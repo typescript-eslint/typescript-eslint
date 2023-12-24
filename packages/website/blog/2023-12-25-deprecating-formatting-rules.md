@@ -40,27 +40,27 @@ You'll want to switch to using their equivalents from [ESLint Stylistic](https:/
 See the [ESLint Stylistic > Getting Started](https://eslint.style/guide/getting-started) guide for how to switch formatting rules to that project.
 The equivalent stylistic rules for deprecated typescript-eslint rules are summarized in this table:
 
-| typescript-eslint Rule                                                                        | ESLint Stylistic Rule                                                                                 |
-| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [`@typescript-eslint/block-spacing`](/rules/block-spacing)                                    | [`@stylistic/block-spacing`](https://eslint.style/rules/ts/block-spacing)                             |
-| [`@typescript-eslint/brace-style`](/rules/brace-style)                                        | [`@stylistic/brace-style`](https://eslint.style/rules/ts/brace-style)                                 |
-| [`@typescript-eslint/comma-dangle`](/rules/comma-dangle)                                      | [`@stylistic/comma-dangle`](https://eslint.style/rules/ts/comma-dangle)                               |
-| [`@typescript-eslint/comma-spacing`](/rules/comma-spacing)                                    | [`@stylistic/comma-spacing`](https://eslint.style/rules/ts/comma-spacing)                             |
-| [`@typescript-eslint/func-call-spacing`](/rules/func-call-spacing)                            | [`@stylistic/func-call-spacing`](https://eslint.style/rules/ts/func-call-spacing)                     |
-| [`@typescript-eslint/indent`](/rules/indent)                                                  | [`@stylistic/indent`](https://eslint.style/rules/ts/indent)                                           |
-| [`@typescript-eslint/key-spacing`](/rules/key-spacing)                                        | [`@stylistic/key-spacing`](https://eslint.style/rules/ts/key-spacing)                                 |
-| [`@typescript-eslint/keyword-spacing`](/rules/keyword-spacing)                                | [`@stylistic/keyword-spacing`](https://eslint.style/rules/ts/keyword-spacing)                         |
-| [`@typescript-eslint/lines-around-comment`](/rules/lines-around-comment)                      | [`@stylistic/lines-around-comment`](https://eslint.style/rules/ts/lines-around-comment)               |
-| [`@typescript-eslint/lines-between-class-members`](/rules/lines-between-class-members)        | [`@stylistic/lines-between-class-members`](https://eslint.style/rules/ts/lines-between-class-members)        |
-| [`@typescript-eslint/member-delimiter-style`](/rules/member-delimiter-style)                  | [`@stylistic/member-delimiter-style`](https://eslint.style/rules/ts/member-delimiter-style)           |
-| [`@typescript-eslint/no-extra-parens`](/rules/no-extra-parens)                                | [`@stylistic/no-extra-parens`](https://eslint.style/rules/ts/no-extra-parens)                         |
+| typescript-eslint Rule                                                                         | ESLint Stylistic Rule                                                                                         |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`@typescript-eslint/block-spacing`](/rules/block-spacing)                                     | [`@stylistic/block-spacing`](https://eslint.style/rules/ts/block-spacing)                                     |
+| [`@typescript-eslint/brace-style`](/rules/brace-style)                                         | [`@stylistic/brace-style`](https://eslint.style/rules/ts/brace-style)                                         |
+| [`@typescript-eslint/comma-dangle`](/rules/comma-dangle)                                       | [`@stylistic/comma-dangle`](https://eslint.style/rules/ts/comma-dangle)                                       |
+| [`@typescript-eslint/comma-spacing`](/rules/comma-spacing)                                     | [`@stylistic/comma-spacing`](https://eslint.style/rules/ts/comma-spacing)                                     |
+| [`@typescript-eslint/func-call-spacing`](/rules/func-call-spacing)                             | [`@stylistic/func-call-spacing`](https://eslint.style/rules/ts/func-call-spacing)                             |
+| [`@typescript-eslint/indent`](/rules/indent)                                                   | [`@stylistic/indent`](https://eslint.style/rules/ts/indent)                                                   |
+| [`@typescript-eslint/key-spacing`](/rules/key-spacing)                                         | [`@stylistic/key-spacing`](https://eslint.style/rules/ts/key-spacing)                                         |
+| [`@typescript-eslint/keyword-spacing`](/rules/keyword-spacing)                                 | [`@stylistic/keyword-spacing`](https://eslint.style/rules/ts/keyword-spacing)                                 |
+| [`@typescript-eslint/lines-around-comment`](/rules/lines-around-comment)                       | [`@stylistic/lines-around-comment`](https://eslint.style/rules/ts/lines-around-comment)                       |
+| [`@typescript-eslint/lines-between-class-members`](/rules/lines-between-class-members)         | [`@stylistic/lines-between-class-members`](https://eslint.style/rules/ts/lines-between-class-members)         |
+| [`@typescript-eslint/member-delimiter-style`](/rules/member-delimiter-style)                   | [`@stylistic/member-delimiter-style`](https://eslint.style/rules/ts/member-delimiter-style)                   |
+| [`@typescript-eslint/no-extra-parens`](/rules/no-extra-parens)                                 | [`@stylistic/no-extra-parens`](https://eslint.style/rules/ts/no-extra-parens)                                 |
 | [`@typescript-eslint/padding-line-between-statements`](/rules/padding-line-between-statements) | [`@stylistic/padding-line-between-statements`](https://eslint.style/rules/ts/padding-line-between-statements) |
-| [`@typescript-eslint/quotes`](/rules/quotes)                                                  | [`@stylistic/quotes`](https://eslint.style/rules/ts/quotes)                                           |
-| [`@typescript-eslint/semi`](/rules/semi)                                                      | [`@stylistic/semi`](https://eslint.style/rules/ts/semi)                                               |
-| [`@typescript-eslint/space-before-blocks`](/rules/space-before-blocks)                        | [`@stylistic/space-before-blocks`](https://eslint.style/rules/ts/space-before-blocks)                 |
-| [`@typescript-eslint/space-before-function-paren`](/rules/space-before-function-paren)        | [`@stylistic/space-before-function-paren`](https://eslint.style/rules/ts/space-before-function-paren)       |
-| [`@typescript-eslint/space-infix-ops`](/rules/space-infix-ops)                                | [`@stylistic/space-infix-ops`](https://eslint.style/rules/ts/space-infix-ops)                         |
-| [`@typescript-eslint/type-annotation-spacing`](/rules/type-annotation-spacing)                | [`@stylistic/type-annotation-spacing`](https://eslint.style/rules/ts/type-annotation-spacing)         |
+| [`@typescript-eslint/quotes`](/rules/quotes)                                                   | [`@stylistic/quotes`](https://eslint.style/rules/ts/quotes)                                                   |
+| [`@typescript-eslint/semi`](/rules/semi)                                                       | [`@stylistic/semi`](https://eslint.style/rules/ts/semi)                                                       |
+| [`@typescript-eslint/space-before-blocks`](/rules/space-before-blocks)                         | [`@stylistic/space-before-blocks`](https://eslint.style/rules/ts/space-before-blocks)                         |
+| [`@typescript-eslint/space-before-function-paren`](/rules/space-before-function-paren)         | [`@stylistic/space-before-function-paren`](https://eslint.style/rules/ts/space-before-function-paren)         |
+| [`@typescript-eslint/space-infix-ops`](/rules/space-infix-ops)                                 | [`@stylistic/space-infix-ops`](https://eslint.style/rules/ts/space-infix-ops)                                 |
+| [`@typescript-eslint/type-annotation-spacing`](/rules/type-annotation-spacing)                 | [`@stylistic/type-annotation-spacing`](https://eslint.style/rules/ts/type-annotation-spacing)                 |
 
 ## Supporting typescript-eslint
 
