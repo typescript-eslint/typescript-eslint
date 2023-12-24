@@ -1,4 +1,5 @@
 import { minimatch } from 'minimatch';
+
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
 import {
@@ -52,7 +53,7 @@ export function useProgramFromProjectService(
 function filePathMatchedBy(
   filePath: string,
   allowDefaultProjectForFiles: string[] | undefined,
-) {
+): boolean {
   return !!allowDefaultProjectForFiles?.some(pattern =>
     minimatch(filePath, pattern),
   );
