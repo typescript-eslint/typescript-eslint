@@ -56,14 +56,16 @@ You can change over to the new Project Service API by replacing `project` with `
 
 ### Flat ESLint Config
 
-```diff title="eslint.config.js"
+```js title="eslint.config.js"
 export default tseslint.flatConfig({
   // ...
   languageOptions: {
     parser: tseslint.parser,
     parserOptions: {
--     project: true,
-+     projectService: true,
+      // Remove this line
+      project: true,
+      // Add this line
+      projectService: true,
       tsconfigRootDir: __dirname,
     },
   },
@@ -73,17 +75,19 @@ export default tseslint.flatConfig({
 
 ### Legacy ESLint Config
 
-```diff title=".eslintrc.cjs"
+```js title=".eslintrc.cjs"
 module.exports = {
   // ...
   parser: '@typescript-eslint/parser',
   parserOptions: {
--   project: true,
-+   projectService: true,
+    // Remove this line
+    project: true,
+    // Add this line
+    projectService: true,
     tsconfigRootDir: __dirname,
   },
   // ...
-}
+};
 ```
 
 <!--/tabs-->
@@ -95,20 +99,10 @@ Everything else around linting, including running ESLint and configuring rules, 
 One long-standing pain point of typed linting is enabling type information for files not included in the project's `tsconfig.json`, such as an `eslint.config.js` or `vitest.config.ts`.
 Common solutions in the legacy Program API were to either skip type checking for those files or to create a separate `tsconfig.eslint.json` that enabled `compilerOptions.allowJs = true`.
 
-Now, the new Project Service API allows for a configuration object specifying `additionalFiles` globs.
+Now, the new Project Service API allows for a configuration object specifying any number of `additionalFiles` globs.
 Those globs allowlist files that should have type information despite not being included in the project's TSConfig.
 
-```js
-parserOptions: {
-  projectService: {
-    additionalFiles: [
-      /* ... */
-    ];
-  }
-}
-```
-
-For example, specifying `projectService.additionalFiles: ['./*']` would solve the common case of projects that have root-level files such as `eslint.config.js` and `vitest.config.ts`:
+For example, specifying `parserOptions.projectService.additionalFiles: ['./*']` would solve the common case of projects that have root-level files such as `eslint.config.js` and `vitest.config.ts`:
 
 <!--tabs-->
 
@@ -282,7 +276,6 @@ Our intent is to roll it out according to the following rough timeline:
 
 - **v7**: Rename `parserOptions.EXPERIMENTAL_useProjectService` to `parserOptions.projectService`
 - **v8**: Rename `parserOptions.project` to something like `parserOptions.DEPRECATED_legacyProjectProgram` and rename `parserOptions.projectService` to `parserOptions.project`
-- **v9**: Remove `parserOptions.DEPRECATED_legacyProjectProgram`
 
 Our plan is to always recommend setting `parserOptions.project` in the docs.
 What that refers to will intentionally switch from the legacy program API to the new Project Service API in v8.
