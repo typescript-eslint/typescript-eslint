@@ -17,7 +17,7 @@ export default createRule<Options, MessageIds>({
   name: 'brace-style',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/brace-style'],
+    replacedBy: ['@stylistic/ts/brace-style'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent brace style for blocks',

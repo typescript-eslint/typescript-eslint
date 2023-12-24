@@ -18,7 +18,7 @@ export default createRule<Options, MessageIds>({
   name: 'block-spacing',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/block-spacing'],
+    replacedBy: ['@stylistic/ts/block-spacing'],
     type: 'layout',
     docs: {
       description:

@@ -12,10 +12,7 @@ export function insertFormattingNotice(page: RuleDocsPage): void {
   );
   const url =
     replacement &&
-    `https://eslint.style/rules/default/${replacement.replace(
-      '@stylistic/',
-      '',
-    )}`;
+    `https://eslint.style/rules/ts/${replacement.replace('@stylistic/', '')}`;
 
   page.spliceChildren(0, 0, {
     value: `
@@ -26,7 +23,7 @@ Formatting rules now live in <a href="https://eslint.style">eslint-stylistic</a>
         : ''
     }
 <br />
-See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
+See <a href="/blog/deprecating-formatting-rules">Deprecating Formatting Rules</a> for more information.
 </admonition>
 `,
     type: 'jsx',

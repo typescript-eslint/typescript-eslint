@@ -28,7 +28,7 @@ export default createRule<Options, MessageIds>({
   name: 'key-spacing',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/key-spacing'],
+    replacedBy: ['@stylistic/ts/key-spacing'],
     type: 'layout',
     docs: {
       description:

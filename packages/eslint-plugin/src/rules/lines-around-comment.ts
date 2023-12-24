@@ -51,7 +51,7 @@ export default createRule<Options, MessageIds>({
   name: 'lines-around-comment',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/lines-around-comment'],
+    replacedBy: ['@stylistic/ts/lines-around-comment'],
     type: 'layout',
     docs: {
       description: 'Require empty lines around comments',
