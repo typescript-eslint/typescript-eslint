@@ -218,7 +218,12 @@ We measured several common project scales:
 - 👶 Linting a "tiny" project (~dozen files)
 - 🧒 Linting a "small" project (~100 files)
 - 🧑 Linting a "medium" project (~1,000 files)
-- 🧓 Linting a "large" project (~5,000 files, with project references)
+- 🧓 Linting a "large" project (~5,000 files)
+
+For each of those project scales, we measured two variations:
+
+- "Solo" TypeScript: using a single TSConfig
+- Project references: multiple, composite TSConfigs
 
 We also measured across different linting scenarios:
 
@@ -232,31 +237,184 @@ See [typescript-eslint/project-apis-performance-comparison](https://github.com/t
 
 These measurements were taken by running `npm run lint` on the respective projects.
 
-| API                | 👶 Tiny | 🧒 Small | 🧑 Medium | 🧓 Large |
-| ------------------ | ------- | -------- | --------- | -------- |
-| Legacy Program     |         |          |           |          |
-| 🆕 Project Service |         |          |           |          |
-| 𝚫 Delta            |         |          |           |          |
+<table>
+<thead>
+<tr>
+<th rowspan="2">API</th>
+<th colspan="2">👶 Tiny</th>
+<th colspan="2">🧒 Small</th>
+<th colspan="2">🧑 Medium</th>
+<th colspan="2">🧓 Large</th>
+</tr>
+<tr>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <th>Legacy Program</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <th>🆕 Project Service</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <th>𝚫 Delta</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+</tbody>
+</table>
 
 ### Partial Cold Start
 
 These measurements were taken by recording restarting VS Code on the respective projects with a single file open.
 
-| API                | 👶 Tiny | 🧒 Small | 🧑 Medium | 🧓 Large |
-| ------------------ | ------- | -------- | --------- | -------- |
-| Legacy Program     |         |          |           |          |
-| 🆕 Project Service |         |          |           |          |
-| 𝚫 Delta            |         |          |           |          |
+<table>
+<thead>
+<tr>
+<th rowspan="2">API</th>
+<th colspan="2">👶 Tiny</th>
+<th colspan="2">🧒 Small</th>
+<th colspan="2">🧑 Medium</th>
+<th colspan="2">🧓 Large</th>
+</tr>
+<tr>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <th>Legacy Program</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <th>🆕 Project Service</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <th>𝚫 Delta</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+</tbody>
+</table>
 
 ### Warm Start
 
 These measurements were taken by recording VS Code on the respective projects with a single file open and modifying that file.
 
-| API                | 👶 Tiny | 🧒 Small | 🧑 Medium | 🧓 Large |
-| ------------------ | ------- | -------- | --------- | -------- |
-| Legacy Program     |         |          |           |          |
-| 🆕 Project Service |         |          |           |          |
-| 𝚫 Delta            |         |          |           |          |
+<table>
+<thead>
+<tr>
+<th rowspan="2">API</th>
+<th colspan="2">👶 Tiny</th>
+<th colspan="2">🧒 Small</th>
+<th colspan="2">🧑 Medium</th>
+<th colspan="2">🧓 Large</th>
+</tr>
+<tr>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+<td>Solo</td>
+<td>Projects</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <th>Legacy Program</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <th>🆕 Project Service</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <th>𝚫 Delta</th>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+</tbody>
+</table>
 
 ## Next Steps
 
