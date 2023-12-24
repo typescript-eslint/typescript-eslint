@@ -17,6 +17,7 @@ export default createRule<Options, MessageIds>({
   name: 'quotes',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/quotes'],
     type: 'layout',
     docs: {
       description:

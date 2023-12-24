@@ -591,6 +591,7 @@ export default createRule<Options, MessageIds>({
   name: 'padding-line-between-statements',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/padding-line-between-statements'],
     type: 'layout',
     docs: {
       description: 'Require or disallow padding lines between statements',

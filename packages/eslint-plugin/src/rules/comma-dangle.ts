@@ -47,6 +47,7 @@ export default createRule<Options, MessageIds>({
   name: 'comma-dangle',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/comma-dangle'],
     type: 'layout',
     docs: {
       description: 'Require or disallow trailing commas',

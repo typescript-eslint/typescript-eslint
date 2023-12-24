@@ -137,6 +137,7 @@ export default createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/member-delimiter-style'],
     type: 'layout',
     docs: {
       description:

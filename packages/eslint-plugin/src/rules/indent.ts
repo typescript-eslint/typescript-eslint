@@ -93,6 +93,7 @@ export default createRule<Options, MessageIds>({
   name: 'indent',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/indent'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',

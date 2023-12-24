@@ -21,6 +21,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-extra-parens',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/no-extra-parens'],
     type: 'layout',
     docs: {
       description: 'Disallow unnecessary parentheses',

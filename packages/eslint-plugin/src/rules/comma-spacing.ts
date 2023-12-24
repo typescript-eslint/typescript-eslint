@@ -23,6 +23,7 @@ export default createRule<Options, MessageIds>({
   name: 'comma-spacing',
   meta: {
     deprecated: true,
+    replacedBy: ['@stylistic/comma-spacing'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',
