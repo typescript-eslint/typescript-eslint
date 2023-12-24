@@ -169,6 +169,94 @@ await Promise.all(arrOfIntersection);
 declare const arrOfUnion: (Promise<number> | number)[];
 await Promise.all(arrOfUnion);
     `,
+    `
+declare const unionOfArr: Promise<string>[] | Promise<number>[];
+await Promise.all(unionOfArr);
+    `,
+    `
+declare const unionOfTuple: [Promise<number>] | [Promise<string>];
+await Promise.all(unionOfTuple);
+    `,
+    `
+declare const intersectionOfArr: Promise<string>[] & Promise<number>[];
+await Promise.all(intersectionOfArr);
+    `,
+    `
+declare const intersectionOfTuple: [Promise<number>] & [Promise<string>];
+await Promise.all(intersectionOfTuple);
+    `,
+    `
+declare const readonlyArr: ReadonlyArray<Promise<number>>;
+await Promise.all(readonlyArr);
+    `,
+    `
+declare const unionOfPromiseArrAndArr: Promise<number>[] | number[];
+await Promise.all(unionOfPromiseArrAndArr);
+    `,
+    `
+declare const readonlyTuple: readonly [Promise<number>];
+await Promise.all(readonlyTuple);
+    `,
+    `
+declare const readonlyTupleWithOneValid: readonly [number, Promise<number>];
+await Promise.all(readonlyTupleWithOneValid);
+    `,
+    `
+declare const unionOfReadonlyTuples:
+  | readonly [number]
+  | readonly [Promise<number>];
+await Promise.all(unionOfReadonlyTuples);
+    `,
+    `
+declare const readonlyTupleOfUnion: readonly [Promise<number> | number];
+await Promise.all(readonlyTupleOfUnion);
+    `,
+    `
+class Foo extends Array<Promise<number>> {}
+declare const foo: Foo;
+await Promise.all(foo);
+    `,
+    `
+class Foo extends Array {}
+declare const foo: Foo;
+await Promise.all(foo);
+    `,
+    `
+class Foo extends Array<any> {}
+declare const foo: Foo;
+await Promise.all(foo);
+    `,
+    `
+class Foo extends Array<unknown> {}
+declare const foo: Foo;
+await Promise.all(foo);
+    `,
+    `
+class Foo extends Array<number | Promise<number>> {}
+declare const foo: Foo;
+await Promise.all(foo);
+    `,
+    `
+type Foo = { new (): ReadonlyArray<Promise<number>> };
+declare const foo: Foo;
+class Baz extends foo {}
+declare const baz: Baz;
+await Promise.all(baz);
+    `,
+    `
+type Foo = { new (): [Promise<number>] };
+declare const foo: Foo;
+class Baz extends foo {}
+declare const baz: Baz;
+await Promise.all(baz);
+    `,
+    `
+type Foo = { new (): [number | Promise<number>] };
+declare const foo: Foo;
+class Baz extends foo {}
+declare const baz: Baz;
+await Promise.all(baz);
+    `,
   ],
 
   invalid: [
@@ -417,72 +505,6 @@ await Promise.all([badUnion]);
       ],
     },
     {
-      code: 'await Promise.race(3);',
-      errors: [
-        {
-          line: 1,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
-      code: 'await Promise.all(3);',
-      errors: [
-        {
-          line: 1,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
-      code: 'await Promise.allSettled({ foo: 3 });',
-      errors: [
-        {
-          line: 1,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
-      code: 'await Promise.race(undefined);',
-      errors: [
-        {
-          line: 1,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
-      code: 'await Promise.race?.(undefined);',
-      errors: [
-        {
-          line: 1,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
-      code: "await Promise['all'](3);",
-      errors: [
-        {
-          line: 1,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
-      code: `
-declare const promiseArr: Promise<number[]>;
-await Promise.all(promiseArr);
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'nonArrayArg',
-        },
-      ],
-    },
-    {
       code: 'await Promise.all([0, 1].map(v => v));',
       errors: [
         {
@@ -553,6 +575,124 @@ await Promise.all(badUnionArr);
       errors: [
         {
           line: 3,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+declare const badArrUnion: number[] | string[];
+await Promise.all(badArrUnion);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+declare const badReadonlyArr: ReadonlyArray<number>;
+await Promise.all(badReadonlyArr);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+declare const badArrIntersection: number[] & string[];
+await Promise.all(badArrIntersection);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+declare const badReadonlyTuple: readonly [number, string];
+await Promise.all(badReadonlyTuple);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Array<number> {}
+declare const foo: Foo;
+await Promise.all(foo);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Array<string | number> {}
+declare const foo: Foo;
+await Promise.all(foo);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = [number];
+declare const foo: Foo;
+await Promise.all(foo);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+class Bar {}
+type Foo = { new (): Bar & [number] };
+declare const foo: Foo;
+class Baz extends foo {}
+declare const baz: Baz;
+await Promise.all(baz);
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { new (): ReadonlyArray<number> };
+declare const foo: Foo;
+class Baz extends foo {}
+declare const baz: Baz;
+await Promise.all(baz);
+      `,
+      errors: [
+        {
+          line: 6,
           messageId: 'arrayArg',
         },
       ],

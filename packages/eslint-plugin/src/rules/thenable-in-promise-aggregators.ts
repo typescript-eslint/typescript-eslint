@@ -23,7 +23,6 @@ export default createRule({
         'Unexpected non-Thenable value in array passed to promise aggregator.',
       arrayArg:
         'Unexpected array of non-Thenable values passed to promise aggregator.',
-      nonArrayArg: 'Unexpected non-array passed to promise aggregator.',
     },
     schema: [],
     type: 'problem',
@@ -115,6 +114,52 @@ export default createRule({
       return false;
     }
 
+    function isPartiallyLikeType(
+      type: ts.Type,
+      predicate: (type: ts.Type) => boolean,
+    ): boolean {
+      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+        return true;
+      }
+      if (type.isIntersection() || type.isUnion()) {
+        return type.types.some(t => isPartiallyLikeType(t, predicate));
+      }
+      return predicate(type);
+    }
+
+    function isIndexableWithSomeElementsLike(
+      type: ts.Type,
+      predicate: (type: ts.Type) => boolean,
+    ): boolean {
+      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+        return true;
+      }
+
+      if (type.isIntersection() || type.isUnion()) {
+        return type.types.some(t =>
+          isIndexableWithSomeElementsLike(t, predicate),
+        );
+      }
+
+      if (!checker.isArrayType(type) && !checker.isTupleType(type)) {
+        const indexType = checker.getIndexTypeOfType(type, ts.IndexKind.Number);
+        if (indexType === undefined) {
+          return false;
+        }
+
+        return isPartiallyLikeType(indexType, predicate);
+      }
+
+      const typeArgs = type.typeArguments;
+      if (typeArgs === undefined) {
+        throw new Error(
+          'Expected to find type arguments for an array or tuple.',
+        );
+      }
+
+      return typeArgs.some(t => isPartiallyLikeType(t, predicate));
+    }
+
     return {
       CallExpression(node: TSESTree.CallExpression): void {
         const callee = skipChainExpression(node.callee);
@@ -181,64 +226,19 @@ export default createRule({
         }
 
         const argType = services.getTypeAtLocation(arg);
-        if (isTypeAnyType(argType) || isTypeUnknownType(argType)) {
-          return;
-        }
-
-        if (checker.isArrayType(argType)) {
-          if (
-            argType.typeArguments == null ||
-            argType.typeArguments.length < 1
-          ) {
-            throw new Error('Expected to find type arguments for an array.');
-          }
-
-          const typeArg = argType.typeArguments[0];
-          if (isTypeAnyType(typeArg) || isTypeUnknownType(typeArg)) {
-            return;
-          }
-
-          const originalNode = services.esTreeNodeToTSNodeMap.get(arg);
-          if (tsutils.isThenableType(checker, originalNode, typeArg)) {
-            return;
-          }
-
-          context.report({
-            messageId: 'arrayArg',
-            node: arg,
-          });
-          return;
-        }
-
-        if (checker.isTupleType(argType)) {
-          if (argType.typeArguments === undefined) {
-            return;
-          }
-
-          const originalNode = services.esTreeNodeToTSNodeMap.get(arg);
-          for (const typeArg of argType.typeArguments) {
-            if (isTypeAnyType(typeArg) || isTypeUnknownType(typeArg)) {
-              continue;
-            }
-
-            if (tsutils.isThenableType(checker, originalNode, typeArg)) {
-              continue;
-            }
-
-            context.report({
-              messageId: 'arrayArg',
-              node: arg,
-            });
-            return;
-          }
+        const originalNode = services.esTreeNodeToTSNodeMap.get(arg);
+        if (
+          isIndexableWithSomeElementsLike(argType, elementType => {
+            return tsutils.isThenableType(checker, originalNode, elementType);
+          })
+        ) {
           return;
         }
 
         context.report({
-          messageId: 'nonArrayArg',
+          messageId: 'arrayArg',
           node: arg,
         });
-        return;
       },
     };
   },
