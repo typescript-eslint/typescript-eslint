@@ -179,10 +179,10 @@ export default createRule({
           return;
         }
 
-        const callerType = services.getTypeAtLocation(callee.object);
+        const calleeType = services.getTypeAtLocation(callee.object);
         if (
-          !isPromiseConstructorLike(services.program, callerType) &&
-          !isPromiseLike(services.program, callerType)
+          !isPromiseConstructorLike(services.program, calleeType) &&
+          !isPromiseLike(services.program, calleeType)
         ) {
           return;
         }
