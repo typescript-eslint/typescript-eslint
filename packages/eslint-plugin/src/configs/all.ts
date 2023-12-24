@@ -115,8 +115,6 @@ export = {
     '@typescript-eslint/no-useless-template-literals': 'error',
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
-    'object-curly-spacing': 'off',
-    '@typescript-eslint/object-curly-spacing': 'error',
     '@typescript-eslint/parameter-properties': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     'prefer-destructuring': 'off',
