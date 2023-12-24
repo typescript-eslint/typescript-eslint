@@ -4,7 +4,7 @@ import { areOptionsValid } from './areOptionsValid';
 const exampleRule = createRule<['value-a' | 'value-b'], never>({
   name: 'my-example-rule',
   meta: {
-    type: 'layout',
+    type: 'suggestion',
     docs: {
       description: 'Detects something or other',
     },

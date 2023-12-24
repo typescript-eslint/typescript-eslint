@@ -111,3 +111,9 @@ Examples of **correct** code for the `{ "ignoreTypeIndexes": true }` option:
 type Foo = Bar[0];
 type Baz = Parameters<Foo>[2];
 ```
+
+## When Not To Use It
+
+If your project frequently deals with constant numbers and you don't wish to take up extra space to declare them, this rule might not be for you.
+We recommend at least using descriptive comments and/or names to describe constants.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) instead of completely disabling this rule.

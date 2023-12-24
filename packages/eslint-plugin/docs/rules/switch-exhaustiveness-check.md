@@ -204,4 +204,4 @@ Since `value` is a non-union type it requires the switch case to have a default 
 
 ## When Not To Use It
 
-If you don't frequently `switch` over union types or enums with many parts, or intentionally wish to leave out some parts.
+If you don't frequently `switch` over union types or enums with many parts, or intentionally wish to leave out some parts, this rule may not be for you.

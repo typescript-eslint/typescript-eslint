@@ -48,3 +48,5 @@ declare const d: any;
 declare const e: 1 | 2;
 -e;
 ```
+
+<!-- Intentionally Omitted: When Not To Use It -->

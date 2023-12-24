@@ -72,6 +72,4 @@ declare const mismatchExample: {
 mismatchExample.indexOf(value) >= 0;
 ```
 
-## When Not To Use It
-
-If you don't want to suggest `includes`, you can safely turn this rule off.
+<!-- Intentionally Omitted: When Not To Use It -->

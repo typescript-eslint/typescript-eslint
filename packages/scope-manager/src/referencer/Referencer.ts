@@ -88,6 +88,7 @@ class Referencer extends Visitor {
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
     for (const lib of this.#lib) {
       const variables = TSLibraries[lib];
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       /* istanbul ignore if */ if (!variables) {
         throw new Error(`Invalid value for lib provided: ${lib}`);
       }

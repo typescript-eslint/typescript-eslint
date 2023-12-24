@@ -1,12 +1,12 @@
 name: '✨ Enhance Another Package'
-description: 'Report an enhancement to another one of our packages (parser, util, scope-manager, etc)'
+description: 'Request a change to another one of our packages (parser, utils, etc)'
 title: 'Enhancement: <a short description of my proposal>'
 labels:
   - enhancement
   - triage
 body:
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Proposal Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
@@ -46,26 +46,6 @@ body:
       label: Description
       description: Explain what your proposal would do and why this is useful.
       placeholder: I propose that the foo rule should also check for when bars are force to be a baz.
-    validations:
-      required: true
-  - type: textarea
-    id: fail-cases
-    attributes:
-      label: Fail
-      description: Specify an example of code that should be detected and errored on.
-      render: typescript
-      value: |
-        var replace = 'me';
-    validations:
-      required: true
-  - type: textarea
-    id: pass-cases
-    attributes:
-      label: Pass
-      description: Specify an example of code that would be accepted in its place
-      render: typescript
-      value: |
-        const replace = 'me';
     validations:
       required: true
   - type: textarea

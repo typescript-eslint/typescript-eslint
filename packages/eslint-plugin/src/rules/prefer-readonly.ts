@@ -105,7 +105,7 @@ export default createRule<Options, MessageIds>({
     function isDestructuringAssignment(
       node: ts.PropertyAccessExpression,
     ): boolean {
-      let current: ts.Node = node.parent;
+      let current = node.parent as ts.Node | undefined;
 
       while (current) {
         const parent = current.parent;

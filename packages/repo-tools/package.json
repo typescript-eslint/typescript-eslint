@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "6.12.0",
+  "version": "6.15.0",
   "private": true,
   "scripts": {
     "//": "NOTE: intentionally no build step in this package",
@@ -8,7 +8,7 @@
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "generate-lib": "tsx ./src/generate-lib.ts",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.mts",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"

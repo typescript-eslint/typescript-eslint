@@ -45,7 +45,7 @@ function createSerializer<TConstructor extends ConstructorSignature>(
 
       if (thing.$id) {
         if (SEEN_THINGS.has(thing)) {
-          return `${name}`;
+          return name;
         }
         SEEN_THINGS.add(thing);
       }

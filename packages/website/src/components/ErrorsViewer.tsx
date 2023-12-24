@@ -115,7 +115,7 @@ export function ErrorViewer({
             <h4>{title}</h4>
           </div>
           <pre className={styles.errorPre}>
-            {type === 'danger' ? value?.stack : value.message}
+            {type === 'danger' ? value.stack : value.message}
           </pre>
         </AlertBlock>
       </div>

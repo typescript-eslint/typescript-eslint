@@ -98,4 +98,4 @@ enum Foo {
 
 ## When Not To Use It
 
-If you want use anything other than simple literals as an enum value.
+If you want use anything other than simple literals as an enum value, this rule might not be for you.

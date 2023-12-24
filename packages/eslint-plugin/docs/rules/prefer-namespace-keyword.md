@@ -38,7 +38,7 @@ declare module 'foo' {}
 
 ## When Not To Use It
 
-If you are using the ES2015 module syntax, then you will not need this rule.
+If you are not using TypeScript's older `module`/`namespace` keywords, then you will not need this rule.
 
 ## Further Reading
 

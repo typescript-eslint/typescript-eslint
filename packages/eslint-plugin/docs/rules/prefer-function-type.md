@@ -84,7 +84,7 @@ type Intersection = ((data: string) => number) & ((id: number) => string);
 
 ## When Not To Use It
 
-If you specifically want to use an interface or type literal with a single call signature for stylistic reasons, you can disable this rule.
+If you specifically want to use an interface or type literal with a single call signature for stylistic reasons, you can avoid this rule.
 
 This rule has a known edge case of sometimes triggering on global augmentations such as `interface Function`.
 These edge cases are rare and often symptomatic of odd code.

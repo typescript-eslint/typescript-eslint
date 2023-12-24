@@ -20,6 +20,8 @@ type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'no-extra-parens',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/no-extra-parens'],
     type: 'layout',
     docs: {
       description: 'Disallow unnecessary parentheses',
@@ -277,6 +279,7 @@ export default createRule<Options, MessageIds>({
         }
       },
     };
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (rules.ForInStatement && rules.ForOfStatement) {
       overrides.ForInStatement = function (node): void {
         if (isTypeAssertion(node.right)) {

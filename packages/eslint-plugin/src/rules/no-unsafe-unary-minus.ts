@@ -15,7 +15,8 @@ export default util.createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unaryMinus: 'Invalid type "{{type}}" of template literal expression.',
+      unaryMinus:
+        'Argument of unary negation should be assignable to number | bigint but is {{type}} instead.',
     },
     schema: [],
   },
