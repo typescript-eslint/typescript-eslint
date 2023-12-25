@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.15.0...v6.16.0) (2023-12-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [unbound-method] exempt all non-Promise built-in statics ([#8096](https://github.com/typescript-eslint/typescript-eslint/issues/8096)) ([3182959](https://github.com/typescript-eslint/typescript-eslint/commit/31829591e2c5cf6bdbdd5da23b12c5782f710fa5))
+
+
+### Features
+
+* **eslint-plugin:** deprecate formatting (meta.type: layout) rules ([#8073](https://github.com/typescript-eslint/typescript-eslint/issues/8073)) ([04dea84](https://github.com/typescript-eslint/typescript-eslint/commit/04dea84e8e934a415ec1381a90de3cde670d0dc3))
+* **eslint-plugin:** deprecate no-extra-semi in favor of ESLint Stylistic equivalent ([#8123](https://github.com/typescript-eslint/typescript-eslint/issues/8123)) ([9368bf3](https://github.com/typescript-eslint/typescript-eslint/commit/9368bf390afc58a19123782f8dff2bb5cdd3cccc))
+* **typescript-estree:** add allowDefaultProjectForFiles project service allowlist option ([#7752](https://github.com/typescript-eslint/typescript-eslint/issues/7752)) ([7ddadda](https://github.com/typescript-eslint/typescript-eslint/commit/7ddadda10845bc53967eeec83ba6b7cdc71a079f))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.14.0...v6.15.0) (2023-12-18)
 
 
