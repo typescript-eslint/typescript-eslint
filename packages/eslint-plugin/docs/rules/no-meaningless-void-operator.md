@@ -44,6 +44,8 @@ void bar(); // discarding a number
 
 ## Options
 
+### `checkNever`
+
 `checkNever: true` will suggest removing `void` when the argument has type `never`.
 
 ## When Not To Use It
