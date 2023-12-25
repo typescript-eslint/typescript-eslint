@@ -24,7 +24,7 @@ export default createRule<Options, MessageIds>({
   name: 'func-call-spacing',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/func-call-spacing'],
+    replacedBy: ['@stylistic/ts/func-call-spacing'],
     type: 'layout',
     docs: {
       description:
