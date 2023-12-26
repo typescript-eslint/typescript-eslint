@@ -57,7 +57,7 @@ interface Foo {
 interface Foo {
   new (arg: string[]): void;
 }
-const x = { foo(arg: string[]): void {}; };
+const x = { foo(arg: string[]): void {} };
 function foo(arg: string[]);
 type Foo = (arg: string[]) => void;
 interface Foo {
@@ -105,7 +105,10 @@ function primitive9(arg: string | number | undefined) {}
 
 function fnSig(arg: () => void) {}
 
-enum Foo { a, b }
+enum Foo {
+  a,
+  b,
+}
 function enumArg(arg: Foo) {}
 
 function symb1(arg: symbol) {}
@@ -119,7 +122,7 @@ interface Foo {
 interface Foo {
   new (arg: readonly string[]): void;
 }
-const x = { foo(arg: readonly string[]): void {}; };
+const x = { foo(arg: readonly string[]): void {} };
 function foo(arg: readonly string[]);
 type Foo = (arg: readonly string[]) => void;
 interface Foo {
