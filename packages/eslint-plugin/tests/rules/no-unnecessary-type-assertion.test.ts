@@ -213,6 +213,10 @@ let values: number[] = [];
 
 value = values.pop()!;
     `,
+    `
+declare function foo(): number | undefined;
+const a = foo()!;
+    `,
   ],
 
   invalid: [
@@ -515,6 +519,22 @@ y = 0;
         {
           messageId: 'contextuallyUnnecessary',
           line: 5,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(): number;
+const a = foo()!;
+      `,
+      output: `
+declare function foo(): number;
+const a = foo();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
         },
       ],
     },

@@ -169,7 +169,10 @@ export default createRule<Options, MessageIds>({
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
         if (!isNullableType(type)) {
-          if (isPossiblyUsedBeforeAssigned(node.expression)) {
+          if (
+            node.expression.type === AST_NODE_TYPES.Identifier &&
+            isPossiblyUsedBeforeAssigned(node.expression)
+          ) {
             return;
           }
 
