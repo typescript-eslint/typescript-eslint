@@ -180,10 +180,7 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              return fixer.removeRange([
-                node.expression.range[1],
-                node.range[1],
-              ]);
+              return fixer.removeRange([node.range[1] - 1, node.range[1]]);
             },
           });
         } else {

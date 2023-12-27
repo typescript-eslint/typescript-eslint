@@ -535,6 +535,38 @@ const a = foo();
         {
           messageId: 'unnecessaryAssertion',
           line: 3,
+          column: 11,
+          endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: `
+const b = new Date()!;
+      `,
+      output: `
+const b = new Date();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const b = (1 + 1)!;
+      `,
+      output: `
+const b = (1 + 1);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 11,
+          endColumn: 19,
         },
       ],
     },
