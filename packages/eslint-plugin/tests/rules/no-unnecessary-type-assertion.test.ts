@@ -538,5 +538,38 @@ const a = foo();
         },
       ],
     },
+    {
+      code: `
+declare function foo(): number;
+const a = foo() as number;
+      `,
+      output: `
+declare function foo(): number;
+const a = foo();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(): number;
+const a = <number>foo();
+      `,
+      output: `
+declare function foo(): number;
+const a = foo();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
   ],
 });

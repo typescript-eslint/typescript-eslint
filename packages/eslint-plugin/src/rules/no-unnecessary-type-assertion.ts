@@ -277,7 +277,10 @@ export default createRule<Options, MessageIds>({
                   : null;
               }
               return fixer.removeRange([
-                node.expression.range[1] + 1,
+                node.expression.range[1] +
+                  (node.expression.type === AST_NODE_TYPES.CallExpression
+                    ? 0
+                    : 1),
                 node.range[1],
               ]);
             },
