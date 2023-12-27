@@ -10,6 +10,7 @@ module.exports = {
     'eslint-plugin',
     'import',
     'jest',
+    'jsdoc',
     'simple-import-sort',
     'unicorn',
   ],
@@ -20,6 +21,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
+    'plugin:jsdoc/recommended-typescript-error',
     'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
   ],
@@ -141,6 +143,7 @@ module.exports = {
       'error',
       { commentPattern: '.*intentional fallthrough.*' },
     ],
+    'one-var': ['error', 'never'],
 
     //
     // eslint-plugin-eslint-comment
@@ -216,7 +219,20 @@ module.exports = {
     // enforce a sort order across the codebase
     'simple-import-sort/imports': 'error',
 
-    'one-var': ['error', 'never'],
+    //
+    // eslint-plugin-jsdoc
+    //
+
+    'jsdoc/check-tag-names': 'off',
+    'jsdoc/require-jsdoc': 'off',
+    'jsdoc/require-returns': 'off',
+    'jsdoc/require-yields': 'off',
+    'jsdoc/tag-lines': 'off',
+    'jsdoc/require-param': 'off',
+
+    //
+    // eslint-plugin-unicorn
+    //
 
     'unicorn/no-typeof-undefined': 'error',
   },

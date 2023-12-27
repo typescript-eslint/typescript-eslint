@@ -6,7 +6,7 @@
  *
  * We could therefore solve this by separating the ast-spec tests out into their own package, but the
  * other option is to get Nx to turn a blind eye to the circular dependency by removing
- * @typescript-eslint/typescript-estree as an explicit devDependency in the package.json and just doing an import here.
+ * "@typescript-eslint/typescript-estree" as an explicit devDependency in the package.json and just doing an import here.
  *
  * This file is ignored via a root `.nxignore`
  *

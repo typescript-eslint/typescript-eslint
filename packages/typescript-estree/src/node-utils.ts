@@ -269,7 +269,6 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param node
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
@@ -771,10 +770,6 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
 
 /**
  * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
- * @template T
- * @template U
- * @param array
- * @param callback
  */
 export function firstDefined<T, U>(
   array: readonly T[] | undefined,
