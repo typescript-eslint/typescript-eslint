@@ -571,5 +571,22 @@ const a = foo();
         },
       ],
     },
+    {
+      code: `
+type RT = { log: () => void };
+declare function foo(): RT;
+(foo() as RT).log;
+      `,
+      output: `
+type RT = { log: () => void };
+declare function foo(): RT;
+(foo()).log;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+    },
   ],
 });
