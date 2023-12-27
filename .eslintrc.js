@@ -223,6 +223,8 @@ module.exports = {
     // eslint-plugin-jsdoc
     //
 
+    // https://github.com/gajus/eslint-plugin-jsdoc/issues/1169
+    'jsdoc/check-param-names': 'off',
     'jsdoc/check-tag-names': 'off',
     'jsdoc/require-jsdoc': 'off',
     'jsdoc/require-returns': 'off',
