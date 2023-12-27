@@ -14,11 +14,12 @@ It adds support for interfaces and enums.
 ### ❌ Incorrect
 
 ```ts
-enum Breakpoint{
-  Large, Medium;
+enum Breakpoint {
+  Large,
+  Medium,
 }
 
-interface State{
+interface State {
   currentBreakpoint: Breakpoint;
 }
 ```
@@ -27,7 +28,8 @@ interface State{
 
 ```ts
 enum Breakpoint {
-  Large, Medium;
+  Large,
+  Medium,
 }
 
 interface State {

@@ -54,22 +54,34 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'neve
 #### ❌ Incorrect
 
 ```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
-const x = { ... } as T;
+const x = {
+  // ...
+} as T;
 
 function foo() {
-  return { ... } as T;
+  return {
+    // ...
+  } as T;
 }
 ```
 
 #### ✅ Correct
 
 ```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
-const x: T = { ... };
-const y = { ... } as any;
-const z = { ... } as unknown;
+const x: T = {
+  // ...
+};
+const y = {
+  // ...
+} as any;
+const z = {
+  // ...
+} as unknown;
 
 function foo(): T {
-  return { ... };
+  return {
+    // ...
+  };
 }
 ```
 
@@ -82,23 +94,47 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allo
 #### ❌ Incorrect
 
 ```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
-const x = { ... } as T;
+const x = {
+  // ...
+} as T;
 
 function foo() {
-  return { ... } as T;
+  return {
+    // ...
+  } as T;
 }
 ```
 
 #### ✅ Correct
 
 ```tsx option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
-const x: T = { ... };
-const y = { ... } as any;
-const z = { ... } as unknown;
-foo({ ... } as T);
-new Clazz({ ... } as T);
-function foo() { throw { bar: 5 } as Foo }
-const foo = <Foo props={{ ... } as Bar}/>;
+const x: T = {
+  // ...
+};
+const y = {
+  // ...
+} as any;
+const z = {
+  // ...
+} as unknown;
+foo({
+  // ...
+} as T);
+new Clazz({
+  // ...
+} as T);
+function foo() {
+  throw { bar: 5 } as Foo;
+}
+const foo = (
+  <Foo
+    props={
+      {
+        // ...
+      } as Bar
+    }
+  />
+);
 ```
 
 <!--/tabs-->

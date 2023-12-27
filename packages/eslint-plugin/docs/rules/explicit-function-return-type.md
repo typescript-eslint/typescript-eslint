@@ -172,10 +172,6 @@ functionWithObjectArg({
     return 1;
   },
 });
-
-const Comp: FC = () => {
-  return <button onClick={() => {}} />;
-};
 ```
 
 ### `allowHigherOrderFunctions`

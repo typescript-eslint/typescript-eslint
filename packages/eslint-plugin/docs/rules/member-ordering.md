@@ -920,7 +920,6 @@ It ignores any member group types completely by specifying `"never"` for `member
 
 ```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
-  static c = 0;
   b(): void;
   a: boolean;
 
@@ -936,7 +935,6 @@ interface Foo {
 interface Foo {
   a: boolean;
   b(): void;
-  static c = 0;
 
   [a: string]: number; // Order doesn't matter (no sortable identifier)
   new (): Bar; // Order doesn't matter (no sortable identifier)
