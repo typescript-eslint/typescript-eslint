@@ -5,21 +5,17 @@ import type { Scope, SourceCode } from '../ts-eslint';
 import type { RuleContext } from '../ts-eslint/Rule';
 import type { TSESTree } from '../ts-estree';
 
-export function getAncestors(
-  context: Readonly<RuleContext<string, unknown[]>>,
-): TSESTree.Node[] {
+export function getAncestors(context: Readonly<RuleContext>): TSESTree.Node[] {
   // TODO: Use `SourceCode#getAncestors` (we'll be forced to soon)
   return context.getAncestors();
 }
 
-export function getCwd(
-  context: Readonly<RuleContext<string, unknown[]>>,
-): string {
+export function getCwd(context: Readonly<RuleContext>): string {
   return context.cwd ?? context.getCwd();
 }
 
 export function getDeclaredVariables(
-  context: Readonly<RuleContext<string, unknown[]>>,
+  context: Readonly<RuleContext>,
   node: TSESTree.Node,
 ): readonly Scope.Variable[] {
   const sourceCode = getSourceCode(context);
@@ -29,9 +25,7 @@ export function getDeclaredVariables(
   );
 }
 
-export function getFilename(
-  context: Readonly<RuleContext<string, unknown[]>>,
-): string {
+export function getFilename(context: Readonly<RuleContext>): string {
   return context.filename ?? context.getFilename();
 }
 

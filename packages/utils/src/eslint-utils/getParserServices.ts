@@ -53,7 +53,7 @@ function getParserServices<
 ): ParserServices;
 
 function getParserServices(
-  context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
+  context: Readonly<TSESLint.RuleContext>,
   allowWithoutFullTypeInformation = false,
 ): ParserServices {
   // This check is unnecessary if the user is using the latest version of our parser.

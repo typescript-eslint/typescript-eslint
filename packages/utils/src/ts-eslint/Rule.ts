@@ -173,8 +173,8 @@ type ReportDescriptor<TMessageIds extends string> =
 type SharedConfigurationSettings = Record<string, unknown>;
 
 interface RuleContext<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  TMessageIds extends string = string,
+  TOptions extends readonly unknown[] = unknown[],
 > {
   /**
    * The rule ID.
