@@ -217,6 +217,14 @@ value = values.pop()!;
 declare function foo(): number | undefined;
 const a = foo()!;
     `,
+    `
+declare function foo(): number | undefined;
+const a = foo() as number;
+    `,
+    `
+declare function foo(): number | undefined;
+const a = <number>foo();
+    `,
   ],
 
   invalid: [
