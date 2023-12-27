@@ -183,8 +183,6 @@ describe('Validating rule docs', () => {
       }
 
       test('must include only valid code samples', () => {
-        const { tokens } = parseMarkdownFile(filePath);
-
         for (const token of tokens) {
           if (token.type !== 'code') {
             continue;
