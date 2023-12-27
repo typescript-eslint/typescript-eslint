@@ -16,7 +16,7 @@ But typed linting hasn't always been straightforward to configure or performant 
 With typescript-eslint 7.0, we're marking as stable a `parserOptions.projectService` option that uses more powerful TypeScript APIs than previous typed linting implementations.
 We've found it to bring the following benefits:
 
-- ✍️ **Configuration**: simpler ESLint configs for typed linting and no ancillary `tsconfig.eslint.json`
+- ✍️ **Configuration**: simpler ESLint configs for typed linting and no separate `tsconfig.eslint.json`
 - ⚡️ **Performance**: faster linting both in CLIs and in editors
 - 🧠 **Predictability**: more closely aligns type information for lint rules to what editors produce
 
@@ -41,7 +41,7 @@ Back in [Relative TSConfig Projects with `parserOptions.project = true` > Projec
 > Project Services will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 >
 > We hope this option will eventually become the standard way to enable typed linting.
-> However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for all of the `6.??` versions.
+> However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for all of the `6.x` versions.
 
 Following several months of discussion and testing, we believe the new Project Service API is ready to be used by real-world projects.
 We've found them to be generally faster at runtime and more straightforward to configure.
