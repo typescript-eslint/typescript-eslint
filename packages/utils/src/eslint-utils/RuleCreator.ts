@@ -6,6 +6,7 @@ import type {
   RuleModule,
 } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
+import { getParserServices } from './getParserServices';
 
 export type { RuleListener, RuleModule };
 
@@ -73,6 +74,13 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
         },
       },
       ...rule,
+      create(context, optionsWithDefault): RuleListener {
+        if (meta.docs.requiresTypeChecking) {
+          getParserServices(context);
+        }
+
+        return rule.create(context, optionsWithDefault);
+      },
     });
   };
 }
@@ -98,8 +106,11 @@ function createRule<
     create(
       context: Readonly<RuleContext<TMessageIds, TOptions>>,
     ): RuleListener {
-      const optionsWithDefault = applyDefault(defaultOptions, context.options);
-      return create(context, optionsWithDefault);
+      if (meta.docs?.requiresTypeChecking) {
+        getParserServices(context);
+      }
+
+      return create(context, applyDefault(defaultOptions, context.options));
     },
     defaultOptions,
     meta,
