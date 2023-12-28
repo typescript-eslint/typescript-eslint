@@ -24,19 +24,7 @@ const createMockRuleContext = (
   }) as unknown as UnknownRuleContext;
 
 describe('getParserServices', () => {
-  it('throws an error when given an unknown parser', () => {
-    const context = createMockRuleContext({
-      parserPath: 'unknown',
-    });
-
-    expect(() => ESLintUtils.getParserServices(context)).toThrow(
-      new Error(
-        `You have used a rule which requires @typescript-eslint/parser to generate type information. Unknown parser provided: '${context.parserPath}'.`,
-      ),
-    );
-  });
-
-  it('throws an error when parserOptions.esTreeNodeToTSNodeMap is missing', () => {
+  it('throws a standard error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is known', () => {
     const context = createMockRuleContext({
       parserServices: {
         ...defaults.parserServices,
@@ -47,6 +35,23 @@ describe('getParserServices', () => {
     expect(() => ESLintUtils.getParserServices(context)).toThrow(
       new Error(
         'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
+      ),
+    );
+  });
+
+  it('throws an augment error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is unknown', () => {
+    const context = createMockRuleContext({
+      parserPath: '@babel/parser.js',
+      parserServices: {
+        ...defaults.parserServices,
+        esTreeNodeToTSNodeMap: undefined as any,
+      },
+    });
+
+    expect(() => ESLintUtils.getParserServices(context)).toThrow(
+      new Error(
+        'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.\n' +
+          'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.',
       ),
     );
   });
