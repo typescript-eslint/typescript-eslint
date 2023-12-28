@@ -8,6 +8,9 @@ import { parserPathSeemsToBeTSESLint } from './parserPathSeemsToBeTSESLint';
 const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
 
+const ERROR_MESSAGE_UNKNOWN_PARSER =
+  'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.';
+
 /* eslint-disable @typescript-eslint/unified-signatures */
 /**
  * Try to retrieve type-aware parser service from context.
@@ -57,12 +60,6 @@ function getParserServices(
   context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
   allowWithoutFullTypeInformation = false,
 ): ParserServices {
-  if (!parserPathSeemsToBeTSESLint(context.parserPath)) {
-    throw new Error(
-      `You have used a rule which requires @typescript-eslint/parser to generate type information. Unknown parser provided: '${context.parserPath}'.`,
-    );
-  }
-
   // This check is unnecessary if the user is using the latest version of our parser.
   //
   // However the world isn't perfect:
@@ -79,7 +76,7 @@ function getParserServices(
     // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unnecessary-condition -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
     context.parserServices.tsNodeToESTreeNodeMap == null
   ) {
-    throw new Error(ERROR_MESSAGE_REQUIRES_PARSER_SERVICES);
+    throwError(context.parserPath);
   }
 
   // if a rule requires full type information, then hard fail if it doesn't exist
@@ -89,12 +86,23 @@ function getParserServices(
     context.parserServices.program == null &&
     !allowWithoutFullTypeInformation
   ) {
-    throw new Error(ERROR_MESSAGE_REQUIRES_PARSER_SERVICES);
+    throwError(context.parserPath);
   }
 
   // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
   return context.parserServices;
 }
 /* eslint-enable @typescript-eslint/unified-signatures */
+
+function throwError(parserPath: string): never {
+  throw new Error(
+    parserPathSeemsToBeTSESLint(parserPath)
+      ? ERROR_MESSAGE_REQUIRES_PARSER_SERVICES
+      : [
+          ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
+          ERROR_MESSAGE_UNKNOWN_PARSER,
+        ].join('\n'),
+  );
+}
 
 export { getParserServices };
