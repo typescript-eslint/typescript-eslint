@@ -62,7 +62,9 @@ Now that you've linked the `@typescript-eslint/*` packages with your local downs
 After that, you need to run your repository's `lint` script and your changes should be reflected on the project.
 
 :::caution
-It's important to note that changes inside `@typescript-eslint` will not be reflected automatically inside your local repository! To update your linked repository, you'll need to run `yarn build` to build these changes.
+Changes to `@typescript-eslint/` packages will not be reflected inside your linked repository until they're built locally.
+To re-build all packages, run `yarn build` from the root.
+To start a watch mode builder on just the ESLint plugin, run `yarn build --watch` from `./packages/eslint-plugin`.
 :::
 
 ## Troubleshooting
