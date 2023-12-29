@@ -17,6 +17,8 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'block-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/block-spacing'],
     type: 'layout',
     docs: {
       description:

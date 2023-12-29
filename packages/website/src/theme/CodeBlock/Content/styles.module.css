@@ -6,6 +6,9 @@
   /* rtl:ignore */
   direction: ltr;
   border-radius: inherit;
+}
+
+.codeBlockContent:has(.playgroundButton) {
   min-height: 5.5rem;
 }
 

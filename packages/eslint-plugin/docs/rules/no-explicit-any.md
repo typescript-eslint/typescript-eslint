@@ -94,6 +94,13 @@ function greet(param: Array<string>): Array<string> {}
 
 ## Options
 
+### `fixToUnknown`
+
+By default, this rule will not provide automatic ESLint _fixes_: only opt-in _suggestions_.
+Switching types to `unknown` is safer but is likely to cause additional type errors.
+
+Enabling `{ "fixToUnknown": true }` gives the rule an auto-fixer to replace `: any` with `: unknown`.
+
 ### `ignoreRestArgs`
 
 A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
