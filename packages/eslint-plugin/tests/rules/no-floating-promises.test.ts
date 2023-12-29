@@ -222,7 +222,7 @@ async function test() {
     `
 async function test() {
   class Thenable {
-    then(callback: () => {}): Thenable {
+    then(callback: () => void): Thenable {
       return new Thenable();
     }
   }
@@ -264,7 +264,7 @@ async function test() {
     `
 async function test() {
   class CatchableThenable {
-    then(callback: () => {}, callback: () => {}): CatchableThenable {
+    then(callback: () => void, callback: () => void): CatchableThenable {
       return new CatchableThenable();
     }
   }
@@ -473,6 +473,35 @@ Promise.reject()
   .finally(() => {})
   .finally(() => {})
   .finally(() => {});
+      `,
+    },
+    {
+      code: `
+await Promise.all([Promise.resolve(), Promise.resolve()]);
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+void promiseArray;
+      `,
+    },
+    {
+      code: `
+[Promise.reject(), Promise.reject()].then(() => {});
+      `,
+    },
+    {
+      // Expressions aren't checked by this rule, so this just becomes an array
+      // of number | undefined, which is fine regardless of the ignoreVoid setting.
+      code: `
+[1, 2, void Promise.reject(), 3];
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+['I', 'am', 'just', 'an', 'array'];
       `,
     },
   ],
@@ -997,7 +1026,7 @@ async function test() {
       code: `
 async function test() {
   class CatchableThenable {
-    then(callback: () => {}, callback: () => {}): CatchableThenable {
+    then(callback: () => void, callback: () => void): CatchableThenable {
       return new CatchableThenable();
     }
   }
@@ -1650,6 +1679,132 @@ Promise.resolve().finally(() => {}), 123;
 Promise.reject(new Error('message')).finally(() => {});
       `,
       errors: [{ line: 2, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+function _<T, S extends Array<T | Promise<T>>>(
+  maybePromiseArray: S | undefined,
+): void {
+  maybePromiseArray?.[0];
+}
+      `,
+      errors: [{ line: 5, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+[1, 2, 3].map(() => Promise.reject());
+      `,
+      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+declare const array: unknown[];
+array.map(() => Promise.reject());
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+void promiseArray;
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [{ line: 3, messageId: 'floatingPromiseArray' }],
+    },
+    {
+      code: `
+[1, 2, Promise.reject(), 3];
+      `,
+      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+[1, 2, Promise.reject().catch(() => {}), 3];
+      `,
+      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+const data = ['test'];
+data.map(async () => {
+  await new Promise((_res, rej) => setTimeout(rej, 1000));
+});
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+function _<T, S extends Array<T | Array<T | Promise<T>>>>(
+  maybePromiseArrayArray: S | undefined,
+): void {
+  maybePromiseArrayArray?.[0];
+}
+      `,
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+function f<T extends Array<Promise<number>>>(a: T): void {
+  a;
+}
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+declare const a: Array<Promise<number>> | undefined;
+a;
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+function f<T extends Array<Promise<number>>>(a: T | undefined): void {
+  a;
+}
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+[Promise.reject()] as const;
+      `,
+      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+declare function cursed(): [Promise<number>, Promise<string>];
+cursed();
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+[
+  'Type Argument number ',
+  1,
+  'is not',
+  Promise.resolve(),
+  'but it still is flagged',
+] as const;
+      `,
+      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+        declare const arrayOrPromiseTuple:
+          | Array<number>
+          | [number, number, Promise<unknown>, string];
+        arrayOrPromiseTuple;
+      `,
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+        declare const okArrayOrPromiseArray: Array<number> | Array<Promise<unknown>>;
+        okArrayOrPromiseArray;
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
     },
   ],
 });
