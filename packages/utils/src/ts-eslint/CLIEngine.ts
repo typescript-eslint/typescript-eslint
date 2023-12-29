@@ -15,7 +15,7 @@ declare class CLIEngineBase {
 
   /**
    * Add a plugin by passing its configuration
-   * @param name Name of the plugin.
+   * @param name Name (id) of the plugin.
    * @param pluginObject Plugin configuration object.
    */
   addPlugin(name: string, pluginObject: Linter.Plugin): void;

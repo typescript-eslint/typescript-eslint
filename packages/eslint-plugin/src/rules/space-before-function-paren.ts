@@ -70,7 +70,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Determines whether a function has a name.
-     * @param {ASTNode} node The function node.
      * @returns {boolean} Whether the function has a name.
      */
     function isNamedFunction(
@@ -97,7 +96,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Gets the config for a given function
-     * @param {ASTNode} node The function node
      * @returns {string} "always", "never", or "ignore"
      */
     function getConfigForFunction(

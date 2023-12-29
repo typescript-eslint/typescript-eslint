@@ -16,10 +16,6 @@ abstract class DefinitionBase<
    */
   public readonly $id: number = generator();
 
-  /**
-   * The type of the definition
-   * @public
-   */
   public readonly type: TType;
 
   /**

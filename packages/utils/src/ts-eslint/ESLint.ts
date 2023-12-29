@@ -49,7 +49,6 @@ declare class ESLintBase {
    * options.warnIgnored option is set along with the options.filePath option, this method returns a LintResult object.
    * In that case, the result may contain a warning that indicates the file was ignored.
    * @param code The source code text to check.
-   * @param options The options.
    * @returns The promise that will be fulfilled with an array of LintResult objects. This is an array (despite there
    *          being only one lint result) in order to keep the interfaces between this and the eslint.lintFiles()
    *          method similar.

@@ -65,7 +65,6 @@ declare class TokenStore {
    * Gets the first `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getFirstTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -109,7 +108,6 @@ declare class TokenStore {
    * Gets the last `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getLastTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -183,7 +181,6 @@ declare class TokenStore {
    * Gets the `count` tokens that follows a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
@@ -193,7 +190,6 @@ declare class TokenStore {
    * Gets the `count` tokens that precedes a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
@@ -216,7 +212,6 @@ declare class TokenStore {
 declare class SourceCodeBase extends TokenStore {
   /**
    * Represents parsed source code.
-   * @param text The source code text.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
    */
   constructor(text: string, ast: SourceCode.Program);

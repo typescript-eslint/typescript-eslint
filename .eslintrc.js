@@ -10,6 +10,7 @@ module.exports = {
     'eslint-plugin',
     'import',
     'jest',
+    'jsdoc',
     'simple-import-sort',
     'unicorn',
   ],
@@ -218,6 +219,7 @@ module.exports = {
 
     'one-var': ['error', 'never'],
 
+    'jsdoc/informative-docs': 'error',
     'unicorn/no-typeof-undefined': 'error',
   },
   overrides: [

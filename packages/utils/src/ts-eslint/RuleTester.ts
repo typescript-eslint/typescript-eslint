@@ -129,7 +129,6 @@ interface TestCaseError<TMessageIds extends string> {
 
 /**
  * @param text a string describing the rule
- * @param callback the test callback
  */
 type RuleTesterTestFrameworkFunction = (
   text: string,

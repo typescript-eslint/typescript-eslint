@@ -107,9 +107,6 @@ function isStrictScope(
   return false;
 }
 
-/**
- * Register scope
- */
 function registerScope(scopeManager: ScopeManager, scope: Scope): void {
   scopeManager.scopes.push(scope);
 
@@ -200,10 +197,6 @@ abstract class ScopeBase<
    * @public
    */
   public readonly through: Reference[] = [];
-  /**
-   * The type of scope
-   * @public
-   */
   public readonly type: TType;
   /**
    * Reference to the parent {@link Scope}.
