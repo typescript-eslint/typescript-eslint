@@ -7,7 +7,7 @@ description: 'Require using Error objects as Promise rejection reasons.'
 > See **https://typescript-eslint.io/rules/prefer-promise-reject-errors** for documentation.
 
 This rule extends the base [`eslint/prefer-promise-reject-errors`](https://eslint.org/docs/rules/prefer-promise-reject-errors) rule.
-It uses type information to guarantee that `Promise` can only be rejected with `Error` objects.
+It uses type information to enforce that `Promise`s are only rejected with `Error` objects.
 
 ## Examples
 
