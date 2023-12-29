@@ -223,14 +223,16 @@ module.exports = {
     // eslint-plugin-jsdoc
     //
 
+    // We often use @remarks or other ad-hoc tag names
+    'jsdoc/check-tag-names': 'off',
     // https://github.com/gajus/eslint-plugin-jsdoc/issues/1169
     'jsdoc/check-param-names': 'off',
-    'jsdoc/check-tag-names': 'off',
+    // https://github.com/gajus/eslint-plugin-jsdoc/issues/1175
     'jsdoc/require-jsdoc': 'off',
+    'jsdoc/require-param': 'off',
     'jsdoc/require-returns': 'off',
     'jsdoc/require-yields': 'off',
     'jsdoc/tag-lines': 'off',
-    'jsdoc/require-param': 'off',
 
     //
     // eslint-plugin-unicorn
