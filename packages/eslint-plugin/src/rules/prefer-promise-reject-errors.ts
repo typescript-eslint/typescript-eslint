@@ -52,7 +52,6 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const services = getParserServices(context);
-    const program = services.program;
 
     function checkRejectCall(callExpression: TSESTree.CallExpression): void {
       const argument = callExpression.arguments.at(0);
@@ -62,7 +61,7 @@ export default createRule<Options, MessageIds>({
 
       if (
         !argument ||
-        !isErrorLike(program, services.getTypeAtLocation(argument))
+        !isErrorLike(services.program, services.getTypeAtLocation(argument))
       ) {
         context.report({
           node: callExpression,
@@ -94,8 +93,8 @@ export default createRule<Options, MessageIds>({
               callee.property.value !== 'reject'
             : callee.property.name !== 'reject') ||
           !(
-            isPromiseConstructorLike(program, calleeObjectType) ||
-            isPromiseLike(program, calleeObjectType)
+            isPromiseConstructorLike(services.program, calleeObjectType) ||
+            isPromiseLike(services.program, calleeObjectType)
           )
         ) {
           return;
@@ -106,7 +105,10 @@ export default createRule<Options, MessageIds>({
       NewExpression(node): void {
         const callee = skipChainExpression(node.callee);
         if (
-          !isPromiseConstructorLike(program, services.getTypeAtLocation(callee))
+          !isPromiseConstructorLike(
+            services.program,
+            services.getTypeAtLocation(callee),
+          )
         ) {
           return;
         }
