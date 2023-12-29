@@ -87,16 +87,16 @@ export default createRule<Options, MessageIds>({
         }
 
         const calleeObjectType = services.getTypeAtLocation(callee.object);
-        if (
-          (callee.computed
-            ? callee.property.type === AST_NODE_TYPES.Literal &&
-              callee.property.value !== 'reject'
-            : callee.property.name !== 'reject') ||
-          !(
-            isPromiseConstructorLike(services.program, calleeObjectType) ||
-            isPromiseLike(services.program, calleeObjectType)
-          )
-        ) {
+
+        const rejectMethodCalled = callee.computed
+          ? callee.property.type === AST_NODE_TYPES.Literal &&
+            callee.property.value === 'reject'
+          : callee.property.name === 'reject';
+        const calleeIsLikePromise =
+          isPromiseConstructorLike(services.program, calleeObjectType) ||
+          isPromiseLike(services.program, calleeObjectType);
+
+        if (!rejectMethodCalled || !calleeIsLikePromise) {
           return;
         }
 
