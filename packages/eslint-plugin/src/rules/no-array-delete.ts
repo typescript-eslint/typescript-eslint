@@ -8,12 +8,12 @@ import {
   getParserServices,
 } from '../util';
 
-type MessageId = 'noArrayDelete';
+type MessageId = 'noArrayDelete' | 'useSplice';
 
 export default createRule<[], MessageId>({
   name: 'no-array-delete',
   meta: {
-    fixable: 'code',
+    hasSuggestions: true,
     type: 'problem',
     docs: {
       description: 'Disallow using the `delete` operator on array values',
@@ -22,7 +22,8 @@ export default createRule<[], MessageId>({
     },
     messages: {
       noArrayDelete:
-        'Using the `delete` operator with an array expression is unsafe. Use `array.splice()` instead.',
+        'Using the `delete` operator with an array expression is unsafe.',
+      useSplice: 'Use `array.splice()` instead.',
     },
     schema: [],
   },
@@ -66,23 +67,28 @@ export default createRule<[], MessageId>({
         context.report({
           node,
           messageId: 'noArrayDelete',
-          fix(fixer): TSESLint.RuleFix | null {
-            if (node.argument.type !== AST_NODE_TYPES.MemberExpression) {
-              return null;
-            }
+          suggest: [
+            {
+              messageId: 'useSplice',
+              fix(fixer): TSESLint.RuleFix | null {
+                if (node.argument.type !== AST_NODE_TYPES.MemberExpression) {
+                  return null;
+                }
 
-            const { object, property } = node.argument;
+                const { object, property } = node.argument;
 
-            const shouldHaveParentheses =
-              property.type === AST_NODE_TYPES.SequenceExpression;
+                const shouldHaveParentheses =
+                  property.type === AST_NODE_TYPES.SequenceExpression;
 
-            const nodeMap = services.esTreeNodeToTSNodeMap;
-            const target = nodeMap.get(object).getText();
-            const rawKey = nodeMap.get(property).getText();
-            const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
+                const nodeMap = services.esTreeNodeToTSNodeMap;
+                const target = nodeMap.get(object).getText();
+                const rawKey = nodeMap.get(property).getText();
+                const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
-            return fixer.replaceText(node, `${target}.splice(${key}, 1)`);
-          },
+                return fixer.replaceText(node, `${target}.splice(${key}, 1)`);
+              },
+            },
+          ],
         });
       },
     };

@@ -62,16 +62,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const arr: number[];
         delete arr[0];
       `,
-      output: `
-        declare const arr: number[];
-        arr.splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: number[];
+        arr.splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -82,17 +87,22 @@ ruleTester.run('no-array-delete', rule, {
         declare const key: number;
         delete arr[key];
       `,
-      output: `
-        declare const arr: number[];
-        declare const key: number;
-        arr.splice(key, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 4,
           column: 9,
           endColumn: 24,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: number[];
+        declare const key: number;
+        arr.splice(key, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -108,7 +118,16 @@ ruleTester.run('no-array-delete', rule, {
 
         delete arr[Keys.A];
       `,
-      output: `
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          line: 9,
+          column: 9,
+          endColumn: 27,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
         declare const arr: number[];
 
         enum Keys {
@@ -118,12 +137,8 @@ ruleTester.run('no-array-delete', rule, {
 
         arr.splice(Keys.A, 1);
       `,
-      errors: [
-        {
-          messageId: 'noArrayDelete',
-          line: 9,
-          column: 9,
-          endColumn: 27,
+            },
+          ],
         },
       ],
     },
@@ -134,17 +149,22 @@ ruleTester.run('no-array-delete', rule, {
         declare function doWork(): void;
         delete arr[(doWork(), 1)];
       `,
-      output: `
-        declare const arr: number[];
-        declare function doWork(): void;
-        arr.splice((doWork(), 1), 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 4,
           column: 9,
           endColumn: 34,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: number[];
+        declare function doWork(): void;
+        arr.splice((doWork(), 1), 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -154,29 +174,40 @@ ruleTester.run('no-array-delete', rule, {
         declare const arr: Array<number>;
         delete arr[0];
       `,
-      output: `
-        declare const arr: Array<number>;
-        arr.splice(0, 1);
-      `,
+
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: Array<number>;
+        arr.splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
 
     {
       code: 'delete [1, 2, 3][0];',
-      output: '[1, 2, 3].splice(0, 1);',
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 1,
           column: 1,
           endColumn: 20,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: '[1, 2, 3].splice(0, 1);',
+            },
+          ],
         },
       ],
     },
@@ -186,16 +217,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const arr: unknown[];
         delete arr[Math.random() ? 0 : 1];
       `,
-      output: `
-        declare const arr: unknown[];
-        arr.splice(Math.random() ? 0 : 1, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 42,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: unknown[];
+        arr.splice(Math.random() ? 0 : 1, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -205,16 +241,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const arr: number[] | string[] | boolean[];
         delete arr[0];
       `,
-      output: `
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          line: 3,
+          column: 9,
+          endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
         declare const arr: number[] | string[] | boolean[];
         arr.splice(0, 1);
       `,
-      errors: [
-        {
-          messageId: 'noArrayDelete',
-          line: 3,
-          column: 9,
-          endColumn: 22,
+            },
+          ],
         },
       ],
     },
@@ -224,16 +265,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const arr: number[] & unknown;
         delete arr[0];
       `,
-      output: `
-        declare const arr: number[] & unknown;
-        arr.splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: number[] & unknown;
+        arr.splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -243,16 +289,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const arr: (number | string)[];
         delete arr[0];
       `,
-      output: `
-        declare const arr: (number | string)[];
-        arr.splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: (number | string)[];
+        arr.splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -262,16 +313,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const obj: { a: { b: { c: number[] } } };
         delete obj.a.b.c[0];
       `,
-      output: `
-        declare const obj: { a: { b: { c: number[] } } };
-        obj.a.b.c.splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 28,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const obj: { a: { b: { c: number[] } } };
+        obj.a.b.c.splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -281,16 +337,21 @@ ruleTester.run('no-array-delete', rule, {
         declare function getArray<T extends number[]>(): T;
         delete getArray()[0];
       `,
-      output: `
-        declare function getArray<T extends number[]>(): T;
-        getArray().splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 29,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare function getArray<T extends number[]>(): T;
+        getArray().splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -300,16 +361,21 @@ ruleTester.run('no-array-delete', rule, {
         declare function getArray<T extends number>(): T[];
         delete getArray()[0];
       `,
-      output: `
-        declare function getArray<T extends number>(): T[];
-        getArray().splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 29,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare function getArray<T extends number>(): T[];
+        getArray().splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -320,17 +386,22 @@ ruleTester.run('no-array-delete', rule, {
           delete a[0];
         }
       `,
-      output: `
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          line: 3,
+          column: 11,
+          endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
         function deleteFromArray(a: number[]) {
           a.splice(0, 1);
         }
       `,
-      errors: [
-        {
-          messageId: 'noArrayDelete',
-          line: 3,
-          column: 11,
-          endColumn: 22,
+            },
+          ],
         },
       ],
     },
@@ -341,17 +412,22 @@ ruleTester.run('no-array-delete', rule, {
           delete a[0];
         }
       `,
-      output: `
-        function deleteFromArray<T extends number>(a: T[]) {
-          a.splice(0, 1);
-        }
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 11,
           endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        function deleteFromArray<T extends number>(a: T[]) {
+          a.splice(0, 1);
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -362,17 +438,22 @@ ruleTester.run('no-array-delete', rule, {
           delete a[0];
         }
       `,
-      output: `
-        function deleteFromArray<T extends number[]>(a: T) {
-          a.splice(0, 1);
-        }
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 11,
           endColumn: 22,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        function deleteFromArray<T extends number[]>(a: T) {
+          a.splice(0, 1);
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -382,16 +463,21 @@ ruleTester.run('no-array-delete', rule, {
         declare const tuple: [number, string];
         delete tuple[0];
       `,
-      output: `
-        declare const tuple: [number, string];
-        tuple.splice(0, 1);
-      `,
       errors: [
         {
           messageId: 'noArrayDelete',
           line: 3,
           column: 9,
           endColumn: 24,
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const tuple: [number, string];
+        tuple.splice(0, 1);
+      `,
+            },
+          ],
         },
       ],
     },
