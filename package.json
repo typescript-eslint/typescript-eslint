@@ -141,7 +141,7 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^4.6.2",
-    "typescript": "5.3.2"
+    "typescript": "5.3.3"
   },
   "packageManager": "yarn@3.7.0"
 }

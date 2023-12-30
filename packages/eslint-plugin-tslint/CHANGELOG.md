@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.15.0...v6.16.0) (2023-12-25)
+
+
+### Features
+
+* **typescript-estree:** add allowDefaultProjectForFiles project service allowlist option ([#7752](https://github.com/typescript-eslint/typescript-eslint/issues/7752)) ([7ddadda](https://github.com/typescript-eslint/typescript-eslint/commit/7ddadda10845bc53967eeec83ba6b7cdc71a079f))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.14.0...v6.15.0) (2023-12-18)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.2...v6.14.0) (2023-12-11)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint

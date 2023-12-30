@@ -153,6 +153,27 @@ module.exports = {
 };
 ```
 
+## typescript-eslint thinks my variable is never nullish / is `any` / etc., but that is clearly not the case to me
+
+Our type-aware rules almost always trust the type information provided by the TypeScript compiler. Therefore, an easy way to check if our rule is behaving correctly is to inspect the type of the variable in question, such as by hovering over it in your IDE.
+
+If the IDE also shows that the type is never nullish / is `any`, you need to fix the type. A very common case is with the [`no-unnecessary-condition`](/rules/no-unnecessary-condition) rule. Take this code for example:
+
+```ts
+let condition = false;
+
+const f = () => (condition = true);
+f();
+
+if (condition) {
+  //^^^^^^^^^ Unnecessary conditional, value is always falsy.
+}
+```
+
+You can see that the type of `condition` is actually the literal type `false` by hovering over it in your IDE. In this case, typescript-eslint cannot possible know better than TypeScript itself, so you need to fix the report by fixing the type, such as through an assertion (`let condition = false as boolean`).
+
+If the IDE provides different type information from typescript-eslint's report, then make sure that the TypeScript setup used for your IDE, typescript-eslint, and `tsc` are the same: the same TypeScript version, the same type-checking compiler options, and the same files being included in the project. For example, if a type is declared in another file but that file is not included, the type will become `any`, and cause our `no-unsafe-*` rules to report.
+
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
