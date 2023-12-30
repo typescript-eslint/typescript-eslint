@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-array-delete';
 import { getFixturesRootDir } from '../RuleTester';
@@ -475,6 +475,110 @@ ruleTester.run('no-array-delete', rule, {
               output: `
         declare const tuple: [number, string];
         tuple.splice(0, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const a: number[];
+        declare const b: number;
+
+        delete [...a, ...a][b];
+      `,
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const a: number[];
+        declare const b: number;
+
+        [...a, ...a].splice(b, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: noFormat`
+        declare const a: number[];
+        declare const b: number;
+
+        delete /* multi
+        line */ a[((
+        // single-line
+        b /* inline */ /* another-inline */ )
+        ) /* another-one */ ];
+      `,
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const a: number[];
+        declare const b: number;
+
+        a.splice(b, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: noFormat`
+        declare const a: number[];
+        declare const b: number;
+
+        delete ((a[((b))]));
+      `,
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const a: number[];
+        declare const b: number;
+
+        a.splice(b, 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const a: number[];
+        declare const b: number;
+
+        delete a[(b + 1) * (b + 2)];
+      `,
+      errors: [
+        {
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const a: number[];
+        declare const b: number;
+
+        a.splice((b + 1) * (b + 2), 1);
       `,
             },
           ],
