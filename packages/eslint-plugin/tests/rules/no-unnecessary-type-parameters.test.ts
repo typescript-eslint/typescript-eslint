@@ -329,12 +329,11 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole' }],
     },
-    {
-      code: `
-        function f3<T>(x: { T: number }): void;
-      `,
-      errors: [{ messageId: 'sole' }],
-    },
+    // The second "T" here is a property name, not a type.
+    // So T is completely unused and this should be caught by no-unused-variables.
+    // `
+    //   function f3<T>(x: { T: number }): void;
+    // `,
     {
       code: `
         function f4<T, U extends T>(u: U): U;
