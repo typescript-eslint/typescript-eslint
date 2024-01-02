@@ -1,6 +1,4 @@
-/* eslint-disable */
 import type { TSESTree } from '@typescript-eslint/utils';
-import { analyze } from '@typescript-eslint/scope-manager';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -122,10 +120,8 @@ function collectTypeParameterUsage(
   };
 
   const process = (type: ts.Type): void => {
-    // console.log('process', checker.typeToString(type));
     if (tsutils.isTypeParameter(type)) {
       for (const decl of type.getSymbol()?.getDeclarations() ?? []) {
-        // console.log(' got a type parameter!');
         increment((decl as ts.TypeParameterDeclaration).name);
         break;
       }
@@ -134,6 +130,7 @@ function collectTypeParameterUsage(
     if (tsutils.isUnionOrIntersectionType(type)) {
       type.types.forEach(process);
     } else if (tsutils.isIndexedAccessType(type)) {
+      // This covers index access types like "T[K]"
       process(type.objectType);
       process(type.indexType);
     } else if (tsutils.isTypeReference(type)) {
@@ -149,16 +146,7 @@ function collectTypeParameterUsage(
         process(checker.getTypeOfSymbol(sym));
       }
     }
-    // If it's specifically a type parameter, then add it and we're done.
-    // Compound types:
-    // + union/intersection types
-    // + array/tuple types
-    // - object types
-    // - mapped types
-    // + types with generic type parameters
-    // - type predicate
-    // + indexed access types
-    // - conditional types
+    // TODO: mapped types, type predicate, conditional types, function types
   };
 
   process(rootType);
