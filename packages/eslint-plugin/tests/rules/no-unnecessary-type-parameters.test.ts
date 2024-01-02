@@ -131,39 +131,27 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       declare function box<T>(val: T): { val: T };
     `,
     // The second use of the class type parameter is in a method's inferred return type.
-    {
-      code: `
-        class Box<T> {
-          val: T | null = null;
-          get() {
-            return this.val;
-          }
+    `
+      class Box<T> {
+        val: T | null = null;
+        get() {
+          return this.val;
         }
-      `,
-    },
-
-    // {
-    //   code: stripIndent`
-    //     // https://github.com/cartant/eslint-plugin-etc/issues/15
-    //     /**
-    //      * Call two functions with the same args, e.g.
-    //      *
-    //      * onClick={both(action('click'), setState)}
-    //      */
-    //     export function both<
-    //       Args extends unknown[],
-    //       CB1 extends (...args: Args) => void,
-    //       CB2 extends (...args: Args) => void
-    //     >(fn1: CB1, fn2: CB2): (...args: Args) => void {
-    //       // See https://stackoverflow.com/a/62093430/388951
-    //       return function (...args: Args) {
-    //         fn1(...args);
-    //         fn2(...args);
-    //       };
-    //     }
-    //   `,
-    // },
+      }
+    `,
+    `
+      export function both<Args extends unknown[]>(
+        fn1: (...args: Args) => void,
+        fn2: (...args: Args) => void,
+      ): (...args: Args) => void {
+        return function (...args: Args) {
+          fn1(...args);
+          fn2(...args);
+        };
+      }
+    `,
   ],
+
   invalid: [
     // These tests are adapted from https://effectivetypescript.com/2020/08/12/generics-golden-rule/
     {
@@ -375,6 +363,32 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         },
       ],
     },
+    {
+      // See https://github.com/cartant/eslint-plugin-etc/issues/15
+      // and https://stackoverflow.com/a/62093430/388951
+      // See above for a fixed version.
+      code: `
+        /**
+         * Call two functions with the same args, e.g.
+         *
+         * onClick={both(action('click'), setState)}
+         */
+        export function both<
+          Args extends unknown[],
+          CB1 extends (...args: Args) => void,
+          CB2 extends (...args: Args) => void,
+        >(fn1: CB1, fn2: CB2): (...args: Args) => void {
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'CB1' } },
+        { messageId: 'sole', data: { name: 'CB2' } },
+      ],
+    },
 
     // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
     {
@@ -468,19 +482,4 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       ],
     },
   ],
-  /*
-    fromFixture(stripIndent`
-
-    `),
-    fromFixture(stripIndent`
-      declare class Foo {
-        prop: string;
-        getProp<T>(this: Record<'prop', T>): T;
-        compare<T>(this: Record<'prop', T>, other: Record<'prop', T>): number;
-        foo<T>(this: T): void;
-            ~ [canReplace { "name": "T", "replacement": "unknown" }]
-      }
-    `),
-  ],
-  */
 });
