@@ -38,8 +38,7 @@ export function getFilename(
 export function getScope(
   context: Readonly<RuleContext<string, readonly unknown[]>>,
 ): Scope.Scope {
-  // TODO: Use `SourceCode#getScope` (we'll be forced to soon)
-  return context.getScope();
+  return context.sourceCode?.getScope() ?? context.getScope()
 }
 
 export function getSourceCode(
