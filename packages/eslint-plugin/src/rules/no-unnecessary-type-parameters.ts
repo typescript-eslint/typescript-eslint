@@ -36,6 +36,7 @@ export default createRule({
         'ArrowFunctionExpression[typeParameters]',
         'FunctionDeclaration[typeParameters]',
         'FunctionExpression[typeParameters]',
+        'MethodDefinition',
         'TSCallSignatureDeclaration[typeParameters]',
         'TSConstructorType[typeParameters]',
         'TSDeclareFunction[typeParameters]',
