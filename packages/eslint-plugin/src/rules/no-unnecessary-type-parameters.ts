@@ -51,6 +51,7 @@ export default createRule({
 
         const checker = parserServices.program.getTypeChecker();
 
+        // XXX this collects a lot more usage than is needed for this rule.
         usage ??= tsutils.collectVariableUsage(tsNode.getSourceFile());
 
         let inferredCounts: Map<ts.Identifier, number> | null = null;
@@ -58,7 +59,6 @@ export default createRule({
           // We need to resolve and analyze the inferred return type to see
           // whether it contains additional references to the type parameters.
           const type = checker.getTypeAtLocation(tsNode);
-          // const appType = checker.getApparentType(type);
           const returns = type.getCallSignatures().map(s => s.getReturnType());
           if (returns.length) {
             const returnTypeNode = returns[0];
@@ -66,10 +66,22 @@ export default createRule({
           }
         }
 
+        let declEndPos = tsNode.end;
+        if ('body' in tsNode) {
+          declEndPos = tsNode.body?.getStart() ?? tsNode.end;
+        }
+
         for (const typeParameter of tsNode.typeParameters) {
           const { uses } = usage.get(typeParameter.name)!;
+          let numExplicitUses = 0;
+          for (const use of uses) {
+            const pos = use.location.getStart();
+            if (pos > tsNode.getStart() && pos < declEndPos) {
+              numExplicitUses++;
+            }
+          }
           const inferredUses = inferredCounts?.get(typeParameter.name) ?? 0;
-          const numUses = uses.length + inferredUses;
+          const numUses = numExplicitUses + inferredUses;
           // console.log('type parameter', typeParameter.name.text, 'explicit', uses.length, 'implicit', inferredUses);
           if (numUses === 1) {
             context.report({

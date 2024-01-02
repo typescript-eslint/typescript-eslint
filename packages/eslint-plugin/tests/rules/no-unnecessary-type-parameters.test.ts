@@ -161,6 +161,15 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
+          data: {
+            name: 'K',
+          },
+          messageId: 'sole',
+        },
+        {
+          data: {
+            name: 'V',
+          },
           messageId: 'sole',
         },
       ],
