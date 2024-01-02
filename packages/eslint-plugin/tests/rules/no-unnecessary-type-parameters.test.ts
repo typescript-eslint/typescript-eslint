@@ -266,6 +266,24 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
+    {
+      code: `
+        declare class Foo {
+          prop: string;
+          getProp<T>(this: Record<'prop', T>): T;
+          compare<T>(this: Record<'prop', T>, other: Record<'prop', T>): number;
+          foo<T>(this: T): void;
+          //  ~ [canReplace { "name": "T", "replacement": "unknown" }]
+        }
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+          data: { name: 'T' },
+          line: 5,
+        },
+      ],
+    },
 
     // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
     {
