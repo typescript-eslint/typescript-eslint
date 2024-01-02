@@ -268,13 +268,17 @@ export default createRule<Options, MessageIds>({
     function checkSwitchUnnecessaryDefaultCase(
       switchMetadata: SwitchMetadata,
     ): void {
-      if (allowDefaultCaseForExhaustiveSwitch || !switchMetadata.isUnion) {
+      if (allowDefaultCaseForExhaustiveSwitch) {
         return;
       }
 
-      const { missingBranchTypes, defaultCase } = switchMetadata;
+      const { missingBranchTypes, defaultCase, isUnion } = switchMetadata;
 
-      if (missingBranchTypes.length === 0 && defaultCase !== undefined) {
+      if (
+        missingBranchTypes.length === 0 &&
+        defaultCase !== undefined &&
+        !isUnion
+      ) {
         context.report({
           node: defaultCase,
           messageId: 'dangerousDefaultCase',
