@@ -6,14 +6,6 @@ import * as ts from 'typescript';
 
 import { createRule, getParserServices } from '../util';
 
-type ESTreeFunctionLikeWithTypeParameters = TSESTree.FunctionLike & {
-  typeParameters: {};
-};
-
-type TSSignatureDeclarationWithTypeParameters = ts.SignatureDeclaration & {
-  typeParameters: {};
-};
-
 export default createRule({
   defaultOptions: [],
   meta: {
@@ -33,21 +25,21 @@ export default createRule({
 
     return {
       [[
-        'ArrowFunctionExpression[typeParameters]',
         'ClassDeclaration[typeParameters]',
+        'ClassExpression[typeParameters]',
+        'ArrowFunctionExpression[typeParameters]',
         'FunctionDeclaration[typeParameters]',
         'FunctionExpression[typeParameters]',
-        // 'MethodDefinition[value.typeParameters]',
         'TSCallSignatureDeclaration[typeParameters]',
         'TSConstructorType[typeParameters]',
         'TSDeclareFunction[typeParameters]',
         'TSFunctionType[typeParameters]',
         'TSMethodSignature[typeParameters]',
         'TSEmptyBodyFunctionExpression[typeParameters]',
-      ].join(', ')](esNode: ESTreeFunctionLikeWithTypeParameters): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-          esNode,
-        ) as TSSignatureDeclarationWithTypeParameters;
+      ].join(', ')](esNode: TSESTree.FunctionLike): void {
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode) as
+          | ts.SignatureDeclaration
+          | ts.ClassLikeDeclaration;
         if (!tsNode.typeParameters) {
           return;
         }
@@ -57,18 +49,31 @@ export default createRule({
         // XXX this collects a lot more usage than is needed for this rule.
         usage ??= tsutils.collectVariableUsage(tsNode.getSourceFile());
 
+        // We need to resolve and analyze the inferred return type of a function
+        // to see whether it contains additional references to the type parameters.
+        // For classes, we need to do this for all their methods.
         let inferredCounts: Map<ts.Identifier, number> | null = null;
-        if (!tsNode.type) {
-          // We need to resolve and analyze the inferred return type to see
-          // whether it contains additional references to the type parameters.
-          inferredCounts = new Map<ts.Identifier, number>();
-          const type = checker.getTypeAtLocation(tsNode);
-          for (const sig of type.getCallSignatures()) {
-            collectTypeParameterUsage(
-              checker,
-              sig.getReturnType(),
-              inferredCounts,
-            );
+        const fnNodes = [];
+        if (ts.isFunctionLike(tsNode)) {
+          fnNodes.push(tsNode);
+        } else if (ts.isClassLike(tsNode)) {
+          for (const member of tsNode.members) {
+            if (ts.isFunctionLike(member)) {
+              fnNodes.push(member);
+            }
+          }
+        }
+        for (const fnNode of fnNodes) {
+          if (!fnNode.type) {
+            inferredCounts ??= new Map<ts.Identifier, number>();
+            const type = checker.getTypeAtLocation(fnNode);
+            for (const sig of type.getCallSignatures()) {
+              collectTypeParameterUsage(
+                checker,
+                sig.getReturnType(),
+                inferredCounts,
+              );
+            }
           }
         }
 

@@ -131,14 +131,16 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       declare function box<T>(val: T): { val: T };
     `,
     // The second use of the class type parameter is in a method's inferred return type.
-    `
-      class Box<T> {
-        val: T | null = null;
-        get() {
-          return this.val;
+    {
+      code: `
+        class Box<T> {
+          val: T | null = null;
+          get() {
+            return this.val;
+          }
         }
-      }
-    `,
+      `,
+    },
 
     // {
     //   code: stripIndent`
