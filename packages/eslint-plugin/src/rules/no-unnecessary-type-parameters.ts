@@ -58,7 +58,7 @@ export default createRule({
           // We need to resolve and analyze the inferred return type to see
           // whether it contains additional references to the type parameters.
           const type = checker.getTypeAtLocation(tsNode);
-          const appType = checker.getApparentType(type);
+          // const appType = checker.getApparentType(type);
           const returns = type.getCallSignatures().map(s => s.getReturnType());
           if (returns.length) {
             const returnTypeNode = returns[0];
@@ -70,6 +70,7 @@ export default createRule({
           const { uses } = usage.get(typeParameter.name)!;
           const inferredUses = inferredCounts?.get(typeParameter.name) ?? 0;
           const numUses = uses.length + inferredUses;
+          // console.log('type parameter', typeParameter.name.text, 'explicit', uses.length, 'implicit', inferredUses);
           if (numUses === 1) {
             context.report({
               data: {
@@ -96,10 +97,10 @@ function collectTypeParameterUsage(
   };
 
   const process = (type: ts.Type): void => {
-    console.log('process', checker.typeToString(type));
+    // console.log('process', checker.typeToString(type));
     if (tsutils.isTypeParameter(type)) {
       for (const decl of type.getSymbol()?.getDeclarations() ?? []) {
-        console.log(' got a type parameter!');
+        // console.log(' got a type parameter!');
         increment((decl as ts.TypeParameterDeclaration).name);
         break;
       }
@@ -112,7 +113,7 @@ function collectTypeParameterUsage(
       process(type.indexType);
     } else if (tsutils.isTypeReference(type)) {
       for (const t of type.typeArguments ?? []) {
-        console.log(t);
+        // console.log(t);
         process(t);
       }
     }
