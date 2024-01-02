@@ -53,24 +53,24 @@ export default createRule({
 
         usage ??= tsutils.collectVariableUsage(tsNode.getSourceFile());
 
-        const type = checker.getTypeAtLocation(tsNode);
-        const appType = checker.getApparentType(type);
-        const returns = type.getCallSignatures().map(s => s.getReturnType());
-        // TODO: if the return type is declared explicitly then we can skip this.
         let inferredCounts: Map<ts.Identifier, number> | null = null;
-        if (returns.length) {
-          const returnTypeNode = returns[0];
-          inferredCounts = collectTypeParameterUsage(checker, returnTypeNode);
+        if (!tsNode.type) {
+          // We need to resolve and analyze the inferred return type to see
+          // whether it contains additional references to the type parameters.
+          const type = checker.getTypeAtLocation(tsNode);
+          const appType = checker.getApparentType(type);
+          const returns = type.getCallSignatures().map(s => s.getReturnType());
+          if (returns.length) {
+            const returnTypeNode = returns[0];
+            inferredCounts = collectTypeParameterUsage(checker, returnTypeNode);
+          }
         }
 
         for (const typeParameter of tsNode.typeParameters) {
           const { uses } = usage.get(typeParameter.name)!;
-          console.log(
-            'inferred uses of',
-            typeParameter.name.text,
-            inferredCounts?.get(typeParameter.name),
-          );
-          if (uses.length === 1) {
+          const inferredUses = inferredCounts?.get(typeParameter.name) ?? 0;
+          const numUses = uses.length + inferredUses;
+          if (numUses === 1) {
             context.report({
               data: {
                 name: typeParameter.name.text,
@@ -124,6 +124,7 @@ function collectTypeParameterUsage(
     // - mapped types
     // - types with generic type parameters
     // - type predicate
+    // + indexed access types
   };
 
   process(rootType);

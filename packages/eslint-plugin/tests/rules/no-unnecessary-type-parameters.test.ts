@@ -17,6 +17,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
     {
+      // only: true,
       code: `
         declare function get(): void;
         declare function get<T>(param: T[]): T;
@@ -39,7 +40,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     //   `,
     // },
     {
-      only: true,
+      // only: true,
       code: `
         function getProperty<T, K extends keyof T>(obj: T, key: K) {
           return obj[key];
@@ -54,6 +55,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           v = 1; // this error disappears if V is replaced with any/unknown
           map.set(key, v);
           return v; // signature has implicit return type V, but we cannot know that without type information
+        }
+      `,
+    },
+    {
+      code: `
+        // The inferred return type is Map<V, V>, therefore this is valid.
+        function makeMap<K, V>(ks: K[], vs: V[]) {
+          const r = new Map<K, V>();
+          ks.forEach((k, i) => {
+            r.set(k, vs[i]);
+          });
+          return r;
         }
       `,
     },
@@ -130,6 +143,20 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: `
         function printProperty<T, K extends keyof T>(obj: T, key: K) {
           console.log(obj[key]);
+        }
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        // The inferred return type is Map<V, V>, but these are the sole uses
+        // of both type paramters, so this is invalid.
+        function makeMap<K, V>() {
+          return new Map<K, V>();
         }
       `,
       errors: [
