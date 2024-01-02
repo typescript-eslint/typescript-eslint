@@ -121,7 +121,12 @@ function collectTypeParameterUsage(
     } else if (tsutils.isIndexedAccessType(type)) {
       process(type.objectType);
       process(type.indexType);
+    } else if (tsutils.isObjectType(type)) {
+      for (const sym of type.getProperties()) {
+        console.log(sym);
+      }
     } else if (tsutils.isTypeReference(type)) {
+      // This covers generic types like Map<K, V>.
       for (const t of type.typeArguments ?? []) {
         // console.log(t);
         process(t);
@@ -130,7 +135,7 @@ function collectTypeParameterUsage(
     // If it's specifically a type parameter, then add it and we're done.
     // Compound types:
     // + union/intersection types
-    // - array/tuple types
+    // + array/tuple types
     // - object types
     // - mapped types
     // + types with generic type parameters

@@ -86,6 +86,15 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return v !== null;
       }
     `,
+    {
+      code: `
+        // T appears in the inferred object return type, so this is OK.
+        function box<T>(val: T) {
+          return { val };
+        }
+      `,
+      only: true,
+    },
     // {
     //   code: stripIndent`
     //     // https://github.com/cartant/eslint-plugin-etc/issues/15
