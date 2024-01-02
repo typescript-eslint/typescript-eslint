@@ -302,13 +302,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       errors: [{ messageId: 'sole' }],
     },
     // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
-    // These aren't flagged as errors by this rule because it only runs over functions.
-    // {
-    //   code: `
-    //     type Fn = <T>() => T;
-    //     type Ctr = new<T>() => T;
-    //   `
-    // }
+    {
+      code: `
+        type Fn = <T>() => T;
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        type Ctr = new <T>() => T;
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
     {
       code: `
         const f1 = <T,>(): T => {};
