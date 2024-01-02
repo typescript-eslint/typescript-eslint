@@ -86,15 +86,16 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return v !== null;
       }
     `,
-    {
-      code: `
-        // T appears in the inferred object return type, so this is OK.
-        function box<T>(val: T) {
-          return { val };
-        }
-      `,
-      only: true,
-    },
+    `
+      // T appears in the inferred object return type, so this is OK.
+      function box<T>(val: T) {
+        return { val };
+      }
+    `,
+    `
+      // Same as above but with an explicit return type.
+      declare function box<T>(val: T): { val: T };
+    `,
     // {
     //   code: stripIndent`
     //     // https://github.com/cartant/eslint-plugin-etc/issues/15
@@ -179,7 +180,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     {
       code: `
         // The inferred return type is Map<V, V>, but these are the sole uses
-        // of both type paramters, so this is invalid.
+        // of both type parameters, so this is invalid.
         function makeMap<K, V>() {
           return new Map<K, V>();
         }

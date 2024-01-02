@@ -61,7 +61,11 @@ export default createRule({
           inferredCounts = new Map<ts.Identifier, number>();
           const type = checker.getTypeAtLocation(tsNode);
           for (const sig of type.getCallSignatures()) {
-            collectTypeParameterUsage(sig.getReturnType(), inferredCounts);
+            collectTypeParameterUsage(
+              checker,
+              sig.getReturnType(),
+              inferredCounts,
+            );
           }
         }
 
@@ -99,6 +103,7 @@ export default createRule({
 });
 
 function collectTypeParameterUsage(
+  checker: ts.TypeChecker,
   rootType: ts.Type,
   counts: Map<ts.Identifier, number>,
 ): void {
@@ -121,15 +126,17 @@ function collectTypeParameterUsage(
     } else if (tsutils.isIndexedAccessType(type)) {
       process(type.objectType);
       process(type.indexType);
-    } else if (tsutils.isObjectType(type)) {
-      for (const sym of type.getProperties()) {
-        console.log(sym);
-      }
     } else if (tsutils.isTypeReference(type)) {
       // This covers generic types like Map<K, V>.
       for (const t of type.typeArguments ?? []) {
-        // console.log(t);
         process(t);
+      }
+    } else if (tsutils.isObjectType(type)) {
+      // This covers inferred object types. This should be _after_
+      // isTypeReference to avoid descending into all the properties of a
+      // generic interface/class, e.g. Map<K, V>.
+      for (const sym of type.getProperties()) {
+        process(checker.getTypeOfSymbol(sym));
       }
     }
     // If it's specifically a type parameter, then add it and we're done.
