@@ -17,7 +17,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
     {
-      // only: true,
       code: `
         declare function get(): void;
         declare function get<T>(param: T[]): T;
@@ -33,14 +32,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         declare function compare<T>(param1: T, param2: T): boolean; // this is valid because it enforces comparable types for both parameters
       `,
     },
-    // Dan and Josh disagree with this; U only appears once, therefore it's invalid.
-    // {
-    //   code: `
-    //     declare function compare<T, U extends T>(param1: T, param2: U): boolean; // this is also valid because T constrains U
-    //   `,
-    // },
     {
-      // only: true,
       code: `
         function getProperty<T, K extends keyof T>(obj: T, key: K) {
           return obj[key];
@@ -251,6 +243,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           messageId: 'sole',
         },
       ],
+    },
+    {
+      // This is considered valid by eslint-plugin-etc but Dan and Josh disagree;
+      // U only appears once, therefore it's invalid.
+      code: `
+        declare function compare<T, U extends T>(param1: T, param2: U): boolean; // this is also valid because T constrains U
+      `,
+      errors: [{ messageId: 'sole' }],
     },
   ],
   /*
