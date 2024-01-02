@@ -315,14 +315,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole' }],
     },
-    {
-      code: `
-        class C {
-          constructor<T>(x: T) {}
-        }
-      `,
-      errors: [{ messageId: 'sole' }],
-    },
+    // This is an error: Type parameters cannot appear on a constructor declaration.
+    // `
+    //   class C {
+    //     constructor<T>(x: T) {}
+    //   }
+    // `,
     {
       code: `
         function f2<T>(): T {}
