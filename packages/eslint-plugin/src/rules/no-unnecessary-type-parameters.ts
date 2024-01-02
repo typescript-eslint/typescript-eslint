@@ -16,7 +16,7 @@ export default createRule({
     schema: [],
     type: 'problem',
   },
-  name: 'no-unnecessary-generics',
+  name: 'no-unnecessary-type-parameters',
   create(context) {
     const parserServices = getParserServices(context);
     let usage: Map<ts.Identifier, tsutils.VariableInfo> | undefined;
@@ -50,30 +50,7 @@ export default createRule({
         // We need to resolve and analyze the inferred return type of a function
         // to see whether it contains additional references to the type parameters.
         // For classes, we need to do this for all their methods.
-        let inferredCounts: Map<ts.Identifier, number> | null = null;
-        const fnNodes = [];
-        if (ts.isFunctionLike(tsNode)) {
-          fnNodes.push(tsNode);
-        } else if (ts.isClassLike(tsNode)) {
-          for (const member of tsNode.members) {
-            if (ts.isFunctionLike(member)) {
-              fnNodes.push(member);
-            }
-          }
-        }
-        for (const fnNode of fnNodes) {
-          if (!fnNode.type) {
-            inferredCounts ??= new Map<ts.Identifier, number>();
-            const type = checker.getTypeAtLocation(fnNode);
-            for (const sig of type.getCallSignatures()) {
-              collectTypeParameterUsage(
-                checker,
-                sig.getReturnType(),
-                inferredCounts,
-              );
-            }
-          }
-        }
+        const inferredCounts = countInferredTypeParameterUsage(checker, tsNode);
 
         // References to the type parameter in the function body are irrelevant
         // for a valid type signature.
@@ -150,4 +127,32 @@ function collectTypeParameterUsage(
   };
 
   process(rootType);
+}
+
+/** Count uses of type parameters in inferred return types. */
+function countInferredTypeParameterUsage(
+  checker: ts.TypeChecker,
+  tsNode: ts.SignatureDeclaration | ts.ClassLikeDeclaration,
+): Map<ts.Identifier, number> | null {
+  let inferredCounts: Map<ts.Identifier, number> | null = null;
+  const fnNodes = [];
+  if (ts.isFunctionLike(tsNode)) {
+    fnNodes.push(tsNode);
+  } else if (ts.isClassLike(tsNode)) {
+    for (const member of tsNode.members) {
+      if (ts.isFunctionLike(member)) {
+        fnNodes.push(member);
+      }
+    }
+  }
+  for (const fnNode of fnNodes) {
+    if (!fnNode.type) {
+      inferredCounts ??= new Map<ts.Identifier, number>();
+      const type = checker.getTypeAtLocation(fnNode);
+      for (const sig of type.getCallSignatures()) {
+        collectTypeParameterUsage(checker, sig.getReturnType(), inferredCounts);
+      }
+    }
+  }
+  return inferredCounts;
 }

@@ -326,7 +326,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         //                      ~~~~~ [canReplace { "name": "U", "replacement": "unknown" }]
       `,
       errors: [
-        // eslint-plugin-etc flags both type parameters as uninferrable
+        // eslint-plugin-etc flags both type parameters but we only flag one.
         // { messageId: 'sole', data: { name: 'T' } },
         { messageId: 'sole', data: { name: 'U' } },
       ],
