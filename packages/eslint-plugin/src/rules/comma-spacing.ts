@@ -22,6 +22,8 @@ type MessageIds = 'missing' | 'unexpected';
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/comma-spacing'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',

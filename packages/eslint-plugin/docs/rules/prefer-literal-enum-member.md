@@ -61,7 +61,9 @@ enum Valid {
 
 ## Options
 
-- `allowBitwiseExpressions` set to `true` will allow you to use bitwise expressions in enum initializer (Default: `false`).
+### `allowBitwiseExpressions`
+
+When set to `true` will allow you to use bitwise expressions in enum initializer (default: `false`).
 
 Examples of code for the `{ "allowBitwiseExpressions": true }` option:
 
