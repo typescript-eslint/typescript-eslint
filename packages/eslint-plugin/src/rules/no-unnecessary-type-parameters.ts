@@ -61,8 +61,7 @@ export default createRule({
           inferredCounts = new Map<ts.Identifier, number>();
           const type = checker.getTypeAtLocation(tsNode);
           for (const sig of type.getCallSignatures()) {
-            const returnType = sig.getReturnType();
-            collectTypeParameterUsage(returnTypeNode, inferredCounts);
+            collectTypeParameterUsage(sig.getReturnType(), inferredCounts);
           }
         }
 
