@@ -104,6 +104,8 @@ export default createRule({
   },
 });
 
+// Fill in a counter of the number of times each type parameter appears in
+// the given type.
 function collectTypeParameterUsage(
   checker: ts.TypeChecker,
   rootType: ts.Type,
