@@ -273,12 +273,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         { messageId: 'sole', data: { name: 'U' } },
       ],
     },
+    {
+      code: `
+        const func = <T,>(param: T) => null;
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
   ],
   /*
-    fromFixture(stripIndent`
-      const func = <T,>(param): T => null!;
-                    ~ [cannotInfer { "name": "T" }]
-    `),
     // This test should fail, but it doesn't because the implementation tests
     // the signature with:
     //
