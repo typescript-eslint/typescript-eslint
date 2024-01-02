@@ -139,7 +139,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       ],
     },
     {
-      // only: true,
       code: `
         function printProperty<T, K extends keyof T>(obj: T, key: K) {
           console.log(obj[key]);
@@ -148,6 +147,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       errors: [
         {
           messageId: 'sole',
+          data: { name: 'K' },
         },
       ],
     },
@@ -161,15 +161,29 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         {
-          data: {
-            name: 'K',
-          },
+          data: { name: 'K' },
           messageId: 'sole',
         },
         {
-          data: {
-            name: 'V',
-          },
+          data: { name: 'V' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        // Same as the previous test, but with an explicit return type.
+        function makeMap<K, V>(): Map<K, V> {
+          return new Map<K, V>();
+        }
+      `,
+      errors: [
+        {
+          data: { name: 'K' },
+          messageId: 'sole',
+        },
+        {
+          data: { name: 'V' },
           messageId: 'sole',
         },
       ],

@@ -58,14 +58,16 @@ export default createRule({
         if (!tsNode.type) {
           // We need to resolve and analyze the inferred return type to see
           // whether it contains additional references to the type parameters.
+          inferredCounts = new Map<ts.Identifier, number>();
           const type = checker.getTypeAtLocation(tsNode);
-          const returns = type.getCallSignatures().map(s => s.getReturnType());
-          if (returns.length) {
-            const returnTypeNode = returns[0];
-            inferredCounts = collectTypeParameterUsage(checker, returnTypeNode);
+          for (const sig of type.getCallSignatures()) {
+            const returnType = sig.getReturnType();
+            collectTypeParameterUsage(returnTypeNode, inferredCounts);
           }
         }
 
+        // References to the type parameter in the function body are irrelevant
+        // for a valid type signature.
         let declEndPos = tsNode.end;
         if ('body' in tsNode) {
           declEndPos = tsNode.body?.getStart() ?? tsNode.end;
@@ -82,7 +84,6 @@ export default createRule({
           }
           const inferredUses = inferredCounts?.get(typeParameter.name) ?? 0;
           const numUses = numExplicitUses + inferredUses;
-          // console.log('type parameter', typeParameter.name.text, 'explicit', uses.length, 'implicit', inferredUses);
           if (numUses === 1) {
             context.report({
               data: {
@@ -99,13 +100,11 @@ export default createRule({
 });
 
 function collectTypeParameterUsage(
-  checker: ts.TypeChecker,
   rootType: ts.Type,
-): Map<ts.Identifier, number> {
-  const out = new Map<ts.Identifier, number>();
-
+  counts: Map<ts.Identifier, number>,
+): void {
   const increment = (id: ts.Identifier): void => {
-    out.set(id, 1 + (out.get(id) ?? 0));
+    counts.set(id, 1 + (counts.get(id) ?? 0));
   };
 
   const process = (type: ts.Type): void => {
@@ -135,11 +134,11 @@ function collectTypeParameterUsage(
     // - array/tuple types
     // - object types
     // - mapped types
-    // - types with generic type parameters
+    // + types with generic type parameters
     // - type predicate
     // + indexed access types
+    // - conditional types
   };
 
   process(rootType);
-  return out;
 }
