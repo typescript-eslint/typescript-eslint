@@ -17,6 +17,34 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
     // These tests are adapted from https://effectivetypescript.com/2020/08/12/generics-golden-rule/
+    `
+      function identity<T>(arg: T): T {
+        return arg;
+      }
+    `,
+    `
+      function printProperty<T>(obj: T, key: keyof T) {
+        console.log(obj[key]);
+      }
+    `,
+    `
+      class ClassyArray<T> {
+        arr: T[];
+        constructor(arr: T[]) {
+          this.arr = arr;
+        }
+
+        get(): T[] {
+          return this.arr;
+        }
+        add(item: T) {
+          this.arr.push(item);
+        }
+        remove(item: T) {
+          this.arr = this.arr.filter(el => el !== item);
+        }
+      }
+    `,
     {
       code: `
         function getProperty<T, K extends keyof T>(obj: T, key: K) {
@@ -128,11 +156,61 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     // These tests are adapted from https://effectivetypescript.com/2020/08/12/generics-golden-rule/
     {
       code: `
+        function third<A, B, C>(a: A, b: B, c: C): C {
+          return c;
+        }
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'A' } },
+        { messageId: 'sole', data: { name: 'B' } },
+      ],
+    },
+    {
+      code: `
+        function parseYAML<T>(input: string): T {
+          // ...
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
         function printProperty<T, K extends keyof T>(obj: T, key: K) {
           console.log(obj[key]);
         }
       `,
       errors: [{ messageId: 'sole', data: { name: 'K' } }],
+    },
+    {
+      code: `
+        class Joiner<T extends string | number> {
+          join(els: T[]) {
+            return els.map(el => '' + el).join(',');
+          }
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        class Joiner {
+          join<T extends string | number>(els: T[]) {
+            return els.map(el => '' + el).join(',');
+          }
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        interface Lengthy {
+          length: number;
+        }
+        function getLength<T extends Lengthy>(x: T) {
+          return x.length;
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
     },
 
     // These tests are adapted from eslint-plugin-etc
