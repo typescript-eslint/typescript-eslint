@@ -229,6 +229,29 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         },
       ],
     },
+    {
+      code: `
+        declare class C<V> {
+          method<T, U>(param: T): U;
+          prop: <P>() => P;
+        }
+      `,
+      errors: [
+        // V is unused so it's already covered by no-unused-variables
+        {
+          data: { name: 'T' },
+          messageId: 'sole',
+        },
+        {
+          data: { name: 'U' },
+          messageId: 'sole',
+        },
+        {
+          data: { name: 'P' },
+          messageId: 'sole',
+        },
+      ],
+    },
   ],
   /*
     }),
@@ -248,13 +271,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
 
     `),
     fromFixture(stripIndent`
-      declare class C<V> {
-        method<T, U>(param: T): U;
-               ~ [canReplace { "name": "T", "replacement": "unknown" }]
-                  ~ [cannotInfer { "name": "U" }]
-        prop: <T>() => T;
-               ~ [cannotInfer { "name": "T" }]
-      }
+
     `),
     fromFixture(stripIndent`
       const func = <T,>(param): T => null!;
