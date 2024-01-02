@@ -1,7 +1,8 @@
 /* eslint-disable */
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import { analyze } from '@typescript-eslint/scope-manager';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import { createRule, getParserServices } from '../util';
 
@@ -29,58 +30,6 @@ export default createRule({
   create(context) {
     const parserServices = getParserServices(context);
     let usage: Map<ts.Identifier, tsutils.VariableInfo> | undefined;
-    /*
-    function checkTypeParameters(
-      typeParameters: readonly ts.TypeParameterDeclaration[],
-      signature: ts.SignatureDeclaration,
-    ) {
-
-      // XXX need to rewrite this (didn't even realize JS had labeled loops!)
-      outer: for (const typeParameter of typeParameters) {
-        let usedInParameters = false;
-        let usedInReturnOrExtends = isFunctionWithBody(signature);
-        for (const use of usage.get(typeParameter.name)!.uses) {
-          if (
-            use.location.pos > signature.parameters.pos &&
-            use.location.pos < signature.parameters.end
-          ) {
-            if (usedInParameters) {
-              continue outer;
-            }
-            usedInParameters = true;
-          } else if (!usedInReturnOrExtends) {
-            usedInReturnOrExtends =
-              use.location.pos > signature.parameters.end ||
-              isUsedInConstraint(use.location, typeParameters);
-          }
-        }
-        // XXX why are these handled differently?
-        if (!usedInParameters) {
-          context.report({
-            data: {
-              name: typeParameter.name.text,
-            },
-            node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
-            messageId: 'sole',
-          });
-        } else if (
-          !usedInReturnOrExtends
-          // && !isConstrainedByOtherTypeParameter(typeParameter, typeParameters)
-        ) {
-          context.report({
-            data: {
-              name: typeParameter.name.text,
-              replacement: typeParameter.constraint
-                ? typeParameter.constraint.getText(signature.getSourceFile())
-                : 'unknown',
-            },
-            node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
-            messageId: 'sole',
-          });
-        }
-      }
-    }
-    */
 
     return {
       [[
@@ -100,14 +49,27 @@ export default createRule({
           return;
         }
 
-        // const checker = parserServices.program.getTypeChecker();
+        const checker = parserServices.program.getTypeChecker();
 
-        if (usage === undefined) {
-          usage = tsutils.collectVariableUsage(tsNode.getSourceFile());
+        usage ??= tsutils.collectVariableUsage(tsNode.getSourceFile());
+
+        const type = checker.getTypeAtLocation(tsNode);
+        const appType = checker.getApparentType(type);
+        const returns = type.getCallSignatures().map(s => s.getReturnType());
+        // TODO: if the return type is declared explicitly then we can skip this.
+        let inferredCounts: Map<ts.Identifier, number> | null = null;
+        if (returns.length) {
+          const returnTypeNode = returns[0];
+          inferredCounts = collectTypeParameterUsage(checker, returnTypeNode);
         }
 
         for (const typeParameter of tsNode.typeParameters) {
           const { uses } = usage.get(typeParameter.name)!;
+          console.log(
+            'inferred uses of',
+            typeParameter.name.text,
+            inferredCounts?.get(typeParameter.name),
+          );
           if (uses.length === 1) {
             context.report({
               data: {
@@ -118,53 +80,52 @@ export default createRule({
             });
           }
         }
-
-        // checkTypeParameters(tsNode.typeParameters, tsNode);
-
-        // if (result === 'ok') {
-        //   continue;
-        // }
-        //
-        // context.report({
-        //   data: { name: typeParameter.name.text },
-        //   messageId: result,
-        //   node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
-        // });
       },
     };
   },
 });
 
-function isUsedInConstraint(
-  use: ts.Identifier,
-  typeParameters: readonly ts.TypeParameterDeclaration[],
-) {
-  for (const typeParameter of typeParameters) {
-    if (
-      typeParameter.constraint !== undefined &&
-      use.pos >= typeParameter.constraint.pos &&
-      use.pos < typeParameter.constraint.end
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
+function collectTypeParameterUsage(
+  checker: ts.TypeChecker,
+  rootType: ts.Type,
+): Map<ts.Identifier, number> {
+  const out = new Map<ts.Identifier, number>();
 
-export function isFunctionWithBody(
-  node: ts.Node,
-): node is ts.FunctionLikeDeclaration & { body: {} } {
-  switch (node.kind) {
-    case ts.SyntaxKind.GetAccessor:
-    case ts.SyntaxKind.SetAccessor:
-    case ts.SyntaxKind.FunctionDeclaration:
-    case ts.SyntaxKind.MethodDeclaration:
-    case ts.SyntaxKind.Constructor:
-      return (<ts.FunctionLikeDeclaration>node).body !== undefined;
-    case ts.SyntaxKind.FunctionExpression:
-    case ts.SyntaxKind.ArrowFunction:
-      return true;
-    default:
-      return false;
-  }
+  const increment = (id: ts.Identifier): void => {
+    out.set(id, 1 + (out.get(id) ?? 0));
+  };
+
+  const process = (type: ts.Type): void => {
+    console.log('process', checker.typeToString(type));
+    if (tsutils.isTypeParameter(type)) {
+      for (const decl of type.getSymbol()?.getDeclarations() ?? []) {
+        console.log(' got a type parameter!');
+        increment((decl as ts.TypeParameterDeclaration).name);
+        break;
+      }
+    }
+    // XXX these should be "else if" but tsutils.isParameterType narrows type to never.
+    if (tsutils.isUnionOrIntersectionType(type)) {
+      type.types.forEach(process);
+    } else if (tsutils.isIndexedAccessType(type)) {
+      process(type.objectType);
+      process(type.indexType);
+    } else if (tsutils.isTypeReference(type)) {
+      for (const t of type.typeArguments ?? []) {
+        console.log(t);
+        process(t);
+      }
+    }
+    // If it's specifically a type parameter, then add it and we're done.
+    // Compound types:
+    // + union/intersection types
+    // - array/tuple types
+    // - object types
+    // - mapped types
+    // - types with generic type parameters
+    // - type predicate
+  };
+
+  process(rootType);
+  return out;
 }
