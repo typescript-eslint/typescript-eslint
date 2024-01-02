@@ -252,13 +252,20 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole' }],
     },
+    {
+      code: `
+        // The parameter type can be Record<string, unknown>
+        declare function get<T extends string, U>(param: Record<T, U>): boolean;
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'U' } },
+      ],
+    },
   ],
   /*
     }),
     `
-
-
-
       declare function get<T extends string, U>(param: Record<T, U>): boolean;
                            ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "string" }]
                                              ~ [canReplace { "name": "U", "replacement": "unknown" }]
