@@ -16,6 +16,15 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
+    // These tests are adapted from https://effectivetypescript.com/2020/08/12/generics-golden-rule/
+    {
+      code: `
+        function getProperty<T, K extends keyof T>(obj: T, key: K) {
+          return obj[key];
+        }
+      `,
+    },
+    // These tests are adapted from eslint-plugin-etc's no-misused-generics
     {
       code: `
         declare function get(): void;
@@ -34,13 +43,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
-        function getProperty<T, K extends keyof T>(obj: T, key: K) {
-          return obj[key];
-        }
-      `,
-    },
-    {
-      code: `
         // The inferred return type is V, therefore this is valid.
         function doStuff<K, V>(map: Map<K, V>, key: K) {
           let v = map.get(key);
@@ -50,6 +52,17 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         }
       `,
     },
+
+    // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
+    'declare function example1(a: string): string;',
+    'declare function example2<T>(a: T): T;',
+    'declare function example3<T>(a: T[]): T;',
+    'declare function example4<T>(a: Set<T>): T;',
+    'declare function example5<T>(a: Set<T>, b: T[]): void;',
+    'declare function example6<T>(a: Map<T, T>): void;',
+    'declare function example7<T, U extends T>(t: T, u: U): U;',
+
+    // These tests are new for the no-unnecessary-type-parameters rule
     {
       code: `
         // The inferred return type is Map<V, V>, therefore this is valid.
@@ -88,28 +101,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       // Same as above but with an explicit return type.
       declare function box<T>(val: T): { val: T };
     `,
-    // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
-    `
-      declare function example1(a: string): string;
-    `,
-    `
-      declare function example2<T>(a: T): T;
-    `,
-    `
-      declare function example3<T>(a: T[]): T;
-    `,
-    `
-      declare function example4<T>(a: Set<T>): T;
-    `,
-    `
-      declare function example5<T>(a: Set<T>, b: T[]): void;
-    `,
-    `
-      declare function example6<T>(a: Map<T, T>): void;
-    `,
-    `
-      declare function example7<T, U extends T>(t: T, u: U): U;
-    `,
+
     // {
     //   code: stripIndent`
     //     // https://github.com/cartant/eslint-plugin-etc/issues/15
@@ -133,101 +125,44 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     // },
   ],
   invalid: [
-    {
-      code: `
-        declare function get<T>(): T;
-        //                   ~ [cannotInfer { "name": "T" }]
-        get<string>();
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-        },
-      ],
-    },
-    {
-      code: `
-        declare function get<T extends object>(): T;
-        // ~~~~~~~~~~~~~~~~ [cannotInfer { "name": "T" }]
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-        },
-      ],
-    },
-    {
-      code: `
-        declare function get<T, U = T>(param: U): U;
-        // ~ [cannotInfer { "name": "T" }]
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-        },
-      ],
-    },
-    {
-      code: `
-        declare function get<T, U extends T = T>(param: T): U;
-        // ~~~~~~~~~~~~~~~ [cannotInfer { "name": "U" }]
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-        },
-      ],
-    },
+    // These tests are adapted from https://effectivetypescript.com/2020/08/12/generics-golden-rule/
     {
       code: `
         function printProperty<T, K extends keyof T>(obj: T, key: K) {
           console.log(obj[key]);
         }
       `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { name: 'K' },
-        },
-      ],
+      errors: [{ messageId: 'sole', data: { name: 'K' } }],
+    },
+
+    // These tests are adapted from eslint-plugin-etc
+    {
+      code: `
+        declare function get<T>(): T;
+        get<string>();
+      `,
+      errors: [{ messageId: 'sole' }],
     },
     {
       code: `
-        // The inferred return type is Map<V, V>, but these are the sole uses
-        // of both type parameters, so this is invalid.
-        function makeMap<K, V>() {
-          return new Map<K, V>();
-        }
+        declare function get<T extends object>(): T;
       `,
-      errors: [
-        {
-          data: { name: 'K' },
-          messageId: 'sole',
-        },
-        {
-          data: { name: 'V' },
-          messageId: 'sole',
-        },
-      ],
+      errors: [{ messageId: 'sole' }],
     },
     {
       code: `
-        // Same as the previous test, but with an explicit return type.
-        function makeMap<K, V>(): Map<K, V> {
-          return new Map<K, V>();
-        }
+        declare function get<T, U = T>(param: U): U;
       `,
-      errors: [
-        {
-          data: { name: 'K' },
-          messageId: 'sole',
-        },
-        {
-          data: { name: 'V' },
-          messageId: 'sole',
-        },
-      ],
+      errors: [{ messageId: 'sole' }],
     },
+    {
+      code: `
+        declare function get<T, U extends T = T>(param: T): U;
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+
+    // These tests are adapted from eslint-plugin-etc's no-misused-generics
     {
       code: `
         // Inferred return type is T, but this is still the sole usage.
@@ -252,18 +187,9 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [
         // V is unused so it's already covered by no-unused-variables
-        {
-          data: { name: 'T' },
-          messageId: 'sole',
-        },
-        {
-          data: { name: 'U' },
-          messageId: 'sole',
-        },
-        {
-          data: { name: 'P' },
-          messageId: 'sole',
-        },
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'U' } },
+        { messageId: 'sole', data: { name: 'P' } },
       ],
     },
     {
@@ -301,6 +227,46 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole' }],
     },
+    {
+      code: `
+        declare function take<T>(param: T): void; // T not used as constraint -> could just be any/unknown
+        //                    ~ [canReplace { "name": "T", "replacement": "unknown" }]
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        declare function take<T extends object>(param: T): void; // could just use object
+        //                    ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "object" }]
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        declare function take<T, U = T>(param1: T, param2: U): void; // no constraint
+        //                    ~ [canReplace { "name": "T", "replacement": "unknown" }]
+        //                      ~~~~~ [canReplace { "name": "U", "replacement": "unknown" }]
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'U' } },
+      ],
+    },
+    {
+      code: `
+        declare function take<T, U extends T>(param: T): U; // U is only used in the return type
+        //                      ~~~~~~~~~~~ [cannotInfer { "name": "U" }]
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'U' } }],
+    },
+    {
+      code: `
+        declare function take<T, U extends T>(param: U): U; // T cannot be inferred
+        //                    ~ [cannotInfer { "name": "T" }]
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+
     // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
     {
       code: `
@@ -365,20 +331,37 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole' }],
     },
+
+    // These tests are new for the no-unnecessary-type-parameters rule
+    {
+      code: `
+        // The inferred return type is Map<V, V>, but these are the sole uses
+        // of both type parameters, so this is invalid.
+        function makeMap<K, V>() {
+          return new Map<K, V>();
+        }
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'K' } },
+        { messageId: 'sole', data: { name: 'V' } },
+      ],
+    },
+    {
+      code: `
+        // Same as the previous test, but with an explicit return type.
+        function makeMap<K, V>(): Map<K, V> {
+          return new Map<K, V>();
+        }
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'K' } },
+        { messageId: 'sole', data: { name: 'V' } },
+      ],
+    },
   ],
   /*
     fromFixture(stripIndent`
-      declare function take<T>(param: T): void; // T not used as constraint -> could just be any/unknown
-                            ~ [canReplace { "name": "T", "replacement": "unknown" }]
-      declare function take<T extends object>(param: T): void; // could just use object
-                            ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "object" }]
-      declare function take<T, U = T>(param1: T, param2: U): void; // no constraint
-                            ~ [canReplace { "name": "T", "replacement": "unknown" }]
-                               ~~~~~ [canReplace { "name": "U", "replacement": "unknown" }]
-      declare function take<T, U extends T>(param: T): U; // U is only used in the return type
-                               ~~~~~~~~~~~ [cannotInfer { "name": "U" }]
-      declare function take<T, U extends T>(param: U): U; // T cannot be inferred
-                            ~ [cannotInfer { "name": "T" }]
+
     `),
     fromFixture(stripIndent`
       declare class Foo {
