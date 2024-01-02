@@ -88,6 +88,28 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       // Same as above but with an explicit return type.
       declare function box<T>(val: T): { val: T };
     `,
+    // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
+    `
+      declare function example1(a: string): string;
+    `,
+    `
+      declare function example2<T>(a: T): T;
+    `,
+    `
+      declare function example3<T>(a: T[]): T;
+    `,
+    `
+      declare function example4<T>(a: Set<T>): T;
+    `,
+    `
+      declare function example5<T>(a: Set<T>, b: T[]): void;
+    `,
+    `
+      declare function example6<T>(a: Map<T, T>): void;
+    `,
+    `
+      declare function example7<T, U extends T>(t: T, u: U): U;
+    `,
     // {
     //   code: stripIndent`
     //     // https://github.com/cartant/eslint-plugin-etc/issues/15
@@ -279,21 +301,70 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       `,
       errors: [{ messageId: 'sole' }],
     },
+    // Tests from DefinitelyTyped-tools / eslint-plugin / no-unnecessary-generics
+    // These aren't flagged as errors by this rule because it only runs over functions.
+    // {
+    //   code: `
+    //     type Fn = <T>() => T;
+    //     type Ctr = new<T>() => T;
+    //   `
+    // }
+    {
+      code: `
+        const f1 = <T,>(): T => {};
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        class C {
+          constructor<T>(x: T) {}
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        function f2<T>(): T {}
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        function f3<T>(x: { T: number }): void;
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        function f4<T, U extends T>(u: U): U;
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        const f5 = function <T>(): T {};
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        interface I {
+          <T>(value: T): void;
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        interface I {
+          m<T>(x: T): void;
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
   ],
   /*
-    // This test should fail, but it doesn't because the implementation tests
-    // the signature with:
-    //
-    //   tsutils.isFunctionWithBody(signature)
-    //
-    // And if that returns true, the implementation assumes that the type
-    // parameter is used.
-    //
-    // fromFixture(stripIndent`
-    //   // https://github.com/cartant/eslint-plugin-etc/issues/30
-    //   const func = <T,>(param: T) => null;
-    //                 ~ [canReplace { "name": "T", "replacement": "unknown" }]
-    // `),
     fromFixture(stripIndent`
       declare function take<T>(param: T): void; // T not used as constraint -> could just be any/unknown
                             ~ [canReplace { "name": "T", "replacement": "unknown" }]
