@@ -214,14 +214,21 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         },
       ],
     },
-    // {
-    //   code: ``,
-    //   errors: [
-    //     {
-    //       messageId: 'sole',
-    //     }
-    //   ]
-    // }
+    {
+      code: `
+        // Inferred return type is T, but this is still the sole usage.
+        function fn<T>(param: string) {
+          let v: T = null!;
+          return v;
+        }
+      `,
+      errors: [
+        {
+          data: { name: 'T' },
+          messageId: 'sole',
+        },
+      ],
+    },
   ],
   /*
     }),
@@ -238,11 +245,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
                                          ~ [cannotInfer { "name": "U" }]
     `),
     fromFixture(stripIndent`
-      function fn<T>(param: string) {
-                  ~ [cannotInfer { "name": "T" }]
-        let v: T = null!;
-        return v;
-      }
+
     `),
     fromFixture(stripIndent`
       declare class C<V> {
