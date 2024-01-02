@@ -52,6 +52,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         }
       `,
     },
+
     // These tests are adapted from eslint-plugin-etc's no-misused-generics
     {
       code: `
@@ -91,9 +92,9 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function example7<T, U extends T>(t: T, u: U): U;',
 
     // These tests are new for the no-unnecessary-type-parameters rule
+    // The inferred return type is Map<V, V>, therefore this is valid.
     {
       code: `
-        // The inferred return type is Map<V, V>, therefore this is valid.
         function makeMap<K, V>(ks: K[], vs: V[]) {
           const r = new Map<K, V>();
           ks.forEach((k, i) => {
@@ -103,31 +104,40 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         }
       `,
     },
+    // The inferred return type is [T, T][], which references T twice.
     `
-      // The inferred return type is [T, T][], which references T twice.
       function arrayOfPairs<T>() {
         return [] as [T, T][];
       }
     `,
+    // Same as above but with an explicit return type.
     `
-      // Same as above but with an explicit return type.
       declare function arrayOfPairs<T>(): [T, T][];
     `,
+    // T appears twice, once as a parameter type and once in the predicate.
     `
-      // T appears twice, once as a parameter type and once in the predicate.
       function isNonNull<T>(v: T): v is Exclude<T, null> {
         return v !== null;
       }
     `,
+    // T appears in the inferred object return type, so this is OK.
     `
-      // T appears in the inferred object return type, so this is OK.
       function box<T>(val: T) {
         return { val };
       }
     `,
+    // Same as above but with an explicit return type.
     `
-      // Same as above but with an explicit return type.
       declare function box<T>(val: T): { val: T };
+    `,
+    // The second use of the class type parameter is in a method's inferred return type.
+    `
+      class Box<T> {
+        val: T | null = null;
+        get() {
+          return this.val;
+        }
+      }
     `,
 
     // {

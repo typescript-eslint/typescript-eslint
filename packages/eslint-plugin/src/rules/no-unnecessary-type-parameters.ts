@@ -34,14 +34,16 @@ export default createRule({
     return {
       [[
         'ArrowFunctionExpression[typeParameters]',
+        'ClassDeclaration[typeParameters]',
         'FunctionDeclaration[typeParameters]',
         'FunctionExpression[typeParameters]',
-        'MethodDefinition[value.typeParameters]',
+        // 'MethodDefinition[value.typeParameters]',
         'TSCallSignatureDeclaration[typeParameters]',
         'TSConstructorType[typeParameters]',
         'TSDeclareFunction[typeParameters]',
         'TSFunctionType[typeParameters]',
         'TSMethodSignature[typeParameters]',
+        'TSEmptyBodyFunctionExpression[typeParameters]',
       ].join(', ')](esNode: ESTreeFunctionLikeWithTypeParameters): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
           esNode,
