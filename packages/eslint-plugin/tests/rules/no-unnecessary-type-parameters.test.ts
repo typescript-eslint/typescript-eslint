@@ -80,6 +80,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       // Same as above but with an explicit return type.
       declare function arrayOfPairs<T>(): [T, T][];
     `,
+    `
+      // T appears twice, once as a parameter type and once in the predicate.
+      function isNonNull<T>(v: T): v is Exclude<T, null> {
+        return v !== null;
+      }
+    `,
     // {
     //   code: stripIndent`
     //     // https://github.com/cartant/eslint-plugin-etc/issues/15
