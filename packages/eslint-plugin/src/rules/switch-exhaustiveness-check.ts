@@ -268,7 +268,7 @@ export default createRule<Options, MessageIds>({
     function checkSwitchUnnecessaryDefaultCase(
       switchMetadata: SwitchMetadata,
     ): void {
-      if (allowDefaultCaseForExhaustiveSwitch) {
+      if (allowDefaultCaseForExhaustiveSwitch || !switchMetadata.isUnion) {
         return;
       }
 

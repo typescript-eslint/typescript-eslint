@@ -229,6 +229,27 @@ switch (value) {
         },
       ],
     },
+    // switch with default clause on non-union type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
