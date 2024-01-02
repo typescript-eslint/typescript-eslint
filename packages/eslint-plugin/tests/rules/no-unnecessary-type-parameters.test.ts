@@ -253,8 +253,8 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       errors: [{ messageId: 'sole' }],
     },
     {
+      // The parameter type can be Record<string, unknown>
       code: `
-        // The parameter type can be Record<string, unknown>
         declare function get<T extends string, U>(param: Record<T, U>): boolean;
       `,
       errors: [
@@ -262,24 +262,19 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         { messageId: 'sole', data: { name: 'U' } },
       ],
     },
+    {
+      // The outer T is shadowed by the inner T; this is  not a valid use.
+      code: `
+        declare function get<T>(param: <T, U>(param: T) => U): T;
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'U' } },
+      ],
+    },
   ],
   /*
-    }),
-    `
-      declare function get<T extends string, U>(param: Record<T, U>): boolean;
-                           ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "string" }]
-                                             ~ [canReplace { "name": "U", "replacement": "unknown" }]
-      declare function get<T>(param: <T, U>(param: T) => U): T;
-                           ~ [cannotInfer { "name": "T" }]
-                                      ~ [canReplace { "name": "T", "replacement": "unknown" }]
-                                         ~ [cannotInfer { "name": "U" }]
-    `),
-    fromFixture(stripIndent`
-
-    `),
-    fromFixture(stripIndent`
-
-    `),
     fromFixture(stripIndent`
       const func = <T,>(param): T => null!;
                     ~ [cannotInfer { "name": "T" }]
