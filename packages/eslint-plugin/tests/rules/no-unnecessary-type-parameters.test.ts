@@ -70,6 +70,16 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         }
       `,
     },
+    `
+      // The inferred return type is [T, T][], which references T twice.
+      function arrayOfPairs<T>() {
+        return [] as [T, T][];
+      }
+    `,
+    `
+      // Same as above but with an explicit return type.
+      declare function arrayOfPairs<T>(): [T, T][];
+    `,
     // {
     //   code: stripIndent`
     //     // https://github.com/cartant/eslint-plugin-etc/issues/15
