@@ -8,7 +8,7 @@ The general strategy to do so is:
 
 1. [Global linking](#global-linking): Use your package manager's global link command to make `@typescript-eslint/*` packages available as global symlinks.
 2. [Repository linking](#repository-linking): Use your package manager's link command to reference those global symlinks in the local downstream repository.
-3. [Testing rules](#testing-rules): Test your local rules and plugins by enabling them in the local downstream repository.
+3. [Trying rules](#trying-rules): Test your local rules and plugins by enabling them in the local downstream repository.
 
 ## Global Linking
 
@@ -46,7 +46,7 @@ Now, you should be able to run ESLint in the local downstream repository as you 
 To check that the local package is being used, consider adding a `console.log("Hello, world!");` to a file such as `./packages/eslint-plugin/dist/index.js` and making sure that log appears when linting the local downstream repository.
 :::
 
-## Testing Rules
+## Trying Rules
 
 Now that you've linked the `@typescript-eslint/*` packages with your local downstream repository, the next step would be to include the rule on the local repository ESLint configuration file, e.g:
 
@@ -61,7 +61,7 @@ Now that you've linked the `@typescript-eslint/*` packages with your local downs
 
 After that, you need to run your repository's `lint` script and your changes should be reflected on the project.
 
-:::caution
+:::note
 Changes to `@typescript-eslint/` packages will not be reflected inside your linked repository until they're built locally.
 To re-build all packages, run `yarn build` from the root.
 To start a watch mode builder on just the ESLint plugin, run `yarn build --watch` from `./packages/eslint-plugin`.
