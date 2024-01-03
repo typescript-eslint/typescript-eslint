@@ -1,5 +1,5 @@
 ---
-description: 'Disallow type parameters that only appear once.'
+description: 'Disallow type parameters that only appear once'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑

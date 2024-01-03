@@ -8,7 +8,8 @@ export default createRule({
   defaultOptions: [],
   meta: {
     docs: {
-      description: 'Disallow signatures using a generic parameter only once',
+      description: 'Disallow type parameters that only appear once',
+      requiresTypeChecking: true,
     },
     messages: {
       sole: 'Type parameter {{name}} is used only once.',
