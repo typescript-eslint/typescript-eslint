@@ -1057,6 +1057,13 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
           allowTypeImports?: boolean;
         }[]
       | string[];
+    export type RuleListener =
+      | Record<string, never>
+      | {
+          ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+          ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+          ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+        };
   }
 
   interface ObjectOfPathsAndPatterns {
@@ -1074,11 +1081,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
     | 'patterns'
     | 'patternWithCustomMessage',
     rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
-    {
-      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
-      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
-    }
+    rule.RuleListener
   >;
   export = rule;
 }
