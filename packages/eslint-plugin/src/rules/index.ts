@@ -80,6 +80,7 @@ import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
+import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
@@ -219,6 +220,7 @@ export default {
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
+  'no-unnecessary-type-parameters': noUnnecessaryTypeParameters,
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
