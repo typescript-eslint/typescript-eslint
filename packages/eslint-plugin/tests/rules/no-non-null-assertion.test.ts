@@ -365,5 +365,29 @@ x
         },
       ],
     },
+    {
+      code: noFormat`
+x!
+ // comment
+     /* comment */ ['y']
+      `,
+      errors: [
+        {
+          messageId: 'noNonNull',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: `
+x?.
+ // comment
+     /* comment */ ['y']
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
