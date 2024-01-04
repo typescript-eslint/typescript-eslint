@@ -886,6 +886,12 @@ export class Converter {
         });
 
       case SyntaxKind.CatchClause:
+        if (node.variableDeclaration?.initializer) {
+          this.#throwError(
+            node.variableDeclaration.initializer,
+            'Catch clause variable cannot have an initializer.',
+          );
+        }
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
