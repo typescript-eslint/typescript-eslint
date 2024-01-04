@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.16.0...v6.17.0) (2024-01-01)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-restricted-imports] prevent crash when `patterns` or `paths` in options are empty ([#8108](https://github.com/typescript-eslint/typescript-eslint/issues/8108)) ([675e987](https://github.com/typescript-eslint/typescript-eslint/commit/675e987ca1d13244c03d7e09d4e42c6539689d9a))
+
+
+### Features
+
+* **eslint-plugin:** [no-floating-promises] flag result of .map(async) ([#7897](https://github.com/typescript-eslint/typescript-eslint/issues/7897)) ([5857356](https://github.com/typescript-eslint/typescript-eslint/commit/5857356962060b19aa792bee778f9167ee54154b))
+* **eslint-plugin:** [switch-exhaustiveness-check] add an option to warn against a `default` case on an already exhaustive `switch` ([#7539](https://github.com/typescript-eslint/typescript-eslint/issues/7539)) ([6a219bd](https://github.com/typescript-eslint/typescript-eslint/commit/6a219bdfe6fcf86aae28158e0d855f87a8bac719))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.15.0...v6.16.0) (2023-12-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [unbound-method] exempt all non-Promise built-in statics ([#8096](https://github.com/typescript-eslint/typescript-eslint/issues/8096)) ([3182959](https://github.com/typescript-eslint/typescript-eslint/commit/31829591e2c5cf6bdbdd5da23b12c5782f710fa5))
+
+
+### Features
+
+* **eslint-plugin:** deprecate formatting (meta.type: layout) rules ([#8073](https://github.com/typescript-eslint/typescript-eslint/issues/8073)) ([04dea84](https://github.com/typescript-eslint/typescript-eslint/commit/04dea84e8e934a415ec1381a90de3cde670d0dc3))
+* **eslint-plugin:** deprecate no-extra-semi in favor of ESLint Stylistic equivalent ([#8123](https://github.com/typescript-eslint/typescript-eslint/issues/8123)) ([9368bf3](https://github.com/typescript-eslint/typescript-eslint/commit/9368bf390afc58a19123782f8dff2bb5cdd3cccc))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.14.0...v6.15.0) (2023-12-18)
 
 
