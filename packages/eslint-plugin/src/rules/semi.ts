@@ -17,7 +17,7 @@ export default createRule<Options, MessageIds>({
   name: 'semi',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/semi'],
+    replacedBy: ['@stylistic/ts/semi'],
     type: 'layout',
     docs: {
       description: 'Require or disallow semicolons instead of ASI',

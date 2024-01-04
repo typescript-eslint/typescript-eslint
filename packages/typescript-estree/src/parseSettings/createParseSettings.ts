@@ -1,7 +1,7 @@
 import debug from 'debug';
 import * as ts from 'typescript';
 
-import type { TypeScriptProjectService } from '../create-program/createProjectService';
+import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
@@ -21,7 +21,7 @@ const log = debug(
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
-let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
+let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
@@ -80,11 +80,14 @@ export function createParseSettings(
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_projectService:
-      (options.EXPERIMENTAL_useProjectService === true &&
+      (options.EXPERIMENTAL_useProjectService &&
         process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'false') ||
       (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true' &&
         options.EXPERIMENTAL_useProjectService !== false)
-        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(jsDocParsingMode))
+        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
+            options.EXPERIMENTAL_useProjectService,
+            jsDocParsingMode,
+          ))
         : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,

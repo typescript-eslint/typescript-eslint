@@ -17,7 +17,7 @@ export default createRule<Options, MessageIds>({
   name: 'space-before-blocks',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/space-before-blocks'],
+    replacedBy: ['@stylistic/ts/space-before-blocks'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before blocks',

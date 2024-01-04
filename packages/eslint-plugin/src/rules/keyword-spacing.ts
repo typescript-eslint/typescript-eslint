@@ -38,7 +38,7 @@ export default createRule<Options, MessageIds>({
   name: 'keyword-spacing',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/keyword-spacing'],
+    replacedBy: ['@stylistic/ts/keyword-spacing'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after keywords',

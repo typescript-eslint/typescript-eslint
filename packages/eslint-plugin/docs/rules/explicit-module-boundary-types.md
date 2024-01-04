@@ -22,11 +22,6 @@ export function test() {
   return;
 }
 
-// Should indicate that a number is returned
-export default function () {
-  return 1;
-}
-
 // Should indicate that a string is returned
 export var arrowFn = () => 'test';
 
@@ -45,15 +40,10 @@ export class Test {
 ### ✅ Correct
 
 ```ts
-// Function is not exported
-function test() {
+// A function with no return value (void)
+export function test(): void {
   return;
 }
-
-// A return value of type number
-export var fn = function (): number {
-  return 1;
-};
 
 // A return value of type string
 export var arrowFn = (): string => 'test';
@@ -62,11 +52,16 @@ export var arrowFn = (): string => 'test';
 export var arrowFn = (arg: string): string => `test ${arg}`;
 export var arrowFn = (arg: unknown): string => `test ${arg}`;
 
-// Class is not exported
-class Test {
-  method() {
+export class Test {
+  // A class method with no return value (void)
+  method(): void {
     return;
   }
+}
+
+// The function does not apply because it is not an exported function.
+function test() {
+  return;
 }
 ```
 

@@ -19,7 +19,7 @@ export default createRule<Options, MessageIds>({
   name: 'space-infix-ops',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/space-infix-ops'],
+    replacedBy: ['@stylistic/ts/space-infix-ops'],
     type: 'layout',
     docs: {
       description: 'Require spacing around infix operators',

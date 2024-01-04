@@ -337,7 +337,24 @@ describe('semanticInfo', () => {
     });
   }
 
-  it('file not in provided program instance(s)', () => {
+  it('file not in single provided program instance should throw', () => {
+    const filename = 'non-existent-file.ts';
+    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+    const options = createOptions(filename);
+    const optionsWithSingleProgram = {
+      ...options,
+      programs: [program],
+    };
+    expect(() =>
+      parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
+    ).toThrow(
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+        : `The file was not found in any of the provided program instance(s): ${filename}`,
+    );
+  });
+
+  it('file not in multiple provided program instances should throw a program instance error', () => {
     const filename = 'non-existent-file.ts';
     const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const options = createOptions(filename);
@@ -348,7 +365,9 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      `The file was not found in any of the provided program instance(s): ${filename}`,
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+        : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
 
     const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
@@ -359,7 +378,9 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithMultiplePrograms),
     ).toThrow(
-      `The file was not found in any of the provided program instance(s): ${filename}`,
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+        : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
 
