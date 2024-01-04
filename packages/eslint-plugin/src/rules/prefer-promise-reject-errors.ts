@@ -78,6 +78,14 @@ export default createRule<Options, MessageIds>({
         : node;
     }
 
+    function typeAtLocationIsLikePromise(node: TSESTree.Node): boolean {
+      const type = services.getTypeAtLocation(node);
+      return (
+        isPromiseConstructorLike(services.program, type) ||
+        isPromiseLike(services.program, type)
+      );
+    }
+
     return {
       CallExpression(node): void {
         const callee = skipChainExpression(node.callee);
@@ -86,17 +94,15 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const calleeObjectType = services.getTypeAtLocation(callee.object);
-
         const rejectMethodCalled = callee.computed
           ? callee.property.type === AST_NODE_TYPES.Literal &&
             callee.property.value === 'reject'
           : callee.property.name === 'reject';
-        const calleeIsLikePromise =
-          isPromiseConstructorLike(services.program, calleeObjectType) ||
-          isPromiseLike(services.program, calleeObjectType);
 
-        if (!rejectMethodCalled || !calleeIsLikePromise) {
+        if (
+          !rejectMethodCalled ||
+          !typeAtLocationIsLikePromise(callee.object)
+        ) {
           return;
         }
 
