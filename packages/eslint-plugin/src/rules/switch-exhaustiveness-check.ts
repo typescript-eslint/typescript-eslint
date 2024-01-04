@@ -152,47 +152,19 @@ export default createRule<Options, MessageIds>({
      * For example:
      *
      * - `"foo" | "bar"` is a type with all literal types.
-     * - `string` and `"foo" | number` are types that contain non-literal types.
+     * - `"foo" | number` is a types that contain non-literal types.
      *
      * Default cases are never superfluous in switches with non-literal types.
      */
     function doesTypeContainNonLiteralType(type: ts.Type): boolean {
       const types = tsutils.unionTypeParts(type);
-      const typeNames = types.map(type => getTypeNameSpecific(type));
-
-      return typeNames.some(
-        typeName =>
-          typeName === 'string' ||
-          typeName === 'number' ||
-          typeName === 'bigint' ||
-          typeName === 'symbol',
+      return types.some(
+        type =>
+          !isFlagSet(
+            type.getFlags(),
+            ts.TypeFlags.Literal | ts.TypeFlags.Undefined | ts.TypeFlags.Null,
+          ),
       );
-    }
-
-    /**
-     * Similar to the `getTypeName` function, but returns a more specific name.
-     * This is useful in differentiating between `string` and `"foo"`.
-     */
-    function getTypeNameSpecific(type: ts.Type): string | undefined {
-      const escapedName = type.getSymbol()?.escapedName as string | undefined;
-      if (escapedName !== undefined && escapedName !== '__type') {
-        return escapedName;
-      }
-
-      const aliasSymbolName = type.aliasSymbol?.getName();
-      if (aliasSymbolName !== undefined) {
-        return aliasSymbolName;
-      }
-
-      // The above checks do not work with boolean values.
-      if ('intrinsicName' in type) {
-        const { intrinsicName } = type;
-        if (typeof intrinsicName === 'string' && intrinsicName !== '') {
-          return intrinsicName;
-        }
-      }
-
-      return undefined;
     }
 
     function checkSwitchExhaustive(
@@ -381,3 +353,7 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function isFlagSet(flags: number, flag: number): boolean {
+  return (flags & flag) !== 0;
+}

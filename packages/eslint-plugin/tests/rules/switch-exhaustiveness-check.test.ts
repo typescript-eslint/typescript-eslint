@@ -879,7 +879,7 @@ enum MyEnum {
 
 declare const myEnum: MyEnum;
 
-switch (myUnion) {
+switch (myEnum) {
   case MyEnum.Foo:
   case MyEnum.Bar:
   case MyEnum.Baz: {
@@ -913,7 +913,7 @@ enum MyEnum {
 
 declare const myEnum: MyEnum;
 
-switch (myUnion) {
+switch (myEnum) {
   case MyEnum.Foo:
   case MyEnum.Bar:
   case MyEnum.Baz: {
