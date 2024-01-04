@@ -17,12 +17,14 @@ interface SwitchMetadata {
   readonly missingBranchTypes: ts.Type[];
   readonly defaultCase: TSESTree.SwitchCase | undefined;
   readonly isUnion: boolean;
+  readonly containsNonLiteralType: boolean;
 }
 
 type Options = [
   {
     /**
-     * If `true`, allow `default` cases on switch statements with exhaustive cases.
+     * If `true`, allow `default` cases on switch statements with exhaustive
+     * cases.
      *
      * @default true
      */
@@ -104,12 +106,16 @@ export default createRule<Options, MessageIds>({
         | string
         | undefined;
 
+      const containsNonLiteralType =
+        doesTypeContainNonLiteralType(discriminantType);
+
       if (!discriminantType.isUnion()) {
         return {
           symbolName,
           missingBranchTypes: [],
           defaultCase,
           isUnion: false,
+          containsNonLiteralType,
         };
       }
 
@@ -138,7 +144,55 @@ export default createRule<Options, MessageIds>({
         missingBranchTypes,
         defaultCase,
         isUnion: true,
+        containsNonLiteralType,
       };
+    }
+
+    /**
+     * For example:
+     *
+     * - `"foo" | "bar"` is a type with all literal types.
+     * - `string` and `"foo" | number` are types that contain non-literal types.
+     *
+     * Default cases are never superfluous in switches with non-literal types.
+     */
+    function doesTypeContainNonLiteralType(type: ts.Type): boolean {
+      const types = tsutils.unionTypeParts(type);
+      const typeNames = types.map(type => getTypeNameSpecific(type));
+
+      return typeNames.some(
+        typeName =>
+          typeName === 'string' ||
+          typeName === 'number' ||
+          typeName === 'bigint' ||
+          typeName === 'symbol',
+      );
+    }
+
+    /**
+     * Similar to the `getTypeName` function, but returns a more specific name.
+     * This is useful in differentiating between `string` and `"foo"`.
+     */
+    function getTypeNameSpecific(type: ts.Type): string | undefined {
+      const escapedName = type.getSymbol()?.escapedName as string | undefined;
+      if (escapedName !== undefined && escapedName !== '__type') {
+        return escapedName;
+      }
+
+      const aliasSymbolName = type.aliasSymbol?.getName();
+      if (aliasSymbolName !== undefined) {
+        return aliasSymbolName;
+      }
+
+      // The above checks do not work with boolean values.
+      if ('intrinsicName' in type) {
+        const { intrinsicName } = type;
+        if (typeof intrinsicName === 'string' && intrinsicName !== '') {
+          return intrinsicName;
+        }
+      }
+
+      return undefined;
     }
 
     function checkSwitchExhaustive(
@@ -272,12 +326,19 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { missingBranchTypes, defaultCase, isUnion } = switchMetadata;
+      const { missingBranchTypes, defaultCase, containsNonLiteralType } =
+        switchMetadata;
+
+      /*
+      console.log('1:', missingBranchTypes.length === 0);
+      console.log('2:', defaultCase !== undefined);
+      console.log('3:', !containsNonLiteralType);
+      */
 
       if (
         missingBranchTypes.length === 0 &&
         defaultCase !== undefined &&
-        !isUnion
+        !containsNonLiteralType
       ) {
         context.report({
           node: defaultCase,
