@@ -51,6 +51,18 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       const foo = false;
       Promise.reject(false || new Error());
     `,
+    `
+      declare const foo: Error[];
+      Promise.reject(foo[5]);
+    `,
+    `
+      declare const foo: ReadonlyArray<Error>;
+      Promise.reject(foo[5]);
+    `,
+    `
+      declare const foo: [Error];
+      Promise.reject(foo[0]);
+    `,
 
     `
       new Promise(function (resolve, reject) {
@@ -129,6 +141,18 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `
       const foo = Promise;
       new foo((resolve, reject) => reject(new Error()));
+    `,
+    `
+      declare const foo: Error[];
+      new Promise((resolve, reject) => reject(foo[5]));
+    `,
+    `
+      declare const foo: ReadonlyArray<Error>;
+      new Promise((resolve, reject) => reject(foo[5]));
+    `,
+    `
+      declare const foo: [Error];
+      new Promise((resolve, reject) => reject(foo[0]));
     `,
     `
       class Foo extends Promise<number> {}
@@ -530,6 +554,86 @@ foo.reject();
         },
       ],
     },
+    {
+      code: `
+declare const foo: never;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: unknown;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Error[];
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: ReadonlyArray<Error>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: [Error];
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
 
     {
       code: `
@@ -780,6 +884,86 @@ new foo((resolve, reject) => reject(5));
           endLine: 3,
           column: 30,
           endColumn: 39,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: never;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: unknown;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Error[];
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: ReadonlyArray<Error>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: [Error];
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
         },
       ],
     },
