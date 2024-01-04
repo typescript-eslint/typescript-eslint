@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-non-null-assertion';
 
@@ -288,6 +288,78 @@ ruleTester.run('no-non-null-assertion', rule, {
             {
               messageId: 'suggestOptionalChain',
               output: 'x.y.z?.();',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+x!
+.y
+      `,
+      errors: [
+        {
+          messageId: 'noNonNull',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: `
+x
+?.y
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+x!
+// comment
+.y
+      `,
+      errors: [
+        {
+          messageId: 'noNonNull',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: `
+x
+// comment
+?.y
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+x!
+ // comment
+    . /* comment */
+      y
+      `,
+      errors: [
+        {
+          messageId: 'noNonNull',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'suggestOptionalChain',
+              output: `
+x
+ // comment
+    ?. /* comment */
+      y
+      `,
             },
           ],
         },
