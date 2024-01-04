@@ -329,12 +329,6 @@ export default createRule<Options, MessageIds>({
       const { missingBranchTypes, defaultCase, containsNonLiteralType } =
         switchMetadata;
 
-      /*
-      console.log('1:', missingBranchTypes.length === 0);
-      console.log('2:', defaultCase !== undefined);
-      console.log('3:', !containsNonLiteralType);
-      */
-
       if (
         missingBranchTypes.length === 0 &&
         defaultCase !== undefined &&
