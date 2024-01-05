@@ -34,248 +34,248 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
-  # install:
-  #   name: Checkout and Install
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
+  install:
+    name: Checkout and Install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-  # build:
-  #   name: Build All Packages
-  #   needs: [install]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
-  #     - name: Build
-  #       uses: ./.github/actions/prepare-build
+  build:
+    name: Build All Packages
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
 
-  # generate_configs:
-  #   name: Lint
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
-  #     - run: yarn generate-configs
-  #     - run: git status --porcelain
-  #     - if: failure()
-  #       run: echo "Outdated result detected from yarn generate-configs. Please check in any file changes."
+  generate_configs:
+    name: Lint
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - run: yarn generate-configs
+      - run: git status --porcelain
+      - if: failure()
+        run: echo "Outdated result detected from yarn generate-configs. Please check in any file changes."
 
-  # lint_without_build:
-  #   name: Lint
-  #   needs: [install]
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       lint-task: ['check-spelling', 'check-format', 'lint-markdown']
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
+  lint_without_build:
+    name: Lint
+    needs: [install]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lint-task: ['check-spelling', 'check-format', 'lint-markdown']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
-  #     - name: Run Check
-  #       run: yarn ${{ matrix.lint-task }}
+      - name: Run Check
+        run: yarn ${{ matrix.lint-task }}
 
-  # lint_with_build:
-  #   name: Lint
-  #   # because we lint with our own tooling, we need to build
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       lint-task: ['lint', 'typecheck']
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
-  #     - name: Build
-  #       uses: ./.github/actions/prepare-build
+  lint_with_build:
+    name: Lint
+    # because we lint with our own tooling, we need to build
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lint-task: ['lint', 'typecheck']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
 
-  #     - name: Run Check
-  #       run: yarn ${{ matrix.lint-task }}
+      - name: Run Check
+        run: yarn ${{ matrix.lint-task }}
 
-  # stylelint:
-  #   name: Stylelint
-  #   needs: [install]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
-  #     - name: Run stylelint check
-  #       run: yarn stylelint
-  #       working-directory: packages/website
+  stylelint:
+    name: Stylelint
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Run stylelint check
+        run: yarn stylelint
+        working-directory: packages/website
 
-  # integration_tests:
-  #   name: Run integration tests on primary Node.js version
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ env.PRIMARY_NODE_VERSION }}
-  #     - name: Build
-  #       uses: ./.github/actions/prepare-build
+  integration_tests:
+    name: Run integration tests on primary Node.js version
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
 
-  #     - name: Run integrations tests
-  #       run: yarn test-integration
-  #       env:
-  #         CI: true
+      - name: Run integrations tests
+        run: yarn test-integration
+        env:
+          CI: true
 
-  # unit_tests:
-  #   name: Run Unit Tests
-  #   needs: [build]
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       exclude:
-  #         - os: windows-latest
-  #           node-version: 16
-  #       os: [ubuntu-latest, windows-latest]
-  #       # just run on the oldest and latest supported versions and assume the intermediate versions are good
-  #       node-version: [16, 20]
-  #       package:
-  #         [
-  #           'ast-spec',
-  #           'eslint-plugin',
-  #           'eslint-plugin-internal',
-  #           'eslint-plugin-tslint',
-  #           'parser',
-  #           'repo-tools',
-  #           'rule-schema-to-typescript-types',
-  #           'scope-manager',
-  #           'type-utils',
-  #           'typescript-estree',
-  #           'utils',
-  #           'visitor-keys',
-  #         ]
-  #   env:
-  #     # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
-  #     NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
-  #     COLLECT_COVERAGE: false
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 2
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: Build
-  #       uses: ./.github/actions/prepare-build
+  unit_tests:
+    name: Run Unit Tests
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        exclude:
+          - os: windows-latest
+            node-version: 16
+        os: [ubuntu-latest, windows-latest]
+        # just run on the oldest and latest supported versions and assume the intermediate versions are good
+        node-version: [16, 20]
+        package:
+          [
+            'ast-spec',
+            'eslint-plugin',
+            'eslint-plugin-internal',
+            'eslint-plugin-tslint',
+            'parser',
+            'repo-tools',
+            'rule-schema-to-typescript-types',
+            'scope-manager',
+            'type-utils',
+            'typescript-estree',
+            'utils',
+            'visitor-keys',
+          ]
+    env:
+      # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
+      NX_CLOUD_ENV_NAME: 'Node ${{ matrix.node-version }} -'
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
 
-  #     # collect coverage on the primary node version
-  #     # we don't collect coverage on other node versions so they run faster
-  #     # note that we don't do this as a single `run` with a flag because some
-  #     # packages don't collect coverage on purpose, so forcing `--coverage=true`
-  #     # would override the config
-  #     - name: Run unit tests with coverage for ${{ matrix.package }}
-  #       if: env.PRIMARY_NODE_VERSION == matrix.node-version
-  #       run: npx nx test ${{ matrix.package }}
-  #       env:
-  #         CI: true
-  #     - name: Run unit tests for ${{ matrix.package }}
-  #       if: env.PRIMARY_NODE_VERSION != matrix.node-version
-  #       run: npx nx test ${{ matrix.package }} --coverage=false
-  #       env:
-  #         CI: true
+      # collect coverage on the primary node version
+      # we don't collect coverage on other node versions so they run faster
+      # note that we don't do this as a single `run` with a flag because some
+      # packages don't collect coverage on purpose, so forcing `--coverage=true`
+      # would override the config
+      - name: Run unit tests with coverage for ${{ matrix.package }}
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version
+        run: npx nx test ${{ matrix.package }}
+        env:
+          CI: true
+      - name: Run unit tests for ${{ matrix.package }}
+        if: env.PRIMARY_NODE_VERSION != matrix.node-version
+        run: npx nx test ${{ matrix.package }} --coverage=false
+        env:
+          CI: true
 
-  #     - name: Store coverage for uploading
-  #       if: env.PRIMARY_NODE_VERSION == matrix.node-version
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: ${{ matrix.package }}-coverage
-  #         path: packages/${{ matrix.package }}/coverage/lcov.info
-  #         # Sadly 1 day is the minimum
-  #         retention-days: 1
+      - name: Store coverage for uploading
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.package }}-coverage
+          path: packages/${{ matrix.package }}/coverage/lcov.info
+          # Sadly 1 day is the minimum
+          retention-days: 1
 
-  # unit_tests_tsserver:
-  #   name: Run Unit Tests with Experimental TSServer
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       package:
-  #         [
-  #           'eslint-plugin',
-  #           'eslint-plugin-internal',
-  #           'eslint-plugin-tslint',
-  #           'typescript-estree',
-  #         ]
-  #   env:
-  #     COLLECT_COVERAGE: false
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 2
-  #     - name: Install
-  #       uses: ./.github/actions/prepare-install
-  #       with:
-  #         node-version: 18
-  #     - name: Build
-  #       uses: ./.github/actions/prepare-build
-  #     - name: Run unit tests for ${{ matrix.package }}
-  #       run: npx nx test ${{ matrix.package }} --coverage=false
-  #       env:
-  #         CI: true
-  #         TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+  unit_tests_tsserver:
+    name: Run Unit Tests with Experimental TSServer
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          [
+            'eslint-plugin',
+            'eslint-plugin-internal',
+            'eslint-plugin-tslint',
+            'typescript-estree',
+          ]
+    env:
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: 18
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run unit tests for ${{ matrix.package }}
+        run: npx nx test ${{ matrix.package }} --coverage=false
+        env:
+          CI: true
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
 
-  # upload_coverage:
-  #   name: Upload Codecov Coverage
-  #   needs: [unit_tests]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  upload_coverage:
+    name: Upload Codecov Coverage
+    needs: [unit_tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Download coverage reports
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         path: coverage
+      - name: Download coverage reports
+        uses: actions/download-artifact@v3
+        with:
+          path: coverage
 
-  #     - name: Publish code coverage report
-  #       uses: codecov/codecov-action@v3
-  #       with:
-  #         token: ${{ secrets.CODECOV_TOKEN }}
-  #         files: coverage/**/lcov.info
-  #         flags: unittest
-  #         name: codecov
+      - name: Publish code coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/**/lcov.info
+          flags: unittest
+          name: codecov
 
   publish_canary_version:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-    # needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
-    # if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
+    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
+    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -296,7 +296,7 @@ jobs:
 
       - name: Publish all packages to npm with the canary tag
         # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
-        run: npx nx release publish --tag canary --dry-run
+        run: npx nx release publish --tag canary
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
