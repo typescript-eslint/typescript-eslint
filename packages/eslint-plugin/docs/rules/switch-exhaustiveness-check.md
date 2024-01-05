@@ -13,14 +13,14 @@ This rule reports when a `switch` statement over a value typed as a union of lit
 
 ## Options
 
-### `"allowDefaultCaseForExhaustiveSwitch"`
+### `allowDefaultCaseForExhaustiveSwitch`
 
 Defaults to true. If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
 
 When a `switch` statement over a union type is exhaustive, a final `default` case would be a form of dead code.
 Additionally, if a new value is added to the union type, a `default` would prevent the `switch-exhaustiveness-check` rule from reporting on the new case not being handled in the `switch` statement.
 
-#### `"allowDefaultCaseForExhaustiveSwitch"` Caveats
+#### `allowDefaultCaseForExhaustiveSwitch` Caveats
 
 It can sometimes be useful to include a redundant `default` case on an exhaustive `switch` statement if it's possible for values to have types not represented by the union type.
 For example, in applications that can have version mismatches between clients and servers, it's possible for a server running a newer software version to send a value not recognized by the client's older typings.
