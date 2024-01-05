@@ -5,10 +5,10 @@
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "./tools/changelog-renderer/changelog-renderer"
+        "renderer": "./tools/changelog-renderer"
       },
       "projectChangelogs": {
-        "renderer": "./tools/changelog-renderer/changelog-renderer"
+        "renderer": "./tools/changelog-renderer"
       }
     },
     "version": {
