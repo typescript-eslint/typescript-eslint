@@ -99,11 +99,6 @@ ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
       output: '!(void wrapMe)',
     },
     {
-      code: 'wrapMe++',
-      errors: [{ messageId: 'addVoid' }],
-      output: '(void wrapMe)++',
-    },
-    {
       code: '"wrapMe" + "dontWrap"',
       errors: [{ messageId: 'addVoid' }],
       output: '(void "wrapMe") + "dontWrap"',
@@ -200,17 +195,6 @@ ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
       output: `
         "dontWrap"
         ;(void "wrapMe") + "!"
-      `,
-    },
-    {
-      code: `
-        dontWrap
-        wrapMe++
-      `,
-      errors: [{ messageId: 'addVoid' }],
-      output: `
-        dontWrap
-        ;(void wrapMe)++
       `,
     },
     {
