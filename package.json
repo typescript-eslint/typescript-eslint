@@ -43,6 +43,7 @@
     "lint": "npx nx run-many -t lint --parallel",
     "postinstall": "npx nx run repo-tools:postinstall-script",
     "pre-commit": "yarn lint-staged",
+    "release": "tsx tools/release/release.ts",
     "start": "npx nx run website:start",
     "test": "npx nx run-many -t test --parallel --exclude integration-tests --exclude website --exclude website-eslint",
     "test-integration": "npx nx run integration-tests:test",

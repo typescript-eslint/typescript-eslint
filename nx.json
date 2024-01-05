@@ -9,10 +9,10 @@
       },
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "./tools/changelog-renderer"
+        "renderer": "tools/release/changelog-renderer"
       },
       "projectChangelogs": {
-        "renderer": "./tools/changelog-renderer"
+        "renderer": "tools/release/changelog-renderer"
       }
     },
     "version": {
