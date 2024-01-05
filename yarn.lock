@@ -6364,7 +6364,7 @@ __metadata:
     jest-diff: ^29.6.2
     jest-snapshot: ^29.6.2
     jest-specific-snapshot: ^8.0.0
-    knip: ^3.10.0
+    knip: ^3.12.0
     lerna: 7.4.2
     lint-staged: ^15.0.0
     make-dir: ^4.0.0
@@ -14308,9 +14308,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knip@npm:^3.10.0":
-  version: 3.10.0
-  resolution: "knip@npm:3.10.0"
+"knip@npm:^3.12.0":
+  version: 3.12.0
+  resolution: "knip@npm:3.12.0"
   dependencies:
     "@ericcornelissen/bash-parser": 0.5.2
     "@npmcli/map-workspaces": 3.0.4
@@ -14337,7 +14337,7 @@ __metadata:
     typescript: ">=5.0.4"
   bin:
     knip: bin/knip.js
-  checksum: 2148c9e76e378062c88d143def584de25f2339b677f55c5f0991c2e00c5eb1161a20a21de34ad9c8826123c8e88a39969e7a3c44bab8a7fb80b9658fdffa00d7
+  checksum: b5d870450cf53e67ced9e8f8de4b34a78ceee61caa2aebb1d58478e408219c49e407105fa10aebd1d1bbb52d4b274a0d981f881671636db09944269e34d803a4
   languageName: node
   linkType: hard
 
