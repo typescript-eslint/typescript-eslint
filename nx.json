@@ -3,6 +3,10 @@
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
     "changelog": {
+      "git": {
+        "commit": true,
+        "tag": true
+      },
       "workspaceChangelog": {
         "createRelease": "github",
         "renderer": "./tools/changelog-renderer"
