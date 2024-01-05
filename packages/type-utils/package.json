@@ -51,6 +51,7 @@
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
+    "@jest/types": "^29.6.3",
     "@typescript-eslint/parser": "6.17.0",
     "ajv": "^6.10.0",
     "downlevel-dts": "*",

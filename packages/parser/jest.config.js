@@ -4,5 +4,5 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   ...require('../../jest.config.base.js'),
-  testRegex: './tests/lib/.+\\.ts$',
+  testMatch: ['./tests/lib/**/*.ts'],
 };

@@ -2,8 +2,8 @@
   "name": "@typescript-eslint/repo-tools",
   "version": "6.17.0",
   "private": true,
+  "//": "NOTE: intentionally no build step in this package",
   "scripts": {
-    "//": "NOTE: intentionally no build step in this package",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
@@ -14,13 +14,17 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@jest/types": "^29.6.3",
     "@nx/devkit": "*",
     "@prettier/sync": "*",
+    "@typescript-eslint/scope-manager": "6.17.0",
+    "@typescript-eslint/types": "6.17.0",
+    "@typescript-eslint/typescript-estree": "6.17.0",
+    "@typescript-eslint/utils": "6.17.0",
     "cross-fetch": "*",
     "execa": "*",
     "prettier": "^3.0.3",
     "rimraf": "*",
-    "tmp": "*",
     "typescript": "*"
   }
 }

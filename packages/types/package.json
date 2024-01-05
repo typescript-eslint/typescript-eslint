@@ -73,6 +73,7 @@
     }
   },
   "devDependencies": {
+    "@jest/types": "^29.6.3",
     "downlevel-dts": "*",
     "prettier": "^3.0.3",
     "rimraf": "*",
