@@ -110,7 +110,8 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSAbstractMethodDefinitionNonComputedName
         | TSESTree.TSAbstractPropertyDefinitionNonComputedName
         | TSESTree.TSMethodSignatureNonComputedName
-        | TSESTree.TSPropertySignatureNonComputedName,
+        | TSESTree.TSPropertySignatureNonComputedName
+        | TSESTree.AccessorPropertyNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
       const key = node.key;
@@ -127,7 +128,8 @@ export default createRule<Options, MessageIds>({
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
-        | TSESTree.TSParameterProperty,
+        | TSESTree.TSParameterProperty
+        | TSESTree.AccessorProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -151,6 +153,9 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
       ) {
         modifiers.add(Modifiers.abstract);
+      }
+      if (node.type === AST_NODE_TYPES.AccessorProperty) {
+        modifiers.add(Modifiers.autoAccessor);
       }
 
       return modifiers;
@@ -523,8 +528,11 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.AccessorProperty,
       ].join(', ')]: {
         validator: validators.accessor,
-        handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
-          const modifiers = new Set<Modifiers>([Modifiers.public]);
+        handler: (node: TSESTree.PropertyNonComputedName | TSESTree.AccessorPropertyNonComputedName, validator): void => {
+          let modifiers = new Set<Modifiers>([Modifiers.public]);
+          if (node.type === AST_NODE_TYPES.AccessorProperty) {
+            modifiers = getMemberModifiers(node);
+          }
           handleMember(validator, node, modifiers);
         },
       },

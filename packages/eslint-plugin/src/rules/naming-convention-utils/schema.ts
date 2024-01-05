@@ -298,6 +298,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'requiresQuotes',
         'static',
         'override',
+        'autoAccessor'
       ]),
       ...selectorSchema('enumMember', false, ['requiresQuotes']),
 

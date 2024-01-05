@@ -116,6 +116,8 @@ enum Modifiers {
   default = 1 << 15,
   // namespace imports
   namespace = 1 << 16,
+  // auto accessors
+  autoAccessor = 1 << 17,
 
   // make sure TypeModifiers starts at Modifiers + 1 or else sorting won't work
 }

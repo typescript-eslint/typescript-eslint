@@ -105,6 +105,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                 "#private",
                 "abstract",
                 "async",
+                "autoAccessor",
                 "const",
                 "default",
                 "destructured",
@@ -211,6 +212,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                 "#private",
                 "abstract",
                 "async",
+                "autoAccessor",
                 "const",
                 "default",
                 "destructured",
@@ -1115,6 +1117,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "items": {
               "enum": [
                 "abstract",
+                "autoAccessor",
                 "override",
                 "private",
                 "protected",
@@ -1612,6 +1615,7 @@ type Options = /** Multiple selectors in one config */
         | '#private'
         | 'abstract'
         | 'async'
+        | 'autoAccessor'
         | 'const'
         | 'default'
         | 'destructured'
@@ -1667,6 +1671,7 @@ type Options = /** Multiple selectors in one config */
       leadingUnderscore?: UnderscoreOptions;
       modifiers?: (
         | 'abstract'
+        | 'autoAccessor'
         | 'override'
         | 'private'
         | 'protected'
@@ -1751,6 +1756,7 @@ type Options = /** Multiple selectors in one config */
         | '#private'
         | 'abstract'
         | 'async'
+        | 'autoAccessor'
         | 'const'
         | 'default'
         | 'destructured'
