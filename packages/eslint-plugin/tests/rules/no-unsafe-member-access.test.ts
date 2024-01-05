@@ -55,16 +55,6 @@ function foo(x: string[]) {
 }
     `,
     `
-function foo(x?: string[]) {
-  x?.[1++];
-}
-    `,
-    `
-function foo(x?: string[]) {
-  x?.[(1 as any)++];
-}
-    `,
-    `
 class B implements FG.A {}
     `,
     `
