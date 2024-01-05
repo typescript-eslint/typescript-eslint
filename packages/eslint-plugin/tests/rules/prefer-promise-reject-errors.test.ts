@@ -52,6 +52,53 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       Promise.reject(false || new Error());
     `,
     `
+      declare const foo: Readonly<Error>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error> | Readonly<TypeError>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error> & Readonly<TypeError>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error> & { foo: 'bar' };
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Error & { bar: 'foo' }> & { foo: 'bar' };
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Readonly<Error>>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<Readonly<Readonly<Error>>>;
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo: Readonly<
+        Readonly<Readonly<Error & { bar: 'foo' }> & { foo: 'bar' }> & {
+          fooBar: 'barFoo';
+        }
+      > & { barFoo: 'fooBar' };
+      Promise.reject(foo);
+    `,
+    `
+      declare const foo:
+        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
+        | Readonly<Error>;
+      Promise.reject(foo);
+    `,
+    `
+      type Wrapper<T> = { foo: Readonly<T>[] };
+      declare const foo: Wrapper<Error>['foo'][5];
+      Promise.reject(foo);
+    `,
+    `
       declare const foo: Error[];
       Promise.reject(foo[5]);
     `,
@@ -141,6 +188,53 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `
       const foo = Promise;
       new foo((resolve, reject) => reject(new Error()));
+    `,
+    `
+      declare const foo: Readonly<Error>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error> | Readonly<TypeError>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error> & Readonly<TypeError>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error> & { foo: 'bar' };
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Error & { bar: 'foo' }> & { foo: 'bar' };
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Readonly<Error>>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<Readonly<Readonly<Error>>>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo: Readonly<
+        Readonly<Readonly<Error & { bar: 'foo' }> & { foo: 'bar' }> & {
+          fooBar: 'barFoo';
+        }
+      > & { barFoo: 'fooBar' };
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      declare const foo:
+        | Readonly<Readonly<Error> | Readonly<TypeError & string>>
+        | Readonly<Error>;
+      new Promise((resolve, reject) => reject(foo));
+    `,
+    `
+      type Wrapper<T> = { foo: Readonly<T>[] };
+      declare const foo: Wrapper<Error>['foo'][5];
+      new Promise((resolve, reject) => reject(foo));
     `,
     `
       declare const foo: Error[];
@@ -588,6 +682,168 @@ Promise.reject(foo);
     },
     {
       code: `
+type FakeReadonly<T> = { 'fake readonly': T };
+declare const foo: FakeReadonly<Error>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<'error'>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Error | 'error'>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Error> | 'error';
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Error> | Readonly<TypeError> | Readonly<'error'>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<'error'>>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<Readonly<Error> | 'error'>>;
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<Readonly<Error> & TypeError>> | 'error';
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<Error>> | Readonly<TypeError> | 'error';
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+type Wrapper<T> = { foo: Readonly<T>[] };
+declare const foo: Wrapper<Error | 'error'>['foo'][5];
+Promise.reject(foo);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
+          column: 1,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
 declare const foo: Error[];
 Promise.reject(foo);
       `,
@@ -914,6 +1170,168 @@ new Promise((resolve, reject) => reject(foo));
           type: AST_NODE_TYPES.CallExpression,
           line: 3,
           endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+type FakeReadonly<T> = { 'fake readonly': T };
+declare const foo: FakeReadonly<Error>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<'error'>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Error | 'error'>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Error> | 'error';
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Error> | Readonly<TypeError> | Readonly<'error'>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<'error'>>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<Readonly<Error> | 'error'>>;
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<Readonly<Error> & TypeError>> | 'error';
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Readonly<Readonly<Error>> | Readonly<TypeError> | 'error';
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 34,
+          endColumn: 45,
+        },
+      ],
+    },
+    {
+      code: `
+type Wrapper<T> = { foo: Readonly<T>[] };
+declare const foo: Wrapper<Error | 'error'>['foo'][5];
+new Promise((resolve, reject) => reject(foo));
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
           column: 34,
           endColumn: 45,
         },

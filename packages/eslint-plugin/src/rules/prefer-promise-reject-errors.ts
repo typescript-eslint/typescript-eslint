@@ -10,6 +10,7 @@ import {
   isIdentifier,
   isPromiseConstructorLike,
   isPromiseLike,
+  isReadonlyErrorLike,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -55,19 +56,22 @@ export default createRule<Options, MessageIds>({
 
     function checkRejectCall(callExpression: TSESTree.CallExpression): void {
       const argument = callExpression.arguments.at(0);
-      if (!argument && options.allowEmptyReject) {
+      if (argument) {
+        const type = services.getTypeAtLocation(argument);
+        if (
+          isErrorLike(services.program, type) ||
+          isReadonlyErrorLike(services.program, type)
+        ) {
+          return;
+        }
+      } else if (options.allowEmptyReject) {
         return;
       }
 
-      if (
-        !argument ||
-        !isErrorLike(services.program, services.getTypeAtLocation(argument))
-      ) {
-        context.report({
-          node: callExpression,
-          messageId: 'rejectAnError',
-        });
-      }
+      context.report({
+        node: callExpression,
+        messageId: 'rejectAnError',
+      });
     }
 
     function skipChainExpression<T extends TSESTree.Node>(
