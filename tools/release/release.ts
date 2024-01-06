@@ -3,7 +3,6 @@ import {
   releasePublish,
   releaseVersion,
 } from 'nx/src/command-line/release';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import yargs from 'yargs';
 
 void (async () => {
@@ -18,7 +17,7 @@ void (async () => {
       .option('dryRun', {
         alias: 'd',
         description:
-          'Whether or not to perform a dry-run of the release process, defaults to true',
+          'Whether to perform a dry-run of the release process, defaults to true',
         type: 'boolean',
         default: true,
       })
