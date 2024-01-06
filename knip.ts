@@ -78,7 +78,9 @@ export default {
       ],
     },
     'packages/website-eslint': {
+      ignoreDependencies: ['vt'],
       entry: [
+        'src/index.js',
         'src/mock/assert.js',
         'src/mock/empty.js',
         'src/mock/eslint-rules.js',

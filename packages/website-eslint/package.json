@@ -22,10 +22,6 @@
     "lint": "npx nx lint",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@typescript-eslint/types": "6.18.0",
-    "@typescript-eslint/utils": "6.18.0"
-  },
   "devDependencies": {
     "@eslint/js": "8.56.0",
     "@typescript-eslint/eslint-plugin": "6.18.0",
@@ -37,9 +33,6 @@
     "eslint": "*",
     "esquery": "*",
     "prettier": "^3.0.3",
-    "rollup": "^2.75.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "semver": "^7.5.4",
     "tsx": "*"
   }
 }

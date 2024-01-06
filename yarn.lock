@@ -6025,9 +6025,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 6.18.0
     "@typescript-eslint/parser": 6.18.0
     "@typescript-eslint/scope-manager": 6.18.0
-    "@typescript-eslint/types": 6.18.0
     "@typescript-eslint/typescript-estree": 6.18.0
-    "@typescript-eslint/utils": 6.18.0
     "@typescript-eslint/visitor-keys": 6.18.0
     esbuild: ~0.19.0
     eslint: "*"
