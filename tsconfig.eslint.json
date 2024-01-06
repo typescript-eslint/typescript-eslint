@@ -6,7 +6,7 @@
   },
   "extends": "./tsconfig.base.json",
   "include": [
-    "tools/**/*.ts",
+    "tools/**/*.{mts,ts}",
     ".eslintrc.js",
     "jest.config.base.js",
     "jest.config.js",
