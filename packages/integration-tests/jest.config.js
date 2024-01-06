@@ -15,7 +15,7 @@ module.exports = {
   globals: {
     tseslintPackages,
   },
-  testRegex: ['/tests/[^/]+.test.ts$'],
+  testMatch: ['**/tests/*.test.ts'],
   rootDir: __dirname,
 
   // TODO(Brad Zacher) - for some reason if we run more than 1 test at a time
