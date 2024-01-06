@@ -15,7 +15,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@jest/types": "^29.6.3",
     "@nx/devkit": "*",
     "@prettier/sync": "*",
     "@typescript-eslint/scope-manager": "6.18.0",

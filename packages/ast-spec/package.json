@@ -47,7 +47,6 @@
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
     "@babel/parser": "*",
-    "@jest/types": "^29.6.3",
     "@microsoft/api-extractor": "^7.38.0",
     "glob": "*",
     "jest": "29.7.0",

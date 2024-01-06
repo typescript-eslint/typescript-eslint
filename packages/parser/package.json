@@ -58,7 +58,6 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
-    "@jest/types": "^29.6.3",
     "downlevel-dts": "*",
     "glob": "*",
     "jest": "29.7.0",

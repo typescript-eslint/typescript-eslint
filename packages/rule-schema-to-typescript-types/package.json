@@ -39,9 +39,6 @@
     "natural-compare": "^1.4.0",
     "prettier": "^3.0.3"
   },
-  "devDependencies": {
-    "@jest/types": "^29.6.3"
-  },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"

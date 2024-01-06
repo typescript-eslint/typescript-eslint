@@ -5603,7 +5603,6 @@ __metadata:
     "@babel/core": "*"
     "@babel/eslint-parser": "*"
     "@babel/parser": "*"
-    "@jest/types": ^29.6.3
     "@microsoft/api-extractor": ^7.38.0
     glob: "*"
     jest: 29.7.0
@@ -5621,7 +5620,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
   dependencies:
-    "@jest/types": ^29.6.3
     "@prettier/sync": "*"
     "@typescript-eslint/rule-tester": 6.18.0
     "@typescript-eslint/scope-manager": 6.18.0
@@ -5637,7 +5635,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin-tslint@workspace:packages/eslint-plugin-tslint"
   dependencies:
-    "@jest/types": ^29.6.3
     "@typescript-eslint/parser": 6.18.0
     "@typescript-eslint/utils": 6.18.0
     jest: 29.7.0
@@ -5655,7 +5652,6 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.5.1
-    "@jest/types": ^29.6.3
     "@prettier/sync": "*"
     "@types/marked": "*"
     "@types/natural-compare": "*"
@@ -5695,7 +5691,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/integration-tests@workspace:packages/integration-tests"
   dependencies:
-    "@jest/types": ^29.6.3
     ncp: "*"
     tmp: "*"
   languageName: unknown
@@ -5705,7 +5700,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
-    "@jest/types": ^29.6.3
     "@typescript-eslint/scope-manager": 6.18.0
     "@typescript-eslint/types": 6.18.0
     "@typescript-eslint/typescript-estree": 6.18.0
@@ -5729,7 +5723,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/repo-tools@workspace:packages/repo-tools"
   dependencies:
-    "@jest/types": ^29.6.3
     "@nx/devkit": "*"
     "@prettier/sync": "*"
     "@typescript-eslint/scope-manager": 6.18.0
@@ -5749,7 +5742,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@jest/types": ^29.6.3
     "@prettier/sync": "*"
     "@typescript-eslint/type-utils": 6.18.0
     "@typescript-eslint/utils": 6.18.0
@@ -5762,7 +5754,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
-    "@jest/types": ^29.6.3
     "@types/lodash.merge": 4.6.9
     "@typescript-eslint/parser": 6.18.0
     "@typescript-eslint/typescript-estree": 6.18.0
@@ -5787,7 +5778,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
-    "@jest/types": ^29.6.3
     "@types/glob": "*"
     "@typescript-eslint/types": 6.18.0
     "@typescript-eslint/typescript-estree": 6.18.0
@@ -5814,7 +5804,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
-    "@jest/types": ^29.6.3
     "@typescript-eslint/parser": 6.18.0
     "@typescript-eslint/typescript-estree": 6.18.0
     "@typescript-eslint/utils": 6.18.0
@@ -5838,7 +5827,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
-    "@jest/types": ^29.6.3
     downlevel-dts: "*"
     prettier: ^3.0.3
     rimraf: "*"
@@ -5865,6 +5853,7 @@ __metadata:
     "@babel/eslint-parser": ^7.23.3
     "@babel/parser": ^7.23.3
     "@babel/types": ^7.23.3
+    "@jest/types": ^29.6.3
     "@nx/eslint": 17.2.8
     "@nx/jest": 17.2.8
     "@nx/workspace": 17.2.8
@@ -5929,7 +5918,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
-    "@jest/types": ^29.6.3
     "@typescript-eslint/types": 6.18.0
     "@typescript-eslint/visitor-keys": 6.18.0
     debug: ^4.3.4
@@ -5973,7 +5961,6 @@ __metadata:
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
-    "@jest/types": ^29.6.3
     "@typescript-eslint/scope-manager": 6.18.0
     "@typescript-eslint/types": 6.18.0
     "@typescript-eslint/typescript-estree": 6.18.0
@@ -6009,7 +5996,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
-    "@jest/types": ^29.6.3
     "@types/eslint-visitor-keys": "*"
     "@typescript-eslint/types": 6.18.0
     downlevel-dts: "*"

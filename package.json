@@ -61,6 +61,7 @@
     "@babel/eslint-parser": "^7.23.3",
     "@babel/parser": "^7.23.3",
     "@babel/types": "^7.23.3",
+    "@jest/types": "^29.6.3",
     "@nx/eslint": "17.2.8",
     "@nx/jest": "17.2.8",
     "@nx/workspace": "17.2.8",

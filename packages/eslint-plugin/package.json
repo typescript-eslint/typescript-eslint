@@ -68,7 +68,6 @@
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
-    "@jest/types": "^29.6.3",
     "@prettier/sync": "*",
     "@types/marked": "*",
     "@types/natural-compare": "*",
