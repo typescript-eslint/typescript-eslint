@@ -1,7 +1,21 @@
-# Change Log
+# [6.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.16.0...v6.17.0) (2024-01-01)
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-restricted-imports] prevent crash when `patterns` or `paths` in options are empty ([#8108](https://github.com/typescript-eslint/typescript-eslint/issues/8108)) ([675e987](https://github.com/typescript-eslint/typescript-eslint/commit/675e987ca1d13244c03d7e09d4e42c6539689d9a))
+
+
+### Features
+
+* **eslint-plugin:** [no-floating-promises] flag result of .map(async) ([#7897](https://github.com/typescript-eslint/typescript-eslint/issues/7897)) ([5857356](https://github.com/typescript-eslint/typescript-eslint/commit/5857356962060b19aa792bee778f9167ee54154b))
+* **eslint-plugin:** [switch-exhaustiveness-check] add an option to warn against a `default` case on an already exhaustive `switch` ([#7539](https://github.com/typescript-eslint/typescript-eslint/issues/7539)) ([6a219bd](https://github.com/typescript-eslint/typescript-eslint/commit/6a219bdfe6fcf86aae28158e0d855f87a8bac719))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
 
 # [6.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.15.0...v6.16.0) (2023-12-25)
 

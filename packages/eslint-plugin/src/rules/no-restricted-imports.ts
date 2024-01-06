@@ -8,6 +8,7 @@ import type {
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
+  RuleListener,
 } from 'eslint/lib/rules/no-restricted-imports';
 import type { Ignore } from 'ignore';
 import ignore from 'ignore';
@@ -211,6 +212,21 @@ function getRestrictedPatterns(
   return [];
 }
 
+function shouldCreateRule(
+  baseRules: RuleListener,
+  options: Options,
+): baseRules is Exclude<RuleListener, Record<string, never>> {
+  if (Object.keys(baseRules).length === 0 || options.length === 0) {
+    return false;
+  }
+
+  if (!isOptionsArrayOfStringOrObject(options)) {
+    return !!(options[0].paths?.length || options[0].patterns?.length);
+  }
+
+  return true;
+}
+
 export default createRule<Options, MessageIds>({
   name: 'no-restricted-imports',
   meta: {
@@ -228,7 +244,7 @@ export default createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const { options } = context;
 
-    if (options.length === 0) {
+    if (!shouldCreateRule(rules, options)) {
       return {};
     }
 
