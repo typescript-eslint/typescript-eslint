@@ -1,3 +1,9 @@
+## 6.18.0 (2024-01-06)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 # [6.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.16.0...v6.17.0) (2024-01-01)
 
 **Note:** Version bump only for package @typescript-eslint/rule-tester
