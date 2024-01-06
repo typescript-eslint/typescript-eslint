@@ -16,13 +16,11 @@
     "typecheck": "tsc -b ./tsconfig.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.22.6",
     "@docusaurus/core": "~2.4.1",
     "@docusaurus/plugin-pwa": "~2.4.1",
     "@docusaurus/preset-classic": "~2.4.1",
     "@docusaurus/remark-plugin-npm2yarn": "~2.4.1",
     "@docusaurus/theme-common": "~2.4.1",
-    "@mdx-js/react": "1.6.22",
     "@prettier/sync": "*",
     "@typescript-eslint/parser": "6.17.0",
     "@typescript-eslint/website-eslint": "6.17.0",
@@ -46,15 +44,16 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "~2.4.1",
+    "@docusaurus/types": "~2.4.1",
+    "@types/mdast": "^3.0.0",
     "@types/react": "*",
-    "@types/react-helmet": "^6.1.6",
-    "@types/react-router-dom": "^5.3.3",
+    "@types/unist": "*",
     "@typescript-eslint/eslint-plugin": "6.17.0",
     "@typescript-eslint/rule-schema-to-typescript-types": "6.17.0",
     "@typescript-eslint/types": "6.17.0",
     "copy-webpack-plugin": "^11.0.0",
     "cross-fetch": "*",
-    "globby": "^11.1.0",
+    "history": "^4.9.0",
     "make-dir": "*",
     "monaco-editor": "~0.44.0",
     "raw-loader": "^4.0.2",
@@ -65,6 +64,8 @@
     "stylelint-order": "^6.0.3",
     "ts-node": "*",
     "tsx": "*",
+    "unified": "^9.2.2",
+    "vfile": "^4.0.0",
     "webpack": "^5.88.1"
   },
   "browserslist": {

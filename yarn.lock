@@ -2822,7 +2822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/types@npm:2.4.3":
+"@docusaurus/types@npm:2.4.3, @docusaurus/types@npm:~2.4.1":
   version: 2.4.3
   resolution: "@docusaurus/types@npm:2.4.3"
   dependencies:
@@ -3796,7 +3796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:1.6.22, @mdx-js/react@npm:^1.6.22":
+"@mdx-js/react@npm:^1.6.22":
   version: 1.6.22
   resolution: "@mdx-js/react@npm:1.6.22"
   peerDependencies:
@@ -5873,15 +5873,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-helmet@npm:^6.1.6":
-  version: 6.1.11
-  resolution: "@types/react-helmet@npm:6.1.11"
-  dependencies:
-    "@types/react": "*"
-  checksum: e329d8ad82c365fec7dd7d91c8b6d167faac30cef0d9f1e27d7e895172a0ebfa65829fb4acabbe79283b01cbbe5840a845caeb50148ceef6f3fad42b3c2c4bdc
-  languageName: node
-  linkType: hard
-
 "@types/react-router-config@npm:*, @types/react-router-config@npm:^5.0.6":
   version: 5.0.6
   resolution: "@types/react-router-config@npm:5.0.6"
@@ -5893,7 +5884,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-router-dom@npm:*, @types/react-router-dom@npm:^5.3.3":
+"@types/react-router-dom@npm:*":
   version: 5.3.3
   resolution: "@types/react-router-dom@npm:5.3.3"
   dependencies:
@@ -21795,18 +21786,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "website@workspace:packages/website"
   dependencies:
-    "@babel/runtime": ^7.22.6
     "@docusaurus/core": ~2.4.1
     "@docusaurus/module-type-aliases": ~2.4.1
     "@docusaurus/plugin-pwa": ~2.4.1
     "@docusaurus/preset-classic": ~2.4.1
     "@docusaurus/remark-plugin-npm2yarn": ~2.4.1
     "@docusaurus/theme-common": ~2.4.1
-    "@mdx-js/react": 1.6.22
+    "@docusaurus/types": ~2.4.1
     "@prettier/sync": "*"
+    "@types/mdast": ^3.0.0
     "@types/react": "*"
-    "@types/react-helmet": ^6.1.6
-    "@types/react-router-dom": ^5.3.3
+    "@types/unist": "*"
     "@typescript-eslint/eslint-plugin": 6.17.0
     "@typescript-eslint/parser": 6.17.0
     "@typescript-eslint/rule-schema-to-typescript-types": 6.17.0
@@ -21816,7 +21806,7 @@ __metadata:
     copy-webpack-plugin: ^11.0.0
     cross-fetch: "*"
     eslint: "*"
-    globby: ^11.1.0
+    history: ^4.9.0
     json5: ^2.2.3
     konamimojisplosion: ^0.5.2
     lz-string: ^1.5.0
@@ -21838,6 +21828,8 @@ __metadata:
     ts-node: "*"
     tsx: "*"
     typescript: "*"
+    unified: ^9.2.2
+    vfile: ^4.0.0
     webpack: ^5.88.1
   languageName: unknown
   linkType: soft

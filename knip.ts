@@ -52,6 +52,31 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'packages/website': {
+      entry: [
+        'docusaurus.config.js',
+        'src/pages/**/*.tsx',
+
+        'src/components/RulesTable/index.tsx',
+        'src/components/TypeScriptOverlap/index.tsx',
+        'src/hooks/useRulesMeta.ts',
+
+        'src/theme/CodeBlock/Content/String.tsx',
+        'src/theme/MDXComponents/index.tsx',
+        'src/theme/NotFound/index.tsx',
+        'src/theme/prism-include-languages.js',
+      ],
+      ignoreDependencies: [
+        'raw-loader',
+        'react-dom',
+        '^@typescript-eslint/.*',
+        '^@docusaurus/.*',
+        '@generated/docusaurus.config',
+        '^@theme/.*',
+        '^@theme-original/.*',
+        'esquery',
+      ],
+    },
     'tools/dummypkg': {},
   },
 } satisfies KnipConfig;
