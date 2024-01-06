@@ -40,7 +40,7 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/rule-tester': {
-      ignore: ['fixtures/**'],
+      ignore: ['tests/eslint-base/fixtures/**'],
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
