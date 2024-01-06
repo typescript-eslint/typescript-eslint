@@ -17,6 +17,9 @@ export default {
     // unresolved: 'off',
   },
   workspaces: {
+    '.': {
+      ignoreDependencies: ['husky'],
+    },
     'packages/ast-spec': {
       ignore: [
         'src/**/fixtures/**',

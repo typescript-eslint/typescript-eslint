@@ -1,4 +1,5 @@
 import { $ as $_config } from 'execa';
+import { workspaceRoot } from '@nx/devkit';
 
 const $ = $_config({
   stdout: 'inherit',
@@ -20,21 +21,16 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
-void (async function (): Promise<void> {
-  // make sure we're running from the workspace root
-  const {
-    default: { workspaceRoot },
-  } = await import('@nx/devkit');
-  process.chdir(workspaceRoot);
+// make sure we're running from the workspace root
+process.chdir(workspaceRoot);
 
-  // Install git hooks
-  await $`yarn husky install`;
+// Install git hooks
+await $`yarn husky install`;
 
-  if (!process.env.SKIP_POSTINSTALL_BUILD) {
-    // Clean any caches that may be invalid now
-    await $`yarn clean`;
+if (!process.env.SKIP_POSTINSTALL_BUILD) {
+  // Clean any caches that may be invalid now
+  await $`yarn clean`;
 
-    // Build all the packages ready for use
-    await $`yarn build`;
-  }
-})();
+  // Build all the packages ready for use
+  await $`yarn build`;
+}

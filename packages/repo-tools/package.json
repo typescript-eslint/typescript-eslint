@@ -26,6 +26,7 @@
     "prettier": "^3.0.3",
     "rimraf": "*",
     "semver": "7.5.4",
+    "tsx": "*",
     "typescript": "*"
   }
 }
