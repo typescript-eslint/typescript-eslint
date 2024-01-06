@@ -1,6 +1,6 @@
 import type { KnipConfig } from 'knip';
 
-const config: KnipConfig = {
+export default {
   rules: {
     // binaries,
     classMembers: 'off',
@@ -53,6 +53,4 @@ const config: KnipConfig = {
       ignore: ['tests/fixtures/**'],
     },
   },
-};
-
-export default config;
+} satisfies KnipConfig;
