@@ -528,7 +528,12 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.AccessorProperty,
       ].join(', ')]: {
         validator: validators.accessor,
-        handler: (node: TSESTree.PropertyNonComputedName | TSESTree.AccessorPropertyNonComputedName, validator): void => {
+        handler: (
+          node:
+            | TSESTree.PropertyNonComputedName
+            | TSESTree.AccessorPropertyNonComputedName,
+          validator,
+        ): void => {
           let modifiers = new Set<Modifiers>([Modifiers.public]);
           if (node.type === AST_NODE_TYPES.AccessorProperty) {
             modifiers = getMemberModifiers(node);
