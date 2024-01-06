@@ -37,6 +37,7 @@
     "generate-sponsors": "npx nx run repo-tools:generate-sponsors",
     "generate-website-dts": "npx nx run website:generate-website-dts",
     "generate-lib": "npx nx run repo-tools:generate-lib",
+    "knip": "knip",
     "lint-fix": "yarn lint --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",

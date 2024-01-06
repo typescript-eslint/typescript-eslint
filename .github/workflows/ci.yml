@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['lint', 'typecheck']
+        lint-task: ['lint', 'typecheck', 'knip']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -128,23 +128,6 @@ jobs:
       - name: Run stylelint check
         run: yarn stylelint
         working-directory: packages/website
-
-  knip:
-    name: Knip
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
-      - name: Run Knip
-        run: yarn knip
 
   integration_tests:
     name: Run integration tests on primary Node.js version
