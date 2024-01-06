@@ -16,10 +16,6 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/website/**/*.{mts,cts,ts,tsx}",
-          "packages/website/**/*.{mjs,cjs,js,jsx}"
-        ],
         "ignorePath": ".eslintignore"
       }
     }
