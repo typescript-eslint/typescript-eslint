@@ -77,6 +77,18 @@ export default {
         'esquery',
       ],
     },
+    'packages/website-eslint': {
+      entry: [
+        'src/mock/assert.js',
+        'src/mock/empty.js',
+        'src/mock/eslint-rules.js',
+        'src/mock/eslint.js',
+        'src/mock/lru-cache.js',
+        'src/mock/path.js',
+        'src/mock/typescript.js',
+        'src/mock/util.js',
+      ],
+    },
     'tools/dummypkg': {},
   },
 } satisfies KnipConfig;
