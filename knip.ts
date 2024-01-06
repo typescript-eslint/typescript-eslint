@@ -52,5 +52,6 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'tools/dummypkg': {},
   },
 } satisfies KnipConfig;
