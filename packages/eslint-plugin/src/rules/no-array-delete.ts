@@ -51,14 +51,13 @@ export default createRule<[], MessageId>({
       'UnaryExpression[operator="delete"]'(
         node: TSESTree.UnaryExpression,
       ): void {
-        if (node.argument.type !== AST_NODE_TYPES.MemberExpression) {
+        const { argument } = node;
+
+        if (argument.type !== AST_NODE_TYPES.MemberExpression) {
           return;
         }
 
-        const type = getConstrainedTypeAtLocation(
-          services,
-          node.argument.object,
-        );
+        const type = getConstrainedTypeAtLocation(services, argument.object);
 
         if (!isUnderlyingTypeArray(type)) {
           return;
@@ -71,11 +70,7 @@ export default createRule<[], MessageId>({
             {
               messageId: 'useSplice',
               fix(fixer): TSESLint.RuleFix | null {
-                if (node.argument.type !== AST_NODE_TYPES.MemberExpression) {
-                  return null;
-                }
-
-                const { object, property } = node.argument;
+                const { object, property } = argument;
 
                 const shouldHaveParentheses =
                   property.type === AST_NODE_TYPES.SequenceExpression;
