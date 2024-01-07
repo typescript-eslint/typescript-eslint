@@ -19,7 +19,7 @@ It may take an options object containing either or both of:
 - `"allow"`: allowing certain kinds of properties to be ignored
 - `"prefer"`: either `"class-property"` _(default)_ or `"parameter-property"`
 
-### `"allow"`
+### `allow`
 
 If you would like to ignore certain kinds of properties then you may pass an object containing `"allow"` as an array of any of the following options:
 
@@ -45,7 +45,7 @@ For example, to ignore `public` properties:
 }
 ```
 
-### `"prefer"`
+### `prefer`
 
 By default, the rule prefers class property (`"class-property"`).
 You can switch it to instead preferring parameter property with (`"parameter-property"`).
@@ -482,4 +482,7 @@ class Foo {
 
 ## When Not To Use It
 
-If you don't care about the using parameter properties in constructors, then you will not need this rule.
+If you don't care about which style of parameter properties in constructors is used in your classes, then you will not need this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

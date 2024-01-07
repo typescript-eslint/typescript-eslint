@@ -76,29 +76,27 @@ export function createLinter(
   const triggerLint = (filename: string): void => {
     console.info('[Editor] linting triggered for file', filename);
     const code = system.readFile(filename) ?? '\n';
-    if (code != null) {
-      try {
-        const messages = linter.verify(code, eslintConfig, filename);
-        onLint.trigger(filename, messages);
-      } catch (e) {
-        const lintMessage: Linter.LintMessage = {
-          source: 'eslint',
-          ruleId: '',
-          severity: 2,
-          nodeType: '',
-          column: 1,
-          line: 1,
-          message: String(e instanceof Error ? e.stack : e),
-        };
-        if (typeof e === 'object' && e && 'currentNode' in e) {
-          const node = e.currentNode as TSESTree.Node;
-          lintMessage.column = node.loc.start.column + 1;
-          lintMessage.line = node.loc.start.line;
-          lintMessage.endColumn = node.loc.end.column + 1;
-          lintMessage.endLine = node.loc.end.line;
-        }
-        onLint.trigger(filename, [lintMessage]);
+    try {
+      const messages = linter.verify(code, eslintConfig, filename);
+      onLint.trigger(filename, messages);
+    } catch (e) {
+      const lintMessage: Linter.LintMessage = {
+        source: 'eslint',
+        ruleId: '',
+        severity: 2,
+        nodeType: '',
+        column: 1,
+        line: 1,
+        message: String(e instanceof Error ? e.stack : e),
+      };
+      if (typeof e === 'object' && e && 'currentNode' in e) {
+        const node = e.currentNode as TSESTree.Node;
+        lintMessage.column = node.loc.start.column + 1;
+        lintMessage.line = node.loc.start.line;
+        lintMessage.endColumn = node.loc.end.column + 1;
+        lintMessage.endLine = node.loc.end.line;
       }
+      onLint.trigger(filename, [lintMessage]);
     }
   };
 

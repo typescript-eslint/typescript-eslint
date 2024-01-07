@@ -3,7 +3,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-extra-parens';
 
@@ -347,10 +347,6 @@ typeof (a);
       options: ['all', { nestedBinaryExpressions: false }],
     },
     {
-      code: 'const x = (1 as 1)++;',
-      options: ['all', { nestedBinaryExpressions: false }],
-    },
-    {
       code: 'function *x() { yield (1 as 1); yield 1; }',
       options: ['all', { nestedBinaryExpressions: false }],
     },
@@ -476,11 +472,6 @@ typeof (a);
     },
     {
       code: 'const x = !(<1>1);',
-      parserOptions: { ecmaFeatures: { jsx: false } },
-      options: ['all', { nestedBinaryExpressions: false }],
-    },
-    {
-      code: 'const x = (<1>1)++;',
       parserOptions: { ecmaFeatures: { jsx: false } },
       options: ['all', { nestedBinaryExpressions: false }],
     },
@@ -743,7 +734,7 @@ const Component = (
     />
 )
       `,
-      output: `
+      output: noFormat`
 const Component =${' '}
     <div>
         <p />

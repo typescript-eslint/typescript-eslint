@@ -167,7 +167,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
    */
-  EXPERIMENTAL_useProjectService?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
@@ -268,6 +268,16 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: number | 'Infinity';
   };
+}
+
+/**
+ * Granular options to configure the project service.
+ */
+interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default inferred project settings.
+   */
+  allowDefaultProjectForFiles?: string[];
 }
 
 interface ParserServices {

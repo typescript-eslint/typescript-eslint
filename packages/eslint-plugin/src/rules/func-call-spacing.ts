@@ -23,6 +23,8 @@ export type MessageIds =
 export default createRule<Options, MessageIds>({
   name: 'func-call-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/func-call-spacing'],
     type: 'layout',
     docs: {
       description:

@@ -430,7 +430,7 @@ export function findFirstMatchingAncestor(
     if (predicate(current)) {
       return current;
     }
-    current = current.parent;
+    current = current.parent as ts.Node | undefined;
   }
   return undefined;
 }
@@ -928,6 +928,35 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   }
 
   return false;
+}
+
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  switch (node.kind) {
+    case SyntaxKind.Identifier:
+      return true;
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      if (node.flags & ts.NodeFlags.OptionalChain) {
+        return false;
+      }
+      return true;
+    case SyntaxKind.ParenthesizedExpression:
+    case SyntaxKind.TypeAssertionExpression:
+    case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.NonNullExpression:
+      return isValidAssignmentTarget(
+        (
+          node as
+            | ts.ParenthesizedExpression
+            | ts.AssertionExpression
+            | ts.SatisfiesExpression
+            | ts.NonNullExpression
+        ).expression,
+      );
+    default:
+      return false;
+  }
 }
 
 export function getNamespaceModifiers(

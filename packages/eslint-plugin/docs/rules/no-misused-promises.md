@@ -17,7 +17,7 @@ See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled 
 
 ## Options
 
-### `"checksConditionals"`
+### `checksConditionals`
 
 If you don't want to check conditionals, you can configure the rule with `"checksConditionals": false`:
 
@@ -73,10 +73,10 @@ while (await promise) {
 
 <!--/tabs-->
 
-### `"checksVoidReturn"`
+### `checksVoidReturn`
 
-Likewise, if you don't want functions that return promises where a void return is
-expected to be checked, your configuration will look like this:
+Likewise, if you don't want to check functions that return promises where a void return is
+expected, your configuration will look like this:
 
 ```json
 {
@@ -182,7 +182,7 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
-### `"checksSpreads"`
+### `checksSpreads`
 
 If you don't want to check object spreads, you can add this configuration:
 
@@ -233,8 +233,9 @@ return { foo: 42, ...(await getData2()) };
 
 ## When Not To Use It
 
-If you do not use Promises in your codebase or are not concerned with possible
-misuses of them outside of what the TypeScript compiler will check.
+This rule can be difficult to enable on large existing projects that set up many misused Promises.
+Alternately, if you're not worried about crashes from floating or misused Promises -such as if you have global unhandled Promise handlers registered- then in some cases it may be safe to not use this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

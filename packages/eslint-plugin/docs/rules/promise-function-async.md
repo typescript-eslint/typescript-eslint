@@ -57,3 +57,76 @@ async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
   return p ? 'value' : Promise.resolve('value');
 }
 ```
+
+## Options
+
+### `allowAny`
+
+Whether to ignore functions that return `any` and `unknown`.
+If you want additional safety, consider turning this option off, as it makes the rule less able to catch incorrect Promise behaviors.
+
+Examples of code with `{ "allowAny": false }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "allowAny": false }'
+const returnsAny = () => ({}) as any;
+```
+
+#### ✅ Correct
+
+```ts option='{ "allowAny": false }'
+const returnsAny = async () => ({}) as any;
+```
+
+### `allowedPromiseNames`
+
+For projects that use constructs other than the global built-in `Promise` for asynchronous code.
+This option allows specifying string names of classes or interfaces that cause a function to be checked as well.
+
+Examples of code with `{ "allowedPromiseNames": ["Bluebird"] }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "allowedPromiseNames": ["Bluebird"] }'
+import { Bluebird } from 'bluebird';
+
+const returnsBluebird = () => new Bluebird(() => {});
+```
+
+#### ✅ Correct
+
+```ts option='{ "allowedPromiseNames": ["Bluebird"] }'
+import { Bluebird } from 'bluebird';
+
+const returnsBluebird = async () => new Bluebird(() => {});
+```
+
+### `checkArrowFunctions`
+
+Whether to check arrow functions.
+`true` by default, but can be set to `false` to ignore them.
+
+### `checkFunctionDeclarations`
+
+Whether to check standalone function declarations.
+`true` by default, but can be set to `false` to ignore them.
+
+### `checkFunctionExpressions`
+
+Whether to check inline function expressions.
+`true` by default, but can be set to `false` to ignore them.
+
+### `checkMethodDeclarations`
+
+Whether to check methods on classes and object literals
+`true` by default, but can be set to `false` to ignore them.
+
+## When Not To Use It
+
+This rule can be difficult to enable on projects that use APIs which require functions to always be `async`.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) along with filing issues on your dependencies for those specific situations instead of completely disabling this rule.

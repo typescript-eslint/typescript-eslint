@@ -63,6 +63,7 @@ const isOptionEnabled = (key: string): boolean => {
 ## When Not To Use It
 
 If you are compiling against multiple versions of TypeScript and using `@ts-ignore` to ignore version-specific type errors, this rule might get in your way.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

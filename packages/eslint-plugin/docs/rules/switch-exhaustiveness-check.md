@@ -6,12 +6,51 @@ description: 'Require switch-case statements to be exhaustive.'
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
 
-When working with union types or enums in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union or the enum).
+When working with union types or enums in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each possible type in the union or the enum.
 However, if the union type or the enum changes, it's easy to forget to modify the cases to account for any new types.
 
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
-There is also an option to check the exhaustiveness of switches on non-union types by requiring a default clause.
+## Options
+
+### `allowDefaultCaseForExhaustiveSwitch`
+
+Defaults to true. If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
+
+When a `switch` statement over a union type is exhaustive, a final `default` case would be a form of dead code.
+Additionally, if a new value is added to the union type, a `default` would prevent the `switch-exhaustiveness-check` rule from reporting on the new case not being handled in the `switch` statement.
+
+#### `allowDefaultCaseForExhaustiveSwitch` Caveats
+
+It can sometimes be useful to include a redundant `default` case on an exhaustive `switch` statement if it's possible for values to have types not represented by the union type.
+For example, in applications that can have version mismatches between clients and servers, it's possible for a server running a newer software version to send a value not recognized by the client's older typings.
+
+If your project has a small number of intentionally redundant `default` cases, you might want to use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for each of them.
+
+If your project has many intentionally redundant `default` cases, you may want to disable `allowDefaultCaseForExhaustiveSwitch` and use the [`default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case) along with [a `satisfies never` check](https://www.typescriptlang.org/play?#code/C4TwDgpgBAYgTgVwJbCgXigcgIZjAGwkygB8sAjbAO2u0wG4AoRgMwSoGNgkB7KqBAGcI8ZMAAULRCgBcsacACUcwcDhIqAcygBvRlCiCA7ig4ALKJIWLd+g1A7ZhWXASJy99+3AjAEcfhw8QgApZA4iJi8AX2YvR2dMShoaTA87Lx8-AIpaGjCkCIYMqFiSgBMIFmwEfGB0rwMpMUNsbkEWJAhBKCoIADcIOCjGrP9A9gBrKh4jKgKikYNY5cZYoA).
+
+### `requireDefaultForNonUnion`
+
+Defaults to false. It set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
+
+This is generally desirable so that `number` and `string` switches will be subject to the same exhaustive checks that your other switches are.
+
+Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
+
+```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
+const value: number = Math.floor(Math.random() * 3);
+
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+}
+```
+
+Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
+
+<!--/tabs-->
 
 ## Examples
 
@@ -181,27 +220,6 @@ switch (fruit) {
 
 <!--/tabs-->
 
-## Options
-
-### `requireDefaultForNonUnion`
-
-Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
-
-```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
-const value: number = Math.floor(Math.random() * 3);
-
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-}
-```
-
-Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
-
-<!--/tabs-->
-
 ## When Not To Use It
 
-If you don't frequently `switch` over union types or enums with many parts, or intentionally wish to leave out some parts.
+If you don't frequently `switch` over union types or enums with many parts, or intentionally wish to leave out some parts, this rule may not be for you.

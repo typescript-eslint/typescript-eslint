@@ -1,3 +1,5 @@
+// See https://github.com/typescript-eslint/typescript-eslint/issues/7630.
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
