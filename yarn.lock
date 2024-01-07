@@ -5691,8 +5691,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/integration-tests@workspace:packages/integration-tests"
   dependencies:
-    "@types/ncp": ^2.0.8
-    ncp: ^2.0.0
+    ncp: "*"
     tmp: "*"
   languageName: unknown
   linkType: soft
@@ -5870,6 +5869,7 @@ __metadata:
     "@types/jest-specific-snapshot": ^0.5.6
     "@types/marked": ^5.0.0
     "@types/natural-compare": ^1.4.1
+    "@types/ncp": ^2.0.8
     "@types/node": ^20.0.0
     "@types/semver": ^7.5.0
     "@types/tmp": ^0.2.3
