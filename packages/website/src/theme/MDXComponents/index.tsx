@@ -5,6 +5,6 @@ import { TryInPlayground } from './TryInPlayground';
 
 export default {
   ...MDXComponents,
-  'rule-attributes': RuleAttributes,
-  'try-in-playground': TryInPlayground,
+  RuleAttributes,
+  TryInPlayground,
 };

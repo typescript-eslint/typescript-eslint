@@ -6,4 +6,4 @@ require('ts-node').register({
   transpileOnly: true,
 });
 
-module.exports = require('./docusaurusConfig');
+module.exports = require('./docusaurusConfig').config;

@@ -59,7 +59,7 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
       )};`,
     } as mdast.Code,
     {
-      value: `<try-in-playground eslintrcHash="${eslintrcHash}">Try this rule in the playground ↗</try-in-playground>`,
+      value: `<TryInPlayground eslintrcHash="${eslintrcHash}">Try this rule in the playground ↗</TryInPlayground>`,
       type: 'jsx',
     } as unist.Node,
   );

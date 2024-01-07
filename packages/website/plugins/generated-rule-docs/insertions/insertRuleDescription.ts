@@ -23,7 +23,7 @@ export function insertRuleDescription(page: RuleDocsPage): void {
     } as mdast.Blockquote,
     {
       type: 'jsx',
-      value: `<rule-attributes name="${page.file.stem}" />`,
+      value: `<RuleAttributes name="${page.file.stem}" />`,
     } as unist.Node,
   );
 }

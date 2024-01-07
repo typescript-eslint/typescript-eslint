@@ -249,7 +249,7 @@ const pluginPwaOptions: PluginPwaOptions = {
   ],
 };
 
-const config: Config = {
+export const config: Config = {
   title: 'typescript-eslint',
   tagline:
     'The tooling that enables ESLint and Prettier to support TypeScript.',
@@ -301,5 +301,3 @@ const config: Config = {
     },
   ],
 };
-
-export = config;

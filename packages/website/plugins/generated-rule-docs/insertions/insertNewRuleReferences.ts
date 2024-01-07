@@ -55,9 +55,9 @@ export function insertNewRuleReferences(page: RuleDocsPage): string {
       value: `module.exports = ${eslintrc};`,
     } as mdast.Code,
     {
-      value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
+      value: `<TryInPlayground eslintrcHash="${convertToPlaygroundHash(
         eslintrc,
-      )}">Try this rule in the playground ↗</try-in-playground>`,
+      )}">Try this rule in the playground ↗</TryInPlayground>`,
       type: 'jsx',
     } as unist.Node,
   );
