@@ -18,7 +18,23 @@ export default {
   },
   workspaces: {
     '.': {
-      ignoreDependencies: ['husky'],
+      ignoreDependencies: [
+        '@nx/workspace',
+        'cross-fetch',
+        'execa',
+        'glob',
+        'husky',
+        // intergrations-tests expect it to be present in the root package.json
+        'tslint',
+        'make-dir',
+        'ncp',
+        'tmp',
+      ],
+      entry: [
+        // https://github.com/webpro/knip/pull/432
+        '.github/actions/wait-for-netlify/index.js',
+        'tools/release/changelog-renderer.js',
+      ],
     },
     'packages/ast-spec': {
       ignore: [
