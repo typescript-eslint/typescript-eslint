@@ -1,7 +1,18 @@
-# Change Log
+## 6.18.0 (2024-01-06)
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-var-requires, no-require-imports] allow option ([#7710](https://github.com/typescript-eslint/typescript-eslint/pull/7710))
+- **typescript-estree:** throw on invalid update expressions ([#7202](https://github.com/typescript-eslint/typescript-eslint/pull/7202))
+- **typescript-estree:** throw error when CatchClause param contains initializer ([#8183](https://github.com/typescript-eslint/typescript-eslint/pull/8183))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Joshua Chen
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
 
 # [6.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.16.0...v6.17.0) (2024-01-01)
 
