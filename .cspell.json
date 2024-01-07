@@ -73,6 +73,7 @@
     "declarators",
     "destructure",
     "destructured",
+    "destructures",
     "discoverability",
     "dprint",
     "errored",
@@ -125,6 +126,7 @@
     "stringification",
     "stringifying",
     "stringly",
+    "subclassing",
     "superset",
     "thenables",
     "transpiled",
@@ -141,7 +143,6 @@
     "unfixable",
     "unoptimized",
     "unprefixed",
-    "upcasting",
     "upsert",
     "warnonunsupportedtypescriptversion",
     "Zacher"

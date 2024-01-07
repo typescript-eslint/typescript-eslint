@@ -347,10 +347,6 @@ typeof (a);
       options: ['all', { nestedBinaryExpressions: false }],
     },
     {
-      code: 'const x = (1 as 1)++;',
-      options: ['all', { nestedBinaryExpressions: false }],
-    },
-    {
       code: 'function *x() { yield (1 as 1); yield 1; }',
       options: ['all', { nestedBinaryExpressions: false }],
     },
@@ -476,11 +472,6 @@ typeof (a);
     },
     {
       code: 'const x = !(<1>1);',
-      parserOptions: { ecmaFeatures: { jsx: false } },
-      options: ['all', { nestedBinaryExpressions: false }],
-    },
-    {
-      code: 'const x = (<1>1)++;',
       parserOptions: { ecmaFeatures: { jsx: false } },
       options: ['all', { nestedBinaryExpressions: false }],
     },
