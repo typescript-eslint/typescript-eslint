@@ -222,7 +222,12 @@ switch (value) {
     return -1;
 }
       `,
-      options: [{ requireDefaultForNonUnion: true }],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
   ],
   invalid: [
@@ -627,7 +632,12 @@ switch (value) {
     return 1;
 }
       `,
-      options: [{ requireDefaultForNonUnion: true }],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
@@ -721,6 +731,35 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+type MyUnion = 'foo' | 'bar' | 'baz';
+
+declare const myUnion: MyUnion;
+
+switch (myUnion) {
+  case 'foo':
+  case 'bar':
+  case 'baz': {
+    break;
+  }
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
         },
       ],
     },

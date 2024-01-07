@@ -27,6 +27,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  isValidAssignmentTarget,
   nodeCanBeDecorated,
   nodeHasIllegalDecorators,
   nodeIsPresent,
@@ -882,6 +883,12 @@ export class Converter {
         });
 
       case SyntaxKind.CatchClause:
+        if (node.variableDeclaration?.initializer) {
+          this.#throwError(
+            node.variableDeclaration.initializer,
+            'Catch clause variable cannot have an initializer.',
+          );
+        }
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
@@ -2017,6 +2024,12 @@ export class Converter {
          * ESTree uses UpdateExpression for ++/--
          */
         if (operator === '++' || operator === '--') {
+          if (!isValidAssignmentTarget(node.operand)) {
+            this.#throwUnlessAllowInvalidAST(
+              node.operand,
+              'Invalid left-hand side expression in unary operation',
+            );
+          }
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
