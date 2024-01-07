@@ -310,8 +310,8 @@ export default createRule<Options, MessageId>({
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
      *    Known exceptions:
-     *      * https://github.com/microsoft/TypeScript/issues/32627
-     *      * https://github.com/microsoft/TypeScript/issues/37160 (handled)
+     *      - https://github.com/microsoft/TypeScript/issues/32627
+     *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
     const BOOL_OPERATORS = new Set([
       '<',

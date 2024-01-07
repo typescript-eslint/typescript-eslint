@@ -208,8 +208,6 @@ function enforceCodeString(code: unknown): string {
  *
  * Even if jsx option is set in typescript compiler, filename still has to
  * contain .tsx file extension.
- *
- * @param options Parser options
  */
 function getFileName(jsx?: boolean): string {
   return jsx ? 'estree.tsx' : 'estree.ts';

@@ -64,7 +64,6 @@ export function formatSnapshotName(
 
 /**
  * Check if file extension is one used for jsx
- * @param fileType
  */
 export function isJSXFileType(fileType: string): boolean {
   if (fileType.startsWith('.')) {

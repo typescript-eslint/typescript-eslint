@@ -96,7 +96,7 @@ function validateRuleSchema(
  * Validates a rule's options against its schema.
  * @param rule The rule that the config is being validated for
  * @param ruleId The rule's unique name.
- * @param {Array|number} options The given options for the rule.
+ * @param options The given options for the rule.
  * @param source The name of the configuration source to report in any errors. If null or undefined,
  * no source is prepended to the message.
  * @throws {Error} Upon any bad rule configuration.
