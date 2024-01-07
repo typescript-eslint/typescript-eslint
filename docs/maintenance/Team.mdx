@@ -3,7 +3,14 @@ id: team
 title: Team
 ---
 
+import { TeamBioDivider } from '@site/src/components/team/TeamBioDivider';
 import { TeamBioList } from '@site/src/components/team/TeamBioList';
+
+The typescript-eslint organization is an independent open source project. Its
+members are volunteer open source developers dedicated to making the
+TypeScript linting experience great.
+
+<TeamBioDivider />
 
 ## Maintainers
 
@@ -12,22 +19,40 @@ import { TeamBioList } from '@site/src/components/team/TeamBioList';
     {
       description:
         'Computer scientist. Cider drinker. Linting enthusiast. Australian.',
+      links: [
+        ['twitter', 'https://twitter.com/bradzacher'],
+        ['mastodon', 'https://mastodon.online/@bradzacher'],
+        ['www', 'https://zacher.com.au'],
+      ],
       name: 'Brad Zacher',
       username: 'bradzacher',
     },
     {
       description:
         'Director of Engineering Nrwl. 5x Microsoft MVP for TypeScript.',
+      links: [
+        ['twitter', 'https://twitter.com/MrJamesHenry'],
+        ['www', 'https://jameshenry.blog'],
+      ],
       name: 'James Henry',
       username: 'jameshenry',
     },
     {
-      description: 'Full time open source maintainer. Likes cats.',
+      description: 'Full time open source maintainer. Likes cats. 🐈‍⬛',
+      links: [
+        ['twitter', 'https://twitter.com/JoshuaKGoldberg'],
+        ['mastodon', 'https://fosstodon.org/@JoshuaKGoldberg'],
+        ['www', 'https://joshuakgoldberg.com'],
+      ],
       name: 'Josh Goldberg',
       username: 'joshuakgoldberg',
     },
   ]}
+  description="Leaders stewarding the direction of the project."
+  explanation="In addition to committer tasks, maintainers work on the processes behind the project, relationships with neighboring ecosystem projects, and manage regular releases."
 />
+
+<TeamBioDivider />
 
 ## Committers
 
@@ -40,8 +65,21 @@ import { TeamBioList } from '@site/src/components/team/TeamBioList';
     },
     {
       description: 'I care about languages!',
+      links: [
+        ['www', 'https://joshcena.com'],
+        ['twitter', 'https://twitter.com/SidaChen63'],
+      ],
       name: 'Joshua Chen',
       username: 'josh-cena',
     },
   ]}
+  description="Code committers who regularly work on the code in the repository."
+  explanation="Committers triage issues, review pull requests, and write code to push the project's functionality and stability forward."
 />
+
+<TeamBioDivider />
+
+## Join Us
+
+We're always looking for developers to add to the team.
+If you're interest in becoming a committer, go ahead and get started with our [Contributing guide](../Contributing.mdx).
