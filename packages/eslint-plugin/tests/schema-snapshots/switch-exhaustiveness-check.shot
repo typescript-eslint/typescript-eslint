@@ -8,6 +8,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
+      "allowDefaultCaseForExhaustiveSwitch": {
+        "description": "If 'true', allow 'default' cases on switch statements with exhaustive cases.",
+        "type": "boolean"
+      },
       "requireDefaultForNonUnion": {
         "description": "If 'true', require a 'default' clause for switches on non-union types.",
         "type": "boolean"
@@ -22,6 +26,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** If 'true', allow 'default' cases on switch statements with exhaustive cases. */
+    allowDefaultCaseForExhaustiveSwitch?: boolean;
     /** If 'true', require a 'default' clause for switches on non-union types. */
     requireDefaultForNonUnion?: boolean;
   },

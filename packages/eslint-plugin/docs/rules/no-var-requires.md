@@ -28,6 +28,28 @@ require('foo');
 import foo from 'foo';
 ```
 
+## Options
+
+### `allow`
+
+A array of strings. These strings will be compiled into regular expressions with the `u` flag and be used to test against the imported path. A common use case is to allow importing `package.json`. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled. You can also use it to allow importing any JSON if your environment doesn't support JSON modules, or use it for other cases where `import` statements cannot work.
+
+With `{allow: ['/package\\.json$']}`:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+const foo = require('../data.json');
+```
+
+### ✅ Correct
+
+```ts
+const foo = require('../package.json');
+```
+
 ## When Not To Use It
 
 If your project frequently uses older CommonJS `require`s, then this rule might not be applicable to you.
