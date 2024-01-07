@@ -6,10 +6,7 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/rule-tester/**/*.ts"]
-      }
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

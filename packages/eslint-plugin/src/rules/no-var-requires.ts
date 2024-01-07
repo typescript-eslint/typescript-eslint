@@ -4,7 +4,11 @@ import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
-type Options = [];
+type Options = [
+  {
+    allow: string[];
+  },
+];
 type MessageIds = 'noVarReqs';
 
 export default createRule<Options, MessageIds>({
@@ -18,14 +22,39 @@ export default createRule<Options, MessageIds>({
     messages: {
       noVarReqs: 'Require statement not part of import statement.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allow: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Patterns of import paths to allow requiring from.',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ allow: [] }],
+  create(context, options) {
+    const allowPatterns = options[0].allow.map(
+      pattern => new RegExp(pattern, 'u'),
+    );
+    function isImportPathAllowed(importPath: string): boolean {
+      return allowPatterns.some(pattern => importPath.match(pattern));
+    }
     return {
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
+        if (
+          node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
+          typeof node.arguments[0].value === 'string' &&
+          isImportPathAllowed(node.arguments[0].value)
+        ) {
+          return;
+        }
         const parent =
           node.parent.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
