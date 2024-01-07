@@ -53,7 +53,6 @@ module.exports = {
     'deprecation/deprecation': 'error',
 
     // TODO(#7338): Investigate enabling these soon ✨
-    '@typescript-eslint/no-dynamic-delete': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
 
     // TODO(#7130): Investigate changing these in or removing these from presets

@@ -127,6 +127,8 @@ export function omitDeep<T = UnknownObject>(
     for (const prop in node) {
       if (Object.prototype.hasOwnProperty.call(node, prop)) {
         if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
+          // Filter out omitted and undefined props from the node
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete node[prop];
           continue;
         }
