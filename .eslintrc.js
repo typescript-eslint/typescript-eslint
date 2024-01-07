@@ -26,7 +26,7 @@ module.exports = {
   parserOptions: {
     allowAutomaticSingleRunInference: true,
     cacheLifetime: {
-      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
+      // we pretty well never create/change tsconfig structure - so no need to ever evict the cache
       // in the rare case that we do - just need to manually restart their IDE.
       glob: 'Infinity',
     },
