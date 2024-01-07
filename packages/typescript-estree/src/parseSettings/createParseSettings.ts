@@ -80,10 +80,10 @@ export function createParseSettings(
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_projectService:
-      (options.EXPERIMENTAL_useProjectService &&
-        process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'false') ||
-      (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true' &&
-        options.EXPERIMENTAL_useProjectService !== false)
+      options.EXPERIMENTAL_useProjectService ||
+      (options.project &&
+        options.EXPERIMENTAL_useProjectService !== false &&
+        process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true')
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
             options.EXPERIMENTAL_useProjectService,
             jsDocParsingMode,
