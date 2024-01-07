@@ -37,9 +37,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-resizable-panels": "^0.0.55",
-    "remark-docusaurus-tabs": "^0.2.0",
     "semver": "^7.5.4",
-    "ts-node": "*",
     "typescript": "*"
   },
   "resolutions": {
@@ -64,7 +62,6 @@
     "stylelint-config-recommended": "^13.0.0",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-order": "^6.0.3",
-    "ts-node": "*",
     "tsx": "*",
     "webpack": "^5.88.1"
   },

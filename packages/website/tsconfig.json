@@ -23,6 +23,7 @@
     "plugins",
     "typings",
     "sidebars/*.js",
+    "./*.mts",
     "./*.ts"
   ]
 }

@@ -14913,13 +14913,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-to-string@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "mdast-util-to-string@npm:2.0.0"
-  checksum: 0b2113ada10e002fbccb014170506dabe2f2ddacaacbe4bc1045c33f986652c5a162732a2c057c5335cdb58419e2ad23e368e5be226855d4d4e280b81c4e9ec2
-  languageName: node
-  linkType: hard
-
 "mdast-util-to-string@npm:^4.0.0":
   version: 4.0.0
   resolution: "mdast-util-to-string@npm:4.0.0"
@@ -18187,16 +18180,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark-docusaurus-tabs@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "remark-docusaurus-tabs@npm:0.2.0"
-  dependencies:
-    mdast-util-to-string: ^2.0.0
-    unist-util-visit: ^2.0.3
-  checksum: 764721ab42f683cbf86770cd04b58a276350c4189ab5f3401f3e5300d71512f7701b9e71bc23fe35e2f4079df1e385b25ea72c6762d4ac23a1794146537d0c8d
-  languageName: node
-  linkType: hard
-
 "remark-emoji@npm:^4.0.0":
   version: 4.0.1
   resolution: "remark-emoji@npm:4.0.1"
@@ -20061,44 +20044,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:*, ts-node@npm:10.9.1":
-  version: 10.9.1
-  resolution: "ts-node@npm:10.9.1"
-  dependencies:
-    "@cspotcode/source-map-support": ^0.8.0
-    "@tsconfig/node10": ^1.0.7
-    "@tsconfig/node12": ^1.0.7
-    "@tsconfig/node14": ^1.0.0
-    "@tsconfig/node16": ^1.0.2
-    acorn: ^8.4.1
-    acorn-walk: ^8.1.1
-    arg: ^4.1.0
-    create-require: ^1.1.0
-    diff: ^4.0.1
-    make-error: ^1.1.1
-    v8-compile-cache-lib: ^3.0.1
-    yn: 3.1.1
-  peerDependencies:
-    "@swc/core": ">=1.2.50"
-    "@swc/wasm": ">=1.2.50"
-    "@types/node": "*"
-    typescript: ">=2.7"
-  peerDependenciesMeta:
-    "@swc/core":
-      optional: true
-    "@swc/wasm":
-      optional: true
-  bin:
-    ts-node: dist/bin.js
-    ts-node-cwd: dist/bin-cwd.js
-    ts-node-esm: dist/bin-esm.js
-    ts-node-script: dist/bin-script.js
-    ts-node-transpile-only: dist/bin-transpile.js
-    ts-script: dist/bin-script-deprecated.js
-  checksum: 090adff1302ab20bd3486e6b4799e90f97726ed39e02b39e566f8ab674fd5bd5f727f43615debbfc580d33c6d9d1c6b1b3ce7d8e3cca3e20530a145ffa232c35
-  languageName: node
-  linkType: hard
-
 "ts-node@npm:10.7.0":
   version: 10.7.0
   resolution: "ts-node@npm:10.7.0"
@@ -20134,6 +20079,44 @@ __metadata:
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
   checksum: 2a379e43f7478d0b79e1e63af91fe222d83857727957df4bd3bdf3c0a884de5097b12feb9bbf530074526b8874c0338b0e6328cf334f3a5e2c49c71e837273f7
+  languageName: node
+  linkType: hard
+
+"ts-node@npm:10.9.1":
+  version: 10.9.1
+  resolution: "ts-node@npm:10.9.1"
+  dependencies:
+    "@cspotcode/source-map-support": ^0.8.0
+    "@tsconfig/node10": ^1.0.7
+    "@tsconfig/node12": ^1.0.7
+    "@tsconfig/node14": ^1.0.0
+    "@tsconfig/node16": ^1.0.2
+    acorn: ^8.4.1
+    acorn-walk: ^8.1.1
+    arg: ^4.1.0
+    create-require: ^1.1.0
+    diff: ^4.0.1
+    make-error: ^1.1.1
+    v8-compile-cache-lib: ^3.0.1
+    yn: 3.1.1
+  peerDependencies:
+    "@swc/core": ">=1.2.50"
+    "@swc/wasm": ">=1.2.50"
+    "@types/node": "*"
+    typescript: ">=2.7"
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    "@swc/wasm":
+      optional: true
+  bin:
+    ts-node: dist/bin.js
+    ts-node-cwd: dist/bin-cwd.js
+    ts-node-esm: dist/bin-esm.js
+    ts-node-script: dist/bin-script.js
+    ts-node-transpile-only: dist/bin-transpile.js
+    ts-script: dist/bin-script-deprecated.js
+  checksum: 090adff1302ab20bd3486e6b4799e90f97726ed39e02b39e566f8ab674fd5bd5f727f43615debbfc580d33c6d9d1c6b1b3ce7d8e3cca3e20530a145ffa232c35
   languageName: node
   linkType: hard
 
@@ -20533,13 +20516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unist-util-is@npm:^4.0.0":
-  version: 4.1.0
-  resolution: "unist-util-is@npm:4.1.0"
-  checksum: 726484cd2adc9be75a939aeedd48720f88294899c2e4a3143da413ae593f2b28037570730d5cf5fd910ff41f3bc1501e3d636b6814c478d71126581ef695f7ea
-  languageName: node
-  linkType: hard
-
 "unist-util-is@npm:^6.0.0":
   version: 6.0.0
   resolution: "unist-util-is@npm:6.0.0"
@@ -20586,16 +20562,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unist-util-visit-parents@npm:^3.0.0":
-  version: 3.1.1
-  resolution: "unist-util-visit-parents@npm:3.1.1"
-  dependencies:
-    "@types/unist": ^2.0.0
-    unist-util-is: ^4.0.0
-  checksum: 1170e397dff88fab01e76d5154981666eb0291019d2462cff7a2961a3e76d3533b42eaa16b5b7e2d41ad42a5ea7d112301458283d255993e660511387bf67bc3
-  languageName: node
-  linkType: hard
-
 "unist-util-visit-parents@npm:^6.0.0":
   version: 6.0.1
   resolution: "unist-util-visit-parents@npm:6.0.1"
@@ -20603,17 +20569,6 @@ __metadata:
     "@types/unist": ^3.0.0
     unist-util-is: ^6.0.0
   checksum: 08927647c579f63b91aafcbec9966dc4a7d0af1e5e26fc69f4e3e6a01215084835a2321b06f3cbe7bf7914a852830fc1439f0fc3d7153d8804ac3ef851ddfa20
-  languageName: node
-  linkType: hard
-
-"unist-util-visit@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "unist-util-visit@npm:2.0.3"
-  dependencies:
-    "@types/unist": ^2.0.0
-    unist-util-is: ^4.0.0
-    unist-util-visit-parents: ^3.0.0
-  checksum: 1fe19d500e212128f96d8c3cfa3312846e586b797748a1fd195fe6479f06bc90a6f6904deb08eefc00dd58e83a1c8a32fb8677252d2273ad7a5e624525b69b8f
   languageName: node
   linkType: hard
 
@@ -21122,14 +21077,12 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-resizable-panels: ^0.0.55
-    remark-docusaurus-tabs: ^0.2.0
     rimraf: "*"
     semver: ^7.5.4
     stylelint: ^15.10.1
     stylelint-config-recommended: ^13.0.0
     stylelint-config-standard: ^34.0.0
     stylelint-order: ^6.0.3
-    ts-node: "*"
     tsx: "*"
     typescript: "*"
     webpack: ^5.88.1
