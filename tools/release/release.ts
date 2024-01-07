@@ -1,3 +1,4 @@
+import { execaSync } from 'execa';
 import {
   releaseChangelog,
   releasePublish,
@@ -37,6 +38,16 @@ void (async () => {
       verbose: options.verbose,
     });
 
+    // Update the lock file after the version bumps and stage it ready to be committed by the changelog step
+    if (!options.dryRun) {
+      console.log('⏳ Updating yarn.lock...');
+      execaSync(`yarn`, [`install`], {
+        env: { ...process.env, SKIP_POSTINSTALL: 'true' },
+      });
+      execaSync(`git`, [`add`, `yarn.lock`]);
+      console.log('✅ Updated and staged yarn.lock\n');
+    }
+
     // This will create a release on GitHub
     await releaseChangelog({
       versionData: projectsVersionData,
@@ -45,10 +56,18 @@ void (async () => {
       verbose: options.verbose,
     });
 
-    await releasePublish({
-      dryRun: options.dryRun,
-      verbose: options.verbose,
-    });
+    // An explicit null value here means that no changes were detected across any package
+    // eslint-disable-next-line eqeqeq
+    if (workspaceVersion === null) {
+      console.log(
+        '⏭️ No changes detected across any package, skipping publish step altogether',
+      );
+    } else {
+      await releasePublish({
+        dryRun: options.dryRun,
+        verbose: options.verbose,
+      });
+    }
 
     // eslint-disable-next-line no-process-exit
     process.exit(0);

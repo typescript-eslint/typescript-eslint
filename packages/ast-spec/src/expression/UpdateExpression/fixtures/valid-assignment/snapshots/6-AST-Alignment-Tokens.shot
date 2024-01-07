@@ -704,24 +704,87 @@ exports[`AST Fixtures expression UpdateExpression valid-assignment AST Alignment
         end: { column: 26, line: 13 },
       },
     },
+    Keyword {
+      type: 'Keyword',
+      value: 'this',
+
+      range: [214, 218],
+      loc: {
+        start: { column: 4, line: 14 },
+        end: { column: 8, line: 14 },
+      },
+    },
     Punctuator {
       type: 'Punctuator',
-      value: '}',
+      value: '.',
 
-      range: [212, 213],
+      range: [218, 219],
       loc: {
-        start: { column: 2, line: 14 },
-        end: { column: 3, line: 14 },
+        start: { column: 8, line: 14 },
+        end: { column: 9, line: 14 },
+      },
+    },
+-   Identifier {
+-     type: 'Identifier',
+-     value: '#a',
++   PrivateIdentifier {
++     type: 'PrivateIdentifier',
++     value: 'a',
+
+      range: [219, 221],
+      loc: {
+        start: { column: 9, line: 14 },
+        end: { column: 11, line: 14 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '!',
+
+      range: [221, 222],
+      loc: {
+        start: { column: 11, line: 14 },
+        end: { column: 12, line: 14 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '++',
+
+      range: [222, 224],
+      loc: {
+        start: { column: 12, line: 14 },
+        end: { column: 14, line: 14 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [224, 225],
+      loc: {
+        start: { column: 14, line: 14 },
+        end: { column: 15, line: 14 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '}',
 
-      range: [214, 215],
+      range: [228, 229],
       loc: {
-        start: { column: 0, line: 15 },
-        end: { column: 1, line: 15 },
+        start: { column: 2, line: 15 },
+        end: { column: 3, line: 15 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '}',
+
+      range: [230, 231],
+      loc: {
+        start: { column: 0, line: 16 },
+        end: { column: 1, line: 16 },
       },
     },
   ]"
