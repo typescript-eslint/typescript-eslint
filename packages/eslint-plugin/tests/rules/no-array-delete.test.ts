@@ -512,11 +512,13 @@ ruleTester.run('no-array-delete', rule, {
         declare const a: number[];
         declare const b: number;
 
-        delete /* multi
+        // before expression
+        delete /** multi
         line */ a[((
         // single-line
         b /* inline */ /* another-inline */ )
-        ) /* another-one */ ];
+        ) /* another-one */ ] /* before semicolon */; /* after semicolon */
+        // after expression
       `,
       errors: [
         {
@@ -528,7 +530,15 @@ ruleTester.run('no-array-delete', rule, {
         declare const a: number[];
         declare const b: number;
 
-        a.splice(b, 1);
+        // before expression
+        /** multi
+        line */
+        // single-line
+        /* inline */
+        /* another-inline */
+        /* another-one */
+        a.splice(b, 1) /* before semicolon */; /* after semicolon */
+        // after expression
       `,
             },
           ],

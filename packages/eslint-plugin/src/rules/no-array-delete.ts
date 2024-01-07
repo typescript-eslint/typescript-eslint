@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type * as ts from 'typescript';
 
 import {
@@ -80,7 +81,27 @@ export default createRule<[], MessageId>({
                 const rawKey = nodeMap.get(property).getText();
                 const key = shouldHaveParentheses ? `(${rawKey})` : rawKey;
 
-                return fixer.replaceText(node, `${target}.splice(${key}, 1)`);
+                let suggestion = `${target}.splice(${key}, 1)`;
+
+                const sourceCode = getSourceCode(context);
+                const comments = sourceCode.getCommentsInside(node);
+
+                if (comments.length > 0) {
+                  const indentationCount = node.loc.start.column;
+                  const indentation = ' '.repeat(indentationCount);
+
+                  const commentsText = comments
+                    .map(comment => {
+                      return comment.type === AST_TOKEN_TYPES.Line
+                        ? `//${comment.value}`
+                        : `/*${comment.value}*/`;
+                    })
+                    .join(`\n${indentation}`);
+
+                  suggestion = `${commentsText}\n${indentation}${suggestion}`;
+                }
+
+                return fixer.replaceText(node, suggestion);
               },
             },
           ],
