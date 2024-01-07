@@ -2,23 +2,23 @@ import type { KnipConfig } from 'knip';
 
 export default {
   rules: {
-    // binaries,
     classMembers: 'off',
-    // dependencies,
-    // devDependencies,
     duplicates: 'off',
     enumMembers: 'off',
     exports: 'off',
-    // files,
     nsExports: 'off',
     nsTypes: 'off',
     types: 'off',
-    // unlisted,
-    // unresolved: 'off',
+    unresolved: 'off',
   },
   workspaces: {
     '.': {
       ignoreDependencies: [
+        '@babel/code-frame',
+        '@babel/core',
+        '@babel/eslint-parser',
+        '@babel/parser',
+        '@babel/types',
         '@prettier/sync',
         '@nx/workspace',
         'cross-fetch',
@@ -26,16 +26,23 @@ export default {
         'glob',
         'husky',
         'jest-specific-snapshot',
-        // intergration-tests expect it to be present in the root package.json
+        // integration-tests expect it to be present in the root package.json
         'tslint',
         'make-dir',
         'ncp',
         'tmp',
+
+        '@typescript-eslint/eslint-plugin',
+        '@typescript-eslint/eslint-plugin-internal',
       ],
       entry: [
         // https://github.com/webpro/knip/pull/432
         '.github/actions/wait-for-netlify/index.js',
         'tools/release/changelog-renderer.js',
+      ],
+      ignoreBinaries: [
+        // https://github.com/webpro/knip/issues/433
+        'stylelint',
       ],
     },
     'packages/ast-spec': {
