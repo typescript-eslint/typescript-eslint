@@ -3,7 +3,7 @@ import { createParseSettings } from '../../src/parseSettings/createParseSettings
 const projectService = { service: true };
 
 jest.mock('../../src/create-program/createProjectService', () => ({
-  createProjectService: () => projectService,
+  createProjectService: (): typeof projectService => projectService,
 }));
 
 describe('createParseSettings', () => {
