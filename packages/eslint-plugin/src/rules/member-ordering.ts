@@ -438,7 +438,6 @@ function getMemberRawName(
  * Gets the member name based on the member type.
  *
  * @param node the node to be evaluated.
- * @param sourceCode
  */
 function getMemberName(
   node: Member,
@@ -801,7 +800,7 @@ export default createRule<Options, MessageIds>({
      * Checks if the members are alphabetically sorted.
      *
      * @param members Members to be validated.
-     * @param caseSensitive indicates if the alpha ordering is case sensitive or not.
+     * @param order What order the members should be sorted in.
      *
      * @return True if all members are correctly sorted.
      */
