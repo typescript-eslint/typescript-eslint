@@ -71,7 +71,7 @@ export default createRule({
     }
 
     function inTry(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
@@ -85,7 +85,7 @@ export default createRule({
     }
 
     function inCatch(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isCatchClause(ancestor)) {
@@ -99,7 +99,7 @@ export default createRule({
     }
 
     function isReturnPromiseInFinally(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (
@@ -116,7 +116,7 @@ export default createRule({
     }
 
     function hasFinallyBlock(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {

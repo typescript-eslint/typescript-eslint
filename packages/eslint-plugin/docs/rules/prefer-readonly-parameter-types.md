@@ -57,7 +57,7 @@ interface Foo {
 interface Foo {
   new (arg: string[]): void;
 }
-const x = { foo(arg: string[]): void; };
+const x = { foo(arg: string[]): void {} };
 function foo(arg: string[]);
 type Foo = (arg: string[]) => void;
 interface Foo {
@@ -91,7 +91,7 @@ interface CustomFunction {
 }
 function custom2(arg: CustomFunction) {}
 
-function union(arg: readonly string[] | ReadonlyArray<number[]>) {}
+function union(arg: readonly string[] | ReadonlyArray<number>) {}
 
 function primitive1(arg: string) {}
 function primitive2(arg: number) {}
@@ -105,8 +105,11 @@ function primitive9(arg: string | number | undefined) {}
 
 function fnSig(arg: () => void) {}
 
-enum Foo { a, b }
-function enum(arg: Foo) {}
+enum Foo {
+  a,
+  b,
+}
+function enumArg(arg: Foo) {}
 
 function symb1(arg: symbol) {}
 const customSymbol = Symbol('a');
@@ -119,7 +122,7 @@ interface Foo {
 interface Foo {
   new (arg: readonly string[]): void;
 }
-const x = { foo(arg: readonly string[]): void; };
+const x = { foo(arg: readonly string[]): void {} };
 function foo(arg: readonly string[]);
 type Foo = (arg: readonly string[]) => void;
 interface Foo {
@@ -380,3 +383,7 @@ type MyType = {
 };
 function foo(arg: MyType) {}
 ```
+
+## When Not To Use It
+
+If your project does not attempt to enforce strong immutability guarantees of parameters, you can avoid this rule.

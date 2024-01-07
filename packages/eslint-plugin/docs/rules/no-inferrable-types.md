@@ -96,8 +96,8 @@ class Foo {
 
 ## When Not To Use It
 
-If you do not want to enforce inferred types.
+If you strongly prefer to have explicit types regardless of whether they can be inferred, this rule may not be for you.
 
 ## Further Reading
 
-TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
+- [TpeScript Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)

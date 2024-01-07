@@ -82,6 +82,46 @@ type T4 =
 
 ## Options
 
+### `checkIntersections`
+
+Whether to check intersection types (`&`).
+
+Examples of code with `{ "checkIntersections": true }` (the default):
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "checkIntersections": true }'
+type ExampleIntersection = B & A;
+```
+
+#### ✅ Correct
+
+```ts option='{ "checkIntersections": true }'
+type ExampleIntersection = A & B;
+```
+
+### `checkUnions`
+
+Whether to check union types (`|`).
+
+Examples of code with `{ "checkUnions": true }` (the default):
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "checkUnions": true }'
+type ExampleUnion = B | A;
+```
+
+#### ✅ Correct
+
+```ts option='{ "checkUnions": true }'
+type ExampleUnion = A | B;
+```
+
 ### `groupOrder`
 
 Each constituent of the type is placed into a group, and then the rule sorts alphabetically within each group.
@@ -99,3 +139,25 @@ The ordering of groups is determined by this option.
 - `tuple` - Tuple types (`[A, B, C]`)
 - `union` - Union types (`A | B`)
 - `nullish` - `null` and `undefined`
+
+For example, configuring the rule with `{ "groupOrder": ["literal", "nullish" ]}`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "groupOrder": ["literal", "nullish" ]}'
+type ExampleGroup = null | 123;
+```
+
+#### ✅ Correct
+
+```ts option='{ "groupOrder": ["literal", "nullish" ]}'
+type ExampleGroup = 123 | null;
+```
+
+## When Not To Use It
+
+This rule is purely a stylistic rule for maintaining consistency in your project.
+You can turn it off if you don't want to keep a consistent, predictable order for intersection and union types.
+However, keep in mind that inconsistent style can harm readability in a project.

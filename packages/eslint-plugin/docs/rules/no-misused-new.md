@@ -43,4 +43,5 @@ interface I {
 
 ## When Not To Use It
 
-If you intentionally want a class with a `new` method, and you're confident nobody working in your code will mistake it with a constructor.
+If you intentionally want a class with a `new` method, and you're confident nobody working in your code will mistake it with a constructor, you might not want this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

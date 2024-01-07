@@ -48,4 +48,4 @@ namespace A {
 
 ## When Not To Use It
 
-If you don't care about having unneeded enum or namespace qualifiers, then you don't need to use this rule.
+If you explicitly prefer to use fully qualified names, such as for explicitness, then you don't need to use this rule.

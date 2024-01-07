@@ -101,3 +101,11 @@ This matrix lists all possible option combinations and their expected results fo
 | `generic`      | `array`        | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `readonly (Foo & Bar)[]`            |
 | `generic`      | `array-simple` | `Array<number>`        | `Array<Foo & Bar>`         | `readonly number[]`             | `ReadonlyArray<Foo & Bar>`          |
 | `generic`      | `generic`      | `Array<number>`        | `Array<Foo & Bar>`         | `ReadonlyArray<number>`         | `ReadonlyArray<Foo & Bar>`          |
+
+## When Not To Use It
+
+This rule is purely a stylistic rule for maintaining consistency in your project.
+You can turn it off if you don't want to keep a consistent style for array types.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

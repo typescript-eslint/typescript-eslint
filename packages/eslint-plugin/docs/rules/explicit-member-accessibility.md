@@ -164,7 +164,7 @@ class Animal {
 }
 ```
 
-### Overrides
+### `overrides`
 
 There are three ways in which an override can be used.
 
@@ -312,7 +312,7 @@ class Animal {
 }
 ```
 
-### Except specific methods
+### `ignoredMethodNames`
 
 If you want to ignore some specific methods, you can do it by specifying method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
@@ -333,7 +333,11 @@ class Animal {
 
 ## When Not To Use It
 
-If you think defaulting to public is a good default, then you should consider using the `no-public` setting. If you want to mix implicit and explicit public members then disable this rule.
+If you think defaulting to public is a good default, then you should consider using the `no-public` setting.
+If you want to mix implicit and explicit public members then you can disable this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.
 
 ## Further Reading
 
