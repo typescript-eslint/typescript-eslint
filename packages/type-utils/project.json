@@ -8,7 +8,6 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/type-utils/**/*.{mts,cts,ts,tsx}"],
         "ignorePath": ".eslintignore"
       }
     }
