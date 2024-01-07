@@ -19,12 +19,14 @@ export default {
   workspaces: {
     '.': {
       ignoreDependencies: [
+        '@prettier/sync',
         '@nx/workspace',
         'cross-fetch',
         'execa',
         'glob',
         'husky',
-        // intergrations-tests expect it to be present in the root package.json
+        'jest-specific-snapshot',
+        // intergration-tests expect it to be present in the root package.json
         'tslint',
         'make-dir',
         'ncp',

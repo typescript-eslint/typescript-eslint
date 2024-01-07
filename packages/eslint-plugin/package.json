@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@prettier/sync": "*",
-    "@types/marked": "*",
+    "@types/marked": "^5.0.0",
     "@types/natural-compare": "*",
     "@typescript-eslint/rule-schema-to-typescript-types": "6.18.0",
     "@typescript-eslint/rule-tester": "6.18.0",
