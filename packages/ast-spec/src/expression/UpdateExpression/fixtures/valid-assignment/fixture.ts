@@ -11,5 +11,6 @@ class F {
     (<number>this.#a)++;
     (this.#a satisfies number)++;
     (this.#a as number)++;
+    this.#a!++;
   }
 }
