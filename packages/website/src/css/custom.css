@@ -198,11 +198,15 @@ a {
 
 /* Removes underlines from table of contents, next page button,
 menu (left hand sidebar), edit this page button,
-and footer links (github, twitter, etc) respectfully */
+and footer links (github, twitter, etc), buttons,
+navbar links, and the navbar title respectfully */
 a.table-of-contents__link,
 a.pagination-nav__link,
 a.menu__link,
 a.theme-edit-this-page,
-footer * {
+footer *,
+.button,
+.navbar__link,
+.navbar__title {
   text-decoration: none;
 }
