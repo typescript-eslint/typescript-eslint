@@ -192,24 +192,6 @@ h6 {
   background-color: #00ff9510;
 }
 
-a {
+.markdown a {
   text-decoration: underline;
-}
-
-/* Removes underlines from table of contents, next page button,
-menu (left hand sidebar), edit this page button,
-and footer links (github, twitter, etc), buttons,
-navbar links, the navbar title, blog sidebar, and blog post headers
-respectfully */
-a.table-of-contents__link,
-a.pagination-nav__link,
-a.menu__link,
-a.theme-edit-this-page,
-footer *,
-.button,
-.navbar__link,
-.navbar__brand,
-aside *,
-header * {
-  text-decoration: none;
 }
