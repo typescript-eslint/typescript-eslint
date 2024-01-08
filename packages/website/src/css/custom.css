@@ -191,3 +191,17 @@ h6 {
 [data-theme='dark'] .code-block-added-line {
   background-color: #00ff9510;
 }
+
+a {
+  text-decoration: underline;
+}
+
+/*Removes underlines from table of contents, menu (left hand sidebar),
+edit this page button, and footer links (github, twitter, etc) respectfully*/
+a.table-of-contents__link,
+a.pagination-nav__link,
+a.menu__link,
+a.theme-edit-this-page,
+footer * {
+  text-decoration: none;
+}
