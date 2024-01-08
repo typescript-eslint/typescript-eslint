@@ -314,7 +314,7 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Check the member separator being used matches the delimiter.
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
     function checkMemberSeparatorStyle(
       node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral,
