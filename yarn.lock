@@ -9134,14 +9134,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-eslint-plugin@npm:^5.1.0":
-  version: 5.1.1
-  resolution: "eslint-plugin-eslint-plugin@npm:5.1.1"
+  version: 5.2.1
+  resolution: "eslint-plugin-eslint-plugin@npm:5.2.1"
   dependencies:
     eslint-utils: ^3.0.0
     estraverse: ^5.3.0
   peerDependencies:
     eslint: ">=7.0.0"
-  checksum: a76e66708d8b79f4703a0722d7ed5e53af978c588fb60fe47936a32b377c08e3b2cf92f51180414d70be02d66f7fef0a3dad65d2e7b27873f24292e6923b7aee
+  checksum: 1fb97f90fa652753b088e19e440e30075964e8a30cc3af28eedfb99888f7e8ebd00fea534cf42a595887b4f43398e6a79894895eea5a881ca9b7a617f1de977b
   languageName: node
   linkType: hard
 
