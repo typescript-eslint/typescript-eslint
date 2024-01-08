@@ -201,7 +201,10 @@ There are two types of selectors, individual selectors, and grouped selectors.
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
 - `accessor` - matches any accessor.
-  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`, `autoAccessor`.
+  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `autoAccessor` - matches any accessor.
+  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 - `class` - matches any class declaration.
   - Allowed `modifiers`: `abstract`, `exported`, `unused`.

@@ -129,7 +129,7 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty
-        | TSESTree.AccessorProperty
+        | TSESTree.AccessorProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -542,7 +542,10 @@ export default createRule<Options, MessageIds>({
 
       AccessorProperty: {
         validator: validators.autoAccessor,
-        handler: (node: TSESTree.AccessorPropertyNonComputedName, validator): void => {
+        handler: (
+          node: TSESTree.AccessorPropertyNonComputedName,
+          validator,
+        ): void => {
           const modifiers = getMemberModifiers(node);
           handleMember(validator, node, modifiers);
         },
