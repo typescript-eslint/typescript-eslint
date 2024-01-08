@@ -14,7 +14,7 @@ In these cases, we aim to remove the old rule with minimal user disruption.
 
 ## Filing the Issue
 
-Rule deprecations can be filed as a [new issue bypassing templates](https://github.com/typescript-eslint/typescript-eslint/issues/new).
+Rule deprecations can be filed as a <u>[new issue bypassing templates](https://github.com/typescript-eslint/typescript-eslint/issues/new)</u>.
 
 Provide it an `## Overview` containing:
 
@@ -23,12 +23,12 @@ Provide it an `## Overview` containing:
 - Whether it exists in popular configs such as `eslint-config-airbnb-typescript` and `eslint-config-standard-with-typescript`
 - Sourcegraph queries showing how often it appears in user configs
 
-> See [#6036](https://github.com/typescript-eslint/typescript-eslint/issues/6036) for examples of those links and queries.
+> See <u>[#6036](https://github.com/typescript-eslint/typescript-eslint/issues/6036)</u> for examples of those links and queries.
 
 ## Timeline
 
-1. In any minor/patch version, add [rule `meta` properties](https://eslint.org/docs/latest/developer-guide/working-with-rules#rule-basics):
+1. In any minor/patch version, add <u>[rule `meta` properties](https://eslint.org/docs/latest/developer-guide/working-with-rules#rule-basics)</u>:
    - `deprecated: true`
    - `replacedBy`, if applicable
 2. In the next major version, you may delete the rule
-   - If the rule is relatively popular with users, consider leaving a documentation page as a tombstone pointing to the new relevant rule or docs (see [`camelcase`](/rules/camelcase/) as an example)
+   - If the rule is relatively popular with users, consider leaving a documentation page as a tombstone pointing to the new relevant rule or docs (see <u>[`camelcase`](/rules/camelcase/)</u> as an example)

@@ -208,7 +208,7 @@ Be sure to set `RuleTester`'s static properties _before_ calling `new RuleTester
 
 #### Mocha
 
-Consider setting up `RuleTester`'s static properties in a [`mochaGlobalSetup` fixture](https://mochajs.org/#global-setup-fixtures):
+Consider setting up `RuleTester`'s static properties in a <u>[`mochaGlobalSetup` fixture](https://mochajs.org/#global-setup-fixtures)</u>:
 
 ```ts
 import * as mocha from 'mocha';
@@ -219,7 +219,7 @@ RuleTester.afterAll = mocha.after;
 
 #### Vitest
 
-Consider setting up `RuleTester`'s static properties in a [`setupFiles` script](https://vitest.dev/config/#setupfiles):
+Consider setting up `RuleTester`'s static properties in a <u>[`setupFiles` script](https://vitest.dev/config/#setupfiles)</u>:
 
 ```ts
 import * as vitest from 'vitest';

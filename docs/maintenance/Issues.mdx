@@ -3,7 +3,7 @@ id: issues
 title: Issues
 ---
 
-This document serves as a guide for how you might manage our [GitHub Issues](https://docs.github.com/issues), also known as issue triaging.
+This document serves as a guide for how you might manage our <u><u>[GitHub Issues](https://docs.github.com/issues)</u></u>, also known as issue triaging.
 
 Use your best judgement when triaging issues, and most of all remember to be **encouraging, friendly, and kind** when responding to users.
 Many users are new to open source and/or typed linting.
@@ -15,7 +15,7 @@ If you're ever unsure on any part of issue management, don't hesitate to loop in
 
 ## Governance
 
-Per the scales from [Contribution Tiers > Pointing](./Contributor_Tiers.mdx#pointing):
+Per the scales from <u><u>[Contribution Tiers > Pointing](./Contributor_Tiers.mdx#pointing)</u></u>:
 
 - Straightforward: at reviewer discretion, may be marked as approved by any committer or maintainer.
   This includes docs enhancements, bug fixes, and feature additions.
@@ -27,14 +27,19 @@ Per the scales from [Contribution Tiers > Pointing](./Contributor_Tiers.mdx#poin
 ## Issue Flow
 
 :::note
-We include a set of common responses to issues in [`.github/replies.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/replies.yml), intended to be used with the [Refined Saved Replies](https://github.com/JoshuaKGoldberg/refined-saved-replies) extension.
+We include a set of common responses to issues in <u><u>[`.github/replies.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/replies.yml)</u></u>, intended to be used with the <u><u>[Refined Saved Replies](https://github.com/JoshuaKGoldberg/refined-saved-replies)</u></u> extension.
 Don't treat these as exact responses you must use: they're just a starting copy+paste helper.
 Please do adopt your specific responses to your personal tone and to match the thread for non-straightforward issues.
 :::
 
-[Issues pending triage](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3Atriage) are searchable with the `triage` label.
-That label is added automatically when a new issue is created.
-Most issues go through the following review flow when created or updated:
+<u>
+  <u>
+    [Issues pending
+    triage](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3Atriage)
+  </u>
+</u> are searchable with the `triage` label. That label is added automatically when
+a new issue is created. Most issues go through the following review flow when created
+or updated:
 
 1. A maintainer ensures the issue is valid:
    - If the poster didn't fill out an appropriate template with enough information:
@@ -48,8 +53,13 @@ Most issues go through the following review flow when created or updated:
      - Add the `working as intended` label and remove the `bug` and `triage` labels
      - If the behavior is due to the user doing something wrong, such as an incorrect config:
        - Add the `fix: user error` label
-       - [This issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22fix%3A+user+error%22+is%3Aclosed)
-     - If the behavior is otherwise expected, [this issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22working+as+intended%22+-label%3A%22fix%3A+user+error%22+is%3Aclosed+)
+       - <u>
+           <u>
+             [This issue search has some examples of closing
+             comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22fix%3A+user+error%22+is%3Aclosed)
+           </u>
+         </u>
+     - If the behavior is otherwise expected, <u><u>[this issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22working+as+intended%22+-label%3A%22fix%3A+user+error%22+is%3Aclosed+)</u></u>
      - You needn't go into too much detail in your comment - just enough to explain it
 2. If the report is valid, add the `accepting prs` label and remove the `triage` label
 3. If you know the rough steps for a fix, consider writing a comment with links to codebase to help someone put together a fix
@@ -89,7 +99,7 @@ In such cases you can forgo the back-and-forth and just skip to the closing step
 
 #### 🐞 "Simple" Bugs
 
-A simple bug is a bug that can be reproduced in a single TS file plus an ESLint config (and possibly a TSConfig) - i.e. an issue reproducible on [our playground](/play).
+A simple bug is a bug that can be reproduced in a single TS file plus an ESLint config (and possibly a TSConfig) - i.e. an issue reproducible on <u><u>[our playground](/play)</u></u>.
 The vast majority of bug reports fall into this category.
 
 If you cannot reproduce the issue as described using the issue's provided playground reproduction, it has not provided enough information.
@@ -116,7 +126,7 @@ We avoid features that:
 - Are only relevant for a minority of users, as they aren't likely worth the maintenance burden
 - Aren't TypeScript-specific (e.g. should be in ESLint core instead)
 - Are only relevant with specific userland frameworks or libraries, such as Jest or React
-- Are for "formatting" functionality (we [strongly recommend users use a separate dedicated formatter](../linting/troubleshooting/Formatting.mdx))
+- Are for "formatting" functionality (we <u><u>[strongly recommend users use a separate dedicated formatter](../linting/troubleshooting/Formatting.mdx)</u></u>)
 
 #### ✨ Rule Enhancements
 
@@ -131,18 +141,18 @@ We have two common strategies for them:
 - Add an option to disable the new logic: which is a breaking change if opt-in, and a non-breaking change if opt-out
 - Add an option to enable the new logic: which is a breaking change if opt-out, and a non-breaking change if opt-in
 
-See [Can we standardize logical direction of rule options?](https://github.com/typescript-eslint/typescript-eslint/discussions/6101) for context on naming options.
+See <u><u>[Can we standardize logical direction of rule options?](https://github.com/typescript-eslint/typescript-eslint/discussions/6101)</u></u> for context on naming options.
 
-For enhancements meant to limit which kinds of nodes the rule targets, mark the issue as blocked on [RFC: Common format to specify a type or value as a rule option](https://github.com/typescript-eslint/typescript-eslint/discussions/6017).
+For enhancements meant to limit which kinds of nodes the rule targets, mark the issue as blocked on <u><u>[RFC: Common format to specify a type or value as a rule option](https://github.com/typescript-eslint/typescript-eslint/discussions/6017)</u></u>.
 
 #### 🚀 New Rules
 
 We're generally accepting of new rules that meet the above feature request criteria.
-The biggest exception is rules that can roughly be implemented with [`@typescript-eslint/ban-types`](/rules/ban-types) and/or [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
+The biggest exception is rules that can roughly be implemented with <u><u>[`@typescript-eslint/ban-types`](/rules/ban-types)</u></u> and/or <u><u>[`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax)</u></u>.
 
 ## Pruning Old Issues
 
-Every so often, we like to [search for open issues `awaiting response`](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+response%22) to find ones that might have been forgotten.
+Every so often, we like to <u><u>[search for open issues `awaiting response`](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aopen+is%3Aissue+label%3A%22awaiting+response%22)</u></u> to find ones that might have been forgotten.
 Our flow for issues that have been waiting for >=1 month is:
 
 1. Ping the author with a message like the _Checking In_ template

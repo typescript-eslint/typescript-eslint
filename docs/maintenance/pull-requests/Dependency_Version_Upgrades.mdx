@@ -20,7 +20,12 @@ The typescript-eslint repository contains four kinds of version ranges for the `
 - Integration tests: Pinned to our lowest supported ESLint version
 - Packages with a `*` `peerDependency` version: These fall back to the explicit `peerDependency` versions
 - Packages with explicit `peerDependency` versions: The full range of supported ESLint major versions
-- [Root `package.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/package.json)'s' `devDependency`: A relatively recent release, used only for repository development
+- <u>
+    [Root
+    `package.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/package.json)
+  </u>
+  's' `devDependency`: A relatively recent release, used only for repository
+  development
 
 :::tip
 Whenever you discover any new areas of work that are blocked by dropping an old ESLint version, such as new ESLint API deprecations, add a _TODO_ comment that will be caught by the regular expressions under [Removing Support for an Old ESLint Version](#removing-support-for-an-old-eslint-version).
@@ -30,8 +35,8 @@ Whenever you discover any new areas of work that are blocked by dropping an old 
 
 1. Upgrade the root `package.json` `devDependency` to the latest ESLint
 1. Add the new major version to the explicit `peerDependency` versions
-1. Check [`eslint-visitor-keys`](https://www.npmjs.com/package/eslint-visitor-keys) for a new version to be upgraded to as well.
-1. Update [Users > Dependency Versions > ESLint](../../users/Dependency_Versions.mdx#eslint)
+1. Check <u>[`eslint-visitor-keys`](https://www.npmjs.com/package/eslint-visitor-keys)</u> for a new version to be upgraded to as well.
+1. Update <u>[Users > Dependency Versions > ESLint](../../users/Dependency_Versions.mdx#eslint)</u>
 
 ### Removing Support for an Old ESLint Version
 
@@ -42,21 +47,24 @@ Whenever you discover any new areas of work that are blocked by dropping an old 
      - `/eslint.*5/i`
      - `/todo.*eslint.*5/i`
      - `/todo.*eslint/i`
-1. Update [Users > Dependency Versions > ESLint](../../users/Dependency_Versions.mdx#eslint)
+1. Update <u>[Users > Dependency Versions > ESLint](../../users/Dependency_Versions.mdx#eslint)</u>
 
-See [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972) for reference.
+See <u>[chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)</u> for reference.
 
 ## Node
 
 The typescript-eslint repository contains three kinds of version ranges for Node:
 
-- [`.github/workflows/ci.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml)'s `PRIMARY_NODE_VERSION`: Set to the highest Node version we support
+- <u>
+    [`.github/workflows/ci.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml)
+  </u>
+  's `PRIMARY_NODE_VERSION`: Set to the highest Node version we support
 - `node-version`: Set to a tuple of our `[lowest, highest]` supported versions for our unit tests in CI
 - `engines` field in all `package.json`s: explicitly lists all supported Node ranges
 
 Change those numbers accordingly when adding support for a new Node version or removing support for an old Node version.
 
-See [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918) + [chore: test node v14 on ci.yml](https://github.com/typescript-eslint/typescript-eslint/pull/5512) for reference.
+See <u>[feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)</u> + <u>[chore: test node v14 on ci.yml](https://github.com/typescript-eslint/typescript-eslint/pull/5512)</u> for reference.
 
 ## TypeScript
 
@@ -102,11 +110,26 @@ We generally start the process of supporting a new TypeScript version just after
 
 See for reference (caveat: these don't follow the exact process described here):
 
-- [TypeScript 4.7 Support](https://github.com/typescript-eslint/typescript-eslint/issues/4800)
-- [TypeScript 4.8 Support](https://github.com/typescript-eslint/typescript-eslint/issues/5227)
-- [feat: support TypeScript 4.8](https://github.com/typescript-eslint/typescript-eslint/pull/5551)
-- [feat: support TypeScript 4.9](https://github.com/typescript-eslint/typescript-eslint/pull/5716)
-- [chore: bump TS from 4.9RC to 4.9](https://github.com/typescript-eslint/typescript-eslint/commit/a40a311bb52a2b1cfac43851b201f8cfc96c8d5d)
+- <u>
+    [TypeScript 4.7
+    Support](https://github.com/typescript-eslint/typescript-eslint/issues/4800)
+  </u>
+- <u>
+    [TypeScript 4.8
+    Support](https://github.com/typescript-eslint/typescript-eslint/issues/5227)
+  </u>
+- <u>
+    [feat: support TypeScript
+    4.8](https://github.com/typescript-eslint/typescript-eslint/pull/5551)
+  </u>
+- <u>
+    [feat: support TypeScript
+    4.9](https://github.com/typescript-eslint/typescript-eslint/pull/5716)
+  </u>
+- <u>
+    [chore: bump TS from 4.9RC to
+    4.9](https://github.com/typescript-eslint/typescript-eslint/commit/a40a311bb52a2b1cfac43851b201f8cfc96c8d5d)
+  </u>
 
 ### Removing Support for an Old TypeScript Version
 
@@ -115,7 +138,7 @@ A single PR can remove support for old TypeScript versions as a breaking change:
 1. Update the root `package.json` `devDependency`
 1. Update the `SUPPORTED_TYPESCRIPT_VERSIONS` constant in `warnAboutTSVersion.ts`
 1. Update the `versions` constant in `version-check.ts`
-1. Update [Users > Dependency Versions > TypeScript](../../users/Dependency_Versions.mdx#typescript)
+1. Update <u>[Users > Dependency Versions > TypeScript](../../users/Dependency_Versions.mdx#typescript)</u>
 1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a now-unsupported version of TypeScript.
    - For example, to remove support for v4.3, searches might include:
      - `4.3`
@@ -125,4 +148,4 @@ A single PR can remove support for old TypeScript versions as a breaking change:
      - `/todo.*ts/i`
      - `/todo.*typescript/i`
 
-See [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915).
+See <u>[feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915)</u>.
