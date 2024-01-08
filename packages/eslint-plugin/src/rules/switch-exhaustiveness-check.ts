@@ -17,12 +17,14 @@ interface SwitchMetadata {
   readonly missingBranchTypes: ts.Type[];
   readonly defaultCase: TSESTree.SwitchCase | undefined;
   readonly isUnion: boolean;
+  readonly containsNonLiteralType: boolean;
 }
 
 type Options = [
   {
     /**
-     * If `true`, allow `default` cases on switch statements with exhaustive cases.
+     * If `true`, allow `default` cases on switch statements with exhaustive
+     * cases.
      *
      * @default true
      */
@@ -104,12 +106,16 @@ export default createRule<Options, MessageIds>({
         | string
         | undefined;
 
+      const containsNonLiteralType =
+        doesTypeContainNonLiteralType(discriminantType);
+
       if (!discriminantType.isUnion()) {
         return {
           symbolName,
           missingBranchTypes: [],
           defaultCase,
           isUnion: false,
+          containsNonLiteralType,
         };
       }
 
@@ -138,7 +144,27 @@ export default createRule<Options, MessageIds>({
         missingBranchTypes,
         defaultCase,
         isUnion: true,
+        containsNonLiteralType,
       };
+    }
+
+    /**
+     * For example:
+     *
+     * - `"foo" | "bar"` is a type with all literal types.
+     * - `"foo" | number` is a type that contains non-literal types.
+     *
+     * Default cases are never superfluous in switches with non-literal types.
+     */
+    function doesTypeContainNonLiteralType(type: ts.Type): boolean {
+      const types = tsutils.unionTypeParts(type);
+      return types.some(
+        type =>
+          !isFlagSet(
+            type.getFlags(),
+            ts.TypeFlags.Literal | ts.TypeFlags.Undefined | ts.TypeFlags.Null,
+          ),
+      );
     }
 
     function checkSwitchExhaustive(
@@ -272,9 +298,14 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { missingBranchTypes, defaultCase } = switchMetadata;
+      const { missingBranchTypes, defaultCase, containsNonLiteralType } =
+        switchMetadata;
 
-      if (missingBranchTypes.length === 0 && defaultCase !== undefined) {
+      if (
+        missingBranchTypes.length === 0 &&
+        defaultCase !== undefined &&
+        !containsNonLiteralType
+      ) {
         context.report({
           node: defaultCase,
           messageId: 'dangerousDefaultCase',
@@ -322,3 +353,7 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function isFlagSet(flags: number, flag: number): boolean {
+  return (flags & flag) !== 0;
+}
