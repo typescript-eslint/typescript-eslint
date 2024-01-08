@@ -202,7 +202,7 @@ describe('Validating rule docs', () => {
               sourceType: 'module',
               range: true,
             });
-          } catch (e) {
+          } catch {
             throw new Error(`Parsing error:\n\n${token.text}`);
           }
         }
