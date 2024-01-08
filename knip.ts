@@ -101,6 +101,7 @@ export default {
         '@typescript-eslint/typescript-estree',
         '@typescript-eslint/scope-manager',
         '@docusaurus/mdx-loader',
+        '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/plugin-content-docs',

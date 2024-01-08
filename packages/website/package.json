@@ -44,7 +44,6 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "~2.4.1",
-    "@docusaurus/types": "~2.4.1",
     "@types/mdast": "^3.0.0",
     "@types/react": "*",
     "@types/unist": "*",
