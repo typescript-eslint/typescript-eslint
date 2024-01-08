@@ -102,6 +102,8 @@ function ConfigEditor({
     (name: string, value: unknown): void => {
       const newConfig = { ...values };
       if (value === '' || value == null) {
+        // Filter out falsy values from the new config
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete newConfig[name];
       } else {
         newConfig[name] = value;

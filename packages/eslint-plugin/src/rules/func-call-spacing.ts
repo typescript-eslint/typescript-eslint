@@ -82,8 +82,7 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Check if open space is present in a function name
-     * @param {ASTNode} node node to evaluate
-     * @returns {void}
+     * @param node node to evaluate
      * @private
      */
     function checkSpacing(

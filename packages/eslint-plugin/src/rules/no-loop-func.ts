@@ -35,7 +35,6 @@ export default createRule<Options, MessageIds>({
      * - has any references which refers to an unsafe variable.
      *
      * @param node The AST node to check.
-     * @returns Whether or not the node is within a loop.
      */
     function checkForLoops(
       node:

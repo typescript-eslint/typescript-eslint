@@ -11,10 +11,10 @@ export * from '@typescript-eslint/utils/ast-utils';
 // Could be export { getNameLocationInGlobalDirectiveComment } from 'eslint/lib/rules/utils/ast-utils'
 /**
  * Get the `loc` object of a given name in a `/*globals` directive comment.
- * @param {SourceCode} sourceCode The source code to convert index to loc.
- * @param {Comment} comment The `/*globals` directive comment which include the name.
- * @param {string} name The name to find.
- * @returns {SourceLocation} The `loc` object.
+ * @param sourceCode The source code to convert index to loc.
+ * @param comment The `/*globals` directive comment which include the name.
+ * @param name The name to find.
+ * @returns The `loc` object.
  */
 export function getNameLocationInGlobalDirectiveComment(
   sourceCode: TSESLint.SourceCode,

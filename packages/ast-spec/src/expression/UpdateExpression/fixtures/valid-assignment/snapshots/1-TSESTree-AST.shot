@@ -547,12 +547,71 @@ Program {
                       end: { column: 26, line: 13 },
                     },
                   },
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: UpdateExpression {
+                      type: "UpdateExpression",
+                      argument: TSNonNullExpression {
+                        type: "TSNonNullExpression",
+                        expression: MemberExpression {
+                          type: "MemberExpression",
+                          computed: false,
+                          object: ThisExpression {
+                            type: "ThisExpression",
+
+                            range: [214, 218],
+                            loc: {
+                              start: { column: 4, line: 14 },
+                              end: { column: 8, line: 14 },
+                            },
+                          },
+                          optional: false,
+                          property: PrivateIdentifier {
+                            type: "PrivateIdentifier",
+                            name: "a",
+
+                            range: [219, 221],
+                            loc: {
+                              start: { column: 9, line: 14 },
+                              end: { column: 11, line: 14 },
+                            },
+                          },
+
+                          range: [214, 221],
+                          loc: {
+                            start: { column: 4, line: 14 },
+                            end: { column: 11, line: 14 },
+                          },
+                        },
+
+                        range: [214, 222],
+                        loc: {
+                          start: { column: 4, line: 14 },
+                          end: { column: 12, line: 14 },
+                        },
+                      },
+                      operator: "++",
+                      prefix: false,
+
+                      range: [214, 224],
+                      loc: {
+                        start: { column: 4, line: 14 },
+                        end: { column: 14, line: 14 },
+                      },
+                    },
+
+                    range: [214, 225],
+                    loc: {
+                      start: { column: 4, line: 14 },
+                      end: { column: 15, line: 14 },
+                    },
+                  },
                 ],
 
-                range: [23, 213],
+                range: [23, 229],
                 loc: {
                   start: { column: 6, line: 4 },
-                  end: { column: 3, line: 14 },
+                  end: { column: 3, line: 15 },
                 },
               },
               declare: false,
@@ -561,25 +620,25 @@ Program {
               id: null,
               params: [],
 
-              range: [20, 213],
+              range: [20, 229],
               loc: {
                 start: { column: 3, line: 4 },
-                end: { column: 3, line: 14 },
+                end: { column: 3, line: 15 },
               },
             },
 
-            range: [19, 213],
+            range: [19, 229],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 3, line: 14 },
+              end: { column: 3, line: 15 },
             },
           },
         ],
 
-        range: [8, 215],
+        range: [8, 231],
         loc: {
           start: { column: 8, line: 1 },
-          end: { column: 1, line: 15 },
+          end: { column: 1, line: 16 },
         },
       },
       declare: false,
@@ -599,19 +658,19 @@ Program {
       implements: [],
       superClass: null,
 
-      range: [0, 215],
+      range: [0, 231],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 1, line: 15 },
+        end: { column: 1, line: 16 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 216],
+  range: [0, 232],
   loc: {
     start: { column: 0, line: 1 },
-    end: { column: 0, line: 16 },
+    end: { column: 0, line: 17 },
   },
 }
 `;
