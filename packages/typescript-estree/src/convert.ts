@@ -629,7 +629,6 @@ export class Converter {
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param node the tagName object from a JSX ts.Node
-   * @param parent
    * @returns the converted ESTree name object
    */
   private convertJSXTagName(
@@ -887,6 +886,12 @@ export class Converter {
         });
 
       case SyntaxKind.CatchClause:
+        if (node.variableDeclaration?.initializer) {
+          this.#throwError(
+            node.variableDeclaration.initializer,
+            'Catch clause variable cannot have an initializer.',
+          );
+        }
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
