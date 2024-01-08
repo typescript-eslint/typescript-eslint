@@ -6,16 +6,20 @@ import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
+export interface IsNullableTypeOptions {
+  /**
+   * Whether the type is a receiving type (i.e. the type of a called function's parameter).
+   */
+  isReceiver?: boolean;
+  allowUndefined?: boolean;
+}
+
 /**
  * Checks if the given type is (or accepts) nullable
- * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
 export function isNullableType(
   type: ts.Type,
-  {
-    isReceiver = false,
-    allowUndefined = true,
-  }: { isReceiver?: boolean; allowUndefined?: boolean } = {},
+  { isReceiver = false, allowUndefined = true }: IsNullableTypeOptions = {},
 ): boolean {
   const flags = getTypeFlags(type);
 

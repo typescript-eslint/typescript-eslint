@@ -277,7 +277,8 @@ export default createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    /** checks if import has type assertions
+                    /**
+                     * checks if import has type assertions
                      * ```
                      * import * as type from 'mod' assert { type: 'json' };
                      * ```
