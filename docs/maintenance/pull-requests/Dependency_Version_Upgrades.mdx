@@ -24,8 +24,7 @@ The typescript-eslint repository contains four kinds of version ranges for the `
     [Root
     `package.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/package.json)
   </u>
-  's' `devDependency`: A relatively recent release, used only for repository
-  development
+  's' `devDependency`: A relatively recent release, used only for repository development
 
 :::tip
 Whenever you discover any new areas of work that are blocked by dropping an old ESLint version, such as new ESLint API deprecations, add a _TODO_ comment that will be caught by the regular expressions under [Removing Support for an Old ESLint Version](#removing-support-for-an-old-eslint-version).
@@ -55,10 +54,7 @@ See <u>[chore: drop support for ESLint v6](https://github.com/typescript-eslint/
 
 The typescript-eslint repository contains three kinds of version ranges for Node:
 
-- <u>
-    [`.github/workflows/ci.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml)
-  </u>
-  's `PRIMARY_NODE_VERSION`: Set to the highest Node version we support
+- [`.github/workflows/ci.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml)'s `PRIMARY_NODE_VERSION`: Set to the highest Node version we support
 - `node-version`: Set to a tuple of our `[lowest, highest]` supported versions for our unit tests in CI
 - `engines` field in all `package.json`s: explicitly lists all supported Node ranges
 
@@ -110,26 +106,16 @@ We generally start the process of supporting a new TypeScript version just after
 
 See for reference (caveat: these don't follow the exact process described here):
 
-- <u>
-    [TypeScript 4.7
-    Support](https://github.com/typescript-eslint/typescript-eslint/issues/4800)
-  </u>
-- <u>
-    [TypeScript 4.8
-    Support](https://github.com/typescript-eslint/typescript-eslint/issues/5227)
-  </u>
-- <u>
-    [feat: support TypeScript
-    4.8](https://github.com/typescript-eslint/typescript-eslint/pull/5551)
-  </u>
-- <u>
-    [feat: support TypeScript
-    4.9](https://github.com/typescript-eslint/typescript-eslint/pull/5716)
-  </u>
-- <u>
-    [chore: bump TS from 4.9RC to
-    4.9](https://github.com/typescript-eslint/typescript-eslint/commit/a40a311bb52a2b1cfac43851b201f8cfc96c8d5d)
-  </u>
+- [TypeScript 4.7
+  Support](https://github.com/typescript-eslint/typescript-eslint/issues/4800)
+- [TypeScript 4.8
+  Support](https://github.com/typescript-eslint/typescript-eslint/issues/5227)
+- [feat: support TypeScript
+  4.8](https://github.com/typescript-eslint/typescript-eslint/pull/5551)
+- [feat: support TypeScript
+  4.9](https://github.com/typescript-eslint/typescript-eslint/pull/5716)
+- [chore: bump TS from 4.9RC to
+  4.9](https://github.com/typescript-eslint/typescript-eslint/commit/a40a311bb52a2b1cfac43851b201f8cfc96c8d5d)
 
 ### Removing Support for an Old TypeScript Version
 

@@ -24,10 +24,8 @@ Here's an example with the `semi` rule:
 
 If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues.
 
-<u>
-  [The contributing guide outlines the best way to raise an
-  issue](../contributing/Issues.mdx)
-</u>
+[The contributing guide outlines the best way to raise an
+issue](../contributing/Issues.mdx)
 .
 
 > We release a new version our tooling every week.
@@ -91,8 +89,8 @@ These errors are caused by an ESLint config requesting type information be gener
     - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
       - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure <u>[`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs)</u> is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - <u>[`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)</u>
-      - <u>[`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)</u>
+      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
+      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
 
 <!-- prettier-ignore-end -->
 
@@ -126,12 +124,11 @@ Update to the latest version to see a more informative version of this error mes
 
 First make sure you've read the docs and understand ESLint configuration files:
 
-- <u>[Read our getting started guide](../Getting_Started.mdx)</u> to ensure your
+- [Read our getting started guide](../Getting_Started.mdx) to ensure your
   config is properly setup to start configuring our rules.
-- <u>
-    [Checkout ESLint's documentation on configuring
-    rules](https://eslint.org/docs/latest/use/configure/rules)
-  </u> to ensure you understand how to configure rules.
+- [Checkout ESLint's documentation on configuring
+  rules](https://eslint.org/docs/latest/use/configure/rules)
+  to ensure you understand how to configure rules.
 
 Our <u>[rule docs](/rules)</u> detail the options each rule supports under the "Options" heading.
 We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
@@ -351,10 +348,9 @@ See <u>[this issue comment](https://github.com/typescript-eslint/typescript-esli
 
 :::tip
 
-<u>
-  [VS Code's ESLint
-  extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-</u> provides an `ESLint: Restart ESLint Server` action. :::
+[VS Code's ESLint
+extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+provides an `ESLint: Restart ESLint Server` action. :::
 
 ### I get `no-unsafe-*` complaints for cross-file changes
 
