@@ -35,11 +35,7 @@ export default {
         '@typescript-eslint/eslint-plugin',
         '@typescript-eslint/eslint-plugin-internal',
       ],
-      entry: [
-        // https://github.com/webpro/knip/pull/432
-        '.github/actions/wait-for-netlify/index.js',
-        'tools/release/changelog-renderer.js',
-      ],
+      entry: ['tools/release/changelog-renderer.js'],
       ignoreBinaries: [
         // https://github.com/webpro/knip/issues/433
         'stylelint',
