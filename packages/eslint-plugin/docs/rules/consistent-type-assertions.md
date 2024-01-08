@@ -56,8 +56,8 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'neve
 ```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
 const x = { foo: 1 } as T;
 
-function foo() {
-  return { bar: 1 } as T;
+function bar() {
+  return { foo: 1 } as T;
 }
 ```
 
@@ -68,8 +68,8 @@ const x: T = { foo: 1 };
 const y = { foo: 1 } as any;
 const z = { foo: 1 } as unknown;
 
-function foo(): T {
-  return { bar: 1 };
+function bar(): T {
+  return { foo: 1 };
 }
 ```
 
@@ -84,8 +84,8 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allo
 ```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
 const x = { foo: 1 } as T;
 
-function foo() {
-  return { bar: 1 } as T;
+function bar() {
+  return { foo: 1 } as T;
 }
 ```
 
@@ -95,12 +95,12 @@ function foo() {
 const x: T = { foo: 1 };
 const y = { foo: 1 } as any;
 const z = { foo: 1 } as unknown;
-foo({ bar: 1 } as T);
+bar({ foo: 1 } as T);
 new Clazz({ foo: 1 } as T);
-function foo() {
-  throw { bar: 1 } as Foo;
+function bar() {
+  throw { foo: 1 } as Foo;
 }
-const foo = <Foo props={{ foo: 1 } as Bar} />;
+const foo = <Foo props={{ bar: 1 } as Bar} />;
 ```
 
 <!--/tabs-->
