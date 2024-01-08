@@ -203,7 +203,7 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
 - `accessor` - matches any accessor.
   - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `autoAccessor` - matches any accessor.
+- `autoAccessor` - matches any auto-accessor.
   - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 - `class` - matches any class declaration.
