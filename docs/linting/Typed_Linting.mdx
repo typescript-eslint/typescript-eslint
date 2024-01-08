@@ -30,15 +30,15 @@ module.exports = {
 
 :::caution
 Your `.eslintrc.cjs` file may start receiving a parsing error about type information.
-See [our TSConfig inclusion FAQ](./Troubleshooting.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+See <u>[our TSConfig inclusion FAQ](./Troubleshooting.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file)</u>.
 :::
 
 In more detail:
 
-- `plugin:@typescript-eslint/recommended-type-checked` is another [recommended configuration](./Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
+- `plugin:@typescript-eslint/recommended-type-checked` is another <u>[recommended configuration](./Configurations.mdx)</u> we provide. This one contains recommended rules that additionally require type information.
 - `parserOptions.project` tells our parser how to find the TSConfig for each source file (`true` indicates to find the closest `tsconfig.json` for each source file)
-  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
+  - If your project is a multi-package monorepo, see <u>[our docs on configuring a monorepo](./typed-linting/Monorepos.mdx)</u>.
+- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see <u>[Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)</u>).
 
 With that done, run the same lint command you ran before.
 You may see new rules reporting errors based on type information!
@@ -62,17 +62,17 @@ module.exports = {
 };
 ```
 
-See [the `@typescript-eslint/parser` docs for more details](../packages/Parser.mdx#project).
+See <u>[the `@typescript-eslint/parser` docs for more details](../packages/Parser.mdx#project)</u>.
 
 :::note
-If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
+If your project is a multi-package monorepo, see <u>[our docs on configuring a monorepo](./typed-linting/Monorepos.mdx)</u>.
 :::
 
 ## FAQs
 
 ### How can I disable type-aware linting for a subset of files?
 
-You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns) config in conjunction with our [`disable-type-checked`](./Configurations.mdx#disable-type-checked) config to turn off type-aware linting on specific subsets of files.
+You can combine ESLint's <u>[overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns)</u> config in conjunction with our <u>[`disable-type-checked`](./Configurations.mdx#disable-type-checked)</u> config to turn off type-aware linting on specific subsets of files.
 
 ```js title=".eslintrc.js"
 module.exports = {
@@ -118,8 +118,8 @@ This means that generally they usually only run a complete lint before a push, o
 ### I get errors telling me "The file must be included in at least one of the projects provided"
 
 You're using an outdated version of `@typescript-eslint/parser`.
-Update to the latest version to see a more informative version of this error message, explained in our [Troubleshooting and FAQs page](./Troubleshooting.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+Update to the latest version to see a more informative version of this error message, explained in our <u>[Troubleshooting and FAQs page](./Troubleshooting.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file)</u>.
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting and FAQs page](./Troubleshooting.mdx).
+If you're having problems getting this working, please have a look at our <u>[Troubleshooting and FAQs page](./Troubleshooting.mdx)</u>.

@@ -3,7 +3,7 @@ id: performance-troubleshooting
 title: Performance Troubleshooting
 ---
 
-As mentioned in the [type-aware linting doc](../Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in the <u>[type-aware linting doc](../Typed_Linting.mdx)</u>, if you're using type-aware linting, your lint times should be roughly the same as your build times.
 
 If you're experiencing times much slower than that, then there are a few common culprits.
 
@@ -43,7 +43,7 @@ module.exports = {
 };
 ```
 
-See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
+See <u>[Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611)</u> for more details.
 
 ## The `indent` / `@typescript-eslint/indent` rules
 
@@ -51,9 +51,9 @@ This rule helps ensure your codebase follows a consistent indentation pattern.
 However this involves a _lot_ of computations across every single token in a file.
 Across a large codebase, these can add up, and severely impact performance.
 
-We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
+We recommend not using this rule, and instead using a tool like <u>[`prettier`](https://www.npmjs.com/package/prettier)</u> to enforce a standardized formatting.
 
-See our [documentation on formatting](./Formatting.mdx) for more information.
+See our <u>[documentation on formatting](./Formatting.mdx)</u> for more information.
 
 ## `eslint-plugin-prettier`
 
@@ -69,7 +69,7 @@ For example, our CI is setup to run the following command automatically, which b
 npm run prettier --check .
 ```
 
-See [Prettier's `--check` docs](https://prettier.io/docs/en/cli#--check) for more details.
+See <u>[Prettier's `--check` docs](https://prettier.io/docs/en/cli#--check)</u> for more details.
 
 ## `eslint-plugin-import`
 
@@ -105,7 +105,7 @@ If you want to enforce file extensions are always used and you **ARE** using `mo
 
 On the surface `import/extensions` seems like it should be fast for this use case, however the rule isn't just a pure AST-check - it has to resolve modules on disk so that it doesn't false positive on cases where you are importing modules with an extension as part of their name (eg `foo.js` resolves to `node_modules/foo.js/index.js`, so the `.js` is required). This disk lookup is costly and thus makes the rule slow.
 
-If your project doesn't use any `npm` packages with a file extension in their name, nor do you name your files with two extensions (like `bar.js.ts`), then this extra cost probably isn't worth it, and you can use a much simpler check using the [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax) lint rule.
+If your project doesn't use any `npm` packages with a file extension in their name, nor do you name your files with two extensions (like `bar.js.ts`), then this extra cost probably isn't worth it, and you can use a much simpler check using the <u>[`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax)</u> lint rule.
 
 The below config is several orders of magnitude faster than `import/extensions` as it does not do disk lookups, however it will false-positive on cases like the aforementioned `foo.js` module.
 

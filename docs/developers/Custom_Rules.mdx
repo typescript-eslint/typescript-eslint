@@ -6,7 +6,7 @@ title: Custom Rules
 
 :::important
 This page describes how to write your own custom ESLint rules using typescript-eslint.
-You should be familiar with [ESLint's developer guide](https://eslint.org/docs/developer-guide) and [ASTs](/blog/asts-and-typescript-eslint) before writing custom rules.
+You should be familiar with <u>[ESLint's developer guide](https://eslint.org/docs/developer-guide)</u> and <u>[ASTs](/blog/asts-and-typescript-eslint)</u> before writing custom rules.
 :::
 
 As long as you are using `@typescript-eslint/parser` as the `parser` in your ESLint configuration, custom ESLint rules generally work the same way for JavaScript and TypeScript code.
@@ -18,7 +18,7 @@ The main three changes to custom rules writing are:
 
 ## Utils Package
 
-The [`@typescript-eslint/utils`](../packages/Utils.mdx) package acts as a replacement package for `eslint` that exports all the same objects and types, but with typescript-eslint support.
+The <u>[`@typescript-eslint/utils`](../packages/Utils.mdx)</u> package acts as a replacement package for `eslint` that exports all the same objects and types, but with typescript-eslint support.
 It also exports common utility functions and constants most custom typescript-eslint rules tend to use.
 
 :::caution
@@ -227,7 +227,7 @@ export function describeNode(node: TSESTree.Node): string {
 
 ### Explicit Node Types
 
-Rule queries that use more features of [esquery](https://github.com/estools/esquery) such as targeting multiple node types may not be able to infer the type of the `node`.
+Rule queries that use more features of <u>[esquery](https://github.com/estools/esquery)</u> such as targeting multiple node types may not be able to infer the type of the `node`.
 In that case, it is best to add an explicit type declaration.
 
 This rule snippet targets name nodes of both function and interface declarations:
@@ -256,7 +256,7 @@ export const rule = createRule({
 ## Typed Rules
 
 :::tip
-Read TypeScript's [Compiler APIs > Type Checker APIs](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#type-checker-apis) for how to use a program's type checker.
+Read TypeScript's <u>[Compiler APIs > Type Checker APIs](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#type-checker-apis)</u> for how to use a program's type checker.
 :::
 
 The biggest addition typescript-eslint brings to ESLint rules is the ability to use TypeScript's type checker APIs.
@@ -336,7 +336,7 @@ Consider either gating type checking behind an explicit option for the rule or c
 `@typescript-eslint/rule-tester` exports a `RuleTester` with a similar API to the built-in ESLint `RuleTester`.
 It should be provided with the same `parser` and `parserOptions` you would use in your ESLint configuration.
 
-Below is a quick-start guide. For more in-depth docs and examples [see the `@typescript-eslint/rule-tester` package documentation](../packages/Rule_Tester.mdx).
+Below is a quick-start guide. For more in-depth docs and examples <u>[see the `@typescript-eslint/rule-tester` package documentation](../packages/Rule_Tester.mdx)</u>.
 
 ### Testing Untyped Rules
 

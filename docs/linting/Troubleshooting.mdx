@@ -7,7 +7,7 @@ title: Troubleshooting & FAQs
 
 This happens because TypeScript adds new features that ESLint doesn't know about.
 
-The first step is to [check our list of "extension" rules here](/rules/#extension-rules).
+The first step is to <u>[check our list of "extension" rules here](/rules/#extension-rules)</u>.
 An extension rule is a rule which extends the base ESLint rules to support TypeScript syntax.
 If you find it in there, give it a go to see if it works for you.
 You can configure it by disabling the base rule, and turning on the extension rule.
@@ -23,10 +23,15 @@ Here's an example with the `semi` rule:
 ```
 
 If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues.
-[The contributing guide outlines the best way to raise an issue](../contributing/Issues.mdx).
+
+<u>
+  [The contributing guide outlines the best way to raise an
+  issue](../contributing/Issues.mdx)
+</u>
+.
 
 > We release a new version our tooling every week.
-> _Please_ ensure that you [check our the latest list of "extension" rules](/rules/#extension-rules) **_before_** filing an issue.
+> _Please_ ensure that you <u>[check our the latest list of "extension" rules](/rules/#extension-rules)</u> **_before_** filing an issue.
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
@@ -37,10 +42,10 @@ These errors are caused by an ESLint config requesting type information be gener
 <!-- prettier-ignore-start -->
 
 - If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
+  - Use <u>[one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code)</u> to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information:
+  - If you **do not** want to lint the file with <u>[type-aware linting](./Typed_Linting.mdx)</u>:
+    - Use <u>[ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns)</u> to configure the file to not be parsed with type information:
       <details>
         <summary>
           A popular setup is to remove all rules requiring type information from the top-level configuration
@@ -82,12 +87,12 @@ These errors are caused by an ESLint config requesting type information be gener
         To disable type checking for files manually, set `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work, and you'll also need to disable any rules or rule options that require type checking.
       </details>
 
-  - If you **do** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
+  - If you **do** want to lint the file with <u>[type-aware linting](./Typed_Linting.mdx)</u>:
     - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
-      - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
+      - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure <u>[`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs)</u> is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
-      - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
-      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+      - <u>[`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)</u>
+      - <u>[`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)</u>
 
 <!-- prettier-ignore-end -->
 
@@ -97,9 +102,9 @@ This error may appear from the combination of two things:
 
 - The ESLint configuration for the source file specifies at least one TSConfig file in `parserOptions.project`
 - None of those TSConfig files includes the source file being linted
-  - Note that files with the same name and different extension may not be recognized by TypeScript: see [`parserOptions.project` docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject)
+  - Note that files with the same name and different extension may not be recognized by TypeScript: see <u>[`parserOptions.project` docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser#parseroptionsproject)</u>
 
-When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per [aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)) to generate type information.
+When TSConfig files are specified for parsing a source file, `@typescript-eslint/parser` will use the first TSConfig that is able to include that source file (per <u>[aka.ms/tsconfig#include](https://www.typescriptlang.org/tsconfig#include)</u>) to generate type information.
 However, if no specified TSConfig includes the source file, the parser won't be able to generate type information.
 
 This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
@@ -110,7 +115,7 @@ For example, many projects have files like:
 
 In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
 
-See our docs on [type aware linting](./Typed_Linting.mdx) for more information.
+See our docs on <u>[type aware linting](./Typed_Linting.mdx)</u> for more information.
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
@@ -121,10 +126,14 @@ Update to the latest version to see a more informative version of this error mes
 
 First make sure you've read the docs and understand ESLint configuration files:
 
-- [Read our getting started guide](../Getting_Started.mdx) to ensure your config is properly setup to start configuring our rules.
-- [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
+- <u>[Read our getting started guide](../Getting_Started.mdx)</u> to ensure your
+  config is properly setup to start configuring our rules.
+- <u>
+    [Checkout ESLint's documentation on configuring
+    rules](https://eslint.org/docs/latest/use/configure/rules)
+  </u> to ensure you understand how to configure rules.
 
-Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
+Our <u>[rule docs](/rules)</u> detail the options each rule supports under the "Options" heading.
 We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
 In your config file the keys of the `rules` object are the names of the rules you wish to configure and the values follow the following form:
 
@@ -157,7 +166,7 @@ module.exports = {
 
 Our type-aware rules almost always trust the type information provided by the TypeScript compiler. Therefore, an easy way to check if our rule is behaving correctly is to inspect the type of the variable in question, such as by hovering over it in your IDE.
 
-If the IDE also shows that the type is never nullish / is `any`, you need to fix the type. A very common case is with the [`no-unnecessary-condition`](/rules/no-unnecessary-condition) rule. Take this code for example:
+If the IDE also shows that the type is never nullish / is `any`, you need to fix the type. A very common case is with the <u>[`no-unnecessary-condition`](/rules/no-unnecessary-condition)</u> rule. Take this code for example:
 
 ```ts
 let condition = false;
@@ -191,7 +200,7 @@ module.exports = {
 
 ## I am running into errors when parsing TypeScript in my .vue files
 
-If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
+If you are running into issues parsing .vue files, it might be because parsers like <u>[`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser)</u> are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
 
 ```diff
 - "parser": "@typescript-eslint/parser",
@@ -202,13 +211,13 @@ If you are running into issues parsing .vue files, it might be because parsers l
   }
 ```
 
-The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.
+The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the <u>[`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage)</u> for more details.
 
 ## One of my lint rules isn't working correctly on a pure JavaScript file
 
 This is to be expected - ESLint rules do not check file extensions on purpose, as it causes issues in environments that use non-standard extensions (for example, a `.vue` and a `.md` file can both contain TypeScript code to be linted).
 
-If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use [ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns) to turn off certain rules, or even change the parser based on glob patterns.
+If you have some pure JavaScript code that you do not want to apply certain lint rules to, then you can use <u>[ESLint's `overrides` configuration](https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns)</u> to turn off certain rules, or even change the parser based on glob patterns.
 
 ## Should I run ESLint on transpiled output JavaScript files?
 
@@ -221,14 +230,14 @@ There's no benefit to also linting output JavaScript files.
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`.
-See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) for more information.
+See <u>[#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041)</u> for more information.
 
 ## How can I ban `<specific language feature>`?
 
-ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
-This generic rule allows you to specify a [selector](https://eslint.org/docs/developer-guide/selectors) for the code you want to ban, along with a custom error message.
+ESLint core contains the rule <u>[`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)</u>.
+This generic rule allows you to specify a <u>[selector](https://eslint.org/docs/developer-guide/selectors)</u> for the code you want to ban, along with a custom error message.
 
-You can use an AST visualization tool such as [typescript-eslint playground](/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
+You can use an AST visualization tool such as <u>[typescript-eslint playground](/play#showAST=es)</u> > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
 For example, you can ban enums (or some variation of) using one of the following configs:
 
@@ -296,7 +305,7 @@ module.exports = {
 };
 ```
 
-If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
+If you choose to leave on the ESLint `no-undef` lint rule, you can <u>[manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals)</u>, and/or you can use one of the <u>[pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments)</u>.
 
 ## How do I check to see what versions are installed?
 
@@ -313,7 +322,7 @@ You can check what versions are installed in your project using the following co
 npm list @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
-If you see more than one version installed, then you will have to either use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions) to force a single version, or you will have to downgrade your root versions to match the dependency versions.
+If you see more than one version installed, then you will have to either use <u>[yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions)</u> to force a single version, or you will have to downgrade your root versions to match the dependency versions.
 
 **The best course of action in this case is to wait until your dependency releases a new version with support for our latest versions.**
 
@@ -328,7 +337,7 @@ For example:
 - `@typescript-eslint/strict-boolean-expressions` might be operating with TypeScript version _X_ and think a variable is `string[] | undefined`
 - TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
 
-See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
+See <u>[this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514)</u> for more details.
 
 ## Changes to one file are not reflected when linting other files in my IDE
 
@@ -338,16 +347,19 @@ ESLint currently does not have any way of telling parsers such as ours when an a
 That means if you change file A that is imported by file B, it won't update lint caches for file B -- even if file B's text contents have changed.
 Sometimes the only solution is to restart your ESLint editor extension altogether.
 
-See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/5845#issuecomment-1283248238 'GitHub issue 5845, comment 1283248238: details on ESLint cross-file caching') for more information.
+See <u>[this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/5845#issuecomment-1283248238 'GitHub issue 5845, comment 1283248238: details on ESLint cross-file caching')</u> for more information.
 
 :::tip
-[VS Code's ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) provides an `ESLint: Restart ESLint Server` action.
-:::
+
+<u>
+  [VS Code's ESLint
+  extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+</u> provides an `ESLint: Restart ESLint Server` action. :::
 
 ### I get `no-unsafe-*` complaints for cross-file changes
 
 See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
-Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-assignment`](/rules/no-unsafe-assignment), and [`no-unsafe-call`](/rules/no-unsafe-call) are often impacted.
+Rules such as <u>[`no-unsafe-argument`](/rules/no-unsafe-argument)</u>, <u>[`no-unsafe-assignment`](/rules/no-unsafe-assignment)</u>, and <u>[`no-unsafe-call`](/rules/no-unsafe-call)</u> are often impacted.
 
 ## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
 
@@ -356,7 +368,7 @@ Make sure you're using the latest versions of each of your ESLint plugins (and o
 
 If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
 
-- Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
+- Running with <u>[`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation)</u> (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
 - Disabling half of them at a time to narrow down which plugin it is
 
 Then make sure each of those plugins has a GitHub issue asking that they release a version supporting typescript-eslint v6.
@@ -371,16 +383,16 @@ For developers updating ESLint rules in plugins that still need to support types
 
 :::
 
-For more context, see the [Some properties named typeParameters instead of typeArguments](https://github.com/typescript-eslint/typescript-eslint/issues/146) issue, and the implementing [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384) pull request.
+For more context, see the <u>[Some properties named typeParameters instead of typeArguments](https://github.com/typescript-eslint/typescript-eslint/issues/146)</u> issue, and the implementing <u>[fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384)</u> pull request.
 
-The [typescript-eslint v6 release post](https://deploy-preview-6515--typescript-eslint.netlify.app/blog/announcing-typescript-eslint-v6-beta) has more information on typescript-eslint v6.
+The <u>[typescript-eslint v6 release post](https://deploy-preview-6515--typescript-eslint.netlify.app/blog/announcing-typescript-eslint-v6-beta)</u> has more information on typescript-eslint v6.
 
 ## My linting feels really slow
 
-If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.mdx).
+If you think you're having issues with performance, see our <u>[Performance Troubleshooting documentation](./troubleshooting/Performance.mdx)</u>.
 
 ## Are TypeScript project references supported?
 
 No, TypeScript project references are not yet supported.
 
-See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.
+See <u>[issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094)</u> for more details.

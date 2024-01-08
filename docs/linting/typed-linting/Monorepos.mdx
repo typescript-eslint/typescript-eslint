@@ -38,8 +38,8 @@ Be sure to update your `.eslintrc.js` to point at this new config file.
 
 ## One `tsconfig.json` per package (and an optional one in the root)
 
-The `parserOptions.project` option introduced in [Linting with Type Information](../Typed_Linting.mdx) accepts an array of relative paths.
-Paths may be provided as [Node globs](https://github.com/isaacs/node-glob/blob/f5a57d3d6e19b324522a3fa5bdd5075fd1aa79d1/README.md#glob-primer).
+The `parserOptions.project` option introduced in <u>[Linting with Type Information](../Typed_Linting.mdx)</u> accepts an array of relative paths.
+Paths may be provided as <u>[Node globs](https://github.com/isaacs/node-glob/blob/f5a57d3d6e19b324522a3fa5bdd5075fd1aa79d1/README.md#glob-primer)</u>.
 For each file being linted, the first matching project path will be used as its backing TSConfig.
 
 ```js title=".eslintrc.js"
@@ -89,14 +89,14 @@ module.exports = {
 };
 ```
 
-See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
+See <u>[Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611)</u> for more details.
 
 ### Important note regarding large (> 10) multi-package monorepos
 
 We've had reports that for sufficiently large and/or interdependent projects, you may run into OOMs using this approach.
 Our advice is to set it up and test first, as there are very few cases that trigger this OOM.
 
-See [#1192](https://github.com/typescript-eslint/typescript-eslint/issues/1192) for more information and discussion.
+See <u>[#1192](https://github.com/typescript-eslint/typescript-eslint/issues/1192)</u> for more information and discussion.
 
 If you do run into an OOM, please comment on the above issue and let us know about your repo - the more information we have, the better.
 As an interim workaround, consider one of the following:
@@ -106,4 +106,4 @@ As an interim workaround, consider one of the following:
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](../Troubleshooting.mdx).
+If you're having problems getting this working, please have a look at our <u>[Troubleshooting FAQ](../Troubleshooting.mdx)</u>.
