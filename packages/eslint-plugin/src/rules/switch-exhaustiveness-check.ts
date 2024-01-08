@@ -152,7 +152,7 @@ export default createRule<Options, MessageIds>({
      * For example:
      *
      * - `"foo" | "bar"` is a type with all literal types.
-     * - `"foo" | number` is a types that contain non-literal types.
+     * - `"foo" | number` is a type that contain non-literal types.
      *
      * Default cases are never superfluous in switches with non-literal types.
      */
