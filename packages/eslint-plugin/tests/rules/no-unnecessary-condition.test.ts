@@ -254,9 +254,7 @@ function test<T>(a: T) {
 }
     `,
 
-    /**
-     * Predicate functions
-     **/
+    // Predicate functions
     `
 // with literal arrow function
 [0, 1, 2].filter(x => x);
