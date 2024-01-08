@@ -159,8 +159,8 @@ export default createRule<Options, MessageIds>({
     function collectUnusedVariables(): TSESLint.Scope.Variable[] {
       /**
        * Checks whether a node is a sibling of the rest property or not.
-       * @param {ASTNode} node a node to check
-       * @returns {boolean} True if the node is a sibling of the rest property, otherwise false.
+       * @param node a node to check
+       * @returns True if the node is a sibling of the rest property, otherwise false.
        */
       function hasRestSibling(node: TSESTree.Node): boolean {
         return (

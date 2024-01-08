@@ -629,7 +629,6 @@ export class Converter {
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param node the tagName object from a JSX ts.Node
-   * @param parent
    * @returns the converted ESTree name object
    */
   private convertJSXTagName(

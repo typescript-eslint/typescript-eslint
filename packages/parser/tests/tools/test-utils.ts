@@ -43,7 +43,7 @@ export function createSnapshotTestBlock(
   config = Object.assign({}, defaultConfig, config);
 
   /**
-   * @returns {Object} the AST object
+   * @returns the AST object
    */
   function parse(): TSESTree.Program {
     const ast = parser.parseForESLint(code, config).ast;
