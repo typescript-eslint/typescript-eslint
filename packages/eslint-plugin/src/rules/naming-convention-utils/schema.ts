@@ -298,7 +298,15 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'requiresQuotes',
         'static',
         'override',
-        'autoAccessor',
+      ]),
+      ...selectorSchema('autoAccessor', true, [
+        'abstract',
+        'private',
+        'protected',
+        'public',
+        'requiresQuotes',
+        'static',
+        'override',
       ]),
       ...selectorSchema('enumMember', false, ['requiresQuotes']),
 
