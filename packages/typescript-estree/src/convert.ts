@@ -3461,16 +3461,10 @@ export class Converter {
   }
   #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
     if (ts.isVariableDeclarationList(initializer)) {
-      if (
-        !(
-          initializer.flags & ts.NodeFlags.Const ||
-          initializer.flags & ts.NodeFlags.Let ||
-          initializer.flags === ts.NodeFlags.None
-        )
-      ) {
+      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
         this.#throwError(
           initializer,
-          " The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
+          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
         );
       }
     }

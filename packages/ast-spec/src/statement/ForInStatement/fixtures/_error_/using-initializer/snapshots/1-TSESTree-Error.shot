@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ForInStatement _error_ using-initializer TSESTree - Error 1`] = `
+"TSError
+> 1 | for(using foo in {});
+    |     ^^^^^^^^^  The left-hand side of a 'for...in' statement cannot be a 'using' declaration."
+`;

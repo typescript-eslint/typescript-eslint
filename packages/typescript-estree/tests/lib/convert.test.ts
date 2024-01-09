@@ -361,13 +361,4 @@ describe('convert', () => {
       expect(Object.keys(esCallExpression)).toContain('typeParameters');
     });
   });
-  describe('using should be forbidden in for-related initializer ', () => {
-    it('using should be forbidden in for in statement ', () => {
-      const ast = convertCode('for(using foo in {});');
-
-      const instance = new Converter(ast);
-
-      expect(() => instance.convertProgram()).toThrow();
-    });
-  });
 });
