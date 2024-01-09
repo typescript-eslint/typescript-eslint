@@ -61,6 +61,8 @@ export = {
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-includes': 'error',
     '@typescript-eslint/prefer-literal-enum-member': 'error',
+    'prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
