@@ -110,6 +110,7 @@ import preferLiteralEnumMember from './prefer-literal-enum-member';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
 import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
+import preferPromiseRejectErrors from './prefer-promise-reject-errors';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
@@ -250,6 +251,7 @@ export default {
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,
+  'prefer-promise-reject-errors': preferPromiseRejectErrors,
   'prefer-readonly': preferReadonly,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
