@@ -253,6 +253,26 @@ function test<T>(a: T) {
   const t16 = undefined !== a;
 }
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  const t1 = arg[key] == null;
+  const t2 = null == arg[key];
+  const t3 = arg[key] != null;
+  const t4 = null != arg[key];
+  const t5 = arg[key] == undefined;
+  const t6 = undefined == arg[key];
+  const t7 = arg[key] != undefined;
+  const t8 = undefined != arg[key];
+  const t9 = arg[key] === null;
+  const t10 = null === arg[key];
+  const t11 = arg[key] !== null;
+  const t12 = null !== arg[key];
+  const t13 = arg[key] === undefined;
+  const t14 = undefined === arg[key];
+  const t15 = arg[key] !== undefined;
+  const t16 = undefined !== arg[key];
+}
+    `,
 
     // Predicate functions
     `
@@ -317,6 +337,11 @@ function test<T>(a: T) {
     `
 function test<T extends string | null>(a: T) {
   return a ?? 'default';
+}
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ?? 'default';
 }
     `,
     // Indexing cases
@@ -741,6 +766,13 @@ foo ||= 1;
 declare let foo: number;
 foo &&= 1;
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ??= 'default';
+  arg[key] ||= 'default';
+  arg[key] &&= 'default';
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6264
     `
 function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
@@ -1084,7 +1116,14 @@ function test(a: never) {
       `,
       errors: [ruleError(3, 10, 'never')],
     },
-
+    {
+      code: `
+function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
+  num ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 3, 'neverNullish')],
+    },
     // Predicate functions
     {
       code: `
