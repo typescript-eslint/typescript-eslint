@@ -1,4 +1,6 @@
 import {
+  isPromiseConstructorLike,
+  isPromiseLike,
   isTypeAnyType,
   isTypeUnknownType,
 } from '@typescript-eslint/type-utils';
@@ -41,77 +43,6 @@ export default createRule({
       return node.type === AST_NODE_TYPES.ChainExpression
         ? node.expression
         : node;
-    }
-
-    function isSymbolFromDefaultLibrary(
-      program: ts.Program,
-      symbol: ts.Symbol | undefined,
-    ): boolean {
-      if (!symbol) {
-        return false;
-      }
-
-      const declarations = symbol.getDeclarations() ?? [];
-      for (const declaration of declarations) {
-        const sourceFile = declaration.getSourceFile();
-        if (program.isSourceFileDefaultLibrary(sourceFile)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
-      return isBuiltinSymbolLike(program, type, 'Promise');
-    }
-
-    function isPromiseConstructorLike(
-      program: ts.Program,
-      type: ts.Type,
-    ): boolean {
-      return isBuiltinSymbolLike(program, type, 'PromiseConstructor');
-    }
-
-    function isBuiltinSymbolLike(
-      program: ts.Program,
-      type: ts.Type,
-      symbolName: string,
-    ): boolean {
-      if (type.isIntersection()) {
-        return type.types.some(t =>
-          isBuiltinSymbolLike(program, t, symbolName),
-        );
-      }
-      if (type.isUnion()) {
-        return type.types.every(t =>
-          isBuiltinSymbolLike(program, t, symbolName),
-        );
-      }
-
-      const symbol = type.getSymbol();
-      if (!symbol) {
-        return false;
-      }
-
-      if (
-        symbol.getName() === symbolName &&
-        isSymbolFromDefaultLibrary(program, symbol)
-      ) {
-        return true;
-      }
-
-      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
-        const checker = program.getTypeChecker();
-
-        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
-          if (isBuiltinSymbolLike(program, baseType, symbolName)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
     }
 
     function isPartiallyLikeType(
