@@ -101,7 +101,7 @@ The following rules do not have equivalent checks in TypeScript, so we recommend
 
 If you want to enforce file extensions are always used and you're **NOT** using `moduleResolution` `node16` or `nodenext`, then there's not really a good alternative for you, and you should continue using the `import/extensions` lint rule.
 
-If you want to enforce file extensions are always used and you **ARE** using `moduleResolution` `node16` or `nodenext`, then you don't need to use the lint rule at all because TypeScript will automatically enforce that you include extensions! (However, the lint rule is still extremely useful as a one-time project-wide autofixer if you are switching from no file extensions --> file extensions, or vice versa.)
+If you want to enforce file extensions are always used and you **ARE** using `moduleResolution` `node16` or `nodenext`, then you don't need to use the lint rule at all because TypeScript will automatically enforce that you include extensions! (However, the lint rule is still extremely useful as a one-time project-wide fixer if you are switching from no file extensions --> file extensions, or vice versa.)
 
 #### Enforcing extensions are not used
 
