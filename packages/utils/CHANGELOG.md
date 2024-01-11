@@ -1,3 +1,20 @@
+## 6.18.1 (2024-01-08)
+
+
+### 🩹 Fixes
+
+- **utils:** improve error message on typed rule with invalid parser
+
+
+### ❤️  Thank You
+
+- auvred
+- James
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.0 (2024-01-06)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.
