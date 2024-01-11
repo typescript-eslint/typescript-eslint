@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -13,7 +13,7 @@ type Options = [
 ];
 type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-extraneous-class',
   meta: {
     type: 'suggestion',

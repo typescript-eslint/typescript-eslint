@@ -232,6 +232,35 @@ async function* foo(): Promise<string> {
         yield* x;
       }
     `,
+    `
+      const fn = async () => {
+        await using foo = new Bar();
+      };
+    `,
+    `
+      async function* test1() {
+        yield Promise.resolve(1);
+      }
+    `,
+    `
+      function asyncFunction() {
+        return Promise.resolve(1);
+      }
+      async function* test1() {
+        yield asyncFunction();
+      }
+    `,
+    `
+      declare const asyncFunction: () => Promise<void>;
+      async function* test1() {
+        yield asyncFunction();
+      }
+    `,
+    `
+      async function* test1() {
+        yield new Promise(() => {});
+      }
+    `,
   ],
 
   invalid: [
@@ -406,6 +435,21 @@ async function* asyncGenerator() {
           messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const fn = async () => {
+          using foo = new Bar();
+        };
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async arrow function 'fn'",
           },
         },
       ],

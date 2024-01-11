@@ -9,8 +9,8 @@ type InferOptionsTypeFromRule<T> = T extends RuleModule<
 >
   ? TOptions
   : T extends RuleCreateFunction<infer _TMessageIds, infer TOptions>
-  ? TOptions
-  : unknown;
+    ? TOptions
+    : unknown;
 
 /**
  * Uses type inference to fetch the TMessageIds type from the given RuleModule
@@ -21,7 +21,7 @@ type InferMessageIdsTypeFromRule<T> = T extends RuleModule<
 >
   ? TMessageIds
   : T extends RuleCreateFunction<infer TMessageIds, infer _TOptions>
-  ? TMessageIds
-  : unknown;
+    ? TMessageIds
+    : unknown;
 
 export { InferOptionsTypeFromRule, InferMessageIdsTypeFromRule };

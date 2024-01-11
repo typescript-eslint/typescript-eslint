@@ -1,7 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  isTypeAssertion,
+} from '../util';
 
 type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
   parent: TSESTree.CallExpression;
@@ -24,7 +30,7 @@ const getMemberExpressionName = (
   return null;
 };
 
-export default util.createRule({
+export default createRule({
   name: 'prefer-reduce-type-parameter',
   meta: {
     type: 'problem',
@@ -43,7 +49,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     return {
@@ -56,15 +62,12 @@ export default util.createRule({
 
         const [, secondArg] = callee.parent.arguments;
 
-        if (
-          callee.parent.arguments.length < 2 ||
-          !util.isTypeAssertion(secondArg)
-        ) {
+        if (callee.parent.arguments.length < 2 || !isTypeAssertion(secondArg)) {
           return;
         }
 
         // Get the symbol of the `reduce` method.
-        const calleeObjType = util.getConstrainedTypeAtLocation(
+        const calleeObjType = getConstrainedTypeAtLocation(
           services,
           callee.object,
         );
@@ -90,9 +93,9 @@ export default util.createRule({
                 fixes.push(
                   fixer.insertTextAfter(
                     callee,
-                    `<${context
-                      .getSourceCode()
-                      .getText(secondArg.typeAnnotation)}>`,
+                    `<${getSourceCode(context).getText(
+                      secondArg.typeAnnotation,
+                    )}>`,
                   ),
                 );
               }

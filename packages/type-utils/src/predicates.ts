@@ -2,21 +2,24 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeArguments } from './getTypeArguments';
 import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
+export interface IsNullableTypeOptions {
+  /**
+   * Whether the type is a receiving type (i.e. the type of a called function's parameter).
+   */
+  isReceiver?: boolean;
+  allowUndefined?: boolean;
+}
+
 /**
  * Checks if the given type is (or accepts) nullable
- * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
 export function isNullableType(
   type: ts.Type,
-  {
-    isReceiver = false,
-    allowUndefined = true,
-  }: { isReceiver?: boolean; allowUndefined?: boolean } = {},
+  { isReceiver = false, allowUndefined = true }: IsNullableTypeOptions = {},
 ): boolean {
   const flags = getTypeFlags(type);
 
@@ -101,10 +104,7 @@ export function isTypeAnyArrayType(
 ): boolean {
   return (
     checker.isArrayType(type) &&
-    isTypeAnyType(
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(type, checker)[0],
-    )
+    isTypeAnyType(checker.getTypeArguments(type)[0])
   );
 }
 
@@ -117,10 +117,7 @@ export function isTypeUnknownArrayType(
 ): boolean {
   return (
     checker.isArrayType(type) &&
-    isTypeUnknownType(
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(type, checker)[0],
-    )
+    isTypeUnknownType(checker.getTypeArguments(type)[0])
   );
 }
 

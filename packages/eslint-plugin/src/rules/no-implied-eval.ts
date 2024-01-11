@@ -1,9 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
 const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
@@ -14,7 +15,7 @@ const EVAL_LIKE_METHODS = new Set([
   'execScript',
 ]);
 
-export default util.createRule({
+export default createRule({
   name: 'no-implied-eval',
   meta: {
     docs: {
@@ -33,7 +34,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     function getCalleeName(
@@ -122,9 +123,9 @@ export default util.createRule({
     }
 
     function isReferenceToGlobalFunction(calleeName: string): boolean {
-      const ref = context
-        .getScope()
-        .references.find(ref => ref.identifier.name === calleeName);
+      const ref = getScope(context).references.find(
+        ref => ref.identifier.name === calleeName,
+      );
 
       // ensure it's the "global" version
       return !ref?.resolved || ref.resolved.defs.length === 0;

@@ -64,7 +64,6 @@ export function formatSnapshotName(
 
 /**
  * Check if file extension is one used for jsx
- * @param fileType
  */
 export function isJSXFileType(fileType: string): boolean {
   if (fileType.startsWith('.')) {
@@ -106,7 +105,7 @@ export function omitDeep<T = UnknownObject>(
   > = {},
 ): UnknownObject {
   function shouldOmit(keyName: string, val: unknown): boolean {
-    if (keysToOmit?.length) {
+    if (keysToOmit.length) {
       return keysToOmit.some(
         keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
       );
@@ -127,6 +126,8 @@ export function omitDeep<T = UnknownObject>(
     for (const prop in node) {
       if (Object.prototype.hasOwnProperty.call(node, prop)) {
         if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
+          // Filter out omitted and undefined props from the node
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete node[prop];
           continue;
         }

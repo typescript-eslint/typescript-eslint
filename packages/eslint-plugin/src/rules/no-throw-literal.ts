@@ -2,7 +2,13 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  isErrorLike,
+  isTypeAnyType,
+  isTypeUnknownType,
+} from '../util';
 
 type MessageIds = 'object' | 'undef';
 
@@ -13,7 +19,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-throw-literal',
   meta: {
     type: 'problem',
@@ -49,42 +55,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const services = util.getParserServices(context);
-    const checker = services.program.getTypeChecker();
-
-    function isErrorLike(type: ts.Type): boolean {
-      if (type.isIntersection()) {
-        return type.types.some(isErrorLike);
-      }
-      if (type.isUnion()) {
-        return type.types.every(isErrorLike);
-      }
-
-      const symbol = type.getSymbol();
-      if (!symbol) {
-        return false;
-      }
-
-      if (symbol.getName() === 'Error') {
-        const declarations = symbol.getDeclarations() ?? [];
-        for (const declaration of declarations) {
-          const sourceFile = declaration.getSourceFile();
-          if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
-            return true;
-          }
-        }
-      }
-
-      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
-        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
-          if (isErrorLike(baseType)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
+    const services = getParserServices(context);
 
     function checkThrowArgument(node: TSESTree.Node): void {
       if (
@@ -101,15 +72,15 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (options.allowThrowingAny && util.isTypeAnyType(type)) {
+      if (options.allowThrowingAny && isTypeAnyType(type)) {
         return;
       }
 
-      if (options.allowThrowingUnknown && util.isTypeUnknownType(type)) {
+      if (options.allowThrowingUnknown && isTypeUnknownType(type)) {
         return;
       }
 
-      if (isErrorLike(type)) {
+      if (isErrorLike(services.program, type)) {
         return;
       }
 

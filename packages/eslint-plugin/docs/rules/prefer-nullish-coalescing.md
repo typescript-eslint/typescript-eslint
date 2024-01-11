@@ -9,7 +9,7 @@ description: 'Enforce using the nullish coalescing operator instead of logical a
 The `??` nullish coalescing runtime operator allows providing a default value when dealing with `null` or `undefined`.
 Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`, which coalesces on any _falsy_ value.
 
-This rule reports when you can safely replace:
+This rule reports when you may consider replacing:
 
 - An `||` operator with `??`
 - An `||=` operator with `??=`
@@ -26,7 +26,7 @@ Setting this option to `true` will cause the rule to ignore any ternary expressi
 
 Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
 
-```ts
+```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
 const foo: any = 'bar';
 foo !== undefined && foo !== null ? foo : 'a string';
 foo === undefined || foo === null ? 'a string' : foo;
@@ -44,7 +44,7 @@ foo === null ? 'a string' : foo;
 
 Correct code for `ignoreTernaryTests: false`:
 
-```ts
+```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
 const foo: any = 'bar';
 foo ?? 'a string';
 foo ?? 'a string';
@@ -70,7 +70,7 @@ If you're looking to enforce stricter conditional tests, you should consider usi
 
 Incorrect code for `ignoreConditionalTests: false`, and correct code for `ignoreConditionalTests: true`:
 
-```ts
+```ts option='{ "ignoreConditionalTests": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 
@@ -87,7 +87,7 @@ a || b ? true : false;
 
 Correct code for `ignoreConditionalTests: false`:
 
-```ts
+```ts option='{ "ignoreConditionalTests": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 
@@ -112,7 +112,7 @@ If you're looking to enforce stricter conditional tests, you should consider usi
 
 Incorrect code for `ignoreMixedLogicalExpressions: false`, and correct code for `ignoreMixedLogicalExpressions: true`:
 
-```ts
+```ts option='{ "ignoreMixedLogicalExpressions": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
@@ -127,7 +127,7 @@ a || (b && c && d);
 
 Correct code for `ignoreMixedLogicalExpressions: false`:
 
-```ts
+```ts option='{ "ignoreMixedLogicalExpressions": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
@@ -144,28 +144,38 @@ a ?? (b && c && d);
 
 ### `ignorePrimitives`
 
-If you would like to ignore certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
+If you would like to ignore expressions containing operands of certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
 
 - `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
 - `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
 - `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
 - `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
 
-Incorrect code for `ignorePrimitives: { string: true }`, and correct code for `ignorePrimitives: { string: false }`:
+Incorrect code for `ignorePrimitives: { string: false }`, and correct code for `ignorePrimitives: { string: true }`:
 
-```ts
+```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
 const foo: string | undefined = 'bar';
 foo || 'a string';
 ```
 
-Correct code for `ignorePrimitives: { string: true }`:
+Correct code for both `ignorePrimitives: { string: false }` and `ignorePrimitives: { string: true }`:
 
-```ts
+```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
 const foo: string | undefined = 'bar';
 foo ?? 'a string';
 ```
 
-Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It would be equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
+Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
+
+### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+
+Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
+
+You should be using `strictNullChecks` to ensure complete type-safety in your codebase.
+
+If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
 
 ## When Not To Use It
 

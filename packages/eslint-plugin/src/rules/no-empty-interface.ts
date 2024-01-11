@@ -1,8 +1,13 @@
 import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getFilename,
+  getScope,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule, isDefinitionFile } from '../util';
 
 type Options = [
   {
@@ -11,7 +16,7 @@ type Options = [
 ];
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
@@ -46,8 +51,8 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
-        const sourceCode = context.getSourceCode();
-        const filename = context.getFilename();
+        const sourceCode = getSourceCode(context);
+        const filename = getFilename(context);
 
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
@@ -55,7 +60,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const extend = node.extends;
-        if (!extend || extend.length === 0) {
+        if (extend.length === 0) {
           context.report({
             node: node.id,
             messageId: 'noEmpty',
@@ -75,16 +80,16 @@ export default util.createRule<Options, MessageIds>({
                 )}${typeParam} = ${sourceCode.getText(extend[0])}`,
               );
             };
-            const scope = context.getScope();
+            const scope = getScope(context);
 
             const mergedWithClassDeclaration = scope.set
               .get(node.id.name)
-              ?.defs?.some(
+              ?.defs.some(
                 def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
               );
 
             const isInAmbientDeclaration = !!(
-              util.isDefinitionFile(filename) &&
+              isDefinitionFile(filename) &&
               scope.type === ScopeType.tsModule &&
               scope.block.declare
             );
@@ -99,15 +104,15 @@ export default util.createRule<Options, MessageIds>({
               ...(useAutoFix
                 ? { fix }
                 : !mergedWithClassDeclaration
-                ? {
-                    suggest: [
-                      {
-                        messageId: 'noEmptyWithSuper',
-                        fix,
-                      },
-                    ],
-                  }
-                : null),
+                  ? {
+                      suggest: [
+                        {
+                          messageId: 'noEmptyWithSuper',
+                          fix,
+                        },
+                      ],
+                    }
+                  : null),
             });
           }
         }

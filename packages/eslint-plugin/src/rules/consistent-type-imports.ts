@@ -1,7 +1,21 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getDeclaredVariables,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  formatWordList,
+  isClosingBraceToken,
+  isCommaToken,
+  isImportKeyword,
+  isOpeningBraceToken,
+  isTypeKeyword,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type Prefer = 'no-type-imports' | 'type-imports';
 type FixStyle = 'inline-type-imports' | 'separate-type-imports';
@@ -40,7 +54,7 @@ type MessageIds =
   | 'someImportsInDecoMeta'
   | 'typeOverValue'
   | 'valueOverType';
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
     type: 'suggestion',
@@ -94,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const sourceImportsMap: Record<string, SourceImports> = {};
 
@@ -105,6 +119,7 @@ export default util.createRule<Options, MessageIds>({
             ImportDeclaration(node): void {
               const source = node.source.value;
               // sourceImports is the object containing all the specifics for a particular import source, type or value
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               sourceImportsMap[source] ??= {
                 source,
                 reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
@@ -158,7 +173,7 @@ export default util.createRule<Options, MessageIds>({
                   continue;
                 }
 
-                const [variable] = context.getDeclaredVariables(specifier);
+                const [variable] = getDeclaredVariables(context, specifier);
                 if (variable.references.length === 0) {
                   unusedSpecifiers.push(specifier);
                 } else {
@@ -170,9 +185,9 @@ export default util.createRule<Options, MessageIds>({
                        * export default Type;
                        */
                       if (
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportSpecifier ||
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportDefaultDeclaration
                       ) {
                         if (ref.isValueReference && ref.isTypeReference) {
@@ -180,8 +195,9 @@ export default util.createRule<Options, MessageIds>({
                         }
                       }
                       if (ref.isValueReference) {
-                        let parent: TSESTree.Node | undefined =
-                          ref.identifier.parent;
+                        let parent = ref.identifier.parent as
+                          | TSESTree.Node
+                          | undefined;
                         let child: TSESTree.Node = ref.identifier;
                         while (parent) {
                           switch (parent.type) {
@@ -261,17 +277,26 @@ export default util.createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    context.report({
-                      node: report.node,
-                      messageId: 'typeOverValue',
-                      *fix(fixer) {
-                        yield* fixToTypeImportDeclaration(
-                          fixer,
-                          report,
-                          sourceImports,
-                        );
-                      },
-                    });
+                    /**
+                     * checks if import has type assertions
+                     * ```
+                     * import * as type from 'mod' assert { type: 'json' };
+                     * ```
+                     * https://github.com/typescript-eslint/typescript-eslint/issues/7527
+                     */
+                    if (report.node.attributes.length === 0) {
+                      context.report({
+                        node: report.node,
+                        messageId: 'typeOverValue',
+                        *fix(fixer) {
+                          yield* fixToTypeImportDeclaration(
+                            fixer,
+                            report,
+                            sourceImports,
+                          );
+                        },
+                      });
+                    }
                   } else {
                     const isTypeImport = report.node.importKind === 'type';
 
@@ -287,7 +312,7 @@ export default util.createRule<Options, MessageIds>({
                       messageId: MessageIds;
                       data: Record<string, unknown>;
                     } => {
-                      const typeImports = util.formatWordList(importNames);
+                      const typeImports = formatWordList(importNames);
 
                       if (importNames.length === 1) {
                         if (isTypeImport) {
@@ -428,24 +453,24 @@ export default util.createRule<Options, MessageIds>({
       if (subsetNamedSpecifiers.length === allNamedSpecifiers.length) {
         // import Foo, {Type1, Type2} from 'foo'
         // import DefType, {Type1, Type2} from 'foo'
-        const openingBraceToken = util.nullThrows(
+        const openingBraceToken = nullThrows(
           sourceCode.getTokenBefore(
             subsetNamedSpecifiers[0],
-            util.isOpeningBraceToken,
+            isOpeningBraceToken,
           ),
-          util.NullThrowsReasons.MissingToken('{', node.type),
+          NullThrowsReasons.MissingToken('{', node.type),
         );
-        const commaToken = util.nullThrows(
-          sourceCode.getTokenBefore(openingBraceToken, util.isCommaToken),
-          util.NullThrowsReasons.MissingToken(',', node.type),
+        const commaToken = nullThrows(
+          sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
+          NullThrowsReasons.MissingToken(',', node.type),
         );
-        const closingBraceToken = util.nullThrows(
+        const closingBraceToken = nullThrows(
           sourceCode.getFirstTokenBetween(
             openingBraceToken,
             node.source,
-            util.isClosingBraceToken,
+            isClosingBraceToken,
           ),
-          util.NullThrowsReasons.MissingToken('}', node.type),
+          NullThrowsReasons.MissingToken('}', node.type),
         );
 
         // import DefType, {...} from 'foo'
@@ -506,7 +531,7 @@ export default util.createRule<Options, MessageIds>({
       const textRange: TSESTree.Range = [...removeRange];
       const before = sourceCode.getTokenBefore(first)!;
       textRange[0] = before.range[1];
-      if (util.isCommaToken(before)) {
+      if (isCommaToken(before)) {
         removeRange[0] = before.range[0];
       } else {
         removeRange[0] = before.range[1];
@@ -517,7 +542,7 @@ export default util.createRule<Options, MessageIds>({
       const after = sourceCode.getTokenAfter(last)!;
       textRange[1] = after.range[0];
       if (isFirst || isLast) {
-        if (util.isCommaToken(after)) {
+        if (isCommaToken(after)) {
           removeRange[1] = after.range[1];
         }
       }
@@ -539,16 +564,16 @@ export default util.createRule<Options, MessageIds>({
       target: TSESTree.ImportDeclaration,
       insertText: string,
     ): TSESLint.RuleFix {
-      const closingBraceToken = util.nullThrows(
+      const closingBraceToken = nullThrows(
         sourceCode.getFirstTokenBetween(
           sourceCode.getFirstToken(target)!,
           target.source,
-          util.isClosingBraceToken,
+          isClosingBraceToken,
         ),
-        util.NullThrowsReasons.MissingToken('}', target.type),
+        NullThrowsReasons.MissingToken('}', target.type),
       );
       const before = sourceCode.getTokenBefore(closingBraceToken)!;
-      if (!util.isCommaToken(before) && !util.isOpeningBraceToken(before)) {
+      if (!isCommaToken(before) && !isOpeningBraceToken(before)) {
         insertText = `,${insertText}`;
       }
       return fixer.insertTextBefore(closingBraceToken, insertText);
@@ -612,7 +637,11 @@ export default util.createRule<Options, MessageIds>({
 
       if (namespaceSpecifier && !defaultSpecifier) {
         // import * as types from 'foo'
-        yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
+
+        // checks for presence of import assertions
+        if (node.attributes.length === 0) {
+          yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
+        }
         return;
       } else if (defaultSpecifier) {
         if (
@@ -710,9 +739,9 @@ export default util.createRule<Options, MessageIds>({
         // import Foo, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
-        const commaToken = util.nullThrows(
-          sourceCode.getTokenBefore(namespaceSpecifier, util.isCommaToken),
-          util.NullThrowsReasons.MissingToken(',', node.type),
+        const commaToken = nullThrows(
+          sourceCode.getTokenBefore(namespaceSpecifier, isCommaToken),
+          NullThrowsReasons.MissingToken(',', node.type),
         );
 
         // import Def, * as Ns from 'foo'
@@ -735,17 +764,17 @@ export default util.createRule<Options, MessageIds>({
         report.typeSpecifiers.includes(defaultSpecifier)
       ) {
         if (report.typeSpecifiers.length === node.specifiers.length) {
-          const importToken = util.nullThrows(
-            sourceCode.getFirstToken(node, util.isImportKeyword),
-            util.NullThrowsReasons.MissingToken('import', node.type),
+          const importToken = nullThrows(
+            sourceCode.getFirstToken(node, isImportKeyword),
+            NullThrowsReasons.MissingToken('import', node.type),
           );
           // import type Type from 'foo'
           //        ^^^^ insert
           yield fixer.insertTextAfter(importToken, ' type');
         } else {
-          const commaToken = util.nullThrows(
-            sourceCode.getTokenAfter(defaultSpecifier, util.isCommaToken),
-            util.NullThrowsReasons.MissingToken(',', defaultSpecifier.type),
+          const commaToken = nullThrows(
+            sourceCode.getTokenAfter(defaultSpecifier, isCommaToken),
+            NullThrowsReasons.MissingToken(',', defaultSpecifier.type),
           );
           // import Type , {...} from 'foo'
           //        ^^^^^ pick
@@ -758,9 +787,9 @@ export default util.createRule<Options, MessageIds>({
               node.source,
             )};\n`,
           );
-          const afterToken = util.nullThrows(
+          const afterToken = nullThrows(
             sourceCode.getTokenAfter(commaToken, { includeComments: true }),
-            util.NullThrowsReasons.MissingToken('any token', node.type),
+            NullThrowsReasons.MissingToken('any token', node.type),
           );
           // import Type , {...} from 'foo'
           //        ^^^^^^^ remove
@@ -784,9 +813,9 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       // import type Foo from 'foo'
       //       ^^^^^ insert
-      const importToken = util.nullThrows(
-        sourceCode.getFirstToken(node, util.isImportKeyword),
-        util.NullThrowsReasons.MissingToken('import', node.type),
+      const importToken = nullThrows(
+        sourceCode.getFirstToken(node, isImportKeyword),
+        NullThrowsReasons.MissingToken('import', node.type),
       );
       yield fixer.insertTextAfter(importToken, ' type');
 
@@ -795,21 +824,21 @@ export default util.createRule<Options, MessageIds>({
         const openingBraceToken = sourceCode.getFirstTokenBetween(
           importToken,
           node.source,
-          util.isOpeningBraceToken,
+          isOpeningBraceToken,
         );
         if (openingBraceToken) {
           // Only braces. e.g. import Foo, {} from 'foo'
-          const commaToken = util.nullThrows(
-            sourceCode.getTokenBefore(openingBraceToken, util.isCommaToken),
-            util.NullThrowsReasons.MissingToken(',', node.type),
+          const commaToken = nullThrows(
+            sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
+            NullThrowsReasons.MissingToken(',', node.type),
           );
-          const closingBraceToken = util.nullThrows(
+          const closingBraceToken = nullThrows(
             sourceCode.getFirstTokenBetween(
               openingBraceToken,
               node.source,
-              util.isClosingBraceToken,
+              isClosingBraceToken,
             ),
-            util.NullThrowsReasons.MissingToken('}', node.type),
+            NullThrowsReasons.MissingToken('}', node.type),
           );
 
           // import type Foo, {} from 'foo'
@@ -929,21 +958,21 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       // import type Foo from 'foo'
       //        ^^^^ remove
-      const importToken = util.nullThrows(
-        sourceCode.getFirstToken(node, util.isImportKeyword),
-        util.NullThrowsReasons.MissingToken('import', node.type),
+      const importToken = nullThrows(
+        sourceCode.getFirstToken(node, isImportKeyword),
+        NullThrowsReasons.MissingToken('import', node.type),
       );
-      const typeToken = util.nullThrows(
+      const typeToken = nullThrows(
         sourceCode.getFirstTokenBetween(
           importToken,
           node.specifiers[0]?.local ?? node.source,
-          util.isTypeKeyword,
+          isTypeKeyword,
         ),
-        util.NullThrowsReasons.MissingToken('type', node.type),
+        NullThrowsReasons.MissingToken('type', node.type),
       );
-      const afterToken = util.nullThrows(
+      const afterToken = nullThrows(
         sourceCode.getTokenAfter(typeToken, { includeComments: true }),
-        util.NullThrowsReasons.MissingToken('any token', node.type),
+        NullThrowsReasons.MissingToken('any token', node.type),
       );
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
     }
@@ -954,13 +983,13 @@ export default util.createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       // import { type Foo } from 'foo'
       //          ^^^^ remove
-      const typeToken = util.nullThrows(
-        sourceCode.getFirstToken(node, util.isTypeKeyword),
-        util.NullThrowsReasons.MissingToken('type', node.type),
+      const typeToken = nullThrows(
+        sourceCode.getFirstToken(node, isTypeKeyword),
+        NullThrowsReasons.MissingToken('type', node.type),
       );
-      const afterToken = util.nullThrows(
+      const afterToken = nullThrows(
         sourceCode.getTokenAfter(typeToken, { includeComments: true }),
-        util.NullThrowsReasons.MissingToken('any token', node.type),
+        NullThrowsReasons.MissingToken('any token', node.type),
       );
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
     }

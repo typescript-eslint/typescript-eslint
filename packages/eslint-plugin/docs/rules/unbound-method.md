@@ -83,7 +83,7 @@ const { double } = arith;
 
 Examples of **correct** code for this rule with `{ ignoreStatic: true }`:
 
-```ts
+```ts option='{ "ignoreStatic": true }' showPlaygroundButton
 class OtherClass {
   static log() {
     console.log(OtherClass);
@@ -98,6 +98,8 @@ log();
 
 ## When Not To Use It
 
-If your code intentionally waits to bind methods after use, such as by passing a `scope: this` along with the method, you can disable this rule.
+If your project dynamically changes `this` scopes around in a way TypeScript has difficulties modeling, this rule may not be viable to use.
+One likely difficult pattern is if your code intentionally waits to bind methods after use, such as by passing a `scope: this` along with the method.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 If you're wanting to use `toBeCalled` and similar matches in `jest` tests, you can disable this rule for your test files in favor of [`eslint-plugin-jest`'s version of this rule](https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/unbound-method.md).

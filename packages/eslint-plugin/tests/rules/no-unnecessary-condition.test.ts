@@ -254,9 +254,7 @@ function test<T>(a: T) {
 }
     `,
 
-    /**
-     * Predicate functions
-     **/
+    // Predicate functions
     `
 // with literal arrow function
 [0, 1, 2].filter(x => x);
@@ -509,6 +507,149 @@ declare const key: Key;
 
 foo?.[key]?.trim();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7700
+    `
+type BrandedKey = string & { __brand: string };
+type Foo = { [key: BrandedKey]: string } | null;
+declare const foo: Foo;
+const key = '1' as BrandedKey;
+foo?.[key]?.trim();
+    `,
+    `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key].trim();
+    `,
+    `
+type BrandedKey = string & { __brand: string };
+interface Outer {
+  inner?: {
+    [key: BrandedKey]: string | undefined;
+  };
+}
+function Foo(outer: Outer, key: BrandedKey): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string & { __brand: string }]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo' & { __brand: string };
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key]?.trim();
+    `,
+    {
+      code: `
+type BrandedKey = string & { __brand: string };
+type Foo = { [key: BrandedKey]: string } | null;
+declare const foo: Foo;
+const key = '1' as BrandedKey;
+foo?.[key]?.trim();
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key].trim();
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+type BrandedKey = string & { __brand: string };
+interface Outer {
+  inner?: {
+    [key: BrandedKey]: string | undefined;
+  };
+}
+function Foo(outer: Outer, key: BrandedKey): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+interface Outer {
+  inner?: {
+    [key: string & { __brand: string }]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo' & { __brand: string };
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key]?.trim();
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
     `
 let latencies: number[][] = [];
 
@@ -631,6 +772,28 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
         typescript: '4.1',
       },
     },
+    `
+type Foo = { bar: () => number | undefined } | null;
+declare const foo: Foo;
+foo?.bar()?.toExponential();
+    `,
+    `
+type Foo = (() => number | undefined) | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+    `,
+    `
+type FooUndef = () => undefined;
+type FooNum = () => number;
+type Foo = FooUndef | FooNum | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+    `,
+    `
+type Foo = { [key: string]: () => number | undefined } | null;
+declare const foo: Foo;
+foo?.['bar']()?.toExponential();
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1092,7 +1255,7 @@ foo ?.
 foo
   ?. ();
       `,
-      output: `
+      output: noFormat`
 let foo = () => {};
 foo();
 foo  ();
@@ -1142,7 +1305,7 @@ foo ?.
 foo
   ?. (bar);
       `,
-      output: `
+      output: noFormat`
 let foo = () => {};
 foo(bar);
 foo  (bar);
@@ -1847,6 +2010,118 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { bar: () => number } | null;
+declare const foo: Foo;
+foo?.bar()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { bar: () => number } | null;
+declare const foo: Foo;
+foo?.bar().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 11,
+          endLine: 4,
+          endColumn: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { bar: null | { baz: () => { qux: number } } } | null;
+declare const foo: Foo;
+foo?.bar?.baz()?.qux?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { bar: null | { baz: () => { qux: number } } } | null;
+declare const foo: Foo;
+foo?.bar?.baz().qux.toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 16,
+          endLine: 4,
+          endColumn: 18,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 21,
+          endLine: 4,
+          endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = (() => number) | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = (() => number) | null;
+declare const foo: Foo;
+foo?.().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 8,
+          endLine: 4,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 15,
+          endLine: 4,
+          endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']?.()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']?.().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 17,
+          endLine: 4,
+          endColumn: 19,
         },
       ],
     },

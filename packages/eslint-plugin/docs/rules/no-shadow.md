@@ -28,25 +28,31 @@ const defaultOptions: Options = {
 
 ### `ignoreTypeValueShadow`
 
-When set to `true`, the rule will ignore the case when you name a type the same as a variable.
-
-TypeScript allows types and variables to shadow one-another. This is generally safe because you cannot use variables in type locations without a `typeof` operator, so there's little risk of confusion.
+When set to `true`, the rule will ignore the case when you name a type the same as a variable. This is generally safe because you cannot use variables in type locations without a `typeof` operator, so there's little risk of confusion.
 
 Examples of **correct** code with `{ ignoreTypeValueShadow: true }`:
 
-```ts
+```ts option='{ "ignoreTypeValueShadow": true }' showPlaygroundButton
 type Foo = number;
-const Foo = 1;
-
 interface Bar {
   prop: number;
 }
-const Bar = 'test';
+
+function f() {
+  const Foo = 1;
+  const Bar = 'test';
+}
 ```
+
+:::note
+
+_Shadowing_ specifically refers to two identical identifiers that are in different, nested scopes. This is different from _redeclaration_, which is when two identical identifiers are in the same scope. Redeclaration is covered by the [`no-redeclare`](./no-redeclare.md) rule instead.
+
+:::
 
 ### `ignoreFunctionTypeParameterNameValueShadow`
 
-When set to `true`, the rule will ignore the case when you name a function type argument the same as a variable.
+When set to `true`, the rule will ignore the case when you name a parameter in a function type the same as a variable.
 
 Each of a function type's arguments creates a value variable within the scope of the function type. This is done so that you can reference the type later using the `typeof` operator:
 
@@ -72,7 +78,7 @@ If you do not use the `typeof` operator in a function type return type position,
 
 Examples of **correct** code with `{ ignoreFunctionTypeParameterNameValueShadow: true }`:
 
-```ts
+```ts option='{ "ignoreFunctionTypeParameterNameValueShadow": true }' showPlaygroundButton
 const test = 1;
 type Func = (test: string) => typeof test;
 ```

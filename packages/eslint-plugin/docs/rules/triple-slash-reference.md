@@ -8,51 +8,102 @@ description: 'Disallow certain triple slash directives in favor of ES6-style imp
 
 TypeScript's `///` triple-slash references are a way to indicate that types from another module are available in a file.
 Use of triple-slash reference type directives is generally discouraged in favor of ECMAScript Module `import`s.
-This rule reports on the use of `/// <reference path="..." />`, `/// <reference types="..." />`, or `/// <reference lib="..." />` directives.
+This rule reports on the use of `/// <reference lib="..." />`, `/// <reference path="..." />`, or `/// <reference types="..." />` directives.
 
 ## Options
 
-With `{ "path": "never", "types": "never", "lib": "never" }` options set, the following will all be **incorrect** usage:
+Any number of the three kinds of references can be specified as an option.
+Specifying `'always'` disables this lint rule for that kind of reference.
 
-```ts
-/// <reference path="foo" />
-/// <reference types="bar" />
-/// <reference lib="baz" />
+### `lib`
+
+When set to `'never'`, bans `/// <reference lib="..." />` and enforces using an `import` instead:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "lib": "never" }'
+/// <reference lib="code" />
+
+globalThis.value;
 ```
 
-Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** styles are used for the **same** module:
+#### ✅ Correct
 
-```ts
-/// <reference types="foo" />
-import * as foo from 'foo';
+```ts option='{ "lib": "never" }'
+import { value } from 'code';
 ```
 
-```ts
-/// <reference types="foo" />
-import foo = require('foo');
+### `path`
+
+When set to `'never'`, bans `/// <reference path="..." />` and enforces using an `import` instead:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "path": "never" }'
+/// <reference path="code" />
+
+globalThis.value;
 ```
 
-With `{ "path": "always", "types": "always", "lib": "always" }` options set, the following will all be **correct** usage:
+#### ✅ Correct
 
-```ts
-/// <reference path="foo" />
-/// <reference types="bar" />
-/// <reference lib="baz" />
+```ts option='{ "path": "never" }'
+import { value } from 'code';
 ```
 
-Examples of **correct** code for the `{ "types": "prefer-import" }` option:
+### `types`
 
-```ts
-import * as foo from 'foo';
+When set to `'never'`, bans `/// <reference types="..." />` and enforces using an `import` instead:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "types": "never" }'
+/// <reference types="code" />
+
+globalThis.value;
 ```
 
-```ts
-import foo = require('foo');
+#### ✅ Correct
+
+```ts option='{ "types": "never" }'
+import { value } from 'code';
 ```
 
-## When To Use It
+<!-- /tabs -->
 
-If you want to ban use of one or all of the triple slash reference directives, or any time you might use triple-slash type reference directives and ES6 import declarations in the same file.
+The `types` option may alternately be given a `"prefer-import"` value.
+Doing so indicates the rule should only report if there is already an `import` from the same location:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "types": "prefer-import" }'
+/// <reference types="code" />
+
+import { valueA } from 'code';
+
+globalThis.valueB;
+```
+
+#### ✅ Correct
+
+```ts option='{ "types": "prefer-import" }'
+import { valueA, valueB } from 'code';
+```
+
+## When Not To Use It
+
+Most modern TypeScript projects generally use `import` statements to bring in types.
+It's rare to need a `///` triple-slash reference outside of auto-generated code.
+If your project is a rare one with one of those use cases, this rule might not be for you.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## When Not To Use It
 

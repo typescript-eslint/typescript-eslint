@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "6.7.0",
+  "version": "6.18.1",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
@@ -40,19 +40,19 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.7.0",
+    "@typescript-eslint/types": "6.18.1",
     "eslint-visitor-keys": "^3.4.1"
   },
   "devDependencies": {
     "@types/eslint-visitor-keys": "*",
     "downlevel-dts": "*",
-    "jest": "29.6.4",
-    "prettier": "^2.8.4",
+    "jest": "29.7.0",
+    "prettier": "^3.0.3",
     "rimraf": "*",
     "typescript": "*"
   },

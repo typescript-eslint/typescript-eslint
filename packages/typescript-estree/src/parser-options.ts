@@ -1,6 +1,7 @@
 import type {
   CacheDurationSeconds,
   DebugLevel,
+  JSDocParsingMode,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
@@ -46,6 +47,18 @@ interface ParseOptions {
   filePath?: string;
 
   /**
+   * If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
+   *
+   * The valid values for this rule are:
+   * - `'all'` - parse all JSDoc comments, always.
+   * - `'none'` - parse no JSDoc comments, ever.
+   * - `'type-info'` - parse just JSDoc comments that are required to provide correct type-info. TS will always parse JSDoc in non-TS files, but never in TS files.
+   *
+   * If you do not rely on JSDoc tags from the TypeScript AST, then you can safely set this to `'none'` to improve performance.
+   */
+  jsDocParsingMode?: JSDocParsingMode;
+
+  /**
    * Enable parsing of JSX.
    * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
@@ -88,6 +101,16 @@ interface ParseOptions {
   suppressDeprecatedPropertyWarnings?: boolean;
 }
 
+/**
+ * Granular options to configure the project service.
+ */
+export interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default inferred project settings.
+   */
+  allowDefaultProjectForFiles?: string[];
+}
+
 interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
@@ -101,7 +124,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
    */
-  EXPERIMENTAL_useProjectService?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.

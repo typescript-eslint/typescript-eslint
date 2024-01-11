@@ -3,8 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { OperatorPrecedence } from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  OperatorPrecedence,
+} from '../util';
 
 type Options = [
   {
@@ -19,7 +23,9 @@ type MessageId =
   | 'floatingUselessRejectionHandler'
   | 'floatingUselessRejectionHandlerVoid'
   | 'floatingFixAwait'
-  | 'floatingFixVoid';
+  | 'floatingFixVoid'
+  | 'floatingPromiseArray'
+  | 'floatingPromiseArrayVoid';
 
 const messageBase =
   'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.';
@@ -31,7 +37,14 @@ const messageBaseVoid =
 const messageRejectionHandler =
   'A rejection handler that is not a function will be ignored.';
 
-export default util.createRule<Options, MessageId>({
+const messagePromiseArray =
+  "An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar.";
+
+const messagePromiseArrayVoid =
+  "An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar," +
+  ' or explicitly marking the expression as ignored with the `void` operator.';
+
+export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
@@ -50,6 +63,8 @@ export default util.createRule<Options, MessageId>({
         messageBase + ' ' + messageRejectionHandler,
       floatingUselessRejectionHandlerVoid:
         messageBaseVoid + ' ' + messageRejectionHandler,
+      floatingPromiseArray: messagePromiseArray,
+      floatingPromiseArrayVoid: messagePromiseArrayVoid,
     },
     schema: [
       {
@@ -78,7 +93,7 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     return {
@@ -93,13 +108,18 @@ export default util.createRule<Options, MessageId>({
           expression = expression.expression;
         }
 
-        const { isUnhandled, nonFunctionHandler } = isUnhandledPromise(
-          checker,
-          expression,
-        );
+        const { isUnhandled, nonFunctionHandler, promiseArray } =
+          isUnhandledPromise(checker, expression);
 
         if (isUnhandled) {
-          if (options.ignoreVoid) {
+          if (promiseArray) {
+            context.report({
+              node,
+              messageId: options.ignoreVoid
+                ? 'floatingPromiseArrayVoid'
+                : 'floatingPromiseArray',
+            });
+          } else if (options.ignoreVoid) {
             context.report({
               node,
               messageId: nonFunctionHandler
@@ -171,7 +191,7 @@ export default util.createRule<Options, MessageId>({
       const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
-      const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
+      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
       return nodePrecedence > OperatorPrecedence.Unary;
     }
 
@@ -181,10 +201,9 @@ export default util.createRule<Options, MessageId>({
       }
 
       return (
-        node.expression.type === AST_NODE_TYPES.CallExpression &&
-        (node.expression.callee.type ===
+        node.expression.callee.type ===
           AST_NODE_TYPES.ArrowFunctionExpression ||
-          node.expression.callee.type === AST_NODE_TYPES.FunctionExpression)
+        node.expression.callee.type === AST_NODE_TYPES.FunctionExpression
       );
     }
 
@@ -202,7 +221,11 @@ export default util.createRule<Options, MessageId>({
     function isUnhandledPromise(
       checker: ts.TypeChecker,
       node: TSESTree.Node,
-    ): { isUnhandled: boolean; nonFunctionHandler?: boolean } {
+    ): {
+      isUnhandled: boolean;
+      nonFunctionHandler?: boolean;
+      promiseArray?: boolean;
+    } {
       // First, check expressions whose resulting types may not be promise-like
       if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Any child in a comma expression could return a potentially unhandled
@@ -225,8 +248,16 @@ export default util.createRule<Options, MessageId>({
         return isUnhandledPromise(checker, node.argument);
       }
 
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+
       // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (!isPromiseLike(checker, services.esTreeNodeToTSNodeMap.get(node))) {
+      // or array thereof.
+
+      if (isPromiseArray(checker, tsNode)) {
+        return { isUnhandled: true, promiseArray: true };
+      }
+
+      if (!isPromiseLike(checker, tsNode)) {
         return { isUnhandled: false };
       }
 
@@ -292,12 +323,39 @@ export default util.createRule<Options, MessageId>({
   },
 });
 
+function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
+  const type = checker.getTypeAtLocation(node);
+  for (const ty of tsutils
+    .unionTypeParts(type)
+    .map(t => checker.getApparentType(t))) {
+    if (checker.isArrayType(ty)) {
+      const arrayType = checker.getTypeArguments(ty)[0];
+      if (isPromiseLike(checker, node, arrayType)) {
+        return true;
+      }
+    }
+
+    if (checker.isTupleType(ty)) {
+      for (const tupleElementType of checker.getTypeArguments(ty)) {
+        if (isPromiseLike(checker, node, tupleElementType)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 // Modified from tsutils.isThenable() to only consider thenables which can be
 // rejected/caught via a second parameter. Original source (MIT licensed):
 //
 //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
-function isPromiseLike(checker: ts.TypeChecker, node: ts.Node): boolean {
-  const type = checker.getTypeAtLocation(node);
+function isPromiseLike(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type?: ts.Type,
+): boolean {
+  type ??= checker.getTypeAtLocation(node);
   for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
     const then = ty.getProperty('then');
     if (then === undefined) {

@@ -30,6 +30,7 @@ The following additional configuration options are available by specifying them 
 
 ```ts
 interface ParserOptions {
+  allowAutomaticSingleRunInference?: boolean;
   cacheLifetime?: {
     glob?: number | 'Infinity';
   };
@@ -40,16 +41,33 @@ interface ParserOptions {
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
   extraFileExtensions?: string[];
+  jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  program?: import('typescript').Program;
+  programs?: import('typescript').Program;
   project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean;
 }
 ```
+
+### `allowAutomaticSingleRunInference`
+
+> Default `false`.
+
+Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
+
+When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../linting/Typed_Linting.mdx), this distinction is important for performance.
+There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
+Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
+
+:::tip
+We've seen `allowAutomaticSingleRunInference` improve linting speed in CI by up to 10-20%.
+Our plan is to [enable `allowAutomaticSingleRunInference` by default in an upcoming major version](https://github.com/typescript-eslint/typescript-eslint/issues/8121).
+:::
 
 ### `cacheLifetime`
 
@@ -57,7 +75,7 @@ This option allows you to granularly control our internal cache expiry lengths.
 
 You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
 
-By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run.
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run (see [`allowAutomaticSingleRunInference`](#allowAutomaticSingleRunInference)).
 
 ### `ecmaFeatures`
 
@@ -118,6 +136,21 @@ This option allows you to provide one or more additional file extensions which s
 The default extensions are `['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx']`.
 Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
 
+### `jsDocParsingMode`
+
+> Default if `parserOptions.project` is set, then `'all'`, otherwise `'none'`
+
+When TS parses a file it will also parse JSDoc comments into the AST - which can then be consumed by lint rules.
+If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
+
+The valid values for this rule are:
+
+- `'all'` - parse all JSDoc comments, always.
+- `'none'` - parse no JSDoc comments, ever.
+- `'type-info'` - parse just JSDoc comments that are required to provide correct type-info. TS will always parse JSDoc in non-TS files, but never in TS files.
+
+If you do not use lint rules like `eslint-plugin-deprecation` that rely on TS's JSDoc tag representation, then you can set this to `'none'` to improve parser performance.
+
 ### `jsxFragmentName`
 
 > Default `null`
@@ -149,7 +182,7 @@ Specifies the TypeScript `lib`s that are available. This is used by the scope an
 
 If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
 
-### `program`
+### `programs`
 
 > Default `undefined`.
 
@@ -250,6 +283,8 @@ Please only submit bug reports when using the officially supported version.
 ```
 
 ### `EXPERIMENTAL_useProjectService`
+
+> Default `false`.
 
 An experimental alternative to `parserOptions.project`.
 This directs the parser to use a more seamless TypeScript API to generate type information for rules.

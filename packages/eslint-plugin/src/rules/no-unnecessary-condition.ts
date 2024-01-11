@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -153,7 +154,7 @@ export default createRule<Options, MessageId>({
   ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const compilerOptions = services.program.getCompilerOptions();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -309,8 +310,8 @@ export default createRule<Options, MessageId>({
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
      *    Known exceptions:
-     *      * https://github.com/microsoft/TypeScript/issues/32627
-     *      * https://github.com/microsoft/TypeScript/issues/37160 (handled)
+     *      - https://github.com/microsoft/TypeScript/issues/32627
+     *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
     const BOOL_OPERATORS = new Set([
       '<',
@@ -438,9 +439,8 @@ export default createRule<Options, MessageId>({
         const callback = node.arguments[0]!;
         // Inline defined functions
         if (
-          (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-            callback.type === AST_NODE_TYPES.FunctionExpression) &&
-          callback.body
+          callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          callback.type === AST_NODE_TYPES.FunctionExpression
         ) {
           // Two special cases, where we can directly check the node that's returned:
           // () => something
@@ -534,12 +534,9 @@ export default createRule<Options, MessageId>({
         }
       }
       const typeName = getTypeName(checker, propertyType);
-      return !!(
-        (typeName === 'string' &&
-          checker.getIndexInfoOfType(objType, ts.IndexKind.String)) ||
-        (typeName === 'number' &&
-          checker.getIndexInfoOfType(objType, ts.IndexKind.Number))
-      );
+      return !!checker
+        .getIndexInfosOfType(objType)
+        .find(info => getTypeName(checker, info.keyType) === typeName);
     }
 
     // Checks whether a member expression is nullable or not regardless of it's previous node.
@@ -550,7 +547,7 @@ export default createRule<Options, MessageId>({
     //  declare const foo: { bar : { baz: string } } | null
     //  foo?.bar;
     //  ```
-    function isNullableOriginFromPrev(
+    function isMemberExpressionNullableOriginFromObject(
       node: TSESTree.MemberExpression,
     ): boolean {
       const prevType = getConstrainedTypeAtLocation(services, node.object);
@@ -583,12 +580,35 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function isCallExpressionNullableOriginFromCallee(
+      node: TSESTree.CallExpression,
+    ): boolean {
+      const prevType = getConstrainedTypeAtLocation(services, node.callee);
+
+      if (prevType.isUnion()) {
+        const isOwnNullable = prevType.types.some(type => {
+          const signatures = type.getCallSignatures();
+          return signatures.some(sig =>
+            isNullableType(sig.getReturnType(), { allowUndefined: true }),
+          );
+        });
+        return (
+          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
+        );
+      }
+
+      return false;
+    }
+
     function isOptionableExpression(node: TSESTree.Expression): boolean {
       const type = getConstrainedTypeAtLocation(services, node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
-          ? !isNullableOriginFromPrev(node)
-          : true;
+          ? !isMemberExpressionNullableOriginFromObject(node)
+          : node.type === AST_NODE_TYPES.CallExpression
+            ? !isCallExpressionNullableOriginFromCallee(node)
+            : true;
+
       const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||

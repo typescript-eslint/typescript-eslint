@@ -2055,6 +2055,20 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  accessor bar;
+
+  baz() {}
+}
+      `,
+      options: [
+        {
+          default: ['accessor', 'method'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -5061,6 +5075,31 @@ interface Foo {
             rank: 'field',
           },
           line: 7,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bar;
+
+  baz() {}
+}
+      `,
+      options: [
+        {
+          default: ['method', 'accessor'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'baz',
+            rank: 'accessor',
+          },
+          line: 5,
           column: 3,
         },
       ],

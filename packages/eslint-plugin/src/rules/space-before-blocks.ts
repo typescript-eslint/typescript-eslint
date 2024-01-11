@@ -1,16 +1,23 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isTokenOnSameLine } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('space-before-blocks');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'space-before-blocks',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/space-before-blocks'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before blocks',
@@ -30,7 +37,7 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: ['always'],
   create(context, [config]) {
     const rules = baseRule.create(context);
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     let requireSpace = true;
 
@@ -44,7 +51,7 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.Token | TSESTree.TSInterfaceBody,
     ): void {
       const precedingToken = sourceCode.getTokenBefore(node);
-      if (precedingToken && util.isTokenOnSameLine(precedingToken, node)) {
+      if (precedingToken && isTokenOnSameLine(precedingToken, node)) {
         // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
         const hasSpace = sourceCode.isSpaceBetweenTokens(
           precedingToken,

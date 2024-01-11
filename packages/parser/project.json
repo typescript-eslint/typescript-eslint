@@ -5,10 +5,9 @@
   "implicitDependencies": [],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/parser/**/*.{mts,cts,ts,tsx}"],
         "ignorePath": ".eslintignore"
       }
     }

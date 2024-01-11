@@ -16,7 +16,7 @@ This rule adds the following options:
 ```ts
 interface Options extends BaseClassMethodsUseThisOptions {
   ignoreOverrideMethods?: boolean;
-  ignoreClassesThatImplementAnInterface?: boolean;
+  ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
 }
 
 const defaultOptions: Options = {
@@ -32,7 +32,7 @@ Makes the rule to ignores any class member explicitly marked with `override`.
 
 Example of a correct code when `ignoreOverrideMethods` is set to `true`:
 
-```ts
+```ts option='{ "ignoreOverrideMethods": true }' showPlaygroundButton
 class X {
   override method() {}
   override property = () => {};
@@ -41,11 +41,47 @@ class X {
 
 ### `ignoreClassesThatImplementAnInterface`
 
-Makes the rule ignore all class members that are defined within a class that `implements` a type.
+Makes the rule ignore class members that are defined within a class that `implements` a type.
+If specified, it can be either:
+
+- `true`: Ignore all classes that implement an interface
+- `'public-fields'`: Ignore only the public fields of classes that implement an interface
 
 It's important to note that this option does not only apply to members defined in the interface as that would require type information.
 
+#### `true`
+
 Example of a correct code when `ignoreClassesThatImplementAnInterface` is set to `true`:
+
+```ts option='{ "ignoreClassesThatImplementAnInterface": true }' showPlaygroundButton
+class X implements Y {
+  method() {}
+  property = () => {};
+}
+```
+
+#### `'public-fields'`
+
+Example of a incorrect code when `ignoreClassesThatImplementAnInterface` is set to `'public-fields'`:
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts
+class X implements Y {
+  method() {}
+  property = () => {};
+
+  private privateMethod() {}
+  private privateProperty = () => {};
+
+  protected privateMethod() {}
+  protected privateProperty = () => {};
+}
+```
+
+##### ✅ Correct
 
 ```ts
 class X implements Y {
@@ -53,3 +89,8 @@ class X implements Y {
   property = () => {};
 }
 ```
+
+## When Not To Use It
+
+If your project dynamically changes `this` scopes around in a way TypeScript has difficulties modeling, this rule may not be viable to use.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

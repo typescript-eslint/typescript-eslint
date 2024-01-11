@@ -83,18 +83,23 @@ export { x };
 
 ### ❌ Incorrect
 
-```ts
+```ts option='{ "fixMixedExportsWithInlineTypeSpecifier": true }'
 export { Button } from 'some-library';
 export type { ButtonProps } from 'some-library';
 ```
 
 ### ✅ Correct
 
-```ts
+```ts option='{ "fixMixedExportsWithInlineTypeSpecifier": true }'
 export { Button, type ButtonProps } from 'some-library';
 ```
 
 ## When Not To Use It
 
-- If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.
-- If you use `--isolatedModules` the compiler would error if a type is not re-exported using `export type`. If you also don't wish to enforce one style over the other, you can disable this rule.
+If you use `--isolatedModules` the compiler would error if a type is not re-exported using `export type`.
+This rule may be less useful in those cases.
+
+If you specifically want to use both export kinds for stylistic reasons, or don't wish to enforce one style over the other, you can avoid this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

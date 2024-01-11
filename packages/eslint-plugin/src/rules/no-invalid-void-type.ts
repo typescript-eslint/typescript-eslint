@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 interface Options {
   allowInGenericTypeArguments?: string[] | boolean;
@@ -16,7 +17,7 @@ type MessageIds =
   | 'invalidVoidNotReturnOrThisParamOrGeneric'
   | 'invalidVoidUnionConstituent';
 
-export default util.createRule<[Options], MessageIds>({
+export default createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
   meta: {
     type: 'problem',
@@ -93,15 +94,15 @@ export default util.createRule<[Options], MessageIds>({
       // extra check for precaution
       /* istanbul ignore next */
       if (
-        node.parent?.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
-        node.parent.parent?.type !== AST_NODE_TYPES.TSTypeReference
+        node.parent.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
+        node.parent.parent.type !== AST_NODE_TYPES.TSTypeReference
       ) {
         return;
       }
 
       // check whitelist
       if (Array.isArray(allowInGenericTypeArguments)) {
-        const sourceCode = context.getSourceCode();
+        const sourceCode = getSourceCode(context);
         const fullyQualifiedName = sourceCode
           .getText(node.parent.parent.typeName)
           .replace(/ /gu, '');
@@ -158,7 +159,7 @@ export default util.createRule<[Options], MessageIds>({
           (member.type === AST_NODE_TYPES.TSTypeReference &&
             member.typeArguments?.type ===
               AST_NODE_TYPES.TSTypeParameterInstantiation &&
-            member.typeArguments?.params
+            member.typeArguments.params
               .map(param => param.type)
               .includes(AST_NODE_TYPES.TSVoidKeyword)),
       );
@@ -216,10 +217,10 @@ export default util.createRule<[Options], MessageIds>({
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
               : allowInGenericTypeArguments
-              ? getNotReturnOrGenericMessageId(node)
-              : allowAsThisParameter
-              ? 'invalidVoidNotReturnOrThisParam'
-              : 'invalidVoidNotReturn',
+                ? getNotReturnOrGenericMessageId(node)
+                : allowAsThisParameter
+                  ? 'invalidVoidNotReturnOrThisParam'
+                  : 'invalidVoidNotReturn',
           node,
         });
       },

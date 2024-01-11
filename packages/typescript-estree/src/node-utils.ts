@@ -191,6 +191,7 @@ export function isComment(node: ts.Node): boolean {
  * @returns is JSDoc comment
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
+  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -268,7 +269,6 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param node
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
@@ -424,11 +424,12 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  while (node) {
-    if (predicate(node)) {
-      return node;
+  let current: ts.Node | undefined = node;
+  while (current) {
+    if (predicate(current)) {
+      return current;
     }
-    node = node.parent;
+    current = current.parent as ts.Node | undefined;
   }
   return undefined;
 }
@@ -482,9 +483,7 @@ export function isComputedProperty(
 export function isOptional(node: {
   questionToken?: ts.QuestionToken;
 }): boolean {
-  return node.questionToken
-    ? node.questionToken.kind === SyntaxKind.QuestionToken
-    : false;
+  return !!node.questionToken;
 }
 
 /**
@@ -677,11 +676,7 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
     }
 
     if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-      const converted = convertToken(node, ast);
-
-      if (converted) {
-        result.push(converted);
-      }
+      result.push(convertToken(node, ast));
     } else {
       node.getChildren(ast).forEach(walk);
     }
@@ -775,10 +770,6 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
 
 /**
  * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
- * @template T
- * @template U
- * @param array
- * @param callback
  */
 export function firstDefined<T, U>(
   array: readonly T[] | undefined,
@@ -934,6 +925,35 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   return false;
 }
 
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  switch (node.kind) {
+    case SyntaxKind.Identifier:
+      return true;
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      if (node.flags & ts.NodeFlags.OptionalChain) {
+        return false;
+      }
+      return true;
+    case SyntaxKind.ParenthesizedExpression:
+    case SyntaxKind.TypeAssertionExpression:
+    case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.NonNullExpression:
+      return isValidAssignmentTarget(
+        (
+          node as
+            | ts.ParenthesizedExpression
+            | ts.AssertionExpression
+            | ts.SatisfiesExpression
+            | ts.NonNullExpression
+        ).expression,
+      );
+    default:
+      return false;
+  }
+}
+
 export function getNamespaceModifiers(
   node: ts.ModuleDeclaration,
 ): ts.Modifier[] | undefined {
@@ -943,11 +963,10 @@ export function getNamespaceModifiers(
   let moduleDeclaration = node;
   while (
     (!modifiers || modifiers.length === 0) &&
-    ts.isModuleDeclaration(moduleDeclaration.parent) &&
-    moduleDeclaration.parent.name
+    ts.isModuleDeclaration(moduleDeclaration.parent)
   ) {
     const parentModifiers = getModifiers(moduleDeclaration.parent);
-    if (parentModifiers && parentModifiers?.length > 0) {
+    if (parentModifiers?.length) {
       modifiers = parentModifiers;
     }
     moduleDeclaration = moduleDeclaration.parent;

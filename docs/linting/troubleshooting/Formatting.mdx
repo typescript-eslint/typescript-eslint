@@ -3,8 +3,8 @@ id: formatting
 title: What About Formatting?
 ---
 
-We strongly recommend against using ESLint for formatting.
-We strongly recommend using [Prettier](https://prettier.io), [dprint](https://dprint.dev), or an equivalent instead.
+We recommend against using ESLint for formatting.
+We recommend using [Prettier](https://prettier.io), [dprint](https://dprint.dev), or an equivalent instead.
 
 ## Formatters vs. Linters
 
@@ -23,9 +23,12 @@ Additionally linters typically run each rule isolated from one another. This has
 - any two lint rules can't share config meaning one lint rule's fixer might introduce a violation of another lint rule's fixer (eg one lint rule might use the incorrect indentation character).
 - lint rule fixers can conflict (apply to the same code range), forcing the linter to perform an additional cycle to attempt to apply a fixer to a clean set of code.
 
-These problems cause a linter to be much slower and, more importantly, much less consistent and less able to handle edge-cases than a purpose-built formatter.
+These problems cause a linter to be much slower - which can be much more of a problem in projects that enable [typed linting](../Typed_Linting.mdx).
+Formatting with a linter is also much less consistent and less able to handle edge-cases than a purpose-built formatter.
+The maintenance cost of formatting-related lint rules is typically very high as a result.
 
-Modern formatters such as Prettier are architected in a way that applies formatting to all code regardless of original formatting which helps them be more consistent.
+Modern formatters such as Prettier are architected in a way that applies formatting to all code regardless of original formatting.
+This design allows formatters to be much more comprehensive and consistent at much lower maintenance cost than linters.
 
 ### Suggested Usage - Prettier
 
@@ -55,6 +58,16 @@ module.exports = {
 
 Note that even if you use a formatter other than `prettier`, you can use `eslint-config-prettier` as it exclusively turns **off** all formatting rules.
 
+#### `eslint-plugin-prettier`
+
+`eslint-config-prettier` is not the same as [`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier).
+
+- The _config_ only disables rules from core and other plugins.
+- The _plugin_ loads and runs Prettier inside ESLint.
+
+Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](./performance-troubleshooting#eslint-plugin-prettier).
+However, because it doesn't re-implement Prettier's logic in ESLint, the caveats mentioned about using linters for formatting don't apply to `eslint-plugin-prettier` either.
+
 ## ESLint Core and Formatting
 
 Most lint rules fall into one of two to three categories:
@@ -69,5 +82,15 @@ Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2
 > We've learned that there's no way to satisfy everyone's personal preferences, and most of the rules already have a lot of difficult-to-understand options.
 > Stylistic rules are those related to spacing, conventions, and generally anything that does not highlight an error or a better way to do something.
 
-We support the ESLint team's decision and backing logic to move away from _formatting_ and _stylistic_ rules.
+We mirror the ESLint team's move away from _formatting_ and _stylistic_ rules.
 With the exception of bug fixes, no new formatting- or stylistic-related pull requests will be accepted into typescript-eslint.
+
+## `eslint-stylistic`
+
+The downside of using a comprehensive formatter for formatting is that it will strictly apply opinions to code.
+Although you can [ignore code in Prettier](https://prettier.io/docs/en/ignore.html) and other formatters, including inline such as with [`// prettier-ignore` comments](https://prettier.io/docs/en/ignore.html#javascript), formatters are much more opinionated than lint rules.
+
+The [`eslint-stylistic`](https://eslint.style) project provides an ESLint plugin containing _formatting_ and _stylistic_ rules.
+That plugin can serve as your formatter if you strongly prefer not to use a dedicated formatter.
+
+See [ESLint Stylistic > Why?](https://eslint.style/guide/why) for more details on that project's motivation, and [ESLint Stylistic > Getting Started](https://eslint.style/guide/getting-started) for how to set it up.

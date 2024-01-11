@@ -11,11 +11,6 @@ This rule simply warns against using them, as using them will likely introduce t
 */
 
 const BANNED_PROPERTIES = [
-  // {
-  //   type: 'Node',
-  //   property: 'parent',
-  //   fixWith: null,
-  // },
   {
     type: 'Symbol',
     property: 'declarations',
@@ -87,10 +82,6 @@ export default createRule({
                 messageId: 'suggestedFix',
                 data: banned,
                 fix(fixer): TSESLint.RuleFix | null {
-                  if (banned.fixWith == null) {
-                    return null;
-                  }
-
                   return fixer.replaceText(node.property, banned.fixWith);
                 },
               },

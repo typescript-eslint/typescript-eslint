@@ -104,8 +104,10 @@
   margin-left: 0;
   opacity: 0;
   width: 0;
-  transition: margin-left var(--ifm-transition-fast),
-    opacity var(--ifm-transition-fast), width var(--ifm-transition-fast);
+  transition:
+    margin-left var(--ifm-transition-fast),
+    opacity var(--ifm-transition-fast),
+    width var(--ifm-transition-fast);
 }
 
 .visual.visual-exclude::after,

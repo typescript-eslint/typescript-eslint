@@ -73,11 +73,21 @@ There are cases where the rule allows passing an argument of `any` to `unknown`.
 
 Example of `any` to `unknown` assignment that are allowed:
 
-```ts
-declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
+```ts showPlaygroundButton
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 ```
+
+## When Not To Use It
+
+If your codebase has many existing `any`s or areas of unsafe code, it may be difficult to enable this rule.
+It may be easier to skip the `no-unsafe-*` rules pending increasing type safety in unsafe areas of your project.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
+- [`no-unsafe-assignment`](./no-unsafe-assignment.md)
+- [`no-unsafe-call`](./no-unsafe-call.md)
+- [`no-unsafe-member-access`](./no-unsafe-member-access.md)
+- [`no-unsafe-return`](./no-unsafe-return.md)

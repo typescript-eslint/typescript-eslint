@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "6.7.0",
+  "version": "6.18.1",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -60,7 +60,7 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -68,19 +68,19 @@
     "@eslint-community/eslint-utils": "^4.4.0",
     "@types/json-schema": "^7.0.12",
     "@types/semver": "^7.5.0",
-    "@typescript-eslint/scope-manager": "6.7.0",
-    "@typescript-eslint/types": "6.7.0",
-    "@typescript-eslint/typescript-estree": "6.7.0",
+    "@typescript-eslint/scope-manager": "6.18.1",
+    "@typescript-eslint/types": "6.18.1",
+    "@typescript-eslint/typescript-estree": "6.18.1",
     "semver": "^7.5.4"
   },
   "peerDependencies": {
     "eslint": "^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "6.7.0",
+    "@typescript-eslint/parser": "6.18.1",
     "downlevel-dts": "*",
-    "jest": "29.6.4",
-    "prettier": "^2.8.4",
+    "jest": "29.7.0",
+    "prettier": "^3.0.3",
     "rimraf": "*",
     "typescript": "*"
   },

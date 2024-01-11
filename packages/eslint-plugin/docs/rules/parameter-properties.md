@@ -19,7 +19,7 @@ It may take an options object containing either or both of:
 - `"allow"`: allowing certain kinds of properties to be ignored
 - `"prefer"`: either `"class-property"` _(default)_ or `"parameter-property"`
 
-### `"allow"`
+### `allow`
 
 If you would like to ignore certain kinds of properties then you may pass an object containing `"allow"` as an array of any of the following options:
 
@@ -45,7 +45,7 @@ For example, to ignore `public` properties:
 }
 ```
 
-### `"prefer"`
+### `prefer`
 
 By default, the rule prefers class property (`"class-property"`).
 You can switch it to instead preferring parameter property with (`"parameter-property"`).
@@ -109,7 +109,7 @@ Examples of code for the `{ "allow": ["readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["readonly"] }'
 class Foo {
   constructor(private name: string) {}
 }
@@ -137,7 +137,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -155,7 +155,7 @@ Examples of code for the `{ "allow": ["private"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["private"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -183,7 +183,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["private"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -201,7 +201,7 @@ Examples of code for the `{ "allow": ["protected"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["protected"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -229,7 +229,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["protected"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -247,7 +247,7 @@ Examples of code for the `{ "allow": ["public"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["public"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -275,7 +275,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["public"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -293,7 +293,7 @@ Examples of code for the `{ "allow": ["private readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["private readonly"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -321,7 +321,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["private readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -339,7 +339,7 @@ Examples of code for the `{ "allow": ["protected readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["protected readonly"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -367,7 +367,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["protected readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -385,7 +385,7 @@ Examples of code for the `{ "allow": ["public readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["public readonly"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -413,7 +413,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["public readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -431,7 +431,7 @@ Examples of code for the `{ "prefer": "parameter-property" }` option:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "prefer": "parameter-property" }'
 class Foo {
   private name: string;
   constructor(name: string) {
@@ -456,7 +456,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "prefer": "parameter-property" }'
 class Foo {
   private differentName: string;
   constructor(name: string) {
@@ -482,4 +482,7 @@ class Foo {
 
 ## When Not To Use It
 
-If you don't care about the using parameter properties in constructors, then you will not need this rule.
+If you don't care about which style of parameter properties in constructors is used in your classes, then you will not need this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

@@ -1,9 +1,21 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  getTypeFlags,
+  isLogicalOrOperator,
+  isNodeEqual,
+  isNullableType,
+  isNullLiteral,
+  isUndefinedIdentifier,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type Options = [
   {
@@ -28,7 +40,7 @@ export type MessageIds =
   | 'preferNullishOverTernary'
   | 'suggestNullish';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'prefer-nullish-coalescing',
   meta: {
     type: 'suggestion',
@@ -112,9 +124,9 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const compilerOptions = parserServices.program.getCompilerOptions();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const checker = parserServices.program.getTypeChecker();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -208,18 +220,18 @@ export default util.createRule<Options, MessageIds>({
 
         // we check that the test only contains null, undefined and the identifier
         for (const testNode of nodesInsideTestExpression) {
-          if (util.isNullLiteral(testNode)) {
+          if (isNullLiteral(testNode)) {
             hasNullCheck = true;
-          } else if (util.isUndefinedIdentifier(testNode)) {
+          } else if (isUndefinedIdentifier(testNode)) {
             hasUndefinedCheck = true;
           } else if (
             (operator === '!==' || operator === '!=') &&
-            util.isNodeEqual(testNode, node.consequent)
+            isNodeEqual(testNode, node.consequent)
           ) {
             identifier = testNode;
           } else if (
             (operator === '===' || operator === '==') &&
-            util.isNodeEqual(testNode, node.alternate)
+            isNodeEqual(testNode, node.alternate)
           ) {
             identifier = testNode;
           } else {
@@ -244,7 +256,7 @@ export default util.createRule<Options, MessageIds>({
 
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(identifier);
           const type = checker.getTypeAtLocation(tsNode);
-          const flags = util.getTypeFlags(type);
+          const flags = getTypeFlags(type);
 
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return false;
@@ -297,7 +309,7 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = util.isNullableType(type, { allowUndefined: true });
+        const isNullish = isNullableType(type, { allowUndefined: true });
         if (!isNullish) {
           return;
         }
@@ -333,24 +345,24 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const barBarOperator = util.nullThrows(
+        const barBarOperator = nullThrows(
           sourceCode.getTokenAfter(
             node.left,
             token =>
               token.type === AST_TOKEN_TYPES.Punctuator &&
               token.value === node.operator,
           ),
-          util.NullThrowsReasons.MissingToken('operator', node.type),
+          NullThrowsReasons.MissingToken('operator', node.type),
         );
 
         function* fix(
           fixer: TSESLint.RuleFixer,
         ): IterableIterator<TSESLint.RuleFix> {
-          if (node.parent && util.isLogicalOrOperator(node.parent)) {
+          if (isLogicalOrOperator(node.parent)) {
             // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
             if (
               node.left.type === AST_NODE_TYPES.LogicalExpression &&
-              !util.isLogicalOrOperator(node.left.left)
+              !isLogicalOrOperator(node.left.left)
             ) {
               yield fixer.insertTextBefore(node.left.right, '(');
             } else {
@@ -422,7 +434,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
     }
     seen.add(current);
 
-    if (current && current.type === AST_NODE_TYPES.LogicalExpression) {
+    if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
       } else if (current.operator === '||') {

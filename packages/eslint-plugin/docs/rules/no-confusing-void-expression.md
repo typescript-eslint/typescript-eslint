@@ -76,7 +76,7 @@ Especially when using Prettier formatter, which spreads such code across 3 lines
 
 Examples of additional **correct** code with this option enabled:
 
-```ts
+```ts option='{ "ignoreArrowShorthand": true }' showPlaygroundButton
 promise.then(value => window.postMessage(value));
 ```
 
@@ -92,7 +92,7 @@ It also enables a suggestion fix to wrap the void expression with `void` operato
 
 Examples of additional **correct** code with this option enabled:
 
-```ts
+```ts option='{ "ignoreVoidOperator": true }' showPlaygroundButton
 // now it's obvious that we don't expect any response
 promise.then(value => void window.postMessage(value));
 
@@ -113,4 +113,4 @@ console.log(void alert('Hello, world!'));
 
 The return type of a function can be inspected by going to its definition or hovering over it in an IDE.
 If you don't care about being explicit about the void type in actual code then don't use this rule.
-Also, if you prefer concise coding style then also don't use it.
+Also, if you strongly prefer a concise coding style more strongly than any fear of `void`-related bugs then you can avoid this rule.

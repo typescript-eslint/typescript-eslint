@@ -17,7 +17,7 @@ See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled 
 
 ## Options
 
-### `"checksConditionals"`
+### `checksConditionals`
 
 If you don't want to check conditionals, you can configure the rule with `"checksConditionals": false`:
 
@@ -40,7 +40,7 @@ Examples of code for this rule with `checksConditionals: true`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checksConditionals": true }'
 const promise = Promise.resolve('value');
 
 if (promise) {
@@ -56,7 +56,7 @@ while (promise) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checksConditionals": true }'
 const promise = Promise.resolve('value');
 
 // Always `await` the Promise in a conditional
@@ -73,10 +73,10 @@ while (await promise) {
 
 <!--/tabs-->
 
-### `"checksVoidReturn"`
+### `checksVoidReturn`
 
-Likewise, if you don't want functions that return promises where a void return is
-expected to be checked, your configuration will look like this:
+Likewise, if you don't want to check functions that return promises where a void return is
+expected, your configuration will look like this:
 
 ```json
 {
@@ -120,7 +120,7 @@ Examples of code for this rule with `checksVoidReturn: true`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checksVoidReturn": true }'
 [1, 2, 3].forEach(async value => {
   await doSomething(value);
 });
@@ -140,7 +140,7 @@ eventEmitter.on('some-event', async () => {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checksVoidReturn": true }'
 // for-of puts `await` in outer context
 for (const value of [1, 2, 3]) {
   await doSomething(value);
@@ -182,7 +182,7 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
-### `"checksSpreads"`
+### `checksSpreads`
 
 If you don't want to check object spreads, you can add this configuration:
 
@@ -203,7 +203,7 @@ Examples of code for this rule with `checksSpreads: true`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checksSpreads": true }'
 const getData = () => someAsyncOperation({ myArg: 'foo' });
 
 return { foo: 42, ...getData() };
@@ -217,7 +217,7 @@ return { foo: 42, ...getData2() };
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checksSpreads": true }'
 const getData = () => someAsyncOperation({ myArg: 'foo' });
 
 return { foo: 42, ...(await getData()) };
@@ -233,8 +233,9 @@ return { foo: 42, ...(await getData2()) };
 
 ## When Not To Use It
 
-If you do not use Promises in your codebase or are not concerned with possible
-misuses of them outside of what the TypeScript compiler will check.
+This rule can be difficult to enable on large existing projects that set up many misused Promises.
+Alternately, if you're not worried about crashes from floating or misused Promises -such as if you have global unhandled Promise handlers registered- then in some cases it may be safe to not use this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

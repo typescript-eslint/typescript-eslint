@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -15,6 +16,8 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'brace-style',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/brace-style'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent brace style for blocks',
@@ -32,7 +35,7 @@ export default createRule<Options, MessageIds>({
       context.options;
 
     const isAllmanStyle = style === 'allman';
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const rules = baseRule.create(context);
 
     /**

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -23,17 +24,19 @@ export default createRule<Options, MessageIds>({
   // eslint-disable-next-line eslint-plugin/prefer-message-ids,eslint-plugin/require-meta-type,eslint-plugin/require-meta-schema,eslint-plugin/require-meta-fixable -- all in base rule - https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/274
   meta: {
     ...baseRule.meta,
+    deprecated: true,
     docs: {
       description: 'Enforce consistent spacing inside braces',
       extendsBaseRule: true,
     },
+    replacedBy: ['@stylistic/ts/object-curly-spacing'],
   },
   defaultOptions: ['never'],
   create(context) {
     // eslint-disable-next-line no-restricted-syntax -- Use raw options for extended rules.
     const [firstOption, secondOption] = context.options;
     const spaced = firstOption === 'always';
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     /**
      * Determines whether an option is set, relative to the spacing option.
@@ -67,9 +70,9 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
-      const nextToken = context
-        .getSourceCode()
-        .getTokenAfter(token, { includeComments: true })!;
+      const nextToken = getSourceCode(context).getTokenAfter(token, {
+        includeComments: true,
+      })!;
 
       context.report({
         node,
@@ -93,9 +96,9 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
-      const previousToken = context
-        .getSourceCode()
-        .getTokenBefore(token, { includeComments: true })!;
+      const previousToken = getSourceCode(context).getTokenBefore(token, {
+        includeComments: true,
+      })!;
 
       context.report({
         node,

@@ -1,8 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
-import * as util from '../util';
+import { createRule, deepMerge } from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
 // need type's implicit index sig for deepMerge
@@ -132,9 +133,11 @@ const BASE_SCHEMA: JSONSchema4 = {
   additionalProperties: false,
 };
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/member-delimiter-style'],
     type: 'layout',
     docs: {
       description:
@@ -200,16 +203,16 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     // use the base options as the defaults for the cases
     const baseOptions = options;
     const overrides = baseOptions.overrides ?? {};
-    const interfaceOptions: BaseOptions = util.deepMerge(
+    const interfaceOptions: BaseOptions = deepMerge(
       baseOptions,
       overrides.interface,
     );
-    const typeLiteralOptions: BaseOptions = util.deepMerge(
+    const typeLiteralOptions: BaseOptions = deepMerge(
       baseOptions,
       overrides.typeLiteral,
     );
@@ -252,7 +255,7 @@ export default util.createRule<Options, MessageIds>({
         .pop();
 
       const sourceCodeLines = sourceCode.getLines();
-      const lastTokenLine = sourceCodeLines[lastToken?.loc.start.line - 1];
+      const lastTokenLine = sourceCodeLines[lastToken.loc.start.line - 1];
 
       const optsSemi = getOption('semi');
       const optsComma = getOption('comma');
@@ -311,7 +314,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Check the member separator being used matches the delimiter.
-     * @param {ASTNode} node the node to be evaluated.
+     * @param node the node to be evaluated.
      */
     function checkMemberSeparatorStyle(
       node: TSESTree.TSInterfaceBody | TSESTree.TSTypeLiteral,
@@ -340,7 +343,7 @@ export default util.createRule<Options, MessageIds>({
         : { ...typeOpts.multiline, type: 'multi-line' };
 
       members.forEach((member, index) => {
-        checkLastToken(member, opts ?? {}, index === members.length - 1);
+        checkLastToken(member, opts, index === members.length - 1);
       });
     }
 

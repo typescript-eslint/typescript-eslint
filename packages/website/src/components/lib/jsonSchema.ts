@@ -50,7 +50,7 @@ export function getRuleJsonSchemaWithErrorLevel(
       };
     }
     // example: naming-convention rule
-    if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
+    if (typeof ruleSchema.items === 'object') {
       return {
         ...ruleSchema,
         type: 'array',
