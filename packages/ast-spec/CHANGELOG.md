@@ -1,7 +1,66 @@
-# Change Log
+## 6.18.1 (2024-01-08)
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+### 🩹 Fixes
+
+- **typescript-estree:** fix invalid parsing error when use update expression on non-null assertion
+
+
+### ❤️  Thank You
+
+- auvred
+- James
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.18.0 (2024-01-06)
+
+
+### 🚀 Features
+
+- **typescript-estree:** throw on invalid update expressions
+
+- **typescript-estree:** throw error when CatchClause param contains initializer
+
+
+### ❤️  Thank You
+
+- auvred
+- Joshua Chen
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# [6.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.16.0...v6.17.0) (2024-01-01)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.15.0...v6.16.0) (2023-12-25)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.14.0...v6.15.0) (2023-12-18)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
 
 # [6.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.2...v6.14.0) (2023-12-11)
 

@@ -222,7 +222,116 @@ switch (value) {
     return -1;
 }
       `,
-      options: [{ requireDefaultForNonUnion: true }],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    // switch with default clause on string type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: string;
+switch (value) {
+  case 'foo':
+    return 0;
+  case 'bar':
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on number type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on bigint type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: bigint;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on symbol type +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: symbol;
+const foo = Symbol('foo');
+switch (value) {
+  case foo:
+    return 0;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    // switch with default clause on union with number +
+    // "allowDefaultCaseForExhaustiveSwitch" option
+    {
+      code: `
+declare const value: 0 | 1 | number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
     },
   ],
   invalid: [
@@ -627,7 +736,12 @@ switch (value) {
     return 1;
 }
       `,
-      options: [{ requireDefaultForNonUnion: true }],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
@@ -721,6 +835,216 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      // superfluous switch with a string-based union
+      code: `
+type MyUnion = 'foo' | 'bar' | 'baz';
+
+declare const myUnion: MyUnion;
+
+switch (myUnion) {
+  case 'foo':
+  case 'bar':
+  case 'baz': {
+    break;
+  }
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      // superfluous switch with a string-based enum
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+  case MyEnum.Bar:
+  case MyEnum.Baz: {
+    break;
+  }
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      // superfluous switch with a number-based enum
+      code: `
+enum MyEnum {
+  Foo,
+  Bar,
+  Baz,
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+  case MyEnum.Bar:
+  case MyEnum.Baz: {
+    break;
+  }
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      // superfluous switch with a boolean
+      code: `
+declare const myBoolean: boolean;
+
+switch (myBoolean) {
+  case true:
+  case false: {
+    break;
+  }
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      // superfluous switch with undefined
+      code: `
+declare const myValue: undefined;
+
+switch (myValue) {
+  case undefined: {
+    break;
+  }
+
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      // superfluous switch with null
+      code: `
+declare const myValue: null;
+
+switch (myValue) {
+  case null: {
+    break;
+  }
+
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      // superfluous switch with union of various types
+      code: `
+declare const myValue: 'foo' | boolean | undefined | null;
+
+switch (myValue) {
+  case 'foo':
+  case true:
+  case false:
+  case undefined:
+  case null: {
+    break;
+  }
+
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
         },
       ],
     },

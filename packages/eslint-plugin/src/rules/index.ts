@@ -34,6 +34,7 @@ import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noArrayDelete from './no-array-delete';
 import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
@@ -109,6 +110,7 @@ import preferLiteralEnumMember from './prefer-literal-enum-member';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
 import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
+import preferPromiseRejectErrors from './prefer-promise-reject-errors';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
@@ -173,6 +175,7 @@ export default {
   'method-signature-style': methodSignatureStyle,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
+  'no-array-delete': noArrayDelete,
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
@@ -248,6 +251,7 @@ export default {
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,
+  'prefer-promise-reject-errors': preferPromiseRejectErrors,
   'prefer-readonly': preferReadonly,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,

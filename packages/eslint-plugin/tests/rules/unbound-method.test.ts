@@ -57,6 +57,7 @@ ruleTester.run('unbound-method', rule, {
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
+    'const x = Object.defineProperty;',
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -206,8 +207,6 @@ class ContainsMethods {
 function foo(instance: ContainsMethods | null) {
   instance?.bound();
   instance?.unbound();
-
-  instance?.bound++;
 
   if (instance?.bound) {
   }

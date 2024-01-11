@@ -310,8 +310,8 @@ export default createRule<Options, MessageId>({
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
      *    Known exceptions:
-     *      * https://github.com/microsoft/TypeScript/issues/32627
-     *      * https://github.com/microsoft/TypeScript/issues/37160 (handled)
+     *      - https://github.com/microsoft/TypeScript/issues/32627
+     *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
     const BOOL_OPERATORS = new Set([
       '<',
@@ -547,7 +547,7 @@ export default createRule<Options, MessageId>({
     //  declare const foo: { bar : { baz: string } } | null
     //  foo?.bar;
     //  ```
-    function isNullableOriginFromPrev(
+    function isMemberExpressionNullableOriginFromObject(
       node: TSESTree.MemberExpression,
     ): boolean {
       const prevType = getConstrainedTypeAtLocation(services, node.object);
@@ -578,12 +578,35 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function isCallExpressionNullableOriginFromCallee(
+      node: TSESTree.CallExpression,
+    ): boolean {
+      const prevType = getConstrainedTypeAtLocation(services, node.callee);
+
+      if (prevType.isUnion()) {
+        const isOwnNullable = prevType.types.some(type => {
+          const signatures = type.getCallSignatures();
+          return signatures.some(sig =>
+            isNullableType(sig.getReturnType(), { allowUndefined: true }),
+          );
+        });
+        return (
+          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
+        );
+      }
+
+      return false;
+    }
+
     function isOptionableExpression(node: TSESTree.Expression): boolean {
       const type = getConstrainedTypeAtLocation(services, node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
-          ? !isNullableOriginFromPrev(node)
-          : true;
+          ? !isMemberExpressionNullableOriginFromObject(node)
+          : node.type === AST_NODE_TYPES.CallExpression
+            ? !isCallExpressionNullableOriginFromCallee(node)
+            : true;
+
       const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||

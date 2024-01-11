@@ -254,9 +254,7 @@ function test<T>(a: T) {
 }
     `,
 
-    /**
-     * Predicate functions
-     **/
+    // Predicate functions
     `
 // with literal arrow function
 [0, 1, 2].filter(x => x);
@@ -774,6 +772,28 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
         typescript: '4.1',
       },
     },
+    `
+type Foo = { bar: () => number | undefined } | null;
+declare const foo: Foo;
+foo?.bar()?.toExponential();
+    `,
+    `
+type Foo = (() => number | undefined) | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+    `,
+    `
+type FooUndef = () => undefined;
+type FooNum = () => number;
+type Foo = FooUndef | FooNum | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+    `,
+    `
+type Foo = { [key: string]: () => number | undefined } | null;
+declare const foo: Foo;
+foo?.['bar']()?.toExponential();
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1990,6 +2010,118 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { bar: () => number } | null;
+declare const foo: Foo;
+foo?.bar()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { bar: () => number } | null;
+declare const foo: Foo;
+foo?.bar().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 11,
+          endLine: 4,
+          endColumn: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { bar: null | { baz: () => { qux: number } } } | null;
+declare const foo: Foo;
+foo?.bar?.baz()?.qux?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { bar: null | { baz: () => { qux: number } } } | null;
+declare const foo: Foo;
+foo?.bar?.baz().qux.toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 16,
+          endLine: 4,
+          endColumn: 18,
+        },
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 21,
+          endLine: 4,
+          endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = (() => number) | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = (() => number) | null;
+declare const foo: Foo;
+foo?.().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 8,
+          endLine: 4,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 15,
+          endLine: 4,
+          endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']?.()?.toExponential();
+      `,
+      output: noFormat`
+type Foo = { [key: string]: () => number } | null;
+declare const foo: Foo;
+foo?.['bar']?.().toExponential();
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 4,
+          column: 17,
+          endLine: 4,
+          endColumn: 19,
         },
       ],
     },
