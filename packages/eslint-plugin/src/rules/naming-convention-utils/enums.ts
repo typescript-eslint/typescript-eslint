@@ -36,19 +36,17 @@ enum Selectors {
   classProperty = 1 << 9,
   objectLiteralProperty = 1 << 10,
   typeProperty = 1 << 11,
+  autoAccessor = 1 << 12,
 
   // typeLike
-  class = 1 << 12,
-  interface = 1 << 13,
-  typeAlias = 1 << 14,
-  enum = 1 << 15,
+  class = 1 << 13,
+  interface = 1 << 14,
+  typeAlias = 1 << 15,
+  enum = 1 << 16,
   typeParameter = 1 << 17,
 
   // other
   import = 1 << 18,
-
-  // auto accessor
-  autoAccessor = 1 << 19,
 }
 type SelectorsString = keyof typeof Selectors;
 
@@ -68,7 +66,8 @@ enum MetaSelectors {
     Selectors.classMethod |
     Selectors.objectLiteralMethod |
     Selectors.typeMethod |
-    Selectors.accessor,
+    Selectors.accessor |
+    Selectors.autoAccessor,
   typeLike = 0 |
     Selectors.class |
     Selectors.interface |

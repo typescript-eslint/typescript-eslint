@@ -129,7 +129,8 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty
-        | TSESTree.AccessorProperty,
+        | TSESTree.AccessorProperty
+        | TSESTree.TSAbstractAccessorProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -150,7 +151,8 @@ export default createRule<Options, MessageIds>({
       }
       if (
         node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
-        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+        node.type === AST_NODE_TYPES.TSAbstractAccessorProperty
       ) {
         modifiers.add(Modifiers.abstract);
       }
@@ -540,7 +542,14 @@ export default createRule<Options, MessageIds>({
           },
         },
 
-      AccessorProperty: {
+      // #endregion accessor
+
+      // #region autoAccessor
+
+      [[
+        AST_NODE_TYPES.AccessorProperty,
+        AST_NODE_TYPES.TSAbstractAccessorProperty,
+      ].join(', ')]: {
         validator: validators.autoAccessor,
         handler: (
           node: TSESTree.AccessorPropertyNonComputedName,
@@ -550,7 +559,8 @@ export default createRule<Options, MessageIds>({
           handleMember(validator, node, modifiers);
         },
       },
-      // #endregion accessor
+
+      // #endregion autoAccessor
 
       // #region enumMember
 
