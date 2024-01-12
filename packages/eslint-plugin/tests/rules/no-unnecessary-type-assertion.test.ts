@@ -646,8 +646,9 @@ declare const arr: object[];
 const item = arr[0]!;
       `,
       output: `
-      declare const arr: object[]
-const item = arr[0]`,
+declare const arr: object[];
+const item = arr[0];
+      `,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
