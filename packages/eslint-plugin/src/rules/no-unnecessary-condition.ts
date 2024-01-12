@@ -436,7 +436,7 @@ export default createRule<Options, MessageId>({
     function checkCallExpression(node: TSESTree.CallExpression): void {
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (isArrayPredicateFunction(node) && node.arguments.length) {
-        const callback = node.arguments[0]!;
+        const callback = node.arguments[0];
         // Inline defined functions
         if (
           callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||

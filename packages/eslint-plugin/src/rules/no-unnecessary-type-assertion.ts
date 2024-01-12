@@ -169,7 +169,10 @@ export default createRule<Options, MessageIds>({
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
         if (!isNullableType(type)) {
-          if (isPossiblyUsedBeforeAssigned(node.expression)) {
+          if (
+            node.expression.type === AST_NODE_TYPES.Identifier &&
+            isPossiblyUsedBeforeAssigned(node.expression)
+          ) {
             return;
           }
 
@@ -177,10 +180,7 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              return fixer.removeRange([
-                node.expression.range[1],
-                node.range[1],
-              ]);
+              return fixer.removeRange([node.range[1] - 1, node.range[1]]);
             },
           });
         } else {
@@ -274,7 +274,10 @@ export default createRule<Options, MessageIds>({
                   : null;
               }
               return fixer.removeRange([
-                node.expression.range[1] + 1,
+                node.expression.range[1] +
+                  (node.expression.type === AST_NODE_TYPES.CallExpression
+                    ? 0
+                    : 1),
                 node.range[1],
               ]);
             },
