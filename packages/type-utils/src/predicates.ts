@@ -2,15 +2,18 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
+import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
 export interface IsNullableTypeOptions {
   /**
-   * Whether the type is a receiving type (i.e. the type of a called function's parameter).
+   * @deprecated - this flag no longer does anything and will be removed in the next major
    */
   isReceiver?: boolean;
+  /**
+   * @deprecated - this flag no longer does anything and will be removed in the next major
+   */
   allowUndefined?: boolean;
 }
 
@@ -19,18 +22,15 @@ export interface IsNullableTypeOptions {
  */
 export function isNullableType(
   type: ts.Type,
-  { isReceiver = false, allowUndefined = true }: IsNullableTypeOptions = {},
+  _deprecated?: IsNullableTypeOptions,
 ): boolean {
-  const flags = getTypeFlags(type);
-
-  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return true;
-  }
-
-  if (allowUndefined) {
-    return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
-  }
-  return (flags & ts.TypeFlags.Null) !== 0;
+  return isTypeFlagSet(
+    type,
+    ts.TypeFlags.Any |
+      ts.TypeFlags.Unknown |
+      ts.TypeFlags.Null |
+      ts.TypeFlags.Undefined,
+  );
 }
 
 /**
