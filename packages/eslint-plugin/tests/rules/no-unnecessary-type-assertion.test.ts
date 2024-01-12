@@ -225,6 +225,18 @@ const a = foo() as number;
 declare function foo(): number | undefined;
 const a = <number>foo();
     `,
+    `
+declare const arr: (object | undefined)[];
+const item = arr[0]!;
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = arr[0] as object;
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = <object>arr[0];
+    `,
   ],
 
   invalid: [
@@ -622,6 +634,20 @@ type RT = { log: () => void };
 declare function foo(): RT;
 (foo()).log;
       `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: object[];
+const item = arr[0]!;
+      `,
+      output: `
+      declare const arr: object[]
+const item = arr[0]`,
       errors: [
         {
           messageId: 'unnecessaryAssertion',
