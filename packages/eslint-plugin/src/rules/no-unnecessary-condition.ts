@@ -530,7 +530,7 @@ export default createRule<Options, MessageId>({
           propertyType.value.toString(),
         );
         if (propType) {
-          return isNullableType(propType, { allowUndefined: true });
+          return isNullableType(propType);
         }
       }
       const typeName = getTypeName(checker, propertyType);
@@ -568,14 +568,12 @@ export default createRule<Options, MessageId>({
           );
 
           if (propType) {
-            return isNullableType(propType, { allowUndefined: true });
+            return isNullableType(propType);
           }
 
           return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
         });
-        return (
-          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
-        );
+        return !isOwnNullable && isNullableType(prevType);
       }
       return false;
     }
@@ -612,8 +610,7 @@ export default createRule<Options, MessageId>({
       const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
-        (isOwnNullable &&
-          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
+        (isOwnNullable && (isNullableType(type) || possiblyVoid))
       );
     }
 

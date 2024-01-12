@@ -49,6 +49,11 @@ const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
 let bar: number | undefined = x;
 let foo: number = bar!;
     `,
+    `
+declare const a: { data?: unknown };
+
+const x = a.data!;
+    `,
     {
       code: `
 type Foo = number;
