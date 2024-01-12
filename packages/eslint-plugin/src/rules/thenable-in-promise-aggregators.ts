@@ -1,6 +1,5 @@
 import {
-  isPromiseConstructorLike,
-  isPromiseLike,
+  isBuiltinSymbolLike,
   isTypeAnyType,
   isTypeUnknownType,
 } from '@typescript-eslint/type-utils';
@@ -10,6 +9,8 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices } from '../util';
+
+const aggregateFunctionNames = new Set(['all', 'race', 'allSettled', 'any']);
 
 export default createRule({
   name: 'thenable-in-promise-aggregators',
@@ -25,6 +26,8 @@ export default createRule({
         'Unexpected non-Thenable value in array passed to promise aggregator.',
       arrayArg:
         'Unexpected array of non-Thenable values passed to promise aggregator.',
+      emptyArrayElement:
+        'Unexpected empty element in array passed to promise aggregator (do you have an extra comma?).',
     },
     schema: [],
     type: 'problem',
@@ -34,8 +37,6 @@ export default createRule({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-
-    const aggregateFunctionNames = ['all', 'race', 'allSettled', 'any'];
 
     function skipChainExpression<T extends TSESTree.Node>(
       node: T,
@@ -91,6 +92,48 @@ export default createRule({
       return typeArgs.some(t => isPartiallyLikeType(t, predicate));
     }
 
+    function isStringLiteralMatching(
+      type: ts.Type,
+      predicate: (value: string) => boolean,
+    ): boolean {
+      if (type.isIntersection()) {
+        return type.types.some(t => isStringLiteralMatching(t, predicate));
+      }
+
+      if (type.isUnion()) {
+        return type.types.every(t => isStringLiteralMatching(t, predicate));
+      }
+
+      if (!type.isStringLiteral()) {
+        return false;
+      }
+
+      return predicate(type.value);
+    }
+
+    function isMemberName(
+      node:
+        | TSESTree.MemberExpressionComputedName
+        | TSESTree.MemberExpressionNonComputedName,
+      predicate: (name: string) => boolean,
+    ): boolean {
+      if (!node.computed) {
+        return predicate(node.property.name);
+      }
+
+      if (node.property.type !== AST_NODE_TYPES.Literal) {
+        const typeOfProperty = services.getTypeAtLocation(node.property);
+        return isStringLiteralMatching(typeOfProperty, predicate);
+      }
+
+      const { value } = node.property;
+      if (typeof value !== 'string') {
+        return false;
+      }
+
+      return predicate(value);
+    }
+
     return {
       CallExpression(node: TSESTree.CallExpression): void {
         const callee = skipChainExpression(node.callee);
@@ -98,28 +141,24 @@ export default createRule({
           return;
         }
 
-        if (callee.computed) {
-          if (
-            callee.property.type !== AST_NODE_TYPES.Literal ||
-            typeof callee.property.value !== 'string' ||
-            !aggregateFunctionNames.includes(callee.property.value)
-          ) {
-            return;
-          }
-        } else if (!aggregateFunctionNames.includes(callee.property.name)) {
-          return;
-        }
-
-        const calleeType = services.getTypeAtLocation(callee.object);
-        if (
-          !isPromiseConstructorLike(services.program, calleeType) &&
-          !isPromiseLike(services.program, calleeType)
-        ) {
+        if (!isMemberName(callee, n => aggregateFunctionNames.has(n))) {
           return;
         }
 
         const args = node.arguments;
         if (args.length < 1) {
+          return;
+        }
+
+        const calleeType = services.getTypeAtLocation(callee.object);
+
+        if (
+          !isBuiltinSymbolLike(
+            services.program,
+            calleeType,
+            name => name === 'PromiseConstructor' || name === 'Promise',
+          )
+        ) {
           return;
         }
 
@@ -133,7 +172,7 @@ export default createRule({
           for (const element of elements) {
             if (element == null) {
               context.report({
-                messageId: 'inArray',
+                messageId: 'emptyArrayElement',
                 node: arg,
               });
               return;

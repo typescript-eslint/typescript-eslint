@@ -21,7 +21,9 @@ ruleTester.run('thenable-in-promise-aggregators', rule, {
     'await Promise.allSettled([Promise.resolve(3)]);',
     'await Promise.any([Promise.resolve(3)]);',
     'await Promise.all([]);',
+    'await Promise.race([Promise.reject(3)]);',
     "await Promise['all']([Promise.resolve(3)]);",
+    'await Promise[`all`]([Promise.resolve(3)]);',
     "await Promise.all([Promise['resolve'](3)]);",
     'await Promise.race([(async () => true)()]);',
     `
@@ -37,6 +39,30 @@ await Promise.race([returnsPromiseAsync()]);
     `
 declare const anyValue: any;
 await Promise.race([anyValue]);
+    `,
+    `
+const key = 'all';
+await Promise[key]([Promise.resolve(3)]);
+    `,
+    `
+declare const key: 'race';
+await Promise[key]([Promise.resolve(3)]);
+    `,
+    `
+declare const key: 'race' | 'any';
+await Promise[key]([Promise.resolve(3)]);
+    `,
+    `
+declare const key: any;
+await Promise[key]([3]);
+    `,
+    `
+declare const key: 'all' | 'unrelated';
+await Promise[key]([3]);
+    `,
+    `
+declare const key: [string] & 'all';
+await Promise[key]([Promise.resolve(3)]);
     `,
     `
 declare const unknownValue: unknown;
@@ -467,11 +493,23 @@ await foo.all([0]);
       ],
     },
     {
+      code: `
+declare const foo: never;
+await Promise.all([foo]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
       code: 'await Promise.all([,]);',
       errors: [
         {
           line: 1,
-          messageId: 'inArray',
+          messageId: 'emptyArrayElement',
         },
       ],
     },
@@ -498,6 +536,54 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: `
+const key = 'all';
+await Promise[key]([3]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: `
+declare const key: 'all';
+await Promise[key]([3]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: `
+declare const key: 'all' | 'race';
+await Promise[key]([3]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: `
+declare const key: 'all' & Promise<number>;
+await Promise[key]([3]);
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'inArray',
         },
       ],

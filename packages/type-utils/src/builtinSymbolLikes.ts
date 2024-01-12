@@ -8,7 +8,11 @@ import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
  *  ^ PromiseLike
  */
 export function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
-  return isBuiltinSymbolLike(program, type, 'Promise');
+  return isBuiltinSymbolLike(
+    program,
+    type,
+    symbolName => symbolName === 'Promise',
+  );
 }
 
 /**
@@ -20,7 +24,11 @@ export function isPromiseConstructorLike(
   program: ts.Program,
   type: ts.Type,
 ): boolean {
-  return isBuiltinSymbolLike(program, type, 'PromiseConstructor');
+  return isBuiltinSymbolLike(
+    program,
+    type,
+    symbolName => symbolName === 'PromiseConstructor',
+  );
 }
 
 /**
@@ -29,7 +37,11 @@ export function isPromiseConstructorLike(
  *      ^ ErrorLike
  */
 export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
-  return isBuiltinSymbolLike(program, type, 'Error');
+  return isBuiltinSymbolLike(
+    program,
+    type,
+    symbolName => symbolName === 'Error',
+  );
 }
 
 /**
@@ -105,7 +117,7 @@ export function isBuiltinTypeAliasLike(
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
-  symbolName: string,
+  predicate: (symbolName: string) => boolean,
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
     const symbol = subType.getSymbol();
@@ -114,7 +126,7 @@ export function isBuiltinSymbolLike(
     }
 
     if (
-      symbol.getName() === symbolName &&
+      predicate(symbol.getName()) &&
       isSymbolFromDefaultLibrary(program, symbol)
     ) {
       return true;
