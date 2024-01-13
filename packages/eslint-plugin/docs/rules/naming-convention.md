@@ -200,7 +200,7 @@ There are two types of selectors, individual selectors, and grouped selectors.
 
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
-- `accessor` - matches any accessor. It refers to the methods attached to `get` and `set` syntax.
+- `classicAccessor` - matches any accessor. It refers to the methods attached to `get` and `set` syntax.
   - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 - `autoAccessor` - matches any auto-accessor. An auto-accessor is just a class field starting with an `accessor` keyword.
@@ -280,6 +280,9 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `variableLike` - matches the same as `function`, `parameter` and `variable`.
   - Allowed `modifiers`: `async`, `unused`.
   - Allowed `types`: none.
+- `accessor` - matches the same as `classicAccessor` and `autoAccessor`.
+  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 
 ## FAQ
 
