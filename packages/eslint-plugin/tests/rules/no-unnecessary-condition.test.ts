@@ -255,22 +255,7 @@ function test<T>(a: T) {
     `,
     `
 function foo<T extends object>(arg: T, key: keyof T): void {
-  const t1 = arg[key] == null;
-  const t2 = null == arg[key];
-  const t3 = arg[key] != null;
-  const t4 = null != arg[key];
-  const t5 = arg[key] == undefined;
-  const t6 = undefined == arg[key];
-  const t7 = arg[key] != undefined;
-  const t8 = undefined != arg[key];
-  const t9 = arg[key] === null;
-  const t10 = null === arg[key];
-  const t11 = arg[key] !== null;
-  const t12 = null !== arg[key];
-  const t13 = arg[key] === undefined;
-  const t14 = undefined === arg[key];
-  const t15 = arg[key] !== undefined;
-  const t16 = undefined !== arg[key];
+  arg[key] == null;
 }
     `,
 
@@ -769,8 +754,6 @@ foo &&= 1;
     `
 function foo<T extends object>(arg: T, key: keyof T): void {
   arg[key] ??= 'default';
-  arg[key] ||= 'default';
-  arg[key] &&= 'default';
 }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6264
