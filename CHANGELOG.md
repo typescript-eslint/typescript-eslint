@@ -1,3 +1,25 @@
+## 6.18.1 (2024-01-08)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-non-null-assertion] provide valid fix when member access is on next line ([#8185](https://github.com/typescript-eslint/typescript-eslint/pull/8185))
+- **eslint-plugin:** [no-unnecessary-condition] improve checking optional callee ([#8178](https://github.com/typescript-eslint/typescript-eslint/pull/8178))
+- **eslint-plugin:** [prefer-readonly] support modifiers of unions and intersections ([#8169](https://github.com/typescript-eslint/typescript-eslint/pull/8169))
+- **eslint-plugin:** [switch-exhaustiveness-check] fix new allowDefaultCaseForExhaustiveSwitch option ([#8176](https://github.com/typescript-eslint/typescript-eslint/pull/8176))
+- **typescript-estree:** fix invalid parsing error when use update expression on non-null assertion ([#8202](https://github.com/typescript-eslint/typescript-eslint/pull/8202))
+- **typescript-estree:** only create project service from env setting if project is enabled ([#8136](https://github.com/typescript-eslint/typescript-eslint/pull/8136))
+- **utils:** improve error message on typed rule with invalid parser ([#8146](https://github.com/typescript-eslint/typescript-eslint/pull/8146))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- James @Zamiell
+- Josh Goldberg ✨
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.0 (2024-01-06)
 
 

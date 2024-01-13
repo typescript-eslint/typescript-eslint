@@ -651,6 +651,72 @@ class Foo {
         }
       `,
     },
+    `
+      class TestIntersection {
+        private prop: number = 3;
+
+        test() {
+          const that = {} as this & { _foo: 'bar' };
+          that.prop = 1;
+        }
+      }
+    `,
+    `
+      class TestUnion {
+        private prop: number = 3;
+
+        test() {
+          const that = {} as this | (this & { _foo: 'bar' });
+          that.prop = 1;
+        }
+      }
+    `,
+    `
+      class TestStaticIntersection {
+        private static prop: number;
+
+        test() {
+          const that = {} as typeof TestStaticIntersection & { _foo: 'bar' };
+          that.prop = 1;
+        }
+      }
+    `,
+    `
+      class TestStaticUnion {
+        private static prop: number = 1;
+
+        test() {
+          const that = {} as
+            | typeof TestStaticUnion
+            | (typeof TestStaticUnion & { _foo: 'bar' });
+          that.prop = 1;
+        }
+      }
+    `,
+    `
+      class TestBothIntersection {
+        private prop1: number = 1;
+        private static prop2: number;
+
+        test() {
+          const that = {} as typeof TestBothIntersection & this;
+          that.prop1 = 1;
+          that.prop2 = 1;
+        }
+      }
+    `,
+    `
+      class TestBothIntersection {
+        private prop1: number = 1;
+        private static prop2: number;
+
+        test() {
+          const that = {} as this & typeof TestBothIntersection;
+          that.prop1 = 1;
+          that.prop2 = 1;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -1972,6 +2038,99 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
         {
           data: {
             name: '#testObj',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private prop: number = 3;
+
+          test() {
+            const that = {} as this & { _foo: 'bar' };
+            that._foo = 1;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly prop: number = 3;
+
+          test() {
+            const that = {} as this & { _foo: 'bar' };
+            that._foo = 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'prop',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private prop: number = 3;
+
+          test() {
+            const that = {} as this | (this & { _foo: 'bar' });
+            that.prop;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly prop: number = 3;
+
+          test() {
+            const that = {} as this | (this & { _foo: 'bar' });
+            that.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'prop',
+          },
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+    },
+    {
+      code: `
+        class Test {
+          private prop: number;
+
+          constructor() {
+            const that = {} as this & { _foo: 'bar' };
+            that.prop = 1;
+          }
+        }
+      `,
+      output: `
+        class Test {
+          private readonly prop: number;
+
+          constructor() {
+            const that = {} as this & { _foo: 'bar' };
+            that.prop = 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: {
+            name: 'prop',
           },
           line: 3,
           messageId: 'preferReadonly',

@@ -1,3 +1,20 @@
+## 6.18.1 (2024-01-08)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** fix invalid parsing error when use update expression on non-null assertion
+
+
+### ❤️  Thank You
+
+- auvred
+- James
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.0 (2024-01-06)
 
 

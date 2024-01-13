@@ -933,6 +933,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
+        this.#checkForStatementDeclaration(node.initializer);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           left: this.convertPattern(node.initializer),
@@ -3509,5 +3510,15 @@ export class Converter {
     }
 
     throw createError(message, this.ast, start, end);
+  }
+  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
+    if (ts.isVariableDeclarationList(initializer)) {
+      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
+        this.#throwError(
+          initializer,
+          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
+        );
+      }
+    }
   }
 }

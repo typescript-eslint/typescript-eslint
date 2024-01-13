@@ -6,7 +6,7 @@ import {
 } from 'nx/src/command-line/release';
 import yargs from 'yargs';
 
-const options = await yargs
+const options = await yargs(process.argv.slice(2))
   .version(false)
   .option('version', {
     description:

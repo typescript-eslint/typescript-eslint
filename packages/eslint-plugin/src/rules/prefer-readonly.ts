@@ -251,6 +251,13 @@ type ParameterOrPropertyDeclaration =
 const OUTSIDE_CONSTRUCTOR = -1;
 const DIRECTLY_INSIDE_CONSTRUCTOR = 0;
 
+enum TypeToClassRelation {
+  ClassAndInstance,
+  Class,
+  Instance,
+  None,
+}
+
 class ClassScope {
   private readonly privateModifiableMembers = new Map<
     string,
@@ -312,29 +319,75 @@ class ClassScope {
     ).set(node.name.getText(), node);
   }
 
-  public addVariableModification(node: ts.PropertyAccessExpression): void {
-    const modifierType = this.checker.getTypeAtLocation(node.expression);
-    if (
-      !modifierType.getSymbol() ||
-      !typeIsOrHasBaseType(modifierType, this.classType)
-    ) {
-      return;
+  public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
+    if (type.isIntersection()) {
+      let result: TypeToClassRelation = TypeToClassRelation.None;
+      for (const subType of type.types) {
+        const subTypeResult = this.getTypeToClassRelation(subType);
+        switch (subTypeResult) {
+          case TypeToClassRelation.Class:
+            if (result === TypeToClassRelation.Instance) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Class;
+            break;
+          case TypeToClassRelation.Instance:
+            if (result === TypeToClassRelation.Class) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Instance;
+            break;
+        }
+      }
+      return result;
+    }
+    if (type.isUnion()) {
+      // any union of class/instance and something else will prevent access to
+      // private members, so we assume that union consists only of classes
+      // or class instances, because otherwise tsc will report an error
+      return this.getTypeToClassRelation(type.types[0]);
     }
 
-    const modifyingStatic =
-      tsutils.isObjectType(modifierType) &&
-      tsutils.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
+    if (!type.getSymbol() || !typeIsOrHasBaseType(type, this.classType)) {
+      return TypeToClassRelation.None;
+    }
+
+    const typeIsClass =
+      tsutils.isObjectType(type) &&
+      tsutils.isObjectFlagSet(type, ts.ObjectFlags.Anonymous);
+
+    if (typeIsClass) {
+      return TypeToClassRelation.Class;
+    }
+
+    return TypeToClassRelation.Instance;
+  }
+
+  public addVariableModification(node: ts.PropertyAccessExpression): void {
+    const modifierType = this.checker.getTypeAtLocation(node.expression);
+
+    const relationOfModifierTypeToClass =
+      this.getTypeToClassRelation(modifierType);
+
     if (
-      !modifyingStatic &&
+      relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
     ) {
       return;
     }
 
-    (modifyingStatic
-      ? this.staticVariableModifications
-      : this.memberVariableModifications
-    ).add(node.name.text);
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Instance ||
+      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
+    ) {
+      this.memberVariableModifications.add(node.name.text);
+    }
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Class ||
+      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
+    ) {
+      this.staticVariableModifications.add(node.name.text);
+    }
   }
 
   public enterConstructor(
