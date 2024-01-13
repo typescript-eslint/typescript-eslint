@@ -530,17 +530,20 @@ export default createRule<Options, MessageIds>({
         },
       },
 
-      'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])':
-        {
-          validator: validators.accessor,
-          handler: (
-            node: TSESTree.MethodDefinitionNonComputedName,
-            validator,
-          ): void => {
-            const modifiers = getMemberModifiers(node);
-            handleMember(validator, node, modifiers);
-          },
+      [[
+        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
+        ':matches(TSAbstractMethodDefinition)[computed = false][kind="get"]',
+        ':matches(TSAbstractMethodDefinition)[computed = false][kind="set"]',
+      ].join(', ')]: {
+        validator: validators.accessor,
+        handler: (
+          node: TSESTree.MethodDefinitionNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
         },
+      },
 
       // #endregion accessor
 
