@@ -131,11 +131,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "additionalItems": false,
             "items": {
               "enum": [
-                "accessor",
                 "autoAccessor",
                 "class",
                 "classMethod",
                 "classProperty",
+                "classicAccessor",
                 "default",
                 "enum",
                 "enumMember",
@@ -1086,7 +1086,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       {
         "additionalProperties": false,
-        "description": "Selector 'accessor'",
+        "description": "Selector 'classicAccessor'",
         "properties": {
           "custom": {
             "$ref": "#/$defs/matchRegexConfig"
@@ -1131,7 +1131,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "$ref": "#/$defs/prefixSuffixConfig"
           },
           "selector": {
-            "enum": ["accessor"],
+            "enum": ["classicAccessor"],
             "type": "string"
           },
           "suffix": {
@@ -1697,11 +1697,11 @@ type Options = /** Multiple selectors in one config */
       )[];
       prefix?: PrefixSuffixConfig;
       selector: (
-        | 'accessor'
         | 'autoAccessor'
         | 'class'
         | 'classMethod'
         | 'classProperty'
+        | 'classicAccessor'
         | 'default'
         | 'enum'
         | 'enumMember'
@@ -1723,28 +1723,6 @@ type Options = /** Multiple selectors in one config */
         | 'variable'
         | 'variableLike'
       )[];
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-      types?: TypeModifiers[];
-    }
-  /** Selector 'accessor' */
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: (
-        | 'abstract'
-        | 'override'
-        | 'private'
-        | 'protected'
-        | 'public'
-        | 'requiresQuotes'
-        | 'static'
-      )[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'accessor';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
@@ -1827,6 +1805,28 @@ type Options = /** Multiple selectors in one config */
       )[];
       prefix?: PrefixSuffixConfig;
       selector: 'classProperty';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'classicAccessor' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | 'abstract'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'classicAccessor';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];

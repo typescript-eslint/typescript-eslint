@@ -523,7 +523,7 @@ export default createRule<Options, MessageIds>({
       // #region accessor
 
       'Property[computed = false]:matches([kind = "get"], [kind = "set"])': {
-        validator: validators.accessor,
+        validator: validators.classicAccessor,
         handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
           const modifiers = new Set<Modifiers>([Modifiers.public]);
           handleMember(validator, node, modifiers);
@@ -535,7 +535,7 @@ export default createRule<Options, MessageIds>({
         ':matches(TSAbstractMethodDefinition)[computed = false][kind="get"]',
         ':matches(TSAbstractMethodDefinition)[computed = false][kind="set"]',
       ].join(', ')]: {
-        validator: validators.accessor,
+        validator: validators.classicAccessor,
         handler: (
           node: TSESTree.MethodDefinitionNonComputedName,
           validator,

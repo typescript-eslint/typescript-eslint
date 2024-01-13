@@ -290,7 +290,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'override',
         'async',
       ]),
-      ...selectorSchema('accessor', true, [
+      ...selectorSchema('classicAccessor', true, [
         'abstract',
         'private',
         'protected',

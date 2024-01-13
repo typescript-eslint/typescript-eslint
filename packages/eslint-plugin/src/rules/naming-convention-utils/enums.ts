@@ -28,7 +28,7 @@ enum Selectors {
 
   // memberLike
   parameterProperty = 1 << 3,
-  accessor = 1 << 4,
+  classicAccessor = 1 << 4,
   enumMember = 1 << 5,
   classMethod = 1 << 6,
   objectLiteralMethod = 1 << 7,
@@ -66,7 +66,7 @@ enum MetaSelectors {
     Selectors.classMethod |
     Selectors.objectLiteralMethod |
     Selectors.typeMethod |
-    Selectors.accessor |
+    Selectors.classicAccessor |
     Selectors.autoAccessor,
   typeLike = 0 |
     Selectors.class |

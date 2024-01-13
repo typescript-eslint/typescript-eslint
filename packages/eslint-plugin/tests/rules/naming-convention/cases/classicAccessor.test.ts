@@ -13,7 +13,7 @@ createTestCases([
       'abstract class Ignored { abstract set %(ignored: number) }',
     ],
     options: {
-      selector: 'accessor',
+      selector: 'classicAccessor',
     },
   },
 ]);
