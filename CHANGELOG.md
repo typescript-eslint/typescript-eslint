@@ -604,10 +604,10 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 * Removes `experimental-utils` - we will no longer update this package and it will be forever frozen at v5.x
 * **eslint-plugin:** Adds an additional class of checks to the rule
 * drop support for ESLint v6
-* drops support for node v17
+* drops support for node v12, v14, and v17
 * **utils:** Removes `meta.docs.suggestion` property
 * Bumps the minimum supported range and removes handling for old versions
-* drops support for node v12
+
 
 You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
 
