@@ -20,7 +20,22 @@ export function isUnsafeAssignment(
   receiver: ts.Type,
   checker: ts.TypeChecker,
   senderNode: TSESTree.Node | null,
-  visited = new Map<ts.Type, Set<ts.Type>>(),
+): false | { sender: ts.Type; receiver: ts.Type } {
+  return isUnsafeAssignmentWorker(
+    type,
+    receiver,
+    checker,
+    senderNode,
+    new Map(),
+  );
+}
+
+function isUnsafeAssignmentWorker(
+  type: ts.Type,
+  receiver: ts.Type,
+  checker: ts.TypeChecker,
+  senderNode: TSESTree.Node | null,
+  visited: Map<ts.Type, Set<ts.Type>>,
 ): false | { sender: ts.Type; receiver: ts.Type } {
   if (isTypeAnyType(type)) {
     // Allow assignment of any ==> unknown.
@@ -84,7 +99,7 @@ export function isUnsafeAssignment(
       const arg = typeArguments[i];
       const receiverArg = receiverTypeArguments[i];
 
-      const unsafe = isUnsafeAssignment(
+      const unsafe = isUnsafeAssignmentWorker(
         arg,
         receiverArg,
         checker,
