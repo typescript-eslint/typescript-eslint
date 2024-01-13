@@ -308,6 +308,15 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'override',
       ]),
+      ...selectorSchema('accessor', true, [
+        'abstract',
+        'private',
+        'protected',
+        'public',
+        'requiresQuotes',
+        'static',
+        'override',
+      ]),
       ...selectorSchema('enumMember', false, ['requiresQuotes']),
 
       ...selectorSchema('typeLike', false, ['abstract', 'exported', 'unused']),

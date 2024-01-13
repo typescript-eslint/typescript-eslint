@@ -82,6 +82,7 @@ enum MetaSelectors {
     Selectors.classProperty |
     Selectors.objectLiteralProperty |
     Selectors.typeProperty,
+  accessor = 0 | Selectors.classicAccessor | Selectors.autoAccessor,
   /* eslint-enable @typescript-eslint/prefer-literal-enum-member */
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;

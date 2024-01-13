@@ -131,6 +131,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "additionalItems": false,
             "items": {
               "enum": [
+                "accessor",
                 "autoAccessor",
                 "class",
                 "classMethod",
@@ -1220,6 +1221,73 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       {
         "additionalProperties": false,
+        "description": "Selector 'accessor'",
+        "properties": {
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
+            ]
+          },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
+          "modifiers": {
+            "additionalItems": false,
+            "items": {
+              "enum": [
+                "abstract",
+                "override",
+                "private",
+                "protected",
+                "public",
+                "requiresQuotes",
+                "static"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["accessor"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
+          "types": {
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["selector", "format"],
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
         "description": "Selector 'enumMember'",
         "properties": {
           "custom": {
@@ -1697,6 +1765,7 @@ type Options = /** Multiple selectors in one config */
       )[];
       prefix?: PrefixSuffixConfig;
       selector: (
+        | 'accessor'
         | 'autoAccessor'
         | 'class'
         | 'classMethod'
@@ -1723,6 +1792,28 @@ type Options = /** Multiple selectors in one config */
         | 'variable'
         | 'variableLike'
       )[];
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'accessor' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | 'abstract'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'accessor';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
