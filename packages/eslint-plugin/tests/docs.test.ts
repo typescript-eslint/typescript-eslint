@@ -189,14 +189,14 @@ describe('Validating rule docs', () => {
           }
 
           const lang = token.lang?.trim();
-          if (!lang?.startsWith('ts')) {
-            return;
+          if (!lang || !/^tsx?\b/i.test(lang)) {
+            continue;
           }
 
           try {
             parseForESLint(token.text, {
               ecmaFeatures: {
-                jsx: lang.startsWith('tsx'),
+                jsx: /^tsx\b/i.test(lang),
               },
               ecmaVersion: 'latest',
               sourceType: 'module',
