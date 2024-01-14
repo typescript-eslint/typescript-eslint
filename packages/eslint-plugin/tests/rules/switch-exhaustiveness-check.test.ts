@@ -926,7 +926,7 @@ default: { throw new Error('default case') }
 declare const value: string | number;
 switch (value) {
   case 1:
-    1;
+    break;
 }
       `,
       errors: [
