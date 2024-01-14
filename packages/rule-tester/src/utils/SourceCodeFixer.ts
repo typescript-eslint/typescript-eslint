@@ -63,7 +63,7 @@ export function applyFixes(
     const end = fix.range[1];
 
     // Remain it as a problem if it's overlapped or it's a negative range
-    if (lastPos >= start || start > end) {
+    if (lastPos > start || start > end) {
       remainingMessages.push(problem);
       return false;
     }
