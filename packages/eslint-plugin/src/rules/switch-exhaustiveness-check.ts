@@ -123,30 +123,26 @@ export default createRule<Options, MessageIds>({
         caseTypes.add(caseType);
       }
 
-      function findMissingBranchTypes(): ts.Type[] {
-        const missingLiteralTypes: ts.Type[] = [];
+      const missingLiteralBranchTypes: ts.Type[] = [];
 
-        for (const unionPart of tsutils.unionTypeParts(discriminantType)) {
-          for (const intersectionPart of tsutils.intersectionTypeParts(
-            unionPart,
-          )) {
-            if (
-              caseTypes.has(intersectionPart) ||
-              !isTypeLiteralLikeType(intersectionPart)
-            ) {
-              continue;
-            }
-
-            missingLiteralTypes.push(intersectionPart);
+      for (const unionPart of tsutils.unionTypeParts(discriminantType)) {
+        for (const intersectionPart of tsutils.intersectionTypeParts(
+          unionPart,
+        )) {
+          if (
+            caseTypes.has(intersectionPart) ||
+            !isTypeLiteralLikeType(intersectionPart)
+          ) {
+            continue;
           }
-        }
 
-        return missingLiteralTypes;
+          missingLiteralBranchTypes.push(intersectionPart);
+        }
       }
 
       return {
         symbolName,
-        missingLiteralBranchTypes: findMissingBranchTypes(),
+        missingLiteralBranchTypes,
         defaultCase,
         containsNonLiteralType,
       };
