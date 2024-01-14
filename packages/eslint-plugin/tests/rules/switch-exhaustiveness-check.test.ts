@@ -786,6 +786,29 @@ switch (value) {
         },
       ],
     },
+    {
+      code: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+  case Aaa.Bar:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1204,8 +1227,8 @@ switch (value) {
     },
     {
       code: `
-const a = Symbol('a');
-const b = Symbol('b');
+const a = Symbol('aa');
+const b = Symbol('bb');
 declare const value: typeof a | typeof b | 1;
 switch (value) {
   case 1:
@@ -1227,14 +1250,14 @@ switch (value) {
             {
               messageId: 'addMissingCases',
               output: `
-const a = Symbol('a');
-const b = Symbol('b');
+const a = Symbol('aa');
+const b = Symbol('bb');
 declare const value: typeof a | typeof b | 1;
 switch (value) {
   case 1:
     break;
-  case typeof a: { throw new Error('Not implemented yet: typeof a case') }
-  case typeof b: { throw new Error('Not implemented yet: typeof b case') }
+  case a: { throw new Error('Not implemented yet: a case') }
+  case b: { throw new Error('Not implemented yet: b case') }
 }
       `,
             },
@@ -1427,6 +1450,77 @@ switch (value) {
 declare const value: object;
 switch (value) {
   case 1:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1 | string;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 7,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1 | string;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+  case Aaa.Bar: { throw new Error('Not implemented yet: Aaa.Bar case') }
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 7,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1 | string;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
     break;
   default: { throw new Error('default case') }
 }

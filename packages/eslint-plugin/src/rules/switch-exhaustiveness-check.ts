@@ -91,12 +91,6 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
 
-    function stringifyType(type: ts.Type): string {
-      return tsutils.isTypeFlagSet(type, ts.TypeFlags.UniqueESSymbol)
-        ? `typeof ${type.getSymbol()?.escapedName as string}`
-        : checker.typeToString(type);
-    }
-
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
@@ -170,7 +164,11 @@ export default createRule<Options, MessageIds>({
           messageId: 'switchIsNotExhaustive',
           data: {
             missingBranches: missingLiteralBranchTypes
-              .map(stringifyType)
+              .map(missingType =>
+                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
+                  : checker.typeToString(missingType),
+              )
               .join(' | '),
           },
           suggest: [
@@ -212,7 +210,12 @@ export default createRule<Options, MessageIds>({
         }
 
         const missingBranchName = missingBranchType.getSymbol()?.escapedName;
-        let caseTest = stringifyType(missingBranchType);
+        let caseTest = tsutils.isTypeFlagSet(
+          missingBranchType,
+          ts.TypeFlags.ESSymbolLike,
+        )
+          ? missingBranchName!
+          : checker.typeToString(missingBranchType);
 
         if (
           symbolName &&
