@@ -49,25 +49,17 @@
     "targets": {
       "copy-ast-spec": {
         "dependsOn": [
-          {
-            "target": "build",
-            "projects": "dependencies"
-          }
+          "^build"
         ],
         "outputs": [
           "{projectRoot}/src/generated"
-        ]
+        ],
+        "cache": true
       },
       "build": {
         "dependsOn": [
-          {
-            "target": "build",
-            "projects": "dependencies"
-          },
-          {
-            "target": "copy-ast-spec",
-            "projects": "self"
-          }
+          "^build",
+          "copy-ast-spec"
         ]
       }
     }

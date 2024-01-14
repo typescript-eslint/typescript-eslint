@@ -244,7 +244,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     options.filePath &&
     parseAndGenerateServicesCalls[options.filePath] > 1
       ? createIsolatedProgram(parseSettings)
-      : getProgramAndAST(parseSettings, hasFullTypeInformation)!;
+      : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
