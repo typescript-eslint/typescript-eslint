@@ -70,7 +70,7 @@ type Order = AlphabeticalOrder | 'as-written';
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
   optionalityOrder?: OptionalityOrder;
-  order: Order;
+  order?: Order;
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
@@ -739,7 +739,9 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      default: defaultOrder,
+      default: {
+        memberTypes: defaultOrder,
+      },
     },
   ],
   create(context, [options]) {
