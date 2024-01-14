@@ -91,6 +91,12 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
 
+    function stringifyType(type: ts.Type): string {
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.UniqueESSymbol)
+        ? `typeof ${type.getSymbol()?.escapedName as string}`
+        : checker.typeToString(type);
+    }
+
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
@@ -164,11 +170,7 @@ export default createRule<Options, MessageIds>({
           messageId: 'switchIsNotExhaustive',
           data: {
             missingBranches: missingLiteralBranchTypes
-              .map(missingType =>
-                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
-                  : checker.typeToString(missingType),
-              )
+              .map(stringifyType)
               .join(' | '),
           },
           suggest: [
@@ -210,7 +212,7 @@ export default createRule<Options, MessageIds>({
         }
 
         const missingBranchName = missingBranchType.getSymbol()?.escapedName;
-        let caseTest = checker.typeToString(missingBranchType);
+        let caseTest = stringifyType(missingBranchType);
 
         if (
           symbolName &&
@@ -326,7 +328,7 @@ function isTypeLiteralLikeType(type: ts.Type): boolean {
     ts.TypeFlags.Literal |
       ts.TypeFlags.Undefined |
       ts.TypeFlags.Null |
-      ts.TypeFlags.ESSymbolLike,
+      ts.TypeFlags.UniqueESSymbol,
   );
 }
 
