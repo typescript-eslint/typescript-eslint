@@ -28,8 +28,6 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       requiresTypeChecking: false,
     },
-    fixable: 'code',
-    hasSuggestions: false,
     schema: [
       {
         type: 'object',
