@@ -615,6 +615,40 @@ function getRank(
   return getRankOrder(memberGroups, orderConfig);
 }
 
+function changeToGroups(
+  memberSet: Member[],
+  memberType: MemberType[],
+  supportsModifiers: boolean,
+) {
+  let groupedMembers: Member[][] = [];
+
+  const getPreviousRank = () => {
+    if (groupedMembers[groupedMembers.length - 1]?.[0] === undefined) {
+      return undefined;
+    } else {
+      return getRank(
+        groupedMembers[groupedMembers.length - 1][0],
+        memberType,
+        supportsModifiers,
+      );
+    }
+  };
+
+  memberSet.forEach((member, index) => {
+    if (getRank(member, memberType, supportsModifiers) === getPreviousRank()) {
+      groupedMembers.at(-1)?.push(member);
+    } else if (index === memberSet.length - 1) {
+      return;
+    } else if (
+      getRank(member, memberType, supportsModifiers) ===
+      getRank(memberSet.at(index + 1) as Member, memberType, supportsModifiers)
+    ) {
+      groupedMembers.push([member]);
+    }
+  });
+  return groupedMembers;
+}
+
 /**
  * Gets the lowest possible rank(s) higher than target.
  * e.g. given the following order:
@@ -934,6 +968,17 @@ export default createRule<Options, MessageIds>({
       let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
+      const runSort = (memberSet: Member[]) => {
+        const hasAlphaSort = !!(order && order !== 'as-written');
+        if (hasAlphaSort && Array.isArray(memberTypes)) {
+          changeToGroups(memberSet, memberTypes, supportsModifiers).forEach(
+            groupMember => {
+              checkAlphaSort(groupMember, order as AlphabeticalOrder);
+            },
+          );
+        }
+      };
+
       // returns true if everything is good and false if an error was reported
       const checkOrder = (memberSet: Member[]): boolean => {
         const hasAlphaSort = !!(order && order !== 'as-written');
@@ -947,20 +992,24 @@ export default createRule<Options, MessageIds>({
           );
 
           if (grouped == null) {
+            runSort(members);
             return false;
           }
 
           if (hasAlphaSort) {
-            return !grouped.some(
-              groupMember =>
-                !checkAlphaSort(groupMember, order as AlphabeticalOrder),
-            );
+            let sortResults: boolean[] = [];
+            grouped.forEach(groupMember => {
+              sortResults.push(
+                checkAlphaSort(groupMember, order as AlphabeticalOrder),
+              );
+            });
+            return sortResults.some(result => result === false);
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
         }
 
-        return true;
+        return false;
       };
 
       if (Array.isArray(orderConfig)) {

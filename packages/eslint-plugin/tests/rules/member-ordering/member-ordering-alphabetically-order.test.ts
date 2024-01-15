@@ -1857,6 +1857,20 @@ interface Foo {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'call',
@@ -1897,6 +1911,20 @@ type Foo = {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'call',
@@ -1931,6 +1959,20 @@ class Foo {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
@@ -1957,6 +1999,20 @@ const foo = class Foo {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -1999,6 +2055,13 @@ class Foo {
         },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a2',
+            beforeMember: 'a3',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -2146,6 +2209,20 @@ class Foo {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
@@ -2290,6 +2367,20 @@ const foo = class Foo {
           { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
         ],
         errors: [
+          {
+            messageId: 'incorrectOrder',
+            data: {
+              member: 'b',
+              beforeMember: 'c',
+            },
+          },
+          {
+            messageId: 'incorrectOrder',
+            data: {
+              member: 'a',
+              beforeMember: 'b',
+            },
+          },
           {
             messageId: 'incorrectGroupOrder',
             data: {
@@ -2443,6 +2534,20 @@ interface Foo {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -2603,6 +2708,20 @@ type Foo = {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
