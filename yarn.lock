@@ -5502,7 +5502,7 @@ __metadata:
     ncp: ^2.0.0
     netlify: ^13.1.9
     nx: 17.2.8
-    prettier: 3.1.0
+    prettier: 3.2.0
     pretty-format: ^29.6.2
     raw-loader: ^4.0.2
     rimraf: ^5.0.1
@@ -15190,12 +15190,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.1.0, prettier@npm:^3.0.3":
-  version: 3.1.0
-  resolution: "prettier@npm:3.1.0"
+"prettier@npm:3.2.0, prettier@npm:^3.0.3":
+  version: 3.2.0
+  resolution: "prettier@npm:3.2.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 44b556bd56f74d7410974fbb2418bb4e53a894d3e7b42f6f87779f69f27a6c272fa7fc27cec0118cd11730ef3246478052e002cbd87e9a253f9cd04a56aa7d9b
+  checksum: 5cd258dddcea58bc1eb1e1a97c38945cde20be105cfc0970d3bb9e390a0587a98a4c340ce14f669b67be06556125aef00cfe40cb22f56f8db26d1dfadd157899
   languageName: node
   linkType: hard
 
