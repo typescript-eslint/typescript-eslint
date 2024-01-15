@@ -76,17 +76,17 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 {
   "rules": {
     // disable the rule for all files
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
   },
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": "error"
-      }
-    }
-  ]
+        "@typescript-eslint/explicit-function-return-type": "error",
+      },
+    },
+  ],
 }
 ```
 

@@ -30,17 +30,17 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 {
   "rules": {
     // disable the rule for all files
-    "@typescript-eslint/explicit-member-accessibility": "off"
+    "@typescript-eslint/explicit-member-accessibility": "off",
   },
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-member-accessibility": "error"
-      }
-    }
-  ]
+        "@typescript-eslint/explicit-member-accessibility": "error",
+      },
+    },
+  ],
 }
 ```
 
