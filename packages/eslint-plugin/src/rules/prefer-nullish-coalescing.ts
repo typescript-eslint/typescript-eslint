@@ -334,7 +334,6 @@ export default createRule<Options, MessageIds>({
         ]
           .filter((flag): flag is number => typeof flag === 'number')
           .reduce((previous, flag) => previous | flag, 0);
-
         if (
           type.flags !== ts.TypeFlags.Null &&
           type.flags !== ts.TypeFlags.Undefined &&
