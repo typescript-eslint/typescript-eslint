@@ -222,6 +222,18 @@ x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
+    `
+      declare const x: any;
+      x || y;
+    `,
+    `
+      declare const x: unknown;
+      x || y;
+    `,
+    `
+      declare const x: never;
+      x || y;
+    `,
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({

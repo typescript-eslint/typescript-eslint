@@ -10,8 +10,8 @@ import {
   getTypeFlags,
   isLogicalOrOperator,
   isNodeEqual,
-  isNullableType,
   isNullLiteral,
+  isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
@@ -309,7 +309,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        if (!isNullableType(type)) {
+        if (!isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)) {
           return;
         }
 
@@ -334,6 +334,7 @@ export default createRule<Options, MessageIds>({
         ]
           .filter((flag): flag is number => typeof flag === 'number')
           .reduce((previous, flag) => previous | flag, 0);
+
         if (
           type.flags !== ts.TypeFlags.Null &&
           type.flags !== ts.TypeFlags.Undefined &&
