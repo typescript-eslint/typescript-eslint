@@ -619,19 +619,18 @@ function changeToGroups(
   memberSet: Member[],
   memberType: MemberType[],
   supportsModifiers: boolean,
-) {
-  let groupedMembers: Member[][] = [];
+): Member[][] {
+  const groupedMembers: Member[][] = [];
 
-  const getPreviousRank = () => {
-    if (groupedMembers[groupedMembers.length - 1]?.[0] === undefined) {
+  const getPreviousRank = (): number | undefined => {
+    if (groupedMembers.at(-1)?.at(0) === undefined) {
       return undefined;
-    } else {
-      return getRank(
-        groupedMembers[groupedMembers.length - 1][0],
-        memberType,
-        supportsModifiers,
-      );
     }
+    return getRank(
+      groupedMembers[groupedMembers.length - 1][0],
+      memberType,
+      supportsModifiers,
+    );
   };
 
   memberSet.forEach((member, index) => {
@@ -641,7 +640,7 @@ function changeToGroups(
       return;
     } else if (
       getRank(member, memberType, supportsModifiers) ===
-      getRank(memberSet.at(index + 1) as Member, memberType, supportsModifiers)
+      getRank(memberSet.at(index + 1)!, memberType, supportsModifiers)
     ) {
       groupedMembers.push([member]);
     }
@@ -968,7 +967,7 @@ export default createRule<Options, MessageIds>({
       let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
-      const runSort = (memberSet: Member[]) => {
+      const runSort = (memberSet: Member[]): undefined => {
         const hasAlphaSort = !!(order && order !== 'as-written');
         if (hasAlphaSort && Array.isArray(memberTypes)) {
           changeToGroups(memberSet, memberTypes, supportsModifiers).forEach(
@@ -997,13 +996,13 @@ export default createRule<Options, MessageIds>({
           }
 
           if (hasAlphaSort) {
-            let sortResults: boolean[] = [];
+            const sortResults: boolean[] = [];
             grouped.forEach(groupMember => {
               sortResults.push(
                 checkAlphaSort(groupMember, order as AlphabeticalOrder),
               );
             });
-            return sortResults.some(result => result === false);
+            return sortResults.some(result => !result);
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
