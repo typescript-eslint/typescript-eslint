@@ -7,7 +7,8 @@ import { Visitor } from './Visitor';
 type ExportNode =
   | TSESTree.ExportAllDeclaration
   | TSESTree.ExportDefaultDeclaration
-  | TSESTree.ExportNamedDeclaration;
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.TSExportAssignment;
 
 class ExportVisitor extends Visitor {
   readonly #referencer: Referencer;
@@ -25,7 +26,10 @@ class ExportVisitor extends Visitor {
   }
 
   protected Identifier(node: TSESTree.Identifier): void {
-    if (this.#exportNode.exportKind === 'type') {
+    if (
+      this.#exportNode.type !== AST_NODE_TYPES.TSExportAssignment &&
+      this.#exportNode.exportKind === 'type'
+    ) {
       // export type { T };
       // type exports can only reference types
       this.#referencer.currentScope().referenceType(node);
@@ -47,6 +51,10 @@ class ExportVisitor extends Visitor {
       // etc
       // these not included in the scope of this visitor as they are all guaranteed to be values or declare variables
     }
+  }
+
+  protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
+    this.visit(node.expression);
   }
 
   protected ExportNamedDeclaration(

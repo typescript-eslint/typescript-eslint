@@ -443,6 +443,10 @@ class Referencer extends Visitor {
     }
   }
 
+  protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
+    ExportVisitor.visit(this, node);
+  }
+
   protected ExportNamedDeclaration(
     node: TSESTree.ExportNamedDeclaration,
   ): void {
