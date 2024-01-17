@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "6.18.0",
+  "version": "6.19.0",
   "private": true,
   "//": "NOTE: intentionally no build step in this package",
   "scripts": {

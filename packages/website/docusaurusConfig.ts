@@ -91,8 +91,8 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       },
       {
         position: 'right',
-        value: `<div class="menu__version-item">v${version}</div>`,
-        type: 'html',
+        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
+        label: `v${version}`,
       },
       {
         to: 'play',

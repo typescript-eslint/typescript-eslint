@@ -92,6 +92,19 @@ toHaveBeenCalledWith(1 as any);
 declare function acceptsMap(arg: Map<string, string>): void;
 acceptsMap(new Map());
     `,
+    `
+type T = [number, T[]];
+declare function foo(t: T): void;
+declare const t: T;
+
+foo(t);
+    `,
+    `
+type T = Array<T>;
+declare function foo<T>(t: T): T;
+const t: T = [];
+foo(t);
+    `,
   ],
   invalid: [
     {
@@ -348,6 +361,26 @@ foo('a', 1 as any, 'a' as any, 1 as any);
           data: {
             sender: 'any',
             receiver: 'string',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type T = [number, T[]];
+declare function foo(t: T): void;
+declare const t: T;
+foo(t as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 5,
+          column: 5,
+          endColumn: 13,
+          data: {
+            sender: 'any',
+            receiver: 'T',
           },
         },
       ],

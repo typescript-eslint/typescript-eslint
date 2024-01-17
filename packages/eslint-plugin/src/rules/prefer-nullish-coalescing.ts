@@ -309,8 +309,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = isNullableType(type, { allowUndefined: true });
-        if (!isNullish) {
+        if (!isNullableType(type)) {
           return;
         }
 
