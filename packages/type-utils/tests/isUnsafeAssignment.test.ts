@@ -9,7 +9,10 @@ import { expectToHaveParserServices } from './test-utils/expectToHaveParserServi
 describe('isUnsafeAssignment', () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
-  function getTypes(code: string): {
+  function getTypes(
+    code: string,
+    declarationIndex = 0,
+  ): {
     sender: ts.Type;
     senderNode: TSESTree.Node;
     receiver: ts.Type;
@@ -23,7 +26,9 @@ describe('isUnsafeAssignment', () => {
     expectToHaveParserServices(services);
     const checker = services.program.getTypeChecker();
 
-    const declaration = ast.body[0] as TSESTree.VariableDeclaration;
+    const declaration = ast.body[
+      declarationIndex
+    ] as TSESTree.VariableDeclaration;
     const declarator = declaration.declarations[0];
     return {
       receiver: services.getTypeAtLocation(declarator.id),
@@ -111,6 +116,21 @@ describe('isUnsafeAssignment', () => {
         'Set<Set<Set<string>>>',
       );
     });
+
+    it('circular reference', () => {
+      const { sender, senderNode, receiver, checker } = getTypes(
+        `type T = [string, T[]];
+        const test: T = ["string", []] as any;`,
+        1,
+      );
+
+      expectTypesAre(
+        isUnsafeAssignment(sender, receiver, checker, senderNode),
+        checker,
+        'any',
+        'T',
+      );
+    });
   });
 
   describe('safe', () => {
@@ -196,6 +216,18 @@ describe('isUnsafeAssignment', () => {
     it('special cases the empty map constructor with no generics', () => {
       const { sender, senderNode, receiver, checker } = getTypes(
         'const test: Map<string, string> = new Map();',
+      );
+
+      expect(
+        isUnsafeAssignment(sender, receiver, checker, senderNode),
+      ).toBeFalsy();
+    });
+
+    it('circular reference', () => {
+      const { sender, senderNode, receiver, checker } = getTypes(
+        `type T = [string, T[]];
+        const test: T = ["string", []] as T;`,
+        1,
       );
 
       expect(
