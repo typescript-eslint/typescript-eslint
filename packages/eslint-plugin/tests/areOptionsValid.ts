@@ -1,7 +1,7 @@
 import { TSUtils } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import Ajv from 'ajv';
-import type { JSONSchema4 } from 'json-schema';
 
 const ajv = new Ajv({ async: false });
 

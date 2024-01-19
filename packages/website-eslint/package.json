@@ -17,14 +17,10 @@
     "node": "^16.0.0 || >=18.0.0"
   },
   "scripts": {
-    "build": "yarn tsx ./build.ts",
+    "build": "tsx ./build.ts",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@typescript-eslint/types": "6.19.0",
-    "@typescript-eslint/utils": "6.19.0"
   },
   "devDependencies": {
     "@eslint/js": "8.56.0",
@@ -37,9 +33,6 @@
     "eslint": "*",
     "esquery": "*",
     "prettier": "^3.0.3",
-    "rollup": "^2.75.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "semver": "^7.5.4",
     "tsx": "*"
   }
 }

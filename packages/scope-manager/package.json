@@ -48,8 +48,6 @@
     "@typescript-eslint/visitor-keys": "6.19.0"
   },
   "devDependencies": {
-    "@prettier/sync": "*",
-    "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "6.19.0",
     "glob": "*",
     "jest-specific-snapshot": "*",

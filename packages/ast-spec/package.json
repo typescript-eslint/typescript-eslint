@@ -51,7 +51,6 @@
     "glob": "*",
     "jest": "29.7.0",
     "jest-diff": "^29.6.2",
-    "jest-snapshot": "^29.6.2",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
     "prettier": "^3.0.3",

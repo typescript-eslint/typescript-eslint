@@ -61,6 +61,9 @@
     "@types/lodash.merge": "4.6.9",
     "@typescript-eslint/parser": "6.19.0",
     "chai": "^4.3.7",
+    "eslint-visitor-keys": "*",
+    "espree": "*",
+    "esprima": "*",
     "mocha": "^10.0.0",
     "sinon": "^16.0.0",
     "source-map-support": "^0.5.21"

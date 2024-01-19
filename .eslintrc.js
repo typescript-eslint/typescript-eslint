@@ -1,5 +1,5 @@
 // @ts-check
-/** @type {import('./packages/utils/src/ts-eslint/Linter').Linter.Config} */
+/** @type {import('./packages/utils/src/ts-eslint/Linter').Linter.ConfigType} */
 module.exports = {
   root: true,
   plugins: [
