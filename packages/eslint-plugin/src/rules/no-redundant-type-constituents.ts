@@ -272,6 +272,10 @@ export default createRule({
           PrimitiveTypeFlag,
           TSESTree.TypeNode[]
         >();
+        const seenUnionTypes = new Map<
+          TSESTree.TypeNode,
+          TypeFlagsWithName[]
+        >();
 
         function checkIntersectionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
@@ -323,8 +327,51 @@ export default createRule({
               }
             }
           }
-        }
 
+          typePartFlags.length >= 2
+            ? seenUnionTypes.set(typeNode, typePartFlags)
+            : null;
+        }
+        const checkIfUnionsAreAssignable = () => {
+          let typeFlagsOfUnions: ts.TypeFlags[] = [];
+          let result = true;
+          let primitiveUnit: number;
+
+          seenUnionTypes.forEach((value, key) => {
+            value.forEach(union => {
+              typeFlagsOfUnions.push(union.typeFlags);
+            });
+            for (const iterator of typeFlagsOfUnions) {
+              if (
+                // @ts-expect-error
+                seenPrimitiveTypes.has(literalToPrimitiveTypeFlags[iterator])
+              ) {
+                result = true;
+                // @ts-expect-error
+                primitiveUnit = literalToPrimitiveTypeFlags[iterator];
+              } else {
+                result = false;
+                break;
+              }
+            }
+            if (result) {
+              context.report({
+                data: {
+                  literal: value.map(name => name.typeName).join(' | '),
+                  // @ts-expect-error
+                  primitive: primitiveTypeFlagNames[primitiveUnit],
+                },
+                messageId: 'primitiveOverridden',
+                node: key,
+              });
+            }
+            typeFlagsOfUnions = [];
+          });
+        };
+        if (seenUnionTypes.size > 0) {
+          checkIfUnionsAreAssignable();
+          return;
+        }
         // For each primitive type of all the seen primitive types,
         // if there was a literal type seen that overrides it,
         // report each of the primitive type's type nodes
