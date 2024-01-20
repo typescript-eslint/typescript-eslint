@@ -89,6 +89,21 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const sourceCode = getSourceCode(context);
+          const name = sourceCode.getText(node.key);
+
+          if (node.parent.type === AST_NODE_TYPES.ClassBody) {
+            const hasDuplicateKeySetter = node.parent.body.some(
+              element =>
+                element.type === AST_NODE_TYPES.MethodDefinition &&
+                element.kind === 'set' &&
+                sourceCode.getText(element.key) === name,
+            );
+            if (hasDuplicateKeySetter) {
+              return;
+            }
+          }
+
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
@@ -96,9 +111,6 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = getSourceCode(context);
-                  const name = sourceCode.getText(node.key);
-
                   let text = '';
 
                   text += printNodeModifiers(node, 'readonly');

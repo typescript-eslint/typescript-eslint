@@ -84,6 +84,23 @@ abstract class Mx {
         \`;
       }
     `,
+    `
+      class Mx {
+        set p1(val) {}
+        get p1() {
+          return '';
+        }
+      }
+    `,
+    `
+      let p1 = 'p1';
+      class Mx {
+        set [p1](val) {}
+        get [p1]() {
+          return '';
+        }
+      }
+    `,
     {
       code: `
         class Mx {
