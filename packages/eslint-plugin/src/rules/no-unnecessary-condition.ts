@@ -271,7 +271,10 @@ export default createRule<Options, MessageId>({
       if (
         isTypeFlagSet(
           type,
-          ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+          ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable,
         )
       ) {
         return;
@@ -345,7 +348,8 @@ export default createRule<Options, MessageId>({
           flag |=
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
-            ts.TypeFlags.TypeParameter;
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable;
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {
