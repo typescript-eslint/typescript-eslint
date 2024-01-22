@@ -197,10 +197,7 @@ export class RuleTester extends TestFramework {
         ? this.#testerConfig.defaultFilenames.tsx
         : this.#testerConfig.defaultFilenames.ts;
       if (resolvedOptions.project) {
-        return path.join(
-          resolvedOptions.tsconfigRootDir ?? process.cwd(),
-          filename,
-        );
+        return path.resolve(process.cwd(), filename);
       }
       return filename;
     };
