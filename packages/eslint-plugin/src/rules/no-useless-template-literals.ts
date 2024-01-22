@@ -6,6 +6,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  getStaticStringValue,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
@@ -118,16 +119,10 @@ export default createRule<[], MessageId>({
                 ]),
               ];
 
-              // Remove quotes for string literals (i.e. `'a'` will become `a`).
-              const isStringLiteral =
-                isUnderlyingTypeString(expression) &&
-                expression.type === AST_NODE_TYPES.Literal;
+              const stringValue = getStaticStringValue(expression);
 
-              if (isStringLiteral) {
-                const escapedValue = expression.value.replace(
-                  /([`$\\])/g,
-                  '\\$1',
-                );
+              if (stringValue != null) {
+                const escapedValue = stringValue.replace(/([`$\\])/g, '\\$1');
 
                 fixes.push(fixer.replaceText(expression, escapedValue));
               }
