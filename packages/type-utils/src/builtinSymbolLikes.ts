@@ -71,11 +71,11 @@ export function isReadonlyTypeLike(
 }
 /**
  * let F = new Function("foo");
- *      ^ FunctionLike
+ *      ^ FunctionSimilar
  * let I = (callback: Function) => {}
- *           ^ FunctionLike
+ *           ^ FunctionSimilar
  */
-export function isFunctionLike(program: ts.Program, type: ts.Type): boolean {
+export function isFunctionSimilar(program: ts.Program, type: ts.Type): boolean {
   return (
     isBuiltinSymbolLike(program, type, 'Function') ||
     isBuiltinSymbolLike(program, type, 'FunctionConstructor')

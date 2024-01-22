@@ -1,11 +1,10 @@
-import { isFunctionLike } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, isFunctionSimilar } from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
 const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
@@ -79,9 +78,8 @@ export default createRule({
         return true;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (symbol && symbol.escapedName === FUNCTION_CONSTRUCTOR) {
-        return isFunctionLike(services.program, type);
+      if (isFunctionSimilar(services.program, type)) {
+        return true;
       }
 
       const signatures = checker.getSignaturesOfType(
@@ -138,7 +136,7 @@ export default createRule({
         const type = services.getTypeAtLocation(node.callee);
         const symbol = type.getSymbol();
         if (symbol) {
-          if (isFunctionLike(services.program, type)) {
+          if (isFunctionSimilar(services.program, type)) {
             context.report({ node, messageId: 'noFunctionConstructor' });
           }
         } else {
