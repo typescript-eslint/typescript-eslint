@@ -69,6 +69,18 @@ export function isReadonlyTypeLike(
     );
   });
 }
+/**
+ * let F = new Function("foo");
+ *      ^ FunctionLike
+ * let I = (callback: Function) => {}
+ *           ^ FunctionLike
+ */
+export function isFunctionLike(program: ts.Program, type: ts.Type): boolean {
+  return (
+    isBuiltinSymbolLike(program, type, 'Function') ||
+    isBuiltinSymbolLike(program, type, 'FunctionConstructor')
+  );
+}
 export function isBuiltinTypeAliasLike(
   program: ts.Program,
   type: ts.Type,
