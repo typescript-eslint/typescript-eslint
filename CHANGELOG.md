@@ -1,3 +1,17 @@
+## 6.19.1 (2024-01-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-condition] fix false positive for type variable ([#8235](https://github.com/typescript-eslint/typescript-eslint/pull/8235))
+- **type-utils:** preventing isUnsafeAssignment infinite recursive calls ([#8237](https://github.com/typescript-eslint/typescript-eslint/pull/8237))
+
+### ❤️  Thank You
+
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.19.0 (2024-01-15)
 
 
