@@ -9,6 +9,7 @@ export = {
   parserOptions: { project: null, program: null },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
+    '@typescript-eslint/consistent-return': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/naming-convention': 'off',

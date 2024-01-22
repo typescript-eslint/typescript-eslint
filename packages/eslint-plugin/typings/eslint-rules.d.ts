@@ -25,6 +25,23 @@ declare module 'eslint/lib/rules/arrow-parens' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/consistent-return' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingReturn' | 'missingReturnValue' | 'unexpectedReturnValue',
+    [
+      {
+        treatUndefinedAsUnspecified?: boolean;
+      }?,
+    ],
+    {
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/camelcase' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
