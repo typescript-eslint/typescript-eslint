@@ -1,7 +1,7 @@
+import { isFunctionLike } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getScope } from '@typescript-eslint/utils/eslint-utils';
-import { isFunctionLike } from '@typescript-eslint/type-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
