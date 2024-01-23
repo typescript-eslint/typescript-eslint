@@ -1,3 +1,46 @@
+## 6.19.1 (2024-01-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-condition] fix false positive for type variable ([#8235](https://github.com/typescript-eslint/typescript-eslint/pull/8235))
+- **type-utils:** preventing isUnsafeAssignment infinite recursive calls ([#8237](https://github.com/typescript-eslint/typescript-eslint/pull/8237))
+
+### ❤️  Thank You
+
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.0 (2024-01-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-promise-reject-errors] add rule ([#8011](https://github.com/typescript-eslint/typescript-eslint/pull/8011))
+- **eslint-plugin:** [no-array-delete] add new rule ([#8067](https://github.com/typescript-eslint/typescript-eslint/pull/8067))
+- **eslint-plugin:** [no-useless-template-literals] add fix suggestions ([#8065](https://github.com/typescript-eslint/typescript-eslint/pull/8065))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] detect unnecessary non-null-assertion on a call expression ([#8143](https://github.com/typescript-eslint/typescript-eslint/pull/8143))
+- **eslint-plugin:** [no-unnecesary-type-assertion] treat unknown/any as nullable ([#8089](https://github.com/typescript-eslint/typescript-eslint/pull/8089))
+- **typescript-estree:** add JSDocParsingMode enum merge for typescript/lib/tsserverlibrary ([#8193](https://github.com/typescript-eslint/typescript-eslint/pull/8193))
+- **typescript-estree:** disallow `using` as the variable keyword for `for..in` loops ([#7649](https://github.com/typescript-eslint/typescript-eslint/pull/7649))
+- **typescript-estree:** fix incorrect backwards-compat augmentation in TS 5.3 ([#8181](https://github.com/typescript-eslint/typescript-eslint/pull/8181))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Brad Zacher @bradzacher
+- Josh Goldberg ✨
+- Joshua Chen
+- LJX @lvjiaxuan
+- Steven @Solo-steven
+- StyleShit @StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.1 (2024-01-08)
 
 

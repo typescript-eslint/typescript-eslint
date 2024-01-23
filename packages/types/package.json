@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "6.18.1",
+  "version": "6.19.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -49,25 +49,17 @@
     "targets": {
       "copy-ast-spec": {
         "dependsOn": [
-          {
-            "target": "build",
-            "projects": "dependencies"
-          }
+          "^build"
         ],
         "outputs": [
           "{projectRoot}/src/generated"
-        ]
+        ],
+        "cache": true
       },
       "build": {
         "dependsOn": [
-          {
-            "target": "build",
-            "projects": "dependencies"
-          },
-          {
-            "target": "copy-ast-spec",
-            "projects": "self"
-          }
+          "^build",
+          "copy-ast-spec"
         ]
       }
     }

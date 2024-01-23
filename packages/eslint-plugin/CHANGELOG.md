@@ -1,3 +1,50 @@
+## 6.19.1 (2024-01-22)
+
+
+### 🩹 Fixes
+
+- **type-utils:** preventing isUnsafeAssignment infinite recursive calls
+
+- **eslint-plugin:** [no-unnecessary-condition] fix false positive for type variable
+
+
+### ❤️  Thank You
+
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.0 (2024-01-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-promise-reject-errors] add rule
+
+- **eslint-plugin:** [no-array-delete] add new rule
+
+- **eslint-plugin:** [no-useless-template-literals] add fix suggestions
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] detect unnecessary non-null-assertion on a call expression
+
+- **eslint-plugin:** [no-unnecesary-type-assertion] treat unknown/any as nullable
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Josh Goldberg ✨
+- Joshua Chen
+- LJX
+- Steven
+- StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.1 (2024-01-08)
 
 

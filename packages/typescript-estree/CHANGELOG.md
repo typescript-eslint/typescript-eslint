@@ -1,3 +1,33 @@
+## 6.19.1 (2024-01-22)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.0 (2024-01-15)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** add JSDocParsingMode enum merge for typescript/lib/tsserverlibrary
+
+- **typescript-estree:** disallow `using` as the variable keyword for `for..in` loops
+
+- **typescript-estree:** fix incorrect backwards-compat augmentation in TS 5.3
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Josh Goldberg ✨
+- Joshua Chen
+- LJX
+- Steven
+- StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.1 (2024-01-08)
 
 

@@ -1,3 +1,42 @@
+## 6.19.1 (2024-01-22)
+
+
+### 🩹 Fixes
+
+- **type-utils:** preventing isUnsafeAssignment infinite recursive calls
+
+
+### ❤️  Thank You
+
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.0 (2024-01-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-promise-reject-errors] add rule
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecesary-type-assertion] treat unknown/any as nullable
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Josh Goldberg ✨
+- Joshua Chen
+- LJX
+- Steven
+- StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.18.1 (2024-01-08)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.
