@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
-import type * as ESQuery from 'esquery';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   type ImperativePanelHandle,
@@ -39,7 +38,6 @@ function Playground(): React.JSX.Element {
   const [selectedRange, setSelectedRange] = useState<SelectedRange>();
   const [position, setPosition] = useState<number>();
   const [activeTab, setTab] = useState<TabType>('code');
-  const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
   const [esQueryError, setEsQueryError] = useState<Error>();
   const [visualEslintRc, setVisualEslintRc] = useState(false);
   const [visualTSConfig, setVisualTSConfig] = useState(false);
@@ -178,7 +176,13 @@ function Playground(): React.JSX.Element {
             />
             {state.showAST === 'es' && (
               <ESQueryFilter
-                onChange={setEsQueryFilter}
+                defaultValue={state.esQueryFilter}
+                onChange={(filter, selector) =>
+                  setState({
+                    esQueryFilter: filter,
+                    esQuerySelector: selector,
+                  })
+                }
                 onError={setEsQueryError}
               />
             )}
@@ -202,7 +206,9 @@ function Playground(): React.JSX.Element {
               (state.showAST && astModel && (
                 <ASTViewer
                   key={String(state.showAST)}
-                  filter={state.showAST === 'es' ? esQueryFilter : undefined}
+                  filter={
+                    state.showAST === 'es' ? state.esQuerySelector : undefined
+                  }
                   value={
                     state.showAST === 'ts'
                       ? astModel.storedTsAST
