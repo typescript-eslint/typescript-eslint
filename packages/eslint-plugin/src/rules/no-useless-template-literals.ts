@@ -53,6 +53,24 @@ export default createRule<[], MessageId>({
       return isString(type);
     }
 
+    function isLiteral(expression: TSESTree.Expression): boolean {
+      return expression.type === AST_NODE_TYPES.Literal;
+    }
+
+    function isInfinityIdentifier(expression: TSESTree.Expression): boolean {
+      return (
+        expression.type === AST_NODE_TYPES.Identifier &&
+        expression.name === 'Infinity'
+      );
+    }
+
+    function isNaNIdentifier(expression: TSESTree.Expression): boolean {
+      return (
+        expression.type === AST_NODE_TYPES.Identifier &&
+        expression.name === 'NaN'
+      );
+    }
+
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
@@ -91,13 +109,15 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const literalsOrUndefinedExpressions = node.expressions.filter(
+        const fixableExpressions = node.expressions.filter(
           (expression): expression is TSESTree.Literal | TSESTree.Identifier =>
-            expression.type === AST_NODE_TYPES.Literal ||
-            isUndefinedIdentifier(expression),
+            isLiteral(expression) ||
+            isUndefinedIdentifier(expression) ||
+            isInfinityIdentifier(expression) ||
+            isNaNIdentifier(expression),
         );
 
-        literalsOrUndefinedExpressions.forEach(expression => {
+        fixableExpressions.forEach(expression => {
           context.report({
             node: expression,
             messageId: 'noUselessTemplateLiteral',
