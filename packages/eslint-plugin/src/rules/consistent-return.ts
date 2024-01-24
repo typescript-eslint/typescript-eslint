@@ -87,16 +87,16 @@ export default createRule<Options, MessageIds>({
     return {
       ...rules,
       FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
-      ArrowFunctionExpression: enterFunction,
       'FunctionDeclaration:exit'(node): void {
         exitFunction();
         rules['FunctionDeclaration:exit'](node);
       },
+      FunctionExpression: enterFunction,
       'FunctionExpression:exit'(node): void {
         exitFunction();
         rules['FunctionExpression:exit'](node);
       },
+      ArrowFunctionExpression: enterFunction,
       'ArrowFunctionExpression:exit'(node): void {
         exitFunction();
         rules['ArrowFunctionExpression:exit'](node);
