@@ -224,14 +224,17 @@ x || y;
     })),
     `
       declare const x: any;
+      declare const y: number;
       x || y;
     `,
     `
       declare const x: unknown;
+      declare const y: number;
       x || y;
     `,
     `
       declare const x: never;
+      declare const y: number;
       x || y;
     `,
   ],
