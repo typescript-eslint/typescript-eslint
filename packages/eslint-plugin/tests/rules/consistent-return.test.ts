@@ -114,6 +114,32 @@ ruleTester.run('consistent-return', rule, {
         }
       }
     `,
+    `
+      declare function bar(): void;
+      function foo(flag: boolean): void {
+        function fn(): string {
+          return '1';
+        }
+        if (flag) {
+          return bar();
+        }
+        return;
+      }
+    `,
+    `
+      class Foo {
+        foo(flag: boolean): void {
+          const bar = (): void => {
+            if (flag) return;
+            return this.foo();
+          };
+          if (flag) {
+            return this.bar();
+          }
+          return;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -151,6 +177,39 @@ ruleTester.run('consistent-return', rule, {
           line: 5,
           column: 11,
           endLine: 5,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        declare function foo(): void;
+        function bar(flag: boolean): undefined {
+          function baz(): undefined {
+            if (flag) return;
+            return undefined;
+          }
+          if (flag) return baz();
+          return;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedReturnValue',
+          data: { name: "Function 'baz'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 6,
+          column: 13,
+          endLine: 6,
+          endColumn: 30,
+        },
+        {
+          messageId: 'missingReturnValue',
+          data: { name: "Function 'bar'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 9,
+          column: 11,
+          endLine: 9,
           endColumn: 18,
         },
       ],

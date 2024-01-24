@@ -37,6 +37,11 @@ declare module 'eslint/lib/rules/consistent-return' {
     ],
     {
       ReturnStatement(node: TSESTree.ReturnStatement): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      'ArrowFunctionExpression:exit'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void;
     }
   >;
   export = rule;

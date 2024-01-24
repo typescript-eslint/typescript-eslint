@@ -38,11 +38,18 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const rules = baseRule.create(context);
+    const functions: FunctionNode[] = [];
 
-    let functionNode: FunctionNode | null;
+    function enterFunction(node: FunctionNode): void {
+      functions.push(node);
+    }
 
-    function setFunctionNode(node: FunctionNode): void {
-      functionNode = node;
+    function exitFunction(): void {
+      functions.pop();
+    }
+
+    function getCurrentFunction(): FunctionNode | null {
+      return functions[functions.length - 1] ?? null;
     }
 
     function isReturnPromiseVoid(
@@ -79,14 +86,29 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      FunctionDeclaration: setFunctionNode,
-      FunctionExpression: setFunctionNode,
-      ArrowFunctionExpression: setFunctionNode,
+      FunctionDeclaration: enterFunction,
+      FunctionExpression: enterFunction,
+      ArrowFunctionExpression: enterFunction,
+      'FunctionDeclaration:exit'(node): void {
+        exitFunction();
+        rules['FunctionDeclaration:exit'](node);
+      },
+      'FunctionExpression:exit'(node): void {
+        exitFunction();
+        rules['FunctionExpression:exit'](node);
+      },
+      'ArrowFunctionExpression:exit'(node): void {
+        exitFunction();
+        rules['ArrowFunctionExpression:exit'](node);
+      },
       ReturnStatement(node): void {
-        if (!node.argument && functionNode) {
-          if (isReturnVoidOrThenableVoid(functionNode)) {
-            return;
-          }
+        const functionNode = getCurrentFunction();
+        if (
+          !node.argument &&
+          functionNode &&
+          isReturnVoidOrThenableVoid(functionNode)
+        ) {
+          return;
         }
         rules.ReturnStatement(node);
       },
