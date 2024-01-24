@@ -83,7 +83,7 @@ export default createRule<Options, MessageIds>({
           | TSESTree.ClassDeclaration
           | TSESTree.ClassExpression;
 
-        if (parent.superClass ?? isAllowWithDecorator(parent)) {
+        if (parent.superClass || isAllowWithDecorator(parent)) {
           return;
         }
 

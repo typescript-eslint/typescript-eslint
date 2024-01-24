@@ -113,6 +113,7 @@ module.exports = {
     '@typescript-eslint/prefer-nullish-coalescing': [
       'error',
       {
+        ignoreConditionalTests: true,
         ignorePrimitives: true,
       },
     ],
