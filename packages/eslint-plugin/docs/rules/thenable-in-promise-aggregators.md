@@ -9,7 +9,7 @@ description: 'Disallow passing non-Thenable values to promise aggregators.'
 A "Thenable" value is an object which has a `then` method, such as a Promise.
 The `await` keyword is generally used to retrieve the result of calling a Thenable's `then` method.
 
-When multiple Thenable's are running at the same time, it is sometimes desirable to wait until any one of them resolves (`Promise.race`), all of them resolve or any of them reject (`Promise.all`), or all of them resolve or reject (`Promise.allSettled`).
+When multiple Thenables are running at the same time, it is sometimes desirable to wait until any one of them resolves (`Promise.race`), all of them resolve or any of them reject (`Promise.all`), or all of them resolve or reject (`Promise.allSettled`).
 
 Each of these functions accept an iterable of promises as input and return a single Promise.
 If a non-Thenable is passed, it is ignored.
@@ -43,6 +43,6 @@ await Promise.race([
 
 ## When Not To Use It
 
-If you want to allow code to use `Promise.race`, `Promise.all`, or `Promise.allSettled` on arrays of non-promise values.
+If you want to allow code to use `Promise.race`, `Promise.all`, or `Promise.allSettled` on arrays of non-Thenable values.
 This is generally not preferred but can sometimes be useful for visual consistency.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
