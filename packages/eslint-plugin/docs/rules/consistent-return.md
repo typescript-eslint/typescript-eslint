@@ -11,7 +11,7 @@ This version adds support for functions that return void type.
 
 <!--tabs-->
 
-#### ❌ Incorrect
+### ❌ Incorrect
 
 ```ts
 function foo(): undefined {}
