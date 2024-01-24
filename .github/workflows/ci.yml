@@ -171,6 +171,7 @@ jobs:
             'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
+            'typescript-eslint',
             'typescript-estree',
             'utils',
             'visitor-keys',
