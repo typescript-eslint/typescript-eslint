@@ -445,8 +445,6 @@ function testIsolatedFile(
 
 /**
  * Verifies that the type of a TS node is number[] as expected
- * @param {ts.TypeChecker} checker
- * @param {ts.Node} tsNode
  */
 function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const nodeType = checker.getTypeAtLocation(tsNode);

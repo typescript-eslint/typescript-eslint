@@ -9,7 +9,6 @@ import { createDefaultCompilerOptionsFromExtra } from './shared';
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
 
 /**
- * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
 function createIsolatedProgram(
