@@ -44,6 +44,4 @@ export const defaultConfig: ConfigModel = {
   }),
   scroll: true,
   showTokens: false,
-  esQueryFilter: '',
-  esQuerySelector: undefined,
 };
