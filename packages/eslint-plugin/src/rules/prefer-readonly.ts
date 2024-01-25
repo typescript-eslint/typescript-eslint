@@ -300,6 +300,7 @@ class ClassScope {
         node.name.kind === ts.SyntaxKind.PrivateIdentifier
       ) ||
       tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
+      tsutils.isModifierFlagSet(node, ts.ModifierFlags.Accessor) ||
       ts.isComputedPropertyName(node.name)
     ) {
       return;

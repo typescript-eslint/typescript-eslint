@@ -717,6 +717,15 @@ class Foo {
         }
       }
     `,
+    `
+      class TestAccessors {
+        private static accessor staticAcc = 1;
+        static accessor #staticAcc = 1;
+
+        private accessor acc = 3;
+        accessor #acc = 3;
+      }
+    `,
   ],
   invalid: [
     {
