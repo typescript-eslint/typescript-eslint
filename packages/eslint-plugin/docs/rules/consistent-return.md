@@ -24,7 +24,6 @@ function bar(flag: boolean): undefined {
 ### ✅ Correct
 
 ```ts
-/* eslint @typescript-eslint/consistent-return: "error" */
 function foo(): void {}
 function bar(flag: boolean): void {
   if (flag) return foo();
