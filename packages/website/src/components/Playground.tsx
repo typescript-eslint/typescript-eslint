@@ -176,11 +176,10 @@ function Playground(): React.JSX.Element {
             />
             {state.showAST === 'es' && (
               <ESQueryFilter
-                defaultValue={state.esQueryFilter}
+                defaultValue={state.esQuery?.filter}
                 onChange={(filter, selector) =>
                   setState({
-                    esQueryFilter: filter,
-                    esQuerySelector: selector,
+                    esQuery: { filter, selector },
                   })
                 }
                 onError={setEsQueryError}
@@ -207,7 +206,7 @@ function Playground(): React.JSX.Element {
                 <ASTViewer
                   key={String(state.showAST)}
                   filter={
-                    state.showAST === 'es' ? state.esQuerySelector : undefined
+                    state.showAST === 'es' ? state.esQuery?.selector : undefined
                   }
                   value={
                     state.showAST === 'ts'

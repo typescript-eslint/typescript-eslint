@@ -30,8 +30,10 @@ export interface ConfigModel {
   showAST?: ConfigShowAst;
   scroll?: boolean;
   showTokens?: boolean;
-  esQueryFilter?: string;
-  esQuerySelector?: ESQuery.Selector;
+  esQuery?: {
+    selector: ESQuery.Selector;
+    filter?: string;
+  };
 }
 
 export type SelectedRange = [number, number];

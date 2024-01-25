@@ -71,11 +71,11 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       );
     }
 
-    let esQuerySelector: ConfigModel['esQuerySelector'] | undefined;
-    if (searchParams.has('esQuerySelector')) {
-      esQuerySelector = JSON.parse(
-        readQueryParam(searchParams.get('esQuerySelector'), ''),
-      ) as ConfigModel['esQuerySelector'];
+    let esQuery: ConfigModel['esQuery'] | undefined;
+    if (searchParams.has('esQuery')) {
+      esQuery = JSON.parse(
+        readQueryParam(searchParams.get('esQuery'), ''),
+      ) as ConfigModel['esQuery'];
     }
 
     const fileType =
@@ -97,8 +97,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       eslintrc: eslintrc ?? '',
       tsconfig: tsconfig ?? '',
       showTokens: searchParams.get('tokens') === 'true',
-      esQuerySelector,
-      esQueryFilter: searchParams.get('esQueryFilter') ?? '',
+      esQuery,
     };
   } catch (e) {
     console.warn(e);
@@ -119,16 +118,15 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
     if (newState.fileType) {
       searchParams.set('fileType', newState.fileType);
     }
-    if (newState.esQuerySelector) {
+    if (newState.esQuery) {
       searchParams.set(
-        'esQuerySelector',
-        writeQueryParam(JSON.stringify(newState.esQuerySelector)),
+        'esQuery',
+        writeQueryParam(JSON.stringify(newState.esQuery)),
       );
     }
     searchParams.set('code', writeQueryParam(newState.code));
     searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));
     searchParams.set('tsconfig', writeQueryParam(newState.tsconfig));
-    searchParams.set('esQueryFilter', newState.esQueryFilter ?? '');
     searchParams.set('tokens', String(!!newState.showTokens));
     return searchParams.toString();
   } catch (e) {
