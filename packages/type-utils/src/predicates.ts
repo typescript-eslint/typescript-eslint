@@ -96,6 +96,16 @@ export function isTypeAnyType(type: ts.Type): boolean {
 }
 
 /**
+ * @returns true if there is the type is an `error` type
+ */
+export function isTypeErrorType(type: ts.Type): boolean {
+  if (type.intrinsicName === 'error') {
+    return true;
+  }
+  return false;
+}
+
+/**
  * @returns true if the type is `any[]`
  */
 export function isTypeAnyArrayType(

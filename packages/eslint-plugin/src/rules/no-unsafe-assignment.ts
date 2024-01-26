@@ -11,6 +11,7 @@ import {
   getThisExpression,
   isTypeAnyArrayType,
   isTypeAnyType,
+  isTypeErrorType,
   isTypeUnknownType,
   isUnsafeAssignment,
   nullThrows,
@@ -38,6 +39,7 @@ export default createRule({
     },
     messages: {
       anyAssignment: 'Unsafe assignment of an `any` value.',
+      errorAssignment: 'Unsafe assignment of an `error` value.',
       anyAssignmentThis: [
         'Unsafe assignment of an `any` value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -257,7 +259,10 @@ export default createRule({
           return false;
         }
 
-        let messageId: 'anyAssignment' | 'anyAssignmentThis' = 'anyAssignment';
+        let messageId:
+          | 'anyAssignment'
+          | 'anyAssignmentThis'
+          | 'errorAssignment' = 'anyAssignment';
 
         if (!isNoImplicitThis) {
           // `var foo = this`
@@ -272,10 +277,15 @@ export default createRule({
           }
         }
 
+        if (isTypeErrorType(senderType)) {
+          messageId = 'errorAssignment';
+        }
+
         context.report({
           node: reportingNode,
           messageId,
         });
+
         return true;
       }
 

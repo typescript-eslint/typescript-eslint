@@ -132,6 +132,14 @@ declare function Foo(props: Props): never;
     },
     {
       code: `
+      let value: number;
+
+      value = spooky;
+      `,
+     only: true,
+    },
+    {
+      code: `
 declare function Foo(props: { a: string }): never;
 <Foo a="foo" />;
       `,
