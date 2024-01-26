@@ -38,18 +38,18 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an `any` value.',
-      errorAssignment: 'Unsafe assignment of an `error` value.',
+      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
       anyAssignmentThis: [
-        'Unsafe assignment of an `any` value. `this` is typed as `any`.',
+        'Unsafe assignment of an {{sender}}  value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeArrayPattern: 'Unsafe array destructuring of an `any` array value.',
+      unsafeArrayPattern:
+        'Unsafe array destructuring of an {{sender}} array value.',
       unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an `any` value.',
+        'Unsafe array destructuring of a tuple element with an {{sender}}  value.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an `any` value in an array.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}}  value in an array.',
     },
     schema: [],
   },
@@ -90,6 +90,9 @@ export default createRule({
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
+          data: {
+            sender: isTypeErrorType(senderType) ? 'error' : 'any',
+          },
         });
         return false;
       }
@@ -128,6 +131,9 @@ export default createRule({
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: {
+              sender: isTypeErrorType(senderType) ? 'error' : 'any',
+            },
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -214,6 +220,9 @@ export default createRule({
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: {
+              sender: isTypeErrorType(senderType) ? 'error' : 'any',
+            },
           });
           didReport = true;
         } else if (
@@ -259,10 +268,7 @@ export default createRule({
           return false;
         }
 
-        let messageId:
-          | 'anyAssignment'
-          | 'anyAssignmentThis'
-          | 'errorAssignment' = 'anyAssignment';
+        let messageId: 'anyAssignment' | 'anyAssignmentThis' = 'anyAssignment';
 
         if (!isNoImplicitThis) {
           // `var foo = this`
@@ -277,13 +283,12 @@ export default createRule({
           }
         }
 
-        if (isTypeErrorType(senderType)) {
-          messageId = 'errorAssignment';
-        }
-
         context.report({
           node: reportingNode,
           messageId,
+          data: {
+            sender: isTypeErrorType(senderType) ? 'error' : 'any',
+          },
         });
 
         return true;
