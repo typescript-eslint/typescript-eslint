@@ -19,6 +19,9 @@ const beforeDefaultRemarkPlugins: MDXPlugin[] = [tabsPlugin];
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 const presetClassicOptions: PresetClassicOptions = {
+  blog: {
+    beforeDefaultRemarkPlugins,
+  },
   docs: {
     id: 'rules-docs',
     path: '../eslint-plugin/docs/rules',
