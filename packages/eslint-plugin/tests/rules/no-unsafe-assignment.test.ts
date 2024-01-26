@@ -130,14 +130,7 @@ declare function Foo(props: Props): never;
         },
       },
     },
-    {
-      code: `
-      let value: number;
 
-      value = spooky;
-      `,
-     only: true,
-    },
     {
       code: `
 declare function Foo(props: { a: string }): never;
@@ -198,7 +191,21 @@ class Foo {
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
+    {
+      code: `
+      let value: number;
 
+      value = spooky;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          data: {
+            sender: 'error',
+          },
+        },
+      ],
+    },
     {
       code: `
 const [x] = 1 as any;
