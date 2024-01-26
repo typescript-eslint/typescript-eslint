@@ -398,6 +398,9 @@ export default createRule({
           context.report({
             node: node,
             messageId: 'unsafeArraySpread',
+            data: {
+              sender: isTypeErrorType(restType) ? 'error' : 'any',
+            },
           });
         }
       },
