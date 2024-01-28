@@ -332,7 +332,7 @@ export default createRule({
             ? seenUnionTypes.set(typeNode, typePartFlags)
             : null;
         }
-        const checkIfUnionsAreAssignable = () => {
+        const checkIfUnionsAreAssignable = (): undefined => {
           let typeFlagsOfUnions: ts.TypeFlags[] = [];
           let result = true;
           let primitiveUnit: number;
@@ -343,12 +343,17 @@ export default createRule({
             });
             for (const iterator of typeFlagsOfUnions) {
               if (
-                // @ts-expect-error
-                seenPrimitiveTypes.has(literalToPrimitiveTypeFlags[iterator])
+                seenPrimitiveTypes.has(
+                  literalToPrimitiveTypeFlags[
+                    iterator as keyof typeof literalToPrimitiveTypeFlags
+                  ],
+                )
               ) {
                 result = true;
-                // @ts-expect-error
-                primitiveUnit = literalToPrimitiveTypeFlags[iterator];
+                primitiveUnit =
+                  literalToPrimitiveTypeFlags[
+                    iterator as keyof typeof literalToPrimitiveTypeFlags
+                  ];
               } else {
                 result = false;
                 break;
@@ -358,8 +363,10 @@ export default createRule({
               context.report({
                 data: {
                   literal: value.map(name => name.typeName).join(' | '),
-                  // @ts-expect-error
-                  primitive: primitiveTypeFlagNames[primitiveUnit],
+                  primitive:
+                    primitiveTypeFlagNames[
+                      primitiveUnit as keyof typeof primitiveTypeFlagNames
+                    ],
                 },
                 messageId: 'primitiveOverridden',
                 node: key,
