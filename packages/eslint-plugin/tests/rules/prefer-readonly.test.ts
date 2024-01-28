@@ -718,11 +718,22 @@ class Foo {
       }
     `,
     `
-      class TestAccessors {
+      class TestStaticPrivateAccessor {
         private static accessor staticAcc = 1;
+      }
+    `,
+    `
+      class TestStaticPrivateFieldAccessor {
         static accessor #staticAcc = 1;
-
+      }
+    `,
+    `
+      class TestPrivateAccessor {
         private accessor acc = 3;
+      }
+    `,
+    `
+      class TestPrivateFieldAccessor {
         accessor #acc = 3;
       }
     `,
