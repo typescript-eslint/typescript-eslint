@@ -39,6 +39,8 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const rules = baseRule.create(context);
     const functions: FunctionNode[] = [];
+    const treatUndefinedAsUnspecified =
+      context.options[0]?.treatUndefinedAsUnspecified === true;
 
     function enterFunction(node: FunctionNode): void {
       functions.push(node);
@@ -110,6 +112,17 @@ export default createRule<Options, MessageIds>({
         ) {
           return;
         }
+        if (treatUndefinedAsUnspecified && node.argument) {
+          const returnValueType = services.getTypeAtLocation(node.argument);
+          if (returnValueType.flags === ts.TypeFlags.Undefined) {
+            rules.ReturnStatement({
+              ...node,
+              argument: null,
+            });
+            return;
+          }
+        }
+
         rules.ReturnStatement(node);
       },
     };

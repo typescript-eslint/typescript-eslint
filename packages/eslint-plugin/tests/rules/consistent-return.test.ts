@@ -140,6 +140,51 @@ ruleTester.run('consistent-return', rule, {
         }
       }
     `,
+    {
+      code: `
+        function foo(flag: boolean): undefined {
+          if (flag) {
+            return undefined;
+          }
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const undef: undefined;
+        function foo(flag: boolean): undefined {
+          if (flag) {
+            return undef;
+          }
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const undef: undefined;
+        function foo(flag: boolean) {
+          if (flag) {
+            return undef;
+          }
+          return 'foo';
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -268,6 +313,59 @@ ruleTester.run('consistent-return', rule, {
           column: 16,
           endLine: 4,
           endColumn: 31,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(flag: boolean): undefined | boolean {
+          if (flag) {
+            return undefined;
+          }
+          return true;
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedReturnValue',
+          data: { name: "Function 'foo'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 6,
+          column: 11,
+          endLine: 6,
+          endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const undefOrNum: undefined | number;
+        function foo(flag: boolean) {
+          if (flag) {
+            return;
+          }
+          return undefOrNum;
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedReturnValue',
+          data: { name: "Function 'foo'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 7,
+          column: 11,
+          endLine: 7,
+          endColumn: 29,
         },
       ],
     },
