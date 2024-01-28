@@ -142,6 +142,7 @@ export default createRule<Options, MessageIds>({
               } else {
                 if (
                   !sourceImports.valueOnlyNamedImport &&
+                  node.specifiers.length &&
                   node.specifiers.every(
                     specifier =>
                       specifier.type === AST_NODE_TYPES.ImportSpecifier,
