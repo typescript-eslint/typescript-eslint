@@ -810,7 +810,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: `
-        type T = "a" | "b";
+        type T = 'a' | 'b';
         type U = T & string;
       `,
       errors: [
@@ -827,7 +827,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     {
       code: `
         type S = 1 | 2;
-        type T = "a" | "b";
+        type T = 'a' | 'b';
         type U = S & T & string & number;
       `,
       errors: [
