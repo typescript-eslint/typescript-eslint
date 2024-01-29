@@ -142,5 +142,15 @@ exports[`AST Fixtures jsx JSXAttribute element-non-self-closing TSESTree - Token
       end: { column: 26, line: 1 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [26, 27],
+    loc: {
+      start: { column: 26, line: 1 },
+      end: { column: 27, line: 1 },
+    },
+  },
 ]
 `;

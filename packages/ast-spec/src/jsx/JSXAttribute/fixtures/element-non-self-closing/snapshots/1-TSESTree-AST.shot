@@ -121,16 +121,16 @@ Program {
         },
       },
 
-      range: [0, 26],
+      range: [0, 27],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 26, line: 1 },
+        end: { column: 27, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 27],
+  range: [0, 28],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
