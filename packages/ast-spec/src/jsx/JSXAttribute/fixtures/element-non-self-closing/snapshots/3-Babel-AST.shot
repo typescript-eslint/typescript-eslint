@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures jsx JSXAttribute element-non-self-closing Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: JSXElement {
+        type: "JSXElement",
+        children: [],
+        closingElement: null,
+        openingElement: JSXOpeningElement {
+          type: "JSXOpeningElement",
+          attributes: [
+            JSXAttribute {
+              type: "JSXAttribute",
+              name: JSXIdentifier {
+                type: "JSXIdentifier",
+                name: "foo",
+
+                range: [5, 8],
+                loc: {
+                  start: { column: 5, line: 1 },
+                  end: { column: 8, line: 1 },
+                },
+              },
+              value: JSXElement {
+                type: "JSXElement",
+                children: [
+                  JSXText {
+                    type: "JSXText",
+                    raw: "bar",
+                    value: "bar",
+
+                    range: [14, 17],
+                    loc: {
+                      start: { column: 14, line: 1 },
+                      end: { column: 17, line: 1 },
+                    },
+                  },
+                ],
+                closingElement: JSXClosingElement {
+                  type: "JSXClosingElement",
+                  name: JSXIdentifier {
+                    type: "JSXIdentifier",
+                    name: "div",
+
+                    range: [19, 22],
+                    loc: {
+                      start: { column: 19, line: 1 },
+                      end: { column: 22, line: 1 },
+                    },
+                  },
+
+                  range: [17, 23],
+                  loc: {
+                    start: { column: 17, line: 1 },
+                    end: { column: 23, line: 1 },
+                  },
+                },
+                openingElement: JSXOpeningElement {
+                  type: "JSXOpeningElement",
+                  attributes: [],
+                  name: JSXIdentifier {
+                    type: "JSXIdentifier",
+                    name: "div",
+
+                    range: [10, 13],
+                    loc: {
+                      start: { column: 10, line: 1 },
+                      end: { column: 13, line: 1 },
+                    },
+                  },
+                  selfClosing: false,
+
+                  range: [9, 14],
+                  loc: {
+                    start: { column: 9, line: 1 },
+                    end: { column: 14, line: 1 },
+                  },
+                },
+
+                range: [9, 23],
+                loc: {
+                  start: { column: 9, line: 1 },
+                  end: { column: 23, line: 1 },
+                },
+              },
+
+              range: [5, 23],
+              loc: {
+                start: { column: 5, line: 1 },
+                end: { column: 23, line: 1 },
+              },
+            },
+          ],
+          name: JSXIdentifier {
+            type: "JSXIdentifier",
+            name: "App",
+
+            range: [1, 4],
+            loc: {
+              start: { column: 1, line: 1 },
+              end: { column: 4, line: 1 },
+            },
+          },
+          selfClosing: true,
+
+          range: [0, 26],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 26, line: 1 },
+          },
+        },
+
+        range: [0, 26],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 26, line: 1 },
+        },
+      },
+
+      range: [0, 26],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 26, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 27],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;
