@@ -312,23 +312,6 @@ export default createRule<Options, MessageIds>({
         markDeclarationChildAsUsed(node);
       },
 
-      // module declaration in module declaration should not report unused vars error
-      // this is workaround as this change should be done in better way
-      'TSModuleDeclaration > TSModuleDeclaration'(
-        node: TSESTree.TSModuleDeclaration,
-      ): void {
-        if (node.id.type === AST_NODE_TYPES.Identifier) {
-          let scope = getScope(context);
-          if (scope.upper) {
-            scope = scope.upper;
-          }
-          const superVar = scope.set.get(node.id.name);
-          if (superVar) {
-            superVar.eslintUsed = true;
-          }
-        }
-      },
-
       // children of a namespace that is a child of a declared namespace are auto-exported
       [ambientDeclarationSelector(
         'TSModuleDeclaration[declare = true] > TSModuleBlock TSModuleDeclaration > TSModuleBlock',
