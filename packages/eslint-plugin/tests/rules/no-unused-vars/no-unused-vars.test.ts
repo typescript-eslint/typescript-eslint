@@ -1111,6 +1111,37 @@ foo &&= 2;
 let foo = 1;
 foo ||= 2;
     `,
+    `
+const foo = 1;
+export = foo;
+    `,
+    `
+const Foo = 1;
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = {} as Foo;
+    `,
+    `
+declare module 'foo' {
+  type Foo = 1;
+  export = Foo;
+}
+    `,
   ],
 
   invalid: [
@@ -1869,6 +1900,48 @@ foo += 1;
           data: {
             varName: 'foo',
             action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Bar;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          column: 11,
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Foo;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 5,
+          column: 6,
+          data: {
+            varName: 'Bar',
+            action: 'defined',
             additional: '',
           },
         },
