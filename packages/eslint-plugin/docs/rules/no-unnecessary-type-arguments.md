@@ -10,7 +10,9 @@ Type parameters in TypeScript may specify a default value.
 For example:
 
 ```ts
-function f<T = number>(...) {...}
+function f<T = number>(/* ... */) {
+  // ...
+}
 ```
 
 It is redundant to provide an explicit type parameter equal to that default: e.g. calling `f<number>(...)`.

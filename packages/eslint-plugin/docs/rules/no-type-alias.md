@@ -27,15 +27,23 @@ In TypeScript, type aliases serve three purposes:
 ```ts
 // this...
 type Person = {
-    firstName: string,
-    lastName: string,
-    age: number
+  firstName: string;
+  lastName: string;
+  age: number;
 };
 
-function addPerson(person : Person) { ... }
+function addPerson(person: Person) {
+  // ...
+}
 
 // is easier to read than this...
-function addPerson(person : { firstName: string, lastName: string, age: number}) { ... }
+function addPerson(person: {
+  firstName: string;
+  lastName: string;
+  age: number;
+}) {
+  // ...
+}
 ```
 
 - Act sort of like an interface, providing a set of methods and properties that must exist
@@ -43,16 +51,18 @@ function addPerson(person : { firstName: string, lastName: string, age: number})
 
 ```ts
 type Person = {
-    firstName: string,
-    lastName: string,
-    age: number,
-    walk: () => void,
-    talk: () => void
+  firstName: string;
+  lastName: string;
+  age: number;
+  walk: () => void;
+  talk: () => void;
 };
 
 // you know person will have 3 properties and 2 methods,
 // because the structure has already been defined.
-var person : Person = { ... }
+var person: Person = {
+  // ...
+};
 
 // so we can be sure that this will work
 person.walk();
