@@ -60,9 +60,6 @@ class Foo {
 Examples of correct code for the `{ "allow": ["decoratedFunctions"] }` option:
 
 ```ts option='{ "allow": ["decoratedFunctions"] }' showPlaygroundButton
-@decorator()
-function foo() {}
-
 class Foo {
   @decorator()
   foo() {}
