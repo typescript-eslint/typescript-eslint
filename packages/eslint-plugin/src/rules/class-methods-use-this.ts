@@ -50,7 +50,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreOverrideMethods: {
             type: 'boolean',
-            description: 'Ingore members marked with the `override` modifier',
+            description: 'Ignore members marked with the `override` modifier',
           },
           ignoreClassesThatImplementAnInterface: {
             oneOf: [
