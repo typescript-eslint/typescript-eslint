@@ -28,7 +28,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "allowTypedFunctionExpressions": {
-        "description": "Whether to ignore type annotations on the variable of a function expresion.",
+        "description": "Whether to ignore type annotations on the variable of a function expression.",
         "type": "boolean"
       }
     },
@@ -53,7 +53,7 @@ type Options = [
      * You must still type the parameters of the function.
      */
     allowHigherOrderFunctions?: boolean;
-    /** Whether to ignore type annotations on the variable of a function expresion. */
+    /** Whether to ignore type annotations on the variable of a function expression. */
     allowTypedFunctionExpressions?: boolean;
     /** An array of function/method names that will not have their arguments or return values checked. */
     allowedNames?: string[];
