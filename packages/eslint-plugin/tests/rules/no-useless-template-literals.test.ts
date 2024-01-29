@@ -281,6 +281,32 @@ ruleTester.run('no-useless-template-literals', rule, {
     },
 
     {
+      code: '`${Infinity}`;',
+      output: '`Infinity`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 12,
+        },
+      ],
+    },
+
+    {
+      code: '`${NaN}`;',
+      output: '`NaN`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 7,
+        },
+      ],
+    },
+
+    {
       code: "`${'a'} ${'b'}`;",
       output: '`a b`;',
       errors: [
