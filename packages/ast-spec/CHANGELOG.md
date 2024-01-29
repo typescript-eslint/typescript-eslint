@@ -1,3 +1,15 @@
+## 6.20.0 (2024-01-29)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.1 (2024-01-22)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.19.0 (2024-01-15)
 
 

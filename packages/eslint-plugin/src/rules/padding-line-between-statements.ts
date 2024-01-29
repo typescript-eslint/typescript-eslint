@@ -476,7 +476,7 @@ function verifyForAlways(
             }
             return true;
           },
-        }) || nextNode;
+        }) ?? nextNode;
       const insertText = isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';
