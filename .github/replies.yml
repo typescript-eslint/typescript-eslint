@@ -16,7 +16,7 @@ replies:
       \
     name: Extension Rule - Reject Due to Enhancement
   - body: |
-      The fix has been merged to main, and will be released Monday, as per our [release schedule](https://github.com/typescript-eslint/typescript-eslint#versioning)
+      The fix has been merged to main, and will be released Monday, as per our [release schedule](https://typescript-eslint.io/users/releases/#latest)
       \
       If you need it sooner, please try the `canary` tag on NPM.
     name: Fix Has Been Merged
@@ -62,7 +62,7 @@ replies:
       Closing this PR as it's been stale for ~6 weeks without activity. Feel free to reopen @{{ author }} if you have time - but no worries if not! If anybody wants to drive it forward, please do post your own PR - and if you use this as a start, consider adding `Co-authored-by: @{{ author }}` at the end of your PR description. Thanks! 😊
     name: Pruning Stale PR
   - body: |
-      As per [our contributing guidelines](https://github.com/typescript-eslint/typescript-eslint/blob/master/CONTRIBUTING.md#addressing-feedback-and-beyond) this PR is in the queue of PRs to reviewed, and will be reviewed when we are able.
+      As per [our contributing guidelines](https://typescript-eslint.io/contributing/pull-requests#addressing-feedback-and-beyond) this PR is in the queue of PRs to reviewed, and will be reviewed when we are able.
       \
       This project is run by volunteer maintainers, so it might be a bit before we can find the time to get to it.
     name: Review Queue
