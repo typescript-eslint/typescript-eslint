@@ -78,6 +78,7 @@
     "@types/node": "^20.0.0",
     "@types/semver": "^7.5.0",
     "@types/tmp": "^0.2.3",
+    "@types/yargs": "^17.0.32",
     "console-fail-test": "^0.2.3",
     "cross-fetch": "^4.0.0",
     "cspell": "^7.0.0",

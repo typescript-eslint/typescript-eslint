@@ -13,7 +13,6 @@ export default createRule({
         'Disallow non-null assertion in locations that may be confusing',
       recommended: 'stylistic',
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       confusingEqual:
