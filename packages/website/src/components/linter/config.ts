@@ -32,6 +32,7 @@ export const defaultParseSettings: ParseSettings = {
   tokens: [],
   tsconfigMatchCache: new Map(),
   tsconfigRootDir: '/',
+  typeAware: false,
 };
 
 export const defaultEslintConfig: ClassicConfig.Config = {
