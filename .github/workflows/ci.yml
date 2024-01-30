@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PRIMARY_NODE_VERSION: '>=20.6.1'
+  PRIMARY_NODE_VERSION: 20
   # Only set the read-write token if we are on the main branch
   NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
 
