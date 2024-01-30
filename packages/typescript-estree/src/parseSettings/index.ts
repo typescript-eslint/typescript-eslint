@@ -154,6 +154,11 @@ export interface MutableParseSettings {
    * The absolute path to the root directory for all provided `project`s.
    */
   tsconfigRootDir: string;
+
+  /**
+   * Whether this parse is type-aware
+   */
+  typeAware: boolean;
 }
 
 export type ParseSettings = Readonly<MutableParseSettings>;
