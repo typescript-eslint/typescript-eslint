@@ -271,7 +271,10 @@ export default createRule<Options, MessageId>({
       if (
         isTypeFlagSet(
           type,
-          ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+          ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable,
         )
       ) {
         return;
@@ -345,7 +348,8 @@ export default createRule<Options, MessageId>({
           flag |=
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
-            ts.TypeFlags.TypeParameter;
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable;
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {
@@ -436,7 +440,7 @@ export default createRule<Options, MessageId>({
     function checkCallExpression(node: TSESTree.CallExpression): void {
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (isArrayPredicateFunction(node) && node.arguments.length) {
-        const callback = node.arguments[0]!;
+        const callback = node.arguments[0];
         // Inline defined functions
         if (
           callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
@@ -530,7 +534,7 @@ export default createRule<Options, MessageId>({
           propertyType.value.toString(),
         );
         if (propType) {
-          return isNullableType(propType, { allowUndefined: true });
+          return isNullableType(propType);
         }
       }
       const typeName = getTypeName(checker, propertyType);
@@ -568,14 +572,12 @@ export default createRule<Options, MessageId>({
           );
 
           if (propType) {
-            return isNullableType(propType, { allowUndefined: true });
+            return isNullableType(propType);
           }
 
           return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
         });
-        return (
-          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
-        );
+        return !isOwnNullable && isNullableType(prevType);
       }
       return false;
     }
@@ -612,8 +614,7 @@ export default createRule<Options, MessageId>({
       const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
-        (isOwnNullable &&
-          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
+        (isOwnNullable && (isNullableType(type) || possiblyVoid))
       );
     }
 
