@@ -369,7 +369,7 @@ export default createRule<Options, MessageIds>({
         }
 
         return typeContainsTypeParameter(
-          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ||
+          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ??
             (type as TSESTree.TSArrayType).elementType,
         );
       }
@@ -523,7 +523,7 @@ export default createRule<Options, MessageIds>({
       key ??= getOverloadKey(signature);
       if (
         currentScope &&
-        (containingNode || signature).parent === currentScope.parent
+        (containingNode ?? signature).parent === currentScope.parent
       ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {
