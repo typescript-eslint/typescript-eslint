@@ -84,6 +84,13 @@
     "website": "https://sentry.io/welcome/"
   },
   {
+    "id": "THANKS.DEV",
+    "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
+    "name": "THANKS.DEV",
+    "totalDonations": 91083,
+    "website": "https://thanks.dev"
+  },
+  {
     "id": "EY Doberman",
     "image": "https://images.opencollective.com/ey-doberman/b269462/logo.png",
     "name": "EY Doberman",
@@ -229,13 +236,6 @@
     "name": "THE PADDING",
     "totalDonations": 15000,
     "website": "https://paddn.com/"
-  },
-  {
-    "id": "THANKS.DEV",
-    "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
-    "name": "THANKS.DEV",
-    "totalDonations": 14761,
-    "website": "https://thanks.dev"
   },
   {
     "id": "Now4real",

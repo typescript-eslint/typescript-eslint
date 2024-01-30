@@ -48,15 +48,15 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 This rule in its default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
 
-```ts
+```jsonc
 {
-  accessibility: 'explicit',
-  overrides: {
-    accessors: 'explicit',
-    constructors: 'no-public',
-    methods: 'explicit',
-    properties: 'off',
-    parameterProperties: 'explicit'
+  "accessibility: "explicit",
+  "overrides": {
+    "accessors": "explicit",
+    "constructors": "no-public",
+    "methods": "explicit",
+    "properties": "off",
+    "parameterProperties": "explicit"
   }
 }
 ```

@@ -14,6 +14,8 @@ Programmers who work with tools like [ESLint](https://eslint.org) and [Prettier]
 But what is an AST, why is it useful for these kinds of tools, and how does that interact with ESLint and TypeScript tooling?
 Let's dig in!
 
+<!--truncate-->
+
 ## What's an AST?
 
 _Static analysis_ tools are those that look at code without running it.

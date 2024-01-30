@@ -253,6 +253,11 @@ function test<T>(a: T) {
   const t16 = undefined !== a;
 }
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] == null;
+}
+    `,
 
     // Predicate functions
     `
@@ -317,6 +322,11 @@ function test<T>(a: T) {
     `
 function test<T extends string | null>(a: T) {
   return a ?? 'default';
+}
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ?? 'default';
 }
     `,
     // Indexing cases
@@ -741,6 +751,11 @@ foo ||= 1;
 declare let foo: number;
 foo &&= 1;
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ??= 'default';
+}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6264
     `
 function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
@@ -1084,7 +1099,14 @@ function test(a: never) {
       `,
       errors: [ruleError(3, 10, 'never')],
     },
-
+    {
+      code: `
+function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
+  num ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 3, 'neverNullish')],
+    },
     // Predicate functions
     {
       code: `
