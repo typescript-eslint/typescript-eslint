@@ -2252,5 +2252,26 @@ class A {
       errors: [{ messageId: 'aImportInDecoMeta', line: 3, column: 1 }],
       parserOptions: withMetaConfigParserOptions,
     },
+    {
+      code: `
+import {} from 'foo';
+import type { Foo, Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+      `,
+      output: `
+import {} from 'foo';
+import { Foo} from 'foo';
+import type { Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+      `,
+      errors: [{ messageId: 'aImportInDecoMeta', line: 3, column: 1 }],
+      parserOptions: withMetaConfigParserOptions,
+    },
   ],
 });
