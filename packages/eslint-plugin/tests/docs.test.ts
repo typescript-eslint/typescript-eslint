@@ -1,3 +1,4 @@
+import { parseForESLint } from '@typescript-eslint/parser';
 import fs from 'fs';
 import { marked } from 'marked';
 import path from 'path';
@@ -180,6 +181,32 @@ describe('Validating rule docs', () => {
           }
         });
       }
+
+      test('must include only valid code samples', () => {
+        for (const token of tokens) {
+          if (token.type !== 'code') {
+            continue;
+          }
+
+          const lang = token.lang?.trim();
+          if (!lang || !/^tsx?\b/i.test(lang)) {
+            continue;
+          }
+
+          try {
+            parseForESLint(token.text, {
+              ecmaFeatures: {
+                jsx: /^tsx\b/i.test(lang),
+              },
+              ecmaVersion: 'latest',
+              sourceType: 'module',
+              range: true,
+            });
+          } catch {
+            throw new Error(`Parsing error:\n\n${token.text}`);
+          }
+        }
+      });
     });
   }
 });

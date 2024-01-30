@@ -51,9 +51,6 @@ module.exports = {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
 
-    // TODO(#7338): Investigate enabling these soon ✨
-    '@typescript-eslint/prefer-nullish-coalescing': 'off',
-
     // TODO(#7130): Investigate changing these in or removing these from presets
     '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/prefer-string-starts-ends-with': 'off',
@@ -108,6 +105,13 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
+    '@typescript-eslint/prefer-nullish-coalescing': [
+      'error',
+      {
+        ignoreConditionalTests: true,
+        ignorePrimitives: true,
+      },
     ],
 
     //

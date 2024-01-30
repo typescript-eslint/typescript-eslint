@@ -143,7 +143,7 @@ type FuncType = () => string;
 
 let arrowFn: FuncType = () => 'test';
 
-let funcExpr: FuncType = function() {
+let funcExpr: FuncType = function () {
   return 'test';
 };
 
@@ -163,19 +163,15 @@ let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
 
-declare functionWithArg(arg: () => number);
+declare function functionWithArg(arg: () => number);
 functionWithArg(() => 1);
 
-declare functionWithObjectArg(arg: { method: () => number });
+declare function functionWithObjectArg(arg: { method: () => number });
 functionWithObjectArg({
   method() {
     return 1;
   },
 });
-
-const Comp: FC = () => {
-  return <button onClick={() => {}} />;
-};
 ```
 
 ### `allowHigherOrderFunctions`
@@ -271,7 +267,7 @@ function foo<T>(t: T): T {
 
 const bar = <T>(t: T): T => t;
 
-const allowedFunction(x: string) {
+function allowedFunction(x: string) {
   return x;
 }
 
