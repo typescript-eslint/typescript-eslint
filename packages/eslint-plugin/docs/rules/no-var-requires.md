@@ -6,6 +6,12 @@ description: 'Disallow `require` statements except in import statements.'
 >
 > See **https://typescript-eslint.io/rules/no-var-requires** for documentation.
 
+:::danger Deprecated
+
+This rule has been deprecated in favour of the [`@typescript-eslint/no-require-imports`](./no-require-imports.md) rule.
+
+:::
+
 In other words, the use of forms such as `var foo = require("foo")` are banned. Instead use ES6 style imports or `import foo = require("foo")` imports.
 
 ## Examples

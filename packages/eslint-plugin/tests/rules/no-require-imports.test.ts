@@ -47,6 +47,18 @@ require('remark-preset-prettier');
       code: "import pkg = require('some-package');",
       options: [{ allow: ['^some-package$'] }],
     },
+    {
+      code: "import foo = require('foo');",
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: 'require(foo);',
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: 'require?.(foo);',
+      options: [{ allowAsImport: true }],
+    },
   ],
   invalid: [
     {
@@ -185,6 +197,28 @@ var lib5 = require?.('lib5'),
           line: 1,
           column: 14,
           messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
+      code: "var foo = require?.('foo');",
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: "let foo = trick(require?.('foo'));",
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 17,
         },
       ],
     },

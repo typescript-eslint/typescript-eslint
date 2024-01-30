@@ -14,6 +14,7 @@ type MessageIds = 'noVarReqs';
 export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
+    deprecated: true,
     type: 'problem',
     docs: {
       description: 'Disallow `require` statements except in import statements',
