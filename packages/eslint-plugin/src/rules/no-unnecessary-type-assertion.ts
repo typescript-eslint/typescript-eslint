@@ -263,15 +263,24 @@ export default createRule<Options, MessageIds>({
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
+                const openingAngleBracket = sourceCode.getTokenBefore(
+                  node.typeAnnotation,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '<',
+                )!;
                 const closingAngleBracket = sourceCode.getTokenAfter(
                   node.typeAnnotation,
-                );
-                return closingAngleBracket?.value === '>'
-                  ? fixer.removeRange([
-                      node.range[0],
-                      closingAngleBracket.range[1],
-                    ])
-                  : null;
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '>',
+                )!;
+                // < ( number ) > ( 3 + 5 )
+                // ^---remove---^
+                return fixer.removeRange([
+                  openingAngleBracket.range[0],
+                  closingAngleBracket.range[1],
+                ]);
               }
               // `as` is always present in TSAsExpression
               const asToken = sourceCode.getTokenAfter(
@@ -283,6 +292,8 @@ export default createRule<Options, MessageIds>({
               const tokenBeforeAs = sourceCode.getTokenBefore(asToken, {
                 includeComments: true,
               })!;
+              // ( 3 + 5 )  as  number
+              //          ^--remove--^
               return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
             },
           });

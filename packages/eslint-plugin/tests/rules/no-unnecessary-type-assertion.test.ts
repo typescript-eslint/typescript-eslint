@@ -755,5 +755,65 @@ const foo = 3 + 5/*a*/ /*b*/;
         },
       ],
     },
+    {
+      code: noFormat`
+const foo = <(number)>(3 + 5);
+      `,
+      output: `
+const foo = (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = < ( number ) >( 3 + 5 );
+      `,
+      output: `
+const foo = ( 3 + 5 );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <number> /* a */ (3 + 5);
+      `,
+      output: `
+const foo =  /* a */ (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <number /* a */>(3 + 5);
+      `,
+      output: `
+const foo = (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
   ],
 });
