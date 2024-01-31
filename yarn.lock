@@ -4059,7 +4059,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/sync@npm:*, @prettier/sync@npm:^0.3.0":
+"@prettier/sync@npm:*":
+  version: 0.5.0
+  resolution: "@prettier/sync@npm:0.5.0"
+  dependencies:
+    make-synchronized: ^0.2.5
+  peerDependencies:
+    prettier: "*"
+  checksum: 491e30148a05128a5e290916a58ab8c328dfd1e6aafa13688ad031caedb47da2ffaea22e12afa14f786c1ae998cbd332fe0ff6bd1152bd176b7a862752a39944
+  languageName: node
+  linkType: hard
+
+"@prettier/sync@npm:^0.3.0":
   version: 0.3.0
   resolution: "@prettier/sync@npm:0.3.0"
   peerDependencies:
@@ -13100,6 +13111,13 @@ __metadata:
     socks-proxy-agent: ^7.0.0
     ssri: ^10.0.0
   checksum: 7268bf274a0f6dcf0343829489a4506603ff34bd0649c12058753900b0eb29191dce5dba12680719a5d0a983d3e57810f594a12f3c18494e93a1fbc6348a4540
+  languageName: node
+  linkType: hard
+
+"make-synchronized@npm:^0.2.5":
+  version: 0.2.7
+  resolution: "make-synchronized@npm:0.2.7"
+  checksum: 80cc6b194c82f84f5159a5547881347c9cd0a3532a9efc3a5c21f1b2f74d1ef89bf7223e0dfe3e62d2ac77a833dca49d4fff73690afcce03d7929c60d49d6138
   languageName: node
   linkType: hard
 
