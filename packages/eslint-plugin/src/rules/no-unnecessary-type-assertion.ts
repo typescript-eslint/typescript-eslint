@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -273,13 +273,17 @@ export default createRule<Options, MessageIds>({
                     ])
                   : null;
               }
-              return fixer.removeRange([
-                node.expression.range[1] +
-                  (node.expression.type === AST_NODE_TYPES.CallExpression
-                    ? 0
-                    : 1),
-                node.range[1],
-              ]);
+              // `as` is always present in TSAsExpression
+              const asToken = sourceCode.getTokenAfter(
+                node.expression,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Identifier &&
+                  token.value === 'as',
+              )!;
+              const tokenBeforeAs = sourceCode.getTokenBefore(asToken, {
+                includeComments: true,
+              })!;
+              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
             },
           });
         }
