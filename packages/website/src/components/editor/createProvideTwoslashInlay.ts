@@ -7,11 +7,11 @@ import type * as ts from 'typescript';
 
 import type { SandboxInstance } from './useSandboxServices';
 
-const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/gm;
 function findTwoshashQueries(code: string): RegExpExecArray[] {
   let match: RegExpExecArray | null = null;
   const matches: RegExpExecArray[] = [];
-  while ((match = twoslashQueryRegex.exec(code))) {
+  // RegExp that matches '^<spaces>//?<spaces>$'
+  while ((match = /^(\s*\/\/\s*\^\?)\s*$/gm.exec(code))) {
     matches.push(match);
   }
   return matches;
