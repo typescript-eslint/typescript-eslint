@@ -566,6 +566,22 @@ export type Y = {
   [constants.X]: ReadonlyArray<string>;
 };
     `,
+    `
+      import A from 'foo';
+      export = A;
+    `,
+    `
+      import type A from 'foo';
+      export = A;
+    `,
+    `
+      import type A from 'foo';
+      export = {} as A;
+    `,
+    `
+      import { type A } from 'foo';
+      export = {} as A;
+    `,
   ],
   invalid: [
     {
@@ -2225,6 +2241,42 @@ let baz: D;
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import A from 'foo';
+export = {} as A;
+      `,
+      output: `
+import type A from 'foo';
+export = {} as A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import { A } from 'foo';
+export = {} as A;
+      `,
+      output: `
+import { type A } from 'foo';
+export = {} as A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
           line: 2,
           column: 1,
         },
