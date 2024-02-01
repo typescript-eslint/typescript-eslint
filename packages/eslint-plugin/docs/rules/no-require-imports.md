@@ -32,7 +32,7 @@ import * as lib3 from 'lib3';
 
 ### `allow`
 
-A array of strings. These strings will be compiled into regular expressions with the `u` flag and be used to test against the imported path. A common use case is to allow importing `package.json`. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled. You can also use it to allow importing any JSON if your environment doesn't support JSON modules, or use it for other cases where `import` statements cannot work.
+An array of strings. These strings will be compiled into regular expressions with the `u` flag and be used to test against the imported path. A common use case is to allow importing `package.json`. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled. You can also use it to allow importing any JSON if your environment doesn't support JSON modules, or use it for other cases where `import` statements cannot work.
 
 With `{allow: ['/package\\.json$']}`:
 
@@ -48,6 +48,30 @@ console.log(require('../data.json').version);
 
 ```ts
 console.log(require('../package.json').version);
+```
+
+### `allowAsImport`
+
+A boolean. If it's set to `true`, the require statements with an `import` declaration won't be reported. The default value is `false`. If you want to apply the `no-var-requires` rule, then set it to `true`.
+
+With `{allowAsImport: true}`:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+var foo = require('foo');
+const foo = require('foo');
+let foo = require('foo');
+```
+
+### ✅ Correct
+
+```ts
+import foo = require('foo');
+require('foo');
+import foo from 'foo';
 ```
 
 ## When Not To Use It

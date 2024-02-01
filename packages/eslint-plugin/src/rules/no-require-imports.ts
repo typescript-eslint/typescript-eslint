@@ -42,7 +42,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ allow: [], allowAsImport: false }],
   create(context, options) {
-    let allowAsImport = options[0].allowAsImport;
+    const allowAsImport = options[0].allowAsImport;
     const allowPatterns = options[0].allow?.map(
       pattern => new RegExp(pattern, 'u'),
     );
@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         const variable = ASTUtils.findVariable(getScope(context), 'require');
-        let parent =
+        const parent =
           node.parent.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
             : node.parent;
