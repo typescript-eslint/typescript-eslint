@@ -114,6 +114,7 @@ export = {
     '@typescript-eslint/no-useless-template-literals': 'error',
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
     '@typescript-eslint/parameter-properties': 'error',
+    '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     'prefer-destructuring': 'off',
     '@typescript-eslint/prefer-destructuring': 'error',
