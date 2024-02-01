@@ -444,7 +444,11 @@ class Referencer extends Visitor {
   }
 
   protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
-    ExportVisitor.visit(this, node);
+    if (node.expression.type === AST_NODE_TYPES.Identifier) {
+      ExportVisitor.visit(this, node);
+    } else {
+      this.visit(node.expression);
+    }
   }
 
   protected ExportNamedDeclaration(
