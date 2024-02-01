@@ -1,0 +1,29 @@
+.description {
+  font-size: 1.25rem;
+}
+
+.bios {
+  --ifm-list-item-margin: 0;
+
+  display: flex;
+  gap: 1.5rem;
+  padding-left: 0;
+}
+
+@media screen and (width >= 1200px) {
+  .teamBioList {
+    display: flex;
+    gap: clamp(2rem, 2.5vw, 5rem);
+  }
+
+  .texts {
+    width: clamp(20rem, 35vw, 35rem);
+  }
+
+  .bios {
+    flex-wrap: wrap;
+    gap: clamp(1rem, 2.5vw, 3rem);
+    width: 100%;
+    margin-top: -3.5rem;
+  }
+}
