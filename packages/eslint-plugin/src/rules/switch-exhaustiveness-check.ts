@@ -142,6 +142,16 @@ export default createRule<Options, MessageIds>({
       return;
     }
 
+    function typeToString(type: ts.Type): string {
+      return checker.typeToString(
+        type,
+        undefined,
+        ts.TypeFormatFlags.AllowUniqueESSymbolType |
+          ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope |
+          ts.TypeFormatFlags.UseFullyQualifiedType,
+      );
+    }
+
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
@@ -230,7 +240,7 @@ export default createRule<Options, MessageIds>({
               .map(missingType =>
                 tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
-                  : checker.typeToString(missingType),
+                  : typeToString(missingType),
               )
               .join(' | '),
           },
@@ -280,9 +290,8 @@ export default createRule<Options, MessageIds>({
           missingBranchType,
           ts.TypeFlags.ESSymbolLike,
         )
-          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            missingBranchName!
-          : checker.typeToString(missingBranchType);
+          ? missingBranchName!
+          : typeToString(missingBranchType);
 
         if (
           symbolName &&

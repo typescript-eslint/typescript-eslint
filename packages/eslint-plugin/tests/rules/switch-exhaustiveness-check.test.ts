@@ -2947,5 +2947,51 @@ switch (literal) {
         },
       ],
     },
+    {
+      code: `
+        export namespace A {
+          export enum B {
+            C,
+            D,
+          }
+        }
+        declare const foo: A.B;
+        switch (foo) {
+          case A.B.C: {
+            break;
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          data: {
+            missingBranches: 'A.B.D',
+          },
+          line: 9,
+          column: 17,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+        export namespace A {
+          export enum B {
+            C,
+            D,
+          }
+        }
+        declare const foo: A.B;
+        switch (foo) {
+          case A.B.C: {
+            break;
+          }
+          case A.B.D: { throw new Error('Not implemented yet: A.B.D case') }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
