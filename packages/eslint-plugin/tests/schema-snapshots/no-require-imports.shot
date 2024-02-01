@@ -16,7 +16,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "allowAsImport": {
-        "description": "Allows `require` statements in import declarations.",
+        "description": "Allows \`require\` statements in import declarations.",
         "type": "boolean"
       }
     },
@@ -31,7 +31,7 @@ type Options = [
   {
     /** Patterns of import paths to allow requiring from. */
     allow?: string[];
-    /** Allows `require` statements in import declarations. */
+    /** Allows \`require\` statements in import declarations. */
     allowAsImport?: boolean;
   },
 ];
