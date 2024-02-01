@@ -49,7 +49,7 @@
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
-    "generate:configs": "yarn tsx tools/generate-configs.ts",
+    "generate:configs": "npx nx run repo-tools:generate-configs",
     "lint": "npx nx lint",
     "test": "jest --coverage --logHeapUsage",
     "test-single": "jest --no-coverage",
