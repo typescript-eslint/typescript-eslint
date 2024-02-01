@@ -1,5 +1,4 @@
 .teamBioDivider {
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  padding-bottom: 2rem;
-  margin-bottom: 3rem;
+  margin: 3rem 0;
 }
