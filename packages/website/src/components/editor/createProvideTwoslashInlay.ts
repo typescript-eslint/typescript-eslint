@@ -82,7 +82,7 @@ export function createTwoslashInlayProvider(
           text = text.slice(0, 119) + '...';
         }
 
-        const inlay: Monaco.languages.InlayHint = {
+        return {
           kind: sandbox.monaco.languages.InlayHintKind.Type,
           position: new sandbox.monaco.Position(
             endPos.lineNumber,
@@ -91,8 +91,6 @@ export function createTwoslashInlayProvider(
           label: text,
           paddingLeft: true,
         };
-
-        return inlay;
       }
     },
   };
