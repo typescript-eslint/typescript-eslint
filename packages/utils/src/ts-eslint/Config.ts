@@ -31,6 +31,17 @@ export namespace SharedConfig {
   }
 
   export type ParserOptions = ParserOptionsTypes.ParserOptions;
+
+  export interface PluginMeta {
+    /**
+     * The meta.name property should match the npm package name for your plugin.
+     */
+    name: string;
+    /**
+     * The meta.version property should match the npm package version for your plugin.
+     */
+    version: string;
+  }
 }
 
 export namespace ClassicConfig {
@@ -121,6 +132,7 @@ export namespace FlatConfig {
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
   export type Parser = ParserType.ParserModule;
   export type ParserOptions = SharedConfig.ParserOptions;
+  export type PluginMeta = SharedConfig.PluginMeta;
   export type Processor = ProcessorType.ProcessorModule;
   export type RuleEntry = SharedConfig.RuleEntry;
   export type RuleLevel = SharedConfig.RuleLevel;
@@ -131,16 +143,6 @@ export namespace FlatConfig {
   export type SeverityString = SharedConfig.SeverityString;
   export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
 
-  export interface PluginMeta {
-    /**
-     * The meta.name property should match the npm package name for your plugin.
-     */
-    name: string;
-    /**
-     * The meta.version property should match the npm package version for your plugin.
-     */
-    version: string;
-  }
   export interface Plugin {
     /**
      * Shared configurations bundled with the plugin.
