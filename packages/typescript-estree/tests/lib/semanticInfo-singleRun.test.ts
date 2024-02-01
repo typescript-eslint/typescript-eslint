@@ -16,6 +16,9 @@ const mockProgram = {
   getTypeChecker(): void {
     return;
   },
+  getCompilerOptions(): unknown {
+    return {};
+  },
 };
 
 jest.mock('../../src/ast-converter', () => {

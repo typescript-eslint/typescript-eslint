@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { RuleListener } from '@typescript-eslint/utils/eslint-utils';
 import {
   getDeclaredVariables,
   getSourceCode,
@@ -8,6 +9,7 @@ import {
 import {
   createRule,
   formatWordList,
+  getParserServices,
   isClosingBraceToken,
   isCommaToken,
   isImportKeyword,
@@ -47,11 +49,9 @@ interface ReportValueImport {
 }
 
 type MessageIds =
-  | 'aImportInDecoMeta'
   | 'aImportIsOnlyTypes'
   | 'noImportTypeAnnotations'
   | 'someImportsAreOnlyTypes'
-  | 'someImportsInDecoMeta'
   | 'typeOverValue'
   | 'valueOverType';
 export default createRule<Options, MessageIds>({
@@ -67,10 +67,6 @@ export default createRule<Options, MessageIds>({
       someImportsAreOnlyTypes:
         'Imports {{typeImports}} are only used as types.',
       aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types.',
-      someImportsInDecoMeta:
-        'Type imports {{typeImports}} are used by decorator metadata.',
-      aImportInDecoMeta:
-        'Type import {{typeImports}} is used by decorator metadata.',
       valueOverType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
     },
@@ -107,305 +103,334 @@ export default createRule<Options, MessageIds>({
   create(context, [option]) {
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
-    const fixStyle = option.fixStyle ?? 'separate-type-imports';
     const sourceCode = getSourceCode(context);
 
+    const selectors: RuleListener = {};
+
+    if (disallowTypeAnnotations) {
+      selectors.TSImportType = (node): void => {
+        context.report({
+          node,
+          messageId: 'noImportTypeAnnotations',
+        });
+      };
+    }
+
+    if (prefer === 'no-type-imports') {
+      // prefer no type imports
+      return {
+        ...selectors,
+        'ImportDeclaration[importKind = "type"]'(
+          node: TSESTree.ImportDeclaration,
+        ): void {
+          context.report({
+            node,
+            messageId: 'valueOverType',
+            fix(fixer) {
+              return fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
+            },
+          });
+        },
+        'ImportSpecifier[importKind = "type"]'(
+          node: TSESTree.ImportSpecifier,
+        ): void {
+          context.report({
+            node,
+            messageId: 'valueOverType',
+            fix(fixer) {
+              return fixRemoveTypeSpecifierFromImportSpecifier(fixer, node);
+            },
+          });
+        },
+      };
+    }
+
+    // prefer type imports
+    const fixStyle = option.fixStyle ?? 'separate-type-imports';
+
+    let hasDecoratorMetadata = false;
     const sourceImportsMap: Record<string, SourceImports> = {};
 
+    const emitDecoratorMetadata =
+      getParserServices(context, true).emitDecoratorMetadata ?? false;
+    const experimentalDecorators =
+      getParserServices(context, true).experimentalDecorators ?? false;
+    if (experimentalDecorators && emitDecoratorMetadata) {
+      selectors.Decorator = (): void => {
+        hasDecoratorMetadata = true;
+      };
+    }
+
     return {
-      ...(prefer === 'type-imports'
-        ? {
-            // prefer type imports
-            ImportDeclaration(node): void {
-              const source = node.source.value;
-              // sourceImports is the object containing all the specifics for a particular import source, type or value
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              sourceImportsMap[source] ??= {
-                source,
-                reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
-                typeOnlyNamedImport: null, // if only type imports
-                valueOnlyNamedImport: null, // if only value imports with named specifiers
-                valueImport: null, // if only value imports
-              };
-              const sourceImports = sourceImportsMap[source];
-              if (node.importKind === 'type') {
-                if (
-                  !sourceImports.typeOnlyNamedImport &&
-                  node.specifiers.every(
-                    specifier =>
-                      specifier.type === AST_NODE_TYPES.ImportSpecifier,
-                  )
-                ) {
-                  // definitely import type { TypeX }
-                  sourceImports.typeOnlyNamedImport = node;
-                }
-              } else {
-                if (
-                  !sourceImports.valueOnlyNamedImport &&
-                  node.specifiers.every(
-                    specifier =>
-                      specifier.type === AST_NODE_TYPES.ImportSpecifier,
-                  )
-                ) {
-                  sourceImports.valueOnlyNamedImport = node;
-                  sourceImports.valueImport = node;
-                } else if (
-                  !sourceImports.valueImport &&
-                  node.specifiers.some(
-                    specifier =>
-                      specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
-                  )
-                ) {
-                  sourceImports.valueImport = node;
+      ...selectors,
+
+      ImportDeclaration(node): void {
+        const source = node.source.value;
+        // sourceImports is the object containing all the specifics for a particular import source, type or value
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        sourceImportsMap[source] ??= {
+          source,
+          reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
+          typeOnlyNamedImport: null, // if only type imports
+          valueOnlyNamedImport: null, // if only value imports with named specifiers
+          valueImport: null, // if only value imports
+        };
+        const sourceImports = sourceImportsMap[source];
+        if (node.importKind === 'type') {
+          if (
+            !sourceImports.typeOnlyNamedImport &&
+            node.specifiers.every(
+              specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
+            )
+          ) {
+            // definitely import type { TypeX }
+            sourceImports.typeOnlyNamedImport = node;
+          }
+        } else {
+          if (
+            !sourceImports.valueOnlyNamedImport &&
+            node.specifiers.every(
+              specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
+            )
+          ) {
+            sourceImports.valueOnlyNamedImport = node;
+            sourceImports.valueImport = node;
+          } else if (
+            !sourceImports.valueImport &&
+            node.specifiers.some(
+              specifier =>
+                specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
+            )
+          ) {
+            sourceImports.valueImport = node;
+          }
+        }
+
+        const typeSpecifiers: TSESTree.ImportClause[] = [];
+        const inlineTypeSpecifiers: TSESTree.ImportSpecifier[] = [];
+        const valueSpecifiers: TSESTree.ImportClause[] = [];
+        const unusedSpecifiers: TSESTree.ImportClause[] = [];
+        for (const specifier of node.specifiers) {
+          if (
+            specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+            specifier.importKind === 'type'
+          ) {
+            inlineTypeSpecifiers.push(specifier);
+            continue;
+          }
+
+          const [variable] = getDeclaredVariables(context, specifier);
+          if (variable.references.length === 0) {
+            unusedSpecifiers.push(specifier);
+          } else {
+            const onlyHasTypeReferences = variable.references.every(ref => {
+              /**
+               * keep origin import kind when export
+               * export { Type }
+               * export default Type;
+               */
+              if (
+                ref.identifier.parent.type === AST_NODE_TYPES.ExportSpecifier ||
+                ref.identifier.parent.type ===
+                  AST_NODE_TYPES.ExportDefaultDeclaration ||
+                ref.identifier.parent.type === AST_NODE_TYPES.TSExportAssignment
+              ) {
+                if (ref.isValueReference && ref.isTypeReference) {
+                  return node.importKind === 'type';
                 }
               }
+              if (ref.isValueReference) {
+                let parent = ref.identifier.parent as TSESTree.Node | undefined;
+                let child: TSESTree.Node = ref.identifier;
+                while (parent) {
+                  switch (parent.type) {
+                    // CASE 1:
+                    // `type T = typeof foo` will create a value reference because "foo" must be a value type
+                    // however this value reference is safe to use with type-only imports
+                    case AST_NODE_TYPES.TSTypeQuery:
+                      return true;
 
-              const typeSpecifiers: TSESTree.ImportClause[] = [];
-              const inlineTypeSpecifiers: TSESTree.ImportSpecifier[] = [];
-              const valueSpecifiers: TSESTree.ImportClause[] = [];
-              const unusedSpecifiers: TSESTree.ImportClause[] = [];
-              for (const specifier of node.specifiers) {
-                if (
-                  specifier.type === AST_NODE_TYPES.ImportSpecifier &&
-                  specifier.importKind === 'type'
-                ) {
-                  inlineTypeSpecifiers.push(specifier);
-                  continue;
-                }
-
-                const [variable] = getDeclaredVariables(context, specifier);
-                if (variable.references.length === 0) {
-                  unusedSpecifiers.push(specifier);
-                } else {
-                  const onlyHasTypeReferences = variable.references.every(
-                    ref => {
-                      /**
-                       * keep origin import kind when export
-                       * export { Type }
-                       * export default Type;
-                       * export = Type;
-                       */
-                      if (
-                        ref.identifier.parent.type ===
-                          AST_NODE_TYPES.ExportSpecifier ||
-                        ref.identifier.parent.type ===
-                          AST_NODE_TYPES.ExportDefaultDeclaration ||
-                        ref.identifier.parent.type ===
-                          AST_NODE_TYPES.TSExportAssignment
-                      ) {
-                        if (ref.isValueReference && ref.isTypeReference) {
-                          return node.importKind === 'type';
-                        }
+                    case AST_NODE_TYPES.TSQualifiedName:
+                      // TSTypeQuery must have a TSESTree.EntityName as its child, so we can filter here and break early
+                      if (parent.left !== child) {
+                        return false;
                       }
-                      if (ref.isValueReference) {
-                        let parent = ref.identifier.parent as
-                          | TSESTree.Node
-                          | undefined;
-                        let child: TSESTree.Node = ref.identifier;
-                        while (parent) {
-                          switch (parent.type) {
-                            // CASE 1:
-                            // `type T = typeof foo` will create a value reference because "foo" must be a value type
-                            // however this value reference is safe to use with type-only imports
-                            case AST_NODE_TYPES.TSTypeQuery:
-                              return true;
+                      child = parent;
+                      parent = parent.parent;
+                      continue;
+                    // END CASE 1
 
-                            case AST_NODE_TYPES.TSQualifiedName:
-                              // TSTypeQuery must have a TSESTree.EntityName as its child, so we can filter here and break early
-                              if (parent.left !== child) {
-                                return false;
-                              }
-                              child = parent;
-                              parent = parent.parent;
-                              continue;
-                            // END CASE 1
+                    //////////////
 
-                            //////////////
+                    // CASE 2:
+                    // `type T = { [foo]: string }` will create a value reference because "foo" must be a value type
+                    // however this value reference is safe to use with type-only imports.
+                    // Also this is represented as a non-type AST - hence it uses MemberExpression
+                    case AST_NODE_TYPES.TSPropertySignature:
+                      return parent.key === child;
 
-                            // CASE 2:
-                            // `type T = { [foo]: string }` will create a value reference because "foo" must be a value type
-                            // however this value reference is safe to use with type-only imports.
-                            // Also this is represented as a non-type AST - hence it uses MemberExpression
-                            case AST_NODE_TYPES.TSPropertySignature:
-                              return parent.key === child;
-
-                            case AST_NODE_TYPES.MemberExpression:
-                              if (parent.object !== child) {
-                                return false;
-                              }
-                              child = parent;
-                              parent = parent.parent;
-                              continue;
-                            // END CASE 2
-
-                            default:
-                              return false;
-                          }
-                        }
+                    case AST_NODE_TYPES.MemberExpression:
+                      if (parent.object !== child) {
+                        return false;
                       }
+                      child = parent;
+                      parent = parent.parent;
+                      continue;
+                    // END CASE 2
 
-                      return ref.isTypeReference;
-                    },
-                  );
-                  if (onlyHasTypeReferences) {
-                    typeSpecifiers.push(specifier);
-                  } else {
-                    valueSpecifiers.push(specifier);
+                    default:
+                      return false;
                   }
                 }
               }
 
-              if (
-                (node.importKind === 'value' && typeSpecifiers.length) ||
-                (node.importKind === 'type' && valueSpecifiers.length)
-              ) {
-                sourceImports.reportValueImports.push({
-                  node,
-                  typeSpecifiers,
-                  valueSpecifiers,
-                  unusedSpecifiers,
-                  inlineTypeSpecifiers,
+              return ref.isTypeReference;
+            });
+            if (onlyHasTypeReferences) {
+              typeSpecifiers.push(specifier);
+            } else {
+              valueSpecifiers.push(specifier);
+            }
+          }
+        }
+
+        if (
+          (node.importKind === 'value' && typeSpecifiers.length) ||
+          (node.importKind === 'type' && valueSpecifiers.length)
+        ) {
+          sourceImports.reportValueImports.push({
+            node,
+            typeSpecifiers,
+            valueSpecifiers,
+            unusedSpecifiers,
+            inlineTypeSpecifiers,
+          });
+        }
+      },
+
+      'Program:exit'(): void {
+        if (hasDecoratorMetadata) {
+          // Decorator metadata is bowl of poop that cannot be supported based
+          // on pure syntactic analysis.
+          //
+          // So we can do one of two things:
+          // 1) add type-information to the rule in a breaking change and
+          //    prevent users from using it so that we can fully support this
+          //    case.
+          // 2) make the rule ignore all imports that are used in a file that
+          //    might have decorator metadata.
+          //
+          // (1) is has huge impact and prevents the rule from being used by 99%
+          // of users Frankly - it's a straight-up bad option. So instead we
+          // choose with option (2) and just avoid reporting on any imports in a
+          // file with both emitDecoratorMetadata AND decorators
+          //
+          // For more context see the discussion in this issue and its linked
+          // issues:
+          // https://github.com/typescript-eslint/typescript-eslint/issues/5468
+          //
+          //
+          // NOTE - in TS 5.0 `experimentalDecorators` became the legacy option,
+          // replaced with un-flagged, stable decorators and thus the type-aware
+          // emitDecoratorMetadata implementation also became legacy. in TS 5.2
+          // support for the new, stable decorator metadata proposal was added -
+          // however this proposal does not include type information
+          //
+          //
+          // PHEW. So TL;DR what does all this mean?
+          // - if you use experimentalDecorators:true,
+          //   emitDecoratorMetadata:true, and have a decorator in the file -
+          //   the rule will do nothing in the file out of an abundance of
+          //   caution.
+          // - else the rule will work as normal.
+          return;
+        }
+
+        for (const sourceImports of Object.values(sourceImportsMap)) {
+          if (sourceImports.reportValueImports.length === 0) {
+            // nothing to fix. value specifiers and type specifiers are correctly written
+            continue;
+          }
+          for (const report of sourceImports.reportValueImports) {
+            if (
+              report.valueSpecifiers.length === 0 &&
+              report.unusedSpecifiers.length === 0 &&
+              report.node.importKind !== 'type'
+            ) {
+              /**
+               * checks if import has type assertions
+               * ```
+               * import * as type from 'mod' assert { type: 'json' };
+               * ```
+               * https://github.com/typescript-eslint/typescript-eslint/issues/7527
+               */
+              if (report.node.attributes.length === 0) {
+                context.report({
+                  node: report.node,
+                  messageId: 'typeOverValue',
+                  *fix(fixer) {
+                    yield* fixToTypeImportDeclaration(
+                      fixer,
+                      report,
+                      sourceImports,
+                    );
+                  },
                 });
               }
-            },
-            'Program:exit'(): void {
-              for (const sourceImports of Object.values(sourceImportsMap)) {
-                if (sourceImports.reportValueImports.length === 0) {
-                  // nothing to fix. value specifiers and type specifiers are correctly written
-                  continue;
+            } else {
+              const isTypeImport = report.node.importKind === 'type';
+
+              // we have a mixed type/value import or just value imports, so we need to split them out into multiple imports if separate-type-imports is configured
+              const importNames = (
+                isTypeImport
+                  ? report.valueSpecifiers // import type { A } from 'roo'; // WHERE A is used in value position
+                  : report.typeSpecifiers
+              ) // import { A, B } from 'roo'; // WHERE A is used in type position and B is in value position
+                .map(specifier => `"${specifier.local.name}"`);
+
+              const message = ((): {
+                messageId: MessageIds;
+                data: Record<string, unknown>;
+              } => {
+                const typeImports = formatWordList(importNames);
+
+                if (importNames.length === 1) {
+                  return {
+                    messageId: 'aImportIsOnlyTypes',
+                    data: { typeImports },
+                  };
                 }
-                for (const report of sourceImports.reportValueImports) {
-                  if (
-                    report.valueSpecifiers.length === 0 &&
-                    report.unusedSpecifiers.length === 0 &&
-                    report.node.importKind !== 'type'
-                  ) {
-                    /**
-                     * checks if import has type assertions
-                     * ```
-                     * import * as type from 'mod' assert { type: 'json' };
-                     * ```
-                     * https://github.com/typescript-eslint/typescript-eslint/issues/7527
-                     */
-                    if (report.node.attributes.length === 0) {
-                      context.report({
-                        node: report.node,
-                        messageId: 'typeOverValue',
-                        *fix(fixer) {
-                          yield* fixToTypeImportDeclaration(
-                            fixer,
-                            report,
-                            sourceImports,
-                          );
-                        },
-                      });
-                    }
+                return {
+                  messageId: 'someImportsAreOnlyTypes',
+                  data: { typeImports }, // typeImports are all the type specifiers in the value position
+                };
+              })();
+
+              context.report({
+                node: report.node,
+                ...message,
+                *fix(fixer) {
+                  if (isTypeImport) {
+                    // take all the valueSpecifiers and put them on a new line
+                    yield* fixToValueImportDeclaration(
+                      fixer,
+                      report,
+                      sourceImports,
+                    );
                   } else {
-                    const isTypeImport = report.node.importKind === 'type';
-
-                    // we have a mixed type/value import or just value imports, so we need to split them out into multiple imports if separate-type-imports is configured
-                    const importNames = (
-                      isTypeImport
-                        ? report.valueSpecifiers // import type { A } from 'roo'; // WHERE A is used in value position
-                        : report.typeSpecifiers
-                    ) // import { A, B } from 'roo'; // WHERE A is used in type position and B is in value position
-                      .map(specifier => `"${specifier.local.name}"`);
-
-                    const message = ((): {
-                      messageId: MessageIds;
-                      data: Record<string, unknown>;
-                    } => {
-                      const typeImports = formatWordList(importNames);
-
-                      if (importNames.length === 1) {
-                        if (isTypeImport) {
-                          return {
-                            messageId: 'aImportInDecoMeta',
-                            data: { typeImports },
-                          };
-                        }
-                        return {
-                          messageId: 'aImportIsOnlyTypes',
-                          data: { typeImports },
-                        };
-                      }
-                      if (isTypeImport) {
-                        return {
-                          messageId: 'someImportsInDecoMeta',
-                          data: { typeImports }, // typeImports are all the value specifiers that are in the type position
-                        };
-                      }
-                      return {
-                        messageId: 'someImportsAreOnlyTypes',
-                        data: { typeImports }, // typeImports are all the type specifiers in the value position
-                      };
-                    })();
-
-                    context.report({
-                      node: report.node,
-                      ...message,
-                      *fix(fixer) {
-                        if (isTypeImport) {
-                          // take all the valueSpecifiers and put them on a new line
-                          yield* fixToValueImportDeclaration(
-                            fixer,
-                            report,
-                            sourceImports,
-                          );
-                        } else {
-                          // take all the typeSpecifiers and put them on a new line
-                          yield* fixToTypeImportDeclaration(
-                            fixer,
-                            report,
-                            sourceImports,
-                          );
-                        }
-                      },
-                    });
+                    // take all the typeSpecifiers and put them on a new line
+                    yield* fixToTypeImportDeclaration(
+                      fixer,
+                      report,
+                      sourceImports,
+                    );
                   }
-                }
-              }
-            },
-          }
-        : {
-            // prefer no type imports
-            'ImportDeclaration[importKind = "type"]'(
-              node: TSESTree.ImportDeclaration,
-            ): void {
-              context.report({
-                node,
-                messageId: 'valueOverType',
-                fix(fixer) {
-                  return fixRemoveTypeSpecifierFromImportDeclaration(
-                    fixer,
-                    node,
-                  );
                 },
               });
-            },
-            'ImportSpecifier[importKind = "type"]'(
-              node: TSESTree.ImportSpecifier,
-            ): void {
-              context.report({
-                node,
-                messageId: 'valueOverType',
-                fix(fixer) {
-                  return fixRemoveTypeSpecifierFromImportSpecifier(fixer, node);
-                },
-              });
-            },
-          }),
-      ...(disallowTypeAnnotations
-        ? {
-            // disallow `import()` type
-            TSImportType(node: TSESTree.TSImportType): void {
-              context.report({
-                node,
-                messageId: 'noImportTypeAnnotations',
-              });
-            },
+            }
           }
-        : {}),
+        }
+      },
     };
 
     function classifySpecifier(node: TSESTree.ImportDeclaration): {
