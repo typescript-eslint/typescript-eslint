@@ -445,7 +445,7 @@ class Referencer extends Visitor {
 
   protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
     if (node.expression.type === AST_NODE_TYPES.Identifier) {
-      ExportVisitor.visit(this, node);
+      this.currentScope().referenceDualValueType(node.expression);
     } else {
       this.visit(node.expression);
     }
