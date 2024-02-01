@@ -38,6 +38,7 @@ body:
         - parser
         - rule-tester
         - scope-manager
+        - typescript-eslint
         - typescript-estree
         - utils
         - website

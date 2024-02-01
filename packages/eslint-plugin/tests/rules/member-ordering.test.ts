@@ -1650,6 +1650,31 @@ class Foo {
       ],
     },
     {
+      name: 'default member types with alphabetically-case-insensitive order',
+      code: `
+// no accessibility === public
+class Foo {
+  [A: string]: any;
+  [a: string]: any;
+  static C: boolean;
+  static d: boolean;
+  b: any;
+  B: any;
+  get e(): string {}
+  get E(): string {}
+  private imPrivate() {}
+  private ImPrivate() {}
+}
+      `,
+      options: [
+        {
+          default: {
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
       code: `
 class Foo {
   readonly B: string;
@@ -2031,6 +2056,46 @@ class Foo {
           },
         },
       ],
+    },
+    {
+      name: 'default member types with alphabetically order',
+      code: `
+// no accessibility === public
+class Foo {
+  [A: string]: any;
+  [B: string]: any;
+  [a: string]: any;
+  [b: string]: any;
+  static C: boolean;
+  static d: boolean;
+  get E(): string {}
+  get e(): string {}
+  private ImPrivate() {}
+  private imPrivate() {}
+}
+      `,
+      options: [
+        {
+          default: {
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      name: 'alphabetically order without member types',
+      code: `
+// no accessibility === public
+interface Foo {
+  A: string;
+  B: string;
+  [Z: string]: any;
+  c();
+  new ();
+  r();
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
     {
       code: `
@@ -4801,6 +4866,57 @@ class Foo {
           column: 3,
         },
       ],
+    },
+    {
+      name: 'default member types with alphabetically order',
+      code: `
+// no accessibility === public
+class Foo {
+  static C: boolean;
+  [B: string]: any;
+  private A() {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'public static field',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+      options: [
+        {
+          default: {
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      name: 'alphabetically order without member types',
+      code: `
+// no accessibility === public
+class Foo {
+  static C: boolean;
+  [B: string]: any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'C',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
     {
       name: '#private and private member order',

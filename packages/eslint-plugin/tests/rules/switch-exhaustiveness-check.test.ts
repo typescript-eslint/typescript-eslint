@@ -333,8 +333,1203 @@ switch (value) {
         },
       ],
     },
+    {
+      code: `
+declare const value: 'literal';
+switch (value) {
+  case 'literal':
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: null;
+switch (value) {
+  case null:
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: undefined;
+switch (value) {
+  case undefined:
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: null | undefined;
+switch (value) {
+  case null:
+    return 0;
+  case undefined:
+    return 0;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'literal' & { _brand: true };
+switch (value) {
+  case 'literal':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: ('literal' & { _brand: true }) | 1;
+switch (value) {
+  case 'literal':
+    break;
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: (1 & { _brand: true }) | 'literal' | null;
+switch (value) {
+  case 'literal':
+    break;
+  case 1:
+    break;
+  case null:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | (number & { foo: 'bar' });
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case '2':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: number | null | undefined;
+switch (value) {
+  case null:
+    break;
+  case undefined:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: (string & { foo: 'bar' }) | '1';
+switch (value) {
+  case '1':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | 2;
+switch (value) {
+  case a:
+    break;
+  case 2:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: number;
+declare const a: number;
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: bigint;
+switch (value) {
+  case 10n:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: symbol;
+const a = Symbol('a');
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: symbol;
+const a = Symbol('a');
+switch (value) {
+  case a:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | string;
+switch (value) {
+  case a:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | string;
+switch (value) {
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean | 1;
+switch (value) {
+  case 1:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean | 1;
+switch (value) {
+  case 1:
+    break;
+  case true:
+    break;
+  case false:
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+  case Aaa.Bar:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+    },
   ],
   invalid: [
+    {
+      code: `
+declare const value: 'literal';
+switch (value) {
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 'literal';
+switch (value) {
+case "literal": { throw new Error('Not implemented yet: "literal" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'literal' & { _brand: true };
+switch (value) {
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: 'literal' & { _brand: true };
+switch (value) {
+case "literal": { throw new Error('Not implemented yet: "literal" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: ('literal' & { _brand: true }) | 1;
+switch (value) {
+  case 'literal':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: ('literal' & { _brand: true }) | 1;
+switch (value) {
+  case 'literal':
+    break;
+  case 1: { throw new Error('Not implemented yet: 1 case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case "2": { throw new Error('Not implemented yet: "2" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case "2": { throw new Error('Not implemented yet: "2" case') }
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: (string & { foo: 'bar' }) | '1';
+switch (value) {
+  case '1':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: (string & { foo: 'bar' }) | '1';
+switch (value) {
+  case '1':
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
+switch (value) {
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
+switch (value) {
+case undefined: { throw new Error('Not implemented yet: undefined case') }
+case null: { throw new Error('Not implemented yet: null case') }
+case "1": { throw new Error('Not implemented yet: "1" case') }
+case 1: { throw new Error('Not implemented yet: 1 case') }
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
+switch (value) {
+default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: string | number;
+switch (value) {
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: string | number;
+switch (value) {
+  case 1:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: number;
+declare const a: number;
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: number;
+declare const a: number;
+switch (value) {
+  case a:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: bigint;
+switch (value) {
+  case 10n:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: bigint;
+switch (value) {
+  case 10n:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: symbol;
+const a = Symbol('a');
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: symbol;
+const a = Symbol('a');
+switch (value) {
+  case a:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('aa');
+const b = Symbol('bb');
+declare const value: typeof a | typeof b | 1;
+switch (value) {
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 5,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const a = Symbol('aa');
+const b = Symbol('bb');
+declare const value: typeof a | typeof b | 1;
+switch (value) {
+  case 1:
+    break;
+  case a: { throw new Error('Not implemented yet: a case') }
+  case b: { throw new Error('Not implemented yet: b case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const a = Symbol('a');
+declare const value: typeof a | string;
+switch (value) {
+  case a:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const a = Symbol('a');
+declare const value: typeof a | string;
+switch (value) {
+  case a:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean;
+switch (value) {
+case false: { throw new Error('Not implemented yet: false case') }
+case true: { throw new Error('Not implemented yet: true case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean | 1;
+switch (value) {
+  case false:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean | 1;
+switch (value) {
+  case false:
+    break;
+  case true: { throw new Error('Not implemented yet: true case') }
+  case 1: { throw new Error('Not implemented yet: 1 case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean | number;
+switch (value) {
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean | number;
+switch (value) {
+  case 1:
+    break;
+  case false: { throw new Error('Not implemented yet: false case') }
+  case true: { throw new Error('Not implemented yet: true case') }
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean | number;
+switch (value) {
+  case 1:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: object;
+switch (value) {
+  case 1:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: object;
+switch (value) {
+  case 1:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1 | string;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 7,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1 | string;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+  case Aaa.Bar: { throw new Error('Not implemented yet: Aaa.Bar case') }
+}
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 7,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Aaa {
+  Foo,
+  Bar,
+}
+declare const value: Aaa | 1 | string;
+switch (value) {
+  case 1:
+    break;
+  case Aaa.Foo:
+    break;
+  default: { throw new Error('default case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
     {
       // Matched only one branch out of seven.
       code: `
@@ -493,32 +1688,6 @@ switch (day) {
           data: {
             missingBranches:
               '"Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
-          },
-        },
-      ],
-    },
-    {
-      // Still complains with union intersection part
-      code: `
-type FooBar = (string & { foo: void }) | 'bar';
-
-const foobar = 'bar' as FooBar;
-let result = 0;
-
-switch (foobar) {
-  case 'bar': {
-    result = 42;
-    break;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'switchIsNotExhaustive',
-          line: 7,
-          column: 9,
-          data: {
-            missingBranches: 'string & { foo: void; }',
           },
         },
       ],

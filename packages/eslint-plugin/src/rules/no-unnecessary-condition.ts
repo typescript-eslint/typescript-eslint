@@ -197,6 +197,28 @@ export default createRule<Options, MessageId>({
       );
     }
 
+    function isNullableMemberExpression(
+      node: TSESTree.MemberExpression,
+    ): boolean {
+      const objectType = services.getTypeAtLocation(node.object);
+      if (node.computed) {
+        const propertyType = services.getTypeAtLocation(node.property);
+        return isNullablePropertyType(objectType, propertyType);
+      }
+      const property = node.property;
+
+      if (property.type === AST_NODE_TYPES.Identifier) {
+        const propertyType = objectType.getProperty(property.name);
+        if (
+          propertyType &&
+          tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     /**
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
@@ -271,7 +293,10 @@ export default createRule<Options, MessageId>({
       if (
         isTypeFlagSet(
           type,
-          ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+          ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable,
         )
       ) {
         return;
@@ -280,7 +305,13 @@ export default createRule<Options, MessageId>({
       let messageId: MessageId | null = null;
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
-      } else if (!isPossiblyNullish(type)) {
+      } else if (
+        !isPossiblyNullish(type) &&
+        !(
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          isNullableMemberExpression(node)
+        )
+      ) {
         // Since typescript array index signature types don't represent the
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
@@ -345,7 +376,8 @@ export default createRule<Options, MessageId>({
           flag |=
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
-            ts.TypeFlags.TypeParameter;
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable;
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {

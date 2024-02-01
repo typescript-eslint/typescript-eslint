@@ -299,7 +299,10 @@ class ClassScope {
         tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
         node.name.kind === ts.SyntaxKind.PrivateIdentifier
       ) ||
-      tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
+      tsutils.isModifierFlagSet(
+        node,
+        ts.ModifierFlags.Accessor | ts.ModifierFlags.Readonly,
+      ) ||
       ts.isComputedPropertyName(node.name)
     ) {
       return;

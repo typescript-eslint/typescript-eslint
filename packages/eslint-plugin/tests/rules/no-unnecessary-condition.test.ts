@@ -22,6 +22,11 @@ const ruleTester = new RuleTester({
   },
 });
 
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootPath,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
+
 const ruleError = (
   line: number,
   column: number,
@@ -253,6 +258,11 @@ function test<T>(a: T) {
   const t16 = undefined !== a;
 }
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] == null;
+}
+    `,
 
     // Predicate functions
     `
@@ -317,6 +327,11 @@ function test<T>(a: T) {
     `
 function test<T extends string | null>(a: T) {
   return a ?? 'default';
+}
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ?? 'default';
 }
     `,
     // Indexing cases
@@ -738,8 +753,55 @@ declare let foo: number;
 foo ||= 1;
     `,
     `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+    `,
+    `
+enum Keys {
+  A = 'A',
+  B = 'B',
+}
+type Foo = {
+  [Keys.A]: number | null;
+  [Keys.B]: number;
+};
+declare const foo: Foo;
+declare const key: Keys;
+foo[key] ??= 1;
+    `,
+    {
+      code: `
+declare const foo: { bar?: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number } };
+foo['bar'].baz ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    `
 declare let foo: number;
 foo &&= 1;
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ??= 'default';
+}
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6264
     `
@@ -1084,7 +1146,14 @@ function test(a: never) {
       `,
       errors: [ruleError(3, 10, 'never')],
     },
-
+    {
+      code: `
+function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
+  num ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 3, 'neverNullish')],
+    },
     // Predicate functions
     {
       code: `
@@ -2010,6 +2079,22 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 8,
         },
       ],
     },
