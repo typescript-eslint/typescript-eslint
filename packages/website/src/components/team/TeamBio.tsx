@@ -31,7 +31,7 @@ export function TeamBio({
           .sort(([a], [b]) => a.localeCompare(b))
           .map(([service, url]) => (
             <li key={service}>
-              <a href={url} target="_blank">
+              <a className={styles.serviceIconLink} href={url} target="_blank">
                 <img
                   alt={service}
                   className={styles.serviceIcon}

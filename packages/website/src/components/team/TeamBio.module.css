@@ -34,14 +34,17 @@
   padding-left: 0;
 }
 
-.serviceIcon {
-  --size: 1.25rem;
-
-  height: var(--size);
+.serviceIconLink {
   transition: opacity 200ms;
-  width: var(--size);
 }
 
 .serviceIconLink:not(:focus, :hover) {
   opacity: 0.7;
+}
+
+.serviceIcon {
+  --size: 1.25rem;
+
+  height: var(--size);
+  width: var(--size);
 }
