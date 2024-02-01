@@ -91,6 +91,16 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
 
+    function typeToString(type: ts.Type): string {
+      return checker.typeToString(
+        type,
+        undefined,
+        ts.TypeFormatFlags.AllowUniqueESSymbolType |
+          ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope |
+          ts.TypeFormatFlags.UseFullyQualifiedType,
+      );
+    }
+
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
@@ -167,7 +177,7 @@ export default createRule<Options, MessageIds>({
               .map(missingType =>
                 tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
-                  : checker.typeToString(missingType),
+                  : typeToString(missingType),
               )
               .join(' | '),
           },
@@ -215,7 +225,7 @@ export default createRule<Options, MessageIds>({
           ts.TypeFlags.ESSymbolLike,
         )
           ? missingBranchName!
-          : checker.typeToString(missingBranchType);
+          : typeToString(missingBranchType);
 
         if (
           symbolName &&
