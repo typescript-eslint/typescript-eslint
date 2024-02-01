@@ -11,7 +11,8 @@ function findTwoshashQueries(code: string): RegExpExecArray[] {
   let match: RegExpExecArray | null = null;
   const matches: RegExpExecArray[] = [];
   // RegExp that matches '^<spaces>//?<spaces>$'
-  while ((match = /^(\s*\/\/\s*\^\?)\s*$/gm.exec(code))) {
+  const twoslashQueryRegex = /^(\s*\/\/\s*\^\?)\s*$/gm;
+  while ((match = twoslashQueryRegex.exec(code))) {
     matches.push(match);
   }
   return matches;
