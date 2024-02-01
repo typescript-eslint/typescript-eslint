@@ -7,15 +7,15 @@
 }
 
 .profilePhoto {
-  width: var(--square-size);
   height: var(--square-size);
+  width: var(--square-size);
 }
 
 .texts {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
   margin-top: 0.75rem;
-  flex-direction: column;
 }
 
 .name {
