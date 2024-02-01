@@ -197,7 +197,7 @@ export default createRule<Options, MessageId>({
       );
     }
 
-    function isNullablesMemberExpression(
+    function isNullableMemberExpression(
       node: TSESTree.MemberExpression,
     ): boolean {
       const objectType = services.getTypeAtLocation(node.object);
@@ -309,7 +309,7 @@ export default createRule<Options, MessageId>({
         !isPossiblyNullish(type) &&
         !(
           node.type === AST_NODE_TYPES.MemberExpression &&
-          isNullablesMemberExpression(node)
+          isNullableMemberExpression(node)
         )
       ) {
         // Since typescript array index signature types don't represent the
