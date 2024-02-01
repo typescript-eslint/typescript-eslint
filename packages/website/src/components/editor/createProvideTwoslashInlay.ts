@@ -74,7 +74,6 @@ export function createTwoslashInlayProvider(
           return;
         }
 
-        // Make a one-liner
         let text = hint.displayParts
           .map(d => d.text)
           .join('')
