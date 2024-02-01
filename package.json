@@ -32,7 +32,7 @@
     "clean": "nx run-many --target=clean",
     "format": "prettier --write .",
     "generate-breaking-changes": "npx nx run eslint-plugin:generate-breaking-changes",
-    "generate-configs": "npx nx run eslint-plugin:generate:configs",
+    "generate-configs": "npx nx run repo-tools:generate-configs",
     "generate-contributors": "npx nx run repo-tools:generate-contributors",
     "generate-sponsors": "npx nx run repo-tools:generate-sponsors",
     "generate-website-dts": "npx nx run website:generate-website-dts",

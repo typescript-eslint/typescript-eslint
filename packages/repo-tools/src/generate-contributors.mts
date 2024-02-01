@@ -2,9 +2,12 @@
 // https://developer.github.com/v3/repos/#list-contributors
 // this endpoint returns a list of contributors sorted by number of contributions
 
+import fs from 'node:fs';
+import path from 'node:path';
+
 import fetch from 'cross-fetch';
-import * as fs from 'fs';
-import * as path from 'path';
+
+import { REPO_ROOT } from './paths.mts';
 
 const IGNORED_USERS = new Set([
   'dependabot[bot]',
@@ -130,10 +133,7 @@ function writeTable(contributors: User[], perLine = 5): void {
   );
   lines.push('');
 
-  fs.writeFileSync(
-    path.join(__dirname, '../../../CONTRIBUTORS.md'),
-    lines.join('\n'),
-  );
+  fs.writeFileSync(path.join(REPO_ROOT, 'CONTRIBUTORS.md'), lines.join('\n'));
 }
 
 async function main(): Promise<void> {
