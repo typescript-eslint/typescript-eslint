@@ -98,8 +98,9 @@ This allows you to skip checking of async IIFEs (Immediately Invoked function Ex
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
+<!-- prettier-ignore -->
 ```ts option='{ "ignoreIIFE": true }' showPlaygroundButton
-await(async function () {
+await (async function () {
   await res(1);
 })();
 

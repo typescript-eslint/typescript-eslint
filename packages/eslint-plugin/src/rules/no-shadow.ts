@@ -545,7 +545,7 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Checks the current context for shadowed variables.
-     * @param {Scope} scope Fixme
+     * @param scope Fixme
      */
     function checkForShadows(scope: TSESLint.Scope.Scope): void {
       // ignore global augmentation

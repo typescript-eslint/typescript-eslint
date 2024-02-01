@@ -397,7 +397,6 @@ const MERGABLE_TYPES = new Set([
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
- * @param target the type of node that is expected to be exported
  */
 function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one

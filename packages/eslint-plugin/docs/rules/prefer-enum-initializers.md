@@ -32,7 +32,7 @@ enum Direction {
 
 enum Color {
   Red,
-  Green = 'Green'
+  Green = 'Green',
   Blue = 'Blue',
 }
 ```

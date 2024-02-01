@@ -12,6 +12,11 @@ declare module 'typescript' {
   // Added in TypeScript 5.3
   enum JSDocParsingMode {}
 }
+// https://github.com/typescript-eslint/typescript-eslint/issues/8172
+declare module 'typescript/lib/tsserverlibrary' {
+  // Added in TypeScript 5.3
+  enum JSDocParsingMode {}
+}
 
 /**
  * Internal settings used by the parser to run on a file.
