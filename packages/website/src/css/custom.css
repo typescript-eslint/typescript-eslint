@@ -191,3 +191,7 @@ h6 {
 [data-theme='dark'] .code-block-added-line {
   background-color: #00ff9510;
 }
+
+.markdown a {
+  text-decoration: underline;
+}

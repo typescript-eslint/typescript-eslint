@@ -94,6 +94,8 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
               if (stderr.length > 0) {
                 console.error(stderr);
               }
+              // childProcess.ExecFileException is an extension of Error
+              // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
               reject(err);
             } else {
               resolve();

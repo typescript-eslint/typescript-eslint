@@ -269,7 +269,6 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param node
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
@@ -771,10 +770,6 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
 
 /**
  * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
- * @template T
- * @template U
- * @param array
- * @param callback
  */
 export function firstDefined<T, U>(
   array: readonly T[] | undefined,
@@ -928,6 +923,35 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   }
 
   return false;
+}
+
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  switch (node.kind) {
+    case SyntaxKind.Identifier:
+      return true;
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      if (node.flags & ts.NodeFlags.OptionalChain) {
+        return false;
+      }
+      return true;
+    case SyntaxKind.ParenthesizedExpression:
+    case SyntaxKind.TypeAssertionExpression:
+    case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.NonNullExpression:
+      return isValidAssignmentTarget(
+        (
+          node as
+            | ts.ParenthesizedExpression
+            | ts.AssertionExpression
+            | ts.SatisfiesExpression
+            | ts.NonNullExpression
+        ).expression,
+      );
+    default:
+      return false;
+  }
 }
 
 export function getNamespaceModifiers(

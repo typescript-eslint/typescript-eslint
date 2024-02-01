@@ -4,11 +4,30 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 "
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allow": {
+        "description": "Patterns of import paths to allow requiring from.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];"
+type Options = [
+  {
+    /** Patterns of import paths to allow requiring from. */
+    allow?: string[];
+  },
+];
+"
 `;

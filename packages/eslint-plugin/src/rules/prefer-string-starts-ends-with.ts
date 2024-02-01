@@ -78,7 +78,6 @@ export default createRule({
     /**
      * Check if a given node is a `Literal` node that is a character.
      * @param node The node to check.
-     * @param kind The method name to get a character.
      */
     function isCharacter(node: TSESTree.Node): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);

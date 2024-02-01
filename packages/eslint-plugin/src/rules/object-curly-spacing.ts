@@ -29,7 +29,7 @@ export default createRule<Options, MessageIds>({
       description: 'Enforce consistent spacing inside braces',
       extendsBaseRule: true,
     },
-    replacedBy: ['@stylistic/object-curly-spacing'],
+    replacedBy: ['@stylistic/ts/object-curly-spacing'],
   },
   defaultOptions: ['never'],
   create(context) {

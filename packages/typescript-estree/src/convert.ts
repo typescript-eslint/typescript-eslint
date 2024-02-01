@@ -27,6 +27,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  isValidAssignmentTarget,
   nodeCanBeDecorated,
   nodeHasIllegalDecorators,
   nodeIsPresent,
@@ -628,7 +629,6 @@ export class Converter {
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param node the tagName object from a JSX ts.Node
-   * @param parent
    * @returns the converted ESTree name object
    */
   private convertJSXTagName(
@@ -886,6 +886,12 @@ export class Converter {
         });
 
       case SyntaxKind.CatchClause:
+        if (node.variableDeclaration?.initializer) {
+          this.#throwError(
+            node.variableDeclaration.initializer,
+            'Catch clause variable cannot have an initializer.',
+          );
+        }
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
@@ -927,6 +933,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
+        this.#checkForStatementDeclaration(node.initializer);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           left: this.convertPattern(node.initializer),
@@ -2021,6 +2028,12 @@ export class Converter {
          * ESTree uses UpdateExpression for ++/--
          */
         if (operator === '++' || operator === '--') {
+          if (!isValidAssignmentTarget(node.operand)) {
+            this.#throwUnlessAllowInvalidAST(
+              node.operand,
+              'Invalid left-hand side expression in unary operation',
+            );
+          }
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
@@ -3406,6 +3419,27 @@ export class Converter {
         );
       }
 
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.PublicKeyword ||
+        modifier.kind === SyntaxKind.ProtectedKeyword ||
+        modifier.kind === SyntaxKind.PrivateKeyword
+      ) {
+        for (const anotherModifier of getModifiers(node) ?? []) {
+          if (
+            anotherModifier !== modifier &&
+            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
+              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
+              anotherModifier.kind === SyntaxKind.PrivateKeyword)
+          ) {
+            this.#throwError(
+              anotherModifier,
+              `Accessibility modifier already seen.`,
+            );
+          }
+        }
+      }
+
       // `checkParameter` function in `typescript`
       if (
         node.kind === SyntaxKind.Parameter &&
@@ -3497,5 +3531,15 @@ export class Converter {
     }
 
     throw createError(message, this.ast, start, end);
+  }
+  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
+    if (ts.isVariableDeclarationList(initializer)) {
+      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
+        this.#throwError(
+          initializer,
+          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
+        );
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { parseForESLint } from '@typescript-eslint/parser';
 import fs from 'fs';
 import { marked } from 'marked';
 import path from 'path';
@@ -53,7 +54,11 @@ describe('Validating rule docs', () => {
     // comments in the files for more information.
     'camelcase.md',
     'no-duplicate-imports.md',
+    'no-parameter-properties.md',
   ]);
+
+  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
       .readdirSync(docsRoot)
@@ -107,17 +112,19 @@ describe('Validating rule docs', () => {
         );
       });
 
+      const headings = tokens.filter(tokenIsHeading);
+
       const requiredHeadings = ['When Not To Use It'];
+
       const importantHeadings = new Set([
         ...requiredHeadings,
         'How to Use',
         'Options',
         'Related To',
+        'When Not To Use It',
       ]);
 
       test('important headings must be h2s', () => {
-        const headings = tokens.filter(tokenIsHeading);
-
         for (const heading of headings) {
           if (importantHeadings.has(heading.raw.replace(/#/g, '').trim())) {
             expect(heading.depth).toBe(2);
@@ -145,6 +152,61 @@ describe('Validating rule docs', () => {
           }
         });
       }
+
+      const { schema } = rule.meta;
+      if (
+        !rulesWithComplexOptions.has(ruleName) &&
+        Array.isArray(schema) &&
+        !rule.meta.docs?.extendsBaseRule &&
+        rule.meta.type !== 'layout'
+      ) {
+        test('each rule option should be mentioned in a heading', () => {
+          const headingTextAfterOptions = headings
+            .slice(headings.findIndex(header => header.text === 'Options'))
+            .map(header => header.text)
+            .join('\n');
+
+          for (const schemaItem of schema) {
+            if (schemaItem.type === 'object') {
+              for (const property of Object.keys(
+                schemaItem.properties as object,
+              )) {
+                if (!headingTextAfterOptions.includes(`\`${property}\``)) {
+                  throw new Error(
+                    `At least one header should include \`${property}\`.`,
+                  );
+                }
+              }
+            }
+          }
+        });
+      }
+
+      test('must include only valid code samples', () => {
+        for (const token of tokens) {
+          if (token.type !== 'code') {
+            continue;
+          }
+
+          const lang = token.lang?.trim();
+          if (!lang || !/^tsx?\b/i.test(lang)) {
+            continue;
+          }
+
+          try {
+            parseForESLint(token.text, {
+              ecmaFeatures: {
+                jsx: /^tsx\b/i.test(lang),
+              },
+              ecmaVersion: 'latest',
+              sourceType: 'module',
+              range: true,
+            });
+          } catch {
+            throw new Error(`Parsing error:\n\n${token.text}`);
+          }
+        }
+      });
     });
   }
 });

@@ -48,15 +48,15 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 This rule in its default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
 
-```ts
+```jsonc
 {
-  accessibility: 'explicit',
-  overrides: {
-    accessors: 'explicit',
-    constructors: 'no-public',
-    methods: 'explicit',
-    properties: 'off',
-    parameterProperties: 'explicit'
+  "accessibility: "explicit",
+  "overrides": {
+    "accessors": "explicit",
+    "constructors": "no-public",
+    "methods": "explicit",
+    "properties": "off",
+    "parameterProperties": "explicit"
   }
 }
 ```
@@ -164,7 +164,7 @@ class Animal {
 }
 ```
 
-### Overrides
+### `overrides`
 
 There are three ways in which an override can be used.
 
@@ -312,7 +312,7 @@ class Animal {
 }
 ```
 
-### Except specific methods
+### `ignoredMethodNames`
 
 If you want to ignore some specific methods, you can do it by specifying method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`

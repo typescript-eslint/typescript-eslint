@@ -183,12 +183,15 @@ export default createRule<Options, MessageIds>({
                        * keep origin import kind when export
                        * export { Type }
                        * export default Type;
+                       * export = Type;
                        */
                       if (
                         ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportSpecifier ||
                         ref.identifier.parent.type ===
-                          AST_NODE_TYPES.ExportDefaultDeclaration
+                          AST_NODE_TYPES.ExportDefaultDeclaration ||
+                        ref.identifier.parent.type ===
+                          AST_NODE_TYPES.TSExportAssignment
                       ) {
                         if (ref.isValueReference && ref.isTypeReference) {
                           return node.importKind === 'type';
@@ -277,7 +280,8 @@ export default createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    /** checks if import has type assertions
+                    /**
+                     * checks if import has type assertions
                      * ```
                      * import * as type from 'mod' assert { type: 'json' };
                      * ```
