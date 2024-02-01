@@ -119,7 +119,6 @@ export default createRule<Options, MessageIds>({
             ImportDeclaration(node): void {
               const source = node.source.value;
               // sourceImports is the object containing all the specifics for a particular import source, type or value
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               sourceImportsMap[source] ??= {
                 source,
                 reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
