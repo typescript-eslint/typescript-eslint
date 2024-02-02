@@ -22,8 +22,8 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      preferFind: 'Use .filter(...)[0] instead of .find(...)',
-      preferFindSuggestion: 'Use .filter(...)[0] instead of .find(...)',
+      preferFind: 'Use .find(...) instead of .filter(...)[0]',
+      preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0]',
     },
     schema: [],
     type: 'suggestion',
