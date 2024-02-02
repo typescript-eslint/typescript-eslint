@@ -495,5 +495,38 @@ function actingOnArray<T extends string[]>(values: T) {
         },
       ],
     },
+    {
+      code: `
+const nestedSequenceAbomination =
+  (1,
+  2,
+  (1,
+  2,
+  3,
+  (1, 2, 3, 4),
+  (1, 2, 3, 4, 5, [1, 2, 3, 4, 5, 6].filter(x => x % 2 == 0)))['0']);
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+const nestedSequenceAbomination =
+  (1,
+  2,
+  (1,
+  2,
+  3,
+  (1, 2, 3, 4),
+  (1, 2, 3, 4, 5, [1, 2, 3, 4, 5, 6].find(x => x % 2 == 0))));
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
