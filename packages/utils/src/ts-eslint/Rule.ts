@@ -1,6 +1,7 @@
 import type { JSONSchema4 } from '../json-schema';
 import type { ParserServices, TSESTree } from '../ts-estree';
 import type { AST } from './AST';
+import type { FlatConfig } from './Config';
 import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
@@ -189,6 +190,11 @@ interface RuleContext<
    * The name of the parser from configuration.
    */
   parserPath: string;
+  /**
+   * The language options configured for this run
+   * @since 8.4.0
+   */
+  languageOptions?: FlatConfig.LanguageOptions;
   /**
    * The parser options configured for this run
    */
