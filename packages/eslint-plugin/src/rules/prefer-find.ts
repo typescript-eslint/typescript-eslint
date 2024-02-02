@@ -138,6 +138,10 @@ export default createRule({
       return undefined;
     }
 
+    /**
+     * Implements the algorithm for array indexing by `.at()` method.
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at#parameters
+     */
     function isTreatedAsZeroByArrayAt(value: unknown): boolean {
       const asNumber = Number(value);
 
@@ -160,6 +164,10 @@ export default createRule({
       );
     }
 
+    /**
+     * Implements the algorithm for array indexing by member operator.
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#array_indices
+     */
     function isTreatedAsZeroByMemberAccess(value: unknown): boolean {
       return String(value) === '0';
     }

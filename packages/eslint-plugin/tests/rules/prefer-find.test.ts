@@ -105,6 +105,52 @@ arr.find(item => item === 'aha');
     },
     {
       code: `
+declare const arr: Array<string>;
+const zero = 0n;
+arr.filter(item => item === 'aha')[zero];
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: Array<string>;
+const zero = 0n;
+arr.find(item => item === 'aha');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: Array<string>;
+const zero = -0n;
+arr.filter(item => item === 'aha')[zero];
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: Array<string>;
+const zero = -0n;
+arr.find(item => item === 'aha');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const arr: readonly string[];
 arr.filter(item => item === 'aha').at(0);
       `,
