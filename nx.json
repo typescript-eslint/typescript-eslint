@@ -42,6 +42,7 @@
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/package.json",
         "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore",
         {
