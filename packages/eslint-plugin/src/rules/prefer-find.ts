@@ -179,11 +179,12 @@ export default createRule({
       sourceCode: SourceCode,
     ): RuleFix {
       const tokenToStartDeletingFrom = nullThrows(
-        sourceCode.getTokenAfter(arrayNode, {
-          // The next `.` or `[` is what we're looking for.
-          // think of (...).at(0) or (...)[0] or even (...)["at"](0).
-          filter: token => token.value === '.' || token.value === '[',
-        }),
+        // The next `.` or `[` is what we're looking for.
+        // think of (...).at(0) or (...)[0] or even (...)["at"](0).
+        sourceCode.getTokenAfter(
+          arrayNode,
+          token => token.value === '.' || token.value === '[',
+        ),
         'Expected to find a member access token!',
       );
       return fixer.removeRange([
