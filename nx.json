@@ -47,6 +47,7 @@
         "default",
         "{workspaceRoot}/package.json",
         "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/eslint.config.mjs",
         "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore",
         {
