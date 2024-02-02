@@ -105,15 +105,26 @@ export default createRule({
           tsutils.isIntrinsicNullType(unionPart) ||
           tsutils.isIntrinsicUndefinedType(unionPart)
         ) {
-          // ignore
-        } else if (
-          checker.isArrayType(unionPart) ||
-          checker.isTupleType(unionPart)
-        ) {
-          isAtLeastOneArrayishComponent = true;
-        } else {
+          continue;
+        }
+
+        // apparently checker.isArrayType(T[] & S[]) => false.
+        // so we need to check the intersection parts individually.
+        const isArrayOrIntersectionThereof = tsutils
+          .intersectionTypeParts(unionPart)
+          .every(
+            intersectionPart =>
+              checker.isArrayType(intersectionPart) ||
+              checker.isTupleType(intersectionPart),
+          );
+
+        if (!isArrayOrIntersectionThereof) {
+          // There is a non-array, non-nullish type component,
+          // so it's not an array.
           return false;
         }
+
+        isAtLeastOneArrayishComponent = true;
       }
 
       return isAtLeastOneArrayishComponent;

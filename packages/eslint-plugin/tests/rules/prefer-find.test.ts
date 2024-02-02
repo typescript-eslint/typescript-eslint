@@ -528,5 +528,47 @@ const nestedSequenceAbomination =
         },
       ],
     },
+    {
+      code: `
+declare const arr: { a: 1 }[] & { b: 2 }[];
+arr.filter(f, thisArg)[0];
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: { a: 1 }[] & { b: 2 }[];
+arr.find(f, thisArg);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: { a: 1 }[] & ({ b: 2 }[] | { c: 3 }[]);
+arr.filter(f, thisArg)[0];
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: { a: 1 }[] & ({ b: 2 }[] | { c: 3 }[]);
+arr.find(f, thisArg);
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
