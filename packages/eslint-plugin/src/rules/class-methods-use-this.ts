@@ -28,8 +28,6 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       requiresTypeChecking: false,
     },
-    fixable: 'code',
-    hasSuggestions: false,
     schema: [
       {
         type: 'object',
@@ -50,7 +48,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreOverrideMethods: {
             type: 'boolean',
-            description: 'Ingore members marked with the `override` modifier',
+            description: 'Ignore members marked with the `override` modifier',
           },
           ignoreClassesThatImplementAnInterface: {
             oneOf: [

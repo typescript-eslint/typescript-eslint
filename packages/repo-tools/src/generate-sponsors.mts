@@ -3,6 +3,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import prettier from 'prettier';
 
+import { PACKAGES_WEBSITE } from './paths.mjs';
+
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
 
 const queries = {
@@ -166,7 +168,7 @@ async function main(): Promise<void> {
     })
     .sort((a, b) => b.totalDonations - a.totalDonations);
 
-  const rcPath = path.resolve(__dirname, '../../website/data/sponsors.json');
+  const rcPath = path.join(PACKAGES_WEBSITE, 'data', 'sponsors.json');
   fs.writeFileSync(rcPath, await stringifyObject(rcPath, allSponsorsConfig));
 }
 

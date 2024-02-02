@@ -1,0 +1,50 @@
+.teamBio {
+  --square-size: 9rem;
+
+  display: flex;
+  flex-direction: column;
+  max-width: var(--square-size);
+}
+
+.profilePhoto {
+  height: var(--square-size);
+  width: var(--square-size);
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.name {
+  font-size: 0.9rem;
+}
+
+.description {
+  font-size: 0.85rem;
+}
+
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.serviceIconLink {
+  transition: opacity 200ms;
+}
+
+.serviceIconLink:not(:focus, :hover) {
+  opacity: 0.7;
+}
+
+.serviceIcon {
+  --size: 1.25rem;
+
+  height: var(--size);
+  width: var(--size);
+}

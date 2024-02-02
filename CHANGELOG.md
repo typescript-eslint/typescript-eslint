@@ -1,3 +1,27 @@
+## 6.20.0 (2024-01-29)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [member-ordering] allow easy reuse of the default ordering ([#8248](https://github.com/typescript-eslint/typescript-eslint/pull/8248))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-useless-template-literals] incorrect bigint autofix result ([#8283](https://github.com/typescript-eslint/typescript-eslint/pull/8283))
+- **eslint-plugin:** [prefer-nullish-coalescing] treat any/unknown as non-nullable ([#8262](https://github.com/typescript-eslint/typescript-eslint/pull/8262))
+- **eslint-plugin:** [no-useless-template-literals] report Infinity & NaN ([#8295](https://github.com/typescript-eslint/typescript-eslint/pull/8295))
+- **eslint-plugin:** [prefer-readonly] disable checking accessors ([#8300](https://github.com/typescript-eslint/typescript-eslint/pull/8300))
+
+### ❤️  Thank You
+
+- Alex Parloti @parloti
+- auvred @auvred
+- James Browning
+- StyleShit @StyleShit
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.19.1 (2024-01-22)
 
 

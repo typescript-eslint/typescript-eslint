@@ -7,7 +7,7 @@ import {
   expectToBeParameterDefinition,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 rest arguments', () => {
   it('materialize rest argument in scope', () => {
