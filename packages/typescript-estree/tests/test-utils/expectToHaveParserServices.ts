@@ -1,7 +1,7 @@
 import type {
   ParserServices,
   ParserServicesWithTypeInformation,
-} from '../../../src';
+} from '../../src';
 
 export function expectToHaveParserServices(
   services: ParserServices | null | undefined,

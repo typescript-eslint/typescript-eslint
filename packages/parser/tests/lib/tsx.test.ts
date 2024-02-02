@@ -1,7 +1,7 @@
 import type { ParserOptions } from '@typescript-eslint/types';
 
 import { parseForESLint } from '../../src/parser';
-import { serializer } from '../tools/ts-error-serializer';
+import { serializer } from '../test-utils/ts-error-serializer';
 
 //------------------------------------------------------------------------------
 // Tests

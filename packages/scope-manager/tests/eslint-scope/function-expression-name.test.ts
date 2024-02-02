@@ -4,7 +4,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('function name', () => {
   it('should create its special scope', () => {

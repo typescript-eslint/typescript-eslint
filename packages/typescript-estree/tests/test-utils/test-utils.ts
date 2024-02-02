@@ -2,8 +2,8 @@ import type {
   ParseAndGenerateServicesResult,
   TSESTree,
   TSESTreeOptions,
-} from '../src';
-import { parse as parserParse, parseAndGenerateServices } from '../src';
+} from '../../src';
+import { parse as parserParse, parseAndGenerateServices } from '../../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
