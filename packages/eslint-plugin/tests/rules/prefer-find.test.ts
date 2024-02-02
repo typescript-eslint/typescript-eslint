@@ -22,7 +22,7 @@ ruleTester.run('prefer-find', rule, {
 
       declare const jerkCode: JerkCode<string>;
 
-      jerkCode.filter(item => item === 'aha');
+      jerkCode.filter(item => item === 'aha')[0];
     `,
     `
       declare const arr: readonly string[];
