@@ -35,7 +35,6 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
       getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
         (group, item) => {
           const category = item.category!.message;
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           group[category] ??= {
             heading: category,
             fields: [],

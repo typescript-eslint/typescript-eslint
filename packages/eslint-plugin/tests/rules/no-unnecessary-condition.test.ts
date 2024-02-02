@@ -22,6 +22,11 @@ const ruleTester = new RuleTester({
   },
 });
 
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootPath,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
+
 const ruleError = (
   line: number,
   column: number,
@@ -747,6 +752,48 @@ foo ??= 1;
 declare let foo: number;
 foo ||= 1;
     `,
+    `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+    `,
+    `
+enum Keys {
+  A = 'A',
+  B = 'B',
+}
+type Foo = {
+  [Keys.A]: number | null;
+  [Keys.B]: number;
+};
+declare const foo: Foo;
+declare const key: Keys;
+foo[key] ??= 1;
+    `,
+    {
+      code: `
+declare const foo: { bar?: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number } };
+foo['bar'].baz ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
     `
 declare let foo: number;
 foo &&= 1;
@@ -2032,6 +2079,22 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 8,
         },
       ],
     },
