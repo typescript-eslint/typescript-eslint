@@ -3,6 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { RuleFix, SourceCode } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
+import type { Type } from 'typescript';
 
 import {
   createRule,
@@ -70,7 +71,6 @@ export default createRule({
               : callee.property.name === 'filter'
           ) {
             const filterNode = callee.property;
-            const isOptionalAccessOfFilter = callee.optional;
 
             const filteredObjectType = getConstrainedTypeAtLocation(
               services,
@@ -79,20 +79,7 @@ export default createRule({
 
             // As long as the object is an array or an optional chain on a
             // nullable array, this is an Array.prototype.filter expression.
-            if (
-              checker.isArrayType(filteredObjectType) ||
-              checker.isTupleType(filteredObjectType) ||
-              (isOptionalAccessOfFilter &&
-                tsutils
-                  .unionTypeParts(filteredObjectType)
-                  .every(
-                    unionPart =>
-                      checker.isArrayType(unionPart) ||
-                      checker.isTupleType(unionPart) ||
-                      tsutils.isIntrinsicNullType(unionPart) ||
-                      tsutils.isIntrinsicUndefinedType(unionPart),
-                  ))
-            ) {
+            if (isArrayish(filteredObjectType)) {
               return {
                 isBracketSyntaxForFilter,
                 filterNode,
@@ -103,6 +90,30 @@ export default createRule({
       }
 
       return undefined;
+    }
+
+    /**
+     * Tells whether the type is a possibly nullable array/tuple or union thereof.
+     */
+    function isArrayish(type: Type): boolean {
+      let isAtLeastOneArrayishComponent = false;
+      for (const unionPart of tsutils.unionTypeParts(type)) {
+        if (
+          tsutils.isIntrinsicNullType(unionPart) ||
+          tsutils.isIntrinsicUndefinedType(unionPart)
+        ) {
+          // ignore
+        } else if (
+          checker.isArrayType(unionPart) ||
+          checker.isTupleType(unionPart)
+        ) {
+          isAtLeastOneArrayishComponent = true;
+        } else {
+          return false;
+        }
+      }
+
+      return isAtLeastOneArrayishComponent;
     }
 
     function getObjectIfArrayAtExpression(

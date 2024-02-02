@@ -54,6 +54,8 @@ ruleTester.run('prefer-find', rule, {
     `,
     "['Just', 'a', 'filter'].filter(x => x.length > 4);",
     "['Just', 'a', 'find'].find(x => x.length > 4);",
+    'undefined.filter(x => x)[0];',
+    'null?.filter(x => x)[0];',
   ],
 
   invalid: [
