@@ -8,7 +8,7 @@ import {
   createSnapshotTestBlock,
   formatSnapshotName,
   testServices,
-} from '../tools/test-utils';
+} from '../test-utils/test-utils';
 
 //------------------------------------------------------------------------------
 // Setup

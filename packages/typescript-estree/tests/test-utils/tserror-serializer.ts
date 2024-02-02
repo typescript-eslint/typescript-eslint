@@ -1,6 +1,6 @@
 import type { Plugin } from 'pretty-format';
 
-import { TSError } from '../src/node-utils';
+import { TSError } from '../../src/node-utils';
 
 export const serializer: Plugin = {
   test: (val: unknown): val is TSError => val instanceof TSError,
