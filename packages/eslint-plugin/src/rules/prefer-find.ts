@@ -9,10 +9,6 @@ import type {
 import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
 
-import type {
-  MemberExpressionComputedName,
-  MemberExpressionNonComputedName,
-} from '../../../types/src/generated/ast-spec';
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -84,8 +80,8 @@ export default createRule({
               callee.object,
             );
 
-            // As long as the object is an array or an optional chain on a
-            // nullable array, this is an Array.prototype.filter expression.
+            // As long as the object is a (possibly nullable) array,
+            // this is an Array.prototype.filter expression.
             if (isArrayish(filteredObjectType)) {
               return {
                 isBracketSyntaxForFilter,
@@ -297,8 +293,8 @@ export default createRule({
  */
 function isStaticMemberAccessOfValue(
   memberExpression:
-    | MemberExpressionComputedName
-    | MemberExpressionNonComputedName,
+    | TSESTree.MemberExpressionComputedName
+    | TSESTree.MemberExpressionNonComputedName,
   value: string,
   scope?: Scope.Scope | undefined,
 ): boolean {
