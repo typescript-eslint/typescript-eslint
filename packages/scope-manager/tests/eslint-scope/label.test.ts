@@ -4,7 +4,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('label', () => {
   it('should not create variables', () => {

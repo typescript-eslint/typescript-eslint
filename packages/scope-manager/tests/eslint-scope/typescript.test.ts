@@ -5,7 +5,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('typescript', () => {
   describe('multiple call signatures', () => {

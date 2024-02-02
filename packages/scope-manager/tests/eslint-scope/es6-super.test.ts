@@ -4,7 +4,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 super', () => {
   it('is not handled as reference', () => {
