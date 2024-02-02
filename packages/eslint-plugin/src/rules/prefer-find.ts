@@ -218,7 +218,7 @@ export default createRule({
               suggest: [
                 {
                   messageId: 'preferFindSuggestion',
-                  fix(fixer): TSESLint.RuleFix[] {
+                  fix: (fixer): TSESLint.RuleFix[] => {
                     const sourceCode = getSourceCode(context);
                     return [
                       generateFixToReplaceFilterWithFind(
@@ -256,9 +256,8 @@ export default createRule({
               suggest: [
                 {
                   messageId: 'preferFindSuggestion',
-                  fix(fixer): TSESLint.RuleFix[] {
+                  fix: (fixer): TSESLint.RuleFix[] => {
                     const sourceCode = context.sourceCode;
-
                     return [
                       generateFixToReplaceFilterWithFind(
                         fixer,
