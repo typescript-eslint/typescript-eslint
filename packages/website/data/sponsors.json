@@ -3,7 +3,7 @@
     "id": "ESLint",
     "image": "https://images.opencollective.com/eslint/48a2e5d/logo.png",
     "name": "ESLint",
-    "totalDonations": 2850000,
+    "totalDonations": 2880000,
     "website": "https://eslint.org/"
   },
   {
@@ -24,28 +24,28 @@
     "id": "Hugging Face",
     "image": "https://images.opencollective.com/huggingface/5c934ee/logo.png",
     "name": "Hugging Face",
-    "totalDonations": 420000,
+    "totalDonations": 440000,
     "website": "https://huggingface.co"
   },
   {
     "id": "Codecademy",
     "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
     "name": "Codecademy",
-    "totalDonations": 240000,
+    "totalDonations": 250000,
     "website": "https://codecademy.com"
   },
   {
     "id": "Airbnb",
     "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
     "name": "Airbnb",
-    "totalDonations": 210800,
+    "totalDonations": 215800,
     "website": "https://www.airbnb.com/"
   },
   {
     "id": "Sourcegraph",
     "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
     "name": "Sourcegraph",
-    "totalDonations": 190000,
+    "totalDonations": 200000,
     "website": "https://about.sourcegraph.com"
   },
   {
@@ -115,7 +115,7 @@
     "id": "STORIS",
     "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
     "name": "STORIS",
-    "totalDonations": 56000,
+    "totalDonations": 58500,
     "website": "https://www.storis.com/"
   },
   {
@@ -203,18 +203,18 @@
     "website": "https://celebrate.company"
   },
   {
+    "id": "Evil Martians",
+    "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
+    "name": "Evil Martians",
+    "totalDonations": 17500,
+    "website": "https://evilmartians.com/"
+  },
+  {
     "id": "CryptoNewsZ",
     "image": "https://images.opencollective.com/cryptonewsz/f50c823/logo.png",
     "name": "CryptoNewsZ",
     "totalDonations": 17500,
     "website": "https://www.cryptonewsz.com/"
-  },
-  {
-    "id": "Evil Martians",
-    "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
-    "name": "Evil Martians",
-    "totalDonations": 17000,
-    "website": "https://evilmartians.com/"
   },
   {
     "id": "Balsa",
@@ -227,7 +227,7 @@
     "id": "Corellium",
     "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
     "name": "Corellium",
-    "totalDonations": 15600,
+    "totalDonations": 16200,
     "website": "https://www.corellium.com"
   },
   {
@@ -255,14 +255,14 @@
     "id": "0+X",
     "image": "https://images.opencollective.com/0-x/7239aff/logo.png",
     "name": "0+X",
-    "totalDonations": 13000,
+    "totalDonations": 14000,
     "website": "https://www.0x.se"
   },
   {
     "id": "Trevor Burnham",
     "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
     "name": "Trevor Burnham",
-    "totalDonations": 12000,
+    "totalDonations": 13000,
     "website": "https://trevorburnham.com"
   },
   {
@@ -281,7 +281,7 @@
   },
   {
     "id": "The Guardian",
-    "image": "https://images.opencollective.com/gdndevelopers/0b72bf0/logo.png",
+    "image": "https://images.opencollective.com/gdndevelopers/0df8716/logo.png",
     "name": "The Guardian",
     "totalDonations": 10000,
     "website": "https://www.theguardian.com/"
