@@ -25,19 +25,35 @@ ruleTester.run('prefer-find', rule, {
       jerkCode.filter(item => item === 'aha');
     `,
     `
+      declare const arr: readonly string[];
+      arr.filter(item => item === 'aha')[1];
+    `,
+    `
+      declare const arr: string[];
+      arr.filter(item => item === 'aha').at(1);
+    `,
+    `
       declare const notNecessarilyAnArray: unknown[] | undefined | null | string;
       notNecessarilyAnArray?.filter(item => true)[0];
     `,
-    // Be sure that we don't try to mess with this case, where the member access
-    // is not directly occurring on the result of the filter call due to optional
-    // chaining.
-    '([]?.filter(f))[0];',
     // Be sure that we don't try to mess with this case, since the member access
     // should not need to be optional for the cases the rule is concerned with.
     '[].filter(() => true)?.[0];',
+    // Be sure that we don't try to mess with this case, since the member access
+    // should not need to be optional for the cases the rule is concerned with.
+    '[].filter(() => true)?.at?.(0);',
     // Be sure that we don't try to mess with this case, since the function call
     // should not need to be optional for the cases the rule is concerned with.
     '[].filter?.(() => true)[0];',
+    '[1, 2, 3].filter(x => x > 0).at(-Infinity);',
+    `
+      declare const arr: string[];
+      declare const cond: Parameters<Array<string>['filter']>[0];
+      const a = { arr };
+      a?.arr.filter(cond).at(1);
+    `,
+    "['Just', 'a', 'filter'].filter(x => x.length > 4);",
+    "['Just', 'a', 'find'].find(x => x.length > 4);",
   ],
 
   invalid: [
@@ -52,9 +68,97 @@ arr.filter(item => item === 'aha')[0];
           messageId: 'preferFind',
           suggestions: [
             {
-              messageId: 'preferFindFix',
+              messageId: 'preferFindSuggestion',
               output: `
 declare const arr: string[];
+arr.find(item => item === 'aha');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: Array<string>;
+const zero = 0;
+arr.filter(item => item === 'aha')[zero];
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: Array<string>;
+const zero = 0;
+arr.find(item => item === 'aha');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: readonly string[];
+arr.filter(item => item === 'aha').at(0);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: readonly string[];
+arr.find(item => item === 'aha');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: ReadonlyArray<string>;
+(undefined, arr.filter(item => item === 'aha')).at(0);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: ReadonlyArray<string>;
+(undefined, arr.find(item => item === 'aha'));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: string[];
+const zero = 0;
+arr.filter(item => item === 'aha').at(zero);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: string[];
+const zero = 0;
 arr.find(item => item === 'aha');
       `,
             },
@@ -73,28 +177,7 @@ arr.filter(item => item === 'aha')['0'];
           messageId: 'preferFind',
           suggestions: [
             {
-              messageId: 'preferFindFix',
-              output: `
-declare const arr: string[];
-arr.find(item => item === 'aha');
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-declare const arr: string[];
-arr.filter(item => item === 'aha')[0n];
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'preferFind',
-          suggestions: [
-            {
-              messageId: 'preferFindFix',
+              messageId: 'preferFindSuggestion',
               output: `
 declare const arr: string[];
 arr.find(item => item === 'aha');
@@ -112,7 +195,7 @@ arr.find(item => item === 'aha');
           messageId: 'preferFind',
           suggestions: [
             {
-              messageId: 'preferFindFix',
+              messageId: 'preferFindSuggestion',
               output: `const two = [1, 2, 3].find(item => item === 2);`,
             },
           ],
@@ -120,16 +203,16 @@ arr.find(item => item === 'aha');
       ],
     },
     {
-      code: noFormat`(([] as unknown[]))["filter"] ((item) => { return item === 2 }  ) [ 0  ] ;`,
+      code: noFormat`const fltr = "filter"; (([] as unknown[]))[fltr] ((item) => { return item === 2 }  ) [ 0  ] ;`,
       errors: [
         {
           line: 1,
           messageId: 'preferFind',
           suggestions: [
             {
-              messageId: 'preferFindFix',
+              messageId: 'preferFindSuggestion',
               output:
-                '(([] as unknown[]))["find"] ((item) => { return item === 2 }  ) ;',
+                'const fltr = "filter"; (([] as unknown[]))["find"] ((item) => { return item === 2 }  )  ;',
             },
           ],
         },
@@ -143,9 +226,9 @@ arr.find(item => item === 'aha');
           messageId: 'preferFind',
           suggestions: [
             {
-              messageId: 'preferFindFix',
+              messageId: 'preferFindSuggestion',
               output:
-                '(([] as unknown[]))?.["find"] ((item) => { return item === 2 }  ) ;',
+                '(([] as unknown[]))?.["find"] ((item) => { return item === 2 }  )  ;',
             },
           ],
         },
@@ -162,10 +245,202 @@ nullableArray?.filter(item => true)[0];
           messageId: 'preferFind',
           suggestions: [
             {
-              messageId: 'preferFindFix',
+              messageId: 'preferFindSuggestion',
               output: `
 declare const nullableArray: unknown[] | undefined | null;
 nullableArray?.find(item => true);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '([]?.filter(f))[0];',
+      errors: [
+        {
+          line: 1,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: '([]?.find(f));',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const objectWithArrayProperty: { arr: unknown[] };
+declare function cond(x: unknown): boolean;
+console.log((1, 2, objectWithArrayProperty?.arr['filter'](cond)).at(0));
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const objectWithArrayProperty: { arr: unknown[] };
+declare function cond(x: unknown): boolean;
+console.log((1, 2, objectWithArrayProperty?.arr["find"](cond)));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[1, 2, 3].filter(x => x > 0).at(NaN);
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+[1, 2, 3].find(x => x > 0);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const idxToLookUp = -0.12635678;
+[1, 2, 3].filter(x => x > 0).at(idxToLookUp);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+const idxToLookUp = -0.12635678;
+[1, 2, 3].find(x => x > 0);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[1, 2, 3].filter(x => x > 0)[\`at\`](0);
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+[1, 2, 3].find(x => x > 0);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: string[];
+declare const cond: Parameters<Array<string>['filter']>[0];
+const a = { arr };
+a?.arr
+  .filter(cond) /* what a bad spot for a comment. Let's make sure
+  there's some yucky symbols too. [ . ?. <>   ' ' \\'] */
+  .at('0');
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const arr: string[];
+declare const cond: Parameters<Array<string>['filter']>[0];
+const a = { arr };
+a?.arr
+  .find(cond) /* what a bad spot for a comment. Let's make sure
+  there's some yucky symbols too. [ . ?. <>   ' ' \\'] */
+  ;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const imNotActuallyAnArray = [
+  [1, 2, 3],
+  [2, 3, 4],
+] as const;
+const butIAm = [4, 5, 6];
+butIAm.push(
+  // line comment!
+  ...imNotActuallyAnArray[/* comment */ 'filter' /* another comment */](
+    x => x[1] > 0,
+  ) /**/[\`0\`]!,
+);
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+const imNotActuallyAnArray = [
+  [1, 2, 3],
+  [2, 3, 4],
+] as const;
+const butIAm = [4, 5, 6];
+butIAm.push(
+  // line comment!
+  ...imNotActuallyAnArray[/* comment */ "find" /* another comment */](
+    x => x[1] > 0,
+  ) /**/!,
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function actingOnArray<T extends string[]>(values: T) {
+  return values.filter(filter => filter === 'filter')[
+    /* filter */ -0.0 /* filter */
+  ];
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+function actingOnArray<T extends string[]>(values: T) {
+  return values.find(filter => filter === 'filter');
+}
       `,
             },
           ],

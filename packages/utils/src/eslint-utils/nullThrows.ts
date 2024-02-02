@@ -11,7 +11,7 @@ const NullThrowsReasons = {
  * Assert that a value must not be null or undefined.
  * This is a nice explicit alternative to the non-null assertion operator.
  */
-function nullThrows<T>(value: T | null | undefined, message: string): T {
+function nullThrows<T>(value: T, message: string): NonNullable<T> {
   // this function is primarily used to keep types happy in a safe way
   // i.e. is used when we expect that a value is never nullish
   // this means that it's pretty much impossible to test the below if...
@@ -19,6 +19,7 @@ function nullThrows<T>(value: T | null | undefined, message: string): T {
   // so ignore it in coverage metrics.
   /* istanbul ignore if */
   if (value == null) {
+    console.error(`Non-null Assertion Failed: ${message}`);
     throw new Error(`Non-null Assertion Failed: ${message}`);
   }
 

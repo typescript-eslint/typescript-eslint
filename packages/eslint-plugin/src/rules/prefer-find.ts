@@ -1,8 +1,16 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
+import type { RuleFix, SourceCode } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getStaticValue,
+  nullThrows,
+} from '../util';
 
 export default createRule({
   name: 'prefer-find',
@@ -11,12 +19,10 @@ export default createRule({
       description:
         'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
       requiresTypeChecking: true,
-      recommended: 'stylistic',
     },
-    fixable: 'code',
     messages: {
       preferFind: 'Use .filter(...)[0] instead of .find(...)',
-      preferFindFix: 'Use .filter(...)[0] instead of .find(...)',
+      preferFindSuggestion: 'Use .filter(...)[0] instead of .find(...)',
     },
     schema: [],
     type: 'suggestion',
@@ -26,82 +32,222 @@ export default createRule({
   defaultOptions: [],
 
   create(context) {
+    const globalScope = getScope(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    return {
-      MemberExpression(node): void {
-        // Check if it looks like <<stuff>>[0] or <<stuff>>['0'], but not <<stuff>>?.[0]
-        if (
-          node.computed &&
-          !node.optional &&
-          node.property.type === AST_NODE_TYPES.Literal &&
-          (node.property.value === 0 ||
-            node.property.value === '0' ||
-            node.property.value === 0n)
-        ) {
-          // Check if it looks like <<stuff>>(...)[0], but not <<stuff>>?.(...)[0]
+    function parseIfArrayFilterExpression(
+      expression: TSESTree.Expression,
+    ):
+      | { isBracketSyntaxForFilter: boolean; filterNode: TSESTree.Node }
+      | undefined {
+      if (expression.type === AST_NODE_TYPES.SequenceExpression) {
+        // Only the last expression in the (a, b, [1, 2, 3].filter(condition))[0] matters
+        const lastExpression = nullThrows(
+          expression.expressions.at(-1),
+          'Expected to have more than zero expressions in a sequence expression',
+        );
+        return parseIfArrayFilterExpression(lastExpression);
+      }
+
+      if (expression.type === AST_NODE_TYPES.ChainExpression) {
+        return parseIfArrayFilterExpression(expression.expression);
+      }
+
+      // Check if it looks like <<stuff>>(...), but not <<stuff>>?.(...)
+      if (
+        expression.type === AST_NODE_TYPES.CallExpression &&
+        !expression.optional
+      ) {
+        const callee = expression.callee;
+        // Check if it looks like <<stuff>>.filter(...) or <<stuff>>['filter'](...),
+        // or the optional chaining variants.
+        if (callee.type === AST_NODE_TYPES.MemberExpression) {
+          const isBracketSyntaxForFilter = callee.computed;
           if (
-            node.object.type === AST_NODE_TYPES.CallExpression &&
-            !node.object.optional
+            isBracketSyntaxForFilter
+              ? getStaticValue(callee.property, globalScope)?.value === 'filter'
+              : callee.property.name === 'filter'
           ) {
-            const objectCallee = node.object.callee;
-            // Check if it looks like <<stuff>>.filter(...)[0] or <<stuff>>['filter'](...)[0],
-            // or the optional chaining variants.
-            if (objectCallee.type === AST_NODE_TYPES.MemberExpression) {
-              const isBracketSyntaxForFilter = objectCallee.computed;
-              if (
-                isBracketSyntaxForFilter
-                  ? objectCallee.property.type === AST_NODE_TYPES.Literal &&
-                    objectCallee.property.value === 'filter'
-                  : objectCallee.property.name === 'filter'
-              ) {
-                const isOptionalAccessOfFilter = objectCallee.optional;
+            const filterNode = callee.property;
+            const isOptionalAccessOfFilter = callee.optional;
 
-                const filteredObjectType = checker.getTypeAtLocation(
-                  services.esTreeNodeToTSNodeMap.get(objectCallee.object),
-                );
+            const filteredObjectType = getConstrainedTypeAtLocation(
+              services,
+              callee.object,
+            );
 
-                // We can now report if the object is an array
-                // or if it's an optional chain on a nullable array.
-                if (
-                  checker.isArrayType(filteredObjectType) ||
-                  (isOptionalAccessOfFilter &&
-                    tsutils
-                      .unionTypeParts(filteredObjectType)
-                      .every(
-                        unionPart =>
-                          checker.isArrayType(unionPart) ||
-                          tsutils.isIntrinsicNullType(unionPart) ||
-                          tsutils.isIntrinsicUndefinedType(unionPart),
-                      ))
-                ) {
-                  context.report({
-                    node,
-                    messageId: 'preferFind',
-                    suggest: [
-                      {
-                        messageId: 'preferFindFix',
-                        fix(fixer): TSESLint.RuleFix[] {
-                          return [
-                            // Replace .filter with .find
-                            fixer.replaceText(
-                              objectCallee.property,
-                              isBracketSyntaxForFilter ? '"find"' : 'find',
-                            ),
-                            // Get rid of the [0]
-                            fixer.removeRange([
-                              node.object.range[1],
-                              node.range[1],
-                            ]),
-                          ];
-                        },
-                      },
-                    ],
-                  });
-                }
-              }
+            // We can now report if the object is an array
+            // or if it's an optional chain on a nullable array.
+            if (
+              checker.isArrayType(filteredObjectType) ||
+              checker.isTupleType(filteredObjectType) ||
+              (isOptionalAccessOfFilter &&
+                tsutils
+                  .unionTypeParts(filteredObjectType)
+                  .every(
+                    unionPart =>
+                      checker.isArrayType(unionPart) ||
+                      checker.isTupleType(unionPart) ||
+                      tsutils.isIntrinsicNullType(unionPart) ||
+                      tsutils.isIntrinsicUndefinedType(unionPart),
+                  ))
+            ) {
+              return {
+                isBracketSyntaxForFilter,
+                filterNode,
+              };
             }
+          }
+        }
+      }
+
+      return undefined;
+    }
+
+    function getObjectIfArrayAtExpression(
+      node: TSESTree.CallExpression,
+    ): TSESTree.Expression | undefined {
+      if (node.arguments.length === 1) {
+        const atArgument = getStaticValue(node.arguments[0], globalScope);
+        if (atArgument != null && isTreatedAsZeroByArrayAt(atArgument.value)) {
+          const callee = node.callee;
+          if (
+            callee.type === AST_NODE_TYPES.MemberExpression &&
+            !callee.optional &&
+            (callee.computed
+              ? getStaticValue(callee.property, globalScope)?.value === 'at'
+              : callee.property.name === 'at')
+          ) {
+            return callee.object;
+          }
+        }
+      }
+
+      return undefined;
+    }
+
+    function isTreatedAsZeroByArrayAt(value: unknown): boolean {
+      const asNumber = Number(value);
+
+      if (isNaN(asNumber)) {
+        return true;
+      }
+
+      return Math.trunc(asNumber) === 0;
+    }
+
+    function isMemberAccessOfZero(
+      node: TSESTree.MemberExpressionComputedName,
+    ): boolean {
+      const property = getStaticValue(node.property, globalScope);
+      // Check if it looks like <<stuff>>[0] or <<stuff>>['0'], but not <<stuff>>?.[0]
+      return (
+        !node.optional &&
+        property != null &&
+        isTreatedAsZeroByMemberAccess(property.value)
+      );
+    }
+
+    function isTreatedAsZeroByMemberAccess(value: unknown): boolean {
+      return String(value) === '0';
+    }
+
+    function generateFixToRemoveArrayAccess(
+      fixer: TSESLint.RuleFixer,
+      arrayNode: TSESTree.Node,
+      wholeExpressionBeingFlagged: TSESTree.Node,
+      sourceCode: SourceCode,
+    ): RuleFix {
+      const tokenToStartDeletingFrom = nullThrows(
+        sourceCode.getTokenAfter(arrayNode, {
+          // The next `.` or `[` is what we're looking for.
+          // think of (...).at(0) or (...)[0] or even (...)["at"](0).
+          filter: token => token.value === '.' || token.value === '[',
+        }),
+        'Expected to find a member access token!',
+      );
+      return fixer.removeRange([
+        tokenToStartDeletingFrom.range[0],
+        wholeExpressionBeingFlagged.range[1],
+      ]);
+    }
+
+    return {
+      CallExpression(node): void {
+        const object = getObjectIfArrayAtExpression(node);
+        if (object) {
+          const filterExpression = parseIfArrayFilterExpression(object);
+          if (filterExpression) {
+            context.report({
+              node,
+              messageId: 'preferFind',
+              suggest: [
+                {
+                  messageId: 'preferFindSuggestion',
+                  fix(fixer): TSESLint.RuleFix[] {
+                    const sourceCode = getSourceCode(context);
+                    return [
+                      fixer.replaceText(
+                        filterExpression.filterNode,
+                        filterExpression.isBracketSyntaxForFilter
+                          ? '"find"'
+                          : 'find',
+                      ),
+                      // get rid of the .at(0) or ['at'](0)
+                      generateFixToRemoveArrayAccess(
+                        fixer,
+                        object,
+                        node,
+                        sourceCode,
+                      ),
+                    ];
+                  },
+                },
+              ],
+            });
+          }
+        }
+      },
+
+      // we're always looking for array member access to be "computed",
+      // i.e. filteredResults[0], since filteredResults.0 isn't a thing.
+      ['MemberExpression[computed=true]'](
+        node: TSESTree.MemberExpressionComputedName,
+      ): void {
+        if (isMemberAccessOfZero(node)) {
+          const object = node.object;
+          const parsedFilterExpression = parseIfArrayFilterExpression(object);
+          if (parsedFilterExpression) {
+            context.report({
+              node,
+              messageId: 'preferFind',
+              suggest: [
+                {
+                  messageId: 'preferFindSuggestion',
+                  fix(fixer): TSESLint.RuleFix[] {
+                    const sourceCode = context.sourceCode;
+
+                    return [
+                      // Replace .filter with .find
+                      fixer.replaceText(
+                        parsedFilterExpression.filterNode,
+                        parsedFilterExpression.isBracketSyntaxForFilter
+                          ? '"find"'
+                          : 'find',
+                      ),
+                      // Get rid of the [0]
+                      generateFixToRemoveArrayAccess(
+                        fixer,
+                        object,
+                        node,
+                        sourceCode,
+                      ),
+                    ];
+                  },
+                },
+              ],
+            });
           }
         }
       },
