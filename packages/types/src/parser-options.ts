@@ -63,7 +63,7 @@ interface ParserOptions {
   jsDocParsingMode?: JSDocParsingMode;
   loc?: boolean;
   programs?: Program | null;
-  project?: string[] | string | true | null;
+  project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: (RegExp | string)[];
   range?: boolean;
   sourceType?: SourceType;
