@@ -77,8 +77,8 @@ export default createRule({
               callee.object,
             );
 
-            // We can now report if the object is an array
-            // or if it's an optional chain on a nullable array.
+            // As long as the object is an array or an optional chain on a
+            // nullable array, this is an Array.prototype.filter expression.
             if (
               checker.isArrayType(filteredObjectType) ||
               checker.isTupleType(filteredObjectType) ||
@@ -153,10 +153,10 @@ export default createRule({
       return String(value) === '0';
     }
 
-    function generateFixToRemoveArrayAccess(
+    function generateFixToRemoveArrayElementAccess(
       fixer: TSESLint.RuleFixer,
-      arrayNode: TSESTree.Node,
-      wholeExpressionBeingFlagged: TSESTree.Node,
+      arrayNode: TSESTree.Expression,
+      wholeExpressionBeingFlagged: TSESTree.Expression,
       sourceCode: SourceCode,
     ): RuleFix {
       const tokenToStartDeletingFrom = nullThrows(
@@ -195,7 +195,7 @@ export default createRule({
                           : 'find',
                       ),
                       // get rid of the .at(0) or ['at'](0)
-                      generateFixToRemoveArrayAccess(
+                      generateFixToRemoveArrayElementAccess(
                         fixer,
                         object,
                         node,
@@ -237,7 +237,7 @@ export default createRule({
                           : 'find',
                       ),
                       // Get rid of the [0]
-                      generateFixToRemoveArrayAccess(
+                      generateFixToRemoveArrayElementAccess(
                         fixer,
                         object,
                         node,
