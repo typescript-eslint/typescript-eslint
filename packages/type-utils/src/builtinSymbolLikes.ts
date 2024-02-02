@@ -135,7 +135,7 @@ export function isBuiltinSymbolLike(
 ): boolean {
   const predicate =
     typeof predicateOrSymbolName === 'string'
-      ? (symbolName: string) => symbolName === predicateOrSymbolName
+      ? (symbolName: string): boolean => symbolName === predicateOrSymbolName
       : predicateOrSymbolName;
 
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
