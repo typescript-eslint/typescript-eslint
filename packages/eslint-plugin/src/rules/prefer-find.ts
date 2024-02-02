@@ -173,6 +173,19 @@ export default createRule({
       ]);
     }
 
+    function generateFixToReplaceFilterWithFind(
+      fixer: TSESLint.RuleFixer,
+      filterExpression: {
+        isBracketSyntaxForFilter: boolean;
+        filterNode: TSESTree.Node;
+      },
+    ): TSESLint.RuleFix {
+      return fixer.replaceText(
+        filterExpression.filterNode,
+        filterExpression.isBracketSyntaxForFilter ? '"find"' : 'find',
+      );
+    }
+
     return {
       CallExpression(node): void {
         const object = getObjectIfArrayAtExpression(node);
@@ -188,11 +201,9 @@ export default createRule({
                   fix(fixer): TSESLint.RuleFix[] {
                     const sourceCode = getSourceCode(context);
                     return [
-                      fixer.replaceText(
-                        filterExpression.filterNode,
-                        filterExpression.isBracketSyntaxForFilter
-                          ? '"find"'
-                          : 'find',
+                      generateFixToReplaceFilterWithFind(
+                        fixer,
+                        filterExpression,
                       ),
                       // get rid of the .at(0) or ['at'](0)
                       generateFixToRemoveArrayElementAccess(
@@ -217,8 +228,8 @@ export default createRule({
       ): void {
         if (isMemberAccessOfZero(node)) {
           const object = node.object;
-          const parsedFilterExpression = parseIfArrayFilterExpression(object);
-          if (parsedFilterExpression) {
+          const filterExpression = parseIfArrayFilterExpression(object);
+          if (filterExpression) {
             context.report({
               node,
               messageId: 'preferFind',
@@ -229,12 +240,9 @@ export default createRule({
                     const sourceCode = context.sourceCode;
 
                     return [
-                      // Replace .filter with .find
-                      fixer.replaceText(
-                        parsedFilterExpression.filterNode,
-                        parsedFilterExpression.isBracketSyntaxForFilter
-                          ? '"find"'
-                          : 'find',
+                      generateFixToReplaceFilterWithFind(
+                        fixer,
+                        filterExpression,
                       ),
                       // Get rid of the [0]
                       generateFixToRemoveArrayElementAccess(
