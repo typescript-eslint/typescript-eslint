@@ -12,7 +12,7 @@ Because the `.find()` only needs to execute the callback until it finds a match,
 
 :::info
 
-Beware the the difference in short-circuiting behavior between the approaches.
+Beware the difference in short-circuiting behavior between the approaches.
 `.find()` will only execute the callback on array elements until it finds a match, whereas `.filter()` executes the callback for all array elements.
 Therefore, when fixing errors from this rule, be sure that your `.filter()` callbacks do not have side effects.
 
