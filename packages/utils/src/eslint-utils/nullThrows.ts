@@ -19,7 +19,6 @@ function nullThrows<T>(value: T, message: string): NonNullable<T> {
   // so ignore it in coverage metrics.
   /* istanbul ignore if */
   if (value == null) {
-    console.error(`Non-null Assertion Failed: ${message}`);
     throw new Error(`Non-null Assertion Failed: ${message}`);
   }
 
