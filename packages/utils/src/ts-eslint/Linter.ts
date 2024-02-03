@@ -32,7 +32,7 @@ declare class LinterBase {
    * @param parserId Name of the parser
    * @param parserModule The parser object
    */
-  defineParser(parserId: string, parserModule: Parser.ParserModule): void;
+  defineParser(parserId: string, parserModule: Parser.LooseParserModule): void;
 
   /**
    * Defines a new linting rule.
@@ -250,7 +250,7 @@ namespace Linter {
   }
 
   /** @deprecated use Parser.ParserModule */
-  export type ParserModule = Parser.ParserModule;
+  export type ParserModule = Parser.LooseParserModule;
 
   /** @deprecated use Parser.ParseResult */
   export type ESLintParseResult = Parser.ParseResult;
