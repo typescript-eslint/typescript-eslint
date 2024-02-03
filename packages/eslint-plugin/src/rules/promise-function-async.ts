@@ -9,6 +9,8 @@ import {
   getFunctionHeadLoc,
   getParserServices,
   isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -95,6 +97,7 @@ export default createRule<Options, MessageIds>({
   ) {
     const allAllowedPromiseNames = new Set([
       'Promise',
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ...allowedPromiseNames!,
     ]);
@@ -164,8 +167,10 @@ export default createRule<Options, MessageIds>({
             const method = node.parent;
 
             // the token to put `async` before
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            let keyToken = sourceCode.getFirstToken(method)!;
+            let keyToken = nullThrows(
+              sourceCode.getFirstToken(method),
+              NullThrowsReasons.MissingToken('key token', 'method'),
+            );
 
             // if there are decorators then skip past them
             if (
@@ -174,8 +179,10 @@ export default createRule<Options, MessageIds>({
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              keyToken = sourceCode.getTokenAfter(lastDecorator)!;
+              keyToken = nullThrows(
+                sourceCode.getTokenAfter(lastDecorator),
+                NullThrowsReasons.MissingToken('key token', 'last decorator'),
+              );
             }
 
             // if current token is a keyword like `static` or `public` then skip it
@@ -183,15 +190,19 @@ export default createRule<Options, MessageIds>({
               keyToken.type === AST_TOKEN_TYPES.Keyword &&
               keyToken.range[0] < method.key.range[0]
             ) {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              keyToken = sourceCode.getTokenAfter(keyToken)!;
+              keyToken = nullThrows(
+                sourceCode.getTokenAfter(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              );
             }
 
             // check if there is a space between key and previous token
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const insertSpace = !sourceCode.isSpaceBetween!(
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              sourceCode.getTokenBefore(keyToken)!,
+            const insertSpace = sourceCode.isSpaceBetween!(
+              nullThrows(
+                sourceCode.getTokenBefore(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              ),
               keyToken,
             );
 

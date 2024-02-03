@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
@@ -509,6 +508,7 @@ function getRankOrder(
   const stack = memberGroups.slice(); // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const memberGroup = stack.shift()!;
     rank = orderConfig.findIndex(memberType =>
       Array.isArray(memberType)
@@ -994,6 +994,8 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     return {
       ClassDeclaration(node): void {
         validateMembersOrder(
@@ -1024,5 +1026,6 @@ export default createRule<Options, MessageIds>({
         );
       },
     };
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
 });

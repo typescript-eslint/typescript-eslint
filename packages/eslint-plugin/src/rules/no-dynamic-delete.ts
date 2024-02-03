@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
   name: 'no-dynamic-delete',
@@ -70,10 +70,14 @@ export default createRule({
       const sourceCode = getSourceCode(context);
 
       return [
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        sourceCode.getTokenBefore(property)!.range[0],
-        sourceCode.getTokenAfter(property)!.range[1],
-        /* eslint-enable @typescript-eslint/no-non-null-assertion */
+        nullThrows(
+          sourceCode.getTokenBefore(property),
+          NullThrowsReasons.MissingToken('token before', 'property'),
+        ).range[0],
+        nullThrows(
+          sourceCode.getTokenAfter(property),
+          NullThrowsReasons.MissingToken('token after', 'property'),
+        ).range[1],
       ];
     }
   },

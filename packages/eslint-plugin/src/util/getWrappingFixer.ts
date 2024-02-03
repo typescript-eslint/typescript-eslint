@@ -1,5 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  ASTUtils,
+  ESLintUtils,
+} from '@typescript-eslint/utils';
 
 interface WrappingFixerParams {
   /** Source code. */
@@ -142,6 +146,7 @@ function isMissingSemicolonBefore(
   sourceCode: TSESLint.SourceCode,
 ): boolean {
   for (;;) {
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const parent = node.parent!;
 
@@ -156,8 +161,10 @@ function isMissingSemicolonBefore(
         const previousStatement = block.body[statementIndex - 1];
         if (
           statementIndex > 0 &&
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          sourceCode.getLastToken(previousStatement)!.value !== ';'
+          ESLintUtils.nullThrows(
+            sourceCode.getLastToken(previousStatement),
+            'Mismatched semicolon and block',
+          ).value !== ';'
         ) {
           return true;
         }
@@ -176,6 +183,7 @@ function isMissingSemicolonBefore(
  * Checks if a node is LHS of an operator.
  */
 function isLeftHandSide(node: TSESTree.Node): boolean {
+  // https://github.com/typescript-eslint/typescript-eslint/issues/6225
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parent = node.parent!;
 

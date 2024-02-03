@@ -213,11 +213,10 @@ export default createRule({
     function getPropertyRange(
       node: TSESTree.MemberExpression,
     ): [number, number] {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const dotOrOpenBracket = sourceCode.getTokenAfter(
-        node.object,
-        isNotClosingParenToken,
-      )!;
+      const dotOrOpenBracket = nullThrows(
+        sourceCode.getTokenAfter(node.object, isNotClosingParenToken),
+        NullThrowsReasons.MissingToken('closing parenthesis', 'member'),
+      );
       return [dotOrOpenBracket.range[0], node.range[1]];
     }
 

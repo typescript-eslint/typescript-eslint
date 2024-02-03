@@ -9,6 +9,7 @@ import {
   getParserServices,
   isClosingBraceToken,
   isOpeningBraceToken,
+  nullThrows,
   requiresQuoting,
 } from '../util';
 
@@ -125,16 +126,14 @@ export default createRule<Options, MessageIds>({
       }
 
       // there were no existing cases
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const openingBrace = sourceCode.getTokenAfter(
-        node.discriminant,
-        isOpeningBraceToken,
-      )!;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const closingBrace = sourceCode.getTokenAfter(
-        node.discriminant,
-        isClosingBraceToken,
-      )!;
+      const openingBrace = nullThrows(
+        sourceCode.getTokenAfter(node.discriminant, isOpeningBraceToken),
+        'Discriminant does not have an opening brace',
+      );
+      const closingBrace = nullThrows(
+        sourceCode.getTokenAfter(node.discriminant, isClosingBraceToken),
+        'Discriminant does not have a closing brace',
+      );
 
       return fixer.replaceTextRange(
         [openingBrace.range[0], closingBrace.range[1]],

@@ -28,4 +28,10 @@ describe('nullThrows', () => {
       nullThrows(undefined, NullThrowsReasons.MissingParent),
     ).toThrow(NullThrowsReasons.MissingParent);
   });
+
+  it('throws a filled in error when the value is undefined and NullThrowsReasons.MissingToken is used', () => {
+    expect(() =>
+      nullThrows(undefined, NullThrowsReasons.MissingToken('bracket', 'node')),
+    ).toThrow(new Error('Expected to find a bracket for the node.'));
+  });
 });

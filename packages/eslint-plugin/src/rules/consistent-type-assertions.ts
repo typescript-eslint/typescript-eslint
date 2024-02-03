@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
@@ -11,6 +10,8 @@ import {
   isClosingParenToken,
   isOpeningParenToken,
   isParenthesized,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
@@ -112,14 +113,14 @@ export default createRule<Options, MessageIds>({
       let afterCount = 0;
 
       if (isParenthesized(node, sourceCode)) {
-        const bodyOpeningParen = sourceCode.getTokenBefore(
-          node,
-          isOpeningParenToken,
-        )!;
-        const bodyClosingParen = sourceCode.getTokenAfter(
-          node,
-          isClosingParenToken,
-        )!;
+        const bodyOpeningParen = nullThrows(
+          sourceCode.getTokenBefore(node, isOpeningParenToken),
+          NullThrowsReasons.MissingToken('(', 'node'),
+        );
+        const bodyClosingParen = nullThrows(
+          sourceCode.getTokenAfter(node, isClosingParenToken),
+          NullThrowsReasons.MissingToken(')', 'node'),
+        );
 
         beforeCount = node.range[0] - bodyOpeningParen.range[0];
         afterCount = bodyClosingParen.range[1] - node.range[1];

@@ -7,11 +7,8 @@ import {
 import { extname } from 'path';
 import * as ts from 'typescript';
 
-import { createRule } from '../util';
+import { createRule, type MakeRequired } from '../util';
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
   'constraint'

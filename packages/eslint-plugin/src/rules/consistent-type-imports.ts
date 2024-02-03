@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
@@ -529,7 +528,10 @@ export default createRule<Options, MessageIds>({
       const last = namedSpecifierGroup[namedSpecifierGroup.length - 1];
       const removeRange: TSESTree.Range = [first.range[0], last.range[1]];
       const textRange: TSESTree.Range = [...removeRange];
-      const before = sourceCode.getTokenBefore(first)!;
+      const before = nullThrows(
+        sourceCode.getTokenAfter(first),
+        NullThrowsReasons.MissingToken('token', 'first specifier'),
+      );
       textRange[0] = before.range[1];
       if (isCommaToken(before)) {
         removeRange[0] = before.range[0];
@@ -539,7 +541,10 @@ export default createRule<Options, MessageIds>({
 
       const isFirst = allNamedSpecifiers[0] === first;
       const isLast = allNamedSpecifiers[allNamedSpecifiers.length - 1] === last;
-      const after = sourceCode.getTokenAfter(last)!;
+      const after = nullThrows(
+        sourceCode.getTokenAfter(last),
+        NullThrowsReasons.MissingToken('token', 'last specifier'),
+      );
       textRange[1] = after.range[0];
       if (isFirst || isLast) {
         if (isCommaToken(after)) {
@@ -566,13 +571,19 @@ export default createRule<Options, MessageIds>({
     ): TSESLint.RuleFix {
       const closingBraceToken = nullThrows(
         sourceCode.getFirstTokenBetween(
-          sourceCode.getFirstToken(target)!,
+          nullThrows(
+            sourceCode.getFirstToken(target),
+            NullThrowsReasons.MissingToken('token before', 'import'),
+          ),
           target.source,
           isClosingBraceToken,
         ),
         NullThrowsReasons.MissingToken('}', target.type),
       );
-      const before = sourceCode.getTokenBefore(closingBraceToken)!;
+      const before = nullThrows(
+        sourceCode.getTokenBefore(closingBraceToken),
+        NullThrowsReasons.MissingToken('token before', 'closing brace'),
+      );
       if (!isCommaToken(before) && !isOpeningBraceToken(before)) {
         insertText = `,${insertText}`;
       }

@@ -338,12 +338,11 @@ export default createRule({
         }
       },
       'PropertyDefinition[value != null]'(
-        node: TSESTree.PropertyDefinition,
+        node: TSESTree.PropertyDefinition & { value: NonNullable<unknown> },
       ): void {
         checkAssignment(
           node.key,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          node.value!,
+          node.value,
           node,
           getComparisonType(node.typeAnnotation),
         );

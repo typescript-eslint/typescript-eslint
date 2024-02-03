@@ -4,7 +4,12 @@ import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, typeIsOrHasBaseType } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  typeIsOrHasBaseType,
+} from '../util';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -183,9 +188,11 @@ export default createRule<Options, MessageIds>({
           ),
         );
       },
-      'ClassDeclaration, ClassExpression:exit'(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const finalizedClassScope = classScopeStack.pop()!;
+      'ClassDeclaration:exit, ClassExpression:exit'(): void {
+        const finalizedClassScope = nullThrows(
+          classScopeStack.pop(),
+          'Stack should exist on class exit',
+        );
         const sourceCode = getSourceCode(context);
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {

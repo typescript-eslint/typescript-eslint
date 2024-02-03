@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type { Equal } from '../util';
-import { arraysAreEqual, createRule } from '../util';
+import { arraysAreEqual, createRule, nullThrows } from '../util';
 
 interface Failure {
   unify: Unify;
@@ -507,11 +507,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkScope(): void {
+      const scope = nullThrows(
+        currentScope,
+        'checkScope() called without a current scope',
+      );
       const failures = checkOverloads(
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        Array.from(currentScope!.overloads.values()),
-        currentScope!.typeParameters,
-        /* eslint-enable @typescript-eslint/no-non-null-assertion */
+        Array.from(scope.overloads.values()),
+        scope.typeParameters,
       );
       addFailures(failures);
       currentScope = scopes.pop();

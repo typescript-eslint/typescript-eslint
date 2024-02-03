@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows } from '../util';
 
 type Modifier =
   | 'private readonly'
@@ -177,8 +177,10 @@ export default createRule<Options, MessageIds>({
       },
 
       ':matches(ClassDeclaration, ClassExpression):exit'(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const propertyNodesByName = propertyNodesByNameStack.pop()!;
+        const propertyNodesByName = nullThrows(
+          propertyNodesByNameStack.pop(),
+          'Stack should exist on class exit',
+        );
 
         for (const [name, nodes] of propertyNodesByName) {
           if (

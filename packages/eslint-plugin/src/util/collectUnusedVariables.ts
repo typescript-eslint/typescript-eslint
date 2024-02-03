@@ -703,6 +703,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const grandparent = parent.parent!;
 

@@ -18,8 +18,9 @@ function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
     return type;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return typeChecker.getTypeAtLocation(symbol.valueDeclaration!.parent);
+  return typeChecker.getTypeAtLocation(
+    (symbol.valueDeclaration as ts.EnumMember).parent,
+  );
 }
 
 /**
