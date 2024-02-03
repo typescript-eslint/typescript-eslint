@@ -58,5 +58,5 @@ export interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * TODO: add description (or maybe even give a better name?)
    */
-  readonly ignoreTsErrors?: boolean;
+  readonly ignoreTsErrors?: number[] | boolean;
 }

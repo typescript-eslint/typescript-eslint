@@ -80,7 +80,7 @@ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
 export function wrapParser(
   parser: Parser.ParserModule,
   options?: {
-    ignoreTsErrors: boolean;
+    ignoreTsErrors?: number[] | boolean;
   },
 ): Parser.ParserModule {
   /**
@@ -124,6 +124,8 @@ export function wrapParser(
     ast.comments?.forEach(comment => defineStartEndAsError('token', comment));
   }
 
+  let firstRun = true;
+
   if ('parseForESLint' in parser) {
     return {
       // @ts-expect-error -- see above
@@ -131,8 +133,22 @@ export function wrapParser(
       parseForESLint(...args): Parser.ParseResult {
         const ret = parser.parseForESLint(...args);
 
-        if (!options?.ignoreTsErrors && ret.services?.program) {
-          checkTsSemanticDiagnostics(ret.services.program);
+        // We check diagnostic only on first run, because the fixer may fix
+        // existing semantic errors
+        // TODO: should we check semantic diagnostics after first run?
+        if (
+          firstRun &&
+          (!options?.ignoreTsErrors || Array.isArray(options.ignoreTsErrors)) &&
+          ret.services?.program
+        ) {
+          firstRun = false;
+          // TODO: ignoreTsErrors min len 1
+          checkTsSemanticDiagnostics(
+            ret.services.program,
+            Array.isArray(options?.ignoreTsErrors)
+              ? Array.from(new Set(options.ignoreTsErrors))
+              : [],
+          );
         }
 
         defineStartEndAsErrorInTree(ret.ast, ret.visitorKeys);
@@ -153,17 +169,23 @@ export function wrapParser(
   };
 }
 
-function checkTsSemanticDiagnostics(program: ts.Program): void {
+function checkTsSemanticDiagnostics(
+  program: ts.Program,
+  extraCodesToIgnore: number[],
+): void {
   const codesToIgnore = [
     1375 /* 'await' expressions are only allowed at the top level of a file when that file is a module, but this file has no imports or exports. Consider adding an empty 'export {}' to make this file a module. */,
     1378 /* Top-level 'await' expressions are only allowed when the 'module' option is set to 'es2022', 'esnext', 'system', 'node16', 'nodenext', or 'preserve', and the 'target' option is set to 'es2017' or higher. */,
     6133 /* '{0}' is declared but its value is never read. */,
     6138 /* Property '{0}' is declared but its value is never read. */,
+    ...extraCodesToIgnore,
   ];
+  let notVisitedCodes = [...extraCodesToIgnore];
 
   const diagnostics = program.getSemanticDiagnostics();
 
   for (const diagnostic of diagnostics) {
+    notVisitedCodes = notVisitedCodes.filter(c => c !== diagnostic.code);
     if (
       diagnostic.category !== ts.DiagnosticCategory.Error ||
       codesToIgnore.includes(diagnostic.code)
@@ -175,6 +197,15 @@ function checkTsSemanticDiagnostics(program: ts.Program): void {
       `error TS${diagnostic.code}: ${ts.flattenDiagnosticMessageText(
         diagnostic.messageText,
         ts.sys.newLine,
+      )}`,
+    );
+  }
+
+  if (notVisitedCodes.length) {
+    const listFormatter = new Intl.ListFormat('en');
+    throw new Error(
+      `Expected to have following TS errors: ${listFormatter.format(
+        notVisitedCodes.map(c => c.toString()),
       )}`,
     );
   }
