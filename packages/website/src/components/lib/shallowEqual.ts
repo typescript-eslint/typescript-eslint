@@ -14,6 +14,8 @@ export function shallowEqual(
     return false;
   }
   for (const key of keys1) {
+    // We'd love to be all proper and use a type predicate earlier, but:
+    // https://github.com/microsoft/TypeScript/issues/26916
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     if (object1![key] !== object2![key]) {
       return false;

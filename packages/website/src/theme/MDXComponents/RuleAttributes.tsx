@@ -20,9 +20,14 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const recommendation = recommendations[docs.recommended!];
+type RecommendedRuleMetaDataDocs = RuleMetaDataDocs & { recommended: string };
+
+const isRecommendedDocs = (
+  docs: RuleMetaDataDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
+
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
+  const recommendation = recommendations[docs.recommended];
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
@@ -38,7 +43,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
 
   const features: FeatureProps[] = [];
 
-  if (rule.docs.recommended) {
+  if (isRecommendedDocs(rule.docs)) {
     const [emoji, recommendation] = getRecommendation(rule.docs);
     features.push({
       children: (

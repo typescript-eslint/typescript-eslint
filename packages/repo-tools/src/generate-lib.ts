@@ -119,10 +119,9 @@ function getVariablesFromScope(scopeManager: ScopeManager): Variable[] {
 
 const REFERENCE_REGEX = /\/ <reference lib="(.+)" \/>/;
 function getReferences(
-  ast: TSESTree.Program & { comments?: TSESTree.Comment[] },
+  ast: TSESTree.Program & { comments: TSESTree.Comment[] },
 ): Set<string> {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const comments = ast.comments!.filter(
+  const comments = ast.comments.filter(
     c =>
       c.type === AST_TOKEN_TYPES.Line &&
       c.value.startsWith('/ <reference lib="'),
@@ -201,7 +200,10 @@ async function main(): Promise<void> {
         loc: true,
         range: true,
       },
-    );
+    ) as ReturnType<typeof parseAndAnalyze> & {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8347
+      ast: TSESTree.Program & { comments: TSESTree.Comment[] };
+    };
 
     const code = [`export const ${sanitize(libName)} = {`];
 

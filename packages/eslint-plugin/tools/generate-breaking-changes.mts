@@ -1,7 +1,12 @@
 import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import { fetch } from 'cross-fetch';
 // markdown-table is ESM, hence this file needs to be `.mts`
 import { markdownTable } from 'markdown-table';
+
+type RuleModuleWithDocs = RuleModule<string, unknown[]> & {
+  meta: { docs: object };
+};
 
 async function main(): Promise<void> {
   const rulesImport = await import('../src/rules/index.js');
@@ -10,8 +15,11 @@ async function main(): Promise<void> {
       { default: { default: Rules }}
   instead of just
       { default: Rules }
-  @ts-expect-error */
-  const rules = rulesImport.default as TypeScriptESLintRules;
+  */
+  const rules = rulesImport.default as unknown as Record<
+    string,
+    RuleModuleWithDocs
+  >;
 
   // Annotate which rules are new since the last version
   async function getNewRulesAsOfMajorVersion(
@@ -131,8 +139,7 @@ async function main(): Promise<void> {
       ...Object.entries(rules).map(([ruleName, { meta }]) => {
         const { deprecated } = meta;
         const { extendsBaseRule, recommended, requiresTypeChecking } =
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          meta.docs!;
+          meta.docs;
 
         return [
           `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName})`,

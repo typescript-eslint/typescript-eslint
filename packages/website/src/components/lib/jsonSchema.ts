@@ -132,11 +132,16 @@ export function getEslintJsonSchema(
   };
 }
 
+export interface DescribedOptionDeclaration extends ts.OptionDeclarations {
+  description: NonNullable<ts.OptionDeclarations['description']>;
+  category: NonNullable<ts.OptionDeclarations['category']>;
+}
+
 /**
  * Get all typescript options, except for the ones that are not supported by the playground
  * this function uses private API from typescript, and this might break in the future
  */
-export function getTypescriptOptions(): ts.OptionDeclarations[] {
+export function getTypescriptOptions(): DescribedOptionDeclaration[] {
   const allowedCategories = [
     'Command-line Options',
     'Projects',
@@ -156,12 +161,12 @@ export function getTypescriptOptions(): ts.OptionDeclarations[] {
   ];
 
   return window.ts.optionDeclarations.filter(
-    item =>
+    (item): item is DescribedOptionDeclaration =>
       (item.type === 'boolean' ||
         item.type === 'list' ||
         item.type instanceof Map) &&
-      item.description &&
-      item.category &&
+      !!item.description &&
+      !!item.category &&
       !allowedCategories.includes(item.category.message) &&
       !filteredNames.includes(item.name),
   );
@@ -175,8 +180,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
     if (item.type === 'boolean') {
       options[item.name] = {
         type: 'boolean',
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        description: item.description!.message,
+        description: item.description.message,
       };
     } else if (item.type === 'list' && item.element?.type instanceof Map) {
       options[item.name] = {
@@ -185,14 +189,12 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
           type: 'string',
           enum: Array.from(item.element.type.keys()),
         },
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        description: item.description!.message,
+        description: item.description.message,
       };
     } else if (item.type instanceof Map) {
       options[item.name] = {
         type: 'string',
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        description: item.description!.message,
+        description: item.description.message,
         enum: Array.from(item.type.keys()),
       };
     }

@@ -125,15 +125,14 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = webLinter.onLint((uri, messages) => {
+      const model = monaco.editor.getModel(monaco.Uri.file(uri));
+      if (!model) {
+        return;
+      }
       const diagnostics = parseLintResults(messages, codeActions, ruleId =>
         monaco.Uri.parse(webLinter.rules.get(ruleId)?.url ?? ''),
       );
-      monaco.editor.setModelMarkers(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        monaco.editor.getModel(monaco.Uri.file(uri))!,
-        'eslint',
-        diagnostics,
-      );
+      monaco.editor.setModelMarkers(model, 'eslint', diagnostics);
       updateMarkers();
     });
     return () => disposable();
