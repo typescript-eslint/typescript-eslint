@@ -105,7 +105,7 @@
     "jest-specific-snapshot": "^8.0.0",
     "lint-staged": "^15.0.0",
     "make-dir": "^4.0.0",
-    "markdownlint-cli": "^0.38.0",
+    "markdownlint-cli": "^0.39.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.9",
     "nx": "17.2.8",
