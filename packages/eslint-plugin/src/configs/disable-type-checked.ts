@@ -5,6 +5,8 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export = {
   parserOptions: { project: null, program: null },
   rules: {
@@ -59,4 +61,4 @@ export = {
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
   },
-};
+} satisfies ClassicConfig.Config;
