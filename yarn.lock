@@ -13960,10 +13960,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:~0.44.0":
-  version: 0.44.0
-  resolution: "monaco-editor@npm:0.44.0"
-  checksum: 6e561b23e5e9090cbdbb820dae5895a8bf9d537acc09281756a8c428960da0481461c72f387cc9a2e14bff69ab4359186c98df2dd29d6d109f1ab7189b573a35
+"monaco-editor@npm:~0.45.0":
+  version: 0.45.0
+  resolution: "monaco-editor@npm:0.45.0"
+  checksum: 7c70aeea8b81bc8dbda4b962fa8236d41fd2a3d07bcc2843ea7f1756ad95d701da5ef71e67d787595567aeec247ceb6bf4e3451abdf4895fe7819a8b9ef76231
   languageName: node
   linkType: hard
 
@@ -19211,7 +19211,7 @@ __metadata:
     konamimojisplosion: ^0.5.2
     lz-string: ^1.5.0
     make-dir: "*"
-    monaco-editor: ~0.44.0
+    monaco-editor: ~0.45.0
     prettier: ^3.0.3
     prism-react-renderer: ^1.3.3
     raw-loader: ^4.0.2
