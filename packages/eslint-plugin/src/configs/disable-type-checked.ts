@@ -41,6 +41,7 @@ export = {
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
+    '@typescript-eslint/prefer-find': 'off',
     '@typescript-eslint/prefer-includes': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',

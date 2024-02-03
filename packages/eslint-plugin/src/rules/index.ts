@@ -105,6 +105,7 @@ import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferDestructuring from './prefer-destructuring';
 import preferEnumInitializers from './prefer-enum-initializers';
+import preferFind from './prefer-find';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
@@ -246,6 +247,7 @@ export default {
   'prefer-as-const': preferAsConst,
   'prefer-destructuring': preferDestructuring,
   'prefer-enum-initializers': preferEnumInitializers,
+  'prefer-find': preferFind,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
