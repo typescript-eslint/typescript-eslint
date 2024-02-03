@@ -16,6 +16,39 @@ export namespace Parser {
     version?: string;
   }
 
+  /**
+   * A loose definition of the ParserModule type for use with configs
+   * This type intended to relax validation of configs so that parsers that have
+   * different AST types or scope managers can still be passed to configs
+   */
+  export type LooseParserModule =
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: ParserMeta;
+        /**
+         * Parses the given text into an ESTree AST
+         */
+        parse(text: string, options?: unknown): unknown;
+      }
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: ParserMeta;
+        /**
+         * Parses the given text into an AST
+         */
+        parseForESLint(
+          text: string,
+          options?: unknown,
+        ): {
+          // intentionally not using a Record to preserve optionals
+          [k in keyof ParseResult]: unknown;
+        };
+      };
+
   export type ParserModule =
     | {
         /**
@@ -66,6 +99,6 @@ export namespace Parser {
 
   // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
   export interface VisitorKeys {
-    [nodeType: string]: string[];
+    [nodeType: string]: readonly string[];
   }
 }
