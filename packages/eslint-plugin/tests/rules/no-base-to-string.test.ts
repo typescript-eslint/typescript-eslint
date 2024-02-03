@@ -41,32 +41,55 @@ const literalListWrapped = [
 ruleTester.run('no-base-to-string', rule, {
   valid: [
     // template
-    ...literalList.map(i => `\`\${${i}}\`;`),
+    ...literalList.map(i => ({ code: `\`\${${i}}\`;`, ignoreTsErrors: true })),
 
     // operator + +=
     ...literalListWrapped
-      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
+      .map(l =>
+        literalListWrapped.map(r => ({
+          code: `${l} + ${r};`,
+          ignoreTsErrors: true,
+        })),
+      )
       .reduce((pre, cur) => [...pre, ...cur]),
 
     // toString()
-    ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
+    ...literalListWrapped.map(i => ({
+      code: `${i === '1' ? `(${i})` : i}.toString();`,
+      ignoreTsErrors: true,
+    })),
 
     // variable toString() and template
-    ...literalList.map(
-      i => `
+    ...literalList.map(i => ({
+      code: `
         let value = ${i};
         value.toString();
         let text = \`\${value}\`;
       `,
-    ),
+      ignoreTsErrors: true,
+    })),
 
     `
 function someFunction() {}
 someFunction.toString();
 let text = \`\${someFunction}\`;
     `,
-    'unknownObject.toString();',
-    'unknownObject.someOtherMethod();',
+    {
+      code: 'unknownObject.toString();',
+      ignoreTsErrors: [2304],
+    },
+    {
+      code: 'unknownObject.someOtherMethod();',
+      ignoreTsErrors: [2304],
+    },
+    `
+      declare const unknownObject: any;
+      unknownObject.toString();
+    `,
+    `
+      declare const unknownObject: any;
+      unknownObject.someOtherMethod();
+    `,
     `
 class CustomToString {
   toString() {
@@ -75,11 +98,20 @@ class CustomToString {
 }
 '' + new CustomToString();
     `,
-    `
+    {
+      code: `
 const literalWithToString = {
   toString: () => 'Hello, world!',
 };
 '' + literalToString;
+      `,
+      ignoreTsErrors: [2552],
+    },
+    `
+const literalWithToString = {
+  toString: () => 'Hello, world!',
+};
+'' + literalWithToString;
     `,
     `
 const printer = (inVar: string | number | boolean) => {
@@ -89,24 +121,59 @@ printer('');
 printer(1);
 printer(true);
     `,
-    'let _ = {} * {};',
-    'let _ = {} / {};',
-    'let _ = ({} *= {});',
-    'let _ = ({} /= {});',
-    'let _ = ({} = {});',
-    'let _ = {} == {};',
-    'let _ = {} === {};',
-    'let _ = {} in {};',
-    'let _ = {} & {};',
-    'let _ = {} ^ {};',
-    'let _ = {} << {};',
-    'let _ = {} >> {};',
+    {
+      code: 'let _ = {} * {};',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = {} / {};',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = ({} *= {});',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = ({} /= {});',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = ({} = {});',
+    },
+    {
+      code: 'let _ = {} == {};',
+      ignoreTsErrors: [2839],
+    },
+    {
+      code: 'let _ = {} === {};',
+      ignoreTsErrors: [2839],
+    },
+    {
+      code: 'let _ = {} in {};',
+      ignoreTsErrors: [2322],
+    },
+    {
+      code: 'let _ = {} & {};',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = {} ^ {};',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = {} << {};',
+      ignoreTsErrors: [2362, 2363],
+    },
+    {
+      code: 'let _ = {} >> {};',
+      ignoreTsErrors: [2362, 2363],
+    },
     `
-function tag() {}
+function tag(a: TemplateStringsArray, b: any) {}
 tag\`\${{}}\`;
     `,
     `
-      function tag() {}
+      function tag(a: TemplateStringsArray, b: any) {}
       tag\`\${{}}\`;
     `,
     `
@@ -115,9 +182,18 @@ tag\`\${{}}\`;
         return \`\${v}\`;
       }
     `,
-    "'' += new Error();",
-    "'' += new URL();",
-    "'' += new URLSearchParams();",
+    {
+      code: "'' += new Error();",
+      ignoreTsErrors: [2364],
+    },
+    {
+      code: "'' += new URL('https://example.com');",
+      ignoreTsErrors: [2364],
+    },
+    {
+      code: "'' += new URLSearchParams();",
+      ignoreTsErrors: [2364],
+    },
   ],
   invalid: [
     {
@@ -158,6 +234,7 @@ tag\`\${{}}\`;
     },
     {
       code: "'' += {};",
+      ignoreTsErrors: [2364],
       errors: [
         {
           data: {
