@@ -146,16 +146,6 @@ export namespace FlatConfig {
   export interface SharedConfigs {
     [key: string]: Config;
   }
-  export interface PluginMeta {
-    /**
-     * The meta.name property should match the npm package name for your plugin.
-     */
-    name: string;
-    /**
-     * The meta.version property should match the npm package version for your plugin.
-     */
-    version: string;
-  }
   export interface Plugin {
     /**
      * Shared configurations bundled with the plugin.
