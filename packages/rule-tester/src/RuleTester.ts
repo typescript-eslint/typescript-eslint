@@ -528,7 +528,9 @@ export class RuleTester extends TestFramework {
 
     this.#linter.defineParser(
       config.parser,
-      wrapParser(require(config.parser) as Parser.ParserModule),
+      wrapParser(require(config.parser) as Parser.ParserModule, {
+        ignoreTsErrors: !!item.ignoreTsErrors,
+      }),
     );
 
     if (schema) {

@@ -1,6 +1,7 @@
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { Parser, SourceCode } from '@typescript-eslint/utils/ts-eslint';
+import * as ts from 'typescript';
 
 /*
  * List every parameters possible on a test case that are not related to eslint
@@ -17,6 +18,7 @@ export const RULE_TESTER_PARAMETERS = [
   'options',
   'output',
   'skip',
+  'ignoreTsErrors',
 ] as const;
 
 /*
@@ -75,7 +77,12 @@ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
  * Wraps the given parser in order to intercept and modify return values from the `parse` and `parseForESLint` methods, for test purposes.
  * In particular, to modify ast nodes, tokens and comments to throw on access to their `start` and `end` properties.
  */
-export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
+export function wrapParser(
+  parser: Parser.ParserModule,
+  options?: {
+    ignoreTsErrors: boolean;
+  },
+): Parser.ParserModule {
   /**
    * Define `start`/`end` properties of all nodes of the given AST as throwing error.
    */
@@ -124,6 +131,10 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
       parseForESLint(...args): Parser.ParseResult {
         const ret = parser.parseForESLint(...args);
 
+        if (!options?.ignoreTsErrors && ret.services?.program) {
+          checkTsSemanticDiagnostics(ret.services.program);
+        }
+
         defineStartEndAsErrorInTree(ret.ast, ret.visitorKeys);
         return ret;
       },
@@ -140,6 +151,33 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
       return ast;
     },
   };
+}
+
+function checkTsSemanticDiagnostics(program: ts.Program): void {
+  const codesToIgnore = [
+    1375 /* 'await' expressions are only allowed at the top level of a file when that file is a module, but this file has no imports or exports. Consider adding an empty 'export {}' to make this file a module. */,
+    1378 /* Top-level 'await' expressions are only allowed when the 'module' option is set to 'es2022', 'esnext', 'system', 'node16', 'nodenext', or 'preserve', and the 'target' option is set to 'es2017' or higher. */,
+    6133 /* '{0}' is declared but its value is never read. */,
+    6138 /* Property '{0}' is declared but its value is never read. */,
+  ];
+
+  const diagnostics = program.getSemanticDiagnostics();
+
+  for (const diagnostic of diagnostics) {
+    if (
+      diagnostic.category !== ts.DiagnosticCategory.Error ||
+      codesToIgnore.includes(diagnostic.code)
+    ) {
+      continue;
+    }
+
+    throw new Error(
+      `error TS${diagnostic.code}: ${ts.flattenDiagnosticMessageText(
+        diagnostic.messageText,
+        ts.sys.newLine,
+      )}`,
+    );
+  }
 }
 
 /**

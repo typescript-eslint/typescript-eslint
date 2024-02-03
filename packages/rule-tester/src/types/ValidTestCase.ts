@@ -55,4 +55,8 @@ export interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
    * Constraints that must pass in the current environment for the test to run
    */
   readonly dependencyConstraints?: DependencyConstraint;
+  /**
+   * TODO: add description (or maybe even give a better name?)
+   */
+  readonly ignoreTsErrors?: boolean;
 }
