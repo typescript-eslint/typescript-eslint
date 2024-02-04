@@ -32,7 +32,19 @@ export default createRule<Options, MessageId>({
     docs: {
       description:
         'Enforce template literal expressions to be of `string` type',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [
+          {
+            allowAny: false,
+            allowBoolean: false,
+            allowNullish: false,
+            allowNumber: false,
+            allowRegExp: false,
+            allowNever: false,
+          },
+        ],
+      },
       requiresTypeChecking: true,
     },
     messages: {

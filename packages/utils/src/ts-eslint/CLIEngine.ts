@@ -155,13 +155,19 @@ namespace CLIEngine {
     replacedBy: string[];
   }
 
-  export interface LintResultData<TMessageIds extends string> {
-    rulesMeta: Record<string, RuleMetaData<TMessageIds>>;
+  export interface LintResultData<
+    TMessageIds extends string,
+    TOptions extends readonly unknown[],
+  > {
+    rulesMeta: Record<string, RuleMetaData<TMessageIds, TOptions>>;
   }
 
-  export type Formatter = <TMessageIds extends string>(
+  export type Formatter = <
+    TMessageIds extends string,
+    TOptions extends readonly unknown[],
+  >(
     results: LintResult[],
-    data?: LintResultData<TMessageIds>,
+    data?: LintResultData<TMessageIds, TOptions>,
   ) => string;
 }
 

@@ -31,7 +31,18 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [
+          {
+            allowAny: false,
+            allowBoolean: false,
+            allowNullish: false,
+            allowNumberAndString: false,
+            allowRegExp: false,
+          },
+        ],
+      },
       requiresTypeChecking: true,
     },
     messages: {

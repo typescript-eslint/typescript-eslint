@@ -50,7 +50,10 @@ export default createRule<Options, MessageId>({
     docs: {
       description:
         'Require Promise-like statements to be handled appropriately',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [{ ignoreVoid: true }],
+      },
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

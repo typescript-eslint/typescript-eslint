@@ -8,7 +8,14 @@ import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
-interface RuleMetaDataDocs {
+export interface RuleRecommendationAcrossConfigs<
+  TOptions extends readonly unknown[],
+> {
+  recommended: true;
+  strict: Partial<TOptions>;
+}
+
+interface RuleMetaDataDocs<TOptions extends readonly unknown[]> {
   /**
    * Concise description of the rule
    */
@@ -18,7 +25,7 @@ interface RuleMetaDataDocs {
    * Used by the build tools to generate the recommended and strict configs.
    * Exclude to not include it as a recommendation.
    */
-  recommended?: RuleRecommendation;
+  recommended?: RuleRecommendation | RuleRecommendationAcrossConfigs<TOptions>;
   /**
    * The URL of the rule's docs
    */
@@ -35,7 +42,10 @@ interface RuleMetaDataDocs {
    */
   extendsBaseRule?: boolean | string;
 }
-interface RuleMetaData<TMessageIds extends string> {
+interface RuleMetaData<
+  TMessageIds extends string,
+  TOptions extends readonly unknown[],
+> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -43,7 +53,7 @@ interface RuleMetaData<TMessageIds extends string> {
   /**
    * Documentation for the rule, unnecessary for custom rules/plugins
    */
-  docs?: RuleMetaDataDocs;
+  docs?: RuleMetaDataDocs<TOptions>;
   /**
    * The fixer category. Omit if there is no fixer
    */
@@ -631,7 +641,7 @@ interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<TMessageIds>;
+  meta: RuleMetaData<TMessageIds, TOptions>;
 
   /**
    * Function which returns an object with methods that ESLint calls to “visit”
