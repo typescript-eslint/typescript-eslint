@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import rules from './rules';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
@@ -12,4 +14,4 @@ export = {
     name,
     version,
   },
-};
+} satisfies Linter.Plugin;

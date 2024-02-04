@@ -31,6 +31,17 @@ export namespace SharedConfig {
   }
 
   export type ParserOptions = ParserOptionsTypes.ParserOptions;
+
+  export interface PluginMeta {
+    /**
+     * The meta.name property should match the npm package name for your plugin.
+     */
+    name: string;
+    /**
+     * The meta.version property should match the npm package version for your plugin.
+     */
+    version: string;
+  }
 }
 
 export namespace ClassicConfig {
@@ -121,6 +132,7 @@ export namespace FlatConfig {
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
   export type Parser = ParserType.LooseParserModule;
   export type ParserOptions = SharedConfig.ParserOptions;
+  export type PluginMeta = SharedConfig.PluginMeta;
   export type Processor = ProcessorType.ProcessorModule;
   export type RuleEntry = SharedConfig.RuleEntry;
   export type RuleLevel = SharedConfig.RuleLevel;
@@ -133,16 +145,6 @@ export namespace FlatConfig {
 
   export interface SharedConfigs {
     [key: string]: Config;
-  }
-  export interface PluginMeta {
-    /**
-     * The meta.name property should match the npm package name for your plugin.
-     */
-    name: string;
-    /**
-     * The meta.version property should match the npm package version for your plugin.
-     */
-    version: string;
   }
   export interface Plugin {
     /**
@@ -183,9 +185,17 @@ export namespace FlatConfig {
      */
     noInlineConfig?: boolean;
     /**
-     * A Boolean value indicating if unused disable directives should be tracked and reported.
+     * A severity string indicating if and how unused disable and enable
+     * directives should be tracked and reported. For legacy compatibility, `true`
+     * is equivalent to `"warn"` and `false` is equivalent to `"off"`.
+     * @default "off"
+     *
+     * non-boolean values @since 8.56.0
      */
-    reportUnusedDisableDirectives?: boolean;
+    reportUnusedDisableDirectives?:
+      | SharedConfig.Severity
+      | SharedConfig.SeverityString
+      | boolean;
   }
 
   export interface LanguageOptions {

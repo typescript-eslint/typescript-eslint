@@ -16,28 +16,6 @@ export namespace Parser {
     version?: string;
   }
 
-  export type ParserModule =
-    | {
-        /**
-         * Information about the parser to uniquely identify it when serializing.
-         */
-        meta?: ParserMeta;
-        /**
-         * Parses the given text into an ESTree AST
-         */
-        parse(text: string, options?: ParserOptions): TSESTree.Program;
-      }
-    | {
-        /**
-         * Information about the parser to uniquely identify it when serializing.
-         */
-        meta?: ParserMeta;
-        /**
-         * Parses the given text into an AST
-         */
-        parseForESLint(text: string, options?: ParserOptions): ParseResult;
-      };
-
   /**
    * A loose definition of the ParserModule type for use with configs
    * This type intended to relax validation of configs so that parsers that have
@@ -69,6 +47,28 @@ export namespace Parser {
           // intentionally not using a Record to preserve optionals
           [k in keyof ParseResult]: unknown;
         };
+      };
+
+  export type ParserModule =
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: ParserMeta;
+        /**
+         * Parses the given text into an ESTree AST
+         */
+        parse(text: string, options?: ParserOptions): TSESTree.Program;
+      }
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: ParserMeta;
+        /**
+         * Parses the given text into an AST
+         */
+        parseForESLint(text: string, options?: ParserOptions): ParseResult;
       };
 
   export interface ParseResult {

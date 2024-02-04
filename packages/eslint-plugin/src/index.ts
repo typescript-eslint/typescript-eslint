@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import all from './configs/all';
 import base from './configs/base';
 import disableTypeChecked from './configs/disable-type-checked';
@@ -36,4 +38,4 @@ export = {
     version,
   },
   rules,
-};
+} satisfies Linter.Plugin;
