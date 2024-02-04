@@ -173,7 +173,7 @@ export default createRule<Options, MessageIds>({
       last: TSESTree.Token,
     ): void {
       if (isTokenOnSameLine(first, second)) {
-        const firstSpaced = sourceCode.isSpaceBetween!(first, second);
+        const firstSpaced = sourceCode.isSpaceBetween(first, second);
         const secondType = sourceCode.getNodeByRangeIndex(
           second.range[0],
         )!.type;
@@ -221,7 +221,7 @@ export default createRule<Options, MessageIds>({
             ? !options.spaced
             : options.spaced;
 
-        const lastSpaced = sourceCode.isSpaceBetween!(penultimate, last);
+        const lastSpaced = sourceCode.isSpaceBetween(penultimate, last);
 
         if (closingCurlyBraceMustBeSpaced && !lastSpaced) {
           reportRequiredEndingSpace(node, last);

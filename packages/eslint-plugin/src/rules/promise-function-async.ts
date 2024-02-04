@@ -183,7 +183,7 @@ export default createRule<Options, MessageIds>({
             }
 
             // check if there is a space between key and previous token
-            const insertSpace = !sourceCode.isSpaceBetween!(
+            const insertSpace = !sourceCode.isSpaceBetween(
               sourceCode.getTokenBefore(keyToken)!,
               keyToken,
             );

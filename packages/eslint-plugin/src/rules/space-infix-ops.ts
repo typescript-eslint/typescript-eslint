@@ -94,8 +94,8 @@ export default createRule<Options, MessageIds>({
       const next = sourceCode.getTokenAfter(operator)!;
 
       if (
-        !sourceCode.isSpaceBetween!(prev, operator) ||
-        !sourceCode.isSpaceBetween!(operator, next)
+        !sourceCode.isSpaceBetween(prev, operator) ||
+        !sourceCode.isSpaceBetween(operator, next)
       ) {
         report(operator);
       }
@@ -148,8 +148,8 @@ export default createRule<Options, MessageIds>({
           const next = sourceCode.getTokenAfter(operator);
 
           if (
-            !sourceCode.isSpaceBetween!(prev!, operator) ||
-            !sourceCode.isSpaceBetween!(operator, next!)
+            !sourceCode.isSpaceBetween(prev!, operator) ||
+            !sourceCode.isSpaceBetween(operator, next!)
           ) {
             report(operator);
           }

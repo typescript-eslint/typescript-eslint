@@ -66,7 +66,7 @@ export default createRule<Options, MessageIds>({
     function isValid(left: TSESTree.Token, right: TSESTree.Token): boolean {
       return (
         !isTokenOnSameLine(left, right) ||
-        sourceCode.isSpaceBetween!(left, right) === always
+        sourceCode.isSpaceBetween(left, right) === always
       );
     }
 

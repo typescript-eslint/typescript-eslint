@@ -1083,9 +1083,6 @@ export class Foo {
   }
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
     },
     `
 interface Foo {
