@@ -81,7 +81,7 @@ export default createRule<Options, MessageIds>({
           },
           allowTypedFunctionExpressions: {
             description:
-              'Whether to ignore type annotations on the variable of a function expresion.',
+              'Whether to ignore type annotations on the variable of a function expression.',
             type: 'boolean',
           },
         },

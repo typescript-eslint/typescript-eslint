@@ -14,15 +14,16 @@ import {
 
 interface SwitchMetadata {
   readonly symbolName: string | undefined;
-  readonly missingBranchTypes: ts.Type[];
   readonly defaultCase: TSESTree.SwitchCase | undefined;
-  readonly isUnion: boolean;
+  readonly missingLiteralBranchTypes: ts.Type[];
+  readonly containsNonLiteralType: boolean;
 }
 
 type Options = [
   {
     /**
-     * If `true`, allow `default` cases on switch statements with exhaustive cases.
+     * If `true`, allow `default` cases on switch statements with exhaustive
+     * cases.
      *
      * @default true
      */
@@ -104,14 +105,8 @@ export default createRule<Options, MessageIds>({
         | string
         | undefined;
 
-      if (!discriminantType.isUnion()) {
-        return {
-          symbolName,
-          missingBranchTypes: [],
-          defaultCase,
-          isUnion: false,
-        };
-      }
+      const containsNonLiteralType =
+        doesTypeContainNonLiteralType(discriminantType);
 
       const caseTypes = new Set<ts.Type>();
       for (const switchCase of node.cases) {
@@ -128,16 +123,28 @@ export default createRule<Options, MessageIds>({
         caseTypes.add(caseType);
       }
 
-      const unionTypes = tsutils.unionTypeParts(discriminantType);
-      const missingBranchTypes = unionTypes.filter(
-        unionType => !caseTypes.has(unionType),
-      );
+      const missingLiteralBranchTypes: ts.Type[] = [];
+
+      for (const unionPart of tsutils.unionTypeParts(discriminantType)) {
+        for (const intersectionPart of tsutils.intersectionTypeParts(
+          unionPart,
+        )) {
+          if (
+            caseTypes.has(intersectionPart) ||
+            !isTypeLiteralLikeType(intersectionPart)
+          ) {
+            continue;
+          }
+
+          missingLiteralBranchTypes.push(intersectionPart);
+        }
+      }
 
       return {
         symbolName,
-        missingBranchTypes,
+        missingLiteralBranchTypes,
         defaultCase,
-        isUnion: true,
+        containsNonLiteralType,
       };
     }
 
@@ -145,17 +152,18 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SwitchStatement,
       switchMetadata: SwitchMetadata,
     ): void {
-      const { missingBranchTypes, symbolName, defaultCase } = switchMetadata;
+      const { missingLiteralBranchTypes, symbolName, defaultCase } =
+        switchMetadata;
 
       // We only trigger the rule if a `default` case does not exist, since that
       // would disqualify the switch statement from having cases that exactly
       // match the members of a union.
-      if (missingBranchTypes.length > 0 && defaultCase === undefined) {
+      if (missingLiteralBranchTypes.length > 0 && defaultCase === undefined) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
           data: {
-            missingBranches: missingBranchTypes
+            missingBranches: missingLiteralBranchTypes
               .map(missingType =>
                 tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
@@ -170,7 +178,7 @@ export default createRule<Options, MessageIds>({
                 return fixSwitch(
                   fixer,
                   node,
-                  missingBranchTypes,
+                  missingLiteralBranchTypes,
                   symbolName?.toString(),
                 );
               },
@@ -201,24 +209,13 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        // While running this rule on the "checker.ts" file of TypeScript, the
-        // the fix introduced a compiler error due to:
-        //
-        // ```ts
-        // type __String = (string & {
-        //   __escapedIdentifier: void;
-        // }) | (void & {
-        //   __escapedIdentifier: void;
-        // }) | InternalSymbolName;
-        // ```
-        //
-        // The following check fixes it.
-        if (missingBranchType.isIntersection()) {
-          continue;
-        }
-
         const missingBranchName = missingBranchType.getSymbol()?.escapedName;
-        let caseTest = checker.typeToString(missingBranchType);
+        let caseTest = tsutils.isTypeFlagSet(
+          missingBranchType,
+          ts.TypeFlags.ESSymbolLike,
+        )
+          ? missingBranchName!
+          : checker.typeToString(missingBranchType);
 
         if (
           symbolName &&
@@ -272,9 +269,14 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { missingBranchTypes, defaultCase } = switchMetadata;
+      const { missingLiteralBranchTypes, defaultCase, containsNonLiteralType } =
+        switchMetadata;
 
-      if (missingBranchTypes.length === 0 && defaultCase !== undefined) {
+      if (
+        missingLiteralBranchTypes.length === 0 &&
+        defaultCase !== undefined &&
+        !containsNonLiteralType
+      ) {
         context.report({
           node: defaultCase,
           messageId: 'dangerousDefaultCase',
@@ -290,9 +292,9 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { isUnion, defaultCase } = switchMetadata;
+      const { defaultCase, containsNonLiteralType } = switchMetadata;
 
-      if (!isUnion && defaultCase === undefined) {
+      if (containsNonLiteralType && defaultCase === undefined) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
@@ -322,3 +324,32 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function isTypeLiteralLikeType(type: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(
+    type,
+    ts.TypeFlags.Literal |
+      ts.TypeFlags.Undefined |
+      ts.TypeFlags.Null |
+      ts.TypeFlags.UniqueESSymbol,
+  );
+}
+
+/**
+ * For example:
+ *
+ * - `"foo" | "bar"` is a type with all literal types.
+ * - `"foo" | number` is a type that contains non-literal types.
+ * - `"foo" & { bar: 1 }` is a type that contains non-literal types.
+ *
+ * Default cases are never superfluous in switches with non-literal types.
+ */
+function doesTypeContainNonLiteralType(type: ts.Type): boolean {
+  return tsutils
+    .unionTypeParts(type)
+    .some(type =>
+      tsutils
+        .intersectionTypeParts(type)
+        .every(subType => !isTypeLiteralLikeType(subType)),
+    );
+}

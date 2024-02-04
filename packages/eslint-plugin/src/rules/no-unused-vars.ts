@@ -159,8 +159,8 @@ export default createRule<Options, MessageIds>({
     function collectUnusedVariables(): TSESLint.Scope.Variable[] {
       /**
        * Checks whether a node is a sibling of the rest property or not.
-       * @param {ASTNode} node a node to check
-       * @returns {boolean} True if the node is a sibling of the rest property, otherwise false.
+       * @param node a node to check
+       * @returns True if the node is a sibling of the rest property, otherwise false.
        */
       function hasRestSibling(node: TSESTree.Node): boolean {
         return (
@@ -310,23 +310,6 @@ export default createRule<Options, MessageIds>({
           return;
         }
         markDeclarationChildAsUsed(node);
-      },
-
-      // module declaration in module declaration should not report unused vars error
-      // this is workaround as this change should be done in better way
-      'TSModuleDeclaration > TSModuleDeclaration'(
-        node: TSESTree.TSModuleDeclaration,
-      ): void {
-        if (node.id.type === AST_NODE_TYPES.Identifier) {
-          let scope = getScope(context);
-          if (scope.upper) {
-            scope = scope.upper;
-          }
-          const superVar = scope.set.get(node.id.name);
-          if (superVar) {
-            superVar.eslintUsed = true;
-          }
-        }
       },
 
       // children of a namespace that is a child of a declared namespace are auto-exported

@@ -3,6 +3,8 @@
  * - disables rules from eslint:recommended which are already handled by TypeScript.
  * - enables rules that make sense due to TS's typechecking / transpilation.
  */
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export = {
   overrides: [
     {
@@ -31,4 +33,4 @@ export = {
       },
     },
   ],
-};
+} satisfies ClassicConfig.Config;

@@ -9,12 +9,12 @@ import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import type { TSESTree } from '../../src/ts-estree';
+import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices,
-} from '../../tools/test-utils';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
+} from '../test-utils/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`**/*.src.ts`, {
@@ -445,8 +445,6 @@ function testIsolatedFile(
 
 /**
  * Verifies that the type of a TS node is number[] as expected
- * @param {ts.TypeChecker} checker
- * @param {ts.Node} tsNode
  */
 function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const nodeType = checker.getTypeAtLocation(tsNode);

@@ -95,7 +95,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Gets the config for a given function
-     * @returns {string} "always", "never", or "ignore"
      */
     function getConfigForFunction(
       node:
@@ -126,8 +125,7 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Checks the parens of a function node
-     * @param {ASTNode} node A function node
-     * @returns {void}
+     * @param node A function node
      */
     function checkFunction(
       node:

@@ -42,7 +42,7 @@ interface Foo<T> {}
 type Bar<T> = {};
 
 class Baz<T> {
-  qux<U> { }
+  qux<U>() {}
 }
 
 const Quux = <T>() => {};

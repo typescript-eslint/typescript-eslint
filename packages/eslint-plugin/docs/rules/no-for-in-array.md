@@ -21,7 +21,7 @@ You may have confused for-in with for-of, which iterates over the elements of th
 
 ### ❌ Incorrect
 
-```js
+```ts
 declare const array: string[];
 
 for (const i in array) {
@@ -35,7 +35,7 @@ for (const i in array) {
 
 ### ✅ Correct
 
-```js
+```ts
 declare const array: string[];
 
 for (const value of array) {
@@ -48,7 +48,7 @@ for (let i = 0; i < array.length; i += 1) {
 
 array.forEach((value, i) => {
   console.log(i, value);
-})
+});
 
 for (const [i, value] of array.entries()) {
   console.log(i, value);

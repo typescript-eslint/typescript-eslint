@@ -70,7 +70,6 @@ export default createRule({
     /**
      * @param member The TypeElement being checked
      * @param node The parent of member being checked
-     * @param tsThisTypes
      */
     function checkMember(
       member: TSESTree.TypeElement,

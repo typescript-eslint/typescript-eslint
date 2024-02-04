@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule, getStaticStringValue } from '../util';
 
 type Options = ['fields' | 'getters'];
 type MessageIds =
@@ -66,6 +66,12 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
+    const sourceCode = getSourceCode(context);
+
+    function getMethodName(node: TSESTree.MethodDefinition): string {
+      return getStaticStringValue(node.key) ?? sourceCode.getText(node.key);
+    }
+
     return {
       ...(style === 'fields' && {
         MethodDefinition(node): void {
@@ -89,6 +95,21 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const name = getMethodName(node);
+
+          if (node.parent.type === AST_NODE_TYPES.ClassBody) {
+            const hasDuplicateKeySetter = node.parent.body.some(element => {
+              return (
+                element.type === AST_NODE_TYPES.MethodDefinition &&
+                element.kind === 'set' &&
+                getMethodName(element) === name
+              );
+            });
+            if (hasDuplicateKeySetter) {
+              return;
+            }
+          }
+
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
@@ -96,7 +117,6 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = getSourceCode(context);
                   const name = sourceCode.getText(node.key);
 
                   let text = '';

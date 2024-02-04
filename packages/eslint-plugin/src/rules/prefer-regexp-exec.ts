@@ -46,7 +46,7 @@ export default createRule({
 
     /**
      * Check if a given node type is a string.
-     * @param node The node type to check.
+     * @param type The node type to check.
      */
     function isStringType(type: ts.Type): boolean {
       return getTypeName(checker, type) === 'string';
@@ -54,7 +54,7 @@ export default createRule({
 
     /**
      * Check if a given node type is a RegExp.
-     * @param node The node type to check.
+     * @param type The node type to check.
      */
     function isRegExpType(type: ts.Type): boolean {
       return getTypeName(checker, type) === 'RegExp';

@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import all from './configs/all';
 import base from './configs/base';
 import disableTypeChecked from './configs/disable-type-checked';
@@ -9,6 +11,12 @@ import strictTypeChecked from './configs/strict-type-checked';
 import stylistic from './configs/stylistic';
 import stylisticTypeChecked from './configs/stylistic-type-checked';
 import rules from './rules';
+
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
+const { name, version } = require('../package.json') as {
+  name: string;
+  version: string;
+};
 
 export = {
   configs: {
@@ -25,5 +33,9 @@ export = {
     stylistic,
     'stylistic-type-checked': stylisticTypeChecked,
   },
+  meta: {
+    name,
+    version,
+  },
   rules,
-};
+} satisfies Linter.Plugin;

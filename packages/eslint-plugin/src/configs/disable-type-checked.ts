@@ -5,6 +5,8 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export = {
   parserOptions: { project: null, program: null },
   rules: {
@@ -12,6 +14,7 @@ export = {
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
@@ -38,9 +41,11 @@ export = {
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
+    '@typescript-eslint/prefer-find': 'off',
     '@typescript-eslint/prefer-includes': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'off',
     '@typescript-eslint/prefer-readonly': 'off',
     '@typescript-eslint/prefer-readonly-parameter-types': 'off',
     '@typescript-eslint/prefer-reduce-type-parameter': 'off',
@@ -57,4 +62,4 @@ export = {
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
   },
-};
+} satisfies ClassicConfig.Config;
