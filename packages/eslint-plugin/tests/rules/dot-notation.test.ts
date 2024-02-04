@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/dot-notation';
 import { getFixturesRootDir } from '../RuleTester';
@@ -26,45 +26,192 @@ ruleTester.run('dot-notation', rule, {
   valid: [
     //  baseRule
 
-    'a.b;',
-    'a.b.c;',
-    "a['12'];",
-    'a[b];',
-    'a[0];',
-    { code: 'a.b.c;', options: [{ allowKeywords: false }] },
-    { code: 'a.arguments;', options: [{ allowKeywords: false }] },
-    { code: 'a.let;', options: [{ allowKeywords: false }] },
-    { code: 'a.yield;', options: [{ allowKeywords: false }] },
-    { code: 'a.eval;', options: [{ allowKeywords: false }] },
-    { code: 'a[0];', options: [{ allowKeywords: false }] },
-    { code: "a['while'];", options: [{ allowKeywords: false }] },
-    { code: "a['true'];", options: [{ allowKeywords: false }] },
-    { code: "a['null'];", options: [{ allowKeywords: false }] },
-    { code: 'a[true];', options: [{ allowKeywords: false }] },
-    { code: 'a[null];', options: [{ allowKeywords: false }] },
-    { code: 'a.true;', options: [{ allowKeywords: true }] },
-    { code: 'a.null;', options: [{ allowKeywords: true }] },
+    `
+      declare const a: { b: number };
+      a.b;
+    `,
+    `
+      declare const a: { b: { c: number } };
+      a.b.c;
+    `,
+    `
+      declare const a: { 12: number };
+      a['12'];
+    `,
+    `
+      declare const b: 'foo';
+      declare const a: { [K in typeof b]: number };
+      a[b];
+    `,
+    `
+      declare const a: [number];
+      a[0];
+    `,
     {
-      code: "a['snake_case'];",
+      code: `
+        declare const a: { b: { c: number } };
+        a.b.c;
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { arguments: number };
+        a.arguments;
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { let: number };
+        a.let;
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { yield: number };
+        a.yield;
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { eval: number };
+        a.eval;
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { 0: number };
+        a[0];
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { while: number };
+        a['while'];
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { true: number };
+        a['true'];
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { null: number };
+        a['null'];
+      `,
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: any;
+        a[true];
+      `,
+      ignoreTsErrors: [2538],
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { null: number };
+        a[null];
+      `,
+      ignoreTsErrors: [2538],
+      options: [{ allowKeywords: false }],
+    },
+    {
+      code: `
+        declare const a: { true: number };
+        a.true;
+      `,
+      options: [{ allowKeywords: true }],
+    },
+    {
+      code: `
+        declare const a: { null: number };
+        a.null;
+      `,
+      options: [{ allowKeywords: true }],
+    },
+    {
+      code: `
+        declare const a: { snake_case: number };
+        a['snake_case'];
+      `,
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
     },
     {
-      code: "a['lots_of_snake_case'];",
+      code: `
+        declare const a: { lots_of_snake_case: number };
+        a['lots_of_snake_case'];
+      `,
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
     },
-    { code: 'a[`time${range}`];', parserOptions: { ecmaVersion: 6 } },
     {
-      code: 'a[`while`];',
+      code: `
+        declare const range: 'foo';
+        declare const a: { timefoo: number };
+        a[\`time\${range}\`];
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+        declare const a: { while: number };
+        a[\`while\`];
+      `,
       options: [{ allowKeywords: false }],
       parserOptions: { ecmaVersion: 6 },
     },
-    { code: 'a[`time range`];', parserOptions: { ecmaVersion: 6 } },
-    'a.true;',
-    'a.null;',
-    'a[undefined];',
-    'a[void 0];',
-    'a[b()];',
-    { code: 'a[/(?<zero>0)/];', parserOptions: { ecmaVersion: 2018 } },
+    {
+      code: `
+        declare const a: { 'time range': number };
+        a[\`time range\`];
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    `
+      declare const a: { true: number };
+      a.true;
+    `,
+    `
+      declare const a: { null: number };
+      a.null;
+    `,
+    {
+      code: `
+        declare const a: { undefined: number };
+        a[undefined];
+      `,
+      ignoreTsErrors: [2538],
+    },
+    {
+      code: `
+        declare const a: any;
+        a[void 0];
+      `,
+      ignoreTsErrors: [2538],
+    },
+    `
+      declare const b: () => 'foo';
+      declare const a: { foo: number };
+      a[b()];
+    `,
+    {
+      code: `
+        declare const a: any;
+        a[/(?<zero>0)/];
+      `,
+      ignoreTsErrors: [2538],
+      parserOptions: { ecmaVersion: 2018 },
+    },
 
     {
       code: `
@@ -92,7 +239,7 @@ x['protected_prop'] = 123;
     {
       code: `
 class X {
-  prop: string;
+  prop: number = 1;
   [key: string]: number;
 }
 
@@ -109,7 +256,7 @@ interface Nested {
 }
 
 class Dingus {
-  nested: Nested;
+  nested: Nested = { property: 'foo' };
 }
 
 let dingus: Dingus | undefined;
@@ -170,132 +317,240 @@ x.pub_prop = 123;
     //     errors: [{ messageId: "useBrackets", data: { key: "true" } }],
     // },
     {
-      code: "a['true'];",
-      output: 'a.true;',
+      code: `
+declare const a: { true: number };
+a['true'];
+      `,
+      output: `
+declare const a: { true: number };
+a.true;
+      `,
       errors: [{ messageId: 'useDot', data: { key: q('true') } }],
     },
     {
-      code: "a['time'];",
-      output: 'a.time;',
+      code: `
+declare const a: { time: number };
+a['time'];
+      `,
+      output: `
+declare const a: { time: number };
+a.time;
+      `,
       parserOptions: { ecmaVersion: 6 },
       errors: [{ messageId: 'useDot', data: { key: '"time"' } }],
     },
     {
-      code: 'a[null];',
-      output: 'a.null;',
+      code: `
+declare const a: { null: number };
+a[null];
+      `,
+      output: `
+declare const a: { null: number };
+a.null;
+      `,
+      ignoreTsErrors: [2538],
       errors: [{ messageId: 'useDot', data: { key: 'null' } }],
     },
     {
-      code: 'a[true];',
-      output: 'a.true;',
+      code: `
+declare const a: { true: number };
+a[true];
+      `,
+      output: `
+declare const a: { true: number };
+a.true;
+      `,
+      ignoreTsErrors: [2538],
       errors: [{ messageId: 'useDot', data: { key: 'true' } }],
     },
     {
-      code: 'a[false];',
-      output: 'a.false;',
+      code: `
+declare const a: { false: number };
+a[false];
+      `,
+      output: `
+declare const a: { false: number };
+a.false;
+      `,
+      ignoreTsErrors: [2538],
       errors: [{ messageId: 'useDot', data: { key: 'false' } }],
     },
     {
-      code: "a['b'];",
-      output: 'a.b;',
+      code: `
+declare const a: { b: number };
+a['b'];
+      `,
+      output: `
+declare const a: { b: number };
+a.b;
+      `,
       errors: [{ messageId: 'useDot', data: { key: q('b') } }],
     },
     {
-      code: "a.b['c'];",
-      output: 'a.b.c;',
+      code: `
+declare const a: { b: { c: number } };
+a.b['c'];
+      `,
+      output: `
+declare const a: { b: { c: number } };
+a.b.c;
+      `,
       errors: [{ messageId: 'useDot', data: { key: q('c') } }],
     },
     {
-      code: "a['_dangle'];",
-      output: 'a._dangle;',
+      code: `
+declare const a: { _dangle: number };
+a['_dangle'];
+      `,
+      output: `
+declare const a: { _dangle: number };
+a._dangle;
+      `,
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
       errors: [{ messageId: 'useDot', data: { key: q('_dangle') } }],
     },
     {
-      code: "a['SHOUT_CASE'];",
-      output: 'a.SHOUT_CASE;',
+      code: `
+declare const a: { SHOUT_CASE: number };
+a['SHOUT_CASE'];
+      `,
+      output: `
+declare const a: { SHOUT_CASE: number };
+a.SHOUT_CASE;
+      `,
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
       errors: [{ messageId: 'useDot', data: { key: q('SHOUT_CASE') } }],
     },
     {
-      code: 'a\n' + "  ['SHOUT_CASE'];",
-      output: 'a\n' + '  .SHOUT_CASE;',
+      code: noFormat`
+declare const a: { SHOUT_CASE: number };
+a
+  ['SHOUT_CASE'];
+      `,
+      output: `
+declare const a: { SHOUT_CASE: number };
+a
+  .SHOUT_CASE;
+      `,
       errors: [
         {
           messageId: 'useDot',
           data: { key: q('SHOUT_CASE') },
-          line: 2,
+          line: 4,
           column: 4,
         },
       ],
     },
     {
-      code:
-        'getResource()\n' +
-        '    .then(function(){})\n' +
-        '    ["catch"](function(){})\n' +
-        '    .then(function(){})\n' +
-        '    ["catch"](function(){});',
-      output:
-        'getResource()\n' +
-        '    .then(function(){})\n' +
-        '    .catch(function(){})\n' +
-        '    .then(function(){})\n' +
-        '    .catch(function(){});',
+      code: `
+declare const getResource: () => Promise<number>;
+getResource()
+  .then(function () {})
+  ['catch'](function () {})
+  .then(function () {})
+  ['catch'](function () {});
+      `,
+      output: `
+declare const getResource: () => Promise<number>;
+getResource()
+  .then(function () {})
+  .catch(function () {})
+  .then(function () {})
+  .catch(function () {});
+      `,
       errors: [
         {
           messageId: 'useDot',
           data: { key: q('catch') },
-          line: 3,
-          column: 6,
+          line: 5,
+          column: 4,
         },
         {
           messageId: 'useDot',
           data: { key: q('catch') },
-          line: 5,
-          column: 6,
+          line: 7,
+          column: 4,
         },
       ],
     },
     {
-      code: 'foo\n' + '  .while;',
-      output: 'foo\n' + '  ["while"];',
+      code: noFormat`
+        declare const foo: { while: number };
+        foo
+          .while;
+      `,
+      output: `
+        declare const foo: { while: number };
+        foo
+          ["while"];
+      `,
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'while' } }],
     },
     {
-      code: "foo[/* comment */ 'bar'];",
+      code: `
+        declare const foo: { bar: number };
+        foo[/* comment */ 'bar'];
+      `,
       output: null, // Not fixed due to comment
       errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
-      code: "foo['bar' /* comment */];",
+      code: `
+        declare const foo: { bar: number };
+        foo['bar' /* comment */];
+      `,
       output: null, // Not fixed due to comment
       errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
-      code: "foo['bar'];",
-      output: 'foo.bar;',
+      code: `
+        declare const foo: { bar: number };
+        foo['bar'];
+      `,
+      output: `
+        declare const foo: { bar: number };
+        foo.bar;
+      `,
       errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
-      code: 'foo./* comment */ while;',
+      code: `
+        declare const foo: { while: number };
+        foo./* comment */ while;
+      `,
       output: null, // Not fixed due to comment
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'while' } }],
     },
     {
-      code: 'foo[null];',
-      output: 'foo.null;',
+      code: `
+        declare const foo: { null: number };
+        foo[null];
+      `,
+      output: `
+        declare const foo: { null: number };
+        foo.null;
+      `,
+      ignoreTsErrors: [2538],
       errors: [{ messageId: 'useDot', data: { key: 'null' } }],
     },
     {
-      code: "foo['bar'] instanceof baz;",
-      output: 'foo.bar instanceof baz;',
+      code: `
+        declare class baz {}
+        declare const foo: { bar: baz };
+        foo['bar'] instanceof baz;
+      `,
+      output: `
+        declare class baz {}
+        declare const foo: { bar: baz };
+        foo.bar instanceof baz;
+      `,
       errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
       code: 'let.if();',
+      ignoreTsErrors: [1212, 2304],
       output: null, // `let["if"]()` is a syntax error because `let[` indicates a destructuring variable declaration
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'if' } }],
@@ -309,6 +564,7 @@ class X {
 const x = new X();
 x['protected_prop'] = 123;
       `,
+      ignoreTsErrors: true,
       options: [{ allowProtectedClassPropertyAccess: false }],
       output: `
 class X {
@@ -323,8 +579,8 @@ x.protected_prop = 123;
     {
       code: `
 class X {
-  prop: string;
-  [key: string]: number;
+  prop: string = 'foo';
+  [key: string]: string;
 }
 
 const x = new X();
@@ -334,8 +590,8 @@ x['prop'] = 'hello';
       errors: [{ messageId: 'useDot' }],
       output: `
 class X {
-  prop: string;
-  [key: string]: number;
+  prop: string = 'foo';
+  [key: string]: string;
 }
 
 const x = new X();
