@@ -24,9 +24,9 @@ For example, to add blank lines before interfaces and type definitions:
     {
       "blankLine": "always",
       "prev": "*",
-      "next": ["interface", "type"]
-    }
-  ]
+      "next": ["interface", "type"],
+    },
+  ],
 }
 ```
 

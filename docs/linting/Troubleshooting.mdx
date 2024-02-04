@@ -240,22 +240,22 @@ For example, you can ban enums (or some variation of) using one of the following
       // ban all enums
       {
         "selector": "TSEnumDeclaration",
-        "message": "My reason for not using any enums at all"
+        "message": "My reason for not using any enums at all",
       },
 
       // ban just const enums
       {
         "selector": "TSEnumDeclaration[const=true]",
-        "message": "My reason for not using const enums"
+        "message": "My reason for not using const enums",
       },
 
       // ban just non-const enums
       {
         "selector": "TSEnumDeclaration:not([const=true])",
-        "message": "My reason for not using non-const enums"
-      }
-    ]
-  }
+        "message": "My reason for not using non-const enums",
+      },
+    ],
+  },
 }
 ```
 

@@ -2,13 +2,13 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": false,
-    "rootDir": "."
+    "rootDir": ".",
   },
   "include": ["src", "tests", "tools"],
   "exclude": ["tests/fixtures"],
   "references": [
     { "path": "../scope-manager/tsconfig.build.json" },
     { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" }
-  ]
+    { "path": "../typescript-estree/tsconfig.build.json" },
+  ],
 }
