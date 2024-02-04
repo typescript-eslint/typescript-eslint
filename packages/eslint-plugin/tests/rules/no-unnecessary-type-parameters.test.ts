@@ -471,7 +471,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
-        // Same as the previous test, but with an explicit return type.
         function makeMap<K, V>(): Map<K, V> {
           return new Map<K, V>();
         }
