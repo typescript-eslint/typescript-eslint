@@ -45,8 +45,8 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  programs?: import('typescript').Program;
-  project?: string | string[] | true;
+  programs?: import('typescript').Program[];
+  project?: string | string[] | boolean | null;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -212,13 +212,17 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
   // array of paths and/or glob patterns
   project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
+
+  // ways to disable type-aware linting (useful for overrides configs)
+  project: false;
+  project: null;
   ```
 
 - If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
 
   - This is done by checking that source file's directory tree for the nearest `tsconfig.json`.
 
-- If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
+- If you use project references, TypeScript will **not** automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 
 - Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
 
