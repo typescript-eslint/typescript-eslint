@@ -5,7 +5,7 @@ import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import { createRule } from '../util';
 
 interface Options {
-  allowInGenericTypeArguments?: string[] | boolean;
+  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
   allowAsThisParameter?: boolean;
 }
 
