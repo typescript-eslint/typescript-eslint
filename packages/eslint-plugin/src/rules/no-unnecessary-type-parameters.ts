@@ -56,7 +56,17 @@ export default createRule({
         // References to the type parameter in the function body are irrelevant
         // for a valid type signature.
         let declEndPos = tsNode.end;
-        if ('body' in tsNode) {
+        if (
+          !ts.isCallSignatureDeclaration(tsNode) &&
+          !ts.isConstructSignatureDeclaration(tsNode) &&
+          !ts.isMethodSignature(tsNode) &&
+          !ts.isIndexSignatureDeclaration(tsNode) &&
+          !ts.isFunctionTypeNode(tsNode) &&
+          !ts.isConstructorTypeNode(tsNode) &&
+          !ts.isJSDocFunctionType(tsNode) &&
+          !ts.isClassDeclaration(tsNode) &&
+          !ts.isClassExpression(tsNode)
+        ) {
           declEndPos = tsNode.body?.getStart() ?? tsNode.end;
         }
 
@@ -67,6 +77,9 @@ export default createRule({
             const pos = use.location.getStart();
             if (pos > tsNode.getStart() && pos < declEndPos) {
               numExplicitUses++;
+              if (numExplicitUses >= 2) {
+                break;
+              }
             }
           }
           const inferredUses = inferredCounts?.get(typeParameter.name) ?? 0;
@@ -104,7 +117,7 @@ function collectTypeParameterUsage(
         break;
       }
     }
-    // XXX these should be "else if" but tsutils.isParameterType narrows type to never.
+    // This should be "else if" but tsutils.isParameterType narrows type to never.
     if (tsutils.isUnionOrIntersectionType(type)) {
       type.types.forEach(process);
     } else if (tsutils.isIndexedAccessType(type)) {
