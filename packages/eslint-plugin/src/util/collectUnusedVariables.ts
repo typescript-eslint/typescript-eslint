@@ -435,7 +435,7 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
       return false;
     }
 
-    return node.parent!.type.indexOf('Export') === 0;
+    return node.parent!.type.startsWith('Export');
   });
 }
 

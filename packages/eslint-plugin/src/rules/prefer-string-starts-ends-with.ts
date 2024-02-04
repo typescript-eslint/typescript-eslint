@@ -18,9 +18,19 @@ import {
 const EQ_OPERATORS = /^[=!]=/;
 const regexpp = new RegExpParser();
 
-export default createRule({
+type AllowedSingleElementEquality = 'always' | 'never';
+
+export type Options = [
+  {
+    allowSingleElementEquality?: AllowedSingleElementEquality;
+  },
+];
+
+type MessageIds = 'preferEndsWith' | 'preferStartsWith';
+
+export default createRule<Options, MessageIds>({
   name: 'prefer-string-starts-ends-with',
-  defaultOptions: [],
+  defaultOptions: [{ allowSingleElementEquality: 'never' }],
 
   meta: {
     type: 'suggestion',
@@ -34,11 +44,24 @@ export default createRule({
       preferStartsWith: "Use 'String#startsWith' method instead.",
       preferEndsWith: "Use the 'String#endsWith' method instead.",
     },
-    schema: [],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowSingleElementEquality: {
+            description:
+              'Whether to allow equality checks against the first or last element of a string.',
+            enum: ['always', 'never'],
+            type: 'string',
+          },
+        },
+        type: 'object',
+      },
+    ],
     fixable: 'code',
   },
 
-  create(context) {
+  create(context, [{ allowSingleElementEquality }]) {
     const globalScope = getScope(context);
     const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
@@ -402,8 +425,15 @@ export default createRule({
         }
 
         const isEndsWith = isLastIndexExpression(indexNode, node.object);
+        if (allowSingleElementEquality === 'always' && isEndsWith) {
+          return;
+        }
+
         const isStartsWith = !isEndsWith && isNumber(indexNode, 0);
-        if (!isStartsWith && !isEndsWith) {
+        if (
+          (allowSingleElementEquality === 'always' && isStartsWith) ||
+          (!isStartsWith && !isEndsWith)
+        ) {
           return;
         }
 
