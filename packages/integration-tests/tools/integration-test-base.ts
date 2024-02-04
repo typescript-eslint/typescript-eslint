@@ -56,10 +56,6 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
           devDependencies: {
             ...BASE_DEPENDENCIES,
             ...fixturePackageJson.devDependencies,
-            // install tslint with the base version if required
-            tslint: fixturePackageJson.devDependencies.tslint
-              ? rootPackageJson.devDependencies.tslint
-              : undefined,
           },
           // ensure everything uses the locally packed versions instead of the NPM versions
           resolutions: {
