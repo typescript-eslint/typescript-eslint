@@ -621,25 +621,25 @@ function getRank(
  * ```
  * interface Foo {
       [a: string]: number;
-
+ 
       a: x;
       B: x;
       c: x;
-
+ 
       c(): void;
       B(): void;
       a(): void;
-
+ 
       (): Baz;
-
+ 
       new (): Bar;
     }
  * ```
   The resulting array will look like this - [[a, B, c], [c, B, a]].
  * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
  * @param memberType The member type order listed in the eslint config file.
- * @param supportsModifiers
- * @returns
+ * @param supportsModifiers it'll get passed to getRank()
+ * @returns the array of groups of members
  */
 function groupMembersByType(
   memberSet: Member[],
@@ -997,7 +997,7 @@ export default createRule<Options, MessageIds>({
 
       /**
        * It runs an alphabetic sort on the groups of the members of the class in the source code.
-       * @param memberSet
+       * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
        */
       const checkAlphaSortForAllMembers = (memberSet: Member[]): undefined => {
         const hasAlphaSort = !!(order && order !== 'as-written');
