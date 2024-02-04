@@ -615,13 +615,38 @@ function getRank(
   return getRankOrder(memberGroups, orderConfig);
 }
 
-function changeToGroups(
+/**
+ * If there are more than 1 consecutive same ranked member in 1 class, those members are put in an array & an array of these members' array is returned as a result. If, for example, the memberSet parameter looks like the below example - (contd. after the example tag)
+ * @example
+ * ```
+ * interface Foo {
+      [a: string]: number;
+
+      a: x;
+      B: x;
+      c: x;
+
+      c(): void;
+      B(): void;
+      a(): void;
+
+      (): Baz;
+
+      new (): Bar;
+    }
+ * ```
+  The resulting array will look like this - [[a, B, c], [c, B, a]].
+ * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
+ * @param memberType The member type order listed in the eslint config file.
+ * @param supportsModifiers
+ * @returns
+ */
+function groupMembersByType(
   memberSet: Member[],
   memberType: MemberType[],
   supportsModifiers: boolean,
 ): Member[][] {
   const groupedMembers: Member[][] = [];
-
   const getPreviousRank = (): number | undefined => {
     if (groupedMembers.at(-1)?.at(0) === undefined) {
       return undefined;
@@ -632,16 +657,19 @@ function changeToGroups(
       supportsModifiers,
     );
   };
-
   memberSet.forEach((member, index) => {
-    if (getRank(member, memberType, supportsModifiers) === getPreviousRank()) {
-      groupedMembers.at(-1)?.push(member);
-    } else if (index === memberSet.length - 1) {
+    const rankOfcurrentMember = getRank(member, memberType, supportsModifiers);
+    const rankOfNextMember = getRank(
+      memberSet[index + 1],
+      memberType,
+      supportsModifiers,
+    );
+    if (index === memberSet.length - 1) {
       return;
-    } else if (
-      getRank(member, memberType, supportsModifiers) ===
-      getRank(memberSet.at(index + 1)!, memberType, supportsModifiers)
-    ) {
+    }
+    if (rankOfcurrentMember === getPreviousRank()) {
+      groupedMembers.at(-1)?.push(member);
+    } else if (rankOfcurrentMember === rankOfNextMember) {
       groupedMembers.push([member]);
     }
   });
@@ -967,10 +995,14 @@ export default createRule<Options, MessageIds>({
       let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
-      const runSort = (memberSet: Member[]): undefined => {
+      /**
+       * It runs an alphabetic sort on the groups of the members of the class in the source code.
+       * @param memberSet
+       */
+      const checkAlphaSortForAllMembers = (memberSet: Member[]): undefined => {
         const hasAlphaSort = !!(order && order !== 'as-written');
         if (hasAlphaSort && Array.isArray(memberTypes)) {
-          changeToGroups(memberSet, memberTypes, supportsModifiers).forEach(
+          groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
             groupMember => {
               checkAlphaSort(groupMember, order as AlphabeticalOrder);
             },
@@ -991,18 +1023,16 @@ export default createRule<Options, MessageIds>({
           );
 
           if (grouped == null) {
-            runSort(members);
+            checkAlphaSortForAllMembers(members);
             return false;
           }
 
           if (hasAlphaSort) {
-            const sortResults: boolean[] = [];
-            grouped.forEach(groupMember => {
-              sortResults.push(
+            return grouped
+              .map(groupMember =>
                 checkAlphaSort(groupMember, order as AlphabeticalOrder),
-              );
-            });
-            return sortResults.some(result => !result);
+              )
+              .some(result => !result);
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
