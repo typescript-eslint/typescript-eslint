@@ -12,9 +12,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@site/*": ["./*"]
+      "@site/*": ["./*"],
     },
-    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
+    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
   },
   "include": [
     "src",
@@ -23,6 +23,6 @@
     "plugins",
     "typings",
     "sidebars/*.js",
-    "./*.ts"
-  ]
+    "./*.ts",
+  ],
 }
