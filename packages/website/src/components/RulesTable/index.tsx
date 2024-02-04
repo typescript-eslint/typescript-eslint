@@ -125,8 +125,9 @@ function RuleFilterCheckBox({
   setMode: (mode: FilterMode) => void;
   mode: FilterMode;
 }): React.JSX.Element {
-  const toNextMode = (): void =>
+  const toNextMode = (): void => {
     setMode(filterModes[(filterModes.indexOf(mode) + 1) % filterModes.length]);
+  };
   return (
     <li className={styles.checkboxListItem}>
       <button
@@ -198,17 +199,23 @@ export default function RulesTable(): React.JSX.Element {
         <ul className={clsx('clean-list', styles.checkboxList)}>
           <RuleFilterCheckBox
             mode={filters.recommended}
-            setMode={(newMode): void => changeFilter('recommended', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('recommended', newMode);
+            }}
             label={`${RECOMMENDED_CONFIG_EMOJI} recommended`}
           />
           <RuleFilterCheckBox
             mode={filters.strict}
-            setMode={(newMode): void => changeFilter('strict', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('strict', newMode);
+            }}
             label={`${STRICT_CONFIG_EMOJI} strict`}
           />
           <RuleFilterCheckBox
             mode={filters.stylistic}
-            setMode={(newMode): void => changeFilter('stylistic', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('stylistic', newMode);
+            }}
             label={`${STYLISTIC_CONFIG_EMOJI} stylistic`}
           />
         </ul>
@@ -218,34 +225,44 @@ export default function RulesTable(): React.JSX.Element {
         <ul className={clsx('clean-list', styles.checkboxList)}>
           <RuleFilterCheckBox
             mode={filters.fixable}
-            setMode={(newMode): void => changeFilter('fixable', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('fixable', newMode);
+            }}
             label={`${FIXABLE_EMOJI} fixable`}
           />
           <RuleFilterCheckBox
             mode={filters.suggestions}
-            setMode={(newMode): void => changeFilter('suggestions', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('suggestions', newMode);
+            }}
             label={`${SUGGESTIONS_EMOJI} has suggestions`}
           />
           <RuleFilterCheckBox
             mode={filters.typeInformation}
-            setMode={(newMode): void =>
-              changeFilter('typeInformation', newMode)
-            }
+            setMode={(newMode): void => {
+              changeFilter('typeInformation', newMode);
+            }}
             label={`${TYPE_INFORMATION_EMOJI} type checked`}
           />
           <RuleFilterCheckBox
             mode={filters.extension}
-            setMode={(newMode): void => changeFilter('extension', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('extension', newMode);
+            }}
             label={`${EXTENSION_RULE_EMOJI} extension`}
           />
           <RuleFilterCheckBox
             mode={filters.formatting}
-            setMode={(newMode): void => changeFilter('formatting', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('formatting', newMode);
+            }}
             label={`${FORMATTING_RULE_EMOJI} formatting`}
           />
           <RuleFilterCheckBox
             mode={filters.deprecated}
-            setMode={(newMode): void => changeFilter('deprecated', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('deprecated', newMode);
+            }}
             label={`${DEPRECATED_RULE_EMOJI} deprecated`}
           />
         </ul>

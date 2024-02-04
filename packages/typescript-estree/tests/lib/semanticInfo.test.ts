@@ -37,7 +37,9 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
 }
 
 // ensure tsconfig-parser watch caches are clean for each test
-beforeEach(() => clearCaches());
+beforeEach(() => {
+  clearCaches();
+});
 
 describe('semanticInfo', () => {
   // test all AST snapshots

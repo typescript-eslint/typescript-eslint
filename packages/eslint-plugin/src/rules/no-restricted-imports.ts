@@ -300,10 +300,12 @@ export default createRule<Options, MessageIds>({
           !isAllowedTypeImportPath(importSource) &&
           !isAllowedTypeImportPattern(importSource)
         ) {
-          return rules.ImportDeclaration(node);
+          rules.ImportDeclaration(node);
+          return;
         }
       } else {
-        return rules.ImportDeclaration(node);
+        rules.ImportDeclaration(node);
+        return;
       }
     }
 
@@ -331,7 +333,8 @@ export default createRule<Options, MessageIds>({
               },
             ],
           } satisfies TSESTree.ImportDeclaration;
-          return checkImportNode(synthesizedImport);
+          checkImportNode(synthesizedImport);
+          return;
         }
       },
       ImportDeclaration: checkImportNode,
@@ -350,10 +353,12 @@ export default createRule<Options, MessageIds>({
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)
           ) {
-            return rules.ExportNamedDeclaration(node);
+            rules.ExportNamedDeclaration(node);
+            return;
           }
         } else {
-          return rules.ExportNamedDeclaration(node);
+          rules.ExportNamedDeclaration(node);
+          return;
         }
       },
       ExportAllDeclaration: rules.ExportAllDeclaration,

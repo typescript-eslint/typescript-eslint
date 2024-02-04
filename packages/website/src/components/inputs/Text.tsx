@@ -21,7 +21,9 @@ const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
           {props.type === 'search' && <SearchIcon />}
           <input
             value={props.value}
-            onChange={(e): void => props.onChange(e.target.value)}
+            onChange={(e): void => {
+              props.onChange(e.target.value);
+            }}
             name={props.name}
             className={props.className}
             type={props.type ?? 'text'}

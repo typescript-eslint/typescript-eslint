@@ -133,14 +133,18 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       );
       updateMarkers();
     });
-    return () => disposable();
+    return () => {
+      disposable();
+    };
   }, [webLinter, monaco, codeActions, updateMarkers]);
 
   useEffect(() => {
     const disposable = webLinter.onParse((uri, model) => {
       onASTChange(model);
     });
-    return () => disposable();
+    return () => {
+      disposable();
+    };
   }, [webLinter, onASTChange]);
 
   useEffect(() => {
@@ -176,7 +180,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       'typescript',
       createProvideCodeActions(codeActions),
     );
-    return () => disposable.dispose();
+    return () => {
+      disposable.dispose();
+    };
   }, [codeActions, monaco]);
 
   useEffect(() => {
@@ -189,7 +195,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }
     });
-    return () => disposable.dispose();
+    return () => {
+      disposable.dispose();
+    };
   }, [editor, tabs.eslintrc]);
 
   useEffect(() => {
@@ -202,7 +210,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }, 150),
     );
-    return () => disposable.dispose();
+    return () => {
+      disposable.dispose();
+    };
   }, [onSelect, editor, tabs.code]);
 
   useEffect(() => {
@@ -225,7 +235,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       },
     });
-    return () => disposable.dispose();
+    return () => {
+      disposable.dispose();
+    };
   }, [editor, monaco, webLinter]);
 
   useEffect(() => {
@@ -242,7 +254,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     ];
 
     return () => {
-      closable.forEach(c => c.close());
+      closable.forEach(c => {
+        c.close();
+      });
     };
   }, [system, onChange]);
 
@@ -253,18 +267,24 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         system.writeFile(model.uri.path, model.getValue());
       }
     });
-    return () => disposable.dispose();
+    return () => {
+      disposable.dispose();
+    };
   }, [editor, system]);
 
   useEffect(() => {
     const disposable = monaco.editor.onDidChangeMarkers(() => {
       updateMarkers();
     });
-    return () => disposable.dispose();
+    return () => {
+      disposable.dispose();
+    };
   }, [monaco.editor, updateMarkers]);
 
   const resize = useMemo(() => {
-    return debounce(() => editor.layout(), 1);
+    return debounce(() => {
+      editor.layout();
+    }, 1);
   }, [editor]);
 
   const container = editor.getContainerDomNode();

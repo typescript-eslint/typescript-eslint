@@ -17,8 +17,9 @@ const useMediaQuery = (mediaQuery: string): boolean => {
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(mediaQuery);
-    const documentChangeHandler = (): void =>
+    const documentChangeHandler = (): void => {
       setIsVerified(!!mediaQueryList.matches);
+    };
 
     try {
       mediaQueryList.addEventListener('change', documentChangeHandler);

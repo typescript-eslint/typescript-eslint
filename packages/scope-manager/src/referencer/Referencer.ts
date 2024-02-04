@@ -270,7 +270,9 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators.forEach(d => this.visit(d));
+      param.decorators.forEach(d => {
+        this.visit(d);
+      });
     }
 
     this.visitType(node.returnType);

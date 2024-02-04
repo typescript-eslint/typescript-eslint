@@ -197,12 +197,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        return rules.VariableDeclaration(node);
+        rules.VariableDeclaration(node);
       },
 
       TSAsExpression(node: TSESTree.TSAsExpression) {
         // transform it to a BinaryExpression
-        return rules['BinaryExpression, LogicalExpression']({
+        rules['BinaryExpression, LogicalExpression']({
           type: AST_NODE_TYPES.BinaryExpression,
           operator: 'as' as any,
           left: node.expression,
@@ -218,7 +218,7 @@ export default createRule<Options, MessageIds>({
 
       TSConditionalType(node: TSESTree.TSConditionalType) {
         // transform it to a ConditionalExpression
-        return rules.ConditionalExpression({
+        rules.ConditionalExpression({
           type: AST_NODE_TYPES.ConditionalExpression,
           test: {
             parent: node,
@@ -248,7 +248,7 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.TSEnumDeclaration | TSESTree.TSTypeLiteral,
       ) {
         // transform it to an ObjectExpression
-        return rules['ObjectExpression, ObjectPattern']({
+        rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: (
             node.members as (TSESTree.TSEnumMember | TSESTree.TypeElement)[]
@@ -269,7 +269,7 @@ export default createRule<Options, MessageIds>({
         // use VariableDeclaration instead of ImportDeclaration because it's essentially the same thing
         const { id, moduleReference } = node;
 
-        return rules.VariableDeclaration({
+        rules.VariableDeclaration({
           type: AST_NODE_TYPES.VariableDeclaration,
           kind: 'const' as const,
           declarations: [
@@ -320,7 +320,7 @@ export default createRule<Options, MessageIds>({
 
       TSIndexedAccessType(node: TSESTree.TSIndexedAccessType) {
         // convert to a MemberExpression
-        return rules['MemberExpression, JSXMemberExpression, MetaProperty']({
+        rules['MemberExpression, JSXMemberExpression, MetaProperty']({
           type: AST_NODE_TYPES.MemberExpression,
           object: node.objectType as any,
           property: node.indexType as any,
@@ -336,7 +336,7 @@ export default createRule<Options, MessageIds>({
 
       TSInterfaceBody(node: TSESTree.TSInterfaceBody) {
         // transform it to an ClassBody
-        return rules['BlockStatement, ClassBody']({
+        rules['BlockStatement, ClassBody']({
           type: AST_NODE_TYPES.ClassBody,
           body: node.body.map(
             p =>
@@ -357,9 +357,7 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.TSInterfaceDeclaration,
       ) {
         // transform it to a ClassDeclaration
-        return rules[
-          'ClassDeclaration[superClass], ClassExpression[superClass]'
-        ]({
+        rules['ClassDeclaration[superClass], ClassExpression[superClass]']({
           type: AST_NODE_TYPES.ClassDeclaration,
           body: node.body as any,
           id: null,
@@ -387,7 +385,7 @@ export default createRule<Options, MessageIds>({
         )!;
 
         // transform it to an ObjectExpression
-        return rules['ObjectExpression, ObjectPattern']({
+        rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: [
             {
@@ -426,7 +424,7 @@ export default createRule<Options, MessageIds>({
 
       TSModuleBlock(node: TSESTree.TSModuleBlock) {
         // transform it to a BlockStatement
-        return rules['BlockStatement, ClassBody']({
+        rules['BlockStatement, ClassBody']({
           type: AST_NODE_TYPES.BlockStatement,
           body: node.body as any,
 
@@ -438,7 +436,7 @@ export default createRule<Options, MessageIds>({
       },
 
       TSQualifiedName(node: TSESTree.TSQualifiedName) {
-        return rules['MemberExpression, JSXMemberExpression, MetaProperty']({
+        rules['MemberExpression, JSXMemberExpression, MetaProperty']({
           type: AST_NODE_TYPES.MemberExpression,
           object: node.left as any,
           property: node.right as any,
@@ -454,7 +452,7 @@ export default createRule<Options, MessageIds>({
 
       TSTupleType(node: TSESTree.TSTupleType) {
         // transform it to an ArrayExpression
-        return rules['ArrayExpression, ArrayPattern']({
+        rules['ArrayExpression, ArrayPattern']({
           type: AST_NODE_TYPES.ArrayExpression,
           elements: node.elementTypes as any,
 
@@ -474,7 +472,7 @@ export default createRule<Options, MessageIds>({
 
         // JSX is about the closest we can get because the angle brackets
         // it's not perfect but it works!
-        return rules.JSXOpeningElement({
+        rules.JSXOpeningElement({
           type: AST_NODE_TYPES.JSXOpeningElement,
           selfClosing: false,
           name: name as any,

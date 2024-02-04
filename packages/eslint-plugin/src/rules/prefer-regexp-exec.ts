@@ -125,7 +125,7 @@ export default createRule({
           } catch {
             return;
           }
-          return context.report({
+          context.report({
             node: memberNode.property,
             messageId: 'regExpExecOverStringMatch',
             fix: getWrappingFixer({
@@ -135,6 +135,7 @@ export default createRule({
               wrap: objectCode => `${regExp.toString()}.exec(${objectCode})`,
             }),
           });
+          return;
         }
 
         const argumentType = services.getTypeAtLocation(argumentNode);
@@ -142,8 +143,8 @@ export default createRule({
           tsutils.unionTypeParts(argumentType),
         );
         switch (argumentTypes) {
-          case ArgumentType.RegExp:
-            return context.report({
+          case ArgumentType.RegExp: {
+            context.report({
               node: memberNode.property,
               messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
@@ -154,9 +155,11 @@ export default createRule({
                   `${argumentCode}.exec(${objectCode})`,
               }),
             });
+            return;
+          }
 
-          case ArgumentType.String:
-            return context.report({
+          case ArgumentType.String: {
+            context.report({
               node: memberNode.property,
               messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
@@ -167,6 +170,8 @@ export default createRule({
                   `RegExp(${argumentCode}).exec(${objectCode})`,
               }),
             });
+            return;
+          }
         }
       },
     };

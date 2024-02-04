@@ -44,7 +44,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        return coreListener(node);
+        coreListener(node);
       };
     }
 

@@ -32,7 +32,8 @@ function SimplifiedItem({
   const onHover = useCallback(
     (v: boolean) => {
       if (isTSNode(value) && onHoverNode) {
-        return onHoverNode(v ? getRange(value, 'tsNode') : undefined);
+        onHoverNode(v ? getRange(value, 'tsNode') : undefined);
+        return;
       }
     },
     [onHoverNode, value],

@@ -142,11 +142,12 @@ export default createRule<Options, MessageIds>({
 
       if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         // Report without auto fixer because the return type is unknown
-        return context.report({
+        context.report({
           messageId: 'missingAsync',
           node,
           loc: getFunctionHeadLoc(node, sourceCode),
         });
+        return;
       }
 
       context.report({
