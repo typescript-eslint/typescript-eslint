@@ -6,7 +6,7 @@ description: 'Disallow type parameters that only appear once'
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-parameters** for documentation.
 
-This rule forbids type parameters that only appear once in a function, method or class definition.
+This rule forbids type parameters that only appear once in a function, method, or class definition.
 
 Type parameters relate two types. If a generic type parameter only appears once, then it is not relating anything. It can usually be replaced with explicit types such as `unknown`.
 
