@@ -18,7 +18,6 @@ This rule reports when a `+` operation combines two values of different types, o
 ### ❌ Incorrect
 
 ```ts
-let foo = '5.5' + 5;
 let foo = 1n + 1;
 ```
 
