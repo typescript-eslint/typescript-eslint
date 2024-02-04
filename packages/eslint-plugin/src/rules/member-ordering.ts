@@ -658,15 +658,15 @@ function groupMembersByType(
     );
   };
   memberSet.forEach((member, index) => {
+    if (index === memberSet.length - 1) {
+      return;
+    }
     const rankOfcurrentMember = getRank(member, memberType, supportsModifiers);
     const rankOfNextMember = getRank(
       memberSet[index + 1],
       memberType,
       supportsModifiers,
     );
-    if (index === memberSet.length - 1) {
-      return;
-    }
     if (rankOfcurrentMember === getPreviousRank()) {
       groupedMembers.at(-1)?.push(member);
     } else if (rankOfcurrentMember === rankOfNextMember) {
