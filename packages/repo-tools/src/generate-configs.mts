@@ -38,7 +38,10 @@ async function main(): Promise<void> {
 
   const prettierConfig = await prettier.resolveConfig(REPO_ROOT);
 
-  type LinterConfigRules = Record<string, ClassicConfig.RuleLevel>;
+  type LinterConfigRules = Record<
+    string,
+    ClassicConfig.RuleLevel | [ClassicConfig.RuleLevel, ...unknown[]]
+  >;
 
   interface LinterConfig extends ClassicConfig.Config {
     extends?: string[] | string;
@@ -73,6 +76,7 @@ async function main(): Promise<void> {
 
   interface RuleFilter {
     deprecated?: 'exclude';
+    getOptions?: GetRuleOptions | undefined;
     typeChecked?: 'exclude' | 'include-only';
     baseRuleForExtensionRule?: 'exclude';
     forcedRuleLevel?: Linter.RuleLevel;
@@ -126,7 +130,11 @@ async function main(): Promise<void> {
       '=',
       chalk.red('error'),
     );
-    config[ruleName] = settings.forcedRuleLevel ?? 'error';
+
+    const ruleLevel = settings.forcedRuleLevel ?? 'error';
+    const ruleOptions = settings.getOptions?.(value);
+
+    config[ruleName] = ruleOptions ? [ruleLevel, ...ruleOptions] : ruleLevel;
 
     return config;
   }
@@ -157,16 +165,21 @@ async function main(): Promise<void> {
     );
   }
 
+  type GetRuleOptions = (
+    rule: RuleModule<string, readonly unknown[]>,
+  ) => readonly unknown[] | undefined;
+
   interface ExtendedConfigSettings {
     extraExtends?: readonly string[];
+    getOptions?: GetRuleOptions;
     name: string;
-    filters?: RuleFilter;
+    settings?: RuleFilter;
     ruleEntries: readonly RuleEntry[];
   }
 
   async function writeExtendedConfig({
     extraExtends = [],
-    filters: ruleFilter,
+    settings,
     name,
     ruleEntries,
   }: ExtendedConfigSettings): Promise<void> {
@@ -174,7 +187,7 @@ async function main(): Promise<void> {
       () => ({
         extends: [...EXTENDS, ...extraExtends],
         rules: ruleEntries.reduce(
-          (config, entry) => reducer(config, entry, ruleFilter),
+          (config, entry) => reducer(config, entry, settings),
           {},
         ),
       }),
@@ -186,7 +199,11 @@ async function main(): Promise<void> {
     ...recommendations: (RuleRecommendation | undefined)[]
   ): RuleEntry[] {
     return allRuleEntries.filter(([, rule]) =>
-      recommendations.includes(rule.meta.docs?.recommended),
+      typeof rule.meta.docs?.recommended === 'object'
+        ? Object.keys(rule.meta.docs.recommended).some(level =>
+            recommendations.includes(level as RuleRecommendation),
+          )
+        : recommendations.includes(rule.meta.docs?.recommended),
     );
   }
 
@@ -214,14 +231,14 @@ async function main(): Promise<void> {
 
   await writeExtendedConfig({
     name: 'all',
-    filters: {
+    settings: {
       deprecated: 'exclude',
     },
     ruleEntries: allRuleEntries,
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
       typeChecked: 'exclude',
     },
     name: 'recommended',
@@ -234,7 +251,11 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
+      getOptions: rule =>
+        typeof rule.meta.docs?.recommended === 'object'
+          ? rule.meta.docs.recommended.strict
+          : undefined,
       typeChecked: 'exclude',
     },
     name: 'strict',
@@ -244,10 +265,16 @@ async function main(): Promise<void> {
   await writeExtendedConfig({
     name: 'strict-type-checked',
     ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
+    settings: {
+      getOptions: rule =>
+        typeof rule.meta.docs?.recommended === 'object'
+          ? rule.meta.docs.recommended.strict
+          : undefined,
+    },
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
       typeChecked: 'exclude',
     },
     name: 'stylistic',
