@@ -14,3 +14,4 @@ export const PACKAGES_TYPESCRIPT_ESLINT = path.join(
   'typescript-eslint',
 );
 export const PACKAGES_WEBSITE = path.join(PACKAGES, 'website');
+export const PRETTIER_CONFIG_PATH = path.join(REPO_ROOT, '.prettierrc.json');

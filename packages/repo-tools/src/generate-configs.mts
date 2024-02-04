@@ -14,7 +14,7 @@ import prettier from 'prettier';
 import {
   PACKAGES_ESLINT_PLUGIN,
   PACKAGES_TYPESCRIPT_ESLINT,
-  REPO_ROOT,
+  PRETTIER_CONFIG_PATH,
 } from './paths.mts';
 
 // no need for us to bring in an entire dependency for a few simple terminal colors
@@ -57,7 +57,9 @@ async function main(): Promise<void> {
     return [...AUTO_GENERATED_COMMENT_LINES, code].join('\n');
   }
 
-  const prettierConfig = await prettier.resolveConfig(REPO_ROOT);
+  const prettierConfig = await prettier.resolveConfig('file.ts', {
+    config: PRETTIER_CONFIG_PATH,
+  });
 
   type LinterConfigRules = Record<string, ClassicConfig.RuleLevel>;
 
