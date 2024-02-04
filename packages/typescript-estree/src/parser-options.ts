@@ -166,6 +166,8 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
+   *
+   * If set to `false`, `null` or `undefined` type information will not be returned.
    */
   project?: string[] | string | boolean | null;
 
