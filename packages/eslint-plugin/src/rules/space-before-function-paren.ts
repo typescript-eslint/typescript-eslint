@@ -70,7 +70,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Determines whether a function has a name.
-     * @returns {boolean} Whether the function has a name.
      */
     function isNamedFunction(
       node:
