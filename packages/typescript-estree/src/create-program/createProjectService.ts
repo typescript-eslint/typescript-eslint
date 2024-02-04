@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+import type { ProjectServiceOptions } from '../parser-options';
+
 const doNothing = (): void => {};
 
 const createStubFileWatcher = (): ts.FileWatcher => ({
@@ -9,9 +11,15 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 
 export type TypeScriptProjectService = ts.server.ProjectService;
 
+export interface ProjectServiceSettings {
+  allowDefaultProjectForFiles: string[] | undefined;
+  service: TypeScriptProjectService;
+}
+
 export function createProjectService(
-  jsDocParsingMode?: ts.JSDocParsingMode,
-): TypeScriptProjectService {
+  options: boolean | ProjectServiceOptions | undefined,
+  jsDocParsingMode: ts.JSDocParsingMode | undefined,
+): ProjectServiceSettings {
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
@@ -30,7 +38,7 @@ export function createProjectService(
     watchFile: createStubFileWatcher,
   };
 
-  return new tsserver.server.ProjectService({
+  const service = new tsserver.server.ProjectService({
     host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
     useSingleInferredProject: false,
@@ -49,4 +57,12 @@ export function createProjectService(
     session: undefined,
     jsDocParsingMode,
   });
+
+  return {
+    allowDefaultProjectForFiles:
+      typeof options === 'object'
+        ? options.allowDefaultProjectForFiles
+        : undefined,
+    service,
+  };
 }

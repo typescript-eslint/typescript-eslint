@@ -183,8 +183,8 @@ function isCJSRequire(node: TSESTree.Node): boolean {
 /**
  * Checks whether the given node is a block-like statement.
  * This checks the last token of the node is the closing brace of a block.
- * @param sourceCode The source code to get tokens.
  * @param node The node to check.
+ * @param sourceCode The source code to get tokens.
  * @returns `true` if the node is a block-like statement.
  * @private
  */
@@ -324,8 +324,8 @@ function isExpression(
  *
  *     foo()
  *     ;[1, 2, 3].forEach(bar)
- * @param sourceCode The source code to get tokens.
  * @param node The node to get.
+ * @param sourceCode The source code to get tokens.
  * @returns The actual last token.
  * @private
  */
@@ -477,7 +477,7 @@ function verifyForAlways(
             }
             return true;
           },
-        }) || nextNode;
+        }) ?? nextNode;
       const insertText = isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';
@@ -591,6 +591,8 @@ const StatementTypes: Record<string, NodeTestObject> = {
 export default createRule<Options, MessageIds>({
   name: 'padding-line-between-statements',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/padding-line-between-statements'],
     type: 'layout',
     docs: {
       description: 'Require or disallow padding lines between statements',

@@ -17,7 +17,7 @@ See [`no-floating-promises`](./no-floating-promises.md) for detecting unhandled 
 
 ## Options
 
-### `"checksConditionals"`
+### `checksConditionals`
 
 If you don't want to check conditionals, you can configure the rule with `"checksConditionals": false`:
 
@@ -73,10 +73,10 @@ while (await promise) {
 
 <!--/tabs-->
 
-### `"checksVoidReturn"`
+### `checksVoidReturn`
 
-Likewise, if you don't want functions that return promises where a void return is
-expected to be checked, your configuration will look like this:
+Likewise, if you don't want to check functions that return promises where a void return is
+expected, your configuration will look like this:
 
 ```json
 {
@@ -182,7 +182,7 @@ eventEmitter.on('some-event', () => {
 
 <!--/tabs-->
 
-### `"checksSpreads"`
+### `checksSpreads`
 
 If you don't want to check object spreads, you can add this configuration:
 

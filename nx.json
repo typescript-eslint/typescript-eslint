@@ -1,6 +1,27 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "release": {
+    "changelog": {
+      "git": {
+        "commit": true,
+        "tag": true
+      },
+      "workspaceChangelog": {
+        "createRelease": "github",
+        "renderer": "tools/release/changelog-renderer"
+      },
+      "projectChangelogs": {
+        "renderer": "tools/release/changelog-renderer"
+      }
+    },
+    "version": {
+      "generatorOptions": {
+        "currentVersionResolver": "git-tag",
+        "specifierSource": "conventional-commits"
+      }
+    }
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
@@ -17,11 +38,17 @@
       "cache": true
     },
     "lint": {
+      "dependsOn": ["eslint-plugin:build"],
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/package.json",
         "{workspaceRoot}/yarn.lock",
-        "{workspaceRoot}/.eslintignore"
+        "{workspaceRoot}/.eslintignore",
+        {
+          "dependentTasksOutputFiles": "**/*.js",
+          "transitive": false
+        }
       ],
       "cache": true
     },

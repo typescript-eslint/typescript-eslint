@@ -19,6 +19,8 @@ const UNIONS = ['|', '&'];
 export default createRule<Options, MessageIds>({
   name: 'space-infix-ops',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/space-infix-ops'],
     type: 'layout',
     docs: {
       description: 'Require spacing around infix operators',

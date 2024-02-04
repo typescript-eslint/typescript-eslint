@@ -30,6 +30,7 @@ The following additional configuration options are available by specifying them 
 
 ```ts
 interface ParserOptions {
+  allowAutomaticSingleRunInference?: boolean;
   cacheLifetime?: {
     glob?: number | 'Infinity';
   };
@@ -44,13 +45,29 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  programs?: import('typescript').Program;
-  project?: string | string[] | true;
+  programs?: import('typescript').Program[];
+  project?: string | string[] | boolean | null;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean;
 }
 ```
+
+### `allowAutomaticSingleRunInference`
+
+> Default `false`.
+
+Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
+
+When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../linting/Typed_Linting.mdx), this distinction is important for performance.
+There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
+Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
+
+:::tip
+We've seen `allowAutomaticSingleRunInference` improve linting speed in CI by up to 10-20%.
+Our plan is to [enable `allowAutomaticSingleRunInference` by default in an upcoming major version](https://github.com/typescript-eslint/typescript-eslint/issues/8121).
+:::
 
 ### `cacheLifetime`
 
@@ -58,7 +75,7 @@ This option allows you to granularly control our internal cache expiry lengths.
 
 You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
 
-By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run.
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run (see [`allowAutomaticSingleRunInference`](#allowAutomaticSingleRunInference)).
 
 ### `ecmaFeatures`
 
@@ -195,13 +212,17 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
   // array of paths and/or glob patterns
   project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
+
+  // ways to disable type-aware linting (useful for overrides configs)
+  project: false;
+  project: null;
   ```
 
 - If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
 
   - This is done by checking that source file's directory tree for the nearest `tsconfig.json`.
 
-- If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
+- If you use project references, TypeScript will **not** automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 
 - Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
 
@@ -266,6 +287,8 @@ Please only submit bug reports when using the officially supported version.
 ```
 
 ### `EXPERIMENTAL_useProjectService`
+
+> Default `false`.
 
 An experimental alternative to `parserOptions.project`.
 This directs the parser to use a more seamless TypeScript API to generate type information for rules.

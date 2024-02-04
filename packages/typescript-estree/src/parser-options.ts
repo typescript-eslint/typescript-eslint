@@ -101,6 +101,16 @@ interface ParseOptions {
   suppressDeprecatedPropertyWarnings?: boolean;
 }
 
+/**
+ * Granular options to configure the project service.
+ */
+export interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default inferred project settings.
+   */
+  allowDefaultProjectForFiles?: string[];
+}
+
 interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
@@ -114,7 +124,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
    */
-  EXPERIMENTAL_useProjectService?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
@@ -156,8 +166,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
+   *
+   * If set to `false`, `null` or `undefined` type information will not be returned.
    */
-  project?: string[] | string | true | null;
+  project?: string[] | string | boolean | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from

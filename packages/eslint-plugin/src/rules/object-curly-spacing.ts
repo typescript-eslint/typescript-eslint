@@ -25,10 +25,12 @@ export default createRule<Options, MessageIds>({
   // eslint-disable-next-line eslint-plugin/prefer-message-ids,eslint-plugin/require-meta-type,eslint-plugin/require-meta-schema,eslint-plugin/require-meta-fixable -- all in base rule - https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/274
   meta: {
     ...baseRule.meta,
+    deprecated: true,
     docs: {
       description: 'Enforce consistent spacing inside braces',
       extendsBaseRule: true,
     },
+    replacedBy: ['@stylistic/ts/object-curly-spacing'],
   },
   defaultOptions: ['never'],
   create(context) {

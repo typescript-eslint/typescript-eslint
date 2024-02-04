@@ -322,6 +322,35 @@ import type { foo } from 'import2/private/bar';
         },
       ],
     },
+    {
+      code: "import foo from 'foo';",
+      options: [],
+    },
+    {
+      code: "import foo from 'foo';",
+      options: [
+        {
+          paths: [],
+        },
+      ],
+    },
+    {
+      code: "import foo from 'foo';",
+      options: [
+        {
+          patterns: [],
+        },
+      ],
+    },
+    {
+      code: "import foo from 'foo';",
+      options: [
+        {
+          paths: [],
+          patterns: [],
+        },
+      ],
+    },
   ],
   invalid: [
     {

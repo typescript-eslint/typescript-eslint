@@ -468,6 +468,7 @@ export class RuleTester extends TestFramework {
       const itemConfig: Record<string, unknown> = { ...item };
 
       for (const parameter of RULE_TESTER_PARAMETERS) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete itemConfig[parameter];
       }
 

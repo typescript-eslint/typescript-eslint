@@ -197,6 +197,28 @@ export default createRule<Options, MessageId>({
       );
     }
 
+    function isNullableMemberExpression(
+      node: TSESTree.MemberExpression,
+    ): boolean {
+      const objectType = services.getTypeAtLocation(node.object);
+      if (node.computed) {
+        const propertyType = services.getTypeAtLocation(node.property);
+        return isNullablePropertyType(objectType, propertyType);
+      }
+      const property = node.property;
+
+      if (property.type === AST_NODE_TYPES.Identifier) {
+        const propertyType = objectType.getProperty(property.name);
+        if (
+          propertyType &&
+          tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     /**
      * Checks if a conditional node is necessary:
      * if the type of the node is always true or always false, it's not necessary.
@@ -271,7 +293,10 @@ export default createRule<Options, MessageId>({
       if (
         isTypeFlagSet(
           type,
-          ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+          ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable,
         )
       ) {
         return;
@@ -280,7 +305,13 @@ export default createRule<Options, MessageId>({
       let messageId: MessageId | null = null;
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
-      } else if (!isPossiblyNullish(type)) {
+      } else if (
+        !isPossiblyNullish(type) &&
+        !(
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          isNullableMemberExpression(node)
+        )
+      ) {
         // Since typescript array index signature types don't represent the
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
@@ -310,8 +341,8 @@ export default createRule<Options, MessageId>({
      * NOTE: It's also unnecessary if the types that don't overlap at all
      *    but that case is handled by the Typescript compiler itself.
      *    Known exceptions:
-     *      * https://github.com/microsoft/TypeScript/issues/32627
-     *      * https://github.com/microsoft/TypeScript/issues/37160 (handled)
+     *      - https://github.com/microsoft/TypeScript/issues/32627
+     *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
     const BOOL_OPERATORS = new Set([
       '<',
@@ -345,7 +376,8 @@ export default createRule<Options, MessageId>({
           flag |=
             ts.TypeFlags.Any |
             ts.TypeFlags.Unknown |
-            ts.TypeFlags.TypeParameter;
+            ts.TypeFlags.TypeParameter |
+            ts.TypeFlags.TypeVariable;
 
           // Allow loose comparison to nullish values.
           if (node.operator === '==' || node.operator === '!=') {
@@ -530,7 +562,7 @@ export default createRule<Options, MessageId>({
           propertyType.value.toString(),
         );
         if (propType) {
-          return isNullableType(propType, { allowUndefined: true });
+          return isNullableType(propType);
         }
       }
       const typeName = getTypeName(checker, propertyType);
@@ -547,7 +579,7 @@ export default createRule<Options, MessageId>({
     //  declare const foo: { bar : { baz: string } } | null
     //  foo?.bar;
     //  ```
-    function isNullableOriginFromPrev(
+    function isMemberExpressionNullableOriginFromObject(
       node: TSESTree.MemberExpression,
     ): boolean {
       const prevType = getConstrainedTypeAtLocation(services, node.object);
@@ -568,15 +600,33 @@ export default createRule<Options, MessageId>({
           );
 
           if (propType) {
-            return isNullableType(propType, { allowUndefined: true });
+            return isNullableType(propType);
           }
 
           return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
+        });
+        return !isOwnNullable && isNullableType(prevType);
+      }
+      return false;
+    }
+
+    function isCallExpressionNullableOriginFromCallee(
+      node: TSESTree.CallExpression,
+    ): boolean {
+      const prevType = getConstrainedTypeAtLocation(services, node.callee);
+
+      if (prevType.isUnion()) {
+        const isOwnNullable = prevType.types.some(type => {
+          const signatures = type.getCallSignatures();
+          return signatures.some(sig =>
+            isNullableType(sig.getReturnType(), { allowUndefined: true }),
+          );
         });
         return (
           !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
         );
       }
+
       return false;
     }
 
@@ -584,13 +634,15 @@ export default createRule<Options, MessageId>({
       const type = getConstrainedTypeAtLocation(services, node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
-          ? !isNullableOriginFromPrev(node)
-          : true;
+          ? !isMemberExpressionNullableOriginFromObject(node)
+          : node.type === AST_NODE_TYPES.CallExpression
+            ? !isCallExpressionNullableOriginFromCallee(node)
+            : true;
+
       const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
-        (isOwnNullable &&
-          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
+        (isOwnNullable && (isNullableType(type) || possiblyVoid))
       );
     }
 

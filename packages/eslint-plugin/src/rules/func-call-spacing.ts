@@ -24,6 +24,8 @@ export type MessageIds =
 export default createRule<Options, MessageIds>({
   name: 'func-call-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/func-call-spacing'],
     type: 'layout',
     docs: {
       description:
@@ -81,8 +83,7 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Check if open space is present in a function name
-     * @param {ASTNode} node node to evaluate
-     * @returns {void}
+     * @param node node to evaluate
      * @private
      */
     function checkSpacing(

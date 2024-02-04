@@ -2,7 +2,12 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule, isNonNullAssertionPunctuator } from '../util';
+import {
+  createRule,
+  isNonNullAssertionPunctuator,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
@@ -29,33 +34,22 @@ export default createRule<[], MessageIds>({
     return {
       TSNonNullExpression(node): void {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-        function convertTokenToOptional(
-          replacement: '?.' | '?',
-        ): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.replaceText(operator, replacement);
-            }
 
-            return null;
-          };
+        // it always exists in non-null assertion
+        const nonNullOperator = nullThrows(
+          sourceCode.getTokenAfter(
+            node.expression,
+            isNonNullAssertionPunctuator,
+          ),
+          NullThrowsReasons.MissingToken('!', 'expression'),
+        );
+
+        function replaceTokenWithOptional(): TSESLint.ReportFixFunction {
+          return fixer => fixer.replaceText(nonNullOperator, '?.');
         }
-        function removeToken(): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.remove(operator);
-            }
 
-            return null;
-          };
+        function removeToken(): TSESLint.ReportFixFunction {
+          return fixer => fixer.remove(nonNullOperator);
         }
 
         if (
@@ -67,13 +61,24 @@ export default createRule<[], MessageIds>({
               // it is x![y]?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?.'),
+                fix: replaceTokenWithOptional(),
               });
             } else {
               // it is x!.y?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?'),
+                fix(fixer) {
+                  // x!.y?.z
+                  //   ^ punctuator
+                  const punctuator = nullThrows(
+                    sourceCode.getTokenAfter(nonNullOperator),
+                    NullThrowsReasons.MissingToken('.', '!'),
+                  );
+                  return [
+                    fixer.remove(nonNullOperator),
+                    fixer.insertTextBefore(punctuator, '?'),
+                  ];
+                },
               });
             }
           } else {
@@ -99,7 +104,7 @@ export default createRule<[], MessageIds>({
             // it is x.y?.z!()
             suggest.push({
               messageId: 'suggestOptionalChain',
-              fix: convertTokenToOptional('?.'),
+              fix: replaceTokenWithOptional(),
             });
           } else {
             // it is x.y.z!?.()

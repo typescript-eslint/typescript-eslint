@@ -84,6 +84,48 @@ abstract class Mx {
         \`;
       }
     `,
+    `
+      class Mx {
+        set p1(val) {}
+        get p1() {
+          return '';
+        }
+      }
+    `,
+    `
+      let p1 = 'p1';
+      class Mx {
+        set [p1](val) {}
+        get [p1]() {
+          return '';
+        }
+      }
+    `,
+    `
+      let p1 = 'p1';
+      class Mx {
+        set [/* before set */ p1 /* after set */](val) {}
+        get [/* before get */ p1 /* after get */]() {
+          return '';
+        }
+      }
+    `,
+    `
+      class Mx {
+        set ['foo'](val) {}
+        get foo() {
+          return '';
+        }
+        set bar(val) {}
+        get ['bar']() {
+          return '';
+        }
+        set ['baz'](val) {}
+        get baz() {
+          return '';
+        }
+      }
+    `,
     {
       code: `
         class Mx {

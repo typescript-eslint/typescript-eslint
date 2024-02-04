@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import noPoorlyTypedTsProps from './no-poorly-typed-ts-props';
 import noTypescriptDefaultImport from './no-typescript-default-import';
 import noTypescriptEstreeImport from './no-typescript-estree-import';
@@ -10,4 +12,4 @@ export default {
   'no-typescript-estree-import': noTypescriptEstreeImport,
   'plugin-test-formatting': pluginTestFormatting,
   'prefer-ast-types-enum': preferASTTypesEnum,
-};
+} satisfies Linter.PluginRules;
