@@ -24,13 +24,13 @@ interface ConfigWithExtends extends FlatConfig.Config {
    *
    * export default [
    *   {
-   *     files: ['** /*.ts'],
    *     ...eslint.configs.recommended,
-   *   },
-   *   {
    *     files: ['** /*.ts'],
-   *     ...tseslint.configs.recommended,
    *   },
+   *   ...tseslint.configs.recommended.map(conf => ({
+   *     ...conf,
+   *     files: ['** /*.ts'],
+   *   })),
    *   {
    *     files: ['** /*.ts'],
    *     rules: {
@@ -54,8 +54,8 @@ interface ConfigWithExtends extends FlatConfig.Config {
  * import tseslint from 'typescript-eslint';
  *
  * export default tseslint.config(
- *   tseslint.configs.recommended,
  *   eslint.configs.recommended,
+ *   ...tseslint.configs.recommended,
  *   {
  *     rules: {
  *       '@typescript-eslint/array-type': 'error',
