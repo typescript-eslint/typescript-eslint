@@ -5,6 +5,8 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
@@ -29,4 +31,4 @@ export = {
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
   },
-};
+} satisfies ClassicConfig.Config;

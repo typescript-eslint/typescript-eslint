@@ -5,6 +5,8 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export = {
   parserOptions: { project: null, program: null },
   rules: {
@@ -40,6 +42,7 @@ export = {
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
+    '@typescript-eslint/prefer-find': 'off',
     '@typescript-eslint/prefer-includes': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/prefer-optional-chain': 'off',
@@ -60,4 +63,4 @@ export = {
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
   },
-};
+} satisfies ClassicConfig.Config;
