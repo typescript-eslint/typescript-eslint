@@ -241,7 +241,7 @@ ruleTester.run('naming-convention', rule, {
       parserOptions,
       options: [
         {
-          selector: ['variable', 'parameter', 'property', 'classicAccessor'],
+          selector: ['variable', 'parameter', 'property', 'accessor'],
           types: ['number'],
           format: ['PascalCase'],
           prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
@@ -257,7 +257,7 @@ ruleTester.run('naming-convention', rule, {
       parserOptions,
       options: [
         {
-          selector: ['property', 'classicAccessor'],
+          selector: ['property', 'accessor'],
           types: ['boolean'],
           modifiers: ['private', 'readonly'],
           format: ['PascalCase'],
@@ -272,7 +272,7 @@ ruleTester.run('naming-convention', rule, {
       `,
       options: [
         {
-          selector: ['property', 'classicAccessor'],
+          selector: ['property', 'accessor'],
           modifiers: ['private'],
           format: ['camelCase'],
         },
@@ -289,7 +289,7 @@ ruleTester.run('naming-convention', rule, {
       parserOptions,
       options: [
         {
-          selector: ['property', 'classicAccessor'],
+          selector: ['property', 'accessor'],
           modifiers: ['private'],
           format: ['StrictPascalCase'],
           prefix: ['Van'],
@@ -618,7 +618,7 @@ ruleTester.run('naming-convention', rule, {
           format: ['PascalCase'],
         },
         {
-          selector: 'classicAccessor',
+          selector: 'accessor',
           format: ['snake_case'],
           modifiers: ['private', 'static'],
         },
@@ -766,7 +766,7 @@ ruleTester.run('naming-convention', rule, {
             'classMethod',
             'objectLiteralMethod',
             'typeMethod',
-            'classicAccessor',
+            'accessor',
             'enumMember',
           ],
           format: null,
@@ -781,7 +781,7 @@ ruleTester.run('naming-convention', rule, {
             'classMethod',
             'objectLiteralMethod',
             'typeMethod',
-            'classicAccessor',
+            'accessor',
             'enumMember',
           ],
           format: ['PascalCase'],
@@ -1347,7 +1347,7 @@ ruleTester.run('naming-convention', rule, {
       `,
       options: [
         {
-          selector: ['property', 'classicAccessor'],
+          selector: ['property', 'accessor'],
           modifiers: ['private', 'readonly'],
           format: ['PascalCase'],
         },
@@ -1643,7 +1643,7 @@ ruleTester.run('naming-convention', rule, {
           format: ['PascalCase'],
         },
         {
-          selector: 'classicAccessor',
+          selector: 'accessor',
           format: ['UPPER_CASE'],
           modifiers: ['private', 'static'],
         },
