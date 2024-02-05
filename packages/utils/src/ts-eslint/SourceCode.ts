@@ -332,7 +332,7 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * The parser services of this source code.
    */
-  parserServices: ParserServices;
+  parserServices?: Partial<ParserServices>;
   /**
    * The scope of this source code.
    */

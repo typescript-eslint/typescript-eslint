@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -33,7 +32,6 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['always'],
 
   create(context, [whenToApplyOption]) {
-    const sourceCode = getSourceCode(context);
     const baseRules = baseRule.create(context);
     const always = whenToApplyOption !== 'never';
     const messageId = always ? 'missing' : 'extra';
@@ -46,7 +44,7 @@ export default createRule<Options, MessageIds>({
     ): TSESTree.PunctuatorToken {
       // guaranteed for enums
       // This is the only change made here from the base rule
-      return sourceCode.getFirstToken(node, {
+      return context.sourceCode.getFirstToken(node, {
         filter: token =>
           token.type === AST_TOKEN_TYPES.Punctuator && token.value === '{',
       }) as TSESTree.PunctuatorToken;
@@ -66,7 +64,7 @@ export default createRule<Options, MessageIds>({
     function isValid(left: TSESTree.Token, right: TSESTree.Token): boolean {
       return (
         !isTokenOnSameLine(left, right) ||
-        sourceCode.isSpaceBetween(left, right) === always
+        context.sourceCode.isSpaceBetween(left, right) === always
       );
     }
 
@@ -76,11 +74,11 @@ export default createRule<Options, MessageIds>({
     function checkSpacingInsideBraces(node: TSESTree.TSEnumDeclaration): void {
       // Gets braces and the first/last token of content.
       const openBrace = getOpenBrace(node);
-      const closeBrace = sourceCode.getLastToken(node)!;
-      const firstToken = sourceCode.getTokenAfter(openBrace, {
+      const closeBrace = context.sourceCode.getLastToken(node)!;
+      const firstToken = context.sourceCode.getTokenAfter(openBrace, {
         includeComments: true,
       })!;
-      const lastToken = sourceCode.getTokenBefore(closeBrace, {
+      const lastToken = context.sourceCode.getTokenBefore(closeBrace, {
         includeComments: true,
       })!;
 

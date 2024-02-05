@@ -9,10 +9,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  // type-only imports were first added in TS3.8
-  dependencyConstraints: {
-    typescript: '3.8',
-  },
 });
 
 const withMetaParserOptions = {

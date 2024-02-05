@@ -405,8 +405,7 @@ export const map: { [name in Foo]: Bar } = {
 };
     `,
     // 4.1 remapped mapped type
-    {
-      code: noFormat`
+    `
 type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
@@ -415,11 +414,7 @@ export const map: { [name in Foo as string]: Bar } = {
   b: 2,
   c: 3,
 };
-      `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
-    },
+    `,
     `
 import { Nullable } from 'nullable';
 class A<T> {
@@ -758,17 +753,12 @@ export function foo() {
 }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
-    {
-      code: noFormat`
+    `
 function foo<T>(value: T): T {
   return { value };
 }
 export type Foo<T> = typeof foo<T>;
-      `,
-      dependencyConstraints: {
-        typescript: '4.7',
-      },
-    },
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2331
     {
       code: `
@@ -945,20 +935,15 @@ export declare namespace Foo {
   }
 }
     `,
-    {
-      code: noFormat`
+    `
 class Foo<T> {
-    value: T;
+  value: T;
 }
 class Bar<T> {
-    foo = Foo<T>;
+  foo = Foo<T>;
 }
 new Bar();
-      `,
-      dependencyConstraints: {
-        typescript: '4.7',
-      },
-    },
+    `,
     {
       code: `
 declare namespace A {
@@ -980,9 +965,6 @@ type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 export type SeussFish = \`\${Quantity | Color} fish\`;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: noFormat`
@@ -991,18 +973,12 @@ type HorizontalAlignment = "left" | "center" | "right";
 
 export declare function setAlignment(value: \`\${VerticalAlignment}-\${HorizontalAlignment}\`): void;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: noFormat`
 type EnthusiasticGreeting<T extends string> = \`\${Uppercase<T>} - \${Lowercase<T>} - \${Capitalize<T>} - \${Uncapitalize<T>}\`;
 export type HELLO = EnthusiasticGreeting<"heLLo">;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2714
     {

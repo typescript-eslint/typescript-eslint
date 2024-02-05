@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -28,7 +27,6 @@ export default createRule({
     const services = getParserServices(context);
     const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
 
     function tryGetAliasedSymbol(
       symbol: ts.Symbol,
@@ -93,7 +91,7 @@ export default createRule({
       const fromScope = getSymbolInScope(
         tsQualifier,
         accessedSymbol.flags,
-        sourceCode.getText(name),
+        context.sourceCode.getText(name),
       );
       return (
         fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
@@ -115,7 +113,7 @@ export default createRule({
           node: qualifier,
           messageId: 'unnecessaryQualifier',
           data: {
-            name: sourceCode.getText(name),
+            name: context.sourceCode.getText(name),
           },
           fix(fixer) {
             return fixer.removeRange([qualifier.range[0], name.range[0]]);

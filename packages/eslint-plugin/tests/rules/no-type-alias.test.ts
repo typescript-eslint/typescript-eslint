@@ -134,107 +134,62 @@ ruleTester.run('no-type-alias', rule, {
     },
     {
       code: 'type Foo = `a-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'always' }],
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'always' }],
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions' }],
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'always' }],
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}` | `c-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions' }],
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'always' }],
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-intersections' }],
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'always' }],
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}` & `c-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-intersections' }],
     },
     {
       code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'always' }],
     },
     {
       code: 'type Foo = `a-${number}` | (`b-${number}` & `c-${number}`);',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'in-unions-and-intersections' }],
     },
     {
@@ -3448,9 +3403,6 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = `foo-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       errors: [
         {
           messageId: 'noTypeAlias',
@@ -3464,9 +3416,6 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = `a-${number}` | `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'never' }],
       errors: [
         {
@@ -3491,9 +3440,6 @@ type Foo<T> = {
     },
     {
       code: 'type Foo = `a-${number}` & `b-${number}`;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ allowAliases: 'never' }],
       errors: [
         {

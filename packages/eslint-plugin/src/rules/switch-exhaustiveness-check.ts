@@ -1,5 +1,4 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -86,7 +85,6 @@ export default createRule<Options, MessageIds>({
     context,
     [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
   ) {
-    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -247,11 +245,11 @@ export default createRule<Options, MessageIds>({
       }
 
       // There were no existing cases.
-      const openingBrace = sourceCode.getTokenAfter(
+      const openingBrace = context.sourceCode.getTokenAfter(
         node.discriminant,
         isOpeningBraceToken,
       )!;
-      const closingBrace = sourceCode.getTokenAfter(
+      const closingBrace = context.sourceCode.getTokenAfter(
         node.discriminant,
         isClosingBraceToken,
       )!;

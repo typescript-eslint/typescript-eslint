@@ -2,7 +2,6 @@ import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -148,7 +147,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ formatWithPrettier }]) {
-    const sourceCode = getSourceCode(context);
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -326,7 +324,10 @@ export default createRule<Options, MessageIds>({
         });
       }
 
-      const parentIndent = getExpectedIndentForNode(literal, sourceCode.lines);
+      const parentIndent = getExpectedIndentForNode(
+        literal,
+        context.sourceCode.lines,
+      );
       if (lastLine.length !== parentIndent) {
         return context.report({
           node: literal,

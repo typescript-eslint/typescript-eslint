@@ -5398,7 +5398,7 @@ __metadata:
     prettier: ^3.0.3
     rimraf: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
     tslint: ^5.0.0 || ^6.0.0
     typescript: "*"
   languageName: unknown
@@ -5441,7 +5441,7 @@ __metadata:
     typescript: "*"
   peerDependencies:
     "@typescript-eslint/parser": ^6.0.0 || ^6.0.0-alpha
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5475,7 +5475,7 @@ __metadata:
     rimraf: "*"
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5527,7 +5527,7 @@ __metadata:
     source-map-support: ^0.5.21
   peerDependencies:
     "@eslint/eslintrc": ">=2"
-    eslint: ">=8"
+    eslint: ^8.56.0
   languageName: unknown
   linkType: soft
 
@@ -5574,7 +5574,7 @@ __metadata:
     ts-api-utils: ^1.0.1
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5738,7 +5738,7 @@ __metadata:
     semver: ^7.5.4
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   languageName: unknown
   linkType: soft
 
@@ -18428,7 +18428,7 @@ __metadata:
     rimraf: "*"
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true

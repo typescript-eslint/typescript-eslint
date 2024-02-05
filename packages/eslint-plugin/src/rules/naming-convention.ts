@@ -1,7 +1,6 @@
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import type { ScriptTarget } from 'typescript';
 
 import {
@@ -159,7 +158,7 @@ export default createRule<Options, MessageIds>({
     const unusedVariables = collectUnusedVariables(context);
     function isUnused(
       name: string,
-      initialScope: TSESLint.Scope.Scope | null = getScope(context),
+      initialScope: TSESLint.Scope.Scope | null,
     ): boolean {
       let variable: TSESLint.Scope.Variable | null = null;
       let scope: TSESLint.Scope.Scope | null = initialScope;
@@ -275,7 +274,7 @@ export default createRule<Options, MessageIds>({
               baseModifiers.add(Modifiers.const);
             }
 
-            if (isGlobal(getScope(context))) {
+            if (isGlobal(context.sourceCode.getScope(node))) {
               baseModifiers.add(Modifiers.global);
             }
           }
@@ -287,11 +286,12 @@ export default createRule<Options, MessageIds>({
               modifiers.add(Modifiers.destructured);
             }
 
-            if (isExported(parent, id.name, getScope(context))) {
+            const scope = context.sourceCode.getScope(id);
+            if (isExported(parent, id.name, scope)) {
               modifiers.add(Modifiers.exported);
             }
 
-            if (isUnused(id.name)) {
+            if (isUnused(id.name, scope)) {
               modifiers.add(Modifiers.unused);
             }
 
@@ -323,7 +323,7 @@ export default createRule<Options, MessageIds>({
 
           const modifiers = new Set<Modifiers>();
           // functions create their own nested scope
-          const scope = getScope(context).upper;
+          const scope = context.sourceCode.getScope(node).upper;
 
           if (isGlobal(scope)) {
             modifiers.add(Modifiers.global);
@@ -374,7 +374,7 @@ export default createRule<Options, MessageIds>({
                   modifiers.add(Modifiers.destructured);
                 }
 
-                if (isUnused(i.name)) {
+                if (isUnused(i.name, context.sourceCode.getScope(i))) {
                   modifiers.add(Modifiers.unused);
                 }
 
@@ -577,7 +577,7 @@ export default createRule<Options, MessageIds>({
 
           const modifiers = new Set<Modifiers>();
           // classes create their own nested scope
-          const scope = getScope(context).upper;
+          const scope = context.sourceCode.getScope(node).upper;
 
           if (node.abstract) {
             modifiers.add(Modifiers.abstract);
@@ -603,7 +603,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.interface,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -625,7 +625,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.typeAlias,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -648,7 +648,7 @@ export default createRule<Options, MessageIds>({
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
           // enums create their own nested scope
-          const scope = getScope(context).upper;
+          const scope = context.sourceCode.getScope(node).upper;
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -670,7 +670,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.typeParameter,
         handler: (node: TSESTree.TSTypeParameter, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
 
           if (isUnused(node.name.name, scope)) {
             modifiers.add(Modifiers.unused);

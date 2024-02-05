@@ -92,7 +92,7 @@
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^6.0.0 || ^6.0.0-alpha",
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^8.56.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

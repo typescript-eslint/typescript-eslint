@@ -25,7 +25,7 @@ export interface OptionsSelectorParams {
   readonly tsVersions: readonly string[];
 }
 
-const MIN_TS_VERSION_SEMVER = '>=4.7.5';
+const MIN_TS_VERSION_SEMVER = '>=4.7.4';
 
 function OptionsSelectorContent({
   state,
