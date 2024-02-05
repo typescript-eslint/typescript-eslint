@@ -41,20 +41,41 @@ export default createRule({
       filterNode: TSESTree.Node;
     }
 
-    function parseIfArrayFilterExpression(
+    function parseArrayFilterExpressions(
       expression: TSESTree.Expression,
-    ): FilterExpressionData | undefined {
+    ): FilterExpressionData[] {
       if (expression.type === AST_NODE_TYPES.SequenceExpression) {
         // Only the last expression in (a, b, [1, 2, 3].filter(condition))[0] matters
         const lastExpression = nullThrows(
           expression.expressions.at(-1),
           'Expected to have more than zero expressions in a sequence expression',
         );
-        return parseIfArrayFilterExpression(lastExpression);
+        return parseArrayFilterExpressions(lastExpression);
       }
 
       if (expression.type === AST_NODE_TYPES.ChainExpression) {
-        return parseIfArrayFilterExpression(expression.expression);
+        return parseArrayFilterExpressions(expression.expression);
+      }
+
+      // This is the only reason we're returning a list rather than a single value.
+      if (expression.type === AST_NODE_TYPES.ConditionalExpression) {
+        // Both branches of the ternary _must_ return results.
+        const alternateResult = parseArrayFilterExpressions(
+          expression.alternate,
+        );
+        if (alternateResult.length === 0) {
+          return [];
+        }
+
+        const consequentResult = parseArrayFilterExpressions(
+          expression.consequent,
+        );
+        if (consequentResult.length === 0) {
+          return [];
+        }
+
+        // Accumulate the results from both sides and pass up the chain.
+        return [...alternateResult, ...consequentResult];
       }
 
       // Check if it looks like <<stuff>>(...), but not <<stuff>>?.(...)
@@ -78,16 +99,19 @@ export default createRule({
             // As long as the object is a (possibly nullable) array,
             // this is an Array.prototype.filter expression.
             if (isArrayish(filteredObjectType)) {
-              return {
-                isBracketSyntaxForFilter,
-                filterNode,
-              };
+              return [
+                {
+                  isBracketSyntaxForFilter,
+                  filterNode,
+                },
+              ];
             }
           }
         }
       }
 
-      return undefined;
+      // not a filter expression.
+      return [];
     }
 
     /**
@@ -223,8 +247,8 @@ export default createRule({
       CallExpression(node): void {
         const object = getObjectIfArrayAtZeroExpression(node);
         if (object) {
-          const filterExpression = parseIfArrayFilterExpression(object);
-          if (filterExpression) {
+          const filterExpressions = parseArrayFilterExpressions(object);
+          if (filterExpressions.length !== 0) {
             context.report({
               node,
               messageId: 'preferFind',
@@ -233,9 +257,11 @@ export default createRule({
                   messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
                     return [
-                      generateFixToReplaceFilterWithFind(
-                        fixer,
-                        filterExpression,
+                      ...filterExpressions.map(filterExpression =>
+                        generateFixToReplaceFilterWithFind(
+                          fixer,
+                          filterExpression,
+                        ),
                       ),
                       // Get rid of the .at(0) or ['at'](0).
                       generateFixToRemoveArrayElementAccess(
@@ -261,8 +287,8 @@ export default createRule({
       ): void {
         if (isMemberAccessOfZero(node)) {
           const object = node.object;
-          const filterExpression = parseIfArrayFilterExpression(object);
-          if (filterExpression) {
+          const filterExpressions = parseArrayFilterExpressions(object);
+          if (filterExpressions.length !== 0) {
             context.report({
               node,
               messageId: 'preferFind',
@@ -271,9 +297,11 @@ export default createRule({
                   messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
                     return [
-                      generateFixToReplaceFilterWithFind(
-                        fixer,
-                        filterExpression,
+                      ...filterExpressions.map(filterExpression =>
+                        generateFixToReplaceFilterWithFind(
+                          fixer,
+                          filterExpression,
+                        ),
                       ),
                       // Get rid of the [0].
                       generateFixToRemoveArrayElementAccess(

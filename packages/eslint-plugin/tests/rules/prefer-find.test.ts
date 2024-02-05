@@ -70,6 +70,7 @@ ruleTester.run('prefer-find', rule, {
     `,
     "[1, 2, 3].filter(x => x)[Symbol('0')];",
     "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
+    '(Math.random < 0.5 ? [1, 2, 3].filter(x => true) : [1, 2, 3])[0];',
   ],
 
   invalid: [
@@ -578,6 +579,73 @@ arr.filter(f, thisArg)[0];
               output: `
 declare const arr: { a: 1 }[] & ({ b: 2 }[] | { c: 3 }[]);
 arr.find(f, thisArg);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: any, g: any;
+const nestedTernaries = (
+  Math.random() < 0.5
+    ? Math.random() < 0.5
+      ? [1, 2, 3].filter(f)
+      : []?.filter(x => 'shrug')
+    : [2, 3, 4]['filter'](g)
+).at(0.2);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const f: any, g: any;
+const nestedTernaries = (
+  Math.random() < 0.5
+    ? Math.random() < 0.5
+      ? [1, 2, 3].find(f)
+      : []?.find(x => 'shrug')
+    : [2, 3, 4]["find"](g)
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const f: any, g: any;
+const nestedTernariesWithSequenceExpression = (
+  Math.random() < 0.5
+    ? ('sequence',
+      'expression',
+      Math.random() < 0.5 ? [1, 2, 3].filter(f) : []?.filter(x => 'shrug'))
+    : [2, 3, 4]['filter'](g)
+).at(0.2);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const f: any, g: any;
+const nestedTernariesWithSequenceExpression = (
+  Math.random() < 0.5
+    ? ('sequence',
+      'expression',
+      Math.random() < 0.5 ? [1, 2, 3].find(f) : []?.find(x => 'shrug'))
+    : [2, 3, 4]["find"](g)
+);
       `,
             },
           ],
