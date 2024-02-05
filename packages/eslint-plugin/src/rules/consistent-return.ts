@@ -33,14 +33,14 @@ export default createRule<Options, MessageIds>({
     schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ treatUndefinedAsUnspecified: false }],
+  create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const rules = baseRule.create(context);
     const functions: FunctionNode[] = [];
     const treatUndefinedAsUnspecified =
-      context.options[0]?.treatUndefinedAsUnspecified === true;
+      options?.treatUndefinedAsUnspecified === true;
 
     function enterFunction(node: FunctionNode): void {
       functions.push(node);
