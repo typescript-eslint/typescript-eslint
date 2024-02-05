@@ -1,4 +1,4 @@
-import prettier from '@prettier/sync';
+import prettier from 'prettier';
 import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
@@ -13,9 +13,9 @@ const prettierConfig = {
   filepath: path.join(__dirname, 'schema.ts'),
 };
 
-export function compile(
+export async function compile(
   schemaIn: JSONSchema4 | readonly JSONSchema4[],
-): string {
+): Promise<string> {
   const { schema, isArraySchema } = (() => {
     if (TSUtils.isArray(schemaIn)) {
       return {

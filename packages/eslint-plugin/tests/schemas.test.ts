@@ -64,7 +64,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         ),
         await prettierConfigJson,
       );
-      const compilationResult = compile(ruleDef.meta.schema);
+      const compilationResult = await compile(ruleDef.meta.schema);
 
       expect(
         [
