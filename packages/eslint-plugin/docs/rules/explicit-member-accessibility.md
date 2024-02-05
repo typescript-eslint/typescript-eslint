@@ -50,14 +50,14 @@ This rule in its default state requires no configuration and will enforce that e
 
 ```jsonc
 {
-  "accessibility: "explicit",
+  "accessibility": "explicit",
   "overrides": {
     "accessors": "explicit",
     "constructors": "no-public",
     "methods": "explicit",
     "properties": "off",
-    "parameterProperties": "explicit"
-  }
+    "parameterProperties": "explicit",
+  },
 }
 ```
 
