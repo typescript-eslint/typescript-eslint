@@ -3,8 +3,8 @@ import 'jest-specific-snapshot';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import prettier from '@prettier/sync';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
+import prettier from 'prettier';
 
 import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
@@ -16,10 +16,12 @@ try {
   // ignore failure as it means it already exists probably
 }
 
-const prettierConfigJson = {
-  ...(prettier.resolveConfig(__filename) ?? {}),
-  filepath: path.join(__dirname, 'schema.json'),
-};
+const prettierConfigJson = (async () => {
+  return {
+    ...((await prettier.resolveConfig(__filename)) ?? {}),
+    filepath: path.join(__dirname, 'schema.json'),
+  };
+})();
 
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
@@ -33,7 +35,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
       continue;
     }
 
-    (ruleName === ONLY ? it.only : it)(ruleName, () => {
+    (ruleName === ONLY ? it.only : it)(ruleName, async () => {
       const schemaString = prettier.format(
         JSON.stringify(
           ruleDef.meta.schema,
@@ -60,7 +62,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           // changes per line, or adding a prop can restructure an object
           2,
         ),
-        prettierConfigJson,
+        await prettierConfigJson,
       );
       const compilationResult = compile(ruleDef.meta.schema);
 
