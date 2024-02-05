@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "6.20.0",
+  "version": "6.21.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -45,13 +45,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "6.20.0",
-    "@typescript-eslint/utils": "6.20.0",
+    "@typescript-eslint/typescript-estree": "6.21.0",
+    "@typescript-eslint/utils": "6.21.0",
     "debug": "^4.3.4",
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "6.20.0",
+    "@typescript-eslint/parser": "6.21.0",
     "ajv": "^6.10.0",
     "downlevel-dts": "*",
     "jest": "29.7.0",

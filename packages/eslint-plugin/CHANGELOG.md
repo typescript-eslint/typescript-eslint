@@ -1,3 +1,40 @@
+## 6.21.0 (2024-02-05)
+
+
+### 🚀 Features
+
+- export plugin metadata
+
+- allow `parserOptions.project: false`
+
+- **eslint-plugin:** add rule prefer-find
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] don't report on types referenced in export assignment expression
+
+- **eslint-plugin:** [switch-exhaustiveness-check] better support for intersections, infinite types, non-union values
+
+- **eslint-plugin:** [consistent-type-imports] dont report on types used in export assignment expressions
+
+- **eslint-plugin:** [no-unnecessary-condition] handle left-hand optional with exactOptionalPropertyTypes option
+
+- **eslint-plugin:** [class-literal-property-style] allow getter when same key setter exists
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] provide valid fixes for assertions with extra tokens before `as` keyword
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Kirk Waiblinger
+- Pete Gonzalez
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.20.0 (2024-01-29)
 
 
