@@ -621,17 +621,17 @@ function getRank(
  * ```
  * interface Foo {
       [a: string]: number;
- 
+
       a: x;
       B: x;
       c: x;
- 
+
       c(): void;
       B(): void;
       a(): void;
- 
+
       (): Baz;
- 
+
       new (): Bar;
     }
  * ```
@@ -647,16 +647,7 @@ function groupMembersByType(
   supportsModifiers: boolean,
 ): Member[][] {
   const groupedMembers: Member[][] = [];
-  const getPreviousRank = (): number | undefined => {
-    if (groupedMembers.at(-1)?.at(0) === undefined) {
-      return undefined;
-    }
-    return getRank(
-      groupedMembers[groupedMembers.length - 1][0],
-      memberType,
-      supportsModifiers,
-    );
-  };
+  let previousRank: number | undefined = undefined;
   memberSet.forEach((member, index) => {
     if (index === memberSet.length - 1) {
       return;
@@ -667,10 +658,11 @@ function groupMembersByType(
       memberType,
       supportsModifiers,
     );
-    if (rankOfcurrentMember === getPreviousRank()) {
+    if (rankOfcurrentMember === previousRank) {
       groupedMembers.at(-1)?.push(member);
     } else if (rankOfcurrentMember === rankOfNextMember) {
       groupedMembers.push([member]);
+      previousRank = rankOfcurrentMember;
     }
   });
   return groupedMembers;
