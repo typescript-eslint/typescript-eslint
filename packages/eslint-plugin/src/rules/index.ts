@@ -140,6 +140,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import useUnknownInCatchCallbackVariable from './use-unknown-in-catch-callback-variable';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -282,4 +283,5 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,
 } satisfies Linter.PluginRules;
