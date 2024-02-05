@@ -5423,6 +5423,7 @@ __metadata:
     chalk: ^5.3.0
     cross-fetch: "*"
     debug: ^4.3.4
+    eslint: "*"
     grapheme-splitter: ^1.0.4
     graphemer: ^1.4.0
     ignore: ^5.2.4
