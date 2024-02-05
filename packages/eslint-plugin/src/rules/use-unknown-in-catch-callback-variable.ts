@@ -106,7 +106,6 @@ export default createRule<[], MessageIds>({
           let firstParamType = checker.getTypeOfSymbol(firstParam);
 
           // Deal with a rest arg.
-          // TODO PR QUESTION - is there a util for this? I just copied it from no-misused-promises.
           const decl = firstParam.valueDeclaration;
           if (decl != null && ts.isParameter(decl) && decl.dotDotDotToken) {
             if (checker.isArrayType(firstParamType)) {
@@ -335,9 +334,6 @@ export default createRule<[], MessageIds>({
   },
 });
 
-// TODO PR QUESTION - impl copied from prefer-find.
-// bump https://github.com/typescript-eslint/typescript-eslint/issues/8323 ?
-
 /**
  * Answers whether the member expression looks like
  * `x.memberName`, `x['memberName']`,
@@ -367,11 +363,6 @@ function isParenlessArrowFunction(
   if (node.params.length !== 1) {
     return false;
   }
-
-  // I don't think this implementation is sound, but I also haven't been
-  // able to break it yet.
-  //
-  // TODO Ask if there's a util or property that can be used here instead.
 
   const singleArg = node.params[0];
   const arrowToken = nullThrows(
