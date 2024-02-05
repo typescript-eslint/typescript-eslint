@@ -10,7 +10,7 @@ async function main(): Promise<void> {
       { default: { default: Rules }}
   instead of just
       { default: Rules }
-  @ts-expect-error */
+  @ts-expect-error: ^ read above */
   const rules = rulesImport.default as TypeScriptESLintRules;
 
   // Annotate which rules are new since the last version
