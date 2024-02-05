@@ -30,6 +30,11 @@ ruleTester.run('consistent-return', rule, {
         }
       }
     `,
+    `
+      async function foo(): Promise<number> {
+        return 1;
+      }
+    `,
     {
       code: `
         const foo = (flag: boolean) => {
@@ -294,6 +299,25 @@ ruleTester.run('consistent-return', rule, {
           column: 16,
           endLine: 4,
           endColumn: 31,
+        },
+      ],
+    },
+    {
+      code: `
+        async function foo(flag: boolean) {
+          if (flag) return;
+          return 1;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedReturnValue',
+          data: { name: "Async function 'foo'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 4,
+          column: 11,
+          endLine: 4,
+          endColumn: 20,
         },
       ],
     },
