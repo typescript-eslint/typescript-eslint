@@ -30,11 +30,6 @@ ruleTester.run('consistent-return', rule, {
         }
       }
     `,
-    `
-      async function foo(): Promise<number> {
-        return 1;
-      }
-    `,
     {
       code: `
         const foo = (flag: boolean) => {
@@ -299,6 +294,25 @@ ruleTester.run('consistent-return', rule, {
           column: 16,
           endLine: 4,
           endColumn: 31,
+        },
+      ],
+    },
+    {
+      code: `
+        async function foo(flag: boolean): Promise<string | undefined> {
+          if (flag) return 'value';
+          else return;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnValue',
+          data: { name: "Async function 'foo'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 4,
+          column: 16,
+          endLine: 4,
+          endColumn: 23,
         },
       ],
     },
