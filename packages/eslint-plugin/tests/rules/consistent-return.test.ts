@@ -23,6 +23,12 @@ ruleTester.run('consistent-return', rule, {
       }
     `,
     `
+      const foo = (flag: boolean) => {
+        if (flag) return true;
+        return false;
+      };
+    `,
+    `
       class A {
         foo() {
           if (a) return true;
@@ -39,15 +45,6 @@ ruleTester.run('consistent-return', rule, {
       `,
       options: [{ treatUndefinedAsUnspecified: true }],
     },
-    `
-      function foo(flag: boolean): number {
-        if (flag) {
-          return 1;
-        } else {
-          return 2;
-        }
-      }
-    `,
     // void
     `
       declare function bar(): void;
@@ -68,6 +65,14 @@ ruleTester.run('consistent-return', rule, {
       };
     `,
     `
+      function foo(flag?: boolean): number | void {
+        if (flag) {
+          return 42;
+        }
+        return;
+      }
+    `,
+    `
       function foo(): boolean;
       function foo(flag: boolean): void;
       function foo(flag?: boolean): boolean | void {
@@ -78,37 +83,9 @@ ruleTester.run('consistent-return', rule, {
       }
     `,
     `
-      declare function bar(): void;
-      async function foo(flag?: boolean): Promise<void> {
-        if (flag) {
-          return bar();
-        }
-        return;
-      }
-    `,
-    `
-      type PromiseVoidNumber = Promise<void | number>;
-      declare function bar(): void;
-      async function foo(flag?: boolean): PromiseVoidNumber {
-        if (flag) {
-          return bar();
-        }
-        return;
-      }
-    `,
-    `
       class Foo {
         baz(): void {}
         bar(flag: boolean): void {
-          if (flag) return baz();
-          return;
-        }
-      }
-    `,
-    `
-      class Foo {
-        baz(): void {}
-        async bar(flag: boolean): Promise<void> {
           if (flag) return baz();
           return;
         }
@@ -140,35 +117,34 @@ ruleTester.run('consistent-return', rule, {
         }
       }
     `,
-    {
-      code: `
-        function foo(flag: boolean): undefined {
-          if (flag) {
-            return undefined;
-          }
+    // async
+    `
+      declare function bar(): void;
+      async function foo(flag?: boolean): Promise<void> {
+        if (flag) {
+          return bar();
         }
-      `,
-      options: [
-        {
-          treatUndefinedAsUnspecified: true,
-        },
-      ],
-    },
-    {
-      code: `
-        declare const undef: undefined;
-        function foo(flag: boolean): undefined {
-          if (flag) {
-            return undef;
-          }
+        return;
+      }
+    `,
+    `
+      type PromiseVoidNumber = Promise<void | number>;
+      async function foo(flag?: boolean): PromiseVoidNumber {
+        if (flag) {
+          return 42;
         }
-      `,
-      options: [
-        {
-          treatUndefinedAsUnspecified: true,
-        },
-      ],
-    },
+        return;
+      }
+    `,
+    `
+      class Foo {
+        baz(): void {}
+        async bar(flag: boolean): Promise<void> {
+          if (flag) return baz();
+          return;
+        }
+      }
+    `,
     {
       code: `
         declare const undef: undefined;
@@ -182,6 +158,37 @@ ruleTester.run('consistent-return', rule, {
       options: [
         {
           treatUndefinedAsUnspecified: false,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(flag: boolean): undefined {
+          if (flag) {
+            return undefined;
+          }
+          return;
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const undef: undefined;
+        function foo(flag: boolean): undefined {
+          if (flag) {
+            return undef;
+          }
+          return;
+        }
+      `,
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
         },
       ],
     },
