@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import prettier from 'prettier';
 import type {
   AnalyzeOptions,
   ScopeManager,
@@ -13,6 +12,7 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import type { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
 import { parse } from '@typescript-eslint/typescript-estree';
 import { ESLint } from '@typescript-eslint/utils/ts-eslint';
+import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 import ts from 'typescript';
 
