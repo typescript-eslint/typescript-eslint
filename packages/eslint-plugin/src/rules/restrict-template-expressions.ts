@@ -12,20 +12,35 @@ import {
   isTypeNeverType,
 } from '../util';
 
-const optionEntries = (
-  ['Any', 'Array', 'Boolean', 'Nullish', 'Number', 'RegExp', 'Never'] as const
-).map(
-  type =>
-    [
-      `allow${type}`,
-      {
-        description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
-        type: 'boolean',
-      },
-    ] as const,
-);
-
-type Options = [{ [Type in (typeof optionEntries)[number][0]]?: boolean }];
+const optionsObj = {
+  Any: isTypeAnyType,
+  Array: (type, checker, rec): boolean => {
+    if (!checker.isArrayType(type)) {
+      return false;
+    }
+    const numberIndexType = type.getNumberIndexType();
+    return !numberIndexType || rec(numberIndexType);
+  },
+  Boolean: (type): boolean => isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+  Nullish: (type): boolean =>
+    isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined),
+  Number: (type): boolean =>
+    isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike),
+  RegExp: (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
+  Never: isTypeNeverType,
+} satisfies Record<
+  string,
+  (
+    type: ts.Type,
+    checker: ts.TypeChecker,
+    rec: (type: ts.Type) => boolean,
+  ) => boolean
+>;
+const optionsArr = Object.entries(optionsObj).map(([_type, fn]) => {
+  const type = _type as keyof typeof optionsObj;
+  return { type, option: `allow${type}` as const, fn };
+});
+type Options = [{ [Type in (typeof optionsArr)[number]['option']]?: boolean }];
 
 type MessageId = 'invalidType';
 
@@ -46,7 +61,15 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         additionalProperties: false,
-        properties: Object.fromEntries(optionEntries),
+        properties: Object.fromEntries(
+          optionsArr.map(({ option, type }) => [
+            option,
+            {
+              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+              type: 'boolean',
+            },
+          ]),
+        ),
       },
     ],
   },
@@ -63,49 +86,6 @@ export default createRule<Options, MessageId>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function isUnderlyingTypePrimitive(type: ts.Type): boolean {
-      if (isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
-        return true;
-      }
-
-      if (
-        options.allowNumber &&
-        isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)
-      ) {
-        return true;
-      }
-
-      if (
-        options.allowBoolean &&
-        isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
-      ) {
-        return true;
-      }
-
-      if (options.allowAny && isTypeAnyType(type)) {
-        return true;
-      }
-
-      if (options.allowRegExp && getTypeName(checker, type) === 'RegExp') {
-        return true;
-      }
-
-      if (
-        options.allowNullish &&
-        isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
-      ) {
-        return true;
-      }
-
-      /*if (options.allowArray)*/ console.log(type);
-
-      if (options.allowNever && isTypeNeverType(type)) {
-        return true;
-      }
-
-      return false;
-    }
-
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
@@ -119,12 +99,7 @@ export default createRule<Options, MessageId>({
             expression,
           );
 
-          if (
-            !isInnerUnionOrIntersectionConformingTo(
-              expressionType,
-              isUnderlyingTypePrimitive,
-            )
-          ) {
+          if (!isInnerUnionOrIntersectionConformingTo(expressionType)) {
             context.report({
               node: expression,
               messageId: 'invalidType',
@@ -135,10 +110,7 @@ export default createRule<Options, MessageId>({
       },
     };
 
-    function isInnerUnionOrIntersectionConformingTo(
-      type: ts.Type,
-      predicate: (underlyingType: ts.Type) => boolean,
-    ): boolean {
+    function isInnerUnionOrIntersectionConformingTo(type: ts.Type): boolean {
       return rec(type);
 
       function rec(innerType: ts.Type): boolean {
@@ -150,7 +122,12 @@ export default createRule<Options, MessageId>({
           return innerType.types.some(rec);
         }
 
-        return predicate(innerType);
+        return (
+          isTypeFlagSet(innerType, ts.TypeFlags.StringLike) ||
+          optionsArr.some(
+            ({ option, fn }) => options[option] && fn(innerType, checker, rec),
+          )
+        );
       }
     }
   },
