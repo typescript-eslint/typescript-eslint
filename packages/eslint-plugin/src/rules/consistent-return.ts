@@ -36,6 +36,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{ treatUndefinedAsUnspecified: false }],
   create(context, [options]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const rules = baseRule.create(context);
     const functions: FunctionNode[] = [];
     const treatUndefinedAsUnspecified =
@@ -53,23 +54,31 @@ export default createRule<Options, MessageIds>({
       return functions[functions.length - 1] ?? null;
     }
 
-    function hasVoidTypeArg(type: ts.Type): boolean {
-      return (
-        tsutils.isTypeReference(type) &&
-        !!type.typeArguments?.some(typeArg =>
-          isTypeFlagSet(typeArg, ts.TypeFlags.Void),
-        )
-      );
+    function isPromiseVoid(node: ts.Node, type: ts.Type): boolean {
+      if (
+        tsutils.isThenableType(checker, node, type) &&
+        tsutils.isTypeReference(type)
+      ) {
+        const awaitedType = type.typeArguments?.[0];
+        if (awaitedType) {
+          if (isTypeFlagSet(awaitedType, ts.TypeFlags.Void)) {
+            return true;
+          }
+          return isPromiseVoid(node, awaitedType);
+        }
+      }
+      return false;
     }
 
     function isReturnVoidOrThenableVoid(node: FunctionNode): boolean {
       const functionType = services.getTypeAtLocation(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const callSignatures = functionType.getCallSignatures();
 
       return callSignatures.some(signature => {
         const returnType = signature.getReturnType();
         if (node.async) {
-          return hasVoidTypeArg(returnType);
+          return isPromiseVoid(tsNode, returnType);
         }
         return isTypeFlagSet(returnType, ts.TypeFlags.Void);
       });

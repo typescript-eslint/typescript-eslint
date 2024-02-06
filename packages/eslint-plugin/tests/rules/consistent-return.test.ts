@@ -128,6 +128,23 @@ ruleTester.run('consistent-return', rule, {
       }
     `,
     `
+      declare function bar(): Promise<void>;
+      async function foo(flag?: boolean): Promise<ReturnType<typeof bar>> {
+        if (flag) {
+          return bar();
+        }
+        return;
+      }
+    `,
+    `
+      async function foo(flag?: boolean): Promise<Promise<void | undefined>> {
+        if (flag) {
+          return undefined;
+        }
+        return;
+      }
+    `,
+    `
       type PromiseVoidNumber = Promise<void | number>;
       async function foo(flag?: boolean): PromiseVoidNumber {
         if (flag) {
