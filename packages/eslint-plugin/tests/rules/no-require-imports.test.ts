@@ -222,5 +222,68 @@ var lib5 = require?.('lib5'),
         },
       ],
     },
+    {
+      code: "trick(require('foo'));",
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 7,
+        },
+      ],
+    },
+    {
+      code: "const foo = require('./foo.json') as Foo;",
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: "const foo: Foo = require('./foo.json').default;",
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: "const foo = <Foo>require('./foo.json');",
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 18,
+        },
+      ],
+    },
+    {
+      code: `
+const configValidator = new Validator(require('./a.json'));
+configValidator.addSchema(require('./a.json'));
+      `,
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 2,
+          column: 39,
+        },
+        {
+          messageId: 'noRequireImports',
+          line: 3,
+          column: 27,
+        },
+      ],
+    },
   ],
 });
