@@ -1,20 +1,15 @@
-import prettier from 'prettier';
 import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import path from 'path';
+import prettier from 'prettier';
 
 import { generateType } from './generateType';
 import { optimizeAST } from './optimizeAST';
 import { printTypeAlias } from './printAST';
 import type { AST } from './types';
 
-const prettierConfig = {
-  ...(prettier.resolveConfig(__filename) ?? {}),
-  filepath: path.join(__dirname, 'schema.ts'),
-};
-
 export async function compile(
   schemaIn: JSONSchema4 | readonly JSONSchema4[],
+  prettierConfig: Promise<prettier.Options>,
 ): Promise<string> {
   const { schema, isArraySchema } = (() => {
     if (TSUtils.isArray(schemaIn)) {
@@ -52,7 +47,7 @@ export async function compile(
 
   const unformattedCode = [...refTypes, optionsType].join('\n\n');
   try {
-    return prettier.format(unformattedCode, prettierConfig);
+    return await prettier.format(unformattedCode, await prettierConfig);
   } catch (e) {
     if (e instanceof Error) {
       e.message = e.message + `\n\nUnformatted Code:\n${unformattedCode}`;

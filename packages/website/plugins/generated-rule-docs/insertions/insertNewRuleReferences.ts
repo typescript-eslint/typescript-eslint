@@ -1,8 +1,8 @@
-import prettier from 'prettier';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
+import prettier from 'prettier';
 import type * as unist from 'unist';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
@@ -27,10 +27,25 @@ const SPECIAL_CASE_DEFAULTS = new Map([
   ['ban-types', '[{ /* See below for default options */ }]'],
 ]);
 
+const PRETTIER_CONFIG_PATH = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  '.prettierrc.json',
+);
 const prettierConfig = (async () => {
+  const filepath = path.join(__dirname, 'file.ts');
+  const config = await prettier.resolveConfig(filepath, {
+    config: PRETTIER_CONFIG_PATH,
+  });
+  if (config == null) {
+    throw new Error('Unable to resolve prettier config');
+  }
   return {
-    ...((await prettier.resolveConfig(__filename)) ?? {}),
-    filepath: path.join(__dirname, '../defaults.ts'),
+    ...config,
+    filepath,
   };
 })();
 
@@ -101,7 +116,7 @@ export async function insertNewRuleReferences(
         lang: 'ts',
         type: 'code',
         value: [
-          await compile(page.rule.meta.schema),
+          await compile(page.rule.meta.schema, prettierConfig),
           await prettier.format(
             `const defaultOptions: Options = ${defaults};`,
             await prettierConfig,

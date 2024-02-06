@@ -16,12 +16,33 @@ try {
   // ignore failure as it means it already exists probably
 }
 
-const prettierConfigJson = (async () => {
+const PRETTIER_CONFIG_PATH = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '.prettierrc.json',
+);
+const SCHEMA_FILEPATH = path.join(__dirname, 'schema.json');
+const TS_TYPE_FILEPATH = path.join(__dirname, 'schema.ts');
+const getPrettierConfig = async (
+  filepath: string,
+): Promise<prettier.Options> => {
+  const config = await prettier.resolveConfig(filepath, {
+    config: PRETTIER_CONFIG_PATH,
+  });
+  if (config == null) {
+    throw new Error('Unable to resolve prettier config');
+  }
   return {
-    ...((await prettier.resolveConfig(__filename)) ?? {}),
-    filepath: path.join(__dirname, 'schema.json'),
+    ...config,
+    filepath,
   };
-})();
+};
+const PRETTIER_CONFIG = {
+  schema: getPrettierConfig(SCHEMA_FILEPATH),
+  tsType: getPrettierConfig(TS_TYPE_FILEPATH),
+};
 
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
 // Set this to a rule name to only run that rule
@@ -36,7 +57,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
     }
 
     (ruleName === ONLY ? it.only : it)(ruleName, async () => {
-      const schemaString = prettier.format(
+      const schemaString = await prettier.format(
         JSON.stringify(
           ruleDef.meta.schema,
           (k, v: unknown) => {
@@ -62,9 +83,12 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           // changes per line, or adding a prop can restructure an object
           2,
         ),
-        await prettierConfigJson,
+        await PRETTIER_CONFIG.schema,
       );
-      const compilationResult = await compile(ruleDef.meta.schema);
+      const compilationResult = await compile(
+        ruleDef.meta.schema,
+        PRETTIER_CONFIG.tsType,
+      );
 
       expect(
         [

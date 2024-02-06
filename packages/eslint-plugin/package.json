@@ -51,8 +51,8 @@
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "npx nx run repo-tools:generate-configs",
     "lint": "npx nx lint",
-    "test": "jest --coverage --logHeapUsage",
-    "test-single": "jest --no-coverage",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" --coverage --logHeapUsage",
+    "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -76,6 +76,7 @@
     "@typescript-eslint/rule-tester": "6.21.0",
     "ajv": "^6.12.6",
     "chalk": "^5.3.0",
+    "cross-env": "^7.0.3",
     "cross-fetch": "*",
     "eslint": "*",
     "grapheme-splitter": "^1.0.4",
