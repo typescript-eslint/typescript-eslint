@@ -11,6 +11,7 @@ declare module 'eslint/use-at-your-own-risk' {
     'block-spacing': typeof import('eslint/lib/rules/block-spacing');
     'brace-style': typeof import('eslint/lib/rules/brace-style');
     'comma-dangle': typeof import('eslint/lib/rules/comma-dangle');
+    'consistent-return': typeof import('eslint/lib/rules/consistent-return');
     'dot-notation': typeof import('eslint/lib/rules/dot-notation');
     indent: typeof import('eslint/lib/rules/indent');
     'init-declarations': typeof import('eslint/lib/rules/init-declarations');
