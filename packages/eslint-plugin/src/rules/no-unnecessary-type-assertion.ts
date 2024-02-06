@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -56,7 +55,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -235,7 +233,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         if (
           options.typesToIgnore?.includes(
-            sourceCode.getText(node.typeAnnotation),
+            context.sourceCode.getText(node.typeAnnotation),
           ) ||
           isConstAssertion(node.typeAnnotation)
         ) {
@@ -263,23 +261,38 @@ export default createRule<Options, MessageIds>({
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const closingAngleBracket = sourceCode.getTokenAfter(
+                const openingAngleBracket = context.sourceCode.getTokenBefore(
                   node.typeAnnotation,
-                );
-                return closingAngleBracket?.value === '>'
-                  ? fixer.removeRange([
-                      node.range[0],
-                      closingAngleBracket.range[1],
-                    ])
-                  : null;
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '<',
+                )!;
+                const closingAngleBracket = context.sourceCode.getTokenAfter(
+                  node.typeAnnotation,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '>',
+                )!;
+                // < ( number ) > ( 3 + 5 )
+                // ^---remove---^
+                return fixer.removeRange([
+                  openingAngleBracket.range[0],
+                  closingAngleBracket.range[1],
+                ]);
               }
-              return fixer.removeRange([
-                node.expression.range[1] +
-                  (node.expression.type === AST_NODE_TYPES.CallExpression
-                    ? 0
-                    : 1),
-                node.range[1],
-              ]);
+              // `as` is always present in TSAsExpression
+              const asToken = context.sourceCode.getTokenAfter(
+                node.expression,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Identifier &&
+                  token.value === 'as',
+              )!;
+              const tokenBeforeAs = context.sourceCode.getTokenBefore(asToken, {
+                includeComments: true,
+              })!;
+              // ( 3 + 5 )  as  number
+              //          ^--remove--^
+              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
             },
           });
         }

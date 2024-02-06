@@ -28,6 +28,7 @@ body:
         - parser
         - scope-manager
         - type-utils
+        - typescript-eslint
         - typescript-estree
         - utils
         - website

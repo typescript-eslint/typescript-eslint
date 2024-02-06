@@ -68,7 +68,10 @@ You may pass `"onlyInlineLambdas": true` as a rule option within an object to re
 
 ```jsonc
 {
-  "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }]
+  "@typescript-eslint/prefer-readonly": [
+    "error",
+    { "onlyInlineLambdas": true },
+  ],
 }
 ```
 

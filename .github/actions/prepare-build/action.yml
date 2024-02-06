@@ -6,7 +6,7 @@ description: 'Prepares the repo for a job by running the build'
 runs:
   using: 'composite'
   steps:
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       id: build-cache
       with:
         path: '**/dist/**'

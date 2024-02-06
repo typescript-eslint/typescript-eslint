@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -58,8 +57,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ before: spaceBefore, after: spaceAfter }]) {
-    const sourceCode = getSourceCode(context);
-    const tokensAndComments = sourceCode.tokensAndComments;
+    const tokensAndComments = context.sourceCode.tokensAndComments;
     const ignoredTokens = new Set<TSESTree.PunctuatorToken>();
 
     /**
@@ -69,16 +67,16 @@ export default createRule<Options, MessageIds>({
     function addNullElementsToIgnoreList(
       node: TSESTree.ArrayExpression | TSESTree.ArrayPattern,
     ): void {
-      let previousToken = sourceCode.getFirstToken(node);
+      let previousToken = context.sourceCode.getFirstToken(node);
       for (const element of node.elements) {
         let token: TSESTree.Token | null;
         if (element == null) {
-          token = sourceCode.getTokenAfter(previousToken!);
+          token = context.sourceCode.getTokenAfter(previousToken!);
           if (token && isCommaToken(token)) {
             ignoredTokens.add(token);
           }
         } else {
-          token = sourceCode.getTokenAfter(element);
+          token = context.sourceCode.getTokenAfter(element);
         }
 
         previousToken = token;
@@ -95,7 +93,7 @@ export default createRule<Options, MessageIds>({
       const paramLength = node.params.length;
       if (paramLength) {
         const param = node.params[paramLength - 1];
-        const afterToken = sourceCode.getTokenAfter(param);
+        const afterToken = context.sourceCode.getTokenAfter(param);
         if (afterToken && isCommaToken(afterToken)) {
           ignoredTokens.add(afterToken);
         }
@@ -116,8 +114,7 @@ export default createRule<Options, MessageIds>({
       if (
         prevToken &&
         isTokenOnSameLine(prevToken, commaToken) &&
-        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
-        spaceBefore !== sourceCode.isSpaceBetweenTokens(prevToken, commaToken)
+        spaceBefore !== context.sourceCode.isSpaceBetween(prevToken, commaToken)
       ) {
         context.report({
           node: commaToken,
@@ -154,8 +151,7 @@ export default createRule<Options, MessageIds>({
       if (
         nextToken &&
         isTokenOnSameLine(commaToken, nextToken) &&
-        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
-        spaceAfter !== sourceCode.isSpaceBetweenTokens(commaToken, nextToken)
+        spaceAfter !== context.sourceCode.isSpaceBetween(commaToken, nextToken)
       ) {
         context.report({
           node: commaToken,

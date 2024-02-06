@@ -1,6 +1,7 @@
 import type { JSONSchema4 } from '../json-schema';
 import type { ParserServices, TSESTree } from '../ts-estree';
 import type { AST } from './AST';
+import type { FlatConfig } from './Config';
 import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
@@ -190,6 +191,10 @@ interface RuleContext<
    */
   parserPath: string;
   /**
+   * The language options configured for this run
+   */
+  languageOptions: FlatConfig.LanguageOptions;
+  /**
    * The parser options configured for this run
    */
   parserOptions: Linter.ParserOptions;
@@ -225,7 +230,6 @@ interface RuleContext<
   /**
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * @since 6.6.0
    * @deprecated in favor of `RuleContext#cwd`
    */
   getCwd(): string;
@@ -233,7 +237,6 @@ interface RuleContext<
   /**
    * The current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * @since 8.40.0
    */
   cwd: string;
 
@@ -246,22 +249,19 @@ interface RuleContext<
 
   /**
    * The filename associated with the source.
-   * @since 8.40.0
    */
   filename: string;
 
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
-   * @since 7.28.0
    * @deprecated in favor of `RuleContext#physicalFilename`
    */
-  getPhysicalFilename?(): string;
+  getPhysicalFilename(): string;
 
   /**
    * The full path of the file on disk without any code block information (unlike `filename`).
-   * @since 8.40.0
    */
-  physicalFilename?: string;
+  physicalFilename: string;
 
   /**
    * Returns the scope of the currently-traversed node.
@@ -282,7 +282,6 @@ interface RuleContext<
   /**
    * A SourceCode object that you can use to work with the source that
    * was passed to ESLint.
-   * @since 8.40.0
    */
   sourceCode: Readonly<SourceCode>;
 

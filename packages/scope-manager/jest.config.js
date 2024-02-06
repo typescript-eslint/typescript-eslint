@@ -9,6 +9,6 @@ module.exports = {
   ...baseConfig,
   setupFilesAfterEnv: [
     ...baseConfig.setupFilesAfterEnv,
-    './tests/util/serializers/index.ts',
+    './tests/test-utils/serializers/index.ts',
   ],
 };

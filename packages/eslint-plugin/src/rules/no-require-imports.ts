@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import * as util from '../util';
 
@@ -60,7 +59,10 @@ export default util.createRule<Options, MessageIds>({
         ) {
           return;
         }
-        const variable = ASTUtils.findVariable(getScope(context), 'require');
+        const variable = ASTUtils.findVariable(
+          context.sourceCode.getScope(node),
+          'require',
+        );
         const parent =
           node.parent.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent

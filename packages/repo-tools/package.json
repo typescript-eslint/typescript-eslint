@@ -1,14 +1,15 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "6.20.0",
+  "version": "6.21.0",
   "private": true,
   "scripts": {
     "//": "NOTE: intentionally no build step in this package",
     "apply-canary-version": "tsx ./src/apply-canary-version.mts",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-contributors": "tsx ./src/generate-contributors.ts",
-    "generate-sponsors": "tsx ./src/generate-sponsors.ts",
-    "generate-lib": "tsx ./src/generate-lib.ts",
+    "generate-configs": "tsx ./src/generate-configs.mts",
+    "generate-contributors": "tsx ./src/generate-contributors.mts",
+    "generate-sponsors": "tsx ./src/generate-sponsors.mts",
+    "generate-lib": "tsx ./src/generate-lib.mts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.mts",
     "test": "jest --coverage",
@@ -16,7 +17,6 @@
   },
   "devDependencies": {
     "@nx/devkit": "*",
-    "@prettier/sync": "*",
     "cross-fetch": "*",
     "execa": "*",
     "prettier": "^3.0.3",

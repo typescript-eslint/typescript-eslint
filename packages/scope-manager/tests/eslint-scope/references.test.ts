@@ -1,4 +1,4 @@
-import { getRealVariables, parseAndAnalyze } from '../util';
+import { getRealVariables, parseAndAnalyze } from '../test-utils';
 
 describe('References:', () => {
   describe('When there is a `let` declaration on global,', () => {

@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -108,8 +107,6 @@ export default createRule<Options, MessageIds>({
           usesThis: boolean;
         };
     let stack: Stack | undefined;
-
-    const sourceCode = getSourceCode(context);
 
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
@@ -220,7 +217,7 @@ export default createRule<Options, MessageIds>({
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           messageId: 'missingThis',
           data: {
             name: getFunctionNameWithKind(node),
