@@ -51,7 +51,7 @@
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "npx nx run repo-tools:generate-configs",
     "lint": "npx nx lint",
-    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" --coverage --logHeapUsage",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
