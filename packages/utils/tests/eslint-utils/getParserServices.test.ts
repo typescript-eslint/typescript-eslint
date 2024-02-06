@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, deprecation/deprecation -- wild and wacky testing */
+/* eslint-disable @typescript-eslint/no-explicit-any -- wild and wacky testing */
 import type * as ts from 'typescript';
 
 import type { ParserServices, TSESLint, TSESTree } from '../../src';
@@ -8,12 +8,14 @@ type UnknownRuleContext = Readonly<TSESLint.RuleContext<string, unknown[]>>;
 
 const defaults = {
   parserPath: '@typescript-eslint/parser/dist/index.js',
-  parserServices: {
-    esTreeNodeToTSNodeMap: new Map<TSESTree.Node, ts.Node>(),
-    program: {},
-    tsNodeToESTreeNodeMap: new Map<ts.Node, TSESTree.Node>(),
-  } as unknown as ParserServices,
-};
+  sourceCode: {
+    parserServices: {
+      esTreeNodeToTSNodeMap: new Map<TSESTree.Node, ts.Node>(),
+      program: {},
+      tsNodeToESTreeNodeMap: new Map<ts.Node, TSESTree.Node>(),
+    } as unknown as ParserServices,
+  },
+} as unknown as UnknownRuleContext;
 
 const createMockRuleContext = (
   overrides: Partial<UnknownRuleContext> = {},
@@ -26,9 +28,12 @@ const createMockRuleContext = (
 describe('getParserServices', () => {
   it('throws a standard error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is known', () => {
     const context = createMockRuleContext({
-      parserServices: {
-        ...defaults.parserServices,
-        esTreeNodeToTSNodeMap: undefined as any,
+      sourceCode: {
+        ...defaults.sourceCode,
+        parserServices: {
+          ...defaults.sourceCode.parserServices,
+          esTreeNodeToTSNodeMap: undefined as any,
+        },
       },
     });
 
@@ -42,9 +47,12 @@ describe('getParserServices', () => {
   it('throws an augment error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is unknown', () => {
     const context = createMockRuleContext({
       parserPath: '@babel/parser.js',
-      parserServices: {
-        ...defaults.parserServices,
-        esTreeNodeToTSNodeMap: undefined as any,
+      sourceCode: {
+        ...defaults.sourceCode,
+        parserServices: {
+          ...defaults.sourceCode.parserServices,
+          esTreeNodeToTSNodeMap: undefined as any,
+        },
       },
     });
 
@@ -58,9 +66,12 @@ describe('getParserServices', () => {
 
   it('throws an error when parserOptions.tsNodeToESTreeNodeMap is missing', () => {
     const context = createMockRuleContext({
-      parserServices: {
-        ...defaults.parserServices,
-        tsNodeToESTreeNodeMap: undefined as any,
+      sourceCode: {
+        ...defaults.sourceCode,
+        parserServices: {
+          ...defaults.sourceCode.parserServices,
+          tsNodeToESTreeNodeMap: undefined as any,
+        },
       },
     });
 
@@ -73,9 +84,12 @@ describe('getParserServices', () => {
 
   it('throws an error when parserServices.program is missing and allowWithoutFullTypeInformation is false', () => {
     const context = createMockRuleContext({
-      parserServices: {
-        ...defaults.parserServices,
-        program: undefined as any,
+      sourceCode: {
+        ...defaults.sourceCode,
+        parserServices: {
+          ...defaults.sourceCode.parserServices,
+          program: undefined as any,
+        },
       },
     });
 
@@ -88,20 +102,25 @@ describe('getParserServices', () => {
 
   it('returns when parserServices.program is missing and allowWithoutFullTypeInformation is true', () => {
     const context = createMockRuleContext({
-      parserServices: {
-        ...defaults.parserServices,
-        program: undefined as any,
+      sourceCode: {
+        ...defaults.sourceCode,
+        parserServices: {
+          ...defaults.sourceCode.parserServices,
+          program: undefined as any,
+        },
       },
     });
 
     expect(ESLintUtils.getParserServices(context, true)).toBe(
-      context.parserServices,
+      context.sourceCode.parserServices,
     );
   });
 
   it('returns when parserServices is filled out', () => {
     const context = createMockRuleContext();
 
-    expect(ESLintUtils.getParserServices(context)).toBe(context.parserServices);
+    expect(ESLintUtils.getParserServices(context)).toBe(
+      context.sourceCode.parserServices,
+    );
   });
 });

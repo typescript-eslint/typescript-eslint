@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -43,7 +42,6 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
 
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
     const baseRules = baseRule.create(context);
 
     /**
@@ -52,7 +50,7 @@ export default createRule<Options, MessageIds>({
     function adjustedColumn(position: TSESTree.Position): number {
       const line = position.line - 1; // position.line is 1-indexed
       return getStringLength(
-        sourceCode.lines.at(line)!.slice(0, position.column),
+        context.sourceCode.lines.at(line)!.slice(0, position.column),
       );
     }
 
@@ -61,9 +59,9 @@ export default createRule<Options, MessageIds>({
      * until it finds the last token before a colon punctuator and returns it.
      */
     function getLastTokenBeforeColon(node: TSESTree.Node): TSESTree.Token {
-      const colonToken = sourceCode.getTokenAfter(node, isColonToken)!;
+      const colonToken = context.sourceCode.getTokenAfter(node, isColonToken)!;
 
-      return sourceCode.getTokenBefore(colonToken)!;
+      return context.sourceCode.getTokenBefore(colonToken)!;
     }
 
     type KeyTypeNode =
@@ -100,13 +98,13 @@ export default createRule<Options, MessageIds>({
      */
     function getKeyText(node: KeyTypeNodeWithTypeAnnotation): string {
       if (node.type !== AST_NODE_TYPES.TSIndexSignature) {
-        return sourceCode.getText(node.key);
+        return context.sourceCode.getText(node.key);
       }
 
-      const code = sourceCode.getText(node);
+      const code = context.sourceCode.getText(node);
       return code.slice(
         0,
-        sourceCode.getTokenAfter(
+        context.sourceCode.getTokenAfter(
           node.parameters.at(-1)!,
           isClosingBracketToken,
         )!.range[1] - node.range[0],
@@ -165,8 +163,8 @@ export default createRule<Options, MessageIds>({
       mode: 'minimum' | 'strict',
     ): void {
       const { typeAnnotation } = node;
-      const colonToken = sourceCode.getFirstToken(typeAnnotation)!;
-      const typeStart = sourceCode.getTokenAfter(colonToken, {
+      const colonToken = context.sourceCode.getFirstToken(typeAnnotation)!;
+      const typeStart = context.sourceCode.getTokenAfter(colonToken, {
         includeComments: true,
       })!.loc.start.column;
       const difference =
@@ -218,7 +216,7 @@ export default createRule<Options, MessageIds>({
        * last comment is adjacent to the candidate property, and that successive
        * comments are adjacent to each other.
        */
-      const leadingComments = sourceCode.getCommentsBefore(candidate);
+      const leadingComments = context.sourceCode.getCommentsBefore(candidate);
 
       if (
         leadingComments.length &&

@@ -14,7 +14,6 @@ import type {
 interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * Name for the test case.
-   * @since 8.1.0
    */
   readonly name?: string;
   /**
@@ -51,7 +50,6 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   readonly settings?: Readonly<SharedConfigurationSettings>;
   /**
    * Run this case exclusively for debugging in supported test frameworks.
-   * @since 7.29.0
    */
   readonly only?: boolean;
 }

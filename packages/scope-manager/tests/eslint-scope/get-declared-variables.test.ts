@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
 import { analyze } from '../../src/analyze';
-import { parse } from '../util/parse';
+import { parse } from '../test-utils/parse';
 
 describe('ScopeManager.prototype.getDeclaredVariables', () => {
   function verify(

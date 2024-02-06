@@ -1,3 +1,3 @@
 {
-  "include": ["./file.ts", "./something.ts"]
+  "include": ["./file.ts", "./something.ts"],
 }

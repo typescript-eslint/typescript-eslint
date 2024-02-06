@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -154,7 +153,7 @@ export default createRule<Options, MessageId>({
   ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
+
     const compilerOptions = services.program.getCompilerOptions();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -195,6 +194,28 @@ export default createRule<Options, MessageId>({
             // Exception: literal index into a tuple - will have a sound type
             node.property.type !== AST_NODE_TYPES.Literal))
       );
+    }
+
+    function isNullableMemberExpression(
+      node: TSESTree.MemberExpression,
+    ): boolean {
+      const objectType = services.getTypeAtLocation(node.object);
+      if (node.computed) {
+        const propertyType = services.getTypeAtLocation(node.property);
+        return isNullablePropertyType(objectType, propertyType);
+      }
+      const property = node.property;
+
+      if (property.type === AST_NODE_TYPES.Identifier) {
+        const propertyType = objectType.getProperty(property.name);
+        if (
+          propertyType &&
+          tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
+        ) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /**
@@ -283,7 +304,13 @@ export default createRule<Options, MessageId>({
       let messageId: MessageId | null = null;
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
-      } else if (!isPossiblyNullish(type)) {
+      } else if (
+        !isPossiblyNullish(type) &&
+        !(
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          isNullableMemberExpression(node)
+        )
+      ) {
         // Since typescript array index signature types don't represent the
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
@@ -644,7 +671,7 @@ export default createRule<Options, MessageId>({
       }
 
       const questionDotOperator = nullThrows(
-        sourceCode.getTokenAfter(
+        context.sourceCode.getTokenAfter(
           beforeOperator,
           token =>
             token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.',
