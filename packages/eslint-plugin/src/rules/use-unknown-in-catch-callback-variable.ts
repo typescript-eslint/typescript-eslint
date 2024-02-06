@@ -92,7 +92,7 @@ export default createRule<[], MessageIds>({
       for (const unionPart of tsUtils.unionTypeParts(type)) {
         const callSignatures = tsUtils.getCallSignaturesOfType(unionPart);
         if (callSignatures.length === 0) {
-          // Ignore any nonfunction components to the type. Those are not this rule's problem.
+          // Ignore any non-function components to the type. Those are not this rule's problem.
           continue;
         }
 
@@ -376,13 +376,13 @@ function isParenlessArrowFunction(
   const tokenBetween = sourceCode.getTokensBetween(singleArg, arrowToken);
 
   if (tokenBetween.length === 0) {
-    // Nothing between the arg and the arrow - this must be a parenless arrow function.
+    // Nothing between the arg and the arrow - this must be a paren-less arrow function.
     return true;
   }
 
   if (tokenBetween.length === 1) {
     if (tokenBetween[0].value === ')') {
-      // There's just one thing between the arg and the arrow. Must be a parenful arrow function.
+      // There's just one thing between the arg and the arrow. Must be a paren-ful arrow function.
       return false;
     }
 
