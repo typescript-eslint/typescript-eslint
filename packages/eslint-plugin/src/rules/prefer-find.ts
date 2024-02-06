@@ -153,14 +153,13 @@ export default createRule({
      * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at#parameters
      */
     function isTreatedAsZeroByArrayAt(value: unknown): boolean {
-      let asNumber: number;
-
-      try {
-        asNumber = Number(value);
-      } catch (e) {
-        // This will happen if trying to convert a symbol.
+      // This would cause the number constructor coercion to throw. Other static
+      // values are safe.
+      if (typeof value === 'symbol') {
         return false;
       }
+
+      const asNumber = Number(value);
 
       if (isNaN(asNumber)) {
         return true;

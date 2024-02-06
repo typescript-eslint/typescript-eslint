@@ -68,12 +68,8 @@ ruleTester.run('prefer-find', rule, {
       const s = Symbol.for("Don't throw!");
       arr.filter(item => item === 'aha').at(s);
     `,
-    `
-      [1, 2, 3].filter(x => x)[Symbol('0')];
-    `,
-    `
-      [1, 2, 3].filter(x => x)[Symbol.for('0')];
-    `,
+    "[1, 2, 3].filter(x => x)[Symbol('0')];",
+    "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
   ],
 
   invalid: [
