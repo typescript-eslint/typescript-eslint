@@ -33,6 +33,7 @@ const PRETTIER_CONFIG_PATH = path.resolve(
   '..',
   '..',
   '..',
+  '..',
   '.prettierrc.json',
 );
 const prettierConfig = (async () => {
