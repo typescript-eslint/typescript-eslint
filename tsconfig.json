@@ -11,6 +11,7 @@
     "tools/**/*.mts",
     ".eslintrc.js",
     "eslint.config.js",
+    "eslint.config.mjs",
     "jest.config.base.js",
     "jest.config.js",
     "jest.preset.js",
