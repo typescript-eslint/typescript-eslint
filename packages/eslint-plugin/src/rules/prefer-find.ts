@@ -125,7 +125,7 @@ export default createRule({
       return isAtLeastOneArrayishComponent;
     }
 
-    function getObjectIfArrayAtExpression(
+    function getObjectIfArrayAtZeroExpression(
       node: TSESTree.CallExpression,
     ): TSESTree.Expression | undefined {
       // .at() should take exactly one argument.
@@ -133,14 +133,14 @@ export default createRule({
         return undefined;
       }
 
-      const atArgument = getStaticValue(node.arguments[0], globalScope);
-      if (atArgument != null && isTreatedAsZeroByArrayAt(atArgument.value)) {
-        const callee = node.callee;
-        if (
-          callee.type === AST_NODE_TYPES.MemberExpression &&
-          !callee.optional &&
-          isStaticMemberAccessOfValue(callee, 'at', globalScope)
-        ) {
+      const callee = node.callee;
+      if (
+        callee.type === AST_NODE_TYPES.MemberExpression &&
+        !callee.optional &&
+        isStaticMemberAccessOfValue(callee, 'at', globalScope)
+      ) {
+        const atArgument = getStaticValue(node.arguments[0], globalScope);
+        if (atArgument != null && isTreatedAsZeroByArrayAt(atArgument.value)) {
           return callee.object;
         }
       }
@@ -153,7 +153,14 @@ export default createRule({
      * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at#parameters
      */
     function isTreatedAsZeroByArrayAt(value: unknown): boolean {
-      const asNumber = Number(value);
+      let asNumber: number;
+
+      try {
+        asNumber = Number(value);
+      } catch (e) {
+        // This will happen if trying to convert a symbol.
+        return false;
+      }
 
       if (isNaN(asNumber)) {
         return true;
@@ -215,7 +222,7 @@ export default createRule({
     return {
       // This query will be used to find things like `filteredResults.at(0)`.
       CallExpression(node): void {
-        const object = getObjectIfArrayAtExpression(node);
+        const object = getObjectIfArrayAtZeroExpression(node);
         if (object) {
           const filterExpression = parseIfArrayFilterExpression(object);
           if (filterExpression) {
