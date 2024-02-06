@@ -356,6 +356,28 @@ ruleTester.run('consistent-return', rule, {
     },
     {
       code: `
+        declare async function bar(): Promise<void>;
+        function foo(flag?: boolean): Promise<void> {
+          if (flag) {
+            return bar();
+          }
+          return;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnValue',
+          data: { name: "Function 'foo'" },
+          type: AST_NODE_TYPES.ReturnStatement,
+          line: 7,
+          column: 11,
+          endLine: 7,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
         function foo(flag: boolean): undefined | boolean {
           if (flag) {
             return undefined;
