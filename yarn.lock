@@ -4213,7 +4213,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/sync@npm:*, @prettier/sync@npm:^0.5.0":
+"@prettier/sync@npm:^0.5.0":
   version: 0.5.0
   resolution: "@prettier/sync@npm:0.5.0"
   dependencies:
@@ -5376,7 +5376,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
   dependencies:
-    "@prettier/sync": "*"
+    "@prettier/sync": ^0.5.0
     "@typescript-eslint/rule-tester": 6.21.0
     "@typescript-eslint/scope-manager": 6.21.0
     "@typescript-eslint/type-utils": 6.21.0
@@ -5398,7 +5398,7 @@ __metadata:
     prettier: ^3.0.3
     rimraf: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
     tslint: ^5.0.0 || ^6.0.0
     typescript: "*"
   languageName: unknown
@@ -5409,7 +5409,6 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.5.1
-    "@prettier/sync": "*"
     "@types/debug": "*"
     "@types/marked": "*"
     "@types/natural-compare": "*"
@@ -5421,8 +5420,10 @@ __metadata:
     "@typescript-eslint/visitor-keys": 6.21.0
     ajv: ^6.12.6
     chalk: ^5.3.0
+    cross-env: ^7.0.3
     cross-fetch: "*"
     debug: ^4.3.4
+    eslint: "*"
     grapheme-splitter: ^1.0.4
     graphemer: ^1.4.0
     ignore: ^5.2.4
@@ -5441,7 +5442,7 @@ __metadata:
     typescript: "*"
   peerDependencies:
     "@typescript-eslint/parser": ^6.0.0 || ^6.0.0-alpha
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5452,6 +5453,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/integration-tests@workspace:packages/integration-tests"
   dependencies:
+    jest: 29.7.0
     ncp: "*"
     tmp: "*"
   languageName: unknown
@@ -5474,7 +5476,7 @@ __metadata:
     rimraf: "*"
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5486,7 +5488,6 @@ __metadata:
   resolution: "@typescript-eslint/repo-tools@workspace:packages/repo-tools"
   dependencies:
     "@nx/devkit": "*"
-    "@prettier/sync": "*"
     cross-fetch: "*"
     execa: "*"
     prettier: ^3.0.3
@@ -5501,7 +5502,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@prettier/sync": "*"
     "@typescript-eslint/type-utils": 6.21.0
     "@typescript-eslint/utils": 6.21.0
     natural-compare: ^1.4.0
@@ -5526,7 +5526,7 @@ __metadata:
     source-map-support: ^0.5.21
   peerDependencies:
     "@eslint/eslintrc": ">=2"
-    eslint: ">=8"
+    eslint: ^8.56.0
   languageName: unknown
   linkType: soft
 
@@ -5534,7 +5534,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
-    "@prettier/sync": "*"
     "@types/glob": "*"
     "@typescript-eslint/types": 6.21.0
     "@typescript-eslint/typescript-estree": 6.21.0
@@ -5573,7 +5572,7 @@ __metadata:
     ts-api-utils: ^1.0.1
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5613,7 +5612,6 @@ __metadata:
     "@nx/eslint": 17.2.8
     "@nx/jest": 17.2.8
     "@nx/workspace": 17.2.8
-    "@prettier/sync": ^0.5.0
     "@swc/core": ^1.3.68
     "@swc/jest": ^0.2.26
     "@types/babel__code-frame": ^7.0.3
@@ -5634,7 +5632,7 @@ __metadata:
     cross-fetch: ^4.0.0
     cspell: ^7.0.0
     downlevel-dts: ">=0.11.0"
-    eslint: ^8.56.0
+    eslint: 8.56.0
     eslint-plugin-deprecation: ^2.0.0
     eslint-plugin-eslint-comments: ^3.2.0
     eslint-plugin-eslint-plugin: ^5.2.1
@@ -5667,7 +5665,7 @@ __metadata:
     ts-node: 10.7.0
     tslint: ^6.1.3
     tsx: ^4.6.2
-    typescript: ">=4.3.5 <5.4.0"
+    typescript: ">=4.7.4 <5.4.0"
     typescript-eslint: "workspace:^"
     yargs: 17.7.2
   languageName: unknown
@@ -5737,7 +5735,7 @@ __metadata:
     semver: ^7.5.4
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   languageName: unknown
   linkType: soft
 
@@ -7955,6 +7953,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-env@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "cross-env@npm:7.0.3"
+  dependencies:
+    cross-spawn: ^7.0.1
+  bin:
+    cross-env: src/bin/cross-env.js
+    cross-env-shell: src/bin/cross-env-shell.js
+  checksum: 26f2f3ea2ab32617f57effb70d329c2070d2f5630adc800985d8b30b56e8bf7f5f439dd3a0358b79cee6f930afc23cf8e23515f17ccfb30092c6b62c6b630a79
+  languageName: node
+  linkType: hard
+
 "cross-fetch@npm:*, cross-fetch@npm:^4.0.0":
   version: 4.0.0
   resolution: "cross-fetch@npm:4.0.0"
@@ -7973,7 +7983,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:
@@ -9596,7 +9606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:*, eslint@npm:^8.56.0":
+"eslint@npm:8.56.0":
   version: 8.56.0
   resolution: "eslint@npm:8.56.0"
   dependencies:
@@ -18427,7 +18437,7 @@ __metadata:
     rimraf: "*"
     typescript: "*"
   peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -19205,7 +19215,6 @@ __metadata:
     "@docusaurus/remark-plugin-npm2yarn": ~2.4.1
     "@docusaurus/theme-common": ~2.4.1
     "@mdx-js/react": 1.6.22
-    "@prettier/sync": "*"
     "@types/react": "*"
     "@types/react-helmet": ^6.1.6
     "@types/react-router-dom": ^5.3.3

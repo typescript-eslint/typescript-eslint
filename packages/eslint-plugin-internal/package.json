@@ -13,7 +13,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@prettier/sync": "*",
+    "@prettier/sync": "^0.5.0",
     "@typescript-eslint/rule-tester": "6.21.0",
     "@typescript-eslint/scope-manager": "6.21.0",
     "@typescript-eslint/type-utils": "6.21.0",

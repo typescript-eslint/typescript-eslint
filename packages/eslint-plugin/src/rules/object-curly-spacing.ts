@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -36,7 +35,6 @@ export default createRule<Options, MessageIds>({
     // eslint-disable-next-line no-restricted-syntax -- Use raw options for extended rules.
     const [firstOption, secondOption] = context.options;
     const spaced = firstOption === 'always';
-    const sourceCode = getSourceCode(context);
 
     /**
      * Determines whether an option is set, relative to the spacing option.
@@ -70,7 +68,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
-      const nextToken = getSourceCode(context).getTokenAfter(token, {
+      const nextToken = context.sourceCode.getTokenAfter(token, {
         includeComments: true,
       })!;
 
@@ -96,7 +94,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSMappedType | TSESTree.TSTypeLiteral,
       token: TSESTree.Token,
     ): void {
-      const previousToken = getSourceCode(context).getTokenBefore(token, {
+      const previousToken = context.sourceCode.getTokenBefore(token, {
         includeComments: true,
       })!;
 
@@ -173,8 +171,8 @@ export default createRule<Options, MessageIds>({
       last: TSESTree.Token,
     ): void {
       if (isTokenOnSameLine(first, second)) {
-        const firstSpaced = sourceCode.isSpaceBetween!(first, second);
-        const secondType = sourceCode.getNodeByRangeIndex(
+        const firstSpaced = context.sourceCode.isSpaceBetween(first, second);
+        const secondType = context.sourceCode.getNodeByRangeIndex(
           second.range[0],
         )!.type;
 
@@ -206,7 +204,7 @@ export default createRule<Options, MessageIds>({
           (options.objectsInObjectsException &&
             isClosingBraceToken(penultimate));
         const penultimateType = shouldCheckPenultimate
-          ? sourceCode.getNodeByRangeIndex(penultimate.range[0])!.type
+          ? context.sourceCode.getNodeByRangeIndex(penultimate.range[0])!.type
           : undefined;
 
         const closingCurlyBraceMustBeSpaced =
@@ -221,7 +219,7 @@ export default createRule<Options, MessageIds>({
             ? !options.spaced
             : options.spaced;
 
-        const lastSpaced = sourceCode.isSpaceBetween!(penultimate, last);
+        const lastSpaced = context.sourceCode.isSpaceBetween(penultimate, last);
 
         if (closingCurlyBraceMustBeSpaced && !lastSpaced) {
           reportRequiredEndingSpace(node, last);
@@ -248,7 +246,10 @@ export default createRule<Options, MessageIds>({
     ): TSESTree.Token | null {
       const lastProperty = node.members[node.members.length - 1];
 
-      return sourceCode.getTokenAfter(lastProperty, isClosingBraceToken);
+      return context.sourceCode.getTokenAfter(
+        lastProperty,
+        isClosingBraceToken,
+      );
     }
 
     //--------------------------------------------------------------------------
@@ -259,12 +260,12 @@ export default createRule<Options, MessageIds>({
     return {
       ...rules,
       TSMappedType(node: TSESTree.TSMappedType): void {
-        const first = sourceCode.getFirstToken(node)!;
-        const last = sourceCode.getLastToken(node)!;
-        const second = sourceCode.getTokenAfter(first, {
+        const first = context.sourceCode.getFirstToken(node)!;
+        const last = context.sourceCode.getLastToken(node)!;
+        const second = context.sourceCode.getTokenAfter(first, {
           includeComments: true,
         })!;
-        const penultimate = sourceCode.getTokenBefore(last, {
+        const penultimate = context.sourceCode.getTokenBefore(last, {
           includeComments: true,
         })!;
 
@@ -275,12 +276,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const first = sourceCode.getFirstToken(node)!;
+        const first = context.sourceCode.getFirstToken(node)!;
         const last = getClosingBraceOfObject(node)!;
-        const second = sourceCode.getTokenAfter(first, {
+        const second = context.sourceCode.getTokenAfter(first, {
           includeComments: true,
         })!;
-        const penultimate = sourceCode.getTokenBefore(last, {
+        const penultimate = context.sourceCode.getTokenBefore(last, {
           includeComments: true,
         })!;
 

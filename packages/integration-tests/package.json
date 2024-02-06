@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "jest": "29.7.0",
     "ncp": "*",
     "tmp": "*"
   }

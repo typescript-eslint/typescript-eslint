@@ -23,7 +23,6 @@
     "@docusaurus/remark-plugin-npm2yarn": "~2.4.1",
     "@docusaurus/theme-common": "~2.4.1",
     "@mdx-js/react": "1.6.22",
-    "@prettier/sync": "*",
     "@typescript-eslint/parser": "6.21.0",
     "@typescript-eslint/website-eslint": "6.21.0",
     "clsx": "^2.0.0",
