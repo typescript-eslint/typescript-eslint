@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getDeclaredVariables } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -133,9 +132,9 @@ export default createRule<Options, MessageIds>({
         }
 
         // reject param is always present in variables declared by executor
-        const rejectVariable = getDeclaredVariables(context, executor).find(
-          variable => variable.identifiers.includes(rejectParamNode),
-        )!;
+        const rejectVariable = context.sourceCode
+          .getDeclaredVariables(executor)
+          .find(variable => variable.identifiers.includes(rejectParamNode))!;
 
         rejectVariable.references.forEach(ref => {
           if (

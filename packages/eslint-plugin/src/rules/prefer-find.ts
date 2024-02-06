@@ -1,11 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
-import type {
-  RuleFix,
-  Scope,
-  SourceCode,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { RuleFix, Scope } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
 
@@ -37,7 +32,7 @@ export default createRule({
   defaultOptions: [],
 
   create(context) {
-    const globalScope = getScope(context);
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -191,12 +186,11 @@ export default createRule({
       fixer: TSESLint.RuleFixer,
       arrayNode: TSESTree.Expression,
       wholeExpressionBeingFlagged: TSESTree.Expression,
-      sourceCode: SourceCode,
     ): RuleFix {
       const tokenToStartDeletingFrom = nullThrows(
         // The next `.` or `[` is what we're looking for.
         // think of (...).at(0) or (...)[0] or even (...)["at"](0).
-        sourceCode.getTokenAfter(
+        context.sourceCode.getTokenAfter(
           arrayNode,
           token => token.value === '.' || token.value === '[',
         ),
@@ -232,7 +226,6 @@ export default createRule({
                 {
                   messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
-                    const sourceCode = getSourceCode(context);
                     return [
                       generateFixToReplaceFilterWithFind(
                         fixer,
@@ -243,7 +236,6 @@ export default createRule({
                         fixer,
                         object,
                         node,
-                        sourceCode,
                       ),
                     ];
                   },
@@ -272,7 +264,6 @@ export default createRule({
                 {
                   messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
-                    const sourceCode = context.sourceCode;
                     return [
                       generateFixToReplaceFilterWithFind(
                         fixer,
@@ -283,7 +274,6 @@ export default createRule({
                         fixer,
                         object,
                         node,
-                        sourceCode,
                       ),
                     ];
                   },

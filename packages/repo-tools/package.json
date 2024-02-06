@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "6.20.0",
+  "version": "6.21.0",
   "private": true,
   "scripts": {
     "//": "NOTE: intentionally no build step in this package",
@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@nx/devkit": "*",
-    "@prettier/sync": "*",
     "cross-fetch": "*",
     "execa": "*",
     "prettier": "^3.0.3",
