@@ -6,7 +6,7 @@ description: 'Enforce typing arguments in .catch() callbacks as unknown.'
 >
 > See **https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable** for documentation.
 
-In the context of exception handling, TypeScript treats the catch variable as `any` by default. However, `unknown` would be a more accurate type, so TypeScript [introduced the `useUnknownInCatchVariables` compiler option](<(https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#defaulting-to-the-unknown-type-in-catch-variables---useunknownincatchvariables)>) to treat the `catch` variable as `unknown` instead.
+In the context of exception handling, TypeScript treats the catch variable as `any` by default. However, `unknown` would be a more accurate type, so TypeScript [introduced the `useUnknownInCatchVariables` compiler option](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#defaulting-to-the-unknown-type-in-catch-variables---useunknownincatchvariables) to treat the `catch` variable as `unknown` instead.
 
 ```ts
 try {
