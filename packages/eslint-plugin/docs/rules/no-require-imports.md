@@ -52,7 +52,8 @@ console.log(require('../package.json').version);
 
 ### `allowAsImport`
 
-A boolean. If it's set to `true`, the require statements with an `import` declaration won't be reported. The default value is `false`. If you want to apply the `no-var-requires` rule, then set it to `true`.
+If it's set to `true`, the require statements with an `import` declaration won't be reported.
+This is useful if you're on an older CommonJS-style codebase and haven't been able to transition to ESM-style imports yet.
 
 With `{allowAsImport: true}`:
 
