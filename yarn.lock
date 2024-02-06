@@ -4792,6 +4792,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/eslint@patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 17.3.1
+  resolution: "@nx/eslint@patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch::version=17.3.1&hash=406746&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nx/devkit": 17.3.1
+    "@nx/js": 17.3.1
+    "@nx/linter": 17.3.1
+    tslib: ^2.3.0
+    typescript: ~5.3.2
+  peerDependencies:
+    eslint: ^8.0.0
+    js-yaml: 4.1.0
+  peerDependenciesMeta:
+    eslint:
+      optional: true
+    js-yaml:
+      optional: true
+  checksum: 6fb0c072953a2a6d64a038590b4dbda134b55f32a1c12d2913a5de91f4208cd9b6dde866c4e15ba8ed6115a69d36f2cbf5cc72a53c8fcdaf96cf2b96060131b2
+  languageName: node
+  linkType: hard
+
 "@nx/jest@npm:17.3.1":
   version: 17.3.1
   resolution: "@nx/jest@npm:17.3.1"

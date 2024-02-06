@@ -413,6 +413,7 @@ export default tseslint.config(
       'packages/eslint-plugin-internal/src/rules/**/*.{ts,tsx,cts,mts}',
       'packages/eslint-plugin-tslint/src/rules/**/*.{ts,tsx,cts,mts}',
       'packages/eslint-plugin/src/configs/**/*.{ts,tsx,cts,mts}',
+      'packages/typescript-eslint/src/configs/**/*.{ts,tsx,cts,mts}',
       'packages/core/src/configs/**/*.{ts,tsx,cts,mts}',
       'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
     ],
