@@ -5,12 +5,8 @@
   "implicitDependencies": [],
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": [
-          "packages/rule-schema-to-typescript-types/**/*.{mts,cts,ts,tsx}"
-        ],
         "ignorePath": ".eslintignore"
       }
     }

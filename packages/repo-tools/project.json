@@ -5,10 +5,8 @@
   "implicitDependencies": [],
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["packages/repo-tools/**/*.{mts,cts,ts,tsx}"],
         "ignorePath": ".eslintignore"
       }
     }

@@ -53,6 +53,7 @@ function getProgramAndAST(
     const fromProjectService = useProgramFromProjectService(
       parseSettings.EXPERIMENTAL_projectService,
       parseSettings,
+      hasFullTypeInformation,
     );
     if (fromProjectService) {
       return fromProjectService;
@@ -158,7 +159,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+let parseAndGenerateServicesCalls: Record<string, number> = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};
@@ -181,7 +182,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   if (
     parseSettings.singleRun &&
     !parseSettings.programs &&
-    parseSettings.projects?.length > 0
+    parseSettings.projects.length > 0
   ) {
     parseSettings.programs = {
       *[Symbol.iterator](): Iterator<ts.Program> {
@@ -207,25 +208,22 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
    */
   const hasFullTypeInformation =
-    parseSettings.programs != null || parseSettings.projects?.length > 0;
+    parseSettings.programs != null || parseSettings.projects.length > 0;
 
-  if (options !== undefined) {
-    if (
-      typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
-        'boolean' &&
-      options.errorOnTypeScriptSyntacticAndSemanticIssues
-    ) {
-      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-    }
+  if (
+    typeof options.errorOnTypeScriptSyntacticAndSemanticIssues === 'boolean' &&
+    options.errorOnTypeScriptSyntacticAndSemanticIssues
+  ) {
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
+  }
 
-    if (
-      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
-      !hasFullTypeInformation
-    ) {
-      throw new Error(
-        'Cannot calculate TypeScript semantic issues without a valid project.',
-      );
-    }
+  if (
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
+    !hasFullTypeInformation
+  ) {
+    throw new Error(
+      'Cannot calculate TypeScript semantic issues without a valid project.',
+    );
   }
 
   /**
@@ -246,7 +244,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     options.filePath &&
     parseAndGenerateServicesCalls[options.filePath] > 1
       ? createIsolatedProgram(parseSettings)
-      : getProgramAndAST(parseSettings, hasFullTypeInformation)!;
+      : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve

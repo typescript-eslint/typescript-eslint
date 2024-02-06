@@ -76,17 +76,17 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 {
   "rules": {
     // disable the rule for all files
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
   },
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": "error"
-      }
-    }
-  ]
+        "@typescript-eslint/explicit-function-return-type": "error",
+      },
+    },
+  ],
 }
 ```
 
@@ -98,7 +98,7 @@ Examples of code for this rule with `{ allowExpressions: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowExpressions": true }'
 function test() {}
 
 const fn = () => {};
@@ -108,7 +108,7 @@ export default () => {};
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowExpressions": true }'
 node.addEventListener('click', () => {});
 
 node.addEventListener('click', function () {});
@@ -124,7 +124,7 @@ Examples of code for this rule with `{ allowTypedFunctionExpressions: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowTypedFunctionExpressions": true }'
 let arrowFn = () => 'test';
 
 let funcExpr = function () {
@@ -138,12 +138,12 @@ let objectProp = {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowTypedFunctionExpressions": true }'
 type FuncType = () => string;
 
 let arrowFn: FuncType = () => 'test';
 
-let funcExpr: FuncType = function() {
+let funcExpr: FuncType = function () {
   return 'test';
 };
 
@@ -163,10 +163,10 @@ let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
 
-declare functionWithArg(arg: () => number);
+declare function functionWithArg(arg: () => number);
 functionWithArg(() => 1);
 
-declare functionWithObjectArg(arg: { method: () => number });
+declare function functionWithObjectArg(arg: { method: () => number });
 functionWithObjectArg({
   method() {
     return 1;
@@ -182,7 +182,7 @@ Examples of code for this rule with `{ allowHigherOrderFunctions: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowHigherOrderFunctions": true }'
 var arrowFn = () => () => {};
 
 function fn() {
@@ -192,7 +192,7 @@ function fn() {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowHigherOrderFunctions": true }'
 var arrowFn = () => (): void => {};
 
 function fn() {
@@ -208,15 +208,15 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 #### ❌ Incorrect
 
-```ts
-const func = (value: number) => ({ type: 'X', value } as any);
-const func = (value: number) => ({ type: 'X', value } as Action);
+```ts option='{ "allowDirectConstAssertionInArrowFunctions": true }'
+const func = (value: number) => ({ type: 'X', value }) as any;
+const func = (value: number) => ({ type: 'X', value }) as Action;
 ```
 
 #### ✅ Correct
 
-```ts
-const func = (value: number) => ({ foo: 'bar', value } as const);
+```ts option='{ "allowDirectConstAssertionInArrowFunctions": true }'
+const func = (value: number) => ({ foo: 'bar', value }) as const;
 const func = () => x as const;
 ```
 
@@ -228,7 +228,7 @@ Examples of code for this rule with `{ allowConciseArrowFunctionExpressionsStart
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowConciseArrowFunctionExpressionsStartingWithVoid": true }'
 var join = (a: string, b: string) => `${a}${b}`;
 
 const log = (message: string) => {
@@ -238,7 +238,7 @@ const log = (message: string) => {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowConciseArrowFunctionExpressionsStartingWithVoid": true }'
 var log = (message: string) => void console.log(message);
 ```
 
@@ -250,7 +250,7 @@ Examples of code for this rule with `{ allowFunctionsWithoutTypeParameters: true
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowFunctionsWithoutTypeParameters": true }'
 function foo<T>(t: T) {
   return t;
 }
@@ -260,14 +260,14 @@ const bar = <T>(t: T) => t;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowFunctionsWithoutTypeParameters": true }'
 function foo<T>(t: T): T {
   return t;
 }
 
 const bar = <T>(t: T): T => t;
 
-const allowedFunction(x: string) {
+function allowedFunction(x: string) {
   return x;
 }
 
@@ -289,19 +289,21 @@ You may pass function/method names you would like this rule to ignore, like so:
 }
 ```
 
-### `allowIIFE`
+### `allowIIFEs`
 
-Examples of code for this rule with `{ allowIIFE: true }`:
+Examples of code for this rule with `{ allowIIFEs: true }`:
+
+<!--tabs-->
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowIIFEs": true }'
 var func = () => 'foo';
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowIIFEs": true }'
 var foo = (() => 'foo')();
 
 var bar = (function () {
@@ -311,8 +313,7 @@ var bar = (function () {
 
 ## When Not To Use It
 
-If you don't wish to prevent calling code from using function return values in unexpected ways, then
-you will not need this rule.
+If you don't find the added cost of explicitly writing function return types to be worth the visual clarity, or your project is not large enough for it to be a factor in type checking performance, then you will not need this rule.
 
 ## Further Reading
 

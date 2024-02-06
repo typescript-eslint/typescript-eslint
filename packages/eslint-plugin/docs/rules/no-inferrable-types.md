@@ -78,7 +78,7 @@ function fn(a = 5, b = true) {}
 
 When set to true, the following pattern is considered valid:
 
-```ts
+```ts option='{ "ignoreParameters": true }' showPlaygroundButton
 function foo(a: number = 5, b: boolean = true) {
   // ...
 }
@@ -88,7 +88,7 @@ function foo(a: number = 5, b: boolean = true) {
 
 When set to true, the following pattern is considered valid:
 
-```ts
+```ts option='{ "ignoreProperties": true }' showPlaygroundButton
 class Foo {
   prop: number = 5;
 }
@@ -96,8 +96,8 @@ class Foo {
 
 ## When Not To Use It
 
-If you do not want to enforce inferred types.
+If you strongly prefer to have explicit types regardless of whether they can be inferred, this rule may not be for you.
 
 ## Further Reading
 
-TypeScript [Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
+- [TpeScript Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)

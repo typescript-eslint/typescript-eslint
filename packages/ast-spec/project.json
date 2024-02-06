@@ -13,10 +13,8 @@
       "outputs": ["{projectRoot}/dist/**/*.ts"]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["packages/ast-spec/**/*.{mts,cts,ts,tsx}"],
         "ignorePath": ".eslintignore"
       }
     }

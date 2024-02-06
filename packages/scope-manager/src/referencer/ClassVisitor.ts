@@ -75,7 +75,7 @@ class ClassVisitor extends Visitor {
     this.visitType(node.typeParameters);
     // then the usages
     this.visitType(node.superTypeArguments);
-    node.implements?.forEach(imp => this.visitType(imp));
+    node.implements.forEach(imp => this.visitType(imp));
 
     this.visit(node.body);
 
@@ -154,10 +154,9 @@ class ClassVisitor extends Visitor {
      *   ) {}
      * }
      */
-    withMethodDecorators =
-      withMethodDecorators ||
-      (methodNode.kind !== 'set' &&
-        node.params.some(param => param.decorators.length));
+    withMethodDecorators ||=
+      methodNode.kind !== 'set' &&
+      node.params.some(param => param.decorators.length);
     if (!withMethodDecorators && methodNode.kind === 'set') {
       const keyName = getLiteralMethodKeyName(methodNode);
 
@@ -192,7 +191,7 @@ class ClassVisitor extends Visitor {
     if (
       !withMethodDecorators &&
       methodNode.kind === 'constructor' &&
-      this.#classNode.decorators
+      this.#classNode.decorators.length
     ) {
       withMethodDecorators = true;
     }
@@ -225,17 +224,7 @@ class ClassVisitor extends Visitor {
     this.visitMetadataType(node.returnType, withMethodDecorators);
     this.visitType(node.typeParameters);
 
-    // In TypeScript there are a number of function-like constructs which have no body,
-    // so check it exists before traversing
-    if (node.body) {
-      // Skip BlockStatement to prevent creating BlockStatement scope.
-      if (node.body.type === AST_NODE_TYPES.BlockStatement) {
-        this.#referencer.visitChildren(node.body);
-      } else {
-        this.#referencer.visit(node.body);
-      }
-    }
-
+    this.#referencer.visitChildren(node.body);
     this.#referencer.close(node);
   }
 

@@ -1,7 +1,15 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  isClosingBraceToken,
+  isFunction,
+  isNotSemicolonToken,
+  isParenthesized,
+  isSemicolonToken,
+  isTokenOnSameLine,
+} from '../util';
 
 /**
  * This rule is a replica of padding-line-between-statements.
@@ -119,9 +127,7 @@ function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
  * @private
  */
 function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
-  return node && node.type === AST_NODE_TYPES.ChainExpression
-    ? node.expression
-    : node;
+  return node.type === AST_NODE_TYPES.ChainExpression ? node.expression : node;
 }
 
 /**
@@ -141,7 +147,7 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
       while (node.type === AST_NODE_TYPES.SequenceExpression) {
         node = node.expressions[node.expressions.length - 1];
       }
-      return util.isFunction(node);
+      return isFunction(node);
     }
   }
   return false;
@@ -155,9 +161,9 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
  */
 function isCJSRequire(node: TSESTree.Node): boolean {
   if (node.type === AST_NODE_TYPES.VariableDeclaration) {
-    const declaration = node.declarations[0];
+    const declaration = node.declarations.at(0);
     if (declaration?.init) {
-      let call = declaration?.init;
+      let call = declaration.init;
       while (call.type === AST_NODE_TYPES.MemberExpression) {
         call = call.object;
       }
@@ -175,8 +181,8 @@ function isCJSRequire(node: TSESTree.Node): boolean {
 /**
  * Checks whether the given node is a block-like statement.
  * This checks the last token of the node is the closing brace of a block.
- * @param sourceCode The source code to get tokens.
  * @param node The node to check.
+ * @param sourceCode The source code to get tokens.
  * @returns `true` if the node is a block-like statement.
  * @private
  */
@@ -201,9 +207,9 @@ function isBlockLikeStatement(
   }
 
   // Checks the last token is a closing brace of blocks.
-  const lastToken = sourceCode.getLastToken(node, util.isNotSemicolonToken);
+  const lastToken = sourceCode.getLastToken(node, isNotSemicolonToken);
   const belongingNode =
-    lastToken && util.isClosingBraceToken(lastToken)
+    lastToken && isClosingBraceToken(lastToken)
       ? sourceCode.getNodeByRangeIndex(lastToken.range[0])
       : null;
 
@@ -226,12 +232,12 @@ function isDirective(
 ): boolean {
   return (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
-    (node.parent?.type === AST_NODE_TYPES.Program ||
-      (node.parent?.type === AST_NODE_TYPES.BlockStatement &&
-        util.isFunction(node.parent.parent))) &&
+    (node.parent.type === AST_NODE_TYPES.Program ||
+      (node.parent.type === AST_NODE_TYPES.BlockStatement &&
+        isFunction(node.parent.parent))) &&
     node.expression.type === AST_NODE_TYPES.Literal &&
     typeof node.expression.value === 'string' &&
-    !util.isParenthesized(node.expression, sourceCode)
+    !isParenthesized(node.expression, sourceCode)
   );
 }
 
@@ -316,8 +322,8 @@ function isExpression(
  *
  *     foo()
  *     ;[1, 2, 3].forEach(bar)
- * @param sourceCode The source code to get tokens.
  * @param node The node to get.
+ * @param sourceCode The source code to get tokens.
  * @returns The actual last token.
  * @private
  */
@@ -332,7 +338,7 @@ function getActualLastToken(
     prevToken &&
     nextToken &&
     prevToken.range[0] >= node.range[0] &&
-    util.isSemicolonToken(semiToken) &&
+    isSemicolonToken(semiToken) &&
     semiToken.loc.start.line !== prevToken.loc.end.line &&
     semiToken.loc.end.line === nextToken.loc.start.line;
 
@@ -400,9 +406,8 @@ function verifyForNever(
       const nextToken = paddingLines[0][1];
       const start = prevToken.range[1];
       const end = nextToken.range[0];
-      const text = context
-        .getSourceCode()
-        .text.slice(start, end)
+      const text = context.sourceCode.text
+        .slice(start, end)
         .replace(PADDING_LINE_SEQUENCE, replacerToRemovePaddingLines);
 
       return fixer.replaceTextRange([start, end], text);
@@ -437,10 +442,9 @@ function verifyForAlways(
     node: nextNode,
     messageId: 'expectedBlankLine',
     fix(fixer) {
-      const sourceCode = context.getSourceCode();
-      let prevToken = getActualLastToken(prevNode, sourceCode)!;
+      let prevToken = getActualLastToken(prevNode, context.sourceCode)!;
       const nextToken =
-        sourceCode.getFirstTokenBetween(prevToken, nextNode, {
+        context.sourceCode.getFirstTokenBetween(prevToken, nextNode, {
           includeComments: true,
 
           /**
@@ -464,14 +468,14 @@ function verifyForAlways(
            * @private
            */
           filter(token) {
-            if (util.isTokenOnSameLine(prevToken, token)) {
+            if (isTokenOnSameLine(prevToken, token)) {
               prevToken = token;
               return false;
             }
             return true;
           },
-        })! || nextNode;
-      const insertText = util.isTokenOnSameLine(prevToken, nextToken)
+        }) ?? nextNode;
+      const insertText = isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';
 
@@ -581,9 +585,11 @@ const StatementTypes: Record<string, NodeTestObject> = {
 // Rule Definition
 //------------------------------------------------------------------------------
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'padding-line-between-statements',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/padding-line-between-statements'],
     type: 'layout',
     docs: {
       description: 'Require or disallow padding lines between statements',
@@ -637,9 +643,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
     // eslint-disable-next-line no-restricted-syntax -- We need all raw options.
-    const configureList = context.options || [];
+    const configureList = context.options;
 
     type Scope = {
       upper: Scope;
@@ -690,7 +695,7 @@ export default util.createRule<Options, MessageIds>({
         return type.some(match.bind(null, innerStatementNode));
       }
 
-      return StatementTypes[type].test(innerStatementNode, sourceCode);
+      return StatementTypes[type].test(innerStatementNode, context.sourceCode);
     }
 
     /**
@@ -729,13 +734,19 @@ export default util.createRule<Options, MessageIds>({
       nextNode: TSESTree.Node,
     ): [TSESTree.Token, TSESTree.Token][] {
       const pairs: [TSESTree.Token, TSESTree.Token][] = [];
-      let prevToken: TSESTree.Token = getActualLastToken(prevNode, sourceCode)!;
+      let prevToken: TSESTree.Token = getActualLastToken(
+        prevNode,
+        context.sourceCode,
+      )!;
 
       if (nextNode.loc.start.line - prevToken.loc.end.line >= 2) {
         do {
-          const token: TSESTree.Token = sourceCode.getTokenAfter(prevToken, {
-            includeComments: true,
-          })!;
+          const token: TSESTree.Token = context.sourceCode.getTokenAfter(
+            prevToken,
+            {
+              includeComments: true,
+            },
+          )!;
 
           if (token.loc.start.line - prevToken.loc.end.line >= 2) {
             pairs.push([prevToken, token]);

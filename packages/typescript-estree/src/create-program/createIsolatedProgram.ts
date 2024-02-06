@@ -9,7 +9,6 @@ import { createDefaultCompilerOptionsFromExtra } from './shared';
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
 
 /**
- * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
 function createIsolatedProgram(
@@ -65,6 +64,7 @@ function createIsolatedProgram(
   const program = ts.createProgram(
     [parseSettings.filePath],
     {
+      jsDocParsingMode: parseSettings.jsDocParsingMode,
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: parseSettings.jsx ? ts.JsxEmit.Preserve : undefined,

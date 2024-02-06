@@ -134,7 +134,7 @@ type RuleConfig =
   | Severity
   | [Severity]
   | [
-      Severiy,
+      Severity,
       // Options is the tuple type from the rule docs
       ...Options,
     ];
@@ -152,6 +152,38 @@ module.exports = {
   },
 };
 ```
+
+## typescript-eslint thinks my variable is never nullish / is `any` / etc., but that is clearly not the case to me
+
+Our type-aware rules almost always trust the type information provided by the TypeScript compiler. Therefore, an easy way to check if our rule is behaving correctly is to inspect the type of the variable in question, such as by hovering over it in your IDE.
+
+If the IDE also shows that the type is never nullish / is `any`, you need to fix the type. A very common case is with the [`no-unnecessary-condition`](/rules/no-unnecessary-condition) rule. Take this code for example:
+
+```ts
+let condition = false;
+
+const f = () => (condition = true);
+f();
+
+if (condition) {
+  //^^^^^^^^^ Unnecessary conditional, value is always falsy.
+}
+```
+
+You can see that the type of `condition` is actually the literal type `false` by hovering over it in your IDE. In this case, typescript-eslint cannot possible know better than TypeScript itself, so you need to fix the report by fixing the type, such as through an assertion (`let condition = false as boolean`).
+
+If the IDE provides different type information from typescript-eslint's report, then make sure that the TypeScript setup used for your IDE, typescript-eslint, and `tsc` are the same: the same TypeScript version, the same type-checking compiler options, and the same files being included in the project. For example, if a type is declared in another file but that file is not included, the type will become `any`, and cause our `no-unsafe-*` rules to report.
+
+## Can I use ESLint's `--cache` with typescript-eslint?
+
+[ESLint's `--cache` option](https://eslint.org/docs/latest/use/command-line-interface#caching) caches on a per-file basis.
+You can use it, but it will only work reliably for untyped rules -- and even then, not always.
+
+Any ESLint rule that checks logic across files, including many rules from `eslint-plugin-import`, creates cross-file dependencies.
+[Typed lint rules](./Typed_Linting.mdx) almost always have dependencies on types across files in practice.
+ESLint's caching doesn't account for those cross-file dependencies.
+
+We don't recommend using `--cache`.
 
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
@@ -219,22 +251,22 @@ For example, you can ban enums (or some variation of) using one of the following
       // ban all enums
       {
         "selector": "TSEnumDeclaration",
-        "message": "My reason for not using any enums at all"
+        "message": "My reason for not using any enums at all",
       },
 
       // ban just const enums
       {
         "selector": "TSEnumDeclaration[const=true]",
-        "message": "My reason for not using const enums"
+        "message": "My reason for not using const enums",
       },
 
       // ban just non-const enums
       {
         "selector": "TSEnumDeclaration:not([const=true])",
-        "message": "My reason for not using non-const enums"
-      }
-    ]
-  }
+        "message": "My reason for not using non-const enums",
+      },
+    ],
+  },
 }
 ```
 
@@ -333,7 +365,11 @@ Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-ass
 If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
 Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
 
-If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try disabling half of them at a time to narrow down which plugin it is.
+If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
+
+- Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
+- Disabling half of them at a time to narrow down which plugin it is
+
 Then make sure each of those plugins has a GitHub issue asking that they release a version supporting typescript-eslint v6.
 
 :::tip

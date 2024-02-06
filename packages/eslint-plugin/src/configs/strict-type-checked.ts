@@ -5,6 +5,8 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
@@ -13,6 +15,7 @@ export = {
     '@typescript-eslint/ban-types': 'error',
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
+    '@typescript-eslint/no-array-delete': 'error',
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
@@ -56,10 +59,13 @@ export = {
     '@typescript-eslint/no-unused-vars': 'error',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
+    '@typescript-eslint/no-useless-template-literals': 'error',
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-includes': 'error',
     '@typescript-eslint/prefer-literal-enum-member': 'error',
+    'prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
@@ -71,4 +77,4 @@ export = {
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
   },
-};
+} satisfies ClassicConfig.Config;

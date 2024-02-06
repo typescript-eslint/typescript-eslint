@@ -16,7 +16,7 @@ Useful when migrating from TSLint to ESLint. Once TSLint has been removed, this 
 
 ### ❌ Incorrect
 
-```js
+```ts
 /* tslint:disable */
 /* tslint:enable */
 /* tslint:disable:rule1 rule2 rule3... */
@@ -28,7 +28,7 @@ someCode(); // tslint:disable-line
 
 ### ✅ Correct
 
-```js
+```ts
 // This is a comment that just happens to mention tslint
 /* This is a multiline comment that just happens to mention tslint */
 someCode(); // This is a comment that just happens to mention tslint
@@ -36,4 +36,4 @@ someCode(); // This is a comment that just happens to mention tslint
 
 ## When Not To Use It
 
-If you are still using TSLint.
+If you are still using TSLint alongside ESLint.

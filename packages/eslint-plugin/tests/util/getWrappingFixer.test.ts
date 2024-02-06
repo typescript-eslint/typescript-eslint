@@ -4,7 +4,16 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, getWrappingFixer } from '../../src/util';
 import { getFixturesRootDir } from '../RuleTester';
 
-const rule = createRule({
+const rootPath = getFixturesRootDir();
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+  },
+});
+
+const voidEverythingRule = createRule({
   name: 'void-everything',
   defaultOptions: [],
   meta: {
@@ -20,14 +29,12 @@ const rule = createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
-
     const report = (node: TSESTree.Node): void => {
       context.report({
         node,
         messageId: 'addVoid',
         fix: getWrappingFixer({
-          sourceCode,
+          sourceCode: context.sourceCode,
           node,
           wrap: code => `void ${code}`,
         }),
@@ -45,16 +52,7 @@ const rule = createRule({
   },
 });
 
-const rootPath = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
-  },
-});
-
-ruleTester.run('getWrappingFixer', rule, {
+ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
   valid: [],
   invalid: [
     // should add parens when inner expression might need them
@@ -96,11 +94,6 @@ ruleTester.run('getWrappingFixer', rule, {
       code: '!wrapMe',
       errors: [{ messageId: 'addVoid' }],
       output: '!(void wrapMe)',
-    },
-    {
-      code: 'wrapMe++',
-      errors: [{ messageId: 'addVoid' }],
-      output: '(void wrapMe)++',
     },
     {
       code: '"wrapMe" + "dontWrap"',
@@ -184,11 +177,6 @@ ruleTester.run('getWrappingFixer', rule, {
       output: 'function* fn() { yield void wrapMe }',
     },
     {
-      code: '() => wrapMe',
-      errors: [{ messageId: 'addVoid' }],
-      output: '() => void wrapMe',
-    },
-    {
       code: 'if (wrapMe) {}',
       errors: [{ messageId: 'addVoid' }],
       output: 'if (void wrapMe) {}',
@@ -204,17 +192,6 @@ ruleTester.run('getWrappingFixer', rule, {
       output: `
         "dontWrap"
         ;(void "wrapMe") + "!"
-      `,
-    },
-    {
-      code: `
-        dontWrap
-        wrapMe++
-      `,
-      errors: [{ messageId: 'addVoid' }],
-      output: `
-        dontWrap
-        ;(void wrapMe)++
       `,
     },
     {
@@ -306,6 +283,66 @@ ruleTester.run('getWrappingFixer', rule, {
           (void wrapMe) ?? f()
         }
       `,
+    },
+  ],
+});
+
+const removeFunctionRule = createRule({
+  name: 'remove-function',
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    fixable: 'code',
+    docs: {
+      description:
+        'Remove function with first arg remaining in random places for test purposes.',
+    },
+    messages: {
+      removeFunction: 'Please remove this function',
+    },
+    schema: [],
+  },
+
+  create(context) {
+    const report = (node: TSESTree.CallExpression): void => {
+      context.report({
+        node,
+        messageId: 'removeFunction',
+        fix: getWrappingFixer({
+          sourceCode: context.sourceCode,
+          node,
+          innerNode: [node.arguments[0]],
+          wrap: code => code,
+        }),
+      });
+    };
+
+    return {
+      'CallExpression[callee.name="fn"]': report,
+    };
+  },
+});
+
+ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
+  valid: [],
+  invalid: [
+    // should add parens when a inner node is a part of return body of node's parent
+    {
+      code: '() => fn({ x: "wrapObject" })',
+      errors: [{ messageId: 'removeFunction' }],
+      output: '() => ({ x: "wrapObject" })',
+    },
+
+    // shouldn't add parens when not necessary
+    {
+      code: 'const a = fn({ x: "wrapObject" })',
+      errors: [{ messageId: 'removeFunction' }],
+      output: 'const a = { x: "wrapObject" }',
+    },
+    {
+      code: '() => fn("string")',
+      errors: [{ messageId: 'removeFunction' }],
+      output: '() => "string"',
     },
   ],
 });

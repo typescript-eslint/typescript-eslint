@@ -1,8 +1,8 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'prefer-namespace-keyword',
   meta: {
     type: 'suggestion',
@@ -20,16 +20,14 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
-
     return {
       TSModuleDeclaration(node): void {
         // Do nothing if the name is a string.
-        if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
+        if (node.id.type === AST_NODE_TYPES.Literal) {
           return;
         }
         // Get tokens of the declaration header.
-        const moduleType = sourceCode.getTokenBefore(node.id);
+        const moduleType = context.sourceCode.getTokenBefore(node.id);
 
         if (
           moduleType &&

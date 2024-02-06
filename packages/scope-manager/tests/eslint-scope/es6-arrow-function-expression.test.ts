@@ -5,7 +5,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 arrow function expression', () => {
   it('materialize scope for arrow function expression', () => {

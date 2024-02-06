@@ -2,9 +2,9 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": false,
-    "rootDir": "."
+    "rootDir": ".",
   },
   "include": ["src", "tests"],
   "exclude": ["tests/fixtures"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "references": [{ "path": "../utils/tsconfig.build.json" }],
 }

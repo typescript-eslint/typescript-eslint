@@ -6,7 +6,7 @@ description: "Require private members to be marked as `readonly` if they're neve
 >
 > See **https://typescript-eslint.io/rules/prefer-readonly** for documentation.
 
-Member variables with the privacy `private` are never permitted to be modified outside of their declaring class.
+Private member variables (whether using the `private` modifier or private `#` fields) are never permitted to be modified outside of their declaring class.
 If that class never modifies their value, they may safely be marked as `readonly`.
 
 This rule reports on private members are marked as `readonly` if they're never modified outside of the constructor.
@@ -22,6 +22,7 @@ class Container {
   // These member variables could be marked as readonly
   private neverModifiedMember = true;
   private onlyModifiedInConstructor: number;
+  #neverModifiedPrivateField = 3;
 
   public constructor(
     onlyModifiedInConstructor: number,
@@ -49,6 +50,13 @@ class Container {
   public mutate() {
     this.modifiedLater = 'mutated';
   }
+
+  // This is modified later on by the class
+  #modifiedLaterPrivateField = 'unchanged';
+
+  public mutatePrivateField() {
+    this.#modifiedLaterPrivateField = 'mutated';
+  }
 }
 ```
 
@@ -60,7 +68,10 @@ You may pass `"onlyInlineLambdas": true` as a rule option within an object to re
 
 ```jsonc
 {
-  "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }]
+  "@typescript-eslint/prefer-readonly": [
+    "error",
+    { "onlyInlineLambdas": true },
+  ],
 }
 ```
 
@@ -70,7 +81,7 @@ Example of code for the `{ "onlyInlineLambdas": true }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "onlyInlineLambdas": true }'
 class Container {
   private onClick = () => {
     /* ... */
@@ -80,8 +91,12 @@ class Container {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "onlyInlineLambdas": true }'
 class Container {
   private neverModifiedPrivate = 'unchanged';
 }
 ```
+
+## When Not To Use It
+
+If you aren't trying to enforce strong immutability guarantees, this rule may be too restrictive for your project.

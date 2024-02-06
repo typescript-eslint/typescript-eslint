@@ -4,6 +4,52 @@
 //   export = rule;
 // }
 
+declare module 'eslint/use-at-your-own-risk' {
+  export interface RuleMap {
+    /* eslint-disable @typescript-eslint/consistent-type-imports -- more concise to use inline imports */
+    'arrow-parens': typeof import('eslint/lib/rules/arrow-parens');
+    'block-spacing': typeof import('eslint/lib/rules/block-spacing');
+    'brace-style': typeof import('eslint/lib/rules/brace-style');
+    'comma-dangle': typeof import('eslint/lib/rules/comma-dangle');
+    'dot-notation': typeof import('eslint/lib/rules/dot-notation');
+    indent: typeof import('eslint/lib/rules/indent');
+    'init-declarations': typeof import('eslint/lib/rules/init-declarations');
+    'key-spacing': typeof import('eslint/lib/rules/key-spacing');
+    'keyword-spacing': typeof import('eslint/lib/rules/keyword-spacing');
+    'lines-around-comment': typeof import('eslint/lib/rules/lines-around-comment');
+    'lines-between-class-members': typeof import('eslint/lib/rules/lines-between-class-members');
+    'max-params': typeof import('eslint/lib/rules/max-params');
+    'no-dupe-args': typeof import('eslint/lib/rules/no-dupe-args');
+    'no-dupe-class-members': typeof import('eslint/lib/rules/no-dupe-class-members');
+    'no-empty-function': typeof import('eslint/lib/rules/no-empty-function');
+    'no-extra-parens': typeof import('eslint/lib/rules/no-extra-parens');
+    'no-extra-semi': typeof import('eslint/lib/rules/no-extra-semi');
+    'no-implicit-globals': typeof import('eslint/lib/rules/no-implicit-globals');
+    'no-invalid-this': typeof import('eslint/lib/rules/no-invalid-this');
+    'no-loop-func': typeof import('eslint/lib/rules/no-loop-func');
+    'no-loss-of-precision': typeof import('eslint/lib/rules/no-loss-of-precision');
+    'no-magic-numbers': typeof import('eslint/lib/rules/no-magic-numbers');
+    'no-restricted-imports': typeof import('eslint/lib/rules/no-restricted-imports');
+    'no-undef': typeof import('eslint/lib/rules/no-undef');
+    'no-unused-expressions': typeof import('eslint/lib/rules/no-unused-expressions');
+    'no-useless-constructor': typeof import('eslint/lib/rules/no-useless-constructor');
+    'no-restricted-globals': typeof import('eslint/lib/rules/no-restricted-globals');
+    'object-curly-spacing': typeof import('eslint/lib/rules/object-curly-spacing');
+    'prefer-const': typeof import('eslint/lib/rules/prefer-const');
+    'prefer-destructuring': typeof import('eslint/lib/rules/prefer-destructuring');
+    quotes: typeof import('eslint/lib/rules/quotes');
+    semi: typeof import('eslint/lib/rules/semi');
+    'space-before-blocks': typeof import('eslint/lib/rules/space-before-blocks');
+    'space-infix-ops': typeof import('eslint/lib/rules/space-infix-ops');
+    strict: typeof import('eslint/lib/rules/strict');
+    /* eslint-enable @typescript-eslint/consistent-type-imports */
+  }
+
+  export const builtinRules: {
+    get<K extends keyof RuleMap>(key: K): RuleMap[K] | undefined;
+  };
+}
+
 declare module 'eslint/lib/rules/arrow-parens' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
@@ -272,6 +318,24 @@ declare module 'eslint/lib/rules/keyword-spacing' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/max-params' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'exceed',
+    (
+      | { max: number; countVoidThis?: boolean }
+      | { maximum: number; countVoidThis?: boolean }
+    )[],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-dupe-class-members' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
@@ -282,12 +346,9 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
       Program(): void;
       ClassBody(): void;
       'ClassBody:exit'(): void;
-      // for ESLint <= v7
-      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
-      // for ESLint v8
-      'MethodDefinition, PropertyDefinition'?: (
+      'MethodDefinition, PropertyDefinition'(
         node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
-      ) => void;
+      ): void;
     }
   >;
   export = rule;
@@ -580,11 +641,6 @@ declare module 'eslint/lib/rules/no-extra-parens' {
       ClassExpression(node: TSESTree.ClassExpression): void;
       ConditionalExpression(node: TSESTree.ConditionalExpression): void;
       DoWhileStatement(node: TSESTree.DoWhileStatement): void;
-      // -- eslint < 7.19.0
-      'ForInStatement, ForOfStatement'(
-        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
-      ): void;
-      // -- eslint >= 7.19.0
       ForInStatement(node: TSESTree.ForInStatement): void;
       ForOfStatement(node: TSESTree.ForOfStatement): void;
       ForStatement(node: TSESTree.ForStatement): void;
@@ -712,19 +768,12 @@ declare module 'eslint/lib/rules/no-extra-semi' {
     {
       EmptyStatement(node: TSESTree.EmptyStatement): void;
       ClassBody(node: TSESTree.ClassBody): void;
-      // for ESLint <= v7
-      MethodDefinition?: (node: TSESTree.MethodDefinition) => void;
-      // for ESLint >= v8 < v8.3.0
-      'MethodDefinition, PropertyDefinition'?: (
-        node: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
-      ) => void;
-      // for ESLint >= v8.3.0
-      'MethodDefinition, PropertyDefinition, StaticBlock'?: (
+      'MethodDefinition, PropertyDefinition, StaticBlock'(
         node:
           | TSESTree.MethodDefinition
           | TSESTree.PropertyDefinition
           | TSESTree.StaticBlock,
-      ) => void;
+      ): void;
     }
   >;
   export = rule;
@@ -816,19 +865,6 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       }?,
     ],
     {
-      // for ESLint < v8.7.0
-      Program?: (node: TSESTree.Program) => void;
-      'Program:exit'?: (node: TSESTree.Program) => void;
-      FunctionDeclaration?: (node: TSESTree.FunctionDeclaration) => void;
-      'FunctionDeclaration:exit'?: (node: TSESTree.FunctionDeclaration) => void;
-      FunctionExpression?: (node: TSESTree.FunctionExpression) => void;
-      'FunctionExpression:exit'?: (node: TSESTree.FunctionExpression) => void;
-
-      // for ESLint >= v8.7.0
-      // We don't use it and we don't have the CodePath types, so comment out it.
-      // onCodePathStart?: (codePath: unknown, node: TSESTree.Node) => void
-      // onCodePathEnd?: (codePath: unknown, node: TSESTree.Node) => void
-
       // Common
       ThisExpression(node: TSESTree.ThisExpression): void;
     }
@@ -966,6 +1002,33 @@ declare module 'eslint/lib/rules/prefer-const' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/prefer-destructuring' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  interface DestructuringTypeConfig {
+    object?: boolean;
+    array?: boolean;
+  }
+  type Option0 =
+    | DestructuringTypeConfig
+    | {
+        VariableDeclarator?: DestructuringTypeConfig;
+        AssignmentExpression?: DestructuringTypeConfig;
+      };
+  interface Option1 {
+    enforceForRenamedProperties?: boolean;
+  }
+  const rule: TSESLint.RuleModule<
+    'preferDestructuring',
+    [Option0, Option1?],
+    {
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/object-curly-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
@@ -1014,6 +1077,13 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
           allowTypeImports?: boolean;
         }[]
       | string[];
+    export type RuleListener =
+      | Record<string, never>
+      | {
+          ImportDeclaration(node: TSESTree.ImportDeclaration): void;
+          ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
+          ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
+        };
   }
 
   interface ObjectOfPathsAndPatterns {
@@ -1031,11 +1101,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
     | 'patterns'
     | 'patternWithCustomMessage',
     rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
-    {
-      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-      ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
-      ExportAllDeclaration(node: TSESTree.ExportAllDeclaration): void;
-    }
+    rule.RuleListener
   >;
   export = rule;
 }

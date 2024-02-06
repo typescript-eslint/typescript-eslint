@@ -2,6 +2,7 @@
 
 import { ESLint as ESLintESLint } from 'eslint';
 
+import type { ClassicConfig } from './Config';
 import type { Linter } from './Linter';
 
 declare class ESLintBase {
@@ -23,7 +24,7 @@ declare class ESLintBase {
    *                 because ESLint cannot handle the overrides setting.
    * @returns The promise that will be fulfilled with a configuration object.
    */
-  calculateConfigForFile(filePath: string): Promise<Linter.Config>;
+  calculateConfigForFile(filePath: string): Promise<Linter.ConfigType>;
   /**
    * This method checks if a given file is ignored by your configuration.
    * @param filePath The path to the file you want to check.
@@ -88,7 +89,7 @@ declare class ESLintBase {
    * @param results The LintResult objects to write.
    * @returns The promise that will be fulfilled after all files are written.
    */
-  static outputFixes(results: ESLint.LintResult): Promise<void>;
+  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
   /**
    * The version text.
    */
@@ -107,7 +108,7 @@ namespace ESLint {
      * You can use this option to define the default settings that will be used if your configuration files don't
      * configure it.
      */
-    baseConfig?: Linter.Config | null;
+    baseConfig?: Linter.ConfigType | null;
     /**
      * If true is present, the eslint.lintFiles() method caches lint results and uses it if each target file is not
      * changed. Please mind that ESLint doesn't clear the cache when you upgrade ESLint plugins. In that case, you have
@@ -164,7 +165,7 @@ namespace ESLint {
      * Configuration object, overrides all configurations used with this instance.
      * You can use this option to define the settings that will be used even if your configuration files configure it.
      */
-    overrideConfig?: Linter.ConfigOverride | null;
+    overrideConfig?: ClassicConfig.ConfigOverride | null;
     /**
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.
@@ -219,9 +220,8 @@ namespace ESLint {
     errorCount: number;
     /**
      * The number of fatal errors.
-     * @since 7.32.0
      */
-    fatalErrorCount?: number;
+    fatalErrorCount: number;
     /**
      * The absolute path to the file of this result. This is the string "<text>" if the file path is unknown (when you
      * didn't pass the options.filePath option to the eslint.lintText() method).
@@ -250,10 +250,8 @@ namespace ESLint {
     source?: string;
     /**
      * The array of SuppressedLintMessage objects.
-     *
-     * @since 8.8.0
      */
-    suppressedMessages?: SuppressedLintMessage[];
+    suppressedMessages: SuppressedLintMessage[];
     /**
      * The information about the deprecated rules that were used to check this file.
      */
@@ -296,7 +294,6 @@ namespace ESLint {
     endLine: number | undefined;
     /**
      * `true` if this is a fatal error unrelated to a rule, like a parsing error.
-     * @since 7.24.0
      */
     fatal?: boolean | undefined;
     /**
@@ -383,24 +380,12 @@ namespace ESLint {
   }
 }
 
-// We want to export this class always so it's easy for end users to consume.
-// However on ESLint v6, this class will not exist, so we provide a fallback to make it clear
-// The only users of this should be users scripting ESLint locally, so _they_ should have the correct version installed.
-const _ESLint = (ESLintESLint ??
-  function (): void {
-    throw new Error(
-      'Attempted to construct an ESLint instance on less than ESLint v7.0.0',
-    );
-  }) as typeof ESLintBase;
-
 /**
  * The ESLint class is the primary class to use in Node.js applications.
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
- *
- * @since 7.0.0
  */
-class ESLint extends _ESLint {}
+class ESLint extends (ESLintESLint as typeof ESLintBase) {}
 
 export { ESLint };

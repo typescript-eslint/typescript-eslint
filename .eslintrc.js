@@ -10,6 +10,7 @@ module.exports = {
     'eslint-plugin',
     'import',
     'jest',
+    'jsdoc',
     'simple-import-sort',
     'unicorn',
   ],
@@ -20,12 +21,17 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
-    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:jsdoc/recommended-typescript-error',
+    'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
-    // TODO: consider enabling strict-type-checked
   ],
   parserOptions: {
-    sourceType: 'module',
+    allowAutomaticSingleRunInference: true,
+    cacheLifetime: {
+      // we pretty well never create/change tsconfig structure - so no need to ever evict the cache
+      // in the rare case that we do - just need to manually restart their IDE.
+      glob: 'Infinity',
+    },
     project: [
       './tsconfig.eslint.json',
       './packages/*/tsconfig.json',
@@ -39,23 +45,11 @@ module.exports = {
       './packages/scope-manager/tsconfig.build.json',
       './packages/scope-manager/tsconfig.spec.json',
     ],
-    allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
-    warnOnUnsupportedTypeScriptVersion: false,
-    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
-    cacheLifetime: {
-      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
-      // in the rare case that we do - just need to manually restart their IDE.
-      glob: 'Infinity',
-    },
   },
   rules: {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
-
-    // TODO(#7138): Investigate enabling these soon ✨
-    '@typescript-eslint/consistent-indexed-object-style': 'off',
-    '@typescript-eslint/prefer-nullish-coalescing': 'off',
 
     // TODO(#7130): Investigate changing these in or removing these from presets
     '@typescript-eslint/no-confusing-void-expression': 'off',
@@ -85,7 +79,18 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    'no-constant-condition': 'off',
+    '@typescript-eslint/no-unnecessary-condition': [
+      'error',
+      { allowConstantLoopConditions: true },
+    ],
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/prefer-literal-enum-member': [
+      'error',
+      {
+        allowBitwiseExpressions: true,
+      },
+    ],
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/restrict-template-expressions': [
       'error',
@@ -100,6 +105,13 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
+    '@typescript-eslint/prefer-nullish-coalescing': [
+      'error',
+      {
+        ignoreConditionalTests: true,
+        ignorePrimitives: true,
+      },
     ],
 
     //
@@ -122,6 +134,8 @@ module.exports = {
         null: 'never',
       },
     ],
+    'logical-assignment-operators': 'error',
+    'no-else-return': 'error',
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
@@ -129,6 +143,7 @@ module.exports = {
       'error',
       { commentPattern: '.*intentional fallthrough.*' },
     ],
+    'one-var': ['error', 'never'],
 
     //
     // eslint-plugin-eslint-comment
@@ -204,7 +219,24 @@ module.exports = {
     // enforce a sort order across the codebase
     'simple-import-sort/imports': 'error',
 
-    'one-var': ['error', 'never'],
+    //
+    // eslint-plugin-jsdoc
+    //
+
+    // We often use @remarks or other ad-hoc tag names
+    'jsdoc/check-tag-names': 'off',
+    // https://github.com/gajus/eslint-plugin-jsdoc/issues/1169
+    'jsdoc/check-param-names': 'off',
+    // https://github.com/gajus/eslint-plugin-jsdoc/issues/1175
+    'jsdoc/require-jsdoc': 'off',
+    'jsdoc/require-param': 'off',
+    'jsdoc/require-returns': 'off',
+    'jsdoc/require-yields': 'off',
+    'jsdoc/tag-lines': 'off',
+
+    //
+    // eslint-plugin-unicorn
+    //
 
     'unicorn/no-typeof-undefined': 'error',
   },

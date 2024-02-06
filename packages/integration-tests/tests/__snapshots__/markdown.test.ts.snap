@@ -19,6 +19,22 @@ exports[`markdown should lint successfully 1`] = `
         "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
+        "suggestions": [
+          {
+            "data": {
+              "propertyName": "log",
+            },
+            "desc": "Remove the console.log().",
+            "fix": {
+              "range": [
+                54,
+                74,
+              ],
+              "text": "",
+            },
+            "messageId": "removeConsole",
+          },
+        ],
       },
       {
         "column": 20,
@@ -65,6 +81,22 @@ exports[`markdown should lint successfully 1`] = `
         "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
+        "suggestions": [
+          {
+            "data": {
+              "propertyName": "log",
+            },
+            "desc": "Remove the console.log().",
+            "fix": {
+              "range": [
+                59,
+                79,
+              ],
+              "text": "",
+            },
+            "messageId": "removeConsole",
+          },
+        ],
       },
       {
         "column": 3,
@@ -76,6 +108,22 @@ exports[`markdown should lint successfully 1`] = `
         "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
+        "suggestions": [
+          {
+            "data": {
+              "propertyName": "log",
+            },
+            "desc": "Remove the console.log().",
+            "fix": {
+              "range": [
+                19,
+                39,
+              ],
+              "text": "",
+            },
+            "messageId": "removeConsole",
+          },
+        ],
       },
       {
         "column": 17,
@@ -122,6 +170,22 @@ exports[`markdown should lint successfully 1`] = `
         "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
+        "suggestions": [
+          {
+            "data": {
+              "propertyName": "log",
+            },
+            "desc": "Remove the console.log().",
+            "fix": {
+              "range": [
+                24,
+                44,
+              ],
+              "text": "",
+            },
+            "messageId": "removeConsole",
+          },
+        ],
       },
       {
         "column": 17,
@@ -168,6 +232,22 @@ exports[`markdown should lint successfully 1`] = `
         "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
+        "suggestions": [
+          {
+            "data": {
+              "propertyName": "log",
+            },
+            "desc": "Remove the console.log().",
+            "fix": {
+              "range": [
+                24,
+                44,
+              ],
+              "text": "",
+            },
+            "messageId": "removeConsole",
+          },
+        ],
       },
       {
         "column": 17,
@@ -214,6 +294,22 @@ exports[`markdown should lint successfully 1`] = `
         "nodeType": "MemberExpression",
         "ruleId": "no-console",
         "severity": 2,
+        "suggestions": [
+          {
+            "data": {
+              "propertyName": "log",
+            },
+            "desc": "Remove the console.log().",
+            "fix": {
+              "range": [
+                24,
+                44,
+              ],
+              "text": "",
+            },
+            "messageId": "removeConsole",
+          },
+        ],
       },
     ],
     "source": "Some extra text to verify that the markdown plugin is ignoring anything that is not a code block.
@@ -227,11 +323,11 @@ function MyComp() {
   console.log('test');
   return (
     <div>
-      <Button type=\"primary\">Primary</Button>
+      <Button type="primary">Primary</Button>
       <Button>Default</Button>
-      <Button type=\"dashed\">Dashed</Button>
-      <Button type=\"danger\">Danger</Button>
-      <Button type=\"link\">Link</Button>
+      <Button type="dashed">Dashed</Button>
+      <Button type="danger">Danger</Button>
+      <Button type="link">Link</Button>
     </div>
   );
 }
@@ -247,11 +343,11 @@ function MyComp(): any {
   console.log('test');
   return (
     <div>
-      <Button type=\"primary\">Primary</Button>
+      <Button type="primary">Primary</Button>
       <Button>Default</Button>
-      <Button type=\"dashed\">Dashed</Button>
-      <Button type=\"danger\">Danger</Button>
-      <Button type=\"link\">Link</Button>
+      <Button type="dashed">Dashed</Button>
+      <Button type="danger">Danger</Button>
+      <Button type="link">Link</Button>
     </div>
   );
 }

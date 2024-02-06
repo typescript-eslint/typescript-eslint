@@ -62,7 +62,7 @@ function ConfigEditorField({
         {item.label && <br />}
         {item.label && <span> {item.label}</span>}
       </span>
-      {(item.type === 'boolean' && (
+      {item.type === 'boolean' ? (
         <Checkbox
           name={`config_${item.key}`}
           value={item.key}
@@ -72,15 +72,16 @@ function ConfigEditorField({
             onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
           }
         />
-      )) ||
-        (item.type === 'string' && item.enum && (
+      ) : (
+        item.enum && (
           <Dropdown
             name={`config_${item.key}`}
             value={String(value)}
             options={item.enum}
             onChange={(value): void => onChange(item.key, value)}
           />
-        ))}
+        )
+      )}
     </label>
   );
 }
@@ -101,6 +102,8 @@ function ConfigEditor({
     (name: string, value: unknown): void => {
       const newConfig = { ...values };
       if (value === '' || value == null) {
+        // Filter out falsy values from the new config
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete newConfig[name];
       } else {
         newConfig[name] = value;

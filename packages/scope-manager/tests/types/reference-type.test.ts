@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { getSpecificNode, parseAndAnalyze } from '../util';
+import { getSpecificNode, parseAndAnalyze } from '../test-utils';
 
 describe('referencing a type - positive', () => {
   it('records a reference when a type is referenced from a type', () => {
@@ -21,7 +21,7 @@ describe('referencing a type - positive', () => {
       AST_NODE_TYPES.TSTypeAliasDeclaration,
       n => n.id.name === 'OtherType',
     );
-    expect(variable.references[0].identifier.parent?.parent).toBe(
+    expect(variable.references[0].identifier.parent.parent).toBe(
       referencingNode,
     );
   });
@@ -39,7 +39,7 @@ describe('referencing a type - positive', () => {
       ast,
       AST_NODE_TYPES.TSTypeAliasDeclaration,
     );
-    expect(variable.references[0].identifier.parent?.parent).toBe(
+    expect(variable.references[0].identifier.parent.parent).toBe(
       referencingNode,
     );
   });
@@ -87,7 +87,7 @@ describe('referencing a type - positive', () => {
       AST_NODE_TYPES.TSTypeAliasDeclaration,
       n => n.id.name === 'reference1',
     );
-    expect(variable.references[1].identifier.parent?.parent).toBe(
+    expect(variable.references[1].identifier.parent.parent).toBe(
       referencingTypeNode,
     );
     // third ref is the variable reference
@@ -141,7 +141,7 @@ describe('referencing a type - positive', () => {
       ast,
       AST_NODE_TYPES.TSTypeAliasDeclaration,
     );
-    expect(variable.references[1].identifier.parent?.parent).toBe(
+    expect(variable.references[1].identifier.parent.parent).toBe(
       referencingNode,
     );
   });

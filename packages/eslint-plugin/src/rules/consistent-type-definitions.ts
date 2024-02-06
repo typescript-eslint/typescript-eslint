@@ -1,9 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'consistent-type-definitions',
   meta: {
     type: 'suggestion',
@@ -26,15 +26,15 @@ export default util.createRule({
   },
   defaultOptions: ['interface'],
   create(context, [option]) {
-    const sourceCode = context.getSourceCode();
-
     /**
      * Iterates from the highest parent to the currently traversed node
      * to determine whether any node in tree is globally declared module declaration
      */
-    function isCurrentlyTraversedNodeWithinModuleDeclaration(): boolean {
-      return context
-        .getAncestors()
+    function isCurrentlyTraversedNodeWithinModuleDeclaration(
+      node: TSESTree.Node,
+    ): boolean {
+      return context.sourceCode
+        .getAncestors(node)
         .some(
           node =>
             node.type === AST_NODE_TYPES.TSModuleDeclaration &&
@@ -55,7 +55,7 @@ export default util.createRule({
               const typeNode = node.typeParameters ?? node.id;
               const fixes: TSESLint.RuleFix[] = [];
 
-              const firstToken = sourceCode.getTokenBefore(node.id);
+              const firstToken = context.sourceCode.getTokenBefore(node.id);
               if (firstToken) {
                 fixes.push(fixer.replaceText(firstToken, 'interface'));
                 fixes.push(
@@ -66,7 +66,9 @@ export default util.createRule({
                 );
               }
 
-              const afterToken = sourceCode.getTokenAfter(node.typeAnnotation);
+              const afterToken = context.sourceCode.getTokenAfter(
+                node.typeAnnotation,
+              );
               if (
                 afterToken &&
                 afterToken.type === AST_TOKEN_TYPES.Punctuator &&
@@ -82,13 +84,13 @@ export default util.createRule({
       }),
       ...(option === 'type' && {
         TSInterfaceDeclaration(node): void {
-          const fix = isCurrentlyTraversedNodeWithinModuleDeclaration()
+          const fix = isCurrentlyTraversedNodeWithinModuleDeclaration(node)
             ? null
             : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
                 const typeNode = node.typeParameters ?? node.id;
                 const fixes: TSESLint.RuleFix[] = [];
 
-                const firstToken = sourceCode.getTokenBefore(node.id);
+                const firstToken = context.sourceCode.getTokenBefore(node.id);
                 if (firstToken) {
                   fixes.push(fixer.replaceText(firstToken, 'type'));
                   fixes.push(
@@ -99,17 +101,15 @@ export default util.createRule({
                   );
                 }
 
-                if (node.extends) {
-                  node.extends.forEach(heritage => {
-                    const typeIdentifier = sourceCode.getText(heritage);
-                    fixes.push(
-                      fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
-                    );
-                  });
-                }
+                node.extends.forEach(heritage => {
+                  const typeIdentifier = context.sourceCode.getText(heritage);
+                  fixes.push(
+                    fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
+                  );
+                });
 
                 if (
-                  node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+                  node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
                 ) {
                   fixes.push(
                     fixer.removeRange([node.parent.range[0], node.range[0]]),

@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, getStaticStringValue } from '../util';
 
 type Options = ['fields' | 'getters'];
 type MessageIds =
@@ -40,7 +40,7 @@ const isSupportedLiteral = (
   return false;
 };
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'class-literal-property-style',
   meta: {
     type: 'problem',
@@ -65,6 +65,12 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
+    function getMethodName(node: TSESTree.MethodDefinition): string {
+      return (
+        getStaticStringValue(node.key) ?? context.sourceCode.getText(node.key)
+      );
+    }
+
     return {
       ...(style === 'fields' && {
         MethodDefinition(node): void {
@@ -88,6 +94,21 @@ export default util.createRule<Options, MessageIds>({
             return;
           }
 
+          const name = getMethodName(node);
+
+          if (node.parent.type === AST_NODE_TYPES.ClassBody) {
+            const hasDuplicateKeySetter = node.parent.body.some(element => {
+              return (
+                element.type === AST_NODE_TYPES.MethodDefinition &&
+                element.kind === 'set' &&
+                getMethodName(element) === name
+              );
+            });
+            if (hasDuplicateKeySetter) {
+              return;
+            }
+          }
+
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
@@ -95,14 +116,13 @@ export default util.createRule<Options, MessageIds>({
               {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = context.getSourceCode();
-                  const name = sourceCode.getText(node.key);
+                  const name = context.sourceCode.getText(node.key);
 
                   let text = '';
 
                   text += printNodeModifiers(node, 'readonly');
                   text += node.computed ? `[${name}]` : name;
-                  text += ` = ${sourceCode.getText(argument)};`;
+                  text += ` = ${context.sourceCode.getText(argument)};`;
 
                   return fixer.replaceText(node, text);
                 },
@@ -130,14 +150,13 @@ export default util.createRule<Options, MessageIds>({
               {
                 messageId: 'preferGetterStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = context.getSourceCode();
-                  const name = sourceCode.getText(node.key);
+                  const name = context.sourceCode.getText(node.key);
 
                   let text = '';
 
                   text += printNodeModifiers(node, 'get');
                   text += node.computed ? `[${name}]` : name;
-                  text += `() { return ${sourceCode.getText(value)}; }`;
+                  text += `() { return ${context.sourceCode.getText(value)}; }`;
 
                   return fixer.replaceText(node, text);
                 },

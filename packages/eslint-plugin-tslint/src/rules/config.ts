@@ -119,8 +119,7 @@ export default createRule<Options, MessageIds>({
     context,
     [{ rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile }],
   ) {
-    const fileName = path.resolve(context.getCwd(), context.getFilename());
-    const sourceCode = context.getSourceCode().text;
+    const fileName = path.resolve(context.cwd, context.filename);
     const services = ESLintUtils.getParserServices(context);
     const program = services.program;
 
@@ -139,14 +138,14 @@ export default createRule<Options, MessageIds>({
       tslintRules,
       tslintRulesDirectory,
     );
-    tslint.lint(fileName, sourceCode, configuration);
+    tslint.lint(fileName, context.sourceCode.text, configuration);
 
     const result = tslint.getResult();
 
     /**
      * Format the TSLint results for ESLint
      */
-    if (result.failures?.length) {
+    if (result.failures.length) {
       result.failures.forEach(failure => {
         const start = failure.getStartPosition().getLineAndCharacter();
         const end = failure.getEndPosition().getLineAndCharacter();
@@ -177,11 +176,11 @@ export default createRule<Options, MessageIds>({
                   ),
                 )
               : replacements !== undefined
-              ? fixer.replaceTextRange(
-                  [replacements.start, replacements.end],
-                  replacements.text,
-                )
-              : [];
+                ? fixer.replaceTextRange(
+                    [replacements.start, replacements.end],
+                    replacements.text,
+                  )
+                : [];
           },
         });
       });

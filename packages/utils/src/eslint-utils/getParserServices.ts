@@ -3,10 +3,15 @@ import type {
   ParserServices,
   ParserServicesWithTypeInformation,
 } from '../ts-estree';
+import { parserPathSeemsToBeTSESLint } from './parserPathSeemsToBeTSESLint';
 
-const ERROR_MESSAGE =
+const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
 
+const ERROR_MESSAGE_UNKNOWN_PARSER =
+  'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.';
+
+/* eslint-disable @typescript-eslint/unified-signatures */
 /**
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
@@ -66,22 +71,34 @@ function getParserServices(
   // This check allows us to handle bad user setups whilst providing a nice user-facing
   // error message explaining the problem.
   if (
-    context.parserServices?.esTreeNodeToTSNodeMap == null ||
-    context.parserServices.tsNodeToESTreeNodeMap == null
+    context.sourceCode.parserServices?.esTreeNodeToTSNodeMap == null ||
+    context.sourceCode.parserServices.tsNodeToESTreeNodeMap == null
   ) {
-    throw new Error(ERROR_MESSAGE);
+    throwError(context.parserPath);
   }
 
   // if a rule requires full type information, then hard fail if it doesn't exist
   // this forces the user to supply parserOptions.project
   if (
-    context.parserServices.program == null &&
+    context.sourceCode.parserServices.program == null &&
     !allowWithoutFullTypeInformation
   ) {
-    throw new Error(ERROR_MESSAGE);
+    throwError(context.parserPath);
   }
 
-  return context.parserServices;
+  return context.sourceCode.parserServices as ParserServices;
+}
+/* eslint-enable @typescript-eslint/unified-signatures */
+
+function throwError(parserPath: string): never {
+  throw new Error(
+    parserPathSeemsToBeTSESLint(parserPath)
+      ? ERROR_MESSAGE_REQUIRES_PARSER_SERVICES
+      : [
+          ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
+          ERROR_MESSAGE_UNKNOWN_PARSER,
+        ].join('\n'),
+  );
 }
 
 export { getParserServices };

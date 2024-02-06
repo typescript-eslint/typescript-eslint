@@ -1,3 +1,4 @@
+import { parseForESLint } from '@typescript-eslint/parser';
 import fs from 'fs';
 import { marked } from 'marked';
 import path from 'path';
@@ -8,13 +9,20 @@ import rules from '../src/rules';
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
 
-function parseMarkdownFile(filePath: string): marked.TokensList {
-  const file = fs.readFileSync(filePath, 'utf-8');
+interface ParsedMarkdownFile {
+  fullText: string;
+  tokens: marked.TokensList;
+}
 
-  return marked.lexer(file, {
+function parseMarkdownFile(filePath: string): ParsedMarkdownFile {
+  const fullText = fs.readFileSync(filePath, 'utf-8');
+
+  const tokens = marked.lexer(fullText, {
     gfm: true,
     silent: false,
   });
+
+  return { fullText, tokens };
 }
 
 type TokenType = marked.Token['type'];
@@ -42,10 +50,15 @@ describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
-    // these rule docs were left behind on purpose for legacy reasons
+    // These rule docs were left behind on purpose for legacy reasons. See the
+    // comments in the files for more information.
     'camelcase.md',
     'no-duplicate-imports.md',
+    'no-parameter-properties.md',
   ]);
+
+  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
       .readdirSync(docsRoot)
@@ -62,7 +75,7 @@ describe('Validating rule docs', () => {
 
     describe(`${ruleName}.md`, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
-      const tokens = parseMarkdownFile(filePath);
+      const { fullText, tokens } = parseMarkdownFile(filePath);
 
       test(`${ruleName}.md must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
@@ -90,16 +103,21 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`headers must be title-cased`, () => {
-        // Get all H2 headers objects as the other levels are variable by design.
-        const headers = tokens.filter(tokenIsH2);
+      test(`headings must be title-cased`, () => {
+        // Get all H2 headings objects as the other levels are variable by design.
+        const headings = tokens.filter(tokenIsH2);
 
-        headers.forEach(header =>
-          expect(header.text).toBe(titleCase(header.text)),
+        headings.forEach(heading =>
+          expect(heading.text).toBe(titleCase(heading.text)),
         );
       });
 
+      const headings = tokens.filter(tokenIsHeading);
+
+      const requiredHeadings = ['When Not To Use It'];
+
       const importantHeadings = new Set([
+        ...requiredHeadings,
         'How to Use',
         'Options',
         'Related To',
@@ -107,11 +125,85 @@ describe('Validating rule docs', () => {
       ]);
 
       test('important headings must be h2s', () => {
-        const headers = tokens.filter(tokenIsHeading);
+        for (const heading of headings) {
+          if (importantHeadings.has(heading.raw.replace(/#/g, '').trim())) {
+            expect(heading.depth).toBe(2);
+          }
+        }
+      });
 
-        for (const header of headers) {
-          if (importantHeadings.has(header.raw.replace(/#/g, '').trim())) {
-            expect(header.depth).toBe(2);
+      if (!rules[ruleName as keyof typeof rules].meta.docs?.extendsBaseRule) {
+        test('must include required headings', () => {
+          const headingTexts = new Set(
+            tokens.filter(tokenIsH2).map(token => token.text),
+          );
+
+          for (const requiredHeading of requiredHeadings) {
+            const omissionComment = `<!-- Intentionally Omitted: ${requiredHeading} -->`;
+
+            if (
+              !headingTexts.has(requiredHeading) &&
+              !fullText.includes(omissionComment)
+            ) {
+              throw new Error(
+                `Expected a '${requiredHeading}' heading or comment like ${omissionComment}.`,
+              );
+            }
+          }
+        });
+      }
+
+      const { schema } = rule.meta;
+      if (
+        !rulesWithComplexOptions.has(ruleName) &&
+        Array.isArray(schema) &&
+        !rule.meta.docs?.extendsBaseRule &&
+        rule.meta.type !== 'layout'
+      ) {
+        test('each rule option should be mentioned in a heading', () => {
+          const headingTextAfterOptions = headings
+            .slice(headings.findIndex(header => header.text === 'Options'))
+            .map(header => header.text)
+            .join('\n');
+
+          for (const schemaItem of schema) {
+            if (schemaItem.type === 'object') {
+              for (const property of Object.keys(
+                schemaItem.properties as object,
+              )) {
+                if (!headingTextAfterOptions.includes(`\`${property}\``)) {
+                  throw new Error(
+                    `At least one header should include \`${property}\`.`,
+                  );
+                }
+              }
+            }
+          }
+        });
+      }
+
+      test('must include only valid code samples', () => {
+        for (const token of tokens) {
+          if (token.type !== 'code') {
+            continue;
+          }
+
+          const lang = token.lang?.trim();
+          if (!lang || !/^tsx?\b/i.test(lang)) {
+            continue;
+          }
+
+          try {
+            parseForESLint(token.text, {
+              ecmaFeatures: {
+                jsx: /^tsx\b/i.test(lang),
+              },
+              ecmaVersion: 'latest',
+              sourceType: 'module',
+              range: true,
+            });
+          } catch {
+            throw new Error(`Parsing error:\n\n${token.text}`);
           }
         }
       });
@@ -129,7 +221,7 @@ describe('Validating rule metadata', () => {
   }
 
   for (const [ruleName, rule] of rulesData) {
-    describe(`${ruleName}`, () => {
+    describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url

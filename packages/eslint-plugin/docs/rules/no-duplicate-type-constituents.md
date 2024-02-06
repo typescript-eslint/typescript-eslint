@@ -10,8 +10,6 @@ TypeScript supports types ("constituents") within union and intersection types b
 However, developers typically expect each constituent to be unique within its intersection or union.
 Duplicate values make the code overly verbose and generally reduce readability.
 
-## Rule Details
-
 This rule disallows duplicate union or intersection constituents.
 We consider types to be duplicate if they evaluate to the same result in the type system.
 For example, given `type A = string` and `type T = string | A`, this rule would flag that `A` is the same type as `string`.
@@ -59,3 +57,10 @@ When set to true, duplicate checks on intersection type constituents are ignored
 ### `ignoreUnions`
 
 When set to true, duplicate checks on union type constituents are ignored.
+
+## When Not To Use It
+
+It can sometimes be useful for the sake of documentation to include aliases for the same type.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+> In some of those cases, [branded types](https://basarat.gitbook.io/typescript/main-1/nominaltyping#using-interfaces) might be a type-safe way to represent the underlying data types.

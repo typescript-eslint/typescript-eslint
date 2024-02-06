@@ -6,10 +6,6 @@ description: 'Require or disallow an empty line between class members.'
 >
 > See **https://typescript-eslint.io/rules/lines-between-class-members** for documentation.
 
-This rule improves readability by enforcing lines between class members. It will not check empty lines before the first member and after the last member. This rule will require or disallow an empty line between class members.
-
-## Examples
-
 This rule extends the base [`eslint/lines-between-class-members`](https://eslint.org/docs/rules/lines-between-class-members) rule.
 It adds support for ignoring overload methods in a class.
 
@@ -28,9 +24,7 @@ In addition to the options supported by the `lines-between-class-members` rule i
 
 Examples of **correct** code for the `{ "exceptAfterOverload": true }` option:
 
-```ts
-/*eslint @typescript-eslint/lines-between-class-members: ["error", "always", { "exceptAfterOverload": true }]*/
-
+```ts option='"always", { "exceptAfterOverload": true }' showPlaygroundButton
 class foo {
   bar(a: string): void;
   bar(a: string, b: string): void;
@@ -46,9 +40,7 @@ class foo {
 
 Examples of **correct** code for the `{ "exceptAfterOverload": false }` option:
 
-```ts
-/*eslint @typescript-eslint/lines-between-class-members: ["error", "always", { "exceptAfterOverload": false }]*/
-
+```ts option='"always", { "exceptAfterOverload": false }' showPlaygroundButton
 class foo {
   bar(a: string): void;
 

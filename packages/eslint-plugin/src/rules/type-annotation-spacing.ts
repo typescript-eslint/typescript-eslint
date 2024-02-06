@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
 import {
+  createRule,
   isClassOrTypeElement,
   isFunction,
   isFunctionOrFunctionType,
@@ -48,21 +48,21 @@ function createRules(options?: Config): WhitespaceRules {
   const colon = {
     ...{ before: false, after: true },
     ...globals,
-    ...override?.colon,
+    ...override.colon,
   };
   const arrow = {
     ...{ before: true, after: true },
     ...globals,
-    ...override?.arrow,
+    ...override.arrow,
   };
 
   return {
     colon: colon,
     arrow: arrow,
-    variable: { ...colon, ...override?.variable },
-    property: { ...colon, ...override?.property },
-    parameter: { ...colon, ...override?.parameter },
-    returnType: { ...colon, ...override?.returnType },
+    variable: { ...colon, ...override.variable },
+    property: { ...colon, ...override.property },
+    parameter: { ...colon, ...override.parameter },
+    returnType: { ...colon, ...override.returnType },
   };
 }
 
@@ -76,16 +76,15 @@ function getIdentifierRules(
     return rules.variable;
   } else if (isFunctionOrFunctionType(scope)) {
     return rules.parameter;
-  } else {
-    return rules.colon;
   }
+  return rules.colon;
 }
 
 function getRules(
   rules: WhitespaceRules,
   node: TSESTree.TypeNode,
 ): WhitespaceRule {
-  const scope = node?.parent?.parent;
+  const scope = node.parent.parent;
 
   if (isTSFunctionType(scope) || isTSConstructorType(scope)) {
     return rules.arrow;
@@ -95,14 +94,15 @@ function getRules(
     return rules.property;
   } else if (isFunction(scope)) {
     return rules.returnType;
-  } else {
-    return rules.colon;
   }
+  return rules.colon;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'type-annotation-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/type-annotation-spacing'],
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',
@@ -156,7 +156,6 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const punctuators = [':', '=>'];
-    const sourceCode = context.getSourceCode();
 
     const ruleSet = createRules(options);
 
@@ -168,9 +167,10 @@ export default util.createRule<Options, MessageIds>({
       typeAnnotation: TSESTree.TypeNode,
     ): void {
       const nextToken = typeAnnotation;
-      const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken)!;
+      const punctuatorTokenEnd = context.sourceCode.getTokenBefore(nextToken)!;
       let punctuatorTokenStart = punctuatorTokenEnd;
-      let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd)!;
+      let previousToken =
+        context.sourceCode.getTokenBefore(punctuatorTokenEnd)!;
       let type = punctuatorTokenEnd.value;
 
       if (!punctuators.includes(type)) {
@@ -181,8 +181,7 @@ export default util.createRule<Options, MessageIds>({
 
       if (type === ':' && previousToken.value === '?') {
         if (
-          // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
-          sourceCode.isSpaceBetweenTokens(previousToken, punctuatorTokenStart)
+          context.sourceCode.isSpaceBetween(previousToken, punctuatorTokenStart)
         ) {
           context.report({
             node: punctuatorTokenStart,
@@ -203,13 +202,13 @@ export default util.createRule<Options, MessageIds>({
         // shift the start to the ?
         type = '?:';
         punctuatorTokenStart = previousToken;
-        previousToken = sourceCode.getTokenBefore(previousToken)!;
+        previousToken = context.sourceCode.getTokenBefore(previousToken)!;
 
         // handle the +/- modifiers for optional modification operators
         if (previousToken.value === '+' || previousToken.value === '-') {
           type = `${previousToken.value}?:`;
           punctuatorTokenStart = previousToken;
-          previousToken = sourceCode.getTokenBefore(previousToken)!;
+          previousToken = context.sourceCode.getTokenBefore(previousToken)!;
         }
       }
 

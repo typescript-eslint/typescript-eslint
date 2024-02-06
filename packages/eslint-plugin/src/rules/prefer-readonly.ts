@@ -3,8 +3,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { typeIsOrHasBaseType } from '../util';
+import { createRule, getParserServices, typeIsOrHasBaseType } from '../util';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -20,7 +19,7 @@ const functionScopeBoundaries = [
   AST_NODE_TYPES.MethodDefinition,
 ].join(', ');
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'prefer-readonly',
   meta: {
     docs: {
@@ -48,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const classScopeStack: ClassScope[] = [];
 
@@ -105,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
     function isDestructuringAssignment(
       node: ts.PropertyAccessExpression,
     ): boolean {
-      let current: ts.Node = node.parent;
+      let current = node.parent as ts.Node | undefined;
 
       while (current) {
         const parent = current.parent;
@@ -185,14 +184,13 @@ export default util.createRule<Options, MessageIds>({
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
         const finalizedClassScope = classScopeStack.pop()!;
-        const sourceCode = context.getSourceCode();
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
             getEsNodesFromViolatingNode(violatingNode);
           context.report({
             data: {
-              name: sourceCode.getText(nameNode),
+              name: context.sourceCode.getText(nameNode),
             },
             fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
             messageId: 'preferReadonly',
@@ -251,6 +249,13 @@ type ParameterOrPropertyDeclaration =
 const OUTSIDE_CONSTRUCTOR = -1;
 const DIRECTLY_INSIDE_CONSTRUCTOR = 0;
 
+enum TypeToClassRelation {
+  ClassAndInstance,
+  Class,
+  Instance,
+  None,
+}
+
 class ClassScope {
   private readonly privateModifiableMembers = new Map<
     string,
@@ -288,8 +293,14 @@ class ClassScope {
 
   public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
-      !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
-      tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
+      !(
+        tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+        node.name.kind === ts.SyntaxKind.PrivateIdentifier
+      ) ||
+      tsutils.isModifierFlagSet(
+        node,
+        ts.ModifierFlags.Accessor | ts.ModifierFlags.Readonly,
+      ) ||
       ts.isComputedPropertyName(node.name)
     ) {
       return;
@@ -309,29 +320,75 @@ class ClassScope {
     ).set(node.name.getText(), node);
   }
 
-  public addVariableModification(node: ts.PropertyAccessExpression): void {
-    const modifierType = this.checker.getTypeAtLocation(node.expression);
-    if (
-      !modifierType.getSymbol() ||
-      !typeIsOrHasBaseType(modifierType, this.classType)
-    ) {
-      return;
+  public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
+    if (type.isIntersection()) {
+      let result: TypeToClassRelation = TypeToClassRelation.None;
+      for (const subType of type.types) {
+        const subTypeResult = this.getTypeToClassRelation(subType);
+        switch (subTypeResult) {
+          case TypeToClassRelation.Class:
+            if (result === TypeToClassRelation.Instance) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Class;
+            break;
+          case TypeToClassRelation.Instance:
+            if (result === TypeToClassRelation.Class) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Instance;
+            break;
+        }
+      }
+      return result;
+    }
+    if (type.isUnion()) {
+      // any union of class/instance and something else will prevent access to
+      // private members, so we assume that union consists only of classes
+      // or class instances, because otherwise tsc will report an error
+      return this.getTypeToClassRelation(type.types[0]);
     }
 
-    const modifyingStatic =
-      tsutils.isObjectType(modifierType) &&
-      tsutils.isObjectFlagSet(modifierType, ts.ObjectFlags.Anonymous);
+    if (!type.getSymbol() || !typeIsOrHasBaseType(type, this.classType)) {
+      return TypeToClassRelation.None;
+    }
+
+    const typeIsClass =
+      tsutils.isObjectType(type) &&
+      tsutils.isObjectFlagSet(type, ts.ObjectFlags.Anonymous);
+
+    if (typeIsClass) {
+      return TypeToClassRelation.Class;
+    }
+
+    return TypeToClassRelation.Instance;
+  }
+
+  public addVariableModification(node: ts.PropertyAccessExpression): void {
+    const modifierType = this.checker.getTypeAtLocation(node.expression);
+
+    const relationOfModifierTypeToClass =
+      this.getTypeToClassRelation(modifierType);
+
     if (
-      !modifyingStatic &&
+      relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
     ) {
       return;
     }
 
-    (modifyingStatic
-      ? this.staticVariableModifications
-      : this.memberVariableModifications
-    ).add(node.name.text);
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Instance ||
+      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
+    ) {
+      this.memberVariableModifications.add(node.name.text);
+    }
+    if (
+      relationOfModifierTypeToClass === TypeToClassRelation.Class ||
+      relationOfModifierTypeToClass === TypeToClassRelation.ClassAndInstance
+    ) {
+      this.staticVariableModifications.add(node.name.text);
+    }
   }
 
   public enterConstructor(

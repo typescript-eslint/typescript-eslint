@@ -199,6 +199,48 @@ declare const x: T;
 const y = x!;
       `,
     },
+    {
+      code: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise()) as string;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise())!;
+}
+      `,
+    },
+    {
+      code: `
+declare const a: string | null;
+
+const b = (a || undefined) as string;
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 4,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+const b = (a || undefined)!;
+      `,
+    },
   ],
 });
 
@@ -210,9 +252,6 @@ const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
     project: './tsconfig.noUncheckedIndexedAccess.json',
   },
   parser: '@typescript-eslint/parser',
-  dependencyConstraints: {
-    typescript: '4.1',
-  },
 });
 
 ruleTesterWithNoUncheckedIndexAccess.run(

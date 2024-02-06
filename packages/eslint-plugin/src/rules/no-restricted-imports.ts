@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   JSONSchema4AnyOfSchema,
   JSONSchema4ArraySchema,
@@ -7,6 +8,7 @@ import type {
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
+  RuleListener,
 } from 'eslint/lib/rules/no-restricted-imports';
 import type { Ignore } from 'ignore';
 import ignore from 'ignore';
@@ -210,6 +212,21 @@ function getRestrictedPatterns(
   return [];
 }
 
+function shouldCreateRule(
+  baseRules: RuleListener,
+  options: Options,
+): baseRules is Exclude<RuleListener, Record<string, never>> {
+  if (Object.keys(baseRules).length === 0 || options.length === 0) {
+    return false;
+  }
+
+  if (!isOptionsArrayOfStringOrObject(options)) {
+    return !!(options[0].paths?.length || options[0].patterns?.length);
+  }
+
+  return true;
+}
+
 export default createRule<Options, MessageIds>({
   name: 'no-restricted-imports',
   meta: {
@@ -227,7 +244,7 @@ export default createRule<Options, MessageIds>({
     const rules = baseRule.create(context);
     const { options } = context;
 
-    if (options.length === 0) {
+    if (!shouldCreateRule(rules, options)) {
       return {};
     }
 
@@ -268,26 +285,66 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    return {
-      ImportDeclaration(node): void {
-        if (node.importKind === 'type') {
-          const importSource = node.source.value.trim();
-          if (
-            !isAllowedTypeImportPath(importSource) &&
-            !isAllowedTypeImportPattern(importSource)
-          ) {
-            return rules.ImportDeclaration(node);
-          }
-        } else {
+    function checkImportNode(node: TSESTree.ImportDeclaration): void {
+      if (
+        node.importKind === 'type' ||
+        (node.specifiers.length > 0 &&
+          node.specifiers.every(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+              specifier.importKind === 'type',
+          ))
+      ) {
+        const importSource = node.source.value.trim();
+        if (
+          !isAllowedTypeImportPath(importSource) &&
+          !isAllowedTypeImportPattern(importSource)
+        ) {
           return rules.ImportDeclaration(node);
         }
+      } else {
+        return rules.ImportDeclaration(node);
+      }
+    }
+
+    return {
+      TSImportEqualsDeclaration(
+        node: TSESTree.TSImportEqualsDeclaration,
+      ): void {
+        if (
+          node.moduleReference.type ===
+            AST_NODE_TYPES.TSExternalModuleReference &&
+          node.moduleReference.expression.type === AST_NODE_TYPES.Literal &&
+          typeof node.moduleReference.expression.value === 'string'
+        ) {
+          const synthesizedImport = {
+            ...node,
+            type: AST_NODE_TYPES.ImportDeclaration,
+            source: node.moduleReference.expression,
+            assertions: [],
+            attributes: [],
+            specifiers: [
+              {
+                ...node.id,
+                type: AST_NODE_TYPES.ImportDefaultSpecifier,
+                local: node.id,
+              },
+            ],
+          } satisfies TSESTree.ImportDeclaration;
+          return checkImportNode(synthesizedImport);
+        }
       },
+      ImportDeclaration: checkImportNode,
       'ExportNamedDeclaration[source]'(
         node: TSESTree.ExportNamedDeclaration & {
           source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
         },
       ): void {
-        if (node.exportKind === 'type') {
+        if (
+          node.exportKind === 'type' ||
+          (node.specifiers.length > 0 &&
+            node.specifiers.every(specifier => specifier.exportKind === 'type'))
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&

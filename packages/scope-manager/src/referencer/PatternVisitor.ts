@@ -92,12 +92,11 @@ class PatternVisitor extends VisitorBase {
   }
 
   protected Identifier(pattern: TSESTree.Identifier): void {
-    const lastRestElement =
-      this.#restElements[this.#restElements.length - 1] ?? null;
+    const lastRestElement = this.#restElements.at(-1);
 
     this.#callback(pattern, {
       topLevel: pattern === this.#rootPattern,
-      rest: lastRestElement != null && lastRestElement.argument === pattern,
+      rest: lastRestElement?.argument === pattern,
       assignments: this.#assignments,
     });
   }

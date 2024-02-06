@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "6.1.0",
+  "version": "6.21.0",
   "main": "dist/index.js",
   "typings": "src/index.ts",
   "description": "ESLint plugin that wraps a TSLint configuration and lints the whole source using TSLint",
@@ -41,20 +41,24 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "6.1.0"
+    "@typescript-eslint/utils": "6.21.0"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0 || ^8.0.0",
+    "eslint": "^8.56.0",
     "tslint": "^5.0.0 || ^6.0.0",
     "typescript": "*"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "6.1.0"
+    "@types/lodash": "*",
+    "@typescript-eslint/parser": "6.21.0",
+    "jest": "29.7.0",
+    "prettier": "^3.0.3",
+    "rimraf": "*"
   },
   "funding": {
     "type": "opencollective",

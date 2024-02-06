@@ -1,12 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  isClosingParenToken,
+  isCommaToken,
+  isOpeningParenToken,
+  isSemicolonToken,
+  nullThrows,
+} from '../util';
 
 export type Options = [('method' | 'property')?];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'method-signature-style',
   meta: {
     type: 'suggestion',
@@ -30,12 +37,10 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: ['property'],
 
   create(context, [mode]) {
-    const sourceCode = context.getSourceCode();
-
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
     ): string {
-      let key = sourceCode.getText(node.key);
+      let key = context.sourceCode.getText(node.key);
       if (node.computed) {
         key = `[${key}]`;
       }
@@ -53,25 +58,28 @@ export default util.createRule<Options, MessageIds>({
     ): string {
       let params = '()';
       if (node.params.length > 0) {
-        const openingParen = util.nullThrows(
-          sourceCode.getTokenBefore(node.params[0], util.isOpeningParenToken),
+        const openingParen = nullThrows(
+          context.sourceCode.getTokenBefore(
+            node.params[0],
+            isOpeningParenToken,
+          ),
           'Missing opening paren before first parameter',
         );
-        const closingParen = util.nullThrows(
-          sourceCode.getTokenAfter(
+        const closingParen = nullThrows(
+          context.sourceCode.getTokenAfter(
             node.params[node.params.length - 1],
-            util.isClosingParenToken,
+            isClosingParenToken,
           ),
           'Missing closing paren after last parameter',
         );
 
-        params = sourceCode.text.substring(
+        params = context.sourceCode.text.substring(
           openingParen.range[0],
           closingParen.range[1],
         );
       }
       if (node.typeParameters != null) {
-        const typeParams = sourceCode.getText(node.typeParameters);
+        const typeParams = context.sourceCode.getText(node.typeParameters);
         params = `${typeParams}${params}`;
       }
       return params;
@@ -84,14 +92,14 @@ export default util.createRule<Options, MessageIds>({
         ? // if the method has no return type, it implicitly has an `any` return type
           // we just make it explicit here so we can do the fix
           'any'
-        : sourceCode.getText(node.returnType.typeAnnotation);
+        : context.sourceCode.getText(node.returnType.typeAnnotation);
     }
 
     function getDelimiter(node: TSESTree.Node): string {
-      const lastToken = sourceCode.getLastToken(node);
+      const lastToken = context.sourceCode.getLastToken(node);
       if (
         lastToken &&
-        (util.isSemicolonToken(lastToken) || util.isCommaToken(lastToken))
+        (isSemicolonToken(lastToken) || isCommaToken(lastToken))
       ) {
         return lastToken.value;
       }
@@ -123,11 +131,11 @@ export default util.createRule<Options, MessageIds>({
 
           const parent = methodNode.parent;
           const members =
-            parent?.type === AST_NODE_TYPES.TSInterfaceBody
+            parent.type === AST_NODE_TYPES.TSInterfaceBody
               ? parent.body
-              : parent?.type === AST_NODE_TYPES.TSTypeLiteral
-              ? parent.members
-              : [];
+              : parent.type === AST_NODE_TYPES.TSTypeLiteral
+                ? parent.members
+                : [];
 
           const duplicatedKeyMethodNodes: TSESTree.TSMethodSignature[] =
             members.filter(
@@ -167,9 +175,10 @@ export default util.createRule<Options, MessageIds>({
                     `${key}: ${typeString}${delimiter}`,
                   );
                   for (const node of duplicatedKeyMethodNodes) {
-                    const lastToken = sourceCode.getLastToken(node);
+                    const lastToken = context.sourceCode.getLastToken(node);
                     if (lastToken) {
-                      const nextToken = sourceCode.getTokenAfter(lastToken);
+                      const nextToken =
+                        context.sourceCode.getTokenAfter(lastToken);
                       if (nextToken) {
                         yield fixer.remove(node);
                         yield fixer.replaceTextRange(

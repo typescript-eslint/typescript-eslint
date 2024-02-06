@@ -53,23 +53,23 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'neve
 
 #### ❌ Incorrect
 
-```ts
-const x = { ... } as T;
+```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
+const x = { foo: 1 } as T;
 
-function foo() {
-  return { ... } as T;
+function bar() {
+  return { foo: 1 } as T;
 }
 ```
 
 #### ✅ Correct
 
-```ts
-const x: T = { ... };
-const y = { ... } as any;
-const z = { ... } as unknown;
+```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
+const x: T = { foo: 1 };
+const y = { foo: 1 } as any;
+const z = { foo: 1 } as unknown;
 
-function foo(): T {
-  return { ... };
+function bar(): T {
+  return { foo: 1 };
 }
 ```
 
@@ -81,24 +81,26 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allo
 
 #### ❌ Incorrect
 
-```ts
-const x = { ... } as T;
+```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
+const x = { foo: 1 } as T;
 
-function foo() {
-  return { ... } as T;
+function bar() {
+  return { foo: 1 } as T;
 }
 ```
 
 #### ✅ Correct
 
-```tsx
-const x: T = { ... };
-const y = { ... } as any;
-const z = { ... } as unknown;
-foo({ ... } as T);
-new Clazz({ ... } as T);
-function foo() { throw { bar: 5 } as Foo }
-const foo = <Foo props={{ ... } as Bar}/>;
+```tsx option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
+const x: T = { foo: 1 };
+const y = { foo: 1 } as any;
+const z = { foo: 1 } as unknown;
+bar({ foo: 1 } as T);
+new Clazz({ foo: 1 } as T);
+function bar() {
+  throw { foo: 1 } as Foo;
+}
+const foo = <Foo props={{ bar: 1 } as Bar} />;
 ```
 
 <!--/tabs-->
@@ -106,3 +108,6 @@ const foo = <Foo props={{ ... } as Bar}/>;
 ## When Not To Use It
 
 If you do not want to enforce consistent type assertions.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

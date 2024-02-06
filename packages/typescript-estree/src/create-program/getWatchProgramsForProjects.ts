@@ -180,8 +180,7 @@ function getWatchProgramsForProjects(
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
 
-      updatedProgram =
-        updatedProgram ?? existingWatch.getProgram().getProgram();
+      updatedProgram ??= existingWatch.getProgram().getProgram();
       // sets parent pointers in source files
       updatedProgram.getTypeChecker();
 
@@ -268,6 +267,7 @@ function createWatchProgram(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
+  watchCompilerHost.jsDocParsingMode = parseSettings.jsDocParsingMode;
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;

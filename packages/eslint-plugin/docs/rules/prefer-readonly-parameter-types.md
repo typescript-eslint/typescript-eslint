@@ -57,7 +57,7 @@ interface Foo {
 interface Foo {
   new (arg: string[]): void;
 }
-const x = { foo(arg: string[]): void; };
+const x = { foo(arg: string[]): void {} };
 function foo(arg: string[]);
 type Foo = (arg: string[]) => void;
 interface Foo {
@@ -91,7 +91,7 @@ interface CustomFunction {
 }
 function custom2(arg: CustomFunction) {}
 
-function union(arg: readonly string[] | ReadonlyArray<number[]>) {}
+function union(arg: readonly string[] | ReadonlyArray<number>) {}
 
 function primitive1(arg: string) {}
 function primitive2(arg: number) {}
@@ -105,8 +105,11 @@ function primitive9(arg: string | number | undefined) {}
 
 function fnSig(arg: () => void) {}
 
-enum Foo { a, b }
-function enum(arg: Foo) {}
+enum Foo {
+  a,
+  b,
+}
+function enumArg(arg: Foo) {}
 
 function symb1(arg: symbol) {}
 const customSymbol = Symbol('a');
@@ -119,7 +122,7 @@ interface Foo {
 interface Foo {
   new (arg: readonly string[]): void;
 }
-const x = { foo(arg: readonly string[]): void; };
+const x = { foo(arg: readonly string[]): void {} };
 function foo(arg: readonly string[]);
 type Foo = (arg: readonly string[]) => void;
 interface Foo {
@@ -158,7 +161,7 @@ Examples of code for this rule with:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface ThisIsMutable {
   prop: string;
 }
@@ -172,12 +175,17 @@ interface WrapperWithOther {
   otherProp: string;
 }
 
-function fn1(arg: ThisIsMutable) {} // Incorrect because ThisIsMutable is not readonly
-function fn2(arg: Wrapper) {} // Incorrect because Wrapper.sub is not readonly
-function fn3(arg: WrapperWithOther) {} // Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+// Incorrect because ThisIsMutable is not readonly
+function fn1(arg: ThisIsMutable) {}
+
+// Incorrect because Wrapper.sub is not readonly
+function fn2(arg: Wrapper) {}
+
+// Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+function fn3(arg: WrapperWithOther) {}
 ```
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from 'some-lib';
 import { Bar } from 'incorrect-lib';
 
@@ -185,14 +193,19 @@ interface HTMLElement {
   prop: string;
 }
 
-function fn1(arg: Foo) {} // Incorrect because Foo is not a local type
-function fn2(arg: HTMLElement) {} // Incorrect because HTMLElement is not from the default library
-function fn3(arg: Bar) {} // Incorrect because Bar is not from "bar-lib"
+// Incorrect because Foo is not a local type
+function fn1(arg: Foo) {}
+
+// Incorrect because HTMLElement is not from the default library
+function fn2(arg: HTMLElement) {}
+
+// Incorrect because Bar is not from "bar-lib"
+function fn3(arg: Bar) {}
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface Foo {
   prop: string;
 }
@@ -202,26 +215,35 @@ interface Wrapper {
   readonly otherProp: string;
 }
 
-function fn1(arg: Foo) {} // Works because Foo is allowed
-function fn2(arg: Wrapper) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
+// Works because Foo is allowed
+function fn1(arg: Foo) {}
+
+// Works even when Foo is nested somewhere in the type, with other properties still being checked
+function fn2(arg: Wrapper) {}
 ```
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Bar } from 'bar-lib';
 
 interface Foo {
   prop: string;
 }
 
-function fn1(arg: Foo) {} // Works because Foo is a local type
-function fn2(arg: HTMLElement) {} // Works because HTMLElement is from the default library
-function fn3(arg: Bar) {} // Works because Bar is from "bar-lib"
+// Works because Foo is a local type
+function fn1(arg: Foo) {}
+
+// Works because HTMLElement is from the default library
+function fn2(arg: HTMLElement) {}
+
+// Works because Bar is from "bar-lib"
+function fn3(arg: Bar) {}
 ```
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from './foo';
 
-function fn(arg: Foo) {} // Works because Foo is still a local type - it has to be in the same package
+// Works because Foo is still a local type - it has to be in the same package
+function fn(arg: Foo) {}
 ```
 
 ### `checkParameterProperties`
@@ -235,7 +257,7 @@ Examples of code for this rule with `{checkParameterProperties: true}`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checkParameterProperties": true }'
 class Foo {
   constructor(private paramProp: string[]) {}
 }
@@ -243,7 +265,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checkParameterProperties": true }'
 class Foo {
   constructor(private paramProp: readonly string[]) {}
 }
@@ -253,7 +275,7 @@ class Foo {
 
 Examples of **correct** code for this rule with `{checkParameterProperties: false}`:
 
-```ts
+```ts option='{ "checkParameterProperties": false }' showPlaygroundButton
 class Foo {
   constructor(
     private paramProp1: string[],
@@ -272,7 +294,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
 acceptsCallback((options: CallbackOptions) => {});
@@ -281,7 +303,7 @@ acceptsCallback((options: CallbackOptions) => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 export interface CallbackOptions {
   prop: string;
 }
@@ -295,7 +317,7 @@ export const acceptsCallback: AcceptsCallback;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 import { acceptsCallback } from 'external-dependency';
 
 acceptsCallback(options => {});
@@ -304,7 +326,7 @@ acceptsCallback(options => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 export interface CallbackOptions {
   prop: string;
 }
@@ -326,7 +348,7 @@ Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "treatMethodsAsReadonly": false }'
 type MyType = {
   readonly prop: string;
   method(): string; // note: this method is mutable
@@ -336,7 +358,7 @@ function foo(arg: MyType) {}
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "treatMethodsAsReadonly": false }'
 type MyType = Readonly<{
   prop: string;
   method(): string;
@@ -354,10 +376,14 @@ function bar(arg: MyOtherType) {}
 
 Examples of **correct** code for this rule with `{treatMethodsAsReadonly: true}`:
 
-```ts
+```ts option='{ "treatMethodsAsReadonly": true }' showPlaygroundButton
 type MyType = {
   readonly prop: string;
   method(): string; // note: this method is mutable
 };
 function foo(arg: MyType) {}
 ```
+
+## When Not To Use It
+
+If your project does not attempt to enforce strong immutability guarantees of parameters, you can avoid this rule.

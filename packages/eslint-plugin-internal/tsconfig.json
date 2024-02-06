@@ -2,8 +2,9 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": false,
-    "rootDir": "."
+    "target": "ES2022",
+    "rootDir": ".",
   },
   "include": ["src", "typings", "tests"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "references": [{ "path": "../utils/tsconfig.build.json" }],
 }

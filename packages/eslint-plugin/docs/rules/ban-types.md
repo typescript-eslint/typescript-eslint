@@ -75,63 +75,7 @@ The default options provide a set of "best practices", intended to provide safet
 <details>
 <summary>Default Options</summary>
 
-```ts
-const defaultTypes = {
-  String: {
-    message: 'Use string instead',
-    fixWith: 'string',
-  },
-  Boolean: {
-    message: 'Use boolean instead',
-    fixWith: 'boolean',
-  },
-  Number: {
-    message: 'Use number instead',
-    fixWith: 'number',
-  },
-  Symbol: {
-    message: 'Use symbol instead',
-    fixWith: 'symbol',
-  },
-  BigInt: {
-    message: 'Use bigint instead',
-    fixWith: 'bigint',
-  },
-  Function: {
-    message: [
-      'The `Function` type accepts any function-like value.',
-      'It provides no type safety when calling the function, which can be a common source of bugs.',
-      'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
-      'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
-    ].join('\n'),
-  },
-  // object typing
-  Object: {
-    message: [
-      'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `object` instead.',
-      '- If you want a type meaning "any value", you probably want `unknown` instead.',
-      '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
-    ].join('\n'),
-    suggest: ['object', 'unknown', 'NonNullable<unknown>'],
-  },
-  '{}': {
-    message: [
-      '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `object` instead.',
-      '- If you want a type meaning "any value", you probably want `unknown` instead.',
-      '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
-      '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
-    ].join('\n'),
-    suggest: [
-      'object',
-      'unknown',
-      'Record<string, never>',
-      'NonNullable<unknown>',
-    ],
-  },
-};
-```
+<!-- Inject default options -->
 
 </details>
 
@@ -170,14 +114,19 @@ Example configuration:
         // add a custom message, AND tell the plugin how to fix it
         "OldAPI": {
           "message": "Use NewAPI instead",
-          "fixWith": "NewAPI"
+          "fixWith": "NewAPI",
         },
 
         // un-ban a type that's banned by default
-        "{}": false
+        "{}": false,
       },
-      "extendDefaults": true
-    }
-  ]
+      "extendDefaults": true,
+    },
+  ],
 }
 ```
+
+## When Not To Use It
+
+If your project is a rare one that intentionally deals with the class equivalents of primitives, it might not be worthwhile to enable the default `ban-types` options.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

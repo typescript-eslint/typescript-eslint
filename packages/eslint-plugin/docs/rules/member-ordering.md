@@ -25,7 +25,7 @@ type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
   optionalityOrder?: 'optional-first' | 'required-first';
-  order:
+  order?:
     | 'alphabetically'
     | 'alphabetically-case-insensitive'
     | 'as-written'
@@ -80,145 +80,178 @@ The default configuration looks as follows:
 
 ```jsonc
 {
-  "default": [
-    // Index signature
-    "signature",
-    "call-signature",
+  "default": {
+    "memberTypes": [
+      // Index signature
+      "signature",
+      "call-signature",
 
-    // Fields
-    "public-static-field",
-    "protected-static-field",
-    "private-static-field",
-    "#private-static-field",
+      // Fields
+      "public-static-field",
+      "protected-static-field",
+      "private-static-field",
+      "#private-static-field",
 
-    "public-decorated-field",
-    "protected-decorated-field",
-    "private-decorated-field",
+      "public-decorated-field",
+      "protected-decorated-field",
+      "private-decorated-field",
 
-    "public-instance-field",
-    "protected-instance-field",
-    "private-instance-field",
-    "#private-instance-field",
+      "public-instance-field",
+      "protected-instance-field",
+      "private-instance-field",
+      "#private-instance-field",
 
-    "public-abstract-field",
-    "protected-abstract-field",
+      "public-abstract-field",
+      "protected-abstract-field",
 
-    "public-field",
-    "protected-field",
-    "private-field",
-    "#private-field",
+      "public-field",
+      "protected-field",
+      "private-field",
+      "#private-field",
 
-    "static-field",
-    "instance-field",
-    "abstract-field",
+      "static-field",
+      "instance-field",
+      "abstract-field",
 
-    "decorated-field",
+      "decorated-field",
 
-    "field",
+      "field",
 
-    // Static initialization
-    "static-initialization",
+      // Static initialization
+      "static-initialization",
 
-    // Constructors
-    "public-constructor",
-    "protected-constructor",
-    "private-constructor",
+      // Constructors
+      "public-constructor",
+      "protected-constructor",
+      "private-constructor",
 
-    "constructor",
+      "constructor",
 
-    // Getters
-    "public-static-get",
-    "protected-static-get",
-    "private-static-get",
-    "#private-static-get",
+      // Accessors
+      "public-static-accessor",
+      "protected-static-accessor",
+      "private-static-accessor",
+      "#private-static-accessor",
 
-    "public-decorated-get",
-    "protected-decorated-get",
-    "private-decorated-get",
+      "public-decorated-accessor",
+      "protected-decorated-accessor",
+      "private-decorated-accessor",
 
-    "public-instance-get",
-    "protected-instance-get",
-    "private-instance-get",
-    "#private-instance-get",
+      "public-instance-accessor",
+      "protected-instance-accessor",
+      "private-instance-accessor",
+      "#private-instance-accessor",
 
-    "public-abstract-get",
-    "protected-abstract-get",
+      "public-abstract-accessor",
+      "protected-abstract-accessor",
 
-    "public-get",
-    "protected-get",
-    "private-get",
-    "#private-get",
+      "public-accessor",
+      "protected-accessor",
+      "private-accessor",
+      "#private-accessor",
 
-    "static-get",
-    "instance-get",
-    "abstract-get",
+      "static-accessor",
+      "instance-accessor",
+      "abstract-accessor",
 
-    "decorated-get",
+      "decorated-accessor",
 
-    "get",
+      "accessor",
 
-    // Setters
-    "public-static-set",
-    "protected-static-set",
-    "private-static-set",
-    "#private-static-set",
+      // Getters
+      "public-static-get",
+      "protected-static-get",
+      "private-static-get",
+      "#private-static-get",
 
-    "public-decorated-set",
-    "protected-decorated-set",
-    "private-decorated-set",
+      "public-decorated-get",
+      "protected-decorated-get",
+      "private-decorated-get",
 
-    "public-instance-set",
-    "protected-instance-set",
-    "private-instance-set",
-    "#private-instance-set",
+      "public-instance-get",
+      "protected-instance-get",
+      "private-instance-get",
+      "#private-instance-get",
 
-    "public-abstract-set",
-    "protected-abstract-set",
+      "public-abstract-get",
+      "protected-abstract-get",
 
-    "public-set",
-    "protected-set",
-    "private-set",
-    "#private-set",
+      "public-get",
+      "protected-get",
+      "private-get",
+      "#private-get",
 
-    "static-set",
-    "instance-set",
-    "abstract-set",
+      "static-get",
+      "instance-get",
+      "abstract-get",
 
-    "decorated-set",
+      "decorated-get",
 
-    "set",
+      "get",
 
-    // Methods
-    "public-static-method",
-    "protected-static-method",
-    "private-static-method",
-    "#private-static-method",
+      // Setters
+      "public-static-set",
+      "protected-static-set",
+      "private-static-set",
+      "#private-static-set",
 
-    "public-decorated-method",
-    "protected-decorated-method",
-    "private-decorated-method",
+      "public-decorated-set",
+      "protected-decorated-set",
+      "private-decorated-set",
 
-    "public-instance-method",
-    "protected-instance-method",
-    "private-instance-method",
-    "#private-instance-method",
+      "public-instance-set",
+      "protected-instance-set",
+      "private-instance-set",
+      "#private-instance-set",
 
-    "public-abstract-method",
-    "protected-abstract-method",
+      "public-abstract-set",
+      "protected-abstract-set",
 
-    "public-method",
-    "protected-method",
-    "private-method",
-    "#private-method",
+      "public-set",
+      "protected-set",
+      "private-set",
+      "#private-set",
 
-    "static-method",
-    "instance-method",
-    "abstract-method",
+      "static-set",
+      "instance-set",
+      "abstract-set",
 
-    "decorated-method",
+      "decorated-set",
 
-    "method"
-  ]
+      "set",
+
+      // Methods
+      "public-static-method",
+      "protected-static-method",
+      "private-static-method",
+      "#private-static-method",
+
+      "public-decorated-method",
+      "protected-decorated-method",
+      "private-decorated-method",
+
+      "public-instance-method",
+      "protected-instance-method",
+      "private-instance-method",
+      "#private-instance-method",
+
+      "public-abstract-method",
+      "protected-abstract-method",
+
+      "public-method",
+      "protected-method",
+      "private-method",
+      "#private-method",
+
+      "static-method",
+      "instance-method",
+      "abstract-method",
+
+      "decorated-method",
+
+      "method",
+    ],
+  },
 }
 ```
 
@@ -246,9 +279,9 @@ It also ignores accessibility and scope.
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": ["signature", "method", "constructor", "field"] }
-    ]
-  }
+      { "default": ["signature", "method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -256,7 +289,7 @@ It also ignores accessibility and scope.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   B: string; // -> field
 
@@ -268,7 +301,7 @@ interface Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   B: string; // -> field
 
@@ -280,7 +313,7 @@ type Foo = {
 };
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 class Foo {
   private C: string; // -> field
   public D: string; // -> field
@@ -295,7 +328,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 const Foo = class {
   private C: string; // -> field
   public D: string; // -> field
@@ -313,7 +346,7 @@ const Foo = class {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   [Z: string]: any; // -> signature
 
@@ -325,7 +358,7 @@ interface Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   // no signature
 
@@ -337,7 +370,7 @@ type Foo = {
 };
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 class Foo {
   [Z: string]: any; // -> signature
 
@@ -352,7 +385,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 const Foo = class {
   [Z: string]: any; // -> signature
 
@@ -381,9 +414,9 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": ["public-instance-method", "public-static-field"] }
-    ]
-  }
+      { "default": ["public-instance-method", "public-static-field"] },
+    ],
+  },
 }
 ```
 
@@ -391,7 +424,7 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 class Foo {
   private C: string; // (irrelevant)
 
@@ -409,7 +442,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 const Foo = class {
   private C: string; // (irrelevant)
 
@@ -429,7 +462,7 @@ const Foo = class {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 class Foo {
   public B(): void {} // -> public instance method
 
@@ -447,7 +480,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 const Foo = class {
   public B(): void {} // -> public instance method
 
@@ -475,9 +508,9 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": ["public-static-field", "static-field", "instance-field"] }
-    ]
-  }
+      { "default": ["public-static-field", "static-field", "instance-field"] },
+    ],
+  },
 }
 ```
 
@@ -485,7 +518,7 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 class Foo {
   private E: string; // -> instance field
 
@@ -499,7 +532,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 const foo = class {
   public T(): void {} // method (irrelevant)
 
@@ -520,7 +553,7 @@ const foo = class {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 class Foo {
   public static A: string; // -> public static field
 
@@ -534,7 +567,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 const foo = class {
   [Z: string]: any; // -> signature (irrelevant)
 
@@ -564,9 +597,9 @@ Default settings will be used for class declarations and all other syntax constr
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "classes": ["method", "constructor", "field"] }
-    ]
-  }
+      { "classes": ["method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -574,7 +607,7 @@ Default settings will be used for class declarations and all other syntax constr
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "classes": ["method", "constructor", "field"] }'
 class Foo {
   private C: string; // -> field
   public D: string; // -> field
@@ -589,7 +622,7 @@ class Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "classes": ["method", "constructor", "field"] }'
 class Foo {
   public static A(): void {} // -> method
   public B(): void {} // -> method
@@ -614,9 +647,9 @@ Default settings will be used for class declarations and all other syntax constr
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "classExpressions": ["method", "constructor", "field"] }
-    ]
-  }
+      { "classExpressions": ["method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -624,7 +657,7 @@ Default settings will be used for class declarations and all other syntax constr
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "classExpressions": ["method", "constructor", "field"] }'
 const foo = class {
   private C: string; // -> field
   public D: string; // -> field
@@ -639,7 +672,7 @@ const foo = class {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "classExpressions": ["method", "constructor", "field"] }'
 const foo = class {
   public static A(): void {} // -> method
   public B(): void {} // -> method
@@ -668,9 +701,9 @@ These member types are the only ones allowed for `interfaces`.
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "interfaces": ["signature", "method", "constructor", "field"] }
-    ]
-  }
+      { "interfaces": ["signature", "method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -678,7 +711,7 @@ These member types are the only ones allowed for `interfaces`.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "interfaces": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   B: string; // -> field
 
@@ -692,7 +725,7 @@ interface Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "interfaces": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   [Z: string]: any; // -> signature
 
@@ -720,9 +753,9 @@ These member types are the only ones allowed for `typeLiterals`.
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "typeLiterals": ["signature", "method", "constructor", "field"] }
-    ]
-  }
+      { "typeLiterals": ["signature", "method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -730,7 +763,7 @@ These member types are the only ones allowed for `typeLiterals`.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "typeLiterals": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   B: string; // -> field
 
@@ -744,7 +777,7 @@ type Foo = {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "typeLiterals": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   [Z: string]: any; // -> signature
 
@@ -761,7 +794,8 @@ type Foo = {
 #### Sorting Alphabetically Within Member Groups
 
 This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
-You can copy and paste the default order from [Default Configuration](#default-configuration).
+The default member order will be applied if `memberTypes` is not specified.
+You can see the default order in [Default Configuration](#default-configuration).
 
 ```jsonc
 // .eslintrc.json
@@ -771,14 +805,11 @@ You can copy and paste the default order from [Default Configuration](#default-c
       "error",
       {
         "default": {
-          "memberTypes": [
-            /* <Default Order> */
-          ],
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -786,7 +817,7 @@ You can copy and paste the default order from [Default Configuration](#default-c
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{"default":{"order":"alphabetically"}}'
 interface Foo {
   a: x;
   B: x;
@@ -800,7 +831,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{"default":{"order":"alphabetically"}}'
 interface Foo {
   B: x;
   a: x;
@@ -809,13 +840,65 @@ interface Foo {
   B(): void;
   a(): void;
   c(): void;
+}
+```
+
+#### Sorting Alphabetically Within Custom Member Groups
+
+This config specifies that within each custom `memberTypes` group, members are in an alphabetic case-sensitive order.
+
+```jsonc
+// .eslintrc.json
+{
+  "rules": {
+    "@typescript-eslint/member-ordering": [
+      "error",
+      {
+        "default": {
+          "memberTypes": ["method", "field"],
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
+}
+```
+
+<!--tabs-->
+
+##### ❌ Incorrect
+
+```ts option='{"default":{"memberTypes":["method","field"],"order":"alphabetically"}}'
+interface Foo {
+  B(): void;
+  c(): void;
+  a(): void;
+
+  a: x;
+  B: x;
+  c: x;
+}
+```
+
+##### ✅ Correct
+
+```ts option='{"default":{"memberTypes":["method","field"],"order":"alphabetically"}}'
+interface Foo {
+  B(): void;
+  a(): void;
+  c(): void;
+
+  B: x;
+  a: x;
+  c: x;
 }
 ```
 
 #### Sorting Alphabetically Case Insensitive Within Member Groups
 
-This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
-You can copy and paste the default order from [Default Configuration](#default-configuration).
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-insensitive order.
+The default member order will be applied if `memberTypes` is not specified.
+You can see the default order in [Default Configuration](#default-configuration).
 
 ```jsonc
 // .eslintrc.json
@@ -825,14 +908,11 @@ You can copy and paste the default order from [Default Configuration](#default-c
       "error",
       {
         "default": {
-          "memberTypes": [
-            /* <Default Order> */
-          ],
-          "order": "alphabetically-case-insensitive"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically-case-insensitive",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -840,7 +920,7 @@ You can copy and paste the default order from [Default Configuration](#default-c
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{"default":{"order":"alphabetically-case-insensitive"}}'
 interface Foo {
   B: x;
   a: x;
@@ -854,7 +934,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{"default":{"order":"alphabetically-case-insensitive"}}'
 interface Foo {
   a: x;
   B: x;
@@ -877,9 +957,9 @@ It ignores any member group types completely by specifying `"never"` for `member
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": { "memberTypes": "never", "order": "alphabetically" } }
-    ]
-  }
+      { "default": { "memberTypes": "never", "order": "alphabetically" } },
+    ],
+  },
 }
 ```
 
@@ -887,9 +967,8 @@ It ignores any member group types completely by specifying `"never"` for `member
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
-  static c = 0;
   b(): void;
   a: boolean;
 
@@ -901,11 +980,10 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   b(): void;
-  static c = 0;
 
   [a: string]: number; // Order doesn't matter (no sortable identifier)
   new (): Bar; // Order doesn't matter (no sortable identifier)
@@ -928,11 +1006,11 @@ This config places all optional members before all required members:
       {
         "default": {
           "optionalityOrder": "optional-first",
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -940,7 +1018,7 @@ This config places all optional members before all required members:
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   b?: number;
@@ -950,7 +1028,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }'
 interface Foo {
   b?: number;
   a: boolean;
@@ -971,11 +1049,11 @@ This config places all required members before all optional members:
       {
         "default": {
           "optionalityOrder": "required-first",
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -983,7 +1061,7 @@ This config places all required members before all optional members:
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   b?: number;
@@ -993,7 +1071,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   c: string;
@@ -1193,7 +1271,7 @@ It is also possible to group member types by their accessibility (`static`, `ins
   // Methods
   "public-method", // = ["public-static-method", "public-instance-method"]
   "protected-method", // = ["protected-static-method", "protected-instance-method"]
-  "private-method" // = ["private-static-method", "private-instance-method"]
+  "private-method", // = ["private-static-method", "private-instance-method"]
 ]
 ```
 
@@ -1239,7 +1317,7 @@ their accessibility.
   "protected-decorated-method",
   "private-decorated-method",
 
-  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
+  "decorated-method", // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
 ]
 ```
 
@@ -1276,7 +1354,7 @@ Another option is to group the member types by their scope (`public`, `protected
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
   "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
-  "abstract-method" // = ["public-abstract-method", "protected-abstract-method"]
+  "abstract-method", // = ["public-abstract-method", "protected-abstract-method"]
 ]
 ```
 
@@ -1308,7 +1386,7 @@ The third grouping option is to ignore both scope and accessibility.
   //                "public-abstract-set", "protected-abstract-set"]
 
   // Methods
-  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
+  "method", // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
   //                "public-abstract-method", "protected-abstract-method"]
 ]
 ```
@@ -1325,7 +1403,7 @@ It is possible to group fields by their `readonly` modifiers.
 
   // Fields
   "readonly-field", // = ["public-static-readonly-field", "protected-static-readonly-field", "private-static-readonly-field", "public-instance-readonly-field", "protected-instance-readonly-field", "private-instance-readonly-field", "public-abstract-readonly-field", "protected-abstract-readonly-field"]
-  "field" // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field", "public-abstract-field", "protected-abstract-field"]
+  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field", "public-abstract-field", "protected-abstract-field"]
 ]
 ```
 
@@ -1351,7 +1429,7 @@ It is also possible to group different member types at the same rank.
   ["get", "set"],
 
   // Methods
-  "method"
+  "method",
 ]
 ```
 

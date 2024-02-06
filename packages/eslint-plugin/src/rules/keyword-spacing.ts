@@ -2,19 +2,23 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, deepMerge, nullThrows, NullThrowsReasons } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('keyword-spacing');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const baseSchema = Array.isArray(baseRule.meta.schema)
   ? baseRule.meta.schema[0]
   : baseRule.meta.schema;
-const schema = util.deepMerge(
+const schema = deepMerge(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
   baseSchema,
   {
@@ -29,9 +33,11 @@ const schema = util.deepMerge(
   },
 ) as unknown as JSONSchema4;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'keyword-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/keyword-spacing'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after keywords',
@@ -45,17 +51,16 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{}],
 
   create(context, [{ after, overrides }]) {
-    const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
     return {
       ...baseRules,
       TSAsExpression(node): void {
-        const asToken = util.nullThrows(
-          sourceCode.getTokenAfter(
+        const asToken = nullThrows(
+          context.sourceCode.getTokenAfter(
             node.expression,
             token => token.value === 'as',
           ),
-          util.NullThrowsReasons.MissingToken('as', node.type),
+          NullThrowsReasons.MissingToken('as', node.type),
         );
         const oldTokenType = asToken.type;
         // as is a contextual keyword, so it's always reported as an Identifier
@@ -74,10 +79,10 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.ImportDeclaration,
       ): void {
         const { type: typeOptionOverride = {} } = overrides ?? {};
-        const typeToken = sourceCode.getFirstToken(node, { skip: 1 })!;
-        const punctuatorToken = sourceCode.getTokenAfter(typeToken)!;
+        const typeToken = context.sourceCode.getFirstToken(node, { skip: 1 })!;
+        const punctuatorToken = context.sourceCode.getTokenAfter(typeToken)!;
         if (
-          node.specifiers?.[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
+          node.specifiers[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
         ) {
           return;
         }

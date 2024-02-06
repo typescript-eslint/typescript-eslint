@@ -18,7 +18,7 @@ This rule recommends a for-of loop when the loop index is only used to read from
 
 ### ❌ Incorrect
 
-```js
+```ts
 declare const array: string[];
 
 for (let i = 0; i < array.length; i++) {
@@ -28,7 +28,7 @@ for (let i = 0; i < array.length; i++) {
 
 ### ✅ Correct
 
-```js
+```ts
 declare const array: string[];
 
 for (const x of array) {
@@ -41,6 +41,4 @@ for (let i = 0; i < array.length; i++) {
 }
 ```
 
-## When Not To Use It
-
-If you transpile for browsers that do not support for-of loops, you may wish to use traditional for loops that produce more compact code.
+<!-- Intentionally Omitted: When Not To Use It -->

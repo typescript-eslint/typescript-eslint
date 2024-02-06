@@ -1,4 +1,5 @@
 import type {
+  Linter,
   ParserOptions,
   SharedConfigurationSettings,
 } from '@typescript-eslint/utils/ts-eslint';
@@ -17,7 +18,7 @@ export interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * Environments for the test case.
    */
-  readonly env?: Readonly<Record<string, boolean>>;
+  readonly env?: Readonly<Linter.EnvironmentConfig>;
   /**
    * The fake filename for the test case. Useful for rules that make assertion about filenames.
    */
@@ -25,7 +26,7 @@ export interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * The additional global variables.
    */
-  readonly globals?: Record<string, 'off' | 'readonly' | 'writable' | true>;
+  readonly globals?: Readonly<Linter.GlobalsConfig>;
   /**
    * Options for the test case.
    */

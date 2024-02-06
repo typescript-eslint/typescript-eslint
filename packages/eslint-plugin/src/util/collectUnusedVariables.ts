@@ -29,7 +29,7 @@ class UnusedVarsVisitor<
     });
 
     this.#scopeManager = ESLintUtils.nullThrows(
-      context.getSourceCode().scopeManager,
+      context.sourceCode.scopeManager,
       'Missing required scope manager',
     );
   }
@@ -40,7 +40,7 @@ class UnusedVarsVisitor<
   >(
     context: TSESLint.RuleContext<TMessageIds, TOptions>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
-    const program = context.getSourceCode().ast;
+    const program = context.sourceCode.ast;
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
@@ -246,7 +246,7 @@ class UnusedVarsVisitor<
 
     let idOrVariable;
     if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
-      const variable = this.#scopeManager.getDeclaredVariables(node.left)[0];
+      const variable = this.#scopeManager.getDeclaredVariables(node.left).at(0);
       if (!variable) {
         return;
       }
@@ -323,7 +323,7 @@ class UnusedVarsVisitor<
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     // -- global augmentation can be in any file, and they do not need exports
-    if (node.global === true) {
+    if (node.global) {
       this.markVariableAsUsed('global', node.parent);
     }
   }
@@ -396,7 +396,6 @@ const MERGABLE_TYPES = new Set([
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
- * @param target the type of node that is expected to be exported
  */
 function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
@@ -438,6 +437,8 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     return node.parent!.type.indexOf('Export') === 0;
   });
 }
+
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
 
 /**
  * Determines if the variable is used.
@@ -701,6 +702,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       ref.isRead() && // in RHS of an assignment for itself. e.g. `a = a + 1`
       // self update. e.g. `a += 1`, `a++`
       ((parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        !LOGICAL_ASSIGNMENT_OPERATORS.has(parent.operator) &&
         grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
         parent.left === id) ||
         (parent.type === AST_NODE_TYPES.UpdateExpression &&

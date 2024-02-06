@@ -65,7 +65,7 @@ There are some types missing `toString()` in old version TypeScript, like `RegEx
 
 The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
-```ts
+```ts option='{ "ignoredTypeNames": ["RegExp"] }' showPlaygroundButton
 `${/regex/}`;
 '' + /regex/;
 /regex/.toString();
@@ -76,7 +76,7 @@ let text = `${value}`;
 
 ## When Not To Use It
 
-If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
+If you don't mind a risk of `"[object Object]"` or incorrect type coercions in your values, then you will not need this rule.
 
 ## Related To
 

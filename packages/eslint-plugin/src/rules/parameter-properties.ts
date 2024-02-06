@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Modifier =
   | 'private readonly'
@@ -23,7 +23,7 @@ type Options = [
 
 type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'parameter-properties',
   meta: {
     type: 'problem',
@@ -149,8 +149,6 @@ export default util.createRule<Options, MessageIds>({
       return created;
     }
 
-    const sourceCode = context.getSourceCode();
-
     function typeAnnotationsMatch(
       classProperty: TSESTree.PropertyDefinition,
       constructorParameter: TSESTree.Identifier,
@@ -165,8 +163,8 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return (
-        sourceCode.getText(classProperty.typeAnnotation) ===
-        sourceCode.getText(constructorParameter.typeAnnotation)
+        context.sourceCode.getText(classProperty.typeAnnotation) ===
+        context.sourceCode.getText(constructorParameter.typeAnnotation)
       );
     }
 

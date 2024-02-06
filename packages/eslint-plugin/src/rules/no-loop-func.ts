@@ -1,15 +1,19 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-loop-func');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-loop-func',
   meta: {
     type: 'suggestion',
@@ -30,7 +34,6 @@ export default util.createRule<Options, MessageIds>({
      * - has any references which refers to an unsafe variable.
      *
      * @param node The AST node to check.
-     * @returns Whether or not the node is within a loop.
      */
     function checkForLoops(
       node:
@@ -44,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      const references = context.getScope().through;
+      const references = context.sourceCode.getScope(node).through;
       const unsafeRefs = references
         .filter(r => !isSafe(loopNode, r))
         .map(r => r.identifier.name);
@@ -207,7 +210,7 @@ function isSafe(
 
     return (
       !upperRef.isWrite() ||
-      (variable?.scope?.variableScope === upperRef.from.variableScope &&
+      (variable?.scope.variableScope === upperRef.from.variableScope &&
         id.range[0] < border)
     );
   }

@@ -23,7 +23,7 @@ function createDefaultProgram(
     parseSettings.filePath || 'unnamed file',
   );
 
-  if (parseSettings.projects?.length !== 1) {
+  if (parseSettings.projects.length !== 1) {
     return undefined;
   }
 
@@ -57,7 +57,10 @@ function createDefaultProgram(
 
   const program = ts.createProgram(
     [parseSettings.filePath],
-    commandLine.options,
+    {
+      ...commandLine.options,
+      jsDocParsingMode: parseSettings.jsDocParsingMode,
+    },
     compilerHost,
   );
   const ast = program.getSourceFile(parseSettings.filePath);

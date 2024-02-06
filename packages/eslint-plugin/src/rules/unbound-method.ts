@@ -3,8 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { getModifiers } from '../util';
+import {
+  createRule,
+  getModifiers,
+  getParserServices,
+  isIdentifier,
+} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -19,51 +23,16 @@ export type Options = [Config];
 export type MessageIds = 'unbound' | 'unboundWithoutThisAnnotation';
 
 /**
- * The following is a list of exceptions to the rule
- * Generated via the following script.
- * This is statically defined to save making purposely invalid calls every lint run
- * ```
-SUPPORTED_GLOBALS.flatMap(namespace => {
-  const object = window[namespace];
-    return Object.getOwnPropertyNames(object)
-      .filter(
-        name =>
-          !name.startsWith('_') &&
-          typeof object[name] === 'function',
-      )
-      .map(name => {
-        try {
-          const x = object[name];
-          x();
-        } catch (e) {
-          if (e.message.includes("called on non-object")) {
-            return `${namespace}.${name}`;
-          }
-        }
-      });
-}).filter(Boolean);
-   * ```
+ * Static methods on these globals are either not `this`-aware or supported being
+ * called without `this`.
+ *
+ * - `Promise` is not in the list because it supports subclassing by using `this`
+ * - `Array` is in the list because although it supports subclassing, the `this`
+ *   value defaults to `Array` when unbound
+ *
+ * This is now a language-design invariant: static methods are never `this`-aware
+ * because TC39 wants to make `array.map(Class.method)` work!
  */
-const nativelyNotBoundMembers = new Set([
-  'Promise.all',
-  'Promise.race',
-  'Promise.resolve',
-  'Promise.reject',
-  'Promise.allSettled',
-  'Object.defineProperties',
-  'Object.defineProperty',
-  'Reflect.defineProperty',
-  'Reflect.deleteProperty',
-  'Reflect.get',
-  'Reflect.getOwnPropertyDescriptor',
-  'Reflect.getPrototypeOf',
-  'Reflect.has',
-  'Reflect.isExtensible',
-  'Reflect.ownKeys',
-  'Reflect.preventExtensions',
-  'Reflect.set',
-  'Reflect.setPrototypeOf',
-]);
 const SUPPORTED_GLOBALS = [
   'Number',
   'Object',
@@ -73,7 +42,6 @@ const SUPPORTED_GLOBALS = [
   'Array',
   'Proxy',
   'Date',
-  'Infinity',
   'Atomics',
   'Reflect',
   'console',
@@ -81,23 +49,23 @@ const SUPPORTED_GLOBALS = [
   'JSON',
   'Intl',
 ] as const;
-const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
-  if (!(namespace in global)) {
-    // node.js might not have namespaces like Intl depending on compilation options
-    // https://nodejs.org/api/intl.html#intl_options_for_building_node_js
-    return [];
-  }
-  const object = global[namespace];
-  return Object.getOwnPropertyNames(object)
-    .filter(
-      name =>
-        !name.startsWith('_') &&
-        typeof (object as Record<string, unknown>)[name] === 'function',
-    )
-    .map(name => `${namespace}.${name}`);
-})
-  .reduce((arr, names) => arr.concat(names), [])
-  .filter(name => !nativelyNotBoundMembers.has(name));
+const nativelyBoundMembers = new Set(
+  SUPPORTED_GLOBALS.flatMap(namespace => {
+    if (!(namespace in global)) {
+      // node.js might not have namespaces like Intl depending on compilation options
+      // https://nodejs.org/api/intl.html#intl_options_for_building_node_js
+      return [];
+    }
+    const object = global[namespace];
+    return Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof (object as Record<string, unknown>)[name] === 'function',
+      )
+      .map(name => `${namespace}.${name}`);
+  }),
+);
 
 const isNotImported = (
   symbol: ts.Symbol,
@@ -124,7 +92,7 @@ const getMemberFullName = (node: TSESTree.MemberExpression): string =>
 const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
     docs: {
@@ -161,10 +129,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreStatic }]) {
-    const services = util.getParserServices(context);
-    const currentSourceFile = services.program.getSourceFile(
-      context.getFilename(),
-    );
+    const services = getParserServices(context);
+    const currentSourceFile = services.program.getSourceFile(context.filename);
 
     function checkMethodAndReport(
       node: TSESTree.Node,
@@ -196,7 +162,7 @@ export default util.createRule<Options, MessageIds>({
 
         if (
           objectSymbol &&
-          nativelyBoundMembers.includes(getMemberFullName(node)) &&
+          nativelyBoundMembers.has(getMemberFullName(node)) &&
           isNotImported(objectSymbol, currentSourceFile)
         ) {
           return;
@@ -226,8 +192,8 @@ export default util.createRule<Options, MessageIds>({
             ) {
               if (
                 notImported &&
-                util.isIdentifier(initNode) &&
-                nativelyBoundMembers.includes(
+                isIdentifier(initNode) &&
+                nativelyBoundMembers.has(
                   `${initNode.name}.${property.key.name}`,
                 )
               ) {
@@ -268,14 +234,13 @@ function checkMethod(
       const decl = valueDeclaration as
         | ts.MethodDeclaration
         | ts.MethodSignature;
-      const firstParam = decl.parameters[0];
+      const firstParam = decl.parameters.at(0);
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
         // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-        firstParam?.name.escapedText === 'this';
+        firstParam.name.escapedText === 'this';
       const thisArgIsVoid =
-        firstParamIsThis &&
-        firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;
+        firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
 
       return {
         dangerous:

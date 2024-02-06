@@ -2,33 +2,35 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeArguments } from './getTypeArguments';
-import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
+import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
+export interface IsNullableTypeOptions {
+  /**
+   * @deprecated - this flag no longer does anything and will be removed in the next major
+   */
+  isReceiver?: boolean;
+  /**
+   * @deprecated - this flag no longer does anything and will be removed in the next major
+   */
+  allowUndefined?: boolean;
+}
+
 /**
  * Checks if the given type is (or accepts) nullable
- * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
 export function isNullableType(
   type: ts.Type,
-  {
-    isReceiver = false,
-    allowUndefined = true,
-  }: { isReceiver?: boolean; allowUndefined?: boolean } = {},
+  _deprecated?: IsNullableTypeOptions,
 ): boolean {
-  const flags = getTypeFlags(type);
-
-  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return true;
-  }
-
-  if (allowUndefined) {
-    return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
-  } else {
-    return (flags & ts.TypeFlags.Null) !== 0;
-  }
+  return isTypeFlagSet(
+    type,
+    ts.TypeFlags.Any |
+      ts.TypeFlags.Unknown |
+      ts.TypeFlags.Null |
+      ts.TypeFlags.Undefined,
+  );
 }
 
 /**
@@ -102,10 +104,7 @@ export function isTypeAnyArrayType(
 ): boolean {
   return (
     checker.isArrayType(type) &&
-    isTypeAnyType(
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(type, checker)[0],
-    )
+    isTypeAnyType(checker.getTypeArguments(type)[0])
   );
 }
 
@@ -118,10 +117,7 @@ export function isTypeUnknownArrayType(
 ): boolean {
   return (
     checker.isArrayType(type) &&
-    isTypeUnknownType(
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(type, checker)[0],
-    )
+    isTypeUnknownType(checker.getTypeArguments(type)[0])
   );
 }
 

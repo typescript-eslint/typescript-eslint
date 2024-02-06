@@ -36,8 +36,8 @@ function foo<T extends (Args: any) => void>(arg: T) {}
 export type ArrayInput<Func> = Func extends (arg0: Array<infer T>) => any
   ? T[]
   : Func extends (...args: infer T) => any
-  ? T
-  : never;
+    ? T
+    : never;
     `,
     `
 function foo() {
@@ -222,6 +222,17 @@ export class Wrapper<Wrapped> {
   }
 }
     `,
+    `
+function makeA() {
+  return class A<T> {
+    constructor(public value: T) {}
+
+    static make<T>(value: T) {
+      return new A<T>(value);
+    }
+  };
+}
+    `,
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/3862
       code: `
@@ -241,9 +252,6 @@ import { type foo } from './foo';
 // 'foo' is already declared in the upper scope
 function doThing(foo: number) {}
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ ignoreTypeValueShadow: true }],
     },
     {
@@ -611,9 +619,6 @@ function doThing(foo: number) {}
 import { type foo } from './foo';
 function doThing(foo: number) {}
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ ignoreTypeValueShadow: false }],
       errors: [
         {
@@ -741,9 +746,6 @@ declare module 'baz' {
   }
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'noShadow',
@@ -764,9 +766,6 @@ declare module 'bar' {
   export type Foo = string;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'noShadow',
@@ -789,9 +788,6 @@ declare module 'bar' {
   }
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'noShadow',

@@ -1,13 +1,17 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isCommentToken, isTokenOnSameLine } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('lines-around-comment');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const COMMENTS_IGNORE_PATTERN =
   /^\s*(?:eslint|jshint\s+|jslint\s+|istanbul\s+|globals?\s+|exported\s+|jscs)/u;
@@ -42,9 +46,11 @@ function getCommentLineNums(comments: TSESTree.Comment[]): number[] {
   return lines;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'lines-around-comment',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/lines-around-comment'],
     type: 'layout',
     docs: {
       description: 'Require empty lines around comments',
@@ -144,10 +150,9 @@ export default util.createRule<Options, MessageIds>({
     const defaultIgnoreRegExp = COMMENTS_IGNORE_PATTERN;
     const customIgnoreRegExp = new RegExp(options.ignorePattern ?? '', 'u');
 
-    const sourceCode = context.getSourceCode();
-    const comments = sourceCode.getAllComments();
+    const comments = context.sourceCode.getAllComments();
 
-    const lines = sourceCode.lines;
+    const lines = context.sourceCode.lines;
     const commentLines = getCommentLineNums(comments);
     const emptyLines = getEmptyLineNums(lines);
     const commentAndEmptyLines = new Set(commentLines.concat(emptyLines));
@@ -159,23 +164,23 @@ export default util.createRule<Options, MessageIds>({
       let currentToken: TSESTree.Token | null = token;
 
       do {
-        currentToken = sourceCode.getTokenBefore(currentToken, {
+        currentToken = context.sourceCode.getTokenBefore(currentToken, {
           includeComments: true,
         });
-      } while (currentToken && util.isCommentToken(currentToken));
+      } while (currentToken && isCommentToken(currentToken));
 
-      if (currentToken && util.isTokenOnSameLine(currentToken, token)) {
+      if (currentToken && isTokenOnSameLine(currentToken, token)) {
         return true;
       }
 
       currentToken = token;
       do {
-        currentToken = sourceCode.getTokenAfter(currentToken, {
+        currentToken = context.sourceCode.getTokenAfter(currentToken, {
           includeComments: true,
         });
-      } while (currentToken && util.isCommentToken(currentToken));
+      } while (currentToken && isCommentToken(currentToken));
 
-      if (currentToken && util.isTokenOnSameLine(token, currentToken)) {
+      if (currentToken && isTokenOnSameLine(token, currentToken)) {
         return true;
       }
 
@@ -196,7 +201,7 @@ export default util.createRule<Options, MessageIds>({
      * @returns the parent node that contains the given token.
      */
     function getParentNodeOfToken(token: TSESTree.Token): TSESTree.Node | null {
-      const node = sourceCode.getNodeByRangeIndex(token.range[0]);
+      const node = context.sourceCode.getNodeByRangeIndex(token.range[0]);
 
       return node;
     }
@@ -339,10 +344,10 @@ export default util.createRule<Options, MessageIds>({
         enumEndAllowed ||
         moduleEndAllowed;
 
-      const previousTokenOrComment = sourceCode.getTokenBefore(token, {
+      const previousTokenOrComment = context.sourceCode.getTokenBefore(token, {
         includeComments: true,
       });
-      const nextTokenOrComment = sourceCode.getTokenAfter(token, {
+      const nextTokenOrComment = context.sourceCode.getTokenAfter(token, {
         includeComments: true,
       });
 
@@ -352,8 +357,8 @@ export default util.createRule<Options, MessageIds>({
         before &&
         !commentAndEmptyLines.has(prevLineNum) &&
         !(
-          util.isCommentToken(previousTokenOrComment!) &&
-          util.isTokenOnSameLine(previousTokenOrComment, token)
+          isCommentToken(previousTokenOrComment!) &&
+          isTokenOnSameLine(previousTokenOrComment, token)
         )
       ) {
         const lineStart = token.range[0] - token.loc.start.column;
@@ -374,8 +379,8 @@ export default util.createRule<Options, MessageIds>({
         after &&
         !commentAndEmptyLines.has(nextLineNum) &&
         !(
-          util.isCommentToken(nextTokenOrComment!) &&
-          util.isTokenOnSameLine(token, nextTokenOrComment)
+          isCommentToken(nextTokenOrComment!) &&
+          isTokenOnSameLine(token, nextTokenOrComment)
         )
       ) {
         context.report({
@@ -437,13 +442,11 @@ export default util.createRule<Options, MessageIds>({
                 before: options.beforeLineComment,
               });
             }
-          } else if (token.type === AST_TOKEN_TYPES.Block) {
-            if (options.beforeBlockComment || options.afterBlockComment) {
-              checkForEmptyLine(token, {
-                after: options.afterBlockComment,
-                before: options.beforeBlockComment,
-              });
-            }
+          } else if (options.beforeBlockComment || options.afterBlockComment) {
+            checkForEmptyLine(token, {
+              after: options.afterBlockComment,
+              before: options.beforeBlockComment,
+            });
           }
         });
       },

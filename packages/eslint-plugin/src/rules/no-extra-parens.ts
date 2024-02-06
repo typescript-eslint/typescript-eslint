@@ -4,17 +4,23 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isOpeningParenToken, isTypeAssertion } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-extra-parens');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-extra-parens',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/no-extra-parens'],
     type: 'layout',
     docs: {
       description: 'Disallow unnecessary parentheses',
@@ -35,8 +41,8 @@ export default util.createRule<Options, MessageIds>({
       const rule = rules.BinaryExpression as (n: typeof node) => void;
 
       // makes the rule think it should skip the left or right
-      const isLeftTypeAssertion = util.isTypeAssertion(node.left);
-      const isRightTypeAssertion = util.isTypeAssertion(node.right);
+      const isLeftTypeAssertion = isTypeAssertion(node.left);
+      const isRightTypeAssertion = isTypeAssertion(node.right);
       if (isLeftTypeAssertion && isRightTypeAssertion) {
         return; // ignore
       }
@@ -66,7 +72,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const rule = rules.CallExpression as (n: typeof node) => void;
 
-      if (util.isTypeAssertion(node.callee)) {
+      if (isTypeAssertion(node.callee)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
         return rule({
           ...node,
@@ -79,11 +85,12 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         node.arguments.length === 1 &&
-        node.typeArguments?.params.some(
-          param =>
-            param.type === AST_NODE_TYPES.TSImportType ||
-            param.type === AST_NODE_TYPES.TSArrayType,
-        )
+        // is there any opening parenthesis in type arguments
+        context.sourceCode.getTokenAfter(node.callee, isOpeningParenToken) !==
+          context.sourceCode.getTokenBefore(
+            node.arguments[0],
+            isOpeningParenToken,
+          )
       ) {
         return rule({
           ...node,
@@ -103,7 +110,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const rule = rules.UnaryExpression as (n: typeof node) => void;
 
-      if (util.isTypeAssertion(node.argument)) {
+      if (isTypeAssertion(node.argument)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
         return rule({
           ...node,
@@ -120,13 +127,13 @@ export default util.createRule<Options, MessageIds>({
     const overrides: TSESLint.RuleListener = {
       // ArrayExpression
       ArrowFunctionExpression(node) {
-        if (!util.isTypeAssertion(node.body)) {
+        if (!isTypeAssertion(node.body)) {
           return rules.ArrowFunctionExpression(node);
         }
       },
       // AssignmentExpression
       AwaitExpression(node) {
-        if (util.isTypeAssertion(node.argument)) {
+        if (isTypeAssertion(node.argument)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.AwaitExpression({
             ...node,
@@ -166,7 +173,7 @@ export default util.createRule<Options, MessageIds>({
       },
       ConditionalExpression(node) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
-        if (util.isTypeAssertion(node.test)) {
+        if (isTypeAssertion(node.test)) {
           return rules.ConditionalExpression({
             ...node,
             test: {
@@ -175,7 +182,7 @@ export default util.createRule<Options, MessageIds>({
             },
           });
         }
-        if (util.isTypeAssertion(node.consequent)) {
+        if (isTypeAssertion(node.consequent)) {
           return rules.ConditionalExpression({
             ...node,
             consequent: {
@@ -184,7 +191,7 @@ export default util.createRule<Options, MessageIds>({
             },
           });
         }
-        if (util.isTypeAssertion(node.alternate)) {
+        if (isTypeAssertion(node.alternate)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.ConditionalExpression({
             ...node,
@@ -196,23 +203,46 @@ export default util.createRule<Options, MessageIds>({
         }
         return rules.ConditionalExpression(node);
       },
+      ForInStatement(node): void {
+        if (isTypeAssertion(node.right)) {
+          // as of 7.20.0 there's no way to skip checking the right of the ForIn
+          // so just don't validate it at all
+          return;
+        }
+
+        return rules.ForInStatement(node);
+      },
+      ForOfStatement(node): void {
+        if (isTypeAssertion(node.right)) {
+          // makes the rule skip checking of the right
+          return rules.ForOfStatement({
+            ...node,
+            type: AST_NODE_TYPES.ForOfStatement,
+            right: {
+              ...node.right,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+        }
+
+        return rules.ForOfStatement(node);
+      },
       // DoWhileStatement
-      // ForIn and ForOf are guarded by eslint version
       ForStatement(node) {
         // make the rule skip the piece by removing it entirely
-        if (node.init && util.isTypeAssertion(node.init)) {
+        if (node.init && isTypeAssertion(node.init)) {
           return rules.ForStatement({
             ...node,
             init: null,
           });
         }
-        if (node.test && util.isTypeAssertion(node.test)) {
+        if (node.test && isTypeAssertion(node.test)) {
           return rules.ForStatement({
             ...node,
             test: null,
           });
         }
-        if (node.update && util.isTypeAssertion(node.update)) {
+        if (node.update && isTypeAssertion(node.update)) {
           return rules.ForStatement({
             ...node,
             update: null,
@@ -222,14 +252,14 @@ export default util.createRule<Options, MessageIds>({
         return rules.ForStatement(node);
       },
       'ForStatement > *.init:exit'(node: TSESTree.Node) {
-        if (!util.isTypeAssertion(node)) {
+        if (!isTypeAssertion(node)) {
           return rules['ForStatement > *.init:exit'](node);
         }
       },
       // IfStatement
       LogicalExpression: binaryExp,
       MemberExpression(node) {
-        if (util.isTypeAssertion(node.object)) {
+        if (isTypeAssertion(node.object)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
           return rules.MemberExpression({
             ...node,
@@ -247,18 +277,18 @@ export default util.createRule<Options, MessageIds>({
       // ReturnStatement
       // SequenceExpression
       SpreadElement(node) {
-        if (!util.isTypeAssertion(node.argument)) {
+        if (!isTypeAssertion(node.argument)) {
           return rules.SpreadElement(node);
         }
       },
       SwitchCase(node) {
-        if (node.test && !util.isTypeAssertion(node.test)) {
+        if (node.test && !isTypeAssertion(node.test)) {
           return rules.SwitchCase(node);
         }
       },
       // SwitchStatement
       ThrowStatement(node) {
-        if (node.argument && !util.isTypeAssertion(node.argument)) {
+        if (node.argument && !isTypeAssertion(node.argument)) {
           return rules.ThrowStatement(node);
         }
       },
@@ -268,55 +298,11 @@ export default util.createRule<Options, MessageIds>({
       // WhileStatement
       // WithStatement - i'm not going to even bother implementing this terrible and never used feature
       YieldExpression(node) {
-        if (node.argument && !util.isTypeAssertion(node.argument)) {
+        if (node.argument && !isTypeAssertion(node.argument)) {
           return rules.YieldExpression(node);
         }
       },
     };
-    if (rules.ForInStatement && rules.ForOfStatement) {
-      overrides.ForInStatement = function (node): void {
-        if (util.isTypeAssertion(node.right)) {
-          // as of 7.20.0 there's no way to skip checking the right of the ForIn
-          // so just don't validate it at all
-          return;
-        }
-
-        return rules.ForInStatement(node);
-      };
-      overrides.ForOfStatement = function (node): void {
-        if (util.isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          return rules.ForOfStatement({
-            ...node,
-            type: AST_NODE_TYPES.ForOfStatement,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
-        }
-
-        return rules.ForOfStatement(node);
-      };
-    } else {
-      overrides['ForInStatement, ForOfStatement'] = function (
-        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
-      ): void {
-        if (util.isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          return rules['ForInStatement, ForOfStatement']({
-            ...node,
-            type: AST_NODE_TYPES.ForOfStatement as any,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
-        }
-
-        return rules['ForInStatement, ForOfStatement'](node);
-      };
-    }
     return Object.assign({}, rules, overrides);
   },
 });

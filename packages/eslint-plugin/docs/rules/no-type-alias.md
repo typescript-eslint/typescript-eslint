@@ -27,15 +27,23 @@ In TypeScript, type aliases serve three purposes:
 ```ts
 // this...
 type Person = {
-    firstName: string,
-    lastName: string,
-    age: number
+  firstName: string;
+  lastName: string;
+  age: number;
 };
 
-function addPerson(person : Person) { ... }
+function addPerson(person: Person) {
+  // ...
+}
 
 // is easier to read than this...
-function addPerson(person : { firstName: string, lastName: string, age: number}) { ... }
+function addPerson(person: {
+  firstName: string;
+  lastName: string;
+  age: number;
+}) {
+  // ...
+}
 ```
 
 - Act sort of like an interface, providing a set of methods and properties that must exist
@@ -43,16 +51,18 @@ function addPerson(person : { firstName: string, lastName: string, age: number})
 
 ```ts
 type Person = {
-    firstName: string,
-    lastName: string,
-    age: number,
-    walk: () => void,
-    talk: () => void
+  firstName: string;
+  lastName: string;
+  age: number;
+  walk: () => void;
+  talk: () => void;
 };
 
 // you know person will have 3 properties and 2 methods,
 // because the structure has already been defined.
-var person : Person = { ... }
+var person: Person = {
+  // ...
+};
 
 // so we can be sure that this will work
 person.walk();
@@ -112,7 +122,7 @@ The setting accepts the following values:
 
 Examples of **correct** code for the `{ "allowAliases": "always" }` options:
 
-```ts
+```ts option='{ "allowAliases": "always" }' showPlaygroundButton
 // primitives
 type Foo = 'a';
 
@@ -139,7 +149,7 @@ type Foo = Bar & Baz;
 
 Examples of **incorrect** code for the `{ "allowAliases": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowAliases": "in-unions" }' showPlaygroundButton
 // primitives
 type Foo = 'a';
 
@@ -160,7 +170,7 @@ type Foo = Bar & Baz;
 
 Examples of **correct** code for the `{ "allowAliases": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowAliases": "in-unions" }' showPlaygroundButton
 // primitives
 type Foo = 'a' | 'b';
 
@@ -177,7 +187,7 @@ type Foo = Bar | Baz;
 
 Examples of **incorrect** code for the `{ "allowAliases": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowAliases": "in-intersections" }' showPlaygroundButton
 // primitives
 type Foo = 'a';
 
@@ -200,7 +210,7 @@ type Foo = Bar | Baz;
 
 Examples of **correct** code for the `{ "allowAliases": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowAliases": "in-intersections" }' showPlaygroundButton
 // primitives
 type Foo = string & string[];
 
@@ -215,7 +225,7 @@ type Foo = Bar & Baz;
 
 Examples of **incorrect** code for the `{ "allowAliases": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowAliases": "in-unions-and-intersections" }' showPlaygroundButton
 // primitives
 type Foo = 'a';
 
@@ -232,7 +242,7 @@ type Foo = Bar;
 
 Examples of **correct** code for the `{ "allowAliases": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowAliases": "in-unions-and-intersections" }' showPlaygroundButton
 // primitives
 type Foo = 'a' | 'b';
 
@@ -263,7 +273,7 @@ The setting accepts the following values:
 
 Examples of **correct** code for the `{ "allowCallbacks": "always" }` option:
 
-```ts
+```ts option='{ "allowCallbacks": "always" }' showPlaygroundButton
 type Foo = () => void;
 
 type Foo = (name: string) => string;
@@ -281,7 +291,7 @@ This applies to conditional types.
 
 Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` option:
 
-```ts
+```ts option='{ "allowConditionalTypes": "always" }' showPlaygroundButton
 type Foo<T> = T extends number ? number : null;
 ```
 
@@ -295,7 +305,7 @@ The setting accepts the following values:
 
 Examples of **correct** code for the `{ "allowConstructors": "always" }` option:
 
-```ts
+```ts option='{ "allowConstructors": "always" }' showPlaygroundButton
 type Foo = new () => void;
 ```
 
@@ -312,7 +322,7 @@ The setting accepts the following options:
 
 Examples of **correct** code for the `{ "allowLiterals": "always" }` options:
 
-```ts
+```ts option='{ "allowLiterals": "always" }' showPlaygroundButton
 type Foo = {};
 
 type Foo = {
@@ -333,7 +343,7 @@ type Foo = { name: string } & { age: number };
 
 Examples of **incorrect** code for the `{ "allowLiterals": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowLiterals": "in-unions" }' showPlaygroundButton
 type Foo = {};
 
 type Foo = {
@@ -352,13 +362,13 @@ type Foo = { name: string } & { age: number };
 
 Examples of **correct** code for the `{ "allowLiterals": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowLiterals": "in-unions" }' showPlaygroundButton
 type Foo = { name: string } | { age: number };
 ```
 
 Examples of **incorrect** code for the `{ "allowLiterals": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowLiterals": "in-intersections" }' showPlaygroundButton
 type Foo = {};
 
 type Foo = {
@@ -377,13 +387,13 @@ type Foo = { name: string } | { age: number };
 
 Examples of **correct** code for the `{ "allowLiterals": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowLiterals": "in-intersections" }' showPlaygroundButton
 type Foo = { name: string } & { age: number };
 ```
 
 Examples of **incorrect** code for the `{ "allowLiterals": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowLiterals": "in-unions-and-intersections" }' showPlaygroundButton
 type Foo = {};
 
 type Foo = {
@@ -400,7 +410,7 @@ type Foo = {
 
 Examples of **correct** code for the `{ "allowLiterals": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowLiterals": "in-unions-and-intersections" }' showPlaygroundButton
 type Foo = { name: string } | { age: number };
 
 type Foo = { name: string } & { age: number };
@@ -419,7 +429,7 @@ The setting accepts the following values:
 
 Examples of **correct** code for the `{ "allowMappedTypes": "always" }` options:
 
-```ts
+```ts option='{ "allowMappedTypes": "always" }' showPlaygroundButton
 type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -439,7 +449,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 
 Examples of **incorrect** code for the `{ "allowMappedTypes": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowMappedTypes": "in-unions" }' showPlaygroundButton
 type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -453,7 +463,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 
 Examples of **correct** code for the `{ "allowMappedTypes": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowMappedTypes": "in-unions" }' showPlaygroundButton
 type Foo<T, U> =
   | { readonly [P in keyof T]: T[P] }
   | { readonly [P in keyof U]: U[P] };
@@ -463,7 +473,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
 Examples of **incorrect** code for the `{ "allowMappedTypes": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowMappedTypes": "in-intersections" }' showPlaygroundButton
 type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -477,7 +487,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 
 Examples of **correct** code for the `{ "allowMappedTypes": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowMappedTypes": "in-intersections" }' showPlaygroundButton
 type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
   readonly [P in keyof U]: U[P];
 };
@@ -487,7 +497,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 
 Examples of **incorrect** code for the `{ "allowMappedTypes": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowMappedTypes": "in-unions-and-intersections" }' showPlaygroundButton
 type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -495,7 +505,7 @@ type Foo<T> = { [P in keyof T]?: T[P] };
 
 Examples of **correct** code for the `{ "allowMappedTypes": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowMappedTypes": "in-unions-and-intersections" }' showPlaygroundButton
 type Foo<T, U> =
   | { readonly [P in keyof T]: T[P] }
   | { readonly [P in keyof U]: U[P] };
@@ -522,7 +532,7 @@ The setting accepts the following options:
 
 Examples of **correct** code for the `{ "allowTupleTypes": "always" }` options:
 
-```ts
+```ts option='{ "allowTupleTypes": "always" }' showPlaygroundButton
 type Foo = [number];
 
 type Foo = [number] | [number, number];
@@ -534,7 +544,7 @@ type Foo = [number] | ([number, number] & [string, string]);
 
 Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowTupleTypes": "in-unions" }' showPlaygroundButton
 type Foo = [number];
 
 type Foo = [number] & [number, number];
@@ -544,7 +554,7 @@ type Foo = [string] & [number];
 
 Examples of **correct** code for the `{ "allowTupleTypes": "in-unions" }` option:
 
-```ts
+```ts option='{ "allowTupleTypes": "in-unions" }' showPlaygroundButton
 type Foo = [number] | [number, number];
 
 type Foo = [string] | [number];
@@ -552,7 +562,7 @@ type Foo = [string] | [number];
 
 Examples of **incorrect** code for the `{ "allowTupleTypes": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowTupleTypes": "in-intersections" }' showPlaygroundButton
 type Foo = [number];
 
 type Foo = [number] | [number, number];
@@ -562,7 +572,7 @@ type Foo = [string] | [number];
 
 Examples of **correct** code for the `{ "allowTupleTypes": "in-intersections" }` option:
 
-```ts
+```ts option='{ "allowTupleTypes": "in-intersections" }' showPlaygroundButton
 type Foo = [number] & [number, number];
 
 type Foo = [string] & [number];
@@ -570,15 +580,15 @@ type Foo = [string] & [number];
 
 Examples of **incorrect** code for the `{ "allowTupleTypes": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowTupleTypes": "in-unions-and-intersections" }' showPlaygroundButton
 type Foo = [number];
 
 type Foo = [string];
 ```
 
-Examples of **correct** code for the `{ "allowLiterals": "in-unions-and-intersections" }` option:
+Examples of **correct** code for the `{ "allowTupleTypes": "in-unions-and-intersections" }` option:
 
-```ts
+```ts option='{ "allowTupleTypes": "in-unions-and-intersections" }' showPlaygroundButton
 type Foo = [number] & [number, number];
 
 type Foo = [string] | [number];
@@ -594,7 +604,7 @@ The setting accepts the following options:
 
 Examples of **correct** code for the `{ "allowGenerics": "always" }` options:
 
-```ts
+```ts option='{ "allowGenerics": "always" }' showPlaygroundButton
 type Foo = Bar<string>;
 
 type Foo = Record<string, number>;
@@ -606,10 +616,7 @@ type Foo = Partial<Bar>;
 type Foo = Omit<Bar, 'a' | 'b'>;
 ```
 
-## When Not To Use It
-
-When you can't express some shape with an interface or you need to use a union, tuple type,
-callback, etc. that would cause the code to be unreadable or impractical.
+<!-- Intentionally Omitted: When Not To Use It -->
 
 ## Further Reading
 

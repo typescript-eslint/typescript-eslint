@@ -48,15 +48,15 @@ module.exports = {
 We recommend that most projects should extend from one of:
 
 - [`recommended`](#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
-- [`recommended-type-checked`](#recommended-type-checked): Additional recommended rules that require type information.
-- [`strict`](#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
-- [`strict-type-checked`](#strict-type-checked): Additional strict rules require type information.
+- [`recommended-type-checked`](#recommended-type-checked): Contains `recommended` + additional recommended rules that require type information.
+- [`strict`](#strict): Contains `recommended` + additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+- [`strict-type-checked`](#strict-type-checked): Contains `strict` + additional strict rules require type information.
 
 Additionally, we provide a [`stylistic`](#stylistic) config that enforces concise and consistent code.
 We recommend that most projects should extend from either:
 
 - [`stylistic`](#stylistic): Stylistic rules you can drop in without additional configuration.
-- [`stylistic-type-checked`](#stylistic-type-checked): Additional stylistic rules that require type information.
+- [`stylistic-type-checked`](#stylistic-type-checked): Contains `stylistic` + additional stylistic rules that require type information.
 
 :::note
 These configurations are our recommended starting points, but **you don't need to use them as-is**.
@@ -229,4 +229,4 @@ If you feel strongly that a specific rule should (or should not) be one of these
 
 None of the preset configs provided by typescript-eslint enable formatting rules (rules that only serve to enforce code whitespace and other trivia).
 We strongly recommend you use Prettier or an equivalent for formatting your code, not ESLint formatting rules.
-See [What About Formatting? > Suggested Usage](./troubleshooting/formatting#suggested-usage).
+See [What About Formatting? > Suggested Usage](./troubleshooting/Formatting.mdx#suggested-usage---prettier).

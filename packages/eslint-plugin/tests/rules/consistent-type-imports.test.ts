@@ -9,10 +9,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  // type-only imports were first added in TS3.8
-  dependencyConstraints: {
-    typescript: '3.8',
-  },
 });
 
 const withMetaParserOptions = {
@@ -125,6 +121,13 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'no-type-imports' }],
     },
+    {
+      code: `
+        import * as Type from 'foo' assert { type: 'json' };
+        const a: typeof Type = Type;
+      `,
+      options: [{ prefer: 'no-type-imports' }],
+    },
     `
       import { type A } from 'foo';
       type T = A;
@@ -198,9 +201,6 @@ ruleTester.run('consistent-type-imports', rule, {
         const b = B;
       `,
       options: [{ prefer: 'no-type-imports', fixStyle: 'inline-type-imports' }],
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
     },
     // exports
     `
@@ -536,6 +536,18 @@ ruleTester.run('consistent-type-imports', rule, {
       parserOptions: withMetaConfigParserOptions,
     },
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7327
+    {
+      code: `
+        import type { ClassA } from './classA';
+
+        export class ClassB {
+          public constructor(node: ClassA) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/2989
     `
 import type * as constants from './constants';
@@ -543,6 +555,22 @@ import type * as constants from './constants';
 export type Y = {
   [constants.X]: ReadonlyArray<string>;
 };
+    `,
+    `
+      import A from 'foo';
+      export = A;
+    `,
+    `
+      import type A from 'foo';
+      export = A;
+    `,
+    `
+      import type A from 'foo';
+      export = {} as A;
+    `,
+    `
+      import { type A } from 'foo';
+      export = {} as A;
     `,
   ],
   invalid: [
@@ -1901,9 +1929,6 @@ import { A, B } from 'foo';
 type T = A;
 const b = B;
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ prefer: 'no-type-imports' }],
       errors: [
         {
@@ -1924,9 +1949,6 @@ import { B, type C } from 'foo';
 type T = A | C;
 const b = B;
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ prefer: 'type-imports' }],
       errors: [
         {
@@ -2203,6 +2225,42 @@ let baz: D;
       errors: [
         {
           messageId: 'aImportIsOnlyTypes',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import A from 'foo';
+export = {} as A;
+      `,
+      output: `
+import type A from 'foo';
+export = {} as A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+import { A } from 'foo';
+export = {} as A;
+      `,
+      output: `
+import { type A } from 'foo';
+export = {} as A;
+      `,
+      options: [{ prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
           line: 2,
           column: 1,
         },

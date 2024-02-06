@@ -1,16 +1,18 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
-import { maybeGetESLintCoreRule } from '../util/getESLintCoreRule';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
+import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
-const baseRule = maybeGetESLintCoreRule('no-loss-of-precision');
+const baseRule = getESLintCoreRule('no-loss-of-precision');
 
-type Options = util.InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
-type MessageIds = util.InferMessageIdsTypeFromRule<
-  NonNullable<typeof baseRule>
->;
+type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
+type MessageIds = InferMessageIdsTypeFromRule<NonNullable<typeof baseRule>>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
   meta: {
     type: 'problem',
@@ -19,20 +21,13 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'recommended',
       extendsBaseRule: true,
     },
-    hasSuggestions: baseRule?.meta.hasSuggestions,
+    hasSuggestions: baseRule.meta.hasSuggestions,
     schema: [],
-    messages: baseRule?.meta.messages ?? { noLossOfPrecision: '' },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [],
   create(context) {
-    /* istanbul ignore if */ if (baseRule == null) {
-      throw new Error(
-        '@typescript-eslint/no-loss-of-precision requires at least ESLint v7.1.0',
-      );
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    const rules = baseRule!.create(context);
+    const rules = baseRule.create(context);
 
     function isSeparatedNumeric(node: TSESTree.Literal): boolean {
       return typeof node.value === 'number' && node.raw.includes('_');

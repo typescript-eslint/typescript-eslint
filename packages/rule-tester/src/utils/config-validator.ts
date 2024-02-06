@@ -24,7 +24,7 @@ const { ConfigOps, environments: BuiltInEnvironments } = Legacy;
 const ajv = ajvBuilder();
 const ruleValidators = new WeakMap<AnyRuleModule, ValidateFunction>();
 
-let validateSchema: ValidateFunction;
+let validateSchema: ValidateFunction | undefined;
 const severityMap = {
   error: 2,
   warn: 1,
@@ -40,8 +40,10 @@ function validateRuleSeverity(options: Linter.RuleEntry): number | string {
   const severity = Array.isArray(options) ? options[0] : options;
   const normSeverity =
     typeof severity === 'string'
-      ? severityMap[severity.toLowerCase() as Linter.SeverityString]
-      : severity;
+      ? (severityMap[severity.toLowerCase() as Linter.SeverityString] as
+          | number
+          | undefined)
+      : (severity as number);
 
   if (normSeverity === 0 || normSeverity === 1 || normSeverity === 2) {
     return normSeverity;
@@ -76,7 +78,7 @@ function validateRuleSchema(
   const validateRule = ruleValidators.get(rule);
 
   if (validateRule) {
-    validateRule(localOptions);
+    void validateRule(localOptions);
     if (validateRule.errors) {
       throw new Error(
         validateRule.errors
@@ -94,7 +96,7 @@ function validateRuleSchema(
  * Validates a rule's options against its schema.
  * @param rule The rule that the config is being validated for
  * @param ruleId The rule's unique name.
- * @param {Array|number} options The given options for the rule.
+ * @param options The given options for the rule.
  * @param source The name of the configuration source to report in any errors. If null or undefined,
  * no source is prepended to the message.
  * @throws {Error} Upon any bad rule configuration.
@@ -248,7 +250,7 @@ function validateConfigSchema(
   config: TesterConfigWithDefaults,
   source: string,
 ): void {
-  validateSchema = validateSchema || ajv.compile(configSchema);
+  validateSchema ||= ajv.compile(configSchema);
 
   if (!validateSchema(config)) {
     throw new Error(

@@ -1443,7 +1443,7 @@ Program {
     },
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: [],
+      attributes: [],
       importKind: "value",
       source: Literal {
         type: "Literal",

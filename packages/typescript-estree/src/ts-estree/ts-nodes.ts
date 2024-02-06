@@ -4,23 +4,30 @@ import type * as ts from 'typescript';
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
 /* eslint-disable @typescript-eslint/no-empty-interface */
 declare module 'typescript' {
-  // added in TS 4.5
-  export interface AssertClause extends ts.Node {}
-  export interface AssertEntry extends ts.Node {}
+  // added in TS 4.5, deprecated in TS 5.3
+  export interface AssertClause extends ts.ImportAttributes {}
+  export interface AssertEntry extends ts.ImportAttribute {}
   // added in TS 4.9
   export interface SatisfiesExpression extends ts.Node {}
   // added in TS 5.1
   export interface JsxNamespacedName extends ts.Node {}
+  // added in TS 5.3
+  export interface ImportAttribute extends ts.Node {}
+  export interface ImportAttributes extends ts.Node {}
 }
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode =
-  | ts.AssertClause
-  | ts.AssertEntry
   | ts.Modifier
   | ts.Identifier
+  | ts.ImportAttribute
+  | ts.ImportAttributes
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
+  | ts.AssertClause
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
+  | ts.AssertEntry
   | ts.PrivateIdentifier
   | ts.QualifiedName
   | ts.ComputedPropertyName
@@ -178,9 +185,9 @@ export type TSNode =
   | ts.ExportAssignment
   | ts.SourceFile
   | ts.Bundle
-  // eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.InputFiles
-  // eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.UnparsedSource
   | ts.JsonMinusNumericLiteral
   | ts.TemplateLiteralTypeNode

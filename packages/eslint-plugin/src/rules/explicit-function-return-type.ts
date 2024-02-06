@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 import {
   ancestorHasReturnType,
   checkFunctionReturnType,
@@ -22,7 +22,7 @@ type Options = [
 ];
 type MessageIds = 'missingReturnType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-function-return-type',
   meta: {
     type: 'problem',
@@ -98,7 +98,6 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -125,7 +124,7 @@ export default util.createRule<Options, MessageIds>({
         let funcName;
         if (node.id?.name) {
           funcName = node.id.name;
-        } else if (parent) {
+        } else {
           switch (parent.type) {
             case AST_NODE_TYPES.VariableDeclarator: {
               if (parent.id.type === AST_NODE_TYPES.Identifier) {
@@ -138,7 +137,7 @@ export default util.createRule<Options, MessageIds>({
             case AST_NODE_TYPES.Property: {
               if (
                 parent.key.type === AST_NODE_TYPES.Identifier &&
-                parent.computed === false
+                !parent.computed
               ) {
                 funcName = parent.key.name;
               }
@@ -153,7 +152,6 @@ export default util.createRule<Options, MessageIds>({
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
-        node.id.type === AST_NODE_TYPES.Identifier &&
         !!options.allowedNames.includes(node.id.name)
       ) {
         return true;
@@ -196,7 +194,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc =>
+        checkFunctionReturnType(node, options, context.sourceCode, loc =>
           context.report({
             node,
             loc,
@@ -212,7 +210,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc =>
+        checkFunctionReturnType(node, options, context.sourceCode, loc =>
           context.report({
             node,
             loc,

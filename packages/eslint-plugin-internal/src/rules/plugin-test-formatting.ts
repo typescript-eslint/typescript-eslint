@@ -1,7 +1,7 @@
+import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
-import { format, resolveConfig } from 'prettier';
 
 import { createRule } from '../util';
 
@@ -45,7 +45,7 @@ const a = 1;
 ]
 */
 
-const prettierConfig = resolveConfig.sync(__dirname) ?? {};
+const prettierConfig = prettier.resolveConfig(__dirname) ?? {};
 const START_OF_LINE_WHITESPACE_MATCHER = /^([ ]*)/;
 const BACKTICK_REGEX = /`/g;
 const TEMPLATE_EXPR_OPENER = /\$\{/g;
@@ -147,7 +147,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ formatWithPrettier }]) {
-    const sourceCode = context.getSourceCode();
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -162,13 +161,19 @@ export default createRule<Options, MessageIds>({
       }
 
       try {
-        return format(code, {
-          ...prettierConfig,
-          parser: 'typescript',
-        }).trimEnd(); // prettier will insert a new line at the end of the code
+        return prettier
+          .format(code, {
+            ...prettierConfig,
+            parser: 'typescript',
+          })
+          .trimEnd(); // prettier will insert a new line at the end of the code
       } catch (ex) {
-        // adapted from https://github.com/prettier/eslint-plugin-prettier/blob/185b1064d3dd674538456fb2fad97fbfcde49e0d/eslint-plugin-prettier.js#L242-L257
-        if (!(ex instanceof SyntaxError)) {
+        // ex instanceof Error is false as of @prettier/sync@0.3.0, as is ex instanceof SyntaxError
+        if (
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          (ex as Partial<Error> | undefined)?.constructor?.name !==
+          'SyntaxError'
+        ) {
           throw ex;
         }
         const err = ex as Error & {
@@ -319,7 +324,10 @@ export default createRule<Options, MessageIds>({
         });
       }
 
-      const parentIndent = getExpectedIndentForNode(literal, sourceCode.lines);
+      const parentIndent = getExpectedIndentForNode(
+        literal,
+        context.sourceCode.lines,
+      );
       if (lastLine.length !== parentIndent) {
         return context.report({
           node: literal,

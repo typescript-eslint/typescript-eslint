@@ -22,10 +22,20 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "ignoreClassesThatImplementAnInterface": {
         "description": "Ignore classes that specifically implement some interface",
-        "type": "boolean"
+        "oneOf": [
+          {
+            "description": "Ignore all classes that implement an interface",
+            "type": "boolean"
+          },
+          {
+            "description": "Ignore only the public fields of classes that implement an interface",
+            "enum": ["public-fields"],
+            "type": "string"
+          }
+        ]
       },
       "ignoreOverrideMethods": {
-        "description": "Ingore members marked with the \`override\` modifier",
+        "description": "Ignore members marked with the \`override\` modifier",
         "type": "boolean"
       }
     },
@@ -43,8 +53,14 @@ type Options = [
     /** Allows specified method names to be ignored with this rule */
     exceptMethods?: string[];
     /** Ignore classes that specifically implement some interface */
-    ignoreClassesThatImplementAnInterface?: boolean;
-    /** Ingore members marked with the \`override\` modifier */
+    ignoreClassesThatImplementAnInterface?: /**
+     * Ignore classes that specifically implement some interface
+     * Ignore all classes that implement an interface
+     */
+    | boolean
+      /** Ignore only the public fields of classes that implement an interface */
+      | 'public-fields';
+    /** Ignore members marked with the \`override\` modifier */
     ignoreOverrideMethods?: boolean;
   },
 ];

@@ -28,8 +28,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['record'],
   create(context, [mode]) {
-    const sourceCode = context.getSourceCode();
-
     function checkMembers(
       members: TSESTree.TypeElement[],
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
@@ -47,15 +45,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const [parameter] = member.parameters;
-
-      if (!parameter) {
+      const parameter = member.parameters.at(0);
+      if (parameter?.type !== AST_NODE_TYPES.Identifier) {
         return;
       }
 
-      if (parameter.type !== AST_NODE_TYPES.Identifier) {
-        return;
-      }
       const keyType = parameter.typeAnnotation;
       if (!keyType) {
         return;
@@ -67,7 +61,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (parentId) {
-        const scope = context.getScope();
+        const scope = context.sourceCode.getScope(parentId);
         const superVar = ASTUtils.findVariable(scope, parentId.name);
         if (superVar) {
           const isCircular = superVar.references.some(
@@ -87,8 +81,10 @@ export default createRule<Options, MessageIds>({
         messageId: 'preferRecord',
         fix: safeFix
           ? (fixer): TSESLint.RuleFix => {
-              const key = sourceCode.getText(keyType.typeAnnotation);
-              const value = sourceCode.getText(valueType.typeAnnotation);
+              const key = context.sourceCode.getText(keyType.typeAnnotation);
+              const value = context.sourceCode.getText(
+                valueType.typeAnnotation,
+              );
               const record = member.readonly
                 ? `Readonly<Record<${key}, ${value}>>`
                 : `Record<${key}, ${value}>`;
@@ -118,8 +114,8 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'preferIndexSignature',
             fix(fixer) {
-              const key = sourceCode.getText(params[0]);
-              const type = sourceCode.getText(params[1]);
+              const key = context.sourceCode.getText(params[0]);
+              const type = context.sourceCode.getText(params[1]);
               return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
             },
           });
@@ -133,9 +129,9 @@ export default createRule<Options, MessageIds>({
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
-          if (node.typeParameters?.params?.length) {
+          if (node.typeParameters?.params.length) {
             genericTypes = `<${node.typeParameters.params
-              .map(p => sourceCode.getText(p))
+              .map(p => context.sourceCode.getText(p))
               .join(', ')}>`;
           }
 
@@ -145,7 +141,7 @@ export default createRule<Options, MessageIds>({
             node.id,
             `type ${node.id.name}${genericTypes} = `,
             ';',
-            !node.extends?.length,
+            !node.extends.length,
           );
         },
       }),

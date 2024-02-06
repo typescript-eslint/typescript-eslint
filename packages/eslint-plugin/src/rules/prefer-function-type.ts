@@ -1,14 +1,14 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 export const phrases = {
   [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
   [AST_NODE_TYPES.TSInterfaceDeclaration]: 'Interface',
 } as const;
 
-export default util.createRule({
+export default createRule({
   name: 'prefer-function-type',
   meta: {
     docs: {
@@ -28,14 +28,12 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
-
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
      * @param node The node being checked
      */
     function hasOneSupertype(node: TSESTree.TSInterfaceDeclaration): boolean {
-      if (!node.extends || node.extends.length === 0) {
+      if (node.extends.length === 0) {
         return false;
       }
       if (node.extends.length !== 1) {
@@ -69,7 +67,6 @@ export default util.createRule({
     /**
      * @param member The TypeElement being checked
      * @param node The parent of member being checked
-     * @param tsThisTypes
      */
     function checkMember(
       member: TSESTree.TypeElement,
@@ -106,10 +103,12 @@ export default util.createRule({
               const fixes: TSESLint.RuleFix[] = [];
               const start = member.range[0];
               const colonPos = member.returnType!.range[0] - start;
-              const text = sourceCode.getText().slice(start, member.range[1]);
-              const comments = sourceCode
+              const text = context.sourceCode
+                .getText()
+                .slice(start, member.range[1]);
+              const comments = context.sourceCode
                 .getCommentsBefore(member)
-                .concat(sourceCode.getCommentsAfter(member));
+                .concat(context.sourceCode.getCommentsAfter(member));
               let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
                 colonPos + 1,
               )}`;
@@ -123,7 +122,7 @@ export default util.createRule({
 
               if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
                 if (node.typeParameters !== undefined) {
-                  suggestion = `type ${sourceCode
+                  suggestion = `type ${context.sourceCode
                     .getText()
                     .slice(
                       node.id.range[0],

@@ -2,7 +2,12 @@ import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
-import * as util from '../util';
+import {
+  createRule,
+  getNameFromIndexSignature,
+  getNameFromMember,
+  MemberNameType,
+} from '../util';
 
 export type MessageIds =
   | 'incorrectGroupOrder'
@@ -13,6 +18,7 @@ type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
   | ReadonlyType
+  | 'accessor'
   | 'call-signature'
   | 'constructor'
   | 'field'
@@ -24,6 +30,7 @@ type MemberKind =
 
 type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
+  | 'accessor'
   | 'field'
   | 'get'
   | 'method'
@@ -62,7 +69,7 @@ type Order = AlphabeticalOrder | 'as-written';
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
   optionalityOrder?: OptionalityOrder;
-  order: Order;
+  order?: Order;
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
@@ -163,6 +170,37 @@ export const defaultOrder: MemberType[] = [
   'private-constructor',
 
   'constructor',
+
+  // Accessors
+  'public-static-accessor',
+  'protected-static-accessor',
+  'private-static-accessor',
+  '#private-static-accessor',
+
+  'public-decorated-accessor',
+  'protected-decorated-accessor',
+  'private-decorated-accessor',
+
+  'public-instance-accessor',
+  'protected-instance-accessor',
+  'private-instance-accessor',
+  '#private-instance-accessor',
+
+  'public-abstract-accessor',
+  'protected-abstract-accessor',
+
+  'public-accessor',
+  'protected-accessor',
+  'private-accessor',
+  '#private-accessor',
+
+  'static-accessor',
+  'instance-accessor',
+  'abstract-accessor',
+
+  'decorated-accessor',
+
+  'accessor',
 
   // Getters
   'public-static-get',
@@ -268,6 +306,7 @@ const allMemberTypes = Array.from(
       'method',
       'call-signature',
       'constructor',
+      'accessor',
       'get',
       'set',
       'static-initialization',
@@ -287,12 +326,13 @@ const allMemberTypes = Array.from(
           all.add(`${accessibility}-${type}`); // e.g. `public-field`
         }
 
-        // Only class instance fields, methods, get and set can have decorators attached to them
+        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
         if (
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
             type === 'method' ||
+            type === 'accessor' ||
             type === 'get' ||
             type === 'set')
         ) {
@@ -349,12 +389,14 @@ function getNodeType(node: Member): MemberKind | null {
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
       return node.readonly ? 'readonly-field' : 'field';
+    case AST_NODE_TYPES.AccessorProperty:
+      return 'accessor';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : node.readonly
-        ? 'readonly-field'
-        : 'field';
+          ? 'readonly-field'
+          : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
@@ -380,12 +422,12 @@ function getMemberRawName(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  const { name, type } = util.getNameFromMember(member, sourceCode);
+  const { name, type } = getNameFromMember(member, sourceCode);
 
-  if (type === util.MemberNameType.Quoted) {
+  if (type === MemberNameType.Quoted) {
     return name.slice(1, -1);
   }
-  if (type === util.MemberNameType.Private) {
+  if (type === MemberNameType.Private) {
     return name.slice(1);
   }
   return name;
@@ -395,7 +437,6 @@ function getMemberRawName(
  * Gets the member name based on the member type.
  *
  * @param node the node to be evaluated.
- * @param sourceCode
  */
 function getMemberName(
   node: Member,
@@ -417,7 +458,7 @@ function getMemberName(
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
-      return util.getNameFromIndexSignature(node);
+      return getNameFromIndexSignature(node);
     case AST_NODE_TYPES.StaticBlock:
       return 'static block';
     default:
@@ -480,7 +521,7 @@ function getAccessibility(node: Member): Accessibility {
   if ('accessibility' in node && node.accessibility) {
     return node.accessibility;
   }
-  if ('key' in node && node.key?.type === AST_NODE_TYPES.PrivateIdentifier) {
+  if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
     return '#private';
   }
   return 'public';
@@ -512,8 +553,8 @@ function getRank(
     'static' in node && node.static
       ? 'static'
       : abstract
-      ? 'abstract'
-      : 'instance';
+        ? 'abstract'
+        : 'instance';
   const accessibility = getAccessibility(node);
 
   // Collect all existing member groups that apply to this node...
@@ -611,7 +652,7 @@ function getLowestRank(
   return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'member-ordering',
   meta: {
     type: 'suggestion',
@@ -697,7 +738,9 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      default: defaultOrder,
+      default: {
+        memberTypes: defaultOrder,
+      },
     },
   ],
   create(context, [options]) {
@@ -720,13 +763,13 @@ export default util.createRule<Options, MessageIds>({
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      for (const member of members) {
         const rank = getRank(member, groupOrder, supportsModifiers);
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, context.sourceCode);
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
         if (rank === -1) {
-          return;
+          continue;
         }
 
         // Works for 1st item because x < undefined === false for any x (typeof string)
@@ -749,7 +792,7 @@ export default util.createRule<Options, MessageIds>({
           previousRanks.push(rank);
           memberGroups.push([member]);
         }
-      });
+      }
 
       return isCorrectlySorted ? memberGroups : null;
     }
@@ -758,7 +801,7 @@ export default util.createRule<Options, MessageIds>({
      * Checks if the members are alphabetically sorted.
      *
      * @param members Members to be validated.
-     * @param caseSensitive indicates if the alpha ordering is case sensitive or not.
+     * @param order What order the members should be sorted in.
      *
      * @return True if all members are correctly sorted.
      */
@@ -771,7 +814,7 @@ export default util.createRule<Options, MessageIds>({
 
       // Find first member which isn't correctly sorted
       members.forEach(member => {
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, context.sourceCode);
 
         // Note: Not all members have names
         if (name) {
@@ -841,7 +884,7 @@ export default util.createRule<Options, MessageIds>({
           messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
           data: {
-            member: getMemberName(member, context.getSourceCode()),
+            member: getMemberName(member, context.sourceCode),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },

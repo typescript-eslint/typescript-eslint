@@ -135,12 +135,11 @@ function getNameFromMember(
         type: MemberNameType.Quoted,
         name: `"${name}"`,
       };
-    } else {
-      return {
-        type: MemberNameType.Normal,
-        name,
-      };
     }
+    return {
+      type: MemberNameType.Normal,
+      name,
+    };
   }
 
   return {
@@ -169,7 +168,7 @@ function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
  * Example: ['foo', 'bar', 'baz' ] returns the string "foo, bar, and baz".
  */
 function formatWordList(words: string[]): string {
-  if (!words?.length) {
+  if (!words.length) {
     return '';
   }
 

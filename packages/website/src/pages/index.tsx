@@ -133,7 +133,7 @@ function Feature({ title, description }: FeatureItem): React.JSX.Element {
 function Home(): React.JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout description={`${siteConfig.tagline}`}>
+    <Layout description={siteConfig.tagline}>
       <main>
         <div className={clsx('hero hero--dark', styles.hero)}>
           <div className="container">

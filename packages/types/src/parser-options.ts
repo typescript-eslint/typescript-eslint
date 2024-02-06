@@ -16,6 +16,8 @@ type EcmaVersion =
   | 11
   | 12
   | 13
+  | 14
+  | 15
   | 2015
   | 2016
   | 2017
@@ -23,14 +25,21 @@ type EcmaVersion =
   | 2019
   | 2020
   | 2021
-  | 2022;
+  | 2022
+  | 2023
+  | 2024;
 
-type SourceType = 'module' | 'script';
+type SourceTypeClassic = 'module' | 'script';
+type SourceType = SourceTypeClassic | 'commonjs';
 
+type JSDocParsingMode = 'all' | 'none' | 'type-info';
+
+// If you add publicly visible options here, make sure they're also documented in `docs/packages/Parser.mdx`
 interface ParserOptions {
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;
+    [key: string]: unknown;
   };
   ecmaVersion?: EcmaVersion | 'latest';
 
@@ -51,9 +60,10 @@ interface ParserOptions {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
+  jsDocParsingMode?: JSDocParsingMode;
   loc?: boolean;
-  program?: Program | null;
-  project?: string[] | string | true | null;
+  programs?: Program | null;
+  project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: (RegExp | string)[];
   range?: boolean;
   sourceType?: SourceType;
@@ -71,6 +81,7 @@ export {
   CacheDurationSeconds,
   DebugLevel,
   EcmaVersion,
+  JSDocParsingMode,
   ParserOptions,
   SourceType,
 };

@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices, isStrongPrecedenceNode } from '../util';
 
 type MessageIds =
   | 'comparingNullableToFalse'
@@ -29,7 +29,7 @@ interface BooleanComparisonWithTypeInformation extends BooleanComparison {
   expressionIsNullableBoolean: boolean;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-boolean-literal-compare',
   meta: {
     docs: {
@@ -78,8 +78,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const services = util.getParserServices(context);
-    const sourceCode = context.getSourceCode();
+    const services = getParserServices(context);
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -222,8 +221,7 @@ export default util.createRule<Options, MessageIds>({
             // 2. literalBooleanInComparison - is compared to literal boolean
             // 3. negated - is expression negated
 
-            const isUnaryNegation =
-              node.parent != null && nodeIsUnaryNegation(node.parent);
+            const isUnaryNegation = nodeIsUnaryNegation(node.parent);
 
             const shouldNegate =
               comparison.negated !== comparison.literalBooleanInComparison;
@@ -232,7 +230,7 @@ export default util.createRule<Options, MessageIds>({
 
             yield fixer.replaceText(
               mutatedNode,
-              sourceCode.getText(comparison.expression),
+              context.sourceCode.getText(comparison.expression),
             );
 
             // if `isUnaryNegation === literalBooleanInComparison === !negated` is true - negate the expression
@@ -240,7 +238,7 @@ export default util.createRule<Options, MessageIds>({
               yield fixer.insertTextBefore(mutatedNode, '!');
 
               // if the expression `exp` is not a strong precedence node, wrap it in parentheses
-              if (!util.isStrongPrecedenceNode(comparison.expression)) {
+              if (!isStrongPrecedenceNode(comparison.expression)) {
                 yield fixer.insertTextBefore(mutatedNode, '(');
                 yield fixer.insertTextAfter(mutatedNode, ')');
               }
@@ -263,8 +261,8 @@ export default util.createRule<Options, MessageIds>({
                 : 'comparingNullableToTrueDirect'
               : 'comparingNullableToFalse'
             : comparison.negated
-            ? 'negated'
-            : 'direct',
+              ? 'negated'
+              : 'direct',
           node,
         });
       },

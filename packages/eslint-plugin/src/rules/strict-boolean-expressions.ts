@@ -6,7 +6,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getWrappingFixer,
+  isTypeArrayTypeOrUnionOfArrayTypes,
+} from '../util';
 
 export type Options = [
   {
@@ -47,7 +53,7 @@ export type MessageId =
   | 'conditionFixDefaultZero'
   | 'noStrictNullCheck';
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
@@ -151,10 +157,10 @@ export default util.createRule<Options, MessageId>({
     },
   ],
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
-    const sourceCode = context.getSourceCode();
+
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
@@ -267,7 +273,7 @@ export default util.createRule<Options, MessageId>({
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
     function checkNode(node: TSESTree.Node): void {
-      const type = util.getConstrainedTypeAtLocation(services, node);
+      const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -309,16 +315,16 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixDefaultFalse',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? false`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareFalse',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} === false`,
@@ -334,16 +340,16 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixDefaultFalse',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? false`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareTrue',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} === true`,
                   }),
@@ -374,8 +380,8 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareStringLength',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code}.length === 0`,
@@ -383,8 +389,8 @@ export default util.createRule<Options, MessageId>({
                 },
                 {
                   messageId: 'conditionFixCompareEmptyString',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} === ""`,
@@ -392,8 +398,8 @@ export default util.createRule<Options, MessageId>({
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -409,24 +415,24 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareStringLength',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code}.length > 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareEmptyString',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} !== ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -449,8 +455,8 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
@@ -458,16 +464,16 @@ export default util.createRule<Options, MessageId>({
                 },
                 {
                   messageId: 'conditionFixDefaultEmptyString',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -483,24 +489,24 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultEmptyString',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -521,8 +527,8 @@ export default util.createRule<Options, MessageId>({
               context.report({
                 node,
                 messageId: 'conditionErrorNumber',
-                fix: util.getWrappingFixer({
-                  sourceCode,
+                fix: getWrappingFixer({
+                  sourceCode: context.sourceCode,
                   node: node.parent,
                   innerNode: node,
                   wrap: code => `${code} === 0`,
@@ -533,8 +539,8 @@ export default util.createRule<Options, MessageId>({
               context.report({
                 node,
                 messageId: 'conditionErrorNumber',
-                fix: util.getWrappingFixer({
-                  sourceCode,
+                fix: getWrappingFixer({
+                  sourceCode: context.sourceCode,
                   node,
                   wrap: code => `${code} > 0`,
                 }),
@@ -548,8 +554,8 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareZero',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     // TODO: we have to compare to 0n if the type is bigint
@@ -559,8 +565,8 @@ export default util.createRule<Options, MessageId>({
                 {
                   // TODO: don't suggest this for bigint because it can't be NaN
                   messageId: 'conditionFixCompareNaN',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `Number.isNaN(${code})`,
@@ -568,8 +574,8 @@ export default util.createRule<Options, MessageId>({
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -585,24 +591,24 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareZero',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} !== 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareNaN',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `!Number.isNaN(${code})`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -625,8 +631,8 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
@@ -634,16 +640,16 @@ export default util.createRule<Options, MessageId>({
                 },
                 {
                   messageId: 'conditionFixDefaultZero',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -659,24 +665,24 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'conditionFixCompareNullish',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultZero',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
-                  fix: util.getWrappingFixer({
-                    sourceCode,
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -703,23 +709,33 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
-              fix: util.getWrappingFixer({
-                sourceCode,
-                node: node.parent,
-                innerNode: node,
-                wrap: code => `${code} == null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code} == null`,
+                  }),
+                },
+              ],
             });
           } else {
             // if (nullableObject)
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
-              fix: util.getWrappingFixer({
-                sourceCode,
-                node,
-                wrap: code => `${code} != null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
+                    node,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+              ],
             });
           }
         }
@@ -743,8 +759,8 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
-              fix: util.getWrappingFixer({
-                sourceCode,
+              fix: getWrappingFixer({
+                sourceCode: context.sourceCode,
                 node: node.parent,
                 innerNode: node,
                 wrap: code => `${code} == null`,
@@ -754,8 +770,8 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
-              fix: util.getWrappingFixer({
-                sourceCode,
+              fix: getWrappingFixer({
+                sourceCode: context.sourceCode,
                 node,
                 wrap: code => `${code} != null`,
               }),
@@ -774,8 +790,8 @@ export default util.createRule<Options, MessageId>({
             suggest: [
               {
                 messageId: 'conditionFixCastBoolean',
-                fix: util.getWrappingFixer({
-                  sourceCode,
+                fix: getWrappingFixer({
+                  sourceCode: context.sourceCode,
                   node,
                   wrap: code => `Boolean(${code})`,
                 }),
@@ -895,7 +911,7 @@ export default util.createRule<Options, MessageId>({
 
       if (
         types.some(type =>
-          util.isTypeFlagSet(
+          tsutils.isTypeFlagSet(
             type,
             ts.TypeFlags.TypeParameter |
               ts.TypeFlags.Any |
@@ -935,6 +951,6 @@ function isArrayLengthExpression(
   if (node.property.name !== 'length') {
     return false;
   }
-  const objectType = util.getConstrainedTypeAtLocation(services, node.object);
-  return util.isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
+  const objectType = getConstrainedTypeAtLocation(services, node.object);
+  return isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
 }

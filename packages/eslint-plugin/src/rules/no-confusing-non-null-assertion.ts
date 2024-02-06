@@ -1,9 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-confusing-non-null-assertion',
   meta: {
     type: 'problem',
@@ -12,7 +12,6 @@ export default util.createRule({
         'Disallow non-null assertion in locations that may be confusing',
       recommended: 'stylistic',
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       confusingEqual:
@@ -29,7 +28,6 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
     return {
       'BinaryExpression, AssignmentExpression'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
@@ -46,11 +44,11 @@ export default util.createRule({
           node.operator === '='
         ) {
           const isAssign = node.operator === '=';
-          const leftHandFinalToken = sourceCode.getLastToken(node.left);
-          const tokenAfterLeft = sourceCode.getTokenAfter(node.left);
+          const leftHandFinalToken = context.sourceCode.getLastToken(node.left);
+          const tokenAfterLeft = context.sourceCode.getTokenAfter(node.left);
           if (
             leftHandFinalToken?.type === AST_TOKEN_TYPES.Punctuator &&
-            leftHandFinalToken?.value === '!' &&
+            leftHandFinalToken.value === '!' &&
             tokenAfterLeft?.value !== ')'
           ) {
             if (isLeftHandPrimaryExpression(node.left)) {

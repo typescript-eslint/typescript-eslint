@@ -6,8 +6,6 @@ description: 'Enforce consistent spacing before blocks.'
 >
 > See **https://typescript-eslint.io/rules/space-before-blocks** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks) rule.
 It adds support for interfaces and enums.
 
@@ -15,9 +13,11 @@ It adds support for interfaces and enums.
 
 ### ❌ Incorrect
 
+<!-- prettier-ignore -->
 ```ts
 enum Breakpoint{
-  Large, Medium;
+  Large,
+  Medium,
 }
 
 interface State{
@@ -29,7 +29,8 @@ interface State{
 
 ```ts
 enum Breakpoint {
-  Large, Medium;
+  Large,
+  Medium,
 }
 
 interface State {

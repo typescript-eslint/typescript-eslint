@@ -77,7 +77,7 @@ function bar(arg?: string | null) {
 
 Example of correct code for `{ allowConstantLoopConditions: true }`:
 
-```ts
+```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
 while (true) {}
 for (; true; ) {}
 do {} while (true);
@@ -95,7 +95,23 @@ If for some reason you cannot turn on `strictNullChecks`, but still want to use 
 
 ## When Not To Use It
 
-The main downside to using this rule is the need for type information.
+If your project is not accurately typed, such as if it's in the process of being converted to TypeScript or is susceptible to [trade-offs in control flow analysis](https://github.com/Microsoft/TypeScript/issues/9998), it may be difficult to enable this rule for particularly non-type-safe areas of code.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
+It is due to limitations of TypeScript's type narrowing.
+See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
+We recommend using a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in those cases.
+
+```ts
+let condition = false as boolean;
+
+const f = () => (condition = true);
+f();
+
+if (condition) {
+}
+```
 
 ## Related To
 

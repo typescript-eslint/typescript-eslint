@@ -32,7 +32,7 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = context.getScope();
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -152,7 +152,7 @@ export default createRule({
       // Check if the comparison is equivalent to `includes()`.
       const callNode = node.parent as TSESTree.CallExpression;
       const compareNode = (
-        callNode.parent?.type === AST_NODE_TYPES.ChainExpression
+        callNode.parent.type === AST_NODE_TYPES.ChainExpression
           ? callNode.parent.parent
           : callNode.parent
       ) as TSESTree.BinaryExpression;

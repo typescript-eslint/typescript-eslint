@@ -88,7 +88,7 @@ There are cases where the rule allows to return `any` to `unknown`.
 
 Examples of `any` to `unknown` return that are allowed:
 
-```ts
+```ts showPlaygroundButton
 function foo1(): unknown {
   return JSON.parse(singleObjString); // Return type for JSON.parse is any.
 }
@@ -98,6 +98,16 @@ function foo2(): unknown[] {
 }
 ```
 
+## When Not To Use It
+
+If your codebase has many existing `any`s or areas of unsafe code, it may be difficult to enable this rule.
+It may be easier to skip the `no-unsafe-*` rules pending increasing type safety in unsafe areas of your project.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
 ## Related To
 
 - [`no-explicit-any`](./no-explicit-any.md)
+- [`no-unsafe-argument`](./no-unsafe-argument.md)
+- [`no-unsafe-assignment`](./no-unsafe-assignment.md)
+- [`no-unsafe-call`](./no-unsafe-call.md)
+- [`no-unsafe-member-access`](./no-unsafe-member-access.md)

@@ -78,6 +78,8 @@ const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
   SyntaxKind.ExclamationEqualsToken,
 ]);
 
+type DeclarationKind = TSESTree.VariableDeclaration['kind'];
+
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
@@ -189,6 +191,7 @@ export function isComment(node: ts.Node): boolean {
  * @returns is JSDoc comment
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
+  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -266,7 +269,6 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param node
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
@@ -335,12 +337,19 @@ export function isJSXToken(node: ts.Node): boolean {
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
-): 'const' | 'let' | 'var' {
+): DeclarationKind {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+  if ((node.flags & ts.NodeFlags.AwaitUsing) === ts.NodeFlags.AwaitUsing) {
+    return 'await using';
+  }
   if (node.flags & ts.NodeFlags.Const) {
     return 'const';
+  }
+  if (node.flags & ts.NodeFlags.Using) {
+    return 'using';
   }
   return 'var';
 }
@@ -415,11 +424,12 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  while (node) {
-    if (predicate(node)) {
-      return node;
+  let current: ts.Node | undefined = node;
+  while (current) {
+    if (predicate(current)) {
+      return current;
     }
-    node = node.parent;
+    current = current.parent as ts.Node | undefined;
   }
   return undefined;
 }
@@ -473,9 +483,7 @@ export function isComputedProperty(
 export function isOptional(node: {
   questionToken?: ts.QuestionToken;
 }): boolean {
-  return node.questionToken
-    ? node.questionToken.kind === SyntaxKind.QuestionToken
-    : false;
+  return !!node.questionToken;
 }
 
 /**
@@ -639,16 +647,15 @@ export function convertToken(
         flags: value.slice(value.lastIndexOf('/') + 1),
       },
     };
-  } else {
-    // @ts-expect-error TS is complaining about `value` not being the correct
-    // type but it is
-    return {
-      type: tokenType,
-      value,
-      range,
-      loc,
-    };
   }
+  // @ts-expect-error TS is complaining about `value` not being the correct
+  // type but it is
+  return {
+    type: tokenType,
+    value,
+    range,
+    loc,
+  };
 }
 
 /**
@@ -669,11 +676,7 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
     }
 
     if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-      const converted = convertToken(node, ast);
-
-      if (converted) {
-        result.push(converted);
-      }
+      result.push(convertToken(node, ast));
     } else {
       node.getChildren(ast).forEach(walk);
     }
@@ -767,10 +770,6 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
 
 /**
  * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
- * @template T
- * @template U
- * @param array
- * @param callback
  */
 export function firstDefined<T, U>(
   array: readonly T[] | undefined,
@@ -924,4 +923,53 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   }
 
   return false;
+}
+
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  switch (node.kind) {
+    case SyntaxKind.Identifier:
+      return true;
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      if (node.flags & ts.NodeFlags.OptionalChain) {
+        return false;
+      }
+      return true;
+    case SyntaxKind.ParenthesizedExpression:
+    case SyntaxKind.TypeAssertionExpression:
+    case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.NonNullExpression:
+      return isValidAssignmentTarget(
+        (
+          node as
+            | ts.ParenthesizedExpression
+            | ts.AssertionExpression
+            | ts.SatisfiesExpression
+            | ts.NonNullExpression
+        ).expression,
+      );
+    default:
+      return false;
+  }
+}
+
+export function getNamespaceModifiers(
+  node: ts.ModuleDeclaration,
+): ts.Modifier[] | undefined {
+  // For following nested namespaces, use modifiers given to the topmost namespace
+  //   export declare namespace foo.bar.baz {}
+  let modifiers = getModifiers(node);
+  let moduleDeclaration = node;
+  while (
+    (!modifiers || modifiers.length === 0) &&
+    ts.isModuleDeclaration(moduleDeclaration.parent)
+  ) {
+    const parentModifiers = getModifiers(moduleDeclaration.parent);
+    if (parentModifiers?.length) {
+      modifiers = parentModifiers;
+    }
+    moduleDeclaration = moduleDeclaration.parent;
+  }
+  return modifiers;
 }

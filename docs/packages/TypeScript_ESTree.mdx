@@ -71,6 +71,18 @@ interface ParseOptions {
   filePath?: string;
 
   /**
+   * If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
+   *
+   * The valid values for this rule are:
+   * - `'all'` - parse all JSDoc comments, always.
+   * - `'none'` - parse no JSDoc comments, ever.
+   * - `'type-info'` - parse just JSDoc comments that are required to provide correct type-info. TS will always parse JSDoc in non-TS files, but never in TS files.
+   *
+   * If you do not rely on JSDoc tags from the TypeScript AST, then you can safely set this to `'none'` to improve performance.
+   */
+  jsDocParsingMode?: JSDocParsingMode;
+
+  /**
    * Enable parsing of JSX.
    * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
@@ -111,6 +123,7 @@ interface ParseOptions {
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   comment: false,
   filePath: 'estree.ts', // or 'estree.tsx', if you pass jsx: true
+  jsDocParsingMode: 'all',
   jsx: false,
   loc: false,
   loggerFn: undefined,
@@ -154,7 +167,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
    */
-  EXPERIMENTAL_useProjectService?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
@@ -196,8 +209,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
+   *
+   * If set to `false`, `null`, or `undefined`, type information will not be returned.
    */
-  project?: string | string[] | true;
+  project?: string[] | string | boolean | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -255,6 +270,16 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: number | 'Infinity';
   };
+}
+
+/**
+ * Granular options to configure the project service.
+ */
+interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default inferred project settings.
+   */
+  allowDefaultProjectForFiles?: string[];
 }
 
 interface ParserServices {
