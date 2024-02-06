@@ -198,6 +198,7 @@ export default createRule<[], MessageIds>({
 
       // Shouldn't be reachable, since function literals without an argument
       // should not cause the rule to report, but if it does happen, fail gracefully.
+      /* istanbul ignore if */
       if (argument.params.length < 1) {
         return undefined;
       }
@@ -280,6 +281,8 @@ export default createRule<[], MessageIds>({
         };
       }
 
+      // No need to handle any other case.
+      /* istanbul ignore next */
       return undefined;
     }
 
@@ -383,11 +386,13 @@ function isParenlessArrowFunction(
       return false;
     }
 
+    /* istanbul ignore next */
     throw new Error(
       'Something else besides a closing paren was between arrow function arg and arrow',
     );
   }
 
+  /* istanbul ignore next */
   throw new Error(
     'More than one token was found between arrow function arg and arrow',
   );

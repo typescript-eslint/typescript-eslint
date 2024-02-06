@@ -86,12 +86,19 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
         },
       );
     `,
+    `
+      declare const notAMemberExpression: (...args: any[]) => {};
+      notAMemberExpression(
+        'This helps get 100% code cov',
+        "but doesn't test anything useful related to the rule.",
+      );
+    `,
   ],
 
   invalid: [
     {
       code: `
-Promise.resolve().catch((err: string) => {
+Promise.resolve().catch((err: Error) => {
   throw err;
 });
       `,
@@ -104,6 +111,30 @@ Promise.resolve().catch((err: string) => {
               messageId: 'wrongTypeAnnotationSuggestion',
               output: `
 Promise.resolve().catch((err: unknown) => {
+  throw err;
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve().catch((e, ...rest: []) => {
+  throw err;
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().catch((e: unknown, ...rest: []) => {
   throw err;
 });
       `,
@@ -557,6 +588,74 @@ Promise.resolve('object destructuring').catch(({}) => {});
         {
           line: 2,
           messageId: 'useUnknownDestructuringPattern',
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve()['catch']((x: any) => 'return');
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongTypeAnnotationSuggestion',
+              output: `
+Promise.resolve()['catch']((x: unknown) => 'return');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: any;
+Promise.resolve().catch(...x);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'useUnknown',
+          suggestions: null,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const x: ((x: any) => string)[];
+Promise.resolve('string promise').catch(...x);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'useUnknown',
+          suggestions: null,
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.reject().catch((...x: any) => {});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongRestTypeAnnotationSuggestion',
+              output: `
+Promise.reject().catch((...x: [unknown]) => {});
+      `,
+            },
+          ],
         },
       ],
     },
