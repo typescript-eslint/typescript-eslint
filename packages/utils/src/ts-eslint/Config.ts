@@ -189,8 +189,6 @@ export namespace FlatConfig {
      * directives should be tracked and reported. For legacy compatibility, `true`
      * is equivalent to `"warn"` and `false` is equivalent to `"off"`.
      * @default "off"
-     *
-     * non-boolean values @since 8.56.0
      */
     reportUnusedDisableDirectives?:
       | SharedConfig.Severity

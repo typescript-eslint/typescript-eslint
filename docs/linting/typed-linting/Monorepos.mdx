@@ -23,14 +23,14 @@ If its `include` paths cannot include all files to be linted, we suggest creatin
   "extends": "./tsconfig.json",
   "compilerOptions": {
     // ensure that nobody can accidentally use this config for a build
-    "noEmit": true
+    "noEmit": true,
   },
   "include": [
     // whatever paths you intend to lint
     "src",
     "test",
-    "tools"
-  ]
+    "tools",
+  ],
 }
 ```
 

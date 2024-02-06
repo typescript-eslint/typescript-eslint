@@ -6,12 +6,12 @@
     "strict": true,
     "esModuleInterop": true,
     "lib": ["es2015", "es2017", "esnext"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
   "include": [
     "file.ts",
     "consistent-type-exports.ts",
     "mixed-enums-decl.ts",
-    "react.tsx"
-  ]
+    "react.tsx",
+  ],
 }

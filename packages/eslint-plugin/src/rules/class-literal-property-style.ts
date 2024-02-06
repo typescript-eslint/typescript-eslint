@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getStaticStringValue } from '../util';
 
@@ -66,10 +65,10 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
-    const sourceCode = getSourceCode(context);
-
     function getMethodName(node: TSESTree.MethodDefinition): string {
-      return getStaticStringValue(node.key) ?? sourceCode.getText(node.key);
+      return (
+        getStaticStringValue(node.key) ?? context.sourceCode.getText(node.key)
+      );
     }
 
     return {
@@ -117,13 +116,13 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const name = sourceCode.getText(node.key);
+                  const name = context.sourceCode.getText(node.key);
 
                   let text = '';
 
                   text += printNodeModifiers(node, 'readonly');
                   text += node.computed ? `[${name}]` : name;
-                  text += ` = ${sourceCode.getText(argument)};`;
+                  text += ` = ${context.sourceCode.getText(argument)};`;
 
                   return fixer.replaceText(node, text);
                 },
@@ -151,14 +150,13 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'preferGetterStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = getSourceCode(context);
-                  const name = sourceCode.getText(node.key);
+                  const name = context.sourceCode.getText(node.key);
 
                   let text = '';
 
                   text += printNodeModifiers(node, 'get');
                   text += node.computed ? `[${name}]` : name;
-                  text += `() { return ${sourceCode.getText(value)}; }`;
+                  text += `() { return ${context.sourceCode.getText(value)}; }`;
 
                   return fixer.replaceText(node, text);
                 },

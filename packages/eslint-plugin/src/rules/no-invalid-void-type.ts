@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -102,8 +101,7 @@ export default createRule<[Options], MessageIds>({
 
       // check whitelist
       if (Array.isArray(allowInGenericTypeArguments)) {
-        const sourceCode = getSourceCode(context);
-        const fullyQualifiedName = sourceCode
+        const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)
           .replace(/ /gu, '');
 

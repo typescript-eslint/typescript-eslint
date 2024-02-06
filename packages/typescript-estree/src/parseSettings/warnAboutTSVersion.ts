@@ -2,11 +2,11 @@ import semver from 'semver';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from './index';
+
 /**
- * This needs to be kept in sync with /docs/users/Versioning.mdx
- * in the typescript-eslint monorepo
+ * This needs to be kept in sync with package.json in the typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.3.5 <5.4.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.7.4 <5.4.0';
 
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
