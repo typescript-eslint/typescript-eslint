@@ -2,7 +2,7 @@
   "compilerOptions": {
     "types": ["@types/node"],
     "noEmit": true,
-    "allowJs": true,
+    "allowJs": true
   },
   "extends": "./tsconfig.base.json",
   "include": [
@@ -14,6 +14,6 @@
     "eslint.config.mjs",
     "jest.config.base.js",
     "jest.config.js",
-    "jest.preset.js",
-  ],
+    "jest.preset.js"
+  ]
 }

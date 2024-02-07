@@ -4,6 +4,6 @@
     "module": "commonjs",
     "strict": true,
     "noUnusedLocals": true,
-    "noImplicitAny": true,
-  },
+    "noImplicitAny": true
+  }
 }
