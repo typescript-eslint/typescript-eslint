@@ -78,6 +78,11 @@
       matchPackagePrefixes: ['@types/jest', 'jest', '@jest'],
       groupName: 'jest',
     },
+    {
+      matchPackageNames: ['eslint'],
+      matchPackagePrefixes: ['@eslint'],
+      groupName: 'eslint',
+    },
   ],
   postUpdateOptions: [
     // run yarn dedupe to cleanup the lockfile after updates

@@ -9,7 +9,6 @@
     "LICENSE"
   ],
   "type": "commonjs",
-  "private": true,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

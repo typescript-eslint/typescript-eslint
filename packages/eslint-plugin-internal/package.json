@@ -3,6 +3,7 @@
   "version": "6.21.0",
   "private": true,
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "clean": "tsc -b tsconfig.build.json --clean",

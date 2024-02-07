@@ -4099,7 +4099,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.56.0":
+"@eslint/js@npm:*":
+  version: 8.53.0
+  resolution: "@eslint/js@npm:8.53.0"
+  checksum: e0d5cfb0000aaee237c8e6d6d6e366faa60b1ef7f928ce17778373aa44d3b886368f6d5e1f97f913f0f16801aad016db8b8df78418c9d18825c15590328028af
+  languageName: node
+  linkType: hard
+
+"@eslint/js@npm:8.56.0, @eslint/js@npm:^8.56.0":
   version: 8.56.0
   resolution: "@eslint/js@npm:8.56.0"
   checksum: 5804130574ef810207bdf321c265437814e7a26f4e6fac9b496de3206afd52f533e09ec002a3be06cd9adcc9da63e727f1883938e663c4e4751c007d5b58e539
@@ -4130,13 +4137,13 @@ __metadata:
   linkType: hard
 
 "@humanwhocodes/config-array@npm:^0.11.13":
-  version: 0.11.14
-  resolution: "@humanwhocodes/config-array@npm:0.11.14"
+  version: 0.11.13
+  resolution: "@humanwhocodes/config-array@npm:0.11.13"
   dependencies:
-    "@humanwhocodes/object-schema": ^2.0.2
-    debug: ^4.3.1
+    "@humanwhocodes/object-schema": ^2.0.1
+    debug: ^4.1.1
     minimatch: ^3.0.5
-  checksum: 861ccce9eaea5de19546653bccf75bf09fe878bc39c3aab00aeee2d2a0e654516adad38dd1098aab5e3af0145bbcbf3f309bdf4d964f8dab9dcd5834ae4c02f2
+  checksum: f8ea57b0d7ed7f2d64cd3944654976829d9da91c04d9c860e18804729a33f7681f78166ef4c761850b8c324d362f7d53f14c5c44907a6b38b32c703ff85e4805
   languageName: node
   linkType: hard
 
@@ -4147,10 +4154,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/object-schema@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@humanwhocodes/object-schema@npm:2.0.2"
-  checksum: 2fc11503361b5fb4f14714c700c02a3f4c7c93e9acd6b87a29f62c522d90470f364d6161b03d1cc618b979f2ae02aed1106fd29d302695d8927e2fc8165ba8ee
+"@humanwhocodes/object-schema@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@humanwhocodes/object-schema@npm:2.0.1"
+  checksum: 24929487b1ed48795d2f08346a0116cc5ee4634848bce64161fb947109352c562310fd159fc64dda0e8b853307f5794605191a9547f7341158559ca3c8262a45
   languageName: node
   linkType: hard
 
@@ -4782,6 +4789,27 @@ __metadata:
     js-yaml:
       optional: true
   checksum: 61ac0bf0c9a62e113d99910543592d3d3066972789e2cbce4bf08895cb529c7bac1290852627243749ae7d92f6a23b0ebf357a257ca4768bf1c59148db203e00
+  languageName: node
+  linkType: hard
+
+"@nx/eslint@patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 17.3.1
+  resolution: "@nx/eslint@patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch::version=17.3.1&hash=406746&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nx/devkit": 17.3.1
+    "@nx/js": 17.3.1
+    "@nx/linter": 17.3.1
+    tslib: ^2.3.0
+    typescript: ~5.3.2
+  peerDependencies:
+    eslint: ^8.0.0
+    js-yaml: 4.1.0
+  peerDependenciesMeta:
+    eslint:
+      optional: true
+    js-yaml:
+      optional: true
+  checksum: 6fb0c072953a2a6d64a038590b4dbda134b55f32a1c12d2913a5de91f4208cd9b6dde866c4e15ba8ed6115a69d36f2cbf5cc72a53c8fcdaf96cf2b96060131b2
   languageName: node
   linkType: hard
 
@@ -6476,6 +6504,8 @@ __metadata:
     "@babel/eslint-parser": ^7.23.3
     "@babel/parser": ^7.23.3
     "@babel/types": ^7.23.3
+    "@eslint/eslintrc": ^2.1.4
+    "@eslint/js": ^8.56.0
     "@nx/eslint": 17.3.1
     "@nx/jest": 17.3.1
     "@nx/workspace": 17.3.1
@@ -6513,6 +6543,7 @@ __metadata:
     eslint-plugin-unicorn: ^50.0.1
     execa: 7.1.1
     glob: ^10.3.3
+    globals: ^13.23.0
     husky: ^8.0.3
     jest: 29.7.0
     jest-diff: ^29.6.2
@@ -6653,7 +6684,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/website-eslint@workspace:packages/website-eslint"
   dependencies:
-    "@eslint/js": 8.56.0
+    "@eslint/js": "*"
     "@typescript-eslint/eslint-plugin": 6.21.0
     "@typescript-eslint/parser": 6.21.0
     "@typescript-eslint/scope-manager": 6.21.0
@@ -11618,6 +11649,15 @@ __metadata:
   dependencies:
     type-fest: ^0.20.2
   checksum: 86c92ca8a04efd864c10852cd9abb1ebe6d447dcc72936783e66eaba1087d7dba5c9c3421a48d6ca722c319378754dbcc3f3f732dbe47592d7de908edf58a773
+  languageName: node
+  linkType: hard
+
+"globals@npm:^13.23.0":
+  version: 13.23.0
+  resolution: "globals@npm:13.23.0"
+  dependencies:
+    type-fest: ^0.20.2
+  checksum: 194c97cf8d1ef6ba59417234c2386549c4103b6e5f24b1ff1952de61a4753e5d2069435ba629de711a6480b1b1d114a98e2ab27f85e966d5a10c319c3bbd3dc3
   languageName: node
   linkType: hard
 
