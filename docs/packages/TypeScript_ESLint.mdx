@@ -66,9 +66,7 @@ export default tseslint.config({
 :::warning
 We **_strongly_** recommend declaring our plugin with the namespace `@typescript-eslint` as shown above. If you use our shared configs this is the namespace that they use. This has been the standard namespace for our plugin for many years and is what users are most familiar with.
 
-You may, however, choose to use a different namespace if you wish - but note that currently [flat configs allow the same plugin to be registered and configured under multiple namespaces](https://github.com/eslint/eslint/discussions/17766). This means that it's possible to have a plugin's rule turned on twice under different namespaces - leading to double reporting!
-
-If you choose your own namespace - you are responsible for ensuring that you deduplicate usages of the plugin to ensure each rule is only enabled once.
+You may choose a different namespace - but note that currently [flat configs allow the same plugin to be registered, configured, and have duplicate reports under multiple namespaces](https://github.com/eslint/eslint/discussions/17766).
 :::
 
 ### Flat config `extends`
