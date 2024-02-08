@@ -63,29 +63,23 @@ export default createRule<[], MessageIds>({
     const checker = services.program.getTypeChecker();
 
     function isPromiseCatchAccess(node: TSESTree.Expression): boolean {
-      if (node.type !== AST_NODE_TYPES.MemberExpression) {
-        return false;
-      }
-
-      if (!isStaticMemberAccessOfValue(node, 'catch')) {
-        return false;
-      }
-
-      const object = node.object;
-
-      const objectTsNode = services.esTreeNodeToTSNodeMap.get(object);
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (
-        !tsUtils.isThenableType(
-          checker,
-          tsNode,
-          checker.getTypeAtLocation(objectTsNode),
+        !(
+          node.type === AST_NODE_TYPES.MemberExpression &&
+          isStaticMemberAccessOfValue(node, 'catch')
         )
       ) {
         return false;
       }
 
-      return true;
+      const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+
+      return tsUtils.isThenableType(
+        checker,
+        tsNode,
+        checker.getTypeAtLocation(objectTsNode),
+      );
     }
 
     function isFlaggableHandlerType(type: ts.Type): boolean {
@@ -173,7 +167,6 @@ export default createRule<[], MessageIds>({
         return isFlaggableHandlerType(firstType);
       }
 
-      // otherwise, flag
       return true;
     }
 
