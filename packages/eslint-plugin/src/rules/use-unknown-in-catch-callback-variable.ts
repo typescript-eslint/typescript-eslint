@@ -327,7 +327,6 @@ export default createRule<[], MessageIds>({
             messageId: 'useUnknown',
             ...overrides,
           });
-          return;
         }
       },
     };
