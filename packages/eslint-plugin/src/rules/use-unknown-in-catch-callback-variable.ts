@@ -42,7 +42,7 @@ export default createRule<[], MessageIds>({
         ' A destructuring pattern makes assumptions about the object that may not be valid.',
       useUnknownSpreadArgs:
         useUnknownMessageBase +
-        ' Your argument list may contain a handler that does not use `unknown` for the catch variable.',
+        ' The argument list may contain a handler that does not use `unknown` for the catch variable.',
       addUnknownTypeAnnotationSuggestion:
         'Add an explicit `: unknown` type annotation to the catch variable.',
       addUnknownRestTypeAnnotationSuggestion:
