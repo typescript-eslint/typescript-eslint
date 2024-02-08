@@ -17,7 +17,6 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow `require` statements except in import statements',
-      recommended: 'recommended',
     },
     messages: {
       noVarReqs: 'Require statement not part of import statement.',

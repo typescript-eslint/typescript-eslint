@@ -59,6 +59,42 @@ require('remark-preset-prettier');
       code: 'require?.(foo);',
       options: [{ allowAsImport: true }],
     },
+    {
+      code: `
+declare function require(path: string): unknown;
+trick(require('foo'));
+      `,
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+declare function require(path: string): unknown;
+const foo = require('./foo.json') as Foo;
+      `,
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+declare function require(path: string): unknown;
+const foo: Foo = require('./foo.json').default;
+      `,
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+declare function require(path: string): unknown;
+const foo = <Foo>require('./foo.json');
+      `,
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+declare function require(path: string): unknown;
+const configValidator = new Validator(require('./a.json'));
+configValidator.addSchema(require('./a.json'));
+      `,
+      options: [{ allowAsImport: true }],
+    },
   ],
   invalid: [
     {
