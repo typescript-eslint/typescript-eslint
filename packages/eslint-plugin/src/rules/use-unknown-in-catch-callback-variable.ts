@@ -40,22 +40,21 @@ export default createRule<[], MessageIds>({
     messages: {
       useUnknown: useUnknownMessageBase,
       useUnknownArrayDestructuringPattern:
-        useUnknownMessageBase +
-        ' An array destructuring pattern assumes that argument is iterable.',
+        useUnknownMessageBase + ' The thrown error may not be iterable.',
       useUnknownObjectDestructuringPattern:
         useUnknownMessageBase +
-        ' An object destructuring pattern assumes that the object is not nullable and may have certain properties.',
+        ' The thrown error may be nullable, or may not have the expected shape.',
       useUnknownSpreadArgs:
         useUnknownMessageBase +
-        ' The argument list may contain a handler that does not use `unknown` for the catch variable.',
+        ' The argument list may contain a handler that does not use `unknown` for the catch callback variable.',
       addUnknownTypeAnnotationSuggestion:
         'Add an explicit `: unknown` type annotation to the catch variable.',
       addUnknownRestTypeAnnotationSuggestion:
         'Add an explicit `: [unknown]` type annotation to the catch rest variable.',
       wrongTypeAnnotationSuggestion:
-        'Change existing type annotation to `: unknown`',
+        'Change existing type annotation to `: unknown`.',
       wrongRestTypeAnnotationSuggestion:
-        'Change existing type annotation to `: [unknown]`',
+        'Change existing type annotation to `: [unknown]`.',
     },
     fixable: 'code',
     schema: [],
@@ -300,14 +299,13 @@ export default createRule<[], MessageIds>({
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
         if (firstArgument.type === AST_NODE_TYPES.SpreadElement) {
-          if (
-            node.arguments.length === 1 &&
-            shouldFlagSingleSpreadArg(firstArgument)
-          ) {
-            context.report({
-              node: firstArgument,
-              messageId: 'useUnknown',
-            });
+          if (node.arguments.length === 1) {
+            if (shouldFlagSingleSpreadArg(firstArgument)) {
+              context.report({
+                node: firstArgument,
+                messageId: 'useUnknown',
+              });
+            }
           } else if (shouldFlagMultipleSpreadArgs(node.arguments)) {
             context.report({
               node,
