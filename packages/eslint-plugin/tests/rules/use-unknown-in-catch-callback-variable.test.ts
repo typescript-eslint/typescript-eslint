@@ -93,6 +93,16 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
         "but doesn't test anything useful related to the rule.",
       );
     `,
+    `
+      Promise.resolve().catch((...[args]: [unknown]) => {
+        console.log(args);
+      });
+    `,
+    `
+      Promise.resolve().catch((...{ find }: [unknown]) => {
+        console.log(find);
+      });
+    `,
   ],
 
   invalid: [
@@ -594,7 +604,7 @@ Promise.resolve('object destructuring').catch(({}) => {});
 
     {
       code: `
-Promise.resolve('object destructuring').catch(function ({ someProperty }) {
+Promise.resolve('object destructuring').catch(function ({ gotcha }) {
   return null;
 });
       `,
@@ -667,6 +677,54 @@ Promise.reject().catch((...x: any) => {});
               messageId: 'wrongRestTypeAnnotationSuggestion',
               output: `
 Promise.reject().catch((...x: [unknown]) => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve().catch((...[args]: [string]) => {
+  console.log(args);
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongRestTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().catch((...[args]: [unknown]) => {
+  console.log(args);
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve().catch((...{ find }: [string]) => {
+  console.log(find);
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongRestTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().catch((...{ find }: [unknown]) => {
+  console.log(find);
+});
       `,
             },
           ],
