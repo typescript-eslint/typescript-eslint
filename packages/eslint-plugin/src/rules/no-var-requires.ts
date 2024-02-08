@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getStaticStringValue } from '../util';
 
 type Options = [
   {
@@ -48,11 +48,14 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.CallExpression,
       ): void {
         if (
-          node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
-          typeof node.arguments[0].value === 'string' &&
-          isImportPathAllowed(node.arguments[0].value)
+          (node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
+            typeof node.arguments[0].value === 'string') ||
+          node.arguments[0]?.type === AST_NODE_TYPES.TemplateLiteral
         ) {
-          return;
+          const argValue = getStaticStringValue(node.arguments[0]);
+          if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
+            return;
+          }
         }
         const parent =
           node.parent.type === AST_NODE_TYPES.ChainExpression
