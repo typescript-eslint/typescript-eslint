@@ -11,6 +11,7 @@ import {
   createRule,
   getParserServices,
   getStaticValue,
+  isParenthesized,
   nullThrows,
 } from '../util';
 
@@ -356,37 +357,7 @@ function isParenlessArrowFunction(
   node: TSESTree.ArrowFunctionExpression,
   sourceCode: TSESLint.SourceCode,
 ): boolean {
-  if (node.params.length !== 1) {
-    return false;
-  }
-
-  const singleArg = node.params[0];
-  const arrowToken = nullThrows(
-    sourceCode.getTokenAfter(singleArg, token => token.value === '=>'),
-    'Arrow function must have  arrow!',
-  );
-
-  const tokenBetween = sourceCode.getTokensBetween(singleArg, arrowToken);
-
-  if (tokenBetween.length === 0) {
-    // Nothing between the arg and the arrow - this must be a paren-less arrow function.
-    return true;
-  }
-
-  if (tokenBetween.length === 1) {
-    if (tokenBetween[0].value === ')') {
-      // There's just one thing between the arg and the arrow. Must be a paren-ful arrow function.
-      return false;
-    }
-
-    /* istanbul ignore next */
-    throw new Error(
-      'Something else besides a closing paren was between arrow function arg and arrow',
-    );
-  }
-
-  /* istanbul ignore next */
-  throw new Error(
-    'More than one token was found between arrow function arg and arrow',
+  return (
+    node.params.length === 1 && !isParenthesized(node.params[0], sourceCode)
   );
 }
