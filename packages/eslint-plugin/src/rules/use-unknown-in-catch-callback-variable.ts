@@ -26,7 +26,7 @@ type MessageIds =
   | 'wrongRestTypeAnnotationSuggestion';
 
 const useUnknownMessageBase =
-  'Use the intrinsic `unknown` type for the catch callback variable.';
+  'Prefer the safe `: unknown` for a catch callback variable.';
 
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
