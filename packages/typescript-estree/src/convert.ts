@@ -844,6 +844,17 @@ export class Converter {
         });
 
       case SyntaxKind.SwitchStatement:
+        if (
+          node.caseBlock.clauses.filter(
+            switchCase => switchCase.kind === SyntaxKind.DefaultClause,
+          ).length > 1
+        ) {
+          this.#throwError(
+            node,
+            "A 'default' clause cannot appear more than once in a 'switch' statement.",
+          );
+        }
+
         return this.createNode<TSESTree.SwitchStatement>(node, {
           type: AST_NODE_TYPES.SwitchStatement,
           discriminant: this.convertChild(node.expression),
