@@ -300,20 +300,19 @@ export default createRule<[], MessageIds>({
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
         if (firstArgument.type === AST_NODE_TYPES.SpreadElement) {
-          if (node.arguments.length === 1) {
-            if (shouldFlagSingleSpreadArg(firstArgument)) {
-              context.report({
-                node: firstArgument,
-                messageId: 'useUnknown',
-              });
-            }
-          } else {
-            if (shouldFlagMultipleSpreadArgs(node.arguments)) {
-              context.report({
-                node,
-                messageId: 'useUnknownSpreadArgs',
-              });
-            }
+          if (
+            node.arguments.length === 1 &&
+            shouldFlagSingleSpreadArg(firstArgument)
+          ) {
+            context.report({
+              node: firstArgument,
+              messageId: 'useUnknown',
+            });
+          } else if (shouldFlagMultipleSpreadArgs(node.arguments)) {
+            context.report({
+              node,
+              messageId: 'useUnknownSpreadArgs',
+            });
           }
           return;
         }
