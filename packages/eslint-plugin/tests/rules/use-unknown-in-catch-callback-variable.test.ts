@@ -476,7 +476,7 @@ Promise.reject(new Error('I will reject!')).catch(([err]: [unknown]) => {
       errors: [
         {
           line: 2,
-          messageId: 'useUnknownDestructuringPattern',
+          messageId: 'useUnknownArrayDestructuringPattern',
           suggestions: null,
         },
       ],
@@ -587,7 +587,21 @@ Promise.resolve('object destructuring').catch(({}) => {});
       errors: [
         {
           line: 2,
-          messageId: 'useUnknownDestructuringPattern',
+          messageId: 'useUnknownObjectDestructuringPattern',
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve('object destructuring').catch(function ({ someProperty }) {
+  return null;
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'useUnknownObjectDestructuringPattern',
         },
       ],
     },

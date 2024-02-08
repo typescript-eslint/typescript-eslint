@@ -16,8 +16,9 @@ import {
 
 type MessageIds =
   | 'useUnknown'
-  | 'useUnknownDestructuringPattern'
   | 'useUnknownSpreadArgs'
+  | 'useUnknownArrayDestructuringPattern'
+  | 'useUnknownObjectDestructuringPattern'
   | 'addUnknownTypeAnnotationSuggestion'
   | 'addUnknownRestTypeAnnotationSuggestion'
   | 'wrongTypeAnnotationSuggestion'
@@ -30,16 +31,20 @@ export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
   meta: {
     docs: {
-      description: 'Enforce typing arguments in .catch() callbacks as unknown',
+      description:
+        'Enforce typing arguments in `.catch()` callbacks as `unknown`',
       requiresTypeChecking: true,
       recommended: 'strict',
     },
     type: 'suggestion',
     messages: {
       useUnknown: useUnknownMessageBase,
-      useUnknownDestructuringPattern:
+      useUnknownArrayDestructuringPattern:
         useUnknownMessageBase +
-        ' A destructuring pattern makes assumptions about the object that may not be valid.',
+        ' An array destructuring pattern assumes that argument is iterable.',
+      useUnknownObjectDestructuringPattern:
+        useUnknownMessageBase +
+        ' An object destructuring pattern assumes that the object is not nullable and may have certain properties.',
       useUnknownSpreadArgs:
         useUnknownMessageBase +
         ' The argument list may contain a handler that does not use `unknown` for the catch variable.',
@@ -193,87 +198,95 @@ export default createRule<[], MessageIds>({
         return undefined;
       }
 
-      const catchVariableOuter = argument.params[0];
+      // Function expressions can't have parameter properties; those only exist in constructors.
+      const catchVariableOuter = argument.params[0] as Exclude<
+        TSESTree.Parameter,
+        TSESTree.TSParameterProperty
+      >;
       const catchVariableInner =
         catchVariableOuter.type === AST_NODE_TYPES.AssignmentPattern
           ? catchVariableOuter.left
           : catchVariableOuter;
 
-      if (catchVariableInner.type === AST_NODE_TYPES.Identifier) {
-        const catchVariableTypeAnnotation = catchVariableInner.typeAnnotation;
-        if (catchVariableTypeAnnotation == null) {
-          return {
-            node: catchVariableOuter,
-            suggest: [
-              {
-                messageId: 'addUnknownTypeAnnotationSuggestion',
-                fix: (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
-                  if (
-                    argument.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-                    isParenlessArrowFunction(argument, context.sourceCode)
-                  ) {
+      switch (catchVariableInner.type) {
+        case AST_NODE_TYPES.Identifier: {
+          const catchVariableTypeAnnotation = catchVariableInner.typeAnnotation;
+          if (catchVariableTypeAnnotation == null) {
+            return {
+              node: catchVariableOuter,
+              suggest: [
+                {
+                  messageId: 'addUnknownTypeAnnotationSuggestion',
+                  fix: (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
+                    if (
+                      argument.type ===
+                        AST_NODE_TYPES.ArrowFunctionExpression &&
+                      isParenlessArrowFunction(argument, context.sourceCode)
+                    ) {
+                      return [
+                        fixer.insertTextBefore(catchVariableInner, '('),
+                        fixer.insertTextAfter(catchVariableInner, ': unknown)'),
+                      ];
+                    }
+
                     return [
-                      fixer.insertTextBefore(catchVariableInner, '('),
-                      fixer.insertTextAfter(catchVariableInner, ': unknown)'),
+                      fixer.insertTextAfter(catchVariableInner, ': unknown'),
                     ];
-                  }
-
-                  return [
-                    fixer.insertTextAfter(catchVariableInner, ': unknown'),
-                  ];
+                  },
                 },
-              },
-            ],
-          };
-        }
+              ],
+            };
+          }
 
-        return {
-          node: catchVariableOuter,
-          suggest: [
-            {
-              messageId: 'wrongTypeAnnotationSuggestion',
-              fix: (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
-                fixer.replaceText(catchVariableTypeAnnotation, ': unknown'),
-            },
-          ],
-        };
-      } else if (
-        catchVariableInner.type === AST_NODE_TYPES.ArrayPattern ||
-        catchVariableInner.type === AST_NODE_TYPES.ObjectPattern
-      ) {
-        return {
-          node: catchVariableOuter,
-          messageId: 'useUnknownDestructuringPattern',
-        };
-      } else if (catchVariableInner.type === AST_NODE_TYPES.RestElement) {
-        const catchVariableTypeAnnotation = catchVariableInner.typeAnnotation;
-        if (catchVariableTypeAnnotation == null) {
           return {
             node: catchVariableOuter,
             suggest: [
               {
-                messageId: 'addUnknownRestTypeAnnotationSuggestion',
-                fix: (fixer): TSESLint.RuleFix =>
-                  fixer.insertTextAfter(catchVariableInner, ': [unknown]'),
+                messageId: 'wrongTypeAnnotationSuggestion',
+                fix: (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
+                  fixer.replaceText(catchVariableTypeAnnotation, ': unknown'),
               },
             ],
           };
         }
-        return {
-          node: catchVariableOuter,
-          suggest: [
-            {
-              messageId: 'wrongRestTypeAnnotationSuggestion',
-              fix: (fixer): TSESLint.RuleFix =>
-                fixer.replaceText(catchVariableTypeAnnotation, ': [unknown]'),
-            },
-          ],
-        };
+        case AST_NODE_TYPES.ArrayPattern: {
+          return {
+            node: catchVariableOuter,
+            messageId: 'useUnknownArrayDestructuringPattern',
+          };
+        }
+        case AST_NODE_TYPES.ObjectPattern: {
+          return {
+            node: catchVariableOuter,
+            messageId: 'useUnknownObjectDestructuringPattern',
+          };
+        }
+        case AST_NODE_TYPES.RestElement: {
+          const catchVariableTypeAnnotation = catchVariableInner.typeAnnotation;
+          if (catchVariableTypeAnnotation == null) {
+            return {
+              node: catchVariableOuter,
+              suggest: [
+                {
+                  messageId: 'addUnknownRestTypeAnnotationSuggestion',
+                  fix: (fixer): TSESLint.RuleFix =>
+                    fixer.insertTextAfter(catchVariableInner, ': [unknown]'),
+                },
+              ],
+            };
+          }
+          return {
+            node: catchVariableOuter,
+            suggest: [
+              {
+                messageId: 'wrongRestTypeAnnotationSuggestion',
+                fix: (fixer): TSESLint.RuleFix =>
+                  fixer.replaceText(catchVariableTypeAnnotation, ': [unknown]'),
+              },
+            ],
+          };
+        }
       }
-
-      // No need to handle any other case.
-      /* istanbul ignore next */
-      return undefined;
     }
 
     return {
