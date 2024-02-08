@@ -4,16 +4,16 @@
   "include": [],
   "references": [
     {
-      "path": "./tsconfig.build.json",
+      "path": "./tsconfig.build.json"
     },
     {
-      "path": "./tsconfig.spec.json",
-    },
+      "path": "./tsconfig.spec.json"
+    }
   ],
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": false,
-  },
+    "noFallthroughCasesInSwitch": false
+  }
 }
