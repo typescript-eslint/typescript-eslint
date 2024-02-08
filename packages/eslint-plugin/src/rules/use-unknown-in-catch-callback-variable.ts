@@ -12,6 +12,7 @@ import {
   getParserServices,
   getStaticValue,
   isParenthesized,
+  nullThrows,
 } from '../util';
 
 type MessageIds =
@@ -190,18 +191,17 @@ export default createRule<[], MessageIds>({
         return undefined;
       }
 
-      // Shouldn't be reachable, since function literals without an argument
-      // should not cause the rule to report, but if it does happen, fail gracefully.
-      /* istanbul ignore if */
-      if (argument.params.length < 1) {
-        return undefined;
-      }
+      const catchVariableOuterWithIncorrectTypes = nullThrows(
+        argument.params.at(0),
+        'There should have been at least one parameter for the rule to have flagged.',
+      );
 
       // Function expressions can't have parameter properties; those only exist in constructors.
-      const catchVariableOuter = argument.params[0] as Exclude<
-        TSESTree.Parameter,
-        TSESTree.TSParameterProperty
-      >;
+      const catchVariableOuter =
+        catchVariableOuterWithIncorrectTypes as Exclude<
+          typeof catchVariableOuterWithIncorrectTypes,
+          TSESTree.TSParameterProperty
+        >;
       const catchVariableInner =
         catchVariableOuter.type === AST_NODE_TYPES.AssignmentPattern
           ? catchVariableOuter.left
