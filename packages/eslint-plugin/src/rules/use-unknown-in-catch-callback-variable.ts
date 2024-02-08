@@ -32,6 +32,7 @@ export default createRule<[], MessageIds>({
     docs: {
       description: 'Enforce typing arguments in .catch() callbacks as unknown',
       requiresTypeChecking: true,
+      recommended: 'strict',
     },
     type: 'suggestion',
     messages: {
@@ -74,7 +75,6 @@ export default createRule<[], MessageIds>({
 
       const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-
       return tsUtils.isThenableType(
         checker,
         tsNode,
