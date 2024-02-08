@@ -75,4 +75,6 @@ For further reading on this, you may also want to look into
 
 ## When Not To Use It
 
-If your codebase does not use `useUnknownInCatchVariables`, it probably does not make sense to enable this rule, though it wouldn't have any adverse affects to do so. Alternately, if you have modified the global type declarations in order to make `catch()` callbacks use the `unknown` type without an explicit type annotation, you do not need this rule.
+If your codebase is not yet able to enable `useUnknownInCatchVariables`, it likely would be similarly difficult to enable this rule.
+
+If you have modified the global type declarations in order to make `catch()` callbacks use the `unknown` type without an explicit type annotation, you do not need this rule.
