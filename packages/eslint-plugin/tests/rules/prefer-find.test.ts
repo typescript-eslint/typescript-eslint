@@ -71,7 +71,11 @@ ruleTester.run('prefer-find', rule, {
     "[1, 2, 3].filter(x => x)[Symbol('0')];",
     "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
     '(Math.random < 0.5 ? [1, 2, 3].filter(x => true) : [1, 2, 3])[0];',
-    '(Math.random < 0.5 ? [1, 2, 3].find(x => true) : [1, 2, 3].filter(x => true))[0];',
+    `
+      (Math.random < 0.5
+        ? [1, 2, 3].find(x => true)
+        : [1, 2, 3].filter(x => true))[0];
+    `,
   ],
 
   invalid: [
