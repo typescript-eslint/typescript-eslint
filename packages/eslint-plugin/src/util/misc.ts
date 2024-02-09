@@ -215,6 +215,10 @@ function typeNodeRequiresParentheses(
   );
 }
 
+function isRestParameterDeclaration(decl: ts.Declaration): boolean {
+  return ts.isParameter(decl) && decl.dotDotDotToken != null;
+}
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -226,6 +230,7 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  isRestParameterDeclaration as isRestParam,
   MemberNameType,
   RequireKeys,
   typeNodeRequiresParentheses,

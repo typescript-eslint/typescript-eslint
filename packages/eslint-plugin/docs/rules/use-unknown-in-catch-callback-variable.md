@@ -1,5 +1,5 @@
 ---
-description: 'Enforce typing arguments in .catch() callbacks as unknown.'
+description: 'Enforce typing arguments in `.catch()` callbacks as `unknown`.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -67,7 +67,7 @@ Promise.reject(x).catch((err: unknown) => {
 
 :::info
 There is actually a way to have the `catch()` callback variable use the `unknown` type _without_ an explicit type annotation at the call sites, but it has the drawback that it involves overriding global type declarations.
-For example, the library [better-typescript-lib](https://github.com/uhyo/better-typescript-lib) sets this up globally for your project (see [the relevant lines in the better-typescript-lib source code](https://github.com/uhyo/better-typescript-lib/blob/c294e177d1cc2b1d1803febf8192a4c83a1fe028/lib/lib.es5.d.ts#L635) for details on how).
+For example, the library [better-TypeScript-lib](https://github.com/uhyo/better-typescript-lib) sets this up globally for your project (see [the relevant lines in the better-TypeScript-lib source code](https://github.com/uhyo/better-typescript-lib/blob/c294e177d1cc2b1d1803febf8192a4c83a1fe028/lib/lib.es5.d.ts#L635) for details on how).
 
 For further reading on this, you may also want to look into
 [the discussion in the proposal for this rule](https://github.com/typescript-eslint/typescript-eslint/issues/7526#issuecomment-1690600813) and [this TypeScript issue on typing catch callback variables as unknown](https://github.com/microsoft/TypeScript/issues/45602).

@@ -5,13 +5,14 @@ import type {
   Scope,
 } from '@typescript-eslint/utils/ts-eslint';
 import * as tsUtils from 'ts-api-utils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 import {
   createRule,
   getParserServices,
   getStaticValue,
   isParenthesized,
+  isRestParam,
   nullThrows,
 } from '../util';
 
@@ -104,9 +105,8 @@ export default createRule<[], MessageIds>({
 
           let firstParamType = checker.getTypeOfSymbol(firstParam);
 
-          // Deal with a rest arg.
           const decl = firstParam.valueDeclaration;
-          if (decl != null && ts.isParameter(decl) && decl.dotDotDotToken) {
+          if (decl != null && isRestParam(decl)) {
             if (checker.isArrayType(firstParamType)) {
               firstParamType = checker.getTypeArguments(firstParamType)[0];
             } else if (checker.isTupleType(firstParamType)) {

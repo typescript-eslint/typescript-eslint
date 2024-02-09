@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, isRestParam } from '../util';
 
 type Options = [
   {
@@ -551,7 +551,7 @@ function voidFunctionArguments(
         // from the current argument to the end.
         // Note - we currently do not support 'spread' arguments - adding support for them
         // is tracked in https://github.com/typescript-eslint/typescript-eslint/issues/5744
-        if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
+        if (decl && isRestParam(decl)) {
           if (checker.isArrayType(type)) {
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
