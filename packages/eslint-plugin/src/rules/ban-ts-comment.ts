@@ -49,7 +49,7 @@ export default createRule<[Options], MessageIds>({
       tsDirectiveCommentDescriptionNotMatchPattern:
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
       replaceTsIgnoreWithTsExpectError:
-        'Replace "@ts-ignore" with "@ts-expect-error" to ensure an error is actually being suppressed.',
+        'Replace "@ts-ignore" with "@ts-expect-error".',
     },
     hasSuggestions: true,
     schema: [
