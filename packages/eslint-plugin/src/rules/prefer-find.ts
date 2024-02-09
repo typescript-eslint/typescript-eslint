@@ -60,13 +60,6 @@ export default createRule({
       // This is the only reason we're returning a list rather than a single value.
       if (expression.type === AST_NODE_TYPES.ConditionalExpression) {
         // Both branches of the ternary _must_ return results.
-        const alternateResult = parseArrayFilterExpressions(
-          expression.alternate,
-        );
-        if (alternateResult.length === 0) {
-          return [];
-        }
-
         const consequentResult = parseArrayFilterExpressions(
           expression.consequent,
         );
@@ -74,8 +67,15 @@ export default createRule({
           return [];
         }
 
+        const alternateResult = parseArrayFilterExpressions(
+          expression.alternate,
+        );
+        if (alternateResult.length === 0) {
+          return [];
+        }
+
         // Accumulate the results from both sides and pass up the chain.
-        return [...alternateResult, ...consequentResult];
+        return [...consequentResult, ...alternateResult];
       }
 
       // Check if it looks like <<stuff>>(...), but not <<stuff>>?.(...)
