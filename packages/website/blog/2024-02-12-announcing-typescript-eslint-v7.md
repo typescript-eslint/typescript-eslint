@@ -32,16 +32,18 @@ npm i eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plug
 
 ### Into the Future
 
-The intent behind this release is for us to constrain variance in our dependencies to help set us up for the future. The upcoming ESLint v9 release will contain many API removals - all of which had replacements added in some of the latest ESLint v8 releases. By enforcing that you have the latest ESLint v8 release we ensure that you have the replacement APIs - meaning we can migrate without needing to build and test for backwards compatibility. This significantly reduces our maintenance burden and should mean we can release v9 support sooner and with less pain and effort.
+The intent behind this release is for us to constrain variance in our dependencies to help set us up for the future. The upcoming ESLint v9 release will contain many API removals - all of which had replacements added in some of the latest ESLint v8 releases. By enforcing that you have the latest ESLint v8 release we ensure that you have the replacement APIs. This significantly reduces our maintenance burden and should mean we can release v9 support sooner and with less pain and effort.
 
 ## New Features - Flat Config Support
 
 There is one big feature that's also shipping with this release:<br />
 🎉 **_Official support for ESLint Flat Configs!_** 🎉
 
-With v7 we're releasing a new package - `typescript-eslint`. This package can be imported within your [flat config](https://eslint.org/docs/latest/use/configure/configuration-files-new) to access our configs, plugin, and parser. This package also exports a utility function called `config` which will allow you to write type-checked configuration files!
+With v7 we're releasing a new package, **`typescript-eslint`**. This package can be imported within your [flat config](https://eslint.org/docs/latest/use/configure/configuration-files-new) to access our configs, plugin, and parser. This package also exports a utility function called `config` which will allow you to write type-checked configuration files!
 
-Because this new package includes dependencies on our plugin and parser meaning you can replace those dependencies entirely:
+### Switching to `typescript-eslint`
+
+Because this new package includes dependencies on our plugin and parser, you can replace those dependencies entirely:
 
 ```bash npm2yarn
 npm un @typescript-eslint/parser @typescript-eslint/eslint-plugin
@@ -88,6 +90,9 @@ export default tseslint.config({
   },
 });
 ```
+
+You don't have to use this package if you haven't yet migrated to flat configs.
+But once you do, this is our recommend way to set up our tooling.
 
 For more information check out:
 
