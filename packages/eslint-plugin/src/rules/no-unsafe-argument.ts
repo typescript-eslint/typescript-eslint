@@ -5,7 +5,7 @@ import type * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
-  isRestParam,
+  isRestParameterDeclaration,
   isTypeAnyArrayType,
   isTypeAnyType,
   isUnsafeAssignment,
@@ -60,7 +60,7 @@ class FunctionSignature {
       const type = checker.getTypeOfSymbolAtLocation(param, tsNode);
 
       const decl = param.getDeclarations()?.[0];
-      if (decl && isRestParam(decl)) {
+      if (decl && isRestParameterDeclaration(decl)) {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {

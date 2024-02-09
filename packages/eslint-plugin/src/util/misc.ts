@@ -7,6 +7,8 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
+import { isParenthesized } from './astUtils';
+
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
   ts.Extension.Dcts,
@@ -219,6 +221,15 @@ function isRestParameterDeclaration(decl: ts.Declaration): boolean {
   return ts.isParameter(decl) && decl.dotDotDotToken != null;
 }
 
+function isParenlessArrowFunction(
+  node: TSESTree.ArrowFunctionExpression,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  return (
+    node.params.length === 1 && !isParenthesized(node.params[0], sourceCode)
+  );
+}
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -230,7 +241,8 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
-  isRestParameterDeclaration as isRestParam,
+  isRestParameterDeclaration,
+  isParenlessArrowFunction,
   MemberNameType,
   RequireKeys,
   typeNodeRequiresParentheses,

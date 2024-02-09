@@ -11,8 +11,8 @@ import {
   createRule,
   getParserServices,
   getStaticValue,
-  isParenthesized,
-  isRestParam,
+  isParenlessArrowFunction,
+  isRestParameterDeclaration,
   nullThrows,
 } from '../util';
 
@@ -106,7 +106,7 @@ export default createRule<[], MessageIds>({
           let firstParamType = checker.getTypeOfSymbol(firstParam);
 
           const decl = firstParam.valueDeclaration;
-          if (decl != null && isRestParam(decl)) {
+          if (decl != null && isRestParameterDeclaration(decl)) {
             if (checker.isArrayType(firstParamType)) {
               firstParamType = checker.getTypeArguments(firstParamType)[0];
             } else if (checker.isTupleType(firstParamType)) {
@@ -353,13 +353,4 @@ function isStaticMemberAccessOfValue(
   // x['memberName'] cases.
   const staticValueResult = getStaticValue(memberExpression.property, scope);
   return staticValueResult != null && value === staticValueResult.value;
-}
-
-function isParenlessArrowFunction(
-  node: TSESTree.ArrowFunctionExpression,
-  sourceCode: TSESLint.SourceCode,
-): boolean {
-  return (
-    node.params.length === 1 && !isParenthesized(node.params[0], sourceCode)
-  );
 }
