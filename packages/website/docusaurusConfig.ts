@@ -21,6 +21,8 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
+    beforeDefaultRemarkPlugins: [...beforeDefaultRemarkPlugins],
+    remarkPlugins,
   },
   docs: {
     id: 'rules-docs',
@@ -32,7 +34,7 @@ const presetClassicOptions: PresetClassicOptions = {
       ...beforeDefaultRemarkPlugins,
       generatedRuleDocs,
     ],
-    remarkPlugins: remarkPlugins,
+    remarkPlugins,
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },

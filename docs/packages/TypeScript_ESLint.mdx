@@ -18,9 +18,23 @@ This package exports the following:
 | `parser`  | [Our parser](./Parser.mdx)                                 |
 | `plugin`  | [Our plugin](./ESLint_Plugin.mdx)                          |
 
+## Installation
+
+```bash npm2yarn
+npm i typescript-eslint
+```
+
+### Migrating from "legacy" config setups
+
+If you're migrating from a "legacy" `.eslintrc` configuration setup you likely have our plugin and parser installed separately. This package includes these as dependencies so you can freely uninstall your local references:
+
+```bash npm2yarn
+npm un @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
 ## Usage
 
-The `tseslint.config` function is a simple utility which does a few things. First and foremost it is a strictly typed function - meaning it allows you to write type-safe configs!
+The `config` function is a simple utility which does a few things. First and foremost it is a strictly typed function - meaning it allows you to write type-safe configs!
 
 The simplest usage would be:
 
