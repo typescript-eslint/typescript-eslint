@@ -178,3 +178,8 @@ export function parseLintResults(
 
   return markers;
 }
+
+export function getPathRegExp(path: string): RegExp {
+  const escapedPath = path.replace(/\./g, '\\.').replace(/\*/g, '[^/]+');
+  return new RegExp(`^${escapedPath}$`, '');
+}
