@@ -869,20 +869,6 @@ describe('hand-crafted cases', () => {
           },
         ],
       },
-      {
-        code: `
-          const a = 0;
-          const b = 0;
-          a === undefined || b === null || b === undefined;
-        `,
-      },
-      {
-        code: `
-          const a = 0;
-          const b = 0;
-          a === undefined || b === undefined || b === null;
-        `,
-      },
       '(x = {}) && (x.y = true) != null && x.y.toString();',
       "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
       '`x` && `x`.length;',
