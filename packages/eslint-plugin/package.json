@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "6.20.0",
+  "version": "6.21.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -21,6 +21,10 @@
     "./use-at-your-own-risk/rules": {
       "types": "./rules.d.ts",
       "default": "./dist/rules/index.js"
+    },
+    "./use-at-your-own-risk/eslint-recommended-raw": {
+      "types": "./eslint-recommended-raw.d.ts",
+      "default": "./dist/configs/eslint-recommended-raw.js"
     }
   },
   "engines": {
@@ -51,16 +55,16 @@
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "npx nx run repo-tools:generate-configs",
     "lint": "npx nx lint",
-    "test": "jest --coverage --logHeapUsage",
-    "test-single": "jest --no-coverage",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage --logHeapUsage",
+    "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.5.1",
-    "@typescript-eslint/scope-manager": "6.20.0",
-    "@typescript-eslint/type-utils": "6.20.0",
-    "@typescript-eslint/utils": "6.20.0",
-    "@typescript-eslint/visitor-keys": "6.20.0",
+    "@typescript-eslint/scope-manager": "6.21.0",
+    "@typescript-eslint/type-utils": "6.21.0",
+    "@typescript-eslint/utils": "6.21.0",
+    "@typescript-eslint/visitor-keys": "6.21.0",
     "debug": "^4.3.4",
     "graphemer": "^1.4.0",
     "ignore": "^5.2.4",
@@ -69,15 +73,16 @@
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
-    "@prettier/sync": "*",
     "@types/debug": "*",
     "@types/marked": "*",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "6.20.0",
-    "@typescript-eslint/rule-tester": "6.20.0",
+    "@typescript-eslint/rule-schema-to-typescript-types": "6.21.0",
+    "@typescript-eslint/rule-tester": "6.21.0",
     "ajv": "^6.12.6",
     "chalk": "^5.3.0",
+    "cross-env": "^7.0.3",
     "cross-fetch": "*",
+    "eslint": "*",
     "grapheme-splitter": "^1.0.4",
     "jest": "29.7.0",
     "jest-specific-snapshot": "^8.0.0",
@@ -92,7 +97,7 @@
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^6.0.0 || ^6.0.0-alpha",
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^8.56.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

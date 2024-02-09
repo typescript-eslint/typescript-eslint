@@ -10,6 +10,11 @@ The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
 Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
 This rule reports on explicit uses of the `any` keyword as a type annotation.
 
+Preferable alternatives to `any` include:
+
+- If the type is known, describing it in an `interface` or `type`
+- If the type is not known, using the safer `unknown` type
+
 > TypeScript's `--noImplicitAny` compiler option prevents an implied `any`, but doesn't prevent `any` from being explicitly used the way this rule does.
 
 ## Examples

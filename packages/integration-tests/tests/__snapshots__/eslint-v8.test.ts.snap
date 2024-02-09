@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`eslint-v7 should lint successfully 1`] = `
+exports[`eslint-v8 should lint successfully 1`] = `
 [
   {
     "errorCount": 1,
+    "fatalErrorCount": 0,
     "filePath": "<root>/index.ts",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
@@ -46,6 +47,7 @@ exports[`eslint-v7 should lint successfully 1`] = `
     ],
     "source": "const noSemi: any = true;
 ",
+    "suppressedMessages": [],
     "usedDeprecatedRules": [],
     "warningCount": 0,
   },

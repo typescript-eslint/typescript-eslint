@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getStringLength, nullThrows } from '../util';
 
@@ -113,7 +112,6 @@ export default createRule<[Options], MessageIds>({
       /^\/*\s*@ts-(?<directive>expect-error|ignore)(?<description>.*)/;
     const commentDirectiveRegExMultiLine =
       /^\s*(?:\/|\*)*\s*@ts-(?<directive>expect-error|ignore)(?<description>.*)/;
-    const sourceCode = getSourceCode(context);
 
     const descriptionFormats = new Map<string, RegExp>();
     for (const directive of [
@@ -180,7 +178,7 @@ export default createRule<[Options], MessageIds>({
 
     return {
       Program(): void {
-        const comments = sourceCode.getAllComments();
+        const comments = context.sourceCode.getAllComments();
 
         comments.forEach(comment => {
           const match = findDirectiveInComment(comment);

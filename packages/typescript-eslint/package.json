@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "6.20.0",
+  "version": "6.21.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
@@ -9,7 +9,6 @@
     "LICENSE"
   ],
   "type": "commonjs",
-  "private": true,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -51,11 +50,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^8.56.0"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "6.20.0",
-    "@typescript-eslint/parser": "6.20.0"
+    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/parser": "6.21.0"
   },
   "devDependencies": {
     "downlevel-dts": "*",
