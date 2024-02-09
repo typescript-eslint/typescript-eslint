@@ -12,11 +12,13 @@ title: Announcing typescript-eslint v7
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
 
+We've been working on infrastructure improvements that will help ensuring long-term interoperability with other tools in the ecosystem. In particular this major release tightens our dependency requirements to help set us up for ESLint v9 and includes a new package `typescript-eslint` providing full support for flat config files!
+
 ## Breaking Changes
 
 This is a small major release with just three breaking changes:
 
-1. Update NodeJS engine requirement to `^18.18.0 || >=20.0.0`. This means we are dropping support for Node 16, 19 and Node 18 versions prior to `18.18.0`. Note that this is the same requirement that ESLint v9 will impose.
+1. Update Node.js engine requirement to `^18.18.0 || >=20.0.0`. This means we are dropping support for Node 16, 19, and Node 18 versions prior to `18.18.0`. Note that this is the same requirement that ESLint v9 will impose.
 1. Update the TypeScript peer dependency requirement to `>=4.7.4`.
 1. Update the ESLint peer dependency requirement to `^8.56.0`.
 
@@ -37,7 +39,7 @@ The intent behind this release is for us to constrain variance in our dependenci
 There is one big feature that's also shipping with this release:<br />
 🎉 **_Official support for ESLint Flat Configs!_** 🎉
 
-With v7 we're releasing a new package - `typescript-eslint`. This package can be imported within your [flat config](https://eslint.org/docs/latest/use/configure/configuration-files-new) to access our configs, plugin, and parser. This package also exports a utility function which will allow you to write type-checked configuration files!
+With v7 we're releasing a new package - `typescript-eslint`. This package can be imported within your [flat config](https://eslint.org/docs/latest/use/configure/configuration-files-new) to access our configs, plugin, and parser. This package also exports a utility function called `config` which will allow you to write type-checked configuration files!
 
 Because this new package includes dependencies on our plugin and parser meaning you can replace those dependencies entirely:
 
@@ -46,7 +48,7 @@ npm un @typescript-eslint/parser @typescript-eslint/eslint-plugin
 npm i typescript-eslint
 ```
 
-The simplest of this new tooling would be:
+The simplest of this new tooling would be the following which will enable the ESLint recommended config and our recommended config (including turning on our plugin and parser):
 
 ```js title="eslint.config.js"
 // @ts-check
@@ -60,7 +62,7 @@ export default tseslint.config(
 );
 ```
 
-You can also declare our plugin and parser in your config via this package. For example this config would enable our plugin, our parser, and type-aware linting with a few of our popular type-aware rules:
+If you're into having a bit more control then you can also declare our plugin and parser in your config - both are exported from this package! For example this config would enable our plugin, our parser, and type-aware linting with a few of our popular type-aware rules:
 
 ```js title="eslint.config.js"
 // @ts-check
