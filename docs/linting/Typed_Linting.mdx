@@ -22,6 +22,7 @@ export default tseslint.config(
   languageOptions: {
     parserOptions: {
       project: true,
+      tsconfigRootDir: import.meta.dirname,
     }
   },
   // Added lines end
@@ -95,6 +96,7 @@ export default tseslint.config({
   languageOptions: {
     parserOptions: {
       project: './tsconfig.eslint.json',
+      tsconfigRootDir: import.meta.dirname,
     },
   },
   // ...
@@ -109,6 +111,7 @@ module.exports = {
   // ...
   parserOptions: {
     project: './tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
   },
   // ...
 };

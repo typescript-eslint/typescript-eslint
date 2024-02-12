@@ -58,6 +58,7 @@ export default tseslint.config(
       project: true,
       // Add this line
       project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+      tsconfigRootDir: import.meta.dirname,
     }
   },
 );
@@ -75,11 +76,11 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: __dirname,
     // Remove this line
     project: true,
     // Add this line
     project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    tsconfigRootDir: import.meta.dirname,
   },
   plugins: ['@typescript-eslint'],
   root: true,
@@ -94,6 +95,28 @@ module.exports = {
 Using wide globs `**` in your `parserOptions.project` may degrade linting performance.
 Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
 
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  languageOptions: {
+    parserOptions: {
+      // Remove this line
+      project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
+      // Add this line
+      project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+      tsconfigRootDir: import.meta.dirname
+    }
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
 ```js title=".eslintrc.js"
 /* eslint-env node */
 module.exports = {
@@ -104,16 +127,19 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: __dirname,
     // Remove this line
     project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
     // Add this line
     project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint'],
   root: true,
 };
 ```
+
+</TabItem>
+</Tabs>
 
 See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
 
