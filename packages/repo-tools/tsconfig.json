@@ -5,8 +5,8 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "composite": false,
-    "rootDir": ".",
+    "rootDir": "."
   },
   "include": ["src", "tests", "typings"],
-  "references": [],
+  "references": []
 }

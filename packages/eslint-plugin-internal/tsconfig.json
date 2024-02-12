@@ -3,8 +3,8 @@
   "compilerOptions": {
     "composite": false,
     "target": "ES2022",
-    "rootDir": ".",
+    "rootDir": "."
   },
-  "include": ["src", "typings", "tests"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }],
+  "include": ["src", "typings", "tests", "index.d.ts"],
+  "references": [{ "path": "../utils/tsconfig.build.json" }]
 }

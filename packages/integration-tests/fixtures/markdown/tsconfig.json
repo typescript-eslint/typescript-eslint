@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "strict": true
   },
-  "include": [],
+  "include": []
 }
