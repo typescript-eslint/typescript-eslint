@@ -39,7 +39,12 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "keywords": ["eslint", "eslintplugin", "eslint-plugin", "typescript"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "typescript"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
