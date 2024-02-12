@@ -63,7 +63,7 @@
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.56.0",
     "@nx/eslint": "17.3.2",
-    "@nx/jest": "17.3.1",
+    "@nx/jest": "17.3.2",
     "@nx/workspace": "17.3.2",
     "@swc/core": "^1.4.0",
     "@swc/jest": "^0.2.26",
