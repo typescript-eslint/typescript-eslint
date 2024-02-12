@@ -1,3 +1,17 @@
+## 7.0.1 (2024-02-12)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** update peer dep for parser
+
+
+### ❤️  Thank You
+
+- Tim Dorr
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 # 7.0.0 (2024-02-12)
 
 
