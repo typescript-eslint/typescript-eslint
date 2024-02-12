@@ -57,7 +57,7 @@ export default createRule<[], MessageIds>({
           const name = getTypeName(paramTypeNode);
 
           if (!name) {
-            // TODO: Report on the whole function?
+            // TODO: Report on the whole function? Is this case even possible?
             return;
           }
 
@@ -93,10 +93,11 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      getReturnTypesNodes(returnTypeNode).forEach(returnTypeNode => {
+      getReturnTypeTypesNodes(returnTypeNode).forEach(returnTypeNode => {
         const name = getTypeName(returnTypeNode);
 
         if (!name) {
+          // TODO: Report on the whole function? Is this case even possi
           return;
         }
 
@@ -198,7 +199,7 @@ export default createRule<[], MessageIds>({
       return [];
     }
 
-    function getReturnTypesNodes(
+    function getReturnTypeTypesNodes(
       typeAnnotation: TSESTree.TSTypeAnnotation,
     ): TSESTree.TSTypeReference[] {
       // Single type
