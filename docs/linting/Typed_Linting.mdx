@@ -29,6 +29,11 @@ export default tseslint.config(
 );
 ```
 
+:::note
+[`import.meta.dirname`](https://nodejs.org/api/esm.html#importmetadirname) is only present for ESM files in Node.js >=20.11.0 / >= 21.2.0.<br />
+For CommonJS modules and/or older versions of Node.js, [use `__dirname` or an alternative](https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-js-when-using-es6-modules).
+:::
+
 In more detail:
 
 - `tseslint.configs.recommendedTypeChecked` is another [recommended configuration](./Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
