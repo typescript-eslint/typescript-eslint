@@ -32,6 +32,11 @@ export function useProgramFromProjectService(
   log('Opened project service file: %o', opened);
 
   if (hasFullTypeInformation) {
+    log(
+      'Project service type information enabled; checking for file path match on: %o',
+      allowDefaultProjectForFiles,
+    );
+
     if (opened.configFileName) {
       if (filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
         throw new Error(
@@ -44,6 +49,8 @@ export function useProgramFromProjectService(
       );
     }
   }
+
+  log('Retrieving scripti nfo and then program for: %s', filePath);
 
   const scriptInfo = service.getScriptInfo(filePath);
   const program = service
