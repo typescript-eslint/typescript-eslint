@@ -1,3 +1,28 @@
+# 7.0.0 (2024-02-12)
+
+
+### 🚀 Features
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements
+
+- add support for flat configs
+
+- **utils:** revert removal of backwards-compat functions
+
+
+#### ⚠️  Breaking Changes
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kirk Waiblinger
+- StyleShit
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.21.0 (2024-02-05)
 
 

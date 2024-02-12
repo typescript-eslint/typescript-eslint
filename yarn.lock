@@ -5418,10 +5418,10 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
   dependencies:
     "@prettier/sync": ^0.5.0
-    "@typescript-eslint/rule-tester": 6.21.0
-    "@typescript-eslint/scope-manager": 6.21.0
-    "@typescript-eslint/type-utils": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
+    "@typescript-eslint/rule-tester": 7.0.0
+    "@typescript-eslint/scope-manager": 7.0.0
+    "@typescript-eslint/type-utils": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
     jest: 29.7.0
     prettier: ^3.0.3
     rimraf: "*"
@@ -5433,8 +5433,8 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin-tslint@workspace:packages/eslint-plugin-tslint"
   dependencies:
     "@types/lodash": "*"
-    "@typescript-eslint/parser": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
+    "@typescript-eslint/parser": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
     jest: 29.7.0
     prettier: ^3.0.3
     rimraf: "*"
@@ -5445,7 +5445,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/eslint-plugin@6.21.0, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
+"@typescript-eslint/eslint-plugin@7.0.0, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
@@ -5453,12 +5453,12 @@ __metadata:
     "@types/debug": "*"
     "@types/marked": "*"
     "@types/natural-compare": "*"
-    "@typescript-eslint/rule-schema-to-typescript-types": 6.21.0
-    "@typescript-eslint/rule-tester": 6.21.0
-    "@typescript-eslint/scope-manager": 6.21.0
-    "@typescript-eslint/type-utils": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
-    "@typescript-eslint/visitor-keys": 6.21.0
+    "@typescript-eslint/rule-schema-to-typescript-types": 7.0.0
+    "@typescript-eslint/rule-tester": 7.0.0
+    "@typescript-eslint/scope-manager": 7.0.0
+    "@typescript-eslint/type-utils": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
+    "@typescript-eslint/visitor-keys": 7.0.0
     ajv: ^6.12.6
     chalk: ^5.3.0
     cross-env: ^7.0.3
@@ -5500,15 +5500,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@6.21.0, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@7.0.0, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
     "@types/glob": "*"
-    "@typescript-eslint/scope-manager": 6.21.0
-    "@typescript-eslint/types": 6.21.0
-    "@typescript-eslint/typescript-estree": 6.21.0
-    "@typescript-eslint/visitor-keys": 6.21.0
+    "@typescript-eslint/scope-manager": 7.0.0
+    "@typescript-eslint/types": 7.0.0
+    "@typescript-eslint/typescript-estree": 7.0.0
+    "@typescript-eslint/visitor-keys": 7.0.0
     debug: ^4.3.4
     downlevel-dts: "*"
     glob: "*"
@@ -5539,25 +5539,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-schema-to-typescript-types@6.21.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
+"@typescript-eslint/rule-schema-to-typescript-types@7.0.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@typescript-eslint/type-utils": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
+    "@typescript-eslint/type-utils": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
     natural-compare: ^1.4.0
     prettier: ^3.0.3
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@6.21.0, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@7.0.0, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@types/lodash.merge": 4.6.9
-    "@typescript-eslint/parser": 6.21.0
-    "@typescript-eslint/typescript-estree": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
+    "@typescript-eslint/parser": 7.0.0
+    "@typescript-eslint/typescript-estree": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
     ajv: ^6.10.0
     chai: ^4.3.7
     lodash.merge: 4.6.2
@@ -5571,14 +5571,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/scope-manager@6.21.0, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
+"@typescript-eslint/scope-manager@7.0.0, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
     "@types/glob": "*"
-    "@typescript-eslint/types": 6.21.0
-    "@typescript-eslint/typescript-estree": 6.21.0
-    "@typescript-eslint/visitor-keys": 6.21.0
+    "@typescript-eslint/types": 7.0.0
+    "@typescript-eslint/typescript-estree": 7.0.0
+    "@typescript-eslint/visitor-keys": 7.0.0
     glob: "*"
     jest-specific-snapshot: "*"
     make-dir: "*"
@@ -5597,13 +5597,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@6.21.0, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/scope-manager@npm:6.21.0":
+  version: 6.21.0
+  resolution: "@typescript-eslint/scope-manager@npm:6.21.0"
+  dependencies:
+    "@typescript-eslint/types": 6.21.0
+    "@typescript-eslint/visitor-keys": 6.21.0
+  checksum: 71028b757da9694528c4c3294a96cc80bc7d396e383a405eab3bc224cda7341b88e0fc292120b35d3f31f47beac69f7083196c70616434072fbcd3d3e62d3376
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/type-utils@7.0.0, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
-    "@typescript-eslint/parser": 6.21.0
-    "@typescript-eslint/typescript-estree": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
+    "@typescript-eslint/parser": 7.0.0
+    "@typescript-eslint/typescript-estree": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
     ajv: ^6.10.0
     debug: ^4.3.4
     downlevel-dts: "*"
@@ -5620,7 +5630,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@6.21.0, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@7.0.0, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5636,6 +5646,13 @@ __metadata:
   version: 5.62.0
   resolution: "@typescript-eslint/types@npm:5.62.0"
   checksum: 48c87117383d1864766486f24de34086155532b070f6264e09d0e6139449270f8a9559cfef3c56d16e3bcfb52d83d42105d61b36743626399c7c2b5e0ac3b670
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/types@npm:6.21.0":
+  version: 6.21.0
+  resolution: "@typescript-eslint/types@npm:6.21.0"
+  checksum: 9501b47d7403417af95fc1fb72b2038c5ac46feac0e1598a46bcb43e56a606c387e9dcd8a2a0abe174c91b509f2d2a8078b093786219eb9a01ab2fbf9ee7b684
   languageName: node
   linkType: hard
 
@@ -5715,14 +5732,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/typescript-estree@6.21.0, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
+"@typescript-eslint/typescript-estree@7.0.0, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@babel/code-frame": "*"
     "@babel/parser": "*"
-    "@typescript-eslint/types": 6.21.0
-    "@typescript-eslint/visitor-keys": 6.21.0
+    "@typescript-eslint/types": 7.0.0
+    "@typescript-eslint/visitor-keys": 7.0.0
     debug: ^4.3.4
     glob: "*"
     globby: ^11.1.0
@@ -5761,17 +5778,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@6.21.0, @typescript-eslint/utils@^6.0.0, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/typescript-estree@npm:6.21.0":
+  version: 6.21.0
+  resolution: "@typescript-eslint/typescript-estree@npm:6.21.0"
+  dependencies:
+    "@typescript-eslint/types": 6.21.0
+    "@typescript-eslint/visitor-keys": 6.21.0
+    debug: ^4.3.4
+    globby: ^11.1.0
+    is-glob: ^4.0.3
+    minimatch: 9.0.3
+    semver: ^7.5.4
+    ts-api-utils: ^1.0.1
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: dec02dc107c4a541e14fb0c96148f3764b92117c3b635db3a577b5a56fc48df7a556fa853fb82b07c0663b4bf2c484c9f245c28ba3e17e5cb0918ea4cab2ea21
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/utils@7.0.0, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     "@types/json-schema": ^7.0.12
     "@types/semver": ^7.5.0
-    "@typescript-eslint/parser": 6.21.0
-    "@typescript-eslint/scope-manager": 6.21.0
-    "@typescript-eslint/types": 6.21.0
-    "@typescript-eslint/typescript-estree": 6.21.0
+    "@typescript-eslint/parser": 7.0.0
+    "@typescript-eslint/scope-manager": 7.0.0
+    "@typescript-eslint/types": 7.0.0
+    "@typescript-eslint/typescript-estree": 7.0.0
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.0.3
@@ -5801,12 +5837,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/visitor-keys@6.21.0, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
+"@typescript-eslint/utils@npm:^6.0.0":
+  version: 6.21.0
+  resolution: "@typescript-eslint/utils@npm:6.21.0"
+  dependencies:
+    "@eslint-community/eslint-utils": ^4.4.0
+    "@types/json-schema": ^7.0.12
+    "@types/semver": ^7.5.0
+    "@typescript-eslint/scope-manager": 6.21.0
+    "@typescript-eslint/types": 6.21.0
+    "@typescript-eslint/typescript-estree": 6.21.0
+    semver: ^7.5.4
+  peerDependencies:
+    eslint: ^7.0.0 || ^8.0.0
+  checksum: b129b3a4aebec8468259f4589985cb59ea808afbfdb9c54f02fad11e17d185e2bf72bb332f7c36ec3c09b31f18fc41368678b076323e6e019d06f74ee93f7bf2
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@7.0.0, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
     "@types/eslint-visitor-keys": "*"
-    "@typescript-eslint/types": 6.21.0
+    "@typescript-eslint/types": 7.0.0
     downlevel-dts: "*"
     eslint-visitor-keys: ^3.4.1
     jest: 29.7.0
@@ -5826,18 +5879,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/website-eslint@6.21.0, @typescript-eslint/website-eslint@workspace:packages/website-eslint":
+"@typescript-eslint/visitor-keys@npm:6.21.0":
+  version: 6.21.0
+  resolution: "@typescript-eslint/visitor-keys@npm:6.21.0"
+  dependencies:
+    "@typescript-eslint/types": 6.21.0
+    eslint-visitor-keys: ^3.4.1
+  checksum: 67c7e6003d5af042d8703d11538fca9d76899f0119130b373402819ae43f0bc90d18656aa7add25a24427ccf1a0efd0804157ba83b0d4e145f06107d7d1b7433
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/website-eslint@7.0.0, @typescript-eslint/website-eslint@workspace:packages/website-eslint":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/website-eslint@workspace:packages/website-eslint"
   dependencies:
     "@eslint/js": "*"
-    "@typescript-eslint/eslint-plugin": 6.21.0
-    "@typescript-eslint/parser": 6.21.0
-    "@typescript-eslint/scope-manager": 6.21.0
-    "@typescript-eslint/types": 6.21.0
-    "@typescript-eslint/typescript-estree": 6.21.0
-    "@typescript-eslint/utils": 6.21.0
-    "@typescript-eslint/visitor-keys": 6.21.0
+    "@typescript-eslint/eslint-plugin": 7.0.0
+    "@typescript-eslint/parser": 7.0.0
+    "@typescript-eslint/scope-manager": 7.0.0
+    "@typescript-eslint/types": 7.0.0
+    "@typescript-eslint/typescript-estree": 7.0.0
+    "@typescript-eslint/utils": 7.0.0
+    "@typescript-eslint/visitor-keys": 7.0.0
     esbuild: ~0.20.0
     eslint: "*"
     esquery: "*"
@@ -18450,8 +18513,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typescript-eslint@workspace:packages/typescript-eslint"
   dependencies:
-    "@typescript-eslint/eslint-plugin": 6.21.0
-    "@typescript-eslint/parser": 6.21.0
+    "@typescript-eslint/eslint-plugin": 7.0.0
+    "@typescript-eslint/parser": 7.0.0
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.0.3
@@ -19239,11 +19302,11 @@ __metadata:
     "@types/react": "*"
     "@types/react-helmet": ^6.1.6
     "@types/react-router-dom": ^5.3.3
-    "@typescript-eslint/eslint-plugin": 6.21.0
-    "@typescript-eslint/parser": 6.21.0
-    "@typescript-eslint/rule-schema-to-typescript-types": 6.21.0
-    "@typescript-eslint/types": 6.21.0
-    "@typescript-eslint/website-eslint": 6.21.0
+    "@typescript-eslint/eslint-plugin": 7.0.0
+    "@typescript-eslint/parser": 7.0.0
+    "@typescript-eslint/rule-schema-to-typescript-types": 7.0.0
+    "@typescript-eslint/types": 7.0.0
+    "@typescript-eslint/website-eslint": 7.0.0
     clsx: ^2.0.0
     copy-webpack-plugin: ^11.0.0
     cross-fetch: "*"
