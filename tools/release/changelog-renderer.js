@@ -24,3 +24,4 @@ const changelogRenderer = async ({
 };
 
 module.exports = changelogRenderer;
+module.exports.default = changelogRenderer;
