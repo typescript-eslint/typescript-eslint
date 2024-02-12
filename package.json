@@ -144,5 +144,5 @@
     "typescript": "5.3.3",
     "@nx/eslint@17.3.1": "patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch"
   },
-  "packageManager": "yarn@3.7.0"
+  "packageManager": "yarn@3.8.0"
 }
