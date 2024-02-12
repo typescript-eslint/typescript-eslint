@@ -29,7 +29,7 @@
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "jest --coverage",
+    "test": "npx jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
