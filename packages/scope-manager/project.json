@@ -51,9 +51,7 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "options": {
-        "ignorePath": ".eslintignore"
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",

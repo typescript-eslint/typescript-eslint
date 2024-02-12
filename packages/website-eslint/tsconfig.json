@@ -6,8 +6,8 @@
     "checkJs": false,
     // build is done via esbuild
     "noEmit": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "include": ["src", "types", "build.ts"],
-  "references": [],
+  "references": []
 }

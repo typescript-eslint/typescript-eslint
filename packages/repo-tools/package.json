@@ -21,7 +21,7 @@
     "execa": "*",
     "prettier": "^3.0.3",
     "rimraf": "*",
-    "semver": "7.5.4",
+    "semver": "7.6.0",
     "tmp": "*",
     "typescript": "*"
   }

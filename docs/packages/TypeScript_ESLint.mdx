@@ -1,0 +1,140 @@
+---
+id: typescript-eslint
+sidebar_label: typescript-eslint
+---
+
+# `typescript-eslint`
+
+> Tooling which enables you to use TypeScript with ESLint
+
+This package is the main entrypoint that you can use to consume our tooling with ESLint.
+
+This package exports the following:
+
+| name      | description                                                |
+| --------- | ---------------------------------------------------------- |
+| `config`  | A utility function for creating type-safe flat configs     |
+| `configs` | [Our eslint (flat) configs](../linting/Configurations.mdx) |
+| `parser`  | [Our parser](./Parser.mdx)                                 |
+| `plugin`  | [Our plugin](./ESLint_Plugin.mdx)                          |
+
+## Installation
+
+```bash npm2yarn
+npm i typescript-eslint
+```
+
+### Migrating from "legacy" config setups
+
+If you're migrating from a "legacy" `.eslintrc` configuration setup you likely have our plugin and parser installed separately. This package includes these as dependencies so you can freely uninstall your local references:
+
+```bash npm2yarn
+npm un @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+## Usage
+
+The `config` function is a simple utility which does a few things. First and foremost it is a strictly typed function - meaning it allows you to write type-safe configs!
+
+The simplest usage would be:
+
+```js title="eslint.config.js"
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+);
+```
+
+You can also declare our plugin and parser in your config via this package. For example this config would enable our plugin, our parser, and type-aware linting with a few of our popular type-aware rules:
+
+```js title="eslint.config.js"
+// @ts-check
+
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config({
+  plugins: {
+    '@typescript-eslint': tseslint.plugin,
+  },
+  languageOptions: {
+    parser: tseslint.parser,
+    parserOptions: {
+      project: true,
+    },
+  },
+  rules: {
+    '@typescript-eslint/no-unsafe-argument': 'error',
+    '@typescript-eslint/no-unsafe-assignment': 'error',
+    '@typescript-eslint/no-unsafe-call': 'error',
+    '@typescript-eslint/no-unsafe-member-access': 'error',
+    '@typescript-eslint/no-unsafe-return': 'error',
+  },
+});
+```
+
+:::warning
+We **_strongly_** recommend declaring our plugin with the namespace `@typescript-eslint` as shown above. If you use our shared configs this is the namespace that they use. This has been the standard namespace for our plugin for many years and is what users are most familiar with.
+
+You may choose a different namespace - but note that currently [flat configs allow the same plugin to be registered, configured, and have duplicate reports under multiple namespaces](https://github.com/eslint/eslint/discussions/17766).
+:::
+
+### Flat config `extends`
+
+The `tseslint.config` utility function also adds handling for the `extends` property on flat config objects. This allows you to more easily extend shared configs for specific file patterns whilst also overriding rules/options provided by those configs:
+
+```js
+export default tseslint.config({
+  files: ['**/*.ts'],
+  extends: [
+    eslint.configs.recommended,
+    ...tseslint.configs.recommended,
+  ],
+  rules: {
+    '@typescript-eslint/array-type': 'error',
+    '@typescript-eslint/consistent-type-imports': 'error',
+  },
+});
+
+// is the same as writing
+
+export default [
+  ...[
+    eslint.configs.recommended,
+    ...tseslint.configs.recommended,
+  ].map(conf => ({
+    ...conf,
+    files: ['**/*.ts'],
+  })),
+  {
+    files: ['**/*.ts'],
+    rules: {
+      '@typescript-eslint/array-type': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
+    },
+  },
+];
+```
+
+We found that this is a pretty common operation when writing ESLint configs which is why we provided this convenience property - for example in codebases with type-aware linting a config object like this is a very common way to disable TS-specific linting setups on JS files:
+
+```js
+export default [
+  {
+    files: ['**/*.js'],
+    extends: [tseslint.configs.disableTypeChecked],
+    rules: {
+      // turn off other type-aware rules
+      'deprecation/deprecation': 'off',
+      '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
+
+      // turn off rules that don't apply to JS code
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
+  },
+];
+```
