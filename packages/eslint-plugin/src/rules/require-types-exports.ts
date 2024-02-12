@@ -24,6 +24,25 @@ export default createRule<[], MessageIds>({
     const exportedTypes = new Set<string>();
     const reported = new Set<string>();
 
+    function collectExportedTypes(program: TSESTree.Program): void {
+      program.body.forEach(statement => {
+        if (statement.type !== AST_NODE_TYPES.ExportNamedDeclaration) {
+          return;
+        }
+
+        const { declaration } = statement;
+
+        if (
+          declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+          declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
+        ) {
+          exportedTypes.add(declaration.id.name);
+
+          return;
+        }
+      });
+    }
+
     function visitExportedFunctionDeclaration(
       node: TSESTree.ExportNamedDeclaration & {
         declaration: TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction;
@@ -244,25 +263,6 @@ export default createRule<[], MessageIds>({
       }
 
       return [];
-    }
-
-    function collectExportedTypes(node: TSESTree.Program): void {
-      node.body.forEach(statement => {
-        if (statement.type !== AST_NODE_TYPES.ExportNamedDeclaration) {
-          return;
-        }
-
-        const { declaration } = statement;
-
-        if (
-          declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
-          declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
-        ) {
-          exportedTypes.add(declaration.id.name);
-
-          return;
-        }
-      });
     }
 
     function getTypeName(typeReference: TSESTree.TSTypeReference): string {
