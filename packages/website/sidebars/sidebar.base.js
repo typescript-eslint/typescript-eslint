@@ -30,6 +30,7 @@ module.exports = {
           },
           type: 'category',
         },
+        'linting/legacy-eslint-setup',
       ],
       label: 'Getting Started',
       link: {
