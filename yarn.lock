@@ -10677,17 +10677,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:7.2.0":
-  version: 7.2.0
-  resolution: "glob@npm:7.2.0"
+"glob@npm:8.1.0":
+  version: 8.1.0
+  resolution: "glob@npm:8.1.0"
   dependencies:
     fs.realpath: ^1.0.0
     inflight: ^1.0.4
     inherits: 2
-    minimatch: ^3.0.4
+    minimatch: ^5.0.1
     once: ^1.3.0
-    path-is-absolute: ^1.0.0
-  checksum: 78a8ea942331f08ed2e055cb5b9e40fe6f46f579d7fd3d694f3412fe5db23223d29b7fee1575440202e9a7ff9a72ab106a39fee39934c7bedafe5e5f8ae20134
+  checksum: 92fbea3221a7d12075f26f0227abac435de868dd0736a17170663783296d0dd8d3d532a5672b4488a439bf5d7fb85cdd07c11185d6cd39184f0385cbdfb86a47
   languageName: node
   linkType: hard
 
@@ -13975,8 +13974,8 @@ __metadata:
   linkType: hard
 
 "mocha@npm:^10.0.0":
-  version: 10.2.0
-  resolution: "mocha@npm:10.2.0"
+  version: 10.3.0
+  resolution: "mocha@npm:10.3.0"
   dependencies:
     ansi-colors: 4.1.1
     browser-stdout: 1.3.1
@@ -13985,13 +13984,12 @@ __metadata:
     diff: 5.0.0
     escape-string-regexp: 4.0.0
     find-up: 5.0.0
-    glob: 7.2.0
+    glob: 8.1.0
     he: 1.2.0
     js-yaml: 4.1.0
     log-symbols: 4.1.0
     minimatch: 5.0.1
     ms: 2.1.3
-    nanoid: 3.3.3
     serialize-javascript: 6.0.0
     strip-json-comments: 3.1.1
     supports-color: 8.1.1
@@ -14002,7 +14000,7 @@ __metadata:
   bin:
     _mocha: bin/_mocha
     mocha: bin/mocha.js
-  checksum: 406c45eab122ffd6ea2003c2f108b2bc35ba036225eee78e0c784b6fa2c7f34e2b13f1dbacef55a4fdf523255d76e4f22d1b5aacda2394bd11666febec17c719
+  checksum: b5e95b9c270b2c33589e2f19d7ee37ac7577c0d471152d4e2692ebf4bc606a36040da4fbadc1e482b4cf5a0784daac7556bb962ad7b23143086b34a58e43e211
   languageName: node
   linkType: hard
 
@@ -14043,15 +14041,6 @@ __metadata:
   bin:
     multicast-dns: cli.js
   checksum: 45a78628a8f26479c4018122d689a8b22aff034699a1913dac0b9891e4111162b3222c85bba642d624270a90e51129607f1e41aa701e0108cc974246bc9fe828
-  languageName: node
-  linkType: hard
-
-"nanoid@npm:3.3.3":
-  version: 3.3.3
-  resolution: "nanoid@npm:3.3.3"
-  bin:
-    nanoid: bin/nanoid.cjs
-  checksum: ada019402a07464a694553c61d2dca8a4353645a7d92f2830f0d487fedff403678a0bee5323a46522752b2eab95a0bc3da98b6cccaa7c0c55cd9975130e6d6f0
   languageName: node
   linkType: hard
 
