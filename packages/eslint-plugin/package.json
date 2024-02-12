@@ -39,12 +39,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "typescript"
-  ],
+  "keywords": ["eslint", "eslintplugin", "eslint-plugin", "typescript"],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
@@ -96,7 +91,7 @@
     "typescript": "*"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^6.0.0 || ^6.0.0-alpha",
+    "@typescript-eslint/parser": "^7.0.0",
     "eslint": "^8.56.0"
   },
   "peerDependenciesMeta": {
