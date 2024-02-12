@@ -95,6 +95,14 @@ configValidator.addSchema(require('./a.json'));
       `,
       options: [{ allowAsImport: true }],
     },
+    {
+      code: `
+import { createRequire } from 'module';
+const require = createRequire();
+require('remark-preset-prettier');
+      `,
+      options: [{ allowAsImport: true }],
+    },
   ],
   invalid: [
     {
