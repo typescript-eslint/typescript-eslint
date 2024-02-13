@@ -806,7 +806,7 @@ ruleTester.run('require-types-exports', rule, {
       ],
     },
 
-    // TODO: Find a resaonable way to handle this case
+    // TODO: Find a reasonable way to handle this case
     {
       code: `
         type Arg = number;
