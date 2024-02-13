@@ -404,10 +404,10 @@ namespace SourceCode {
     ) => token is infer U extends TSESTree.Token)
       ? U
       : TDefault;
-  export type GetFilterPredicateFromOptions<TOptions, TDefault> =
-    TOptions extends { filter?: FilterPredicate }
-      ? GetFilterPredicate<TOptions['filter'], TDefault>
-      : GetFilterPredicate<TOptions, TDefault>;
+  export type GetFilterPredicateFromOptions<Options, TDefault> =
+    Options extends { filter?: FilterPredicate }
+      ? GetFilterPredicate<Options['filter'], TDefault>
+      : GetFilterPredicate<Options, TDefault>;
 
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? GetFilterPredicateFromOptions<T, TSESTree.Token>
