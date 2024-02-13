@@ -11,6 +11,7 @@ export default createRule<[], MessageIds>({
     type: 'suggestion',
     docs: {
       recommended: 'strict',
+      requiresTypeChecking: true,
       description:
         'Require exporting types that are used in exported functions declarations',
     },
