@@ -1643,6 +1643,7 @@ if (x) {
         !obj
         obj || 0
         obj && 1 || 0
+        obj ?? 1
       `,
       errors: [
         {
@@ -1658,6 +1659,7 @@ if (x) {
         !obj
         obj || 0
         obj && 1 || 0
+        obj ?? 1
       `,
             },
           ],
@@ -1675,6 +1677,7 @@ if (x) {
         obj == null
         obj || 0
         obj && 1 || 0
+        obj ?? 1
       `,
             },
           ],

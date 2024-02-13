@@ -725,7 +725,7 @@ export default createRule<Options, MessageId>({
                 },
               ],
             });
-          } else if (isLogicalExpressionNotNullishCoalescing(node.parent!)) {
+          } else if (isLogicalExpression(node.parent!)) {
             context.report({
               node,
               messageId:
@@ -947,12 +947,10 @@ function isLogicalNegationExpression(
   return node.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!';
 }
 
-function isLogicalExpressionNotNullishCoalescing(
+function isLogicalExpression(
   node: TSESTree.Node,
 ): node is TSESTree.LogicalExpression {
-  return (
-    node.type === AST_NODE_TYPES.LogicalExpression && node.operator !== '??'
-  );
+  return node.type === AST_NODE_TYPES.LogicalExpression;
 }
 
 function isArrayLengthExpression(
