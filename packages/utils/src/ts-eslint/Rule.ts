@@ -37,6 +37,11 @@ interface RuleMetaDataDocs {
 }
 interface RuleMetaData<TMessageIds extends string> {
   /**
+   * Specifies default options for the rule.
+   * If present, ESLint will recursively merge any user-provided options with these default options.
+   */
+  defaultOptions?: unknown[];
+  /**
    * True if the rule is deprecated, false otherwise
    */
   deprecated?: boolean;
