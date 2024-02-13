@@ -42,6 +42,9 @@ ruleTester.run('require-types-exports', rule, {
     'export function f(...args: unknown[]): void {}',
     'export const f = (...args: unknown[]): void => {};',
 
+    'export default function f(): void {}',
+    'export default (): void => {};',
+
     `
       type A = number;
       function f(a: A): A {
@@ -292,6 +295,44 @@ ruleTester.run('require-types-exports', rule, {
           line: 4,
           column: 30,
           endColumn: 33,
+          data: {
+            name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg = number;
+
+        export default function(a: Arg): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 36,
+          endColumn: 39,
+          data: {
+            name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg = number;
+
+        export default (a: Arg): void => {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 28,
+          endColumn: 31,
           data: {
             name: 'Arg',
           },
@@ -806,6 +847,52 @@ ruleTester.run('require-types-exports', rule, {
       ],
     },
 
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry,
+        }
+
+        export function f(a: Fruit): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 30,
+          endColumn: 35,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry,
+        }
+
+        export const f = (a: Fruit): void => {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 30,
+          endColumn: 35,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
     // TODO: Find a reasonable way to handle this case
     {
       code: `
@@ -1110,6 +1197,48 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 48,
           data: {
             name: 'Ret2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg = number;
+
+        const a = (a: Arg): void => {};
+
+        export default a;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 23,
+          endColumn: 26,
+          data: {
+            name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg = number;
+
+        const a = function (a: Arg): void {};
+
+        export default a;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 32,
+          endColumn: 35,
+          data: {
+            name: 'Arg',
           },
         },
       ],

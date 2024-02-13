@@ -1,7 +1,8 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getParserServices } from '../util';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 
 type MessageIds = 'requireTypeExport';
 
@@ -45,7 +46,10 @@ export default createRule<[], MessageIds>({
     }
 
     function visitExportedFunctionDeclaration(
-      node: TSESTree.ExportNamedDeclaration & {
+      node: (
+        | TSESTree.ExportNamedDeclaration
+        | TSESTree.DefaultExportDeclarations
+      ) & {
         declaration: TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction;
       },
     ): void {
@@ -66,11 +70,46 @@ export default createRule<[], MessageIds>({
       });
     }
 
+    function visitDefaultExportedArrowFunction(
+      node: TSESTree.ExportDefaultDeclaration & {
+        declaration: TSESTree.ArrowFunctionExpression;
+      },
+    ): void {
+      checkFunctionParamsTypes(node.declaration);
+      checkFunctionReturnType(node.declaration);
+    }
+
+    function visitDefaultExportedIdentifier(
+      node: TSESTree.DefaultExportDeclarations & {
+        declaration: TSESTree.Identifier;
+      },
+    ) {
+      const scope = context.sourceCode.getScope(node);
+      const variable = scope.set.get(node.declaration.name);
+
+      if (!variable) {
+        return;
+      }
+
+      for (const definition of variable.defs) {
+        if (
+          definition.type === DefinitionType.Variable &&
+          (definition.node.init?.type ===
+            AST_NODE_TYPES.ArrowFunctionExpression ||
+            definition.node.init?.type === AST_NODE_TYPES.FunctionExpression)
+        ) {
+          checkFunctionParamsTypes(definition.node.init);
+          checkFunctionReturnType(definition.node.init);
+        }
+      }
+    }
+
     function checkFunctionParamsTypes(
       node:
         | TSESTree.FunctionDeclaration
         | TSESTree.TSDeclareFunction
-        | TSESTree.ArrowFunctionExpression,
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression,
     ): void {
       node.params.forEach(param => {
         getParamTypesNodes(param).forEach(paramTypeNode => {
@@ -105,7 +144,8 @@ export default createRule<[], MessageIds>({
       node:
         | TSESTree.FunctionDeclaration
         | TSESTree.TSDeclareFunction
-        | TSESTree.ArrowFunctionExpression,
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression,
     ): void {
       const returnTypeNode = node.returnType;
 
@@ -285,6 +325,15 @@ export default createRule<[], MessageIds>({
 
       'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
         visitExportedVariableDeclaration,
+
+      'ExportDefaultDeclaration[declaration.type="FunctionDeclaration"]':
+        visitExportedFunctionDeclaration,
+
+      'ExportDefaultDeclaration[declaration.type="ArrowFunctionExpression"]':
+        visitDefaultExportedArrowFunction,
+
+      'ExportDefaultDeclaration[declaration.type="Identifier"]':
+        visitDefaultExportedIdentifier,
     };
   },
 });
