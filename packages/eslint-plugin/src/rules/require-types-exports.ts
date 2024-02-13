@@ -321,7 +321,7 @@ export default createRule<[], MessageIds>({
       const scope = context.sourceCode.getScope(functionNode);
       const variable = scope.set.get(typeName);
 
-      if (!variable || !variable.isTypeVariable) {
+      if (!variable?.isTypeVariable) {
         return typeNode;
       }
 
