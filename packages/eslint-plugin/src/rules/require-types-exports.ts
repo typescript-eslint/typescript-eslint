@@ -6,6 +6,12 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 
 type MessageIds = 'requireTypeExport';
 
+type FunctionNode =
+  | TSESTree.FunctionDeclaration
+  | TSESTree.TSDeclareFunction
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionExpression;
+
 export default createRule<[], MessageIds>({
   name: 'require-types-exports',
   meta: {
@@ -104,16 +110,53 @@ export default createRule<[], MessageIds>({
       }
     }
 
-    function checkFunctionParamsTypes(
-      node:
-        | TSESTree.FunctionDeclaration
-        | TSESTree.TSDeclareFunction
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression,
-    ): void {
+    function checkFunctionParamsTypes(node: FunctionNode): void {
       node.params.forEach(param => {
-        getParamTypesNodes(param).forEach(paramTypeNode => {
-          const name = getTypeName(paramTypeNode);
+        getParamTypesNodes(param)
+          .flatMap(paramTypeNode => {
+            return convertGenericTypeToTypeReference(node, paramTypeNode);
+          })
+          .forEach(paramTypeNode => {
+            const name = getTypeName(paramTypeNode);
+
+            if (!name) {
+              // TODO: Report on the whole function? Is this case even possible?
+              return;
+            }
+
+            const isExported = exportedTypes.has(name);
+            const isReported = reported.has(name);
+
+            if (isExported || isReported) {
+              return;
+            }
+
+            context.report({
+              node: paramTypeNode,
+              messageId: 'requireTypeExport',
+              data: {
+                name,
+              },
+            });
+
+            reported.add(name);
+          });
+      });
+    }
+
+    function checkFunctionReturnType(node: FunctionNode): void {
+      const returnTypeNode = node.returnType;
+
+      if (!returnTypeNode) {
+        return;
+      }
+
+      getReturnTypeTypesNodes(returnTypeNode)
+        .flatMap(paramTypeNode => {
+          return convertGenericTypeToTypeReference(node, paramTypeNode);
+        })
+        .forEach(returnTypeNode => {
+          const name = getTypeName(returnTypeNode);
 
           if (!name) {
             // TODO: Report on the whole function? Is this case even possible?
@@ -128,7 +171,7 @@ export default createRule<[], MessageIds>({
           }
 
           context.report({
-            node: paramTypeNode,
+            node: returnTypeNode,
             messageId: 'requireTypeExport',
             data: {
               name,
@@ -137,47 +180,6 @@ export default createRule<[], MessageIds>({
 
           reported.add(name);
         });
-      });
-    }
-
-    function checkFunctionReturnType(
-      node:
-        | TSESTree.FunctionDeclaration
-        | TSESTree.TSDeclareFunction
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression,
-    ): void {
-      const returnTypeNode = node.returnType;
-
-      if (!returnTypeNode) {
-        return;
-      }
-
-      getReturnTypeTypesNodes(returnTypeNode).forEach(returnTypeNode => {
-        const name = getTypeName(returnTypeNode);
-
-        if (!name) {
-          // TODO: Report on the whole function? Is this case even possible?
-          return;
-        }
-
-        const isExported = exportedTypes.has(name);
-        const isReported = reported.has(name);
-
-        if (isExported || isReported) {
-          return;
-        }
-
-        context.report({
-          node: returnTypeNode,
-          messageId: 'requireTypeExport',
-          data: {
-            name,
-          },
-        });
-
-        reported.add(name);
-      });
     }
 
     function getParamTypesNodes(
@@ -304,6 +306,48 @@ export default createRule<[], MessageIds>({
       }
 
       return [];
+    }
+
+    function convertGenericTypeToTypeReference(
+      functionNode: FunctionNode,
+      typeNode: TSESTree.TSTypeReference,
+    ): TSESTree.TSTypeReference | TSESTree.TSTypeReference[] {
+      const typeName = getTypeName(typeNode);
+
+      if (!typeName) {
+        return typeNode;
+      }
+
+      const scope = context.sourceCode.getScope(functionNode);
+      const variable = scope.set.get(typeName);
+
+      if (!variable || !variable.isTypeVariable) {
+        return typeNode;
+      }
+
+      for (const definition of variable.defs) {
+        if (
+          definition.type === DefinitionType.Type &&
+          definition.node.type === AST_NODE_TYPES.TSTypeParameter &&
+          definition.node.constraint
+        ) {
+          switch (definition.node.constraint.type) {
+            case AST_NODE_TYPES.TSTypeReference:
+              return definition.node.constraint;
+
+            case AST_NODE_TYPES.TSUnionType:
+            case AST_NODE_TYPES.TSIntersectionType:
+              return definition.node.constraint.types.filter(
+                type => type.type === AST_NODE_TYPES.TSTypeReference,
+              ) as TSESTree.TSTypeReference[];
+
+            default:
+              continue;
+          }
+        }
+      }
+
+      return typeNode;
     }
 
     function getTypeName(typeReference: TSESTree.TSTypeReference): string {

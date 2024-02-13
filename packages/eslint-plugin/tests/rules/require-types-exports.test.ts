@@ -893,7 +893,6 @@ ruleTester.run('require-types-exports', rule, {
       ],
     },
 
-    // TODO: Find a reasonable way to handle this case
     {
       code: `
         type Arg = number;
@@ -905,7 +904,7 @@ ruleTester.run('require-types-exports', rule, {
           messageId: 'requireTypeExport',
           line: 4,
           column: 37,
-          endColumn: 39,
+          endColumn: 40,
           data: {
             name: 'Arg',
           },
@@ -915,18 +914,115 @@ ruleTester.run('require-types-exports', rule, {
 
     {
       code: `
-        type Arg = number;
+        type Arg1 = number;
+        type Arg2 = string;
 
-        export const f = <T extends Arg>(a: T): void => {};
+        export function f<T extends Arg1 | Arg2>(a: T): void {}
       `,
       errors: [
         {
           messageId: 'requireTypeExport',
-          line: 4,
+          line: 5,
           column: 37,
-          endColumn: 39,
+          endColumn: 41,
           data: {
-            name: 'Arg',
+            name: 'Arg1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Arg2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg1 = number;
+        type Arg2 = string;
+
+        export function f<T extends Arg1 | Arg2 | number>(a: T): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
+          data: {
+            name: 'Arg1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Arg2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg1 = number;
+        type Arg2 = string;
+
+        export function f<T extends Arg1 & Arg2>(a: T): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
+          data: {
+            name: 'Arg1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Arg2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg1 = number;
+        type Arg2 = string;
+
+        export function f<T extends Arg1 & Arg2 & string>(a: T): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
+          data: {
+            name: 'Arg1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Arg2',
           },
         },
       ],
@@ -1186,6 +1282,141 @@ ruleTester.run('require-types-exports', rule, {
           line: 5,
           column: 35,
           endColumn: 39,
+          data: {
+            name: 'Ret1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Ret2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Ret = string;
+
+        export function f<T extends Ret>(): T {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 37,
+          endColumn: 40,
+          data: {
+            name: 'Ret',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Ret1 = string;
+        type Ret2 = number;
+
+        export function f<T extends Ret1 | Ret2>(): T {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
+          data: {
+            name: 'Ret1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Ret2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Ret1 = string;
+        type Ret2 = number;
+
+        export function f<T extends Ret1 | Ret2 | number>(): T {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
+          data: {
+            name: 'Ret1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Ret2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Ret1 = string;
+        type Ret2 = number;
+
+        export function f<T extends Ret1 & Ret2>(): T {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
+          data: {
+            name: 'Ret1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 44,
+          endColumn: 48,
+          data: {
+            name: 'Ret2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Ret1 = string;
+        type Ret2 = number;
+
+        export function f<T extends Ret1 & Ret2 & number>(): T {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 41,
           data: {
             name: 'Ret1',
           },
