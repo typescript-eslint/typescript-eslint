@@ -350,6 +350,22 @@ export default createRule<[], MessageIds>({
                 type => type.type === AST_NODE_TYPES.TSTypeReference,
               ) as TSESTree.TSTypeReference[];
 
+            // T extends { some: SomeType, another: AnotherType }
+            case AST_NODE_TYPES.TSTypeLiteral:
+              return definition.node.constraint.members.reduce<
+                TSESTree.TSTypeReference[]
+              >((acc, member) => {
+                if (
+                  member.type === AST_NODE_TYPES.TSPropertySignature &&
+                  member.typeAnnotation?.typeAnnotation.type ===
+                    AST_NODE_TYPES.TSTypeReference
+                ) {
+                  acc.push(member.typeAnnotation.typeAnnotation);
+                }
+
+                return acc;
+              }, []);
+
             default:
               continue;
           }

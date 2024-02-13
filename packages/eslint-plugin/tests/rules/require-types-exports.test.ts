@@ -1004,7 +1004,7 @@ ruleTester.run('require-types-exports', rule, {
         type Arg1 = number;
         type Arg2 = string;
 
-        export function f<T extends Arg1 & Arg2 & string>(a: T): void {}
+        export const f = <T extends Arg1 & Arg2 & string>(a: T): void => {}
       `,
       errors: [
         {
@@ -1040,6 +1040,25 @@ ruleTester.run('require-types-exports', rule, {
           line: 4,
           column: 38,
           endColumn: 41,
+          data: {
+            name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg = string;
+
+        export function f<T extends { a: Arg; b: number; c: Arg }>(a: T): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 42,
+          endColumn: 45,
           data: {
             name: 'Arg',
           },
