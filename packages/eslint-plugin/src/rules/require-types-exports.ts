@@ -1,7 +1,7 @@
 import { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, getParserServices } from '../util';
+import { createRule } from '../util';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 
 type MessageIds = 'requireTypeExport';
