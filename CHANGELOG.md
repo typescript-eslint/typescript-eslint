@@ -1765,7 +1765,7 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 ### Features
 
 - add RuleCreator.withoutDocs ([#4136](https://github.com/typescript-eslint/typescript-eslint/issues/4136)) ([87cfc6a](https://github.com/typescript-eslint/typescript-eslint/commit/87cfc6ad3e3312d7b6f98a592fb37e69d5d6880a))
-- **experimental-utils:** add default [] for RuleModule Options generic ([#4135](https://github.com/typescript-eslint/typescript-eslint/issues/4135)) ([62b8098](https://github.com/typescript-eslint/typescript-eslint/commit/62b8098fa7d361954c170ee6c190e47e95194b13))
+- **experimental-utils:** add default [] for RuleModule TOptions generic ([#4135](https://github.com/typescript-eslint/typescript-eslint/issues/4135)) ([62b8098](https://github.com/typescript-eslint/typescript-eslint/commit/62b8098fa7d361954c170ee6c190e47e95194b13))
 - **typescript-estree:** support Import Assertions ([#4074](https://github.com/typescript-eslint/typescript-eslint/issues/4074)) ([ae0fb5a](https://github.com/typescript-eslint/typescript-eslint/commit/ae0fb5a591958216b7df656e66b1dfe464898167))
 - **typescript-estree:** support private fields in-in syntax ([#4075](https://github.com/typescript-eslint/typescript-eslint/issues/4075)) ([939d8ea](https://github.com/typescript-eslint/typescript-eslint/commit/939d8eac547fb1734aa00f1ea01cc6eae0b4280a))
 - **typescript-estree:** support type-only module specifiers ([#4076](https://github.com/typescript-eslint/typescript-eslint/issues/4076)) ([77baa92](https://github.com/typescript-eslint/typescript-eslint/commit/77baa9203638e888a76e21003a278a8da386e133))
