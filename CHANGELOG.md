@@ -1,3 +1,44 @@
+## 7.0.1 (2024-02-12)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** update peer dep for parser ([#8441](https://github.com/typescript-eslint/typescript-eslint/pull/8441))
+
+### ❤️  Thank You
+
+- Tim Dorr @timdorr
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# 7.0.0 (2024-02-12)
+
+
+### 🚀 Features
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements ([#8377](https://github.com/typescript-eslint/typescript-eslint/pull/8377))
+- add support for flat configs ([#7935](https://github.com/typescript-eslint/typescript-eslint/pull/7935))
+- **utils:** revert removal of backwards-compat functions ([#8399](https://github.com/typescript-eslint/typescript-eslint/pull/8399))
+- **website:** add ESQuery filter to URL state ([#8297](https://github.com/typescript-eslint/typescript-eslint/pull/8297))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-find] stop throwing type errors when converting symbols to numbers ([#8390](https://github.com/typescript-eslint/typescript-eslint/pull/8390))
+- **website:** [playground] trigger lint when eslintrc and tsconfig changed ([#8391](https://github.com/typescript-eslint/typescript-eslint/pull/8391))
+
+#### ⚠️  Breaking Changes
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements ([#8377](https://github.com/typescript-eslint/typescript-eslint/pull/8377))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+- Kirk Waiblinger @kirkwaiblinger
+- StyleShit @StyleShit
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.21.0 (2024-02-05)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "6.21.0",
+  "version": "7.0.1",
   "private": true,
   "scripts": {
     "//": "NOTE: intentionally no build step in this package",
@@ -12,7 +12,7 @@
     "generate-lib": "tsx ./src/generate-lib.mts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.mts",
-    "test": "jest --coverage",
+    "test": "npx jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
