@@ -116,7 +116,7 @@ export default createRule<[], MessageIds>({
         const name = getTypeName(returnTypeNode);
 
         if (!name) {
-          // TODO: Report on the whole function? Is this case even possi
+          // TODO: Report on the whole function? Is this case even possible?
           return;
         }
 

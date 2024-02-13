@@ -170,13 +170,13 @@ ruleTester.run('require-types-exports', rule, {
     `
       export type A = number;
       export type B = string;
-      export function f(args: { a: A, b: B, c: number }): void {}
+      export function f(args: { a: A; b: B; c: number }): void {}
     `,
 
     `
       export type A = number;
       export type B = string;
-      export const f = (args: { a: A, b: B, c: number }): void => {};
+      export const f = (args: { a: A; b: B; c: number }): void => {};
     `,
 
     `
@@ -250,13 +250,13 @@ ruleTester.run('require-types-exports', rule, {
     `
       export type A = number;
       export type B = string;
-      export function f(): { a: A, b: B } {}
+      export function f(): { a: A; b: B } {}
     `,
 
     `
       export type A = number;
       export type B = string;
-      export const f = (): { a: A, b: B } => {};
+      export const f = (): { a: A; b: B } => {};
     `,
   ],
 
