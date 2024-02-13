@@ -332,12 +332,21 @@ export default createRule<[], MessageIds>({
           definition.node.constraint
         ) {
           switch (definition.node.constraint.type) {
+            // T extends SomeType
             case AST_NODE_TYPES.TSTypeReference:
               return definition.node.constraint;
 
+            // T extends SomeType | AnotherType
+            // T extends SomeType & AnotherType
             case AST_NODE_TYPES.TSUnionType:
             case AST_NODE_TYPES.TSIntersectionType:
               return definition.node.constraint.types.filter(
+                type => type.type === AST_NODE_TYPES.TSTypeReference,
+              ) as TSESTree.TSTypeReference[];
+
+            // T extends [SomeType, AnotherType]
+            case AST_NODE_TYPES.TSTupleType:
+              return definition.node.constraint.elementTypes.filter(
                 type => type.type === AST_NODE_TYPES.TSTypeReference,
               ) as TSESTree.TSTypeReference[];
 

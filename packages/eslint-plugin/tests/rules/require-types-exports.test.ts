@@ -1030,6 +1030,25 @@ ruleTester.run('require-types-exports', rule, {
 
     {
       code: `
+        type Arg = string;
+
+        export function f<T extends [Arg, number]>(a: T): void {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 38,
+          endColumn: 41,
+          data: {
+            name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
         type Ret = string;
 
         export function f(): Ret {}
@@ -1428,6 +1447,25 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 48,
           data: {
             name: 'Ret2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Ret = string;
+
+        export function f<T extends [Ret, number]>(): T {}
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 38,
+          endColumn: 41,
+          data: {
+            name: 'Ret',
           },
         },
       ],
