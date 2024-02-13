@@ -408,7 +408,6 @@ namespace SourceCode {
     Options extends { filter?: FilterPredicate }
       ? GetFilterPredicate<Options['filter'], Default>
       : GetFilterPredicate<Options, Default>;
-
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? GetFilterPredicateFromOptions<T, TSESTree.Token>
     : GetFilterPredicateFromOptions<
