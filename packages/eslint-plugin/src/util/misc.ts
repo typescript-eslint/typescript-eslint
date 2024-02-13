@@ -149,9 +149,9 @@ function getNameFromMember(
 }
 
 type ExcludeKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
-> = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
+> = { [k in Exclude<keyof Obj, Keys>]: Obj[k] };
 type RequireKeys<
   Obj extends Record<string, unknown>,
   Keys extends keyof Obj,

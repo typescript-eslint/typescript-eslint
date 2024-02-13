@@ -239,9 +239,9 @@ export interface ParserWeakMap<Key, ValueBase> {
 }
 
 export interface ParserWeakMapESTreeToTSNode<
-  TKey extends TSESTree.Node = TSESTree.Node,
+  Key extends TSESTree.Node = TSESTree.Node,
 > {
-  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  get<KeyBase extends Key>(key: KeyBase): TSESTreeToTSNode<KeyBase>;
   has(key: unknown): boolean;
 }
 
