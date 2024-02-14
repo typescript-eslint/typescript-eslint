@@ -529,6 +529,40 @@ class A {
   }
 }
     `,
+    {
+      code: `
+const obj = {
+  foo: 'foo-value',
+  bar: 'bar-value',
+} satisfies {
+  [key in 'foo' | 'bar']: \`\${key}-value\`;
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+const obj = {
+  foo: 'foo-value',
+  bar: 'bar-value',
+} as {
+  [key in 'foo' | 'bar']: \`\${key}-value\`;
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+const obj = {
+  foo: {
+    foo: 'foo',
+  } as {
+    [key in 'foo' | 'bar']: key;
+  },
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+    },
   ],
   invalid: [
     {
