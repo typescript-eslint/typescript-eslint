@@ -17,7 +17,7 @@ TS wants to transpile each rule file to this `.d.ts` file:
 
 ```ts
 import type { TSESLint } from '@typescript-eslint/utils';
-declare const _default: TSESLint.RuleModule<MessageIds, Options, TSESLint.RuleListener>;
+declare const _default: TSESLint.RuleModule<TMessageIds, TOptions, TSESLint.RuleListener>;
 export default _default;
 ```
 
