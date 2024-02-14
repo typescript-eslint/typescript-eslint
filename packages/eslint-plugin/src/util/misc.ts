@@ -153,9 +153,9 @@ type ExcludeKeys<
   TKeys extends keyof TObj,
 > = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
 type RequireKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
-> = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
+> = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
   return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
