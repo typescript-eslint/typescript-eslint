@@ -153,8 +153,8 @@ type ExcludeKeys<
   Keys extends keyof Obj,
 > = { [k in Exclude<keyof Obj, Keys>]: Obj[k] };
 type RequireKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
 > = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
