@@ -614,7 +614,7 @@ interface RuleModule<
   MessageIds extends string,
   Options extends readonly unknown[] = [],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
+  ExtendedRuleListener extends RuleListener = RuleListener,
 > {
   /**
    * Default options the rule will be run with
@@ -630,7 +630,9 @@ interface RuleModule<
    * Function which returns an object with methods that ESLint calls to “visit”
    * nodes while traversing the abstract syntax tree.
    */
-  create(context: Readonly<RuleContext<MessageIds, Options>>): TRuleListener;
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): ExtendedRuleListener;
 }
 type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
