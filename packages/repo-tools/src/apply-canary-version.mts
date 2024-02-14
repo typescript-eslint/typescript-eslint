@@ -1,3 +1,4 @@
+import { workspaceRoot } from '@nx/devkit';
 import { execaSync } from 'execa';
 import semver from 'semver';
 
@@ -61,4 +62,5 @@ console.log(`\n> ${command}\n`);
 
 execaSync('npx', command.split(' '), {
   stdio: 'inherit',
+  cwd: workspaceRoot,
 });

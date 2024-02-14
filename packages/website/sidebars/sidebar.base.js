@@ -30,6 +30,7 @@ module.exports = {
           },
           type: 'category',
         },
+        'linting/legacy-eslint-setup',
       ],
       label: 'Getting Started',
       link: {
@@ -72,6 +73,7 @@ module.exports = {
         'packages/rule-tester',
         'packages/scope-manager',
         'packages/typescript-estree',
+        'packages/typescript-eslint',
         'packages/utils',
       ],
       label: 'Packages',

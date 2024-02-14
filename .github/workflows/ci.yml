@@ -113,6 +113,8 @@ jobs:
 
       - name: Run Check
         run: yarn ${{ matrix.lint-task }}
+        env:
+          ESLINT_USE_FLAT_CONFIG: true
 
   stylelint:
     name: Stylelint

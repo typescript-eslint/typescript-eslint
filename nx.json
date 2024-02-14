@@ -60,7 +60,8 @@
       "dependsOn": ["eslint-plugin:build"],
       "inputs": [
         "default",
-        "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/eslint.config.mjs",
         "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore",
         {

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "6.21.0",
+  "version": "7.0.1",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -29,12 +29,12 @@
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "jest --coverage",
+    "test": "npx jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "6.21.0",
-    "@typescript-eslint/utils": "6.21.0",
+    "@typescript-eslint/type-utils": "7.0.1",
+    "@typescript-eslint/utils": "7.0.1",
     "natural-compare": "^1.4.0",
     "prettier": "^3.0.3"
   },
