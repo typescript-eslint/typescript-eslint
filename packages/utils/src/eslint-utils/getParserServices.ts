@@ -1,5 +1,3 @@
-import { parse } from 'path';
-
 import type * as TSESLint from '../ts-eslint';
 import type {
   ParserServices,
