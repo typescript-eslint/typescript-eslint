@@ -1,3 +1,4 @@
+import { parse } from 'path';
 import type * as TSESLint from '../ts-eslint';
 import type {
   ParserServices,
@@ -91,14 +92,14 @@ function getParserServices(
 /* eslint-enable @typescript-eslint/unified-signatures */
 
 function throwError(parserPath: string): never {
-  throw new Error(
-    parserPathSeemsToBeTSESLint(parserPath)
-      ? ERROR_MESSAGE_REQUIRES_PARSER_SERVICES
-      : [
-          ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
-          ERROR_MESSAGE_UNKNOWN_PARSER,
-        ].join('\n'),
-  );
+  const messages = [
+    ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
+    `Parser: ${parserPath}`,
+  ];
+  if (!parserPathSeemsToBeTSESLint(parserPath)) {
+    messages.push(ERROR_MESSAGE_UNKNOWN_PARSER);
+  }
+  throw new Error(messages.join('\n'));
 }
 
 export { getParserServices };
