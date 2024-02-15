@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`flat-config-types eslint should work successfully 1`] = `
+[
+  {
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "filePath": "<root>/eslint.config.js",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "column": 3,
+        "endColumn": 22,
+        "endLine": 48,
+        "line": 48,
+        "message": "Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.",
+        "messageId": "tsDirectiveCommentRequiresDescription",
+        "nodeType": "Line",
+        "ruleId": "@typescript-eslint/ban-ts-comment",
+        "severity": 2,
+      },
+      {
+        "column": 3,
+        "endColumn": 22,
+        "endLine": 53,
+        "line": 53,
+        "message": "Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.",
+        "messageId": "tsDirectiveCommentRequiresDescription",
+        "nodeType": "Line",
+        "ruleId": "@typescript-eslint/ban-ts-comment",
+        "severity": 2,
+      },
+    ],
+    "output": "// @ts-check
+
+import { FlatCompat } from '@eslint/eslintrc'
+import eslint from '@eslint/js'
+import stylisticPlugin from '@stylistic/eslint-plugin'
+import deprecationPlugin from 'eslint-plugin-deprecation'
+import jestPlugin from 'eslint-plugin-jest'
+import tseslint from 'typescript-eslint'
+
+import __dirname from './dirname.cjs'
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: {},
+  allConfig: {},
+})
+
+// this config is run through eslint as part of the integration test
+// so it needs to be a correct config
+export default tseslint.config(
+  {
+    plugins: {
+      ['@typescript-eslint']: tseslint.plugin,
+      ['deprecation']: deprecationPlugin,
+      ['jest']: jestPlugin,
+    },
+  },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  stylisticPlugin.configs['recommended-flat'],
+)
+
+// these are just tests for the types and are not seen by eslint so they can be whatever
+tseslint.config({
+  plugins: {
+    ['@stylistic']: stylisticPlugin,
+    ['@typescript-eslint']: tseslint.plugin,
+    ['deprecation']: deprecationPlugin,
+    ['jest']: jestPlugin,
+  },
+})
+tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  stylisticPlugin.configs['recommended-flat'],
+)
+tseslint.config(
+  // @ts-expect-error
+  compat.config(deprecationPlugin.configs.recommended),
+  ...compat.config(jestPlugin.configs.recommended),
+)
+tseslint.config(
+  // @ts-expect-error
+  deprecationPlugin.configs.recommended,
+  // this should error but doesn't because there are no types exported from the jest plugin
+  jestPlugin.configs.recommended,
+)
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [
+      {
+        "replacedBy": [],
+        "ruleId": "no-extra-semi",
+      },
+      {
+        "replacedBy": [],
+        "ruleId": "no-mixed-spaces-and-tabs",
+      },
+    ],
+    "warningCount": 0,
+  },
+]
+`;
