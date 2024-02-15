@@ -635,7 +635,7 @@ export interface RuleModule<
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
 /**
- * A loose definition of the RuleModule type for use with configs. This type
+ * A loose definition of the RuleModule type for use with configs. This type is
  * intended to relax validation of types so that we can have basic validation
  * without being overly strict about nitty gritty details matching.
  *
@@ -644,7 +644,7 @@ export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
  * super strict validation in a config - a loose shape match is "good enough" to
  * help validate the config is correct.
  *
- * See also LooseParserModule, LooseProcessorModule
+ * @see {@link LooseParserModule}, {@link LooseProcessorModule}
  */
 export type LooseRuleDefinition =
   // TODO - ESLint v9 will remove support for RuleCreateFunction

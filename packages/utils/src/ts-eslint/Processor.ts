@@ -51,7 +51,7 @@ export namespace Processor {
    * This type intended to relax validation of configs so that parsers that have
    * different AST types or scope managers can still be passed to configs
    *
-   * See also LooseRuleDefinition, LooseParserModule
+   * @see {@link LooseRuleDefinition}, {@link LooseParserModule}
    */
   export interface LooseProcessorModule {
     /**
