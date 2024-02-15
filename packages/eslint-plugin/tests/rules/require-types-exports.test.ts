@@ -261,6 +261,30 @@ ruleTester.run('require-types-exports', rule, {
       export type B = string;
       export const f = (): { a: A; b: B } => {};
     `,
+
+    `
+      import { testFunction, type Arg } from './module';
+
+      export function f(a: Arg): void {}
+    `,
+
+    `
+      import type { Arg } from './types';
+
+      export function f(a: Arg): void {}
+    `,
+
+    `
+      import type { ImportedArg as Arg } from './types';
+
+      export function f(a: Arg): void {}
+    `,
+
+    `
+      import type { Arg } from './types';
+
+      export function f<T extends Arg>(a: T): void {}
+    `,
   ],
 
   invalid: [
@@ -306,14 +330,14 @@ ruleTester.run('require-types-exports', rule, {
       code: `
         type Arg = number;
 
-        export default function(a: Arg): void {}
+        export default function (a: Arg): void {}
       `,
       errors: [
         {
           messageId: 'requireTypeExport',
           line: 4,
-          column: 36,
-          endColumn: 39,
+          column: 37,
+          endColumn: 40,
           data: {
             name: 'Arg',
           },
@@ -325,7 +349,7 @@ ruleTester.run('require-types-exports', rule, {
       code: `
         type Arg = number;
 
-        export default (a: Arg): void => {}
+        export default (a: Arg): void => {};
       `,
       errors: [
         {
@@ -878,7 +902,7 @@ ruleTester.run('require-types-exports', rule, {
           Cherry,
         }
 
-        export const f = (a: Fruit): void => {}
+        export const f = (a: Fruit): void => {};
       `,
       errors: [
         {
@@ -1004,7 +1028,7 @@ ruleTester.run('require-types-exports', rule, {
         type Arg1 = number;
         type Arg2 = string;
 
-        export const f = <T extends Arg1 & Arg2 & string>(a: T): void => {}
+        export const f = <T extends Arg1 & Arg2 & string>(a: T): void => {};
       `,
       errors: [
         {

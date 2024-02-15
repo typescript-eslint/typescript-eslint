@@ -1,8 +1,8 @@
-import { TSESTree } from '@typescript-eslint/utils';
+import { DefinitionType } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 
 type MessageIds = 'requireTypeExport';
 
@@ -29,26 +29,17 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const exportedTypes = new Set<string>();
-    const reported = new Set<string>();
+    const externalizedTypes = new Set<string>();
+    const reportedTypes = new Set<string>();
 
-    function collectExportedTypes(program: TSESTree.Program): void {
-      program.body.forEach(statement => {
-        if (statement.type !== AST_NODE_TYPES.ExportNamedDeclaration) {
-          return;
-        }
+    function collectImportedTypes(node: TSESTree.ImportSpecifier): void {
+      externalizedTypes.add(node.local.name);
+    }
 
-        const { declaration } = statement;
-
-        if (
-          declaration?.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
-          declaration?.type === AST_NODE_TYPES.TSInterfaceDeclaration
-        ) {
-          exportedTypes.add(declaration.id.name);
-
-          return;
-        }
-      });
+    function collectExportedTypes(
+      node: TSESTree.TSTypeAliasDeclaration | TSESTree.TSInterfaceDeclaration,
+    ): void {
+      externalizedTypes.add(node.id.name);
     }
 
     function visitExportedFunctionDeclaration(
@@ -89,7 +80,7 @@ export default createRule<[], MessageIds>({
       node: TSESTree.DefaultExportDeclarations & {
         declaration: TSESTree.Identifier;
       },
-    ) {
+    ): void {
       const scope = context.sourceCode.getScope(node);
       const variable = scope.set.get(node.declaration.name);
 
@@ -124,8 +115,8 @@ export default createRule<[], MessageIds>({
               return;
             }
 
-            const isExported = exportedTypes.has(name);
-            const isReported = reported.has(name);
+            const isExported = externalizedTypes.has(name);
+            const isReported = reportedTypes.has(name);
 
             if (isExported || isReported) {
               return;
@@ -139,7 +130,7 @@ export default createRule<[], MessageIds>({
               },
             });
 
-            reported.add(name);
+            reportedTypes.add(name);
           });
       });
     }
@@ -163,8 +154,8 @@ export default createRule<[], MessageIds>({
             return;
           }
 
-          const isExported = exportedTypes.has(name);
-          const isReported = reported.has(name);
+          const isExported = externalizedTypes.has(name);
+          const isReported = reportedTypes.has(name);
 
           if (isExported || isReported) {
             return;
@@ -178,7 +169,7 @@ export default createRule<[], MessageIds>({
             },
           });
 
-          reported.add(name);
+          reportedTypes.add(name);
         });
     }
 
@@ -384,7 +375,11 @@ export default createRule<[], MessageIds>({
     }
 
     return {
-      Program: collectExportedTypes,
+      'ImportDeclaration[importKind="type"] ImportSpecifier, ImportSpecifier[importKind="type"]':
+        collectImportedTypes,
+
+      'ExportNamedDeclaration TSTypeAliasDeclaration, ExportNamedDeclaration TSInterfaceDeclaration':
+        collectExportedTypes,
 
       'ExportNamedDeclaration[declaration.type="FunctionDeclaration"]':
         visitExportedFunctionDeclaration,
