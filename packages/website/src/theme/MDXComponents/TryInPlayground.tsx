@@ -7,7 +7,10 @@ import styles from './TryInPlayground.module.css';
 
 const fileExtensionsSortedByLength = fileTypes
   .toSorted((a, b) => b.length - a.length)
-  .map(fileExt => fileExt.replaceAll(/^\./g, ''));
+  .map(fileExtension => {
+    const language = fileExtension.replaceAll(/^\./g, '');
+    return [language, new RegExp(`^${language}\\b`)] as const;
+  });
 
 export function TryInPlayground({
   eslintrcHash,
@@ -28,9 +31,12 @@ export function TryInPlayground({
   }
   if (language) {
     // iterating over sorted array, so the longer extensions will be matched first
-    for (const fileExt of fileExtensionsSortedByLength) {
-      if (new RegExp(`^${fileExt}\\b`).test(language)) {
-        params.set('fileType', `.${fileExt}`);
+    for (const [
+      fileLanguage,
+      fileLanguageRegExp,
+    ] of fileExtensionsSortedByLength) {
+      if (fileLanguageRegExp.test(language)) {
+        params.set('fileType', `.${fileLanguage}`);
         break;
       }
     }
