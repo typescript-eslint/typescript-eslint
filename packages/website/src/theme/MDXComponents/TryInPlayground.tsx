@@ -32,11 +32,11 @@ export function TryInPlayground({
   if (language) {
     // iterating over sorted array, so the longer extensions will be matched first
     for (const [
-      fileLanguage,
+      fileExtension,
       fileLanguageRegExp,
     ] of fileExtensionsSortedByLength) {
       if (fileLanguageRegExp.test(language)) {
-        params.set('fileType', `.${fileLanguage}`);
+        params.set('fileType', `.${fileExtension}`);
         break;
       }
     }
