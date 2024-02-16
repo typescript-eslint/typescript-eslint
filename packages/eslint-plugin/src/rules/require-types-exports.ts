@@ -115,10 +115,10 @@ export default createRule<[], MessageIds>({
               return;
             }
 
-            const isExported = externalizedTypes.has(name);
+            const isExternalized = externalizedTypes.has(name);
             const isReported = reportedTypes.has(name);
 
-            if (isExported || isReported) {
+            if (isExternalized || isReported) {
               return;
             }
 
@@ -154,10 +154,10 @@ export default createRule<[], MessageIds>({
             return;
           }
 
-          const isExported = externalizedTypes.has(name);
+          const isExternalized = externalizedTypes.has(name);
           const isReported = reportedTypes.has(name);
 
-          if (isExported || isReported) {
+          if (isExternalized || isReported) {
             return;
           }
 
