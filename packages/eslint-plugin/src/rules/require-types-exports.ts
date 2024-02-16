@@ -59,12 +59,12 @@ export default createRule<[], MessageIds>({
         declaration: TSESTree.VariableDeclaration;
       },
     ): void {
-      node.declaration.declarations.forEach(declaration => {
+      for (const declaration of node.declaration.declarations) {
         if (declaration.init?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           checkFunctionParamsTypes(declaration.init);
           checkFunctionReturnType(declaration.init);
         }
-      });
+      }
     }
 
     function visitDefaultExportedArrowFunction(
@@ -88,49 +88,26 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      for (const definition of variable.defs) {
+      for (const def of variable.defs) {
         if (
-          definition.type === DefinitionType.Variable &&
-          (definition.node.init?.type ===
-            AST_NODE_TYPES.ArrowFunctionExpression ||
-            definition.node.init?.type === AST_NODE_TYPES.FunctionExpression)
+          def.type === DefinitionType.Variable &&
+          (def.node.init?.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+            def.node.init?.type === AST_NODE_TYPES.FunctionExpression)
         ) {
-          checkFunctionParamsTypes(definition.node.init);
-          checkFunctionReturnType(definition.node.init);
+          checkFunctionParamsTypes(def.node.init);
+          checkFunctionReturnType(def.node.init);
         }
       }
     }
 
     function checkFunctionParamsTypes(node: FunctionNode): void {
       for (const param of node.params) {
-        const typeNodes = getParamTypesNodes(param).flatMap(typeNode => {
+        const typeNodes = getParamTypeNodes(param).flatMap(typeNode => {
           return convertGenericTypeToTypeReferences(node, typeNode);
         });
 
         for (const typeNode of typeNodes) {
-          const name = getTypeName(typeNode);
-
-          if (!name) {
-            // TODO: Report the whole function? Is this case even possible?
-            return;
-          }
-
-          const isExternalized = externalizedTypes.has(name);
-          const isReported = reportedTypes.has(name);
-
-          if (isExternalized || isReported) {
-            return;
-          }
-
-          context.report({
-            node: typeNode,
-            messageId: 'requireTypeExport',
-            data: {
-              name,
-            },
-          });
-
-          reportedTypes.add(name);
+          checkTypeNode(typeNode);
         }
       }
     }
@@ -142,40 +119,42 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      const typeNodes = getReturnTypeTypesNodes(returnType).flatMap(
-        typeNode => {
-          return convertGenericTypeToTypeReferences(node, typeNode);
-        },
-      );
+      const typeNodes = getReturnTypeTypeNodes(returnType).flatMap(typeNode => {
+        return convertGenericTypeToTypeReferences(node, typeNode);
+      });
 
       for (const typeNode of typeNodes) {
-        const name = getTypeName(typeNode);
-
-        if (!name) {
-          // TODO: Report the whole function? Is this case even possible?
-          return;
-        }
-
-        const isExternalized = externalizedTypes.has(name);
-        const isReported = reportedTypes.has(name);
-
-        if (isExternalized || isReported) {
-          return;
-        }
-
-        context.report({
-          node: typeNode,
-          messageId: 'requireTypeExport',
-          data: {
-            name,
-          },
-        });
-
-        reportedTypes.add(name);
+        checkTypeNode(typeNode);
       }
     }
 
-    function getParamTypesNodes(
+    function checkTypeNode(node: TSESTree.TSTypeReference): void {
+      const name = getTypeName(node);
+
+      if (!name) {
+        // TODO: Report the whole function? Is this case even possible?
+        return;
+      }
+
+      const isExternalized = externalizedTypes.has(name);
+      const isReported = reportedTypes.has(name);
+
+      if (isExternalized || isReported) {
+        return;
+      }
+
+      context.report({
+        node: node,
+        messageId: 'requireTypeExport',
+        data: {
+          name,
+        },
+      });
+
+      reportedTypes.add(name);
+    }
+
+    function getParamTypeNodes(
       param: TSESTree.Parameter,
     ): TSESTree.TSTypeReference[] {
       // Single type
@@ -254,7 +233,7 @@ export default createRule<[], MessageIds>({
       return [];
     }
 
-    function getReturnTypeTypesNodes(
+    function getReturnTypeTypeNodes(
       typeAnnotation: TSESTree.TSTypeAnnotation,
     ): TSESTree.TSTypeReference[] {
       // Single type
@@ -318,50 +297,49 @@ export default createRule<[], MessageIds>({
         return typeNode;
       }
 
-      for (const definition of variable.defs) {
+      for (const def of variable.defs) {
         if (
-          definition.type === DefinitionType.Type &&
-          definition.node.type === AST_NODE_TYPES.TSTypeParameter &&
-          definition.node.constraint
+          def.type !== DefinitionType.Type ||
+          def.node.type !== AST_NODE_TYPES.TSTypeParameter ||
+          !def.node.constraint
         ) {
-          switch (definition.node.constraint.type) {
-            // T extends SomeType
-            case AST_NODE_TYPES.TSTypeReference:
-              return definition.node.constraint;
+          continue;
+        }
 
-            // T extends SomeType | AnotherType
-            // T extends SomeType & AnotherType
-            case AST_NODE_TYPES.TSUnionType:
-            case AST_NODE_TYPES.TSIntersectionType:
-              return definition.node.constraint.types.filter(
-                type => type.type === AST_NODE_TYPES.TSTypeReference,
-              ) as TSESTree.TSTypeReference[];
+        switch (def.node.constraint.type) {
+          // T extends SomeType
+          case AST_NODE_TYPES.TSTypeReference:
+            return def.node.constraint;
 
-            // T extends [SomeType, AnotherType]
-            case AST_NODE_TYPES.TSTupleType:
-              return definition.node.constraint.elementTypes.filter(
-                type => type.type === AST_NODE_TYPES.TSTypeReference,
-              ) as TSESTree.TSTypeReference[];
+          // T extends SomeType | AnotherType
+          // T extends SomeType & AnotherType
+          case AST_NODE_TYPES.TSUnionType:
+          case AST_NODE_TYPES.TSIntersectionType:
+            return def.node.constraint.types.filter(
+              type => type.type === AST_NODE_TYPES.TSTypeReference,
+            ) as TSESTree.TSTypeReference[];
 
-            // T extends { some: SomeType, another: AnotherType }
-            case AST_NODE_TYPES.TSTypeLiteral:
-              return definition.node.constraint.members.reduce<
-                TSESTree.TSTypeReference[]
-              >((acc, member) => {
-                if (
-                  member.type === AST_NODE_TYPES.TSPropertySignature &&
-                  member.typeAnnotation?.typeAnnotation.type ===
-                    AST_NODE_TYPES.TSTypeReference
-                ) {
-                  acc.push(member.typeAnnotation.typeAnnotation);
-                }
+          // T extends [SomeType, AnotherType]
+          case AST_NODE_TYPES.TSTupleType:
+            return def.node.constraint.elementTypes.filter(
+              type => type.type === AST_NODE_TYPES.TSTypeReference,
+            ) as TSESTree.TSTypeReference[];
 
-                return acc;
-              }, []);
+          // T extends { some: SomeType, another: AnotherType }
+          case AST_NODE_TYPES.TSTypeLiteral:
+            return def.node.constraint.members.reduce<
+              TSESTree.TSTypeReference[]
+            >((acc, member) => {
+              if (
+                member.type === AST_NODE_TYPES.TSPropertySignature &&
+                member.typeAnnotation?.typeAnnotation.type ===
+                  AST_NODE_TYPES.TSTypeReference
+              ) {
+                acc.push(member.typeAnnotation.typeAnnotation);
+              }
 
-            default:
-              continue;
-          }
+              return acc;
+            }, []);
         }
       }
 
