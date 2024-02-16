@@ -171,7 +171,10 @@ export type ReportDescriptor<TMessageIds extends string> =
  * Plugins can add their settings using declaration
  * merging against this interface.
  */
-export type SharedConfigurationSettings = Record<string, unknown>;
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface SharedConfigurationSettings {
+  [name: string]: unknown;
+}
 
 export interface RuleContext<
   TMessageIds extends string,
