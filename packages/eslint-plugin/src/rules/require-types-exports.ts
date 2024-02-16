@@ -102,55 +102,16 @@ export default createRule<[], MessageIds>({
     }
 
     function checkFunctionParamsTypes(node: FunctionNode): void {
-      node.params.forEach(param => {
-        getParamTypesNodes(param)
-          .flatMap(paramTypeNode => {
-            return convertGenericTypeToTypeReference(node, paramTypeNode);
-          })
-          .forEach(paramTypeNode => {
-            const name = getTypeName(paramTypeNode);
+      for (const param of node.params) {
+        const typeNodes = getParamTypesNodes(param).flatMap(typeNode => {
+          return convertGenericTypeToTypeReferences(node, typeNode);
+        });
 
-            if (!name) {
-              // TODO: Report on the whole function? Is this case even possible?
-              return;
-            }
-
-            const isExternalized = externalizedTypes.has(name);
-            const isReported = reportedTypes.has(name);
-
-            if (isExternalized || isReported) {
-              return;
-            }
-
-            context.report({
-              node: paramTypeNode,
-              messageId: 'requireTypeExport',
-              data: {
-                name,
-              },
-            });
-
-            reportedTypes.add(name);
-          });
-      });
-    }
-
-    function checkFunctionReturnType(node: FunctionNode): void {
-      const returnTypeNode = node.returnType;
-
-      if (!returnTypeNode) {
-        return;
-      }
-
-      getReturnTypeTypesNodes(returnTypeNode)
-        .flatMap(paramTypeNode => {
-          return convertGenericTypeToTypeReference(node, paramTypeNode);
-        })
-        .forEach(returnTypeNode => {
-          const name = getTypeName(returnTypeNode);
+        for (const typeNode of typeNodes) {
+          const name = getTypeName(typeNode);
 
           if (!name) {
-            // TODO: Report on the whole function? Is this case even possible?
+            // TODO: Report the whole function? Is this case even possible?
             return;
           }
 
@@ -162,7 +123,7 @@ export default createRule<[], MessageIds>({
           }
 
           context.report({
-            node: returnTypeNode,
+            node: typeNode,
             messageId: 'requireTypeExport',
             data: {
               name,
@@ -170,7 +131,48 @@ export default createRule<[], MessageIds>({
           });
 
           reportedTypes.add(name);
+        }
+      }
+    }
+
+    function checkFunctionReturnType(node: FunctionNode): void {
+      const { returnType } = node;
+
+      if (!returnType) {
+        return;
+      }
+
+      const typeNodes = getReturnTypeTypesNodes(returnType).flatMap(
+        typeNode => {
+          return convertGenericTypeToTypeReferences(node, typeNode);
+        },
+      );
+
+      for (const typeNode of typeNodes) {
+        const name = getTypeName(typeNode);
+
+        if (!name) {
+          // TODO: Report the whole function? Is this case even possible?
+          return;
+        }
+
+        const isExternalized = externalizedTypes.has(name);
+        const isReported = reportedTypes.has(name);
+
+        if (isExternalized || isReported) {
+          return;
+        }
+
+        context.report({
+          node: typeNode,
+          messageId: 'requireTypeExport',
+          data: {
+            name,
+          },
         });
+
+        reportedTypes.add(name);
+      }
     }
 
     function getParamTypesNodes(
@@ -299,7 +301,7 @@ export default createRule<[], MessageIds>({
       return [];
     }
 
-    function convertGenericTypeToTypeReference(
+    function convertGenericTypeToTypeReferences(
       functionNode: FunctionNode,
       typeNode: TSESTree.TSTypeReference,
     ): TSESTree.TSTypeReference | TSESTree.TSTypeReference[] {
