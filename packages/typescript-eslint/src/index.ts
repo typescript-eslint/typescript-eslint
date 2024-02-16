@@ -1,6 +1,7 @@
 import pluginBase from '@typescript-eslint/eslint-plugin';
 import * as parserBase from '@typescript-eslint/parser';
-import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+// see the comment in config-helper.ts for why this doesn't use /ts-eslint
+import type { TSESLint } from '@typescript-eslint/utils';
 
 import { config } from './config-helper';
 import allConfig from './configs/all';
@@ -14,12 +15,12 @@ import strictTypeCheckedConfig from './configs/strict-type-checked';
 import stylisticConfig from './configs/stylistic';
 import stylisticTypeCheckedConfig from './configs/stylistic-type-checked';
 
-const parser: FlatConfig.Parser = {
+const parser: TSESLint.FlatConfig.Parser = {
   meta: parserBase.meta,
   parseForESLint: parserBase.parseForESLint,
 };
 
-const plugin: FlatConfig.Plugin = {
+const plugin: TSESLint.FlatConfig.Plugin = {
   meta: pluginBase.meta,
   rules: pluginBase.rules,
 };

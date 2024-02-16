@@ -1,3 +1,3 @@
-import { integrationTest } from '../tools/integration-test-base';
+import { eslintIntegrationTest } from '../tools/integration-test-base';
 
-integrationTest(__filename, '*.ts');
+eslintIntegrationTest(__filename, '*.ts');

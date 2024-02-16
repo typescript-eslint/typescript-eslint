@@ -20,6 +20,7 @@
       "default": "./dist/use-at-your-own-risk.js"
     }
   },
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": "^16.0.0 || >=18.0.0"
   },
