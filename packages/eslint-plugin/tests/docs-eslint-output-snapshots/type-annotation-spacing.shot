@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"let foo:string = "bar";
+       ~ Expected a space after the ':'.
+let foo :string = "bar";
+        ~ Expected a space after the ':'.
+        ~ Unexpected space before the ':'.
+let foo : string = "bar";
+        ~ Unexpected space before the ':'.
+
+function foo():string {}
+              ~ Expected a space after the ':'.
+function foo() :string {}
+               ~ Expected a space after the ':'.
+               ~ Unexpected space before the ':'.
+function foo() : string {}
+               ~ Unexpected space before the ':'.
+
+class Foo {
+    name:string;
+        ~ Expected a space after the ':'.
+}
+
+class Foo {
+    name :string;
+         ~ Expected a space after the ':'.
+         ~ Unexpected space before the ':'.
+}
+
+class Foo {
+    name : string;
+         ~ Unexpected space before the ':'.
+}
+
+type Foo = ()=>{};
+             ~~ Expected a space after the '=>'.
+             ~~ Expected a space before the '=>'.
+type Foo = () =>{};
+              ~~ Expected a space after the '=>'.
+type Foo = ()=> {};
+             ~~ Expected a space before the '=>'.
+"
+`;
+
+exports[` 2`] = `
+"let foo: string = "bar";
+
+function foo(): string {}
+
+class Foo {
+    name: string;
+}
+
+type Foo = () => {};
+"
+`;
+
+exports[` 3`] = `
+"let foo:string = "bar";
+       ~ Expected a space after the ':'.
+let foo :string = "bar";
+        ~ Expected a space after the ':'.
+        ~ Unexpected space before the ':'.
+let foo : string = "bar";
+        ~ Unexpected space before the ':'.
+
+function foo():string {}
+              ~ Expected a space after the ':'.
+function foo() :string {}
+               ~ Expected a space after the ':'.
+               ~ Unexpected space before the ':'.
+function foo() : string {}
+               ~ Unexpected space before the ':'.
+
+class Foo {
+    name:string;
+        ~ Expected a space after the ':'.
+}
+
+class Foo {
+    name :string;
+         ~ Expected a space after the ':'.
+         ~ Unexpected space before the ':'.
+}
+
+class Foo {
+    name : string;
+         ~ Unexpected space before the ':'.
+}
+
+type Foo = ()=>{};
+             ~~ Expected a space after the '=>'.
+type Foo = () =>{};
+              ~~ Expected a space after the '=>'.
+              ~~ Unexpected space before the '=>'.
+type Foo = () => {};
+              ~~ Unexpected space before the '=>'.
+"
+`;
+
+exports[` 4`] = `
+"let foo: string = "bar";
+
+function foo(): string {}
+
+class Foo {
+    name: string;
+}
+
+type Foo = ()=> {};
+"
+`;
+
+exports[` 5`] = `
+"let foo: string = "bar";
+       ~ Expected a space before the ':'.
+let foo:string = "bar";
+       ~ Expected a space after the ':'.
+       ~ Expected a space before the ':'.
+let foo :string = "bar";
+        ~ Expected a space after the ':'.
+
+function foo(): string {}
+              ~ Expected a space before the ':'.
+function foo():string {}
+              ~ Expected a space after the ':'.
+              ~ Expected a space before the ':'.
+function foo() :string {}
+               ~ Expected a space after the ':'.
+
+class Foo {
+    name: string;
+        ~ Expected a space before the ':'.
+}
+
+class Foo {
+    name:string;
+        ~ Expected a space after the ':'.
+        ~ Expected a space before the ':'.
+}
+
+class Foo {
+    name :string;
+         ~ Expected a space after the ':'.
+}
+
+type Foo = ()=>{};
+             ~~ Expected a space after the '=>'.
+             ~~ Expected a space before the '=>'.
+type Foo = () =>{};
+              ~~ Expected a space after the '=>'.
+type Foo = ()=> {};
+             ~~ Expected a space before the '=>'.
+"
+`;
+
+exports[` 6`] = `
+"let foo : string = "bar";
+
+function foo() : string {}
+
+class Foo {
+    name : string;
+}
+
+type Foo = () => {};
+"
+`;
+
+exports[` 7`] = `
+"let foo: string = "bar";
+       ~ Expected a space before the ':'.
+let foo:string = "bar";
+       ~ Expected a space after the ':'.
+       ~ Expected a space before the ':'.
+let foo :string = "bar";
+        ~ Expected a space after the ':'.
+
+function foo(): string {}
+              ~ Expected a space before the ':'.
+function foo():string {}
+              ~ Expected a space after the ':'.
+              ~ Expected a space before the ':'.
+function foo() :string {}
+               ~ Expected a space after the ':'.
+
+class Foo {
+    name: string;
+        ~ Expected a space before the ':'.
+}
+
+class Foo {
+    name:string;
+        ~ Expected a space after the ':'.
+        ~ Expected a space before the ':'.
+}
+
+class Foo {
+    name :string;
+         ~ Expected a space after the ':'.
+}
+
+type Foo = () =>{};
+              ~~ Unexpected space before the '=>'.
+type Foo = ()=> {};
+             ~~ Unexpected space after the '=>'.
+type Foo = () => {};
+              ~~ Unexpected space after the '=>'.
+              ~~ Unexpected space before the '=>'.
+"
+`;
+
+exports[` 8`] = `
+"let foo : string = "bar";
+
+function foo() : string {}
+
+class Foo {
+    name : string;
+}
+
+type Foo = {
+    name : (name : string)=>string;
+}
+
+type Foo = ()=>{};
+"
+`;
+
+exports[` 9`] = `
+"let foo: string = "bar";
+       ~ Unexpected space after the ':'.
+let foo : string = "bar";
+        ~ Unexpected space after the ':'.
+        ~ Unexpected space before the ':'.
+let foo :string = "bar";
+        ~ Unexpected space before the ':'.
+
+function foo(): string {}
+              ~ Unexpected space after the ':'.
+function foo():string {}
+function foo() :string {}
+               ~ Unexpected space before the ':'.
+
+class Foo {
+    name: string;
+        ~ Unexpected space after the ':'.
+}
+
+class Foo {
+    name : string;
+         ~ Unexpected space after the ':'.
+         ~ Unexpected space before the ':'.
+}
+
+class Foo {
+    name :string;
+         ~ Unexpected space before the ':'.
+}
+
+type Foo = ()=>{};
+             ~~ Expected a space after the '=>'.
+             ~~ Expected a space before the '=>'.
+type Foo = () =>{};
+              ~~ Expected a space after the '=>'.
+type Foo = ()=> {};
+             ~~ Expected a space before the '=>'.
+"
+`;
+
+exports[` 10`] = `
+"let foo:string = "bar";
+
+function foo():string {}
+
+class Foo {
+    name:string;
+}
+
+type Foo = () => {};
+"
+`;

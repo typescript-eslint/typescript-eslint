@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"class Mx {
+  public static get myField1() {
+                    ~~~~~~~~ Literals should be exposed using readonly fields.
+    return 1;
+  }
+
+  private get ['myField2']() {
+               ~~~~~~~~~~ Literals should be exposed using readonly fields.
+    return 'hello world';
+  }
+}
+"
+`;
+
+exports[` 2`] = `
+"class Mx {
+  public readonly myField1 = 1;
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  private readonly ['myField3'] = 'hello world';
+
+  public get myField4() {
+    return \`hello from \${window.location.href}\`;
+  }
+}
+"
+`;
+
+exports[` 3`] = `
+"class Mx {
+  readonly myField1 = 1;
+           ~~~~~~~~ Literals should be exposed using getters.
+  readonly myField2 = \`hello world\`;
+           ~~~~~~~~ Literals should be exposed using getters.
+  private readonly myField3 = 'hello world';
+                   ~~~~~~~~ Literals should be exposed using getters.
+}
+"
+`;
+
+exports[` 4`] = `
+"class Mx {
+  // no readonly modifier
+  public myField1 = 'hello';
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  public static get myField3() {
+    return 1;
+  }
+
+  private get ['myField4']() {
+    return 'hello world';
+  }
+}
+"
+`;

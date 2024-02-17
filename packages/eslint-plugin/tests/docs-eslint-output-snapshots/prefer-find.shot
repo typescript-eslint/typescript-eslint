@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"[1, 2, 3].filter(x => x > 1)[0];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer .find(...) instead of .filter(...)[0].
+
+[1, 2, 3].filter(x => x > 1).at(0);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer .find(...) instead of .filter(...)[0].
+"
+`;
+
+exports[` 2`] = `
+"[1, 2, 3].find(x => x > 1);
+"
+`;

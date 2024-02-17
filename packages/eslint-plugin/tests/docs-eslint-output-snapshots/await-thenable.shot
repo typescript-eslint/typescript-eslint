@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"await 'value';
+~~~~~~~~~~~~~ Unexpected \`await\` of a non-Promise (non-"Thenable") value.
+
+const createValue = () => 'value';
+await createValue();
+~~~~~~~~~~~~~~~~~~~ Unexpected \`await\` of a non-Promise (non-"Thenable") value.
+"
+`;
+
+exports[` 2`] = `
+"await Promise.resolve('value');
+
+const createValue = async () => 'value';
+await createValue();
+"
+`;

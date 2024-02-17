@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"class StaticConstants {
+      ~~~~~~~~~~~~~~~ Unexpected class with only static properties.
+  static readonly version = 42;
+
+  static isProduction() {
+    return process.env.NODE_ENV === 'production';
+  }
+}
+
+class HelloWorldLogger {
+      ~~~~~~~~~~~~~~~~ Unexpected class with only a constructor.
+  constructor() {
+    console.log('Hello, world!');
+  }
+}
+"
+`;
+
+exports[` 2`] = `
+"export const version = 42;
+
+export function isProduction() {
+  return process.env.NODE_ENV === 'production';
+}
+
+function logHelloWorld() {
+  console.log('Hello, world!');
+}
+"
+`;
+
+exports[` 3`] = `
+"export class Utilities {
+             ~~~~~~~~~ Unexpected class with only static properties.
+  static util1() {
+    return Utilities.util3();
+  }
+
+  static util2() {
+    /* ... */
+  }
+
+  static util3() {
+    /* ... */
+  }
+}
+"
+`;
+
+exports[` 4`] = `
+"export function util1() {
+  return util3();
+}
+
+export function util2() {
+  /* ... */
+}
+
+export function util3() {
+  /* ... */
+}
+"
+`;
+
+exports[` 5`] = `
+"// utilities.ts
+export class Utilities {
+             ~~~~~~~~~ Unexpected class with only static properties.
+  static sayHello() {
+    console.log('Hello, world!');
+  }
+}
+
+// consumers.ts
+import { Utilities } from './utilities';
+
+Utilities.sayHello();
+"
+`;
+
+exports[` 6`] = `
+"// utilities.ts
+export function sayHello() {
+  console.log('Hello, world!');
+}
+
+// consumers.ts
+import * as utilities from './utilities';
+
+utilities.sayHello();
+"
+`;
+
+exports[` 7`] = `
+"// utilities.ts
+export function sayHello() {
+  console.log('Hello, world!');
+}
+
+// consumers.ts
+import { sayHello } from './utilities';
+
+sayHello();
+"
+`;
+
+exports[` 8`] = `
+"export class Utilities {
+             ~~~~~~~~~ Unexpected class with only static properties.
+  static mutableCount = 1;
+
+  static incrementCount() {
+    Utilities.mutableCount += 1;
+  }
+}
+"
+`;
+
+exports[` 9`] = `
+"let mutableCount = 1;
+
+export function getMutableCount() {
+  return mutableField;
+}
+
+export function incrementCount() {
+  mutableField += 1;
+}
+"
+`;
+
+exports[` 10`] = `
+"class NoFields {}
+      ~~~~~~~~ Unexpected empty class.
+"
+`;
+
+exports[` 11`] = `
+"class NoFields {
+  constructor() {
+    console.log('Hello, world!');
+  }
+}
+"
+`;
+
+exports[` 12`] = `
+"class NoFields {
+      ~~~~~~~~ Unexpected class with only a constructor.
+  constructor() {
+    console.log('Hello, world!');
+  }
+}
+"
+`;
+
+exports[` 13`] = `
+"class NoFields {}
+"
+`;
+
+exports[` 14`] = `
+"class EmptyClass {}
+      ~~~~~~~~~~ Unexpected empty class.
+"
+`;
+
+exports[` 15`] = `
+"class NotEmptyClass {
+  static version = 42;
+}
+"
+`;
+
+exports[` 16`] = `
+"class Constants {
+      ~~~~~~~~~ Unexpected class with only static properties.
+  static readonly version = 42;
+}
+"
+`;
+
+exports[` 17`] = `
+"@logOnRead()
+class Constants {
+  static readonly version = 42;
+}
+"
+`;

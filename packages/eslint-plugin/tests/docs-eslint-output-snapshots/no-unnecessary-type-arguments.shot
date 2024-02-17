@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"function f<T = number>() {}
+f<number>();
+  ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[` 2`] = `
+"function g<T = number, U = string>() {}
+g<string, string>();
+          ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[` 3`] = `
+"class C<T = number> {}
+new C<number>();
+      ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+
+class D extends C<number> {}
+                  ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[` 4`] = `
+"interface I<T = number> {}
+class Impl implements I<number> {}
+                        ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[` 5`] = `
+"function f<T = number>() {}
+f();
+f<string>();
+"
+`;
+
+exports[` 6`] = `
+"function g<T = number, U = string>() {}
+g<string>();
+g<number, number>();
+"
+`;
+
+exports[` 7`] = `
+"class C<T = number> {}
+new C();
+new C<string>();
+
+class D extends C {}
+class D extends C<string> {}
+"
+`;
+
+exports[` 8`] = `
+"interface I<T = number> {}
+class Impl implements I<string> {}
+"
+`;

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"// Passing an object or class instance to string concatenation:
+'' + {};
+     ~~ '{}' will evaluate to '[object Object]' when stringified.
+
+class MyClass {}
+const value = new MyClass();
+value + '';
+~~~~~ 'value' will evaluate to '[object Object]' when stringified.
+
+// Interpolation and manual .toString() calls too:
+\`Value: \${value}\`;
+          ~~~~~ 'value' will evaluate to '[object Object]' when stringified.
+({}).toString();
+ ~~ '{}' will evaluate to '[object Object]' when stringified.
+"
+`;
+
+exports[` 2`] = `
+"// These types all have useful .toString()s
+'Text' + true;
+\`Value: \${123}\`;
+\`Arrays too: \${[1, 2, 3]}\`;
+(() => {}).toString();
+
+// Defining a custom .toString class is considered acceptable
+class CustomToString {
+  toString() {
+    return 'Hello, world!';
+  }
+}
+\`Value: \${new CustomToString()}\`;
+
+const literalWithToString = {
+  toString: () => 'Hello, world!',
+};
+
+\`Value: \${literalWithToString}\`;
+"
+`;
+
+exports[` 3`] = `
+"\`\${/regex/}\`;
+'' + /regex/;
+/regex/.toString();
+let value = /regex/;
+value.toString();
+let text = \`\${value}\`;
+"
+`;

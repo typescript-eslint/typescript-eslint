@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"[1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
+                                                    ~~~~~~~~~~~~~~ Unnecessary cast: Array#reduce accepts a type parameter for the default value.
+
+['a', 'b'].reduce(
+  (accum, name) => ({
+    ...accum,
+    [name]: true,
+  }),
+  {} as Record<string, boolean>,
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unnecessary cast: Array#reduce accepts a type parameter for the default value.
+);
+"
+`;
+
+exports[` 2`] = `
+"[1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
+
+['a', 'b'].reduce<Record<string, boolean>>(
+  (accum, name) => ({
+    ...accum,
+    [name]: true,
+  }),
+  {},
+);
+"
+`;

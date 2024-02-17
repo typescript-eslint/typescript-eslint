@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"class Animal {
+  constructor(name) {
+  ~ Missing accessibility modifier on method definition constructor.
+    // No accessibility modifier
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    this.animalName = name;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  animalName: string; // No accessibility modifier
+  ~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on class property animalName.
+  get name(): string {
+  ~ Missing accessibility modifier on get property accessor name.
+    // No accessibility modifier
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    return this.animalName;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  set name(value: string) {
+  ~ Missing accessibility modifier on set property accessor name.
+    // No accessibility modifier
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    this.animalName = value;
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  walk() {
+  ~ Missing accessibility modifier on method definition walk.
+    // method
+~~~~~~~~~~~
+  }
+~
+}
+"
+`;
+
+exports[` 2`] = `
+"class Animal {
+  public constructor(
+    public breed,
+    name,
+  ) {
+    // Parameter property and constructor
+    this.animalName = name;
+  }
+  private animalName: string; // Property
+  get name(): string {
+  ~ Missing accessibility modifier on get property accessor name.
+    // get accessor
+~~~~~~~~~~~~~~~~~
+    return this.animalName;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  set name(value: string) {
+  ~ Missing accessibility modifier on set property accessor name.
+    // set accessor
+~~~~~~~~~~~~~~~~~
+    this.animalName = value;
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  public walk() {
+    // method
+  }
+}
+"
+`;
+
+exports[` 3`] = `
+"class Animal {
+  public constructor(
+  ~ Public accessibility modifier on method definition constructor.
+    public breed,
+~~~~~~~~~~~~~~~
+    name,
+~~~~~~~
+  ) {
+~~~
+    // Parameter property and constructor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    this.animalName = name;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  public animalName: string; // Property
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on class property animalName.
+  public get name(): string {
+  ~ Public accessibility modifier on get property accessor name.
+    // get accessor
+~~~~~~~~~~~~~~~~~
+    return this.animalName;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  public set name(value: string) {
+  ~ Public accessibility modifier on set property accessor name.
+    // set accessor
+~~~~~~~~~~~~~~~~~
+    this.animalName = value;
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~
+  public walk() {
+  ~ Public accessibility modifier on method definition walk.
+    // method
+~~~~~~~~~~~
+  }
+~
+}
+"
+`;
+
+exports[` 4`] = `
+"class Animal {
+  constructor(
+    protected breed,
+    name,
+  ) {
+    // Parameter property and constructor
+    this.name = name;
+  }
+  private animalName: string; // Property
+  get name(): string {
+    // get accessor
+    return this.animalName;
+  }
+  private set name(value: string) {
+    // set accessor
+    this.animalName = value;
+  }
+  protected walk() {
+    // method
+  }
+}
+"
+`;
+
+exports[` 5`] = `
+"class Animal {
+  public constructor(protected animalName) {}
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on method definition constructor.
+  public get name() {
+    return this.animalName;
+  }
+}
+"
+`;
+
+exports[` 6`] = `
+"class Animal {
+  constructor(protected animalName) {}
+  public get name() {
+    return this.animalName;
+  }
+}
+"
+`;
+
+exports[` 7`] = `
+"class Animal {
+  constructor(protected animalName) {}
+  get name() {
+    return this.animalName;
+  }
+  protected set name(value: string) {
+    this.animalName = value;
+  }
+  legs: number;
+  ~~~~~~~~~~~~~ Missing accessibility modifier on class property legs.
+  private hasFleas: boolean;
+}
+"
+`;
+
+exports[` 8`] = `
+"class Animal {
+  constructor(protected animalName) {}
+  get name() {
+    return this.animalName;
+  }
+  protected set name(value: string) {
+    this.animalName = value;
+  }
+  public legs: number;
+  private hasFleas: boolean;
+}
+"
+`;
+
+exports[` 9`] = `
+"class Animal {
+  constructor(readonly animalName: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on parameter property animalName.
+}
+"
+`;
+
+exports[` 10`] = `
+"class Animal {
+  constructor(public readonly animalName: string) {}
+}
+
+class Animal {
+  constructor(public animalName: string) {}
+}
+
+class Animal {
+  constructor(animalName: string) {}
+}
+"
+`;
+
+exports[` 11`] = `
+"class Animal {
+  constructor(public readonly animalName: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on parameter property animalName.
+}
+"
+`;
+
+exports[` 12`] = `
+"class Animal {
+  constructor(public animalName: string) {}
+}
+"
+`;
+
+exports[` 13`] = `
+"class Animal {
+  constructor(protected animalName) {}
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on method definition constructor.
+  public get name() {
+    return this.animalName;
+  }
+  get legs() {
+    return this.legCount;
+  }
+}
+"
+`;
+
+exports[` 14`] = `
+"class Animal {
+  public constructor(protected animalName) {}
+  public get name() {
+    return this.animalName;
+  }
+  get legs() {
+    return this.legCount;
+  }
+}
+"
+`;
+
+exports[` 15`] = `
+"class Animal {
+  get specificMethod() {
+    console.log('No error because you specified this method on option');
+  }
+  get whateverMethod() {
+    console.log('No error because you specified this method on option');
+  }
+  public get otherMethod() {
+    console.log('This method comply with this rule');
+  }
+}
+"
+`;

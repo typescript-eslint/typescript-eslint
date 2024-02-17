@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"declare class C {
+  new(): C;
+  ~~~~~~~~~ Class cannot have method named \`new\`.
+}
+
+interface I {
+  new (): I;
+  ~~~~~~~~~~ Interfaces cannot be constructed, only classes.
+  constructor(): void;
+  ~~~~~~~~~~~~~~~~~~~~ Interfaces cannot be constructed, only classes.
+}
+"
+`;
+
+exports[` 2`] = `
+"declare class C {
+  constructor();
+}
+
+interface I {
+  new (): C;
+}
+"
+`;

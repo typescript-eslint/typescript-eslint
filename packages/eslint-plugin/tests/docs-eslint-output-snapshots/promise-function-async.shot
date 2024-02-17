@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const arrowFunctionReturnsPromise = () => Promise.resolve('value');
+                                       ~~ Functions that return promises must be async.
+
+function functionReturnsPromise() {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Functions that return promises must be async.
+  return Promise.resolve('value');
+}
+
+function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Functions that return promises must be async.
+  return p ? 'value' : Promise.resolve('value');
+}
+"
+`;
+
+exports[` 2`] = `
+"const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
+
+async function functionReturnsPromise() {
+  return Promise.resolve('value');
+}
+
+// An explicit return type that is not Promise means this function cannot be made async, so it is ignored by the rule
+function functionReturnsUnionWithPromiseExplicitly(
+  p: boolean,
+): string | Promise<string> {
+  return p ? 'value' : Promise.resolve('value');
+}
+
+async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
+  return p ? 'value' : Promise.resolve('value');
+}
+"
+`;
+
+exports[` 3`] = `
+"const returnsAny = () => ({}) as any;
+                      ~~ Functions that return promises must be async.
+"
+`;
+
+exports[` 4`] = `
+"const returnsAny = async () => ({}) as any;
+"
+`;
+
+exports[` 5`] = `
+"class Bluebird {}
+
+const returnsBluebird = () => new Bluebird(() => {});
+                           ~~ Functions that return promises must be async.
+"
+`;
+
+exports[` 6`] = `
+"class Bluebird {}
+
+const returnsBluebird = async () => new Bluebird(() => {});
+"
+`;

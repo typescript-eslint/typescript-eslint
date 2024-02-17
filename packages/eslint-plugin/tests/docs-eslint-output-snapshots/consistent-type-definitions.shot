@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"type T = { x: number };
+     ~ Use an \`interface\` instead of a \`type\`.
+"
+`;
+
+exports[` 2`] = `
+"type T = string;
+type Foo = string | {};
+
+interface T {
+  x: number;
+}
+"
+`;
+
+exports[` 3`] = `
+"interface T {
+          ~ Use a \`type\` instead of an \`interface\`.
+  x: number;
+}
+"
+`;
+
+exports[` 4`] = `
+"type T = { x: number };
+"
+`;

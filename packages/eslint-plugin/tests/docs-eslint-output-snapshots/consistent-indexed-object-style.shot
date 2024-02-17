@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface Foo {
+~ A record is preferred over an index signature.
+  [key: string]: unknown;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+}
+~
+
+type Foo = {
+           ~ A record is preferred over an index signature.
+  [key: string]: unknown;
+~~~~~~~~~~~~~~
+};
+~
+"
+`;
+
+exports[` 2`] = `
+"type Foo = Record<string, unknown>;
+"
+`;
+
+exports[` 3`] = `
+"type Foo = Record<string, unknown>;
+           ~~~~~~~~~~~~~~~~~~~~~~~ An index signature is preferred over a record.
+"
+`;
+
+exports[` 4`] = `
+"interface Foo {
+  [key: string]: unknown;
+}
+
+type Foo = {
+  [key: string]: unknown;
+};
+"
+`;

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const x: string = obj.x; // This is incorrect and the auto fixer provides following untyped fix.
+// const { x } = obj;
+"
+`;
+
+exports[` 2`] = `
+"const x: string = obj.x; // This is correct by default. You can also forbid this by an option.
+"
+`;
+
+exports[` 3`] = `
+"const x = ['a'];
+const y = x[0];
+      ~~~~~~~~ Use array destructuring.
+"
+`;
+
+exports[` 4`] = `
+"const x = { 0: 'a' };
+const y = x[0];
+"
+`;
+
+exports[` 5`] = `
+"const x: string = obj.x;
+      ~~~~~~~~~~~~~~~~~ Use object destructuring.
+"
+`;
+
+exports[` 6`] = `
+"const { x }: { x: string } = obj;
+"
+`;

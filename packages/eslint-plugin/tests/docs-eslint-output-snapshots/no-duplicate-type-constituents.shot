@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"type T1 = 'A' | 'A';
+                ~~~ Union type constituent is duplicated with 'A'.
+
+type T2 = A | A | B;
+              ~ Union type constituent is duplicated with A.
+
+type T3 = { a: string } & { a: string };
+                          ~~~~~~~~~~~~~ Intersection type constituent is duplicated with { a: string }.
+
+type T4 = [1, 2, 3] | [1, 2, 3];
+                      ~~~~~~~~~ Union type constituent is duplicated with [1, 2, 3].
+
+type StringA = string;
+type StringB = string;
+type T5 = StringA | StringB;
+                    ~~~~~~~ Union type constituent is duplicated with StringA.
+"
+`;
+
+exports[` 2`] = `
+"type T1 = 'A' | 'B';
+
+type T2 = A | B | C;
+
+type T3 = { a: string } & { b: string };
+
+type T4 = [1, 2, 3] | [1, 2, 3, 4];
+
+type StringA = string;
+type NumberB = number;
+type T5 = StringA | NumberB;
+"
+`;

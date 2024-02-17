@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const age: any = 'seventeen';
+           ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 2`] = `
+"const ages: any[] = ['seventeen'];
+            ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 3`] = `
+"const ages: Array<any> = ['seventeen'];
+                  ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 4`] = `
+"function greet(): any {}
+                  ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 5`] = `
+"function greet(): any[] {}
+                  ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 6`] = `
+"function greet(): Array<any> {}
+                        ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 7`] = `
+"function greet(): Array<Array<any>> {}
+                              ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 8`] = `
+"function greet(param: Array<any>): string {}
+                            ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 9`] = `
+"function greet(param: Array<any>): Array<any> {}
+                            ~~~ Unexpected any. Specify a different type.
+                                         ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[` 10`] = `
+"const age: number = 17;
+"
+`;
+
+exports[` 11`] = `
+"const ages: number[] = [17];
+"
+`;
+
+exports[` 12`] = `
+"const ages: Array<number> = [17];
+"
+`;
+
+exports[` 13`] = `
+"function greet(): string {}
+"
+`;
+
+exports[` 14`] = `
+"function greet(): string[] {}
+"
+`;
+
+exports[` 15`] = `
+"function greet(): Array<string> {}
+"
+`;
+
+exports[` 16`] = `
+"function greet(): Array<Array<string>> {}
+"
+`;
+
+exports[` 17`] = `
+"function greet(param: Array<string>): string {}
+"
+`;
+
+exports[` 18`] = `
+"function greet(param: Array<string>): Array<string> {}
+"
+`;
+
+exports[` 19`] = `
+"function foo1(...args: any[]): void {}
+                       ~~~ Unexpected any. Specify a different type.
+function foo2(...args: readonly any[]): void {}
+                                ~~~ Unexpected any. Specify a different type.
+function foo3(...args: Array<any>): void {}
+                             ~~~ Unexpected any. Specify a different type.
+function foo4(...args: ReadonlyArray<any>): void {}
+                                     ~~~ Unexpected any. Specify a different type.
+
+declare function bar(...args: any[]): void;
+                              ~~~ Unexpected any. Specify a different type.
+
+const baz = (...args: any[]) => {};
+                      ~~~ Unexpected any. Specify a different type.
+const qux = function (...args: any[]) {};
+                               ~~~ Unexpected any. Specify a different type.
+
+type Quux = (...args: any[]) => void;
+                      ~~~ Unexpected any. Specify a different type.
+type Quuz = new (...args: any[]) => void;
+                          ~~~ Unexpected any. Specify a different type.
+
+interface Grault {
+  (...args: any[]): void;
+            ~~~ Unexpected any. Specify a different type.
+}
+interface Corge {
+  new (...args: any[]): void;
+                ~~~ Unexpected any. Specify a different type.
+}
+interface Garply {
+  f(...args: any[]): void;
+             ~~~ Unexpected any. Specify a different type.
+}
+"
+`;

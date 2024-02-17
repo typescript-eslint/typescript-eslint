@@ -1,0 +1,406 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 2`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+"
+`;
+
+exports[` 3`] = `
+"class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 4`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(readonly name: string) {}
+}
+"
+`;
+
+exports[` 5`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 6`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private name: string) {}
+}
+"
+`;
+
+exports[` 7`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 8`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected name: string) {}
+}
+"
+`;
+
+exports[` 9`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 10`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public name: string) {}
+}
+"
+`;
+
+exports[` 11`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 12`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+}
+"
+`;
+
+exports[` 13`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 14`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+}
+"
+`;
+
+exports[` 15`] = `
+"class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[` 16`] = `
+"class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+}
+"
+`;
+
+exports[` 17`] = `
+"class Foo {
+  private name: string;
+  ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  public readonly name: string;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  constructor(name: string) {
+    this.name = name;
+  }
+  name: string;
+  ~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+}
+"
+`;
+
+exports[` 18`] = `
+"class Foo {
+  private differentName: string;
+  constructor(name: string) {
+    this.differentName = name;
+  }
+}
+
+class Foo {
+  private differentType: number | undefined;
+  constructor(differentType: number) {
+    this.differentType = differentType;
+  }
+}
+
+class Foo {
+  protected logicInConstructor: string;
+  constructor(logicInConstructor: string) {
+    console.log('Hello, world!');
+    this.logicInConstructor = logicInConstructor;
+  }
+}
+"
+`;

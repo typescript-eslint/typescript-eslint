@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"type UnionAny = any | 'foo';
+                ~~~ 'any' overrides all other types in this union type.
+type UnionUnknown = unknown | 'foo';
+                    ~~~~~~~ 'unknown' overrides all other types in this union type.
+type UnionNever = never | 'foo';
+                  ~~~~~ 'never' is overridden by other types in this union type.
+
+type UnionBooleanLiteral = boolean | false;
+                                     ~~~~~ false is overridden by boolean in this union type.
+type UnionNumberLiteral = number | 1;
+                                   ~ 1 is overridden by number in this union type.
+type UnionStringLiteral = string | 'foo';
+                                   ~~~~~ "foo" is overridden by string in this union type.
+
+type IntersectionAny = any & 'foo';
+                       ~~~ 'any' overrides all other types in this intersection type.
+type IntersectionUnknown = string & unknown;
+                                    ~~~~~~~ 'unknown' is overridden by other types in this intersection type.
+type IntersectionNever = string | never;
+                                  ~~~~~ 'never' is overridden by other types in this union type.
+
+type IntersectionBooleanLiteral = boolean & false;
+                                  ~~~~~~~ boolean is overridden by the false in this intersection type.
+type IntersectionNumberLiteral = number & 1;
+                                 ~~~~~~ number is overridden by the 1 in this intersection type.
+type IntersectionStringLiteral = string & 'foo';
+                                 ~~~~~~ string is overridden by the "foo" in this intersection type.
+"
+`;
+
+exports[` 2`] = `
+"type UnionAny = any;
+type UnionUnknown = unknown;
+type UnionNever = never;
+
+type UnionBooleanLiteral = boolean;
+type UnionNumberLiteral = number;
+type UnionStringLiteral = string;
+
+type IntersectionAny = any;
+type IntersectionUnknown = string;
+type IntersectionNever = string;
+
+type IntersectionBooleanLiteral = false;
+type IntersectionNumberLiteral = 1;
+type IntersectionStringLiteral = 'foo';
+"
+`;

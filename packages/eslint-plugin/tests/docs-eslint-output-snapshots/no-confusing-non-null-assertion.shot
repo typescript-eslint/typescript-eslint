@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface Foo {
+  bar?: string;
+  num?: number;
+}
+
+const foo: Foo = getFoo();
+const isEqualsBar = foo.bar! == 'hello';
+                    ~~~~~~~~~~~~~~~~~~~ Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".
+const isEqualsNum = 1 + foo.num! == 2;
+                    ~~~~~~~~~~~~~~~~~ Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".
+"
+`;
+
+exports[` 2`] = `
+"interface Foo {
+  bar?: string;
+  num?: number;
+}
+
+const foo: Foo = getFoo();
+const isEqualsBar = foo.bar == 'hello';
+const isEqualsNum = (1 + foo.num!) == 2;
+"
+`;

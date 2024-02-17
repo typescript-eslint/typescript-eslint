@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"enum Status {
+  Unknown,
+  Closed = 1,
+  Open = 'open',
+         ~~~~~~ Mixing number and string enums can be confusing.
+}
+"
+`;
+
+exports[` 2`] = `
+"enum Status {
+  Unknown = 0,
+  Closed = 1,
+  Open = 2,
+}
+"
+`;
+
+exports[` 3`] = `
+"enum Status {
+  Unknown,
+  Closed,
+  Open,
+}
+"
+`;
+
+exports[` 4`] = `
+"enum Status {
+  Unknown = 'unknown',
+  Closed = 'closed',
+  Open = 'open',
+}
+"
+`;

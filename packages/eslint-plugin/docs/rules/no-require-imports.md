@@ -40,13 +40,13 @@ With `{allow: ['/package\\.json$']}`:
 
 ### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["/package.json$"] }'
 console.log(require('../data.json').version);
 ```
 
 ### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["/package.json$"] }'
 console.log(require('../package.json').version);
 ```
 

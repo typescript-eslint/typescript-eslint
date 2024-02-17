@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"enum foo {
+  SECOND = 1000,
+           ~~~~ No magic number: 1000.
+}
+"
+`;
+
+exports[` 2`] = `
+"enum foo {
+  SECOND = 1000,
+}
+"
+`;
+
+exports[` 3`] = `
+"type SmallPrimes = 2 | 3 | 5 | 7 | 11;
+                   ~ No magic number: 2.
+                       ~ No magic number: 3.
+                           ~ No magic number: 5.
+                               ~ No magic number: 7.
+                                   ~~ No magic number: 11.
+"
+`;
+
+exports[` 4`] = `
+"type SmallPrimes = 2 | 3 | 5 | 7 | 11;
+"
+`;
+
+exports[` 5`] = `
+"class Foo {
+  readonly A = 1;
+               ~ No magic number: 1.
+  readonly B = 2;
+               ~ No magic number: 2.
+  public static readonly C = 1;
+                             ~ No magic number: 1.
+  static readonly D = 1;
+                      ~ No magic number: 1.
+}
+"
+`;
+
+exports[` 6`] = `
+"class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+"
+`;
+
+exports[` 7`] = `
+"type Foo = Bar[0];
+               ~ No magic number: 0.
+type Baz = Parameters<Foo>[2];
+                           ~ No magic number: 2.
+"
+`;
+
+exports[` 8`] = `
+"type Foo = Bar[0];
+type Baz = Parameters<Foo>[2];
+"
+`;

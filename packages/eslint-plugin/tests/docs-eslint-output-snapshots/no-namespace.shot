@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+"
+`;
+
+exports[` 2`] = `
+"declare module 'foo' {}
+
+// anything inside a d.ts file
+"
+`;
+
+exports[` 3`] = `
+"module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+"
+`;
+
+exports[` 4`] = `
+"declare module 'foo' {}
+declare module foo {}
+declare namespace foo {}
+
+declare global {
+  namespace foo {}
+}
+
+declare module foo {
+  namespace foo {}
+}
+"
+`;
+
+exports[` 5`] = `
+"module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+"
+`;
+
+exports[` 6`] = `
+"declare module 'foo' {}
+"
+`;
+
+exports[` 7`] = `
+"// if outside a d.ts file
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+// if outside a d.ts file and allowDeclarations = false
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+"
+`;
+
+exports[` 8`] = `
+"declare module 'foo' {}
+
+// anything inside a d.ts file
+"
+`;

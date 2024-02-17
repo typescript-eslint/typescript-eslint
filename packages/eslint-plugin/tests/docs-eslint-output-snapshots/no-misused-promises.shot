@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const promise = Promise.resolve('value');
+
+if (promise) {
+    ~~~~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+
+const val = promise ? 123 : 456;
+            ~~~~~~~ Expected non-Promise value in a boolean conditional.
+
+while (promise) {
+       ~~~~~~~ Expected non-Promise value in a boolean conditional.
+  // Do something
+}
+"
+`;
+
+exports[` 2`] = `
+"const promise = Promise.resolve('value');
+
+// Always \`await\` the Promise in a conditional
+if (await promise) {
+  // Do something
+}
+
+const val = (await promise) ? 123 : 456;
+
+while (await promise) {
+  // Do something
+}
+"
+`;
+
+exports[` 3`] = `
+"[1, 2, 3].forEach(async value => {
+                  ~ Promise returned in function argument where a void return was expected.
+  await doSomething(value);
+~~~~~~~~~
+});
+~
+
+new Promise(async (resolve, reject) => {
+            ~ Promise returned in function argument where a void return was expected.
+  await doSomething();
+~~~~~~~~~~
+  resolve();
+~
+});
+~
+
+const eventEmitter = new EventEmitter();
+eventEmitter.on('some-event', async () => {
+  synchronousCall();
+  await doSomething();
+  otherSynchronousCall();
+});
+"
+`;
+
+exports[` 4`] = `
+"// for-of puts \`await\` in outer context
+for (const value of [1, 2, 3]) {
+  await doSomething(value);
+}
+
+// If outer context is not \`async\`, handle error explicitly
+Promise.all(
+  [1, 2, 3].map(async value => {
+    await doSomething(value);
+  }),
+).catch(handleError);
+
+// Use an async IIFE wrapper
+new Promise((resolve, reject) => {
+  // combine with \`void\` keyword to tell \`no-floating-promises\` rule to ignore unhandled rejection
+  void (async () => {
+    await doSomething();
+    resolve();
+  })();
+});
+
+// Name the async wrapper to call it later
+const eventEmitter = new EventEmitter();
+eventEmitter.on('some-event', () => {
+  const handler = async () => {
+    await doSomething();
+    otherSynchronousCall();
+  };
+
+  try {
+    synchronousCall();
+  } catch (err) {
+    handleSpecificError(err);
+  }
+
+  handler().catch(handleError);
+});
+"
+`;
+
+exports[` 5`] = `
+"const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...getData() };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...getData2() };
+                     ~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
+"
+`;
+
+exports[` 6`] = `
+"const getData = () => someAsyncOperation({ myArg: 'foo' });
+
+return { foo: 42, ...(await getData()) };
+
+const getData2 = async () => {
+  await someAsyncOperation({ myArg: 'foo' });
+};
+
+return { foo: 42, ...(await getData2()) };
+"
+`;

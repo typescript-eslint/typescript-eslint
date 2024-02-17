@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"declare const anyVar: any;
+declare const nestedAny: { prop: any };
+
+anyVar.a;
+       ~ Unsafe member access .a on an \`any\` value.
+anyVar.a.b;
+       ~ Unsafe member access .a on an \`any\` value.
+anyVar['a'];
+       ~~~ Unsafe member access ['a'] on an \`any\` value.
+anyVar['a']['b'];
+       ~~~ Unsafe member access ['a'] on an \`any\` value.
+
+nestedAny.prop.a;
+               ~ Unsafe member access .a on an \`any\` value.
+nestedAny.prop['a'];
+               ~~~ Unsafe member access ['a'] on an \`any\` value.
+
+const key = 'a';
+nestedAny.prop[key];
+               ~~~ Unsafe member access [key] on an \`any\` value.
+
+// Using an any to access a member is unsafe
+const arr = [1, 2, 3];
+arr[anyVar];
+    ~~~~~~ Computed name [anyVar] resolves to an any value.
+nestedAny[anyVar];
+          ~~~~~~ Computed name [anyVar] resolves to an any value.
+"
+`;
+
+exports[` 2`] = `
+"declare const properlyTyped: { prop: { a: string } };
+
+properlyTyped.prop.a;
+properlyTyped.prop['a'];
+
+const key = 'a';
+properlyTyped.prop[key];
+
+const arr = [1, 2, 3];
+arr[1];
+let idx = 1;
+arr[idx];
+arr[idx++];
+"
+`;

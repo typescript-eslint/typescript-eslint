@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"import type { Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+"
+`;
+
+exports[` 2`] = `
+"import { Foo } from 'Foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~ All imports in the declaration are only used as types. Use \`import type\`.
+import Bar from 'Bar';
+~~~~~~~~~~~~~~~~~~~~~~ All imports in the declaration are only used as types. Use \`import type\`.
+type T = Foo;
+const x: Bar = 1;
+"
+`;
+
+exports[` 3`] = `
+"import { Foo } from 'Foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~ All imports in the declaration are only used as types. Use \`import type\`.
+import Bar from 'Bar';
+~~~~~~~~~~~~~~~~~~~~~~ All imports in the declaration are only used as types. Use \`import type\`.
+type T = Foo;
+const x: Bar = 1;
+"
+`;
+
+exports[` 4`] = `
+"import type { Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+"
+`;
+
+exports[` 5`] = `
+"import { type Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;
+"
+`;
+
+exports[` 6`] = `
+"type T = import('Foo').Foo;
+         ~~~~~~~~~~~~~~~~~ \`import()\` type annotations are forbidden.
+const x: import('Bar') = 1;
+         ~~~~~~~~~~~~~ \`import()\` type annotations are forbidden.
+"
+`;

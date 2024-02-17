@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"declare function foo(arg1: string, arg2: number, arg3: string): void;
+
+const anyTyped = 1 as any;
+
+foo(...anyTyped);
+    ~~~~~~~~~~~ Unsafe spread of an \`any\` type.
+foo(anyTyped, 1, 'a');
+    ~~~~~~~~ Unsafe argument of type \`any\` assigned to a parameter of type \`string\`.
+
+const anyArray: any[] = [];
+foo(...anyArray);
+    ~~~~~~~~~~~ Unsafe spread of an \`any\` array type.
+
+const tuple1 = ['a', anyTyped, 'b'] as const;
+foo(...tuple1);
+    ~~~~~~~~~ Unsafe spread of a tuple type. The argument is of type \`any\` and is assigned to a parameter of type \`number\`.
+
+const tuple2 = [1] as const;
+foo('a', ...tuple, anyTyped);
+         ~~~~~~~~ Unsafe spread of an \`any\` type.
+                   ~~~~~~~~ Unsafe argument of type \`any\` assigned to a parameter of type \`number\`.
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+const x = [1, 2] as [number, ...number[]];
+foo('a', ...x, anyTyped);
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+foo(new Set<any>(), new Map<any, string>());
+"
+`;
+
+exports[` 2`] = `
+"declare function foo(arg1: string, arg2: number, arg3: string): void;
+
+foo('a', 1, 'b');
+
+const tuple1 = ['a', 1, 'b'] as const;
+foo(...tuple1);
+
+declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
+const array: string[] = ['a'];
+bar('a', 1, ...array);
+
+declare function baz(arg1: Set<string>, arg2: Map<string, string>): void;
+foo(new Set<string>(), new Map<string, string>());
+"
+`;
+
+exports[` 3`] = `
+"declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+foo(1 as any, new Set<any>(), [] as any[]);
+"
+`;

@@ -91,31 +91,31 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowArgumentsExplicitlyTypedAsAny`
 
-Examples of code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false }`:
+When this option is `true` the rule ignores arguments that are explicitly typed as any.
 
 <!--tabs-->
 
-#### ❌ Incorrect
+#### ❌ Incorrect for `allowArgumentsExplicitlyTypedAsAny: false`
 
 ```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
 export const func = (value: any): number => value + 1;
 ```
 
-#### ✅ Correct
+#### ✅ Correct for `allowArgumentsExplicitlyTypedAsAny: true`
 
-```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
-export const func = (value: number): number => value + 1;
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": true }'
+export const func = (value: any): number => value + 1;
 ```
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions: false }`:
+When this option is `true` the rule ignores return type annotations on body-less arrow functions that return an `as const` type assertion.
 
 <!--tabs-->
 
-#### ❌ Incorrect
+#### ❌ Incorrect for `allowDirectConstAssertionInArrowFunctions: false`
 
-```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
+```ts option='{ "allowDirectConstAssertionInArrowFunctions": false }'
 export const func = (value: number) => ({ type: 'X', value });
 export const foo = () => ({
   bar: true,
@@ -123,9 +123,9 @@ export const foo = () => ({
 export const bar = () => 1;
 ```
 
-#### ✅ Correct
+#### ✅ Correct for `allowDirectConstAssertionInArrowFunctions: true`
 
-```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
+```ts option='{ "allowDirectConstAssertionInArrowFunctions": true }'
 export const func = (value: number) => ({ type: 'X', value }) as const;
 export const foo = () =>
   ({
@@ -151,11 +151,11 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 ### `allowHigherOrderFunctions`
 
-Examples of code for this rule with `{ allowHigherOrderFunctions: false }`:
+When this option is `true` the rule ignores return type annotations on function immediately returning another function expression.
 
 <!--tabs-->
 
-#### ❌ Incorrect
+#### ❌ Incorrect for `allowHigherOrderFunctions: false`
 
 ```ts option='{ "allowHigherOrderFunctions": false }'
 export const arrowFn = () => () => {};
@@ -169,9 +169,9 @@ export function foo(outer: string) {
 }
 ```
 
-#### ✅ Correct
+#### ✅ Correct for `allowHigherOrderFunctions: true`
 
-```ts option='{ "allowHigherOrderFunctions": false }'
+```ts option='{ "allowHigherOrderFunctions": true }'
 export const arrowFn = () => (): void => {};
 
 export function fn() {
@@ -185,11 +185,11 @@ export function foo(outer: string) {
 
 ### `allowTypedFunctionExpressions`
 
-Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
+When this option is `true` the rule ignores type annotations on the variable of a function expression.
 
 <!--tabs-->
 
-#### ❌ Incorrect
+#### ❌ Incorrect for `allowTypedFunctionExpressions: false`
 
 ```ts option='{ "allowTypedFunctionExpressions": false }'
 export let arrowFn = () => 'test';
@@ -205,9 +205,9 @@ export let objectProp = {
 export const foo = bar => {};
 ```
 
-#### ✅ Correct
+#### ✅ Correct for `allowTypedFunctionExpressions: true`
 
-```ts option='{ "allowTypedFunctionExpressions": false }'
+```ts option='{ "allowTypedFunctionExpressions": true }'
 type FuncType = () => string;
 
 export let arrowFn: FuncType = () => 'test';

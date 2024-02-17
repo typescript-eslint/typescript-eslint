@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"enum A {
+  B,
+  C = A.B,
+      ~ Qualifier is unnecessary since 'B' is in scope.
+}
+"
+`;
+
+exports[` 2`] = `
+"namespace A {
+  export type B = number;
+  const x: A.B = 3;
+           ~ Qualifier is unnecessary since 'B' is in scope.
+}
+"
+`;
+
+exports[` 3`] = `
+"enum A {
+  B,
+  C = B,
+}
+"
+`;
+
+exports[` 4`] = `
+"namespace A {
+  export type B = number;
+  const x: B = 3;
+}
+"
+`;

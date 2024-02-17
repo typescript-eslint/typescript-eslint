@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const array: any[];
+const stringArray: string[];
+
+array.sort();
+~~~~~~~~~~~~ Require 'compare' argument.
+
+// String arrays should be sorted using \`String#localeCompare\`.
+stringArray.sort();
+"
+`;
+
+exports[` 2`] = `
+"const array: any[];
+const userDefinedType: { sort(): void };
+
+array.sort((a, b) => a - b);
+array.sort((a, b) => a.localeCompare(b));
+
+userDefinedType.sort();
+"
+`;
+
+exports[` 3`] = `
+"const one = 1;
+const two = 2;
+const three = 3;
+[one, two, three].sort();
+~~~~~~~~~~~~~~~~~~~~~~~~ Require 'compare' argument.
+"
+`;
+
+exports[` 4`] = `
+"const one = '1';
+const two = '2';
+const three = '3';
+[one, two, three].sort();
+"
+`;

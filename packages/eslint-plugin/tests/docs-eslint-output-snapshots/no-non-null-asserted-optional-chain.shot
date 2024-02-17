@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"foo?.bar!;
+~~~~~~~~~ Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.
+foo?.bar()!;
+~~~~~~~~~~~ Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.
+"
+`;
+
+exports[` 2`] = `
+"foo?.bar;
+foo?.bar();
+"
+`;

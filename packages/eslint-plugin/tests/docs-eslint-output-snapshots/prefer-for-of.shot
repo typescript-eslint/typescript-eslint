@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"declare const array: string[];
+
+for (let i = 0; i < array.length; i++) {
+~ Expected a \`for-of\` loop instead of a \`for\` loop with this simple iteration.
+  console.log(array[i]);
+~~~~~~~~~~~~~~~~~~~~~~~~
+}
+~
+"
+`;
+
+exports[` 2`] = `
+"declare const array: string[];
+
+for (const x of array) {
+  console.log(x);
+}
+
+for (let i = 0; i < array.length; i++) {
+  // i is used, so for-of could not be used.
+  console.log(i, array[i]);
+}
+"
+`;

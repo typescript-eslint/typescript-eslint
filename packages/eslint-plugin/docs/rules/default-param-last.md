@@ -14,8 +14,6 @@ It adds support for optional parameters.
 ### ❌ Incorrect
 
 ```ts
-/* eslint @typescript-eslint/default-param-last: "error" */
-
 function f(a = 0, b: number) {}
 function f(a: number, b = 0, c: number) {}
 function f(a: number, b?: number, c: number) {}
@@ -36,8 +34,6 @@ class Foo {
 ### ✅ Correct
 
 ```ts
-/* eslint @typescript-eslint/default-param-last: "error" */
-
 function f(a = 0) {}
 function f(a: number, b = 0) {}
 function f(a: number, b?: number) {}

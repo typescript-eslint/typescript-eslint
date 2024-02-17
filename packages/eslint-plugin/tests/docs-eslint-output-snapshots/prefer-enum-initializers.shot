@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"enum Status {
+  Open = 1,
+  Close,
+  ~~~~~ The value of the member 'Close' should be explicitly defined.
+}
+
+enum Direction {
+  Up,
+  ~~ The value of the member 'Up' should be explicitly defined.
+  Down,
+  ~~~~ The value of the member 'Down' should be explicitly defined.
+}
+
+enum Color {
+  Red,
+  ~~~ The value of the member 'Red' should be explicitly defined.
+  Green = 'Green',
+  Blue = 'Blue',
+}
+"
+`;
+
+exports[` 2`] = `
+"enum Status {
+  Open = 'Open',
+  Close = 'Close',
+}
+
+enum Direction {
+  Up = 1,
+  Down = 2,
+}
+
+enum Color {
+  Red = 'Red',
+  Green = 'Green',
+  Blue = 'Blue',
+}
+"
+`;

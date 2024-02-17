@@ -176,22 +176,22 @@ Examples of code for this rule with `{ skipCompoundAssignments: false }`:
 
 #### ❌ Incorrect
 
-```ts option='{ "skipCompoundAssignments": true }'
-let foo: string | undefined;
-foo += 'some data';
+```ts option='{ "skipCompoundAssignments": false }'
+let foo: bigint = 0n;
+foo += 1;
 
-let bar: string = '';
-bar += 0;
+let bar: number[] = [1];
+bar += 1;
 ```
 
 #### ✅ Correct
 
-```ts option='{ "skipCompoundAssignments": true }'
-let foo: number = 0;
-foo += 1;
+```ts option='{ "skipCompoundAssignments": false }'
+let foo: bigint = 0n;
+foo += 1n;
 
-let bar = '';
-bar += 'test';
+let bar: number = 1;
+bar += 1;
 ```
 
 ## When Not To Use It

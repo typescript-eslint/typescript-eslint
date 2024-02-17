@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface ButtonProps {
+  onClick: () => void;
+}
+
+class Button implements ButtonProps {
+  onClick = () => console.log('button!');
+}
+
+export { Button, ButtonProps };
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type export ButtonProps is not a value and should be exported using \`export type\`.
+"
+`;
+
+exports[` 2`] = `
+"interface ButtonProps {
+  onClick: () => void;
+}
+
+class Button implements ButtonProps {
+  onClick = () => console.log('button!');
+}
+
+export { Button };
+export type { ButtonProps };
+"
+`;

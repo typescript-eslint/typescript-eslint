@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
+
+const definitely = maybe as string;
+                   ~~~~~~~~~~~~~~~ Use a ! assertion to more succinctly remove null and undefined from the type.
+const alsoDefinitely = <string>maybe;
+                       ~~~~~~~~~~~~~ Use a ! assertion to more succinctly remove null and undefined from the type.
+"
+`;
+
+exports[` 2`] = `
+"const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
+
+const definitely = maybe!;
+const alsoDefinitely = maybe!;
+"
+`;

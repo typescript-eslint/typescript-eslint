@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface Foo {}
+          ~~~ Unsafe declaration merging between classes and interfaces.
+
+class Foo {}
+      ~~~ Unsafe declaration merging between classes and interfaces.
+"
+`;
+
+exports[` 2`] = `
+"interface Foo {}
+class Bar implements Foo {}
+
+namespace Baz {}
+namespace Baz {}
+enum Baz {}
+
+namespace Qux {}
+function Qux() {}
+"
+`;

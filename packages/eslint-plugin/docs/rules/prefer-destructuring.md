@@ -80,12 +80,12 @@ Examples with `{ enforceForDeclarationWithTypeAnnotation: true }`:
 
 ### ❌ Incorrect
 
-```ts
+```ts option='{ "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }'
 const x: string = obj.x;
 ```
 
 ### ✅ Correct
 
-```ts
+```ts option='{ "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }'
 const { x }: { x: string } = obj;
 ```

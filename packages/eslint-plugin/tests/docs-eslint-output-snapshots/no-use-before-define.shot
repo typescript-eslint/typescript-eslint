@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const x = Foo.FOO;
+          ~~~ 'Foo' was used before it was defined.
+
+enum Foo {
+  FOO,
+}
+"
+`;
+
+exports[` 2`] = `
+"function foo() {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+"
+`;
+
+exports[` 3`] = `
+"let myVar: StringOrNumber;
+type StringOrNumber = string | number;
+"
+`;
+
+exports[` 4`] = `
+"let var1: StringOrNumber;
+type StringOrNumber = string | number;
+
+let var2: Enum;
+enum Enum {}
+"
+`;

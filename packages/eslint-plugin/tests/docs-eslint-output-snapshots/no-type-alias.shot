@@ -1,0 +1,489 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"// primitives
+type Foo = 'a';
+
+type Foo = 'a' | 'b';
+
+type Foo = string;
+
+type Foo = string | string[];
+
+type Foo = string & string[];
+
+type Foo = \`foo-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+
+type Foo = Bar | Baz;
+
+type Foo = Bar & Baz;
+"
+`;
+
+exports[` 2`] = `
+"// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = string & string[];
+           ~~~~~~ Aliases in intersection types are not allowed.
+                    ~~~~~~~~ Aliases in intersection types are not allowed.
+
+type Foo = \`foo-\${number}\`;
+           ~~~~~~~~~~~~~~~ Type aliases are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+
+type Foo = Bar & Baz;
+           ~~~ Aliases in intersection types are not allowed.
+                 ~~~ Aliases in intersection types are not allowed.
+"
+`;
+
+exports[` 3`] = `
+"// primitives
+type Foo = 'a' | 'b';
+
+type Foo = string | string[];
+
+type Foo = \`a-\${number}\` | \`b-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar | Baz;
+"
+`;
+
+exports[` 4`] = `
+"// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = 'a' | 'b';
+           ~~~ Aliases in union types are not allowed.
+                 ~~~ Aliases in union types are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = string | string[];
+           ~~~~~~ Aliases in union types are not allowed.
+                    ~~~~~~~~ Aliases in union types are not allowed.
+
+type Foo = \`a-\${number}\` | \`b-\${number}\`;
+           ~~~~~~~~~~~~~ Aliases in union types are not allowed.
+                           ~~~~~~~~~~~~~ Aliases in union types are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+
+type Foo = Bar | Baz;
+           ~~~ Aliases in union types are not allowed.
+                 ~~~ Aliases in union types are not allowed.
+"
+`;
+
+exports[` 5`] = `
+"// primitives
+type Foo = string & string[];
+
+type Foo = \`a-\${number}\` & \`b-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar & Baz;
+"
+`;
+
+exports[` 6`] = `
+"// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = \`foo-\${number}\`;
+           ~~~~~~~~~~~~~~~ Type aliases are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+"
+`;
+
+exports[` 7`] = `
+"// primitives
+type Foo = 'a' | 'b';
+
+type Foo = string | string[];
+
+type Foo = string & string[];
+
+type Foo = \`a-\${number}\` & \`b-\${number}\`;
+
+type Foo = \`a-\${number}\` | \`b-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar | Baz;
+
+type Foo = Bar & Baz;
+"
+`;
+
+exports[` 8`] = `
+"type Foo = () => void;
+
+type Foo = (name: string) => string;
+
+class Person {}
+
+type Foo = (name: string, age: number) => string | Person;
+
+type Foo = (name: string, age: number) => string & Person;
+"
+`;
+
+exports[` 9`] = `
+"type Foo<T> = T extends number ? number : null;
+"
+`;
+
+exports[` 10`] = `
+"type Foo = new () => void;
+"
+`;
+
+exports[` 11`] = `
+"type Foo = {};
+
+type Foo = {
+  name: string;
+  age: number;
+};
+
+type Foo = {
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
+};
+
+type Foo = { name: string } | { age: number };
+
+type Foo = { name: string } & { age: number };
+"
+`;
+
+exports[` 12`] = `
+"type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~
+  age: number;
+~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~
+  age: number;
+~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type Foo = { name: string } & { age: number };
+           ~~~~~~~~~~~~~~~~ Literals in intersection types are not allowed.
+                              ~~~~~~~~~~~~~~~ Literals in intersection types are not allowed.
+"
+`;
+
+exports[` 13`] = `
+"type Foo = { name: string } | { age: number };
+"
+`;
+
+exports[` 14`] = `
+"type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~
+  age: number;
+~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~
+  age: number;
+~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type Foo = { name: string } | { age: number };
+           ~~~~~~~~~~~~~~~~ Literals in union types are not allowed.
+                              ~~~~~~~~~~~~~~~ Literals in union types are not allowed.
+"
+`;
+
+exports[` 15`] = `
+"type Foo = { name: string } & { age: number };
+"
+`;
+
+exports[` 16`] = `
+"type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~
+  age: number;
+~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~
+  age: number;
+~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~
+};
+~
+"
+`;
+
+exports[` 17`] = `
+"type Foo = { name: string } | { age: number };
+
+type Foo = { name: string } & { age: number };
+"
+`;
+
+exports[` 18`] = `
+"type Foo<T> = { readonly [P in keyof T]: T[P] };
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[` 19`] = `
+"type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
+                                                     ~ Mapped types in intersection types are not allowed.
+  readonly [P in keyof U]: U[P];
+~
+};
+~
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
+"
+`;
+
+exports[` 20`] = `
+"type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[` 21`] = `
+"type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+  | { readonly [P in keyof U]: U[P] };
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+"
+`;
+
+exports[` 22`] = `
+"type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[` 23`] = `
+"type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+"
+`;
+
+exports[` 24`] = `
+"type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[` 25`] = `
+"type Foo = [number];
+
+type Foo = [number] | [number, number];
+
+type Foo = [number] & [number, number];
+
+type Foo = [number] | ([number, number] & [string, string]);
+"
+`;
+
+exports[` 26`] = `
+"type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [number] & [number, number];
+           ~~~~~~~~ Tuple Types in intersection types are not allowed.
+                      ~~~~~~~~~~~~~~~~ Tuple Types in intersection types are not allowed.
+
+type Foo = [string] & [number];
+           ~~~~~~~~ Tuple Types in intersection types are not allowed.
+                      ~~~~~~~~ Tuple Types in intersection types are not allowed.
+"
+`;
+
+exports[` 27`] = `
+"type Foo = [number] | [number, number];
+
+type Foo = [string] | [number];
+"
+`;
+
+exports[` 28`] = `
+"type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [number] | [number, number];
+           ~~~~~~~~ Tuple Types in union types are not allowed.
+                      ~~~~~~~~~~~~~~~~ Tuple Types in union types are not allowed.
+
+type Foo = [string] | [number];
+           ~~~~~~~~ Tuple Types in union types are not allowed.
+                      ~~~~~~~~ Tuple Types in union types are not allowed.
+"
+`;
+
+exports[` 29`] = `
+"type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];
+"
+`;
+
+exports[` 30`] = `
+"type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [string];
+           ~~~~~~~~ Type tuple types are not allowed.
+"
+`;
+
+exports[` 31`] = `
+"type Foo = [number] & [number, number];
+
+type Foo = [string] | [number];
+"
+`;
+
+exports[` 32`] = `
+"type Foo = Bar<string>;
+
+type Foo = Record<string, number>;
+
+type Foo = Readonly<Bar>;
+
+type Foo = Partial<Bar>;
+
+type Foo = Omit<Bar, 'a' | 'b'>;
+"
+`;

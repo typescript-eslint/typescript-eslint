@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"declare const foo: string;
+
+// starts with
+foo[0] === 'b';
+~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+foo.charAt(0) === 'b';
+~~~~~~~~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+foo.indexOf('bar') === 0;
+~~~~~~~~~~~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+foo.slice(0, 3) === 'bar';
+~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+foo.substring(0, 3) === 'bar';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+foo.match(/^bar/) != null;
+~~~~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+/^bar/.test(foo);
+~~~~~~~~~~~~~~~~ Use 'String#startsWith' method instead.
+
+// ends with
+foo[foo.length - 1] === 'b';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+foo.charAt(foo.length - 1) === 'b';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+foo.lastIndexOf('bar') === foo.length - 3;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+foo.slice(-3) === 'bar';
+~~~~~~~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+foo.substring(foo.length - 3) === 'bar';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+foo.match(/bar$/) != null;
+~~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+/bar$/.test(foo);
+~~~~~~~~~~~~~~~~ Use the 'String#endsWith' method instead.
+"
+`;
+
+exports[` 2`] = `
+"declare const foo: string;
+
+// starts with
+foo.startsWith('bar');
+
+// ends with
+foo.endsWith('bar');
+"
+`;

@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"throw 'error';
+      ~~~~~~~ Expected an error object to be thrown.
+
+throw 0;
+      ~ Expected an error object to be thrown.
+
+throw undefined;
+      ~~~~~~~~~ Do not throw undefined.
+
+throw null;
+      ~~~~ Expected an error object to be thrown.
+
+const err1 = new Error();
+throw 'an ' + err1;
+      ~~~~~~~~~~~~ Expected an error object to be thrown.
+
+const err2 = new Error();
+throw \`\${err2}\`;
+      ~~~~~~~~~ Expected an error object to be thrown.
+
+const err3 = '';
+throw err3;
+      ~~~~ Expected an error object to be thrown.
+
+function getErr() {
+  return '';
+}
+throw getErr();
+      ~~~~~~~~ Expected an error object to be thrown.
+
+const foo = {
+  bar: '',
+};
+throw foo.bar;
+      ~~~~~~~ Expected an error object to be thrown.
+"
+`;
+
+exports[` 2`] = `
+"throw new Error();
+
+throw new Error('error');
+
+const e = new Error('error');
+throw e;
+
+try {
+  throw new Error('error');
+} catch (e) {
+  throw e;
+}
+
+const err = new Error();
+throw err;
+
+function getErr() {
+  return new Error();
+}
+throw getErr();
+
+const foo = {
+  bar: new Error(),
+};
+throw foo.bar;
+
+class CustomError extends Error {
+  // ...
+}
+throw new CustomError();
+"
+`;

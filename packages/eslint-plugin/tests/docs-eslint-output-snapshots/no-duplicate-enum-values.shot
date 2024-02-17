@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"enum E {
+  A = 0,
+  B = 0,
+  ~~~~~ Duplicate enum member value 0.
+}
+"
+`;
+
+exports[` 2`] = `
+"enum E {
+  A = 'A',
+  B = 'A',
+  ~~~~~~~ Duplicate enum member value A.
+}
+"
+`;
+
+exports[` 3`] = `
+"enum E {
+  A = 0,
+  B = 1,
+}
+"
+`;
+
+exports[` 4`] = `
+"enum E {
+  A = 'A',
+  B = 'B',
+}
+"
+`;

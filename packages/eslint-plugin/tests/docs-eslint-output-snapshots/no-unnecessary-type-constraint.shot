@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface FooAny<T extends any> {}
+                 ~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`any\` does nothing and is unnecessary.
+
+interface FooUnknown<T extends unknown> {}
+                     ~~~~~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`unknown\` does nothing and is unnecessary.
+
+type BarAny<T extends any> = {};
+            ~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`any\` does nothing and is unnecessary.
+
+type BarUnknown<T extends unknown> = {};
+                ~~~~~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`unknown\` does nothing and is unnecessary.
+
+class BazAny<T extends any> {
+             ~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`any\` does nothing and is unnecessary.
+  quxAny<U extends any>() {}
+         ~~~~~~~~~~~~~ Constraining the generic type \`U\` to \`any\` does nothing and is unnecessary.
+}
+
+const QuuxAny = <T extends any>() => {};
+                 ~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`any\` does nothing and is unnecessary.
+
+function QuuzAny<T extends any>() {}
+                 ~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`any\` does nothing and is unnecessary.
+"
+`;
+
+exports[` 2`] = `
+"interface Foo<T> {}
+
+type Bar<T> = {};
+
+class Baz<T> {
+  qux<U>() {}
+}
+
+const Quux = <T>() => {};
+
+function Quuz<T>() {}
+"
+`;

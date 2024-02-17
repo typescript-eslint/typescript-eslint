@@ -34,8 +34,6 @@ This rule aims to eliminate implied `eval()` through the use of `new Function()`
 ### ❌ Incorrect
 
 ```ts
-/* eslint @typescript-eslint/no-implied-eval: "error" */
-
 setTimeout('alert(`Hi!`);', 100);
 
 setInterval('alert(`Hi!`);', 100);
@@ -62,8 +60,6 @@ const fn = new Function('a', 'b', 'return a + b');
 ### ✅ Correct
 
 ```ts
-/* eslint @typescript-eslint/no-implied-eval: "error" */
-
 setTimeout(function () {
   alert('Hi!');
 }, 100);

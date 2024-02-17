@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface T1 {
+  func(arg: string): number;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
+}
+type T2 = {
+  func(arg: boolean): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
+};
+interface T3 {
+  func(arg: number): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
+  func(arg: string): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
+  func(arg: boolean): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
+}
+"
+`;
+
+exports[` 2`] = `
+"interface T1 {
+  func: (arg: string) => number;
+}
+type T2 = {
+  func: (arg: boolean) => void;
+};
+// this is equivalent to the overload
+interface T3 {
+  func: ((arg: number) => void) &
+    ((arg: string) => void) &
+    ((arg: boolean) => void);
+}
+"
+`;
+
+exports[` 3`] = `
+"interface T1 {
+  func: (arg: string) => number;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Function property signature is forbidden. Use a method shorthand instead.
+}
+type T2 = {
+  func: (arg: boolean) => void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Function property signature is forbidden. Use a method shorthand instead.
+};
+"
+`;
+
+exports[` 4`] = `
+"interface T1 {
+  func(arg: string): number;
+}
+type T2 = {
+  func(arg: boolean): void;
+};
+"
+`;

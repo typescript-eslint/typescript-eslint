@@ -283,8 +283,8 @@ class Constants {
 #### ✅ Correct
 
 ```ts option='{ "allowWithDecorator": true }'
+@logOnRead()
 class Constants {
-  @logOnRead()
   static readonly version = 42;
 }
 ```

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"type Foo = number;
+interface Bar {
+  prop: number;
+}
+
+function f() {
+  const Foo = 1;
+  const Bar = 'test';
+}
+"
+`;
+
+exports[` 2`] = `
+"const test = 1;
+type Func = (test: string) => typeof test;
+"
+`;

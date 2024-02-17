@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"enum Fruit {
+  Apple,
+}
+
+declare let fruit: Fruit;
+
+fruit === 0;
+~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
+"
+`;
+
+exports[` 2`] = `
+"enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare let vegetable: Vegetable;
+
+vegetable === 'asparagus';
+~~~~~~~~~~~~~~~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
+"
+`;
+
+exports[` 3`] = `
+"enum Fruit {
+  Apple,
+}
+
+declare let fruit: Fruit;
+
+fruit === Fruit.Apple;
+"
+`;
+
+exports[` 4`] = `
+"enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare let vegetable: Vegetable;
+
+vegetable === Vegetable.Asparagus;
+"
+`;

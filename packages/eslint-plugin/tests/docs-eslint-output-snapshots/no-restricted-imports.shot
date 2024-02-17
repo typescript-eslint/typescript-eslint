@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"import foo from 'import-foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 'import-foo' import is restricted from being used. Please use import-bar instead.
+export { Foo } from 'import-foo';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 'import-foo' import is restricted from being used. Please use import-bar instead.
+
+import baz from 'import-baz';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 'import-baz' import is restricted from being used. Please use import-quux instead.
+export { Baz } from 'import-baz';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 'import-baz' import is restricted from being used. Please use import-quux instead.
+"
+`;
+
+exports[` 2`] = `
+"import { foo } from 'other-module';
+
+import type foo from 'import-foo';
+export type { Foo } from 'import-foo';
+
+import type baz from 'import-baz';
+export type { Baz } from 'import-baz';
+"
+`;

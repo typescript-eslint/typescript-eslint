@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"/// <reference lib="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+globalThis.value;
+"
+`;
+
+exports[` 2`] = `
+"import { value } from 'code';
+"
+`;
+
+exports[` 3`] = `
+"/// <reference path="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+globalThis.value;
+"
+`;
+
+exports[` 4`] = `
+"import { value } from 'code';
+"
+`;
+
+exports[` 5`] = `
+"/// <reference types="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+globalThis.value;
+"
+`;
+
+exports[` 6`] = `
+"import { value } from 'code';
+"
+`;
+
+exports[` 7`] = `
+"/// <reference types="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+import { valueA } from 'code';
+
+globalThis.valueB;
+"
+`;
+
+exports[` 8`] = `
+"import { valueA, valueB } from 'code';
+"
+`;

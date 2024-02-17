@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"// Should indicate that no value is returned (void)
+export function test() {
+       ~~~~~~~~~~~~~ Missing return type on function.
+  return;
+}
+
+// Should indicate that a string is returned
+export var arrowFn = () => 'test';
+                        ~~ Missing return type on function.
+
+// All arguments should be typed
+export var arrowFn = (arg): string => \`test \${arg}\`;
+                      ~~~ Argument 'arg' should be typed.
+export var arrowFn = (arg: any): string => \`test \${arg}\`;
+                      ~~~~~~~~ Argument 'arg' should be typed with a non-any type.
+
+export class Test {
+  // Should indicate that no value is returned (void)
+  method() {
+  ~~~~~~ Missing return type on function.
+    return;
+  }
+}
+"
+`;
+
+exports[` 2`] = `
+"// A function with no return value (void)
+export function test(): void {
+  return;
+}
+
+// A return value of type string
+export var arrowFn = (): string => 'test';
+
+// All arguments should be typed
+export var arrowFn = (arg: string): string => \`test \${arg}\`;
+export var arrowFn = (arg: unknown): string => \`test \${arg}\`;
+
+export class Test {
+  // A class method with no return value (void)
+  method(): void {
+    return;
+  }
+}
+
+// The function does not apply because it is not an exported function.
+function test() {
+  return;
+}
+"
+`;
+
+exports[` 3`] = `
+"export const func = (value: any): number => value + 1;
+                     ~~~~~~~~~~ Argument 'value' should be typed with a non-any type.
+"
+`;
+
+exports[` 4`] = `
+"export const func = (value: any): number => value + 1;
+"
+`;
+
+exports[` 5`] = `
+"export const func = (value: number) => ({ type: 'X', value });
+                                    ~~ Missing return type on function.
+export const foo = () => ({
+                      ~~ Missing return type on function.
+  bar: true,
+});
+export const bar = () => 1;
+                      ~~ Missing return type on function.
+"
+`;
+
+exports[` 6`] = `
+"export const func = (value: number) => ({ type: 'X', value }) as const;
+export const foo = () =>
+  ({
+    bar: true,
+  }) as const;
+export const bar = () => 1 as const;
+"
+`;
+
+exports[` 7`] = `
+"export const arrowFn = () => () => {};
+                          ~~ Missing return type on function.
+                                ~~ Missing return type on function.
+
+export function fn() {
+       ~~~~~~~~~~~ Missing return type on function.
+  return function () {};
+         ~~~~~~~~~ Missing return type on function.
+}
+
+export function foo(outer: string) {
+       ~~~~~~~~~~~~ Missing return type on function.
+  return function (inner: string) {};
+         ~~~~~~~~~ Missing return type on function.
+}
+"
+`;
+
+exports[` 8`] = `
+"export const arrowFn = () => (): void => {};
+
+export function fn() {
+  return function (): void {};
+}
+
+export function foo(outer: string) {
+  return function (inner: string): void {};
+}
+"
+`;
+
+exports[` 9`] = `
+"export let arrowFn = () => 'test';
+                        ~~ Missing return type on function.
+
+export let funcExpr = function () {
+                      ~~~~~~~~~ Missing return type on function.
+  return 'test';
+};
+
+export let objectProp = {
+  foo: () => 1,
+  ~~~~~ Missing return type on function.
+};
+
+export const foo = bar => {};
+                   ~~~ Argument 'bar' should be typed.
+                       ~~ Missing return type on function.
+"
+`;
+
+exports[` 10`] = `
+"type FuncType = () => string;
+
+export let arrowFn: FuncType = () => 'test';
+
+export let funcExpr: FuncType = function () {
+  return 'test';
+};
+
+export let asTyped = (() => '') as () => string;
+export let castTyped = <() => string>(() => '');
+
+interface ObjectType {
+  foo(): number;
+}
+export let objectProp: ObjectType = {
+  foo: () => 1,
+};
+export let objectPropAs = {
+  foo: () => 1,
+} as ObjectType;
+export let objectPropCast = <ObjectType>{
+  foo: () => 1,
+};
+
+type FooType = (bar: string) => void;
+export const foo: FooType = bar => {};
+"
+`;

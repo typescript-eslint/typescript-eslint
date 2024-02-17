@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const self = this;
+      ~~~~ Unexpected aliasing of 'this' to local variable.
+
+setTimeout(function () {
+  self.doWork();
+});
+"
+`;
+
+exports[` 2`] = `
+"setTimeout(() => {
+  this.doWork();
+});
+"
+`;
+
+exports[` 3`] = `
+"class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    const { props, state } = this;
+          ~~~~~~~~~~~~~~~~ Unexpected aliasing of members of 'this' to local variables.
+
+    console.log(props);
+    console.log(state);
+  }
+}
+"
+`;
+
+exports[` 4`] = `
+"class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    console.log(this.props);
+    console.log(this.state);
+  }
+}
+"
+`;
+
+exports[` 5`] = `
+"class Example {
+  method() {
+    const that = this;
+          ~~~~ Unexpected aliasing of 'this' to local variable.
+  }
+}
+"
+`;
+
+exports[` 6`] = `
+"class Example {
+  method() {
+    const self = this;
+  }
+}
+"
+`;

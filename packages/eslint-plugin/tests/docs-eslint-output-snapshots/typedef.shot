@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const [a] = [1];
+      ~~~ Expected a type annotation.
+const [b, c] = [1, 2];
+      ~~~~~~ Expected a type annotation.
+"
+`;
+
+exports[` 2`] = `
+"const [a]: number[] = [1];
+const [b]: [number] = [2];
+const [c, d]: [boolean, string] = [true, 'text'];
+
+for (const [key, val] of new Map([['key', 1]])) {
+}
+"
+`;
+
+exports[` 3`] = `
+"const logsSize = size => console.log(size);
+                 ~~~~ Expected size to have a type annotation.
+
+['hello', 'world'].map(text => text.length);
+                       ~~~~ Expected text to have a type annotation.
+
+const mapper = {
+  map: text => text + '...',
+       ~~~~ Expected text to have a type annotation.
+};
+"
+`;
+
+exports[` 4`] = `
+"const logsSize = (size: number) => console.log(size);
+
+['hello', 'world'].map((text: string) => text.length);
+
+const mapper = {
+  map: (text: string) => text + '...',
+};
+"
+`;
+
+exports[` 5`] = `
+"class ContainsText {
+  delayedText;
+  ~~~~~~~~~~~~ Expected delayedText to have a type annotation.
+  immediateTextImplicit = 'text';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected immediateTextImplicit to have a type annotation.
+}
+"
+`;
+
+exports[` 6`] = `
+"class ContainsText {
+  delayedText: string;
+  immediateTextImplicit: string = 'text';
+}
+"
+`;
+
+exports[` 7`] = `
+"const { length } = 'text';
+      ~~~~~~~~~~ Expected a type annotation.
+const [b, c] = Math.random() ? [1, 2] : [3, 4];
+"
+`;
+
+exports[` 8`] = `
+"const { length }: { length: number } = 'text';
+const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
+
+for (const { key, val } of [{ key: 'key', val: 1 }]) {
+}
+"
+`;
+
+exports[` 9`] = `
+"function logsSize(size): void {
+                  ~~~~ Expected size to have a type annotation.
+  console.log(size);
+}
+
+const doublesSize = function (size): number {
+                              ~~~~ Expected size to have a type annotation.
+  return size * 2;
+};
+
+const divider = {
+  curriesSize(size): number {
+              ~~~~ Expected size to have a type annotation.
+    return size;
+  },
+  dividesSize: function (size): number {
+                         ~~~~ Expected size to have a type annotation.
+    return size / 2;
+  },
+};
+
+class Logger {
+  log(text): boolean {
+      ~~~~ Expected text to have a type annotation.
+    console.log('>', text);
+    return true;
+  }
+}
+"
+`;
+
+exports[` 10`] = `
+"function logsSize(size: number): void {
+  console.log(size);
+}
+
+const doublesSize = function (size: number): number {
+  return size * 2;
+};
+
+const divider = {
+  curriesSize(size: number): number {
+    return size;
+  },
+  dividesSize: function (size: number): number {
+    return size / 2;
+  },
+};
+
+class Logger {
+  log(text: boolean): boolean {
+    console.log('>', text);
+    return true;
+  }
+}
+"
+`;
+
+exports[` 11`] = `
+"type Members = {
+  member;
+  ~~~~~~~ Expected member to have a type annotation.
+  otherMember;
+  ~~~~~~~~~~~~ Expected otherMember to have a type annotation.
+};
+"
+`;
+
+exports[` 12`] = `
+"type Members = {
+  member: boolean;
+  otherMember: string;
+};
+"
+`;
+
+exports[` 13`] = `
+"const text = 'text';
+      ~~~~~~~~~~~~~ Expected text to have a type annotation.
+let initialText = 'text';
+    ~~~~~~~~~~~~~~~~~~~~ Expected initialText to have a type annotation.
+let delayedText;
+    ~~~~~~~~~~~ Expected delayedText to have a type annotation.
+"
+`;
+
+exports[` 14`] = `
+"const text: string = 'text';
+let initialText: string = 'text';
+let delayedText: string;
+"
+`;
+
+exports[` 15`] = `
+"const text = 'text';
+      ~~~~~~~~~~~~~ Expected text to have a type annotation.
+"
+`;
+
+exports[` 16`] = `
+"const a = (): void => {};
+const b = function (): void {};
+const c: () => void = (): void => {};
+
+class Foo {
+  a = (): void => {};
+  b = function (): void {};
+  c: () => void = (): void => {};
+}
+"
+`;

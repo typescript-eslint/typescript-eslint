@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"class Container {
+  // These member variables could be marked as readonly
+  private neverModifiedMember = true;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedMember' is never reassigned; mark it as \`readonly\`.
+  private onlyModifiedInConstructor: number;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'onlyModifiedInConstructor' is never reassigned; mark it as \`readonly\`.
+  #neverModifiedPrivateField = 3;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member '#neverModifiedPrivateField' is never reassigned; mark it as \`readonly\`.
+
+  public constructor(
+    onlyModifiedInConstructor: number,
+    // Private parameter properties can also be marked as readonly
+    private neverModifiedParameter: string,
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedParameter: string' is never reassigned; mark it as \`readonly\`.
+  ) {
+    this.onlyModifiedInConstructor = onlyModifiedInConstructor;
+  }
+}
+"
+`;
+
+exports[` 2`] = `
+"class Container {
+  // Public members might be modified externally
+  public publicMember: boolean;
+
+  // Protected members might be modified by child classes
+  protected protectedMember: number;
+
+  // This is modified later on by the class
+  private modifiedLater = 'unchanged';
+
+  public mutate() {
+    this.modifiedLater = 'mutated';
+  }
+
+  // This is modified later on by the class
+  #modifiedLaterPrivateField = 'unchanged';
+
+  public mutatePrivateField() {
+    this.#modifiedLaterPrivateField = 'mutated';
+  }
+}
+"
+`;
+
+exports[` 3`] = `
+"class Container {
+  private onClick = () => {
+  ~~ Member 'onClick' is never reassigned; mark it as \`readonly\`.
+    /* ... */
+~~~~~~~~~~~
+  };
+~~
+}
+"
+`;
+
+exports[` 4`] = `
+"class Container {
+  private neverModifiedPrivate = 'unchanged';
+}
+"
+`;

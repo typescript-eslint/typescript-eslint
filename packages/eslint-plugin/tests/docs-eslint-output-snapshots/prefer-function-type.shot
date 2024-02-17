@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface Example {
+  (): string;
+  ~~~~~~~~~~~ Interface only has a call signature, you should use a function type instead.
+}
+"
+`;
+
+exports[` 2`] = `
+"function foo(example: { (): number }): number {
+                        ~~~~~~~~~~ Type literal only has a call signature, you should use a function type instead.
+  return example();
+}
+"
+`;
+
+exports[` 3`] = `
+"interface ReturnsSelf {
+  // returns the function itself, not the \`this\` argument.
+  (arg: string): this;
+                 ~~~~ \`this\` refers to the function type 'ReturnsSelf', did you intend to use a generic \`this\` parameter like \`<Self>(this: Self, ...) => Self\` instead?
+}
+"
+`;
+
+exports[` 4`] = `
+"type Example = () => string;
+"
+`;
+
+exports[` 5`] = `
+"function foo(example: () => number): number {
+  return bar();
+}
+"
+`;
+
+exports[` 6`] = `
+"// returns the function itself, not the \`this\` argument.
+type ReturnsSelf = (arg: string) => ReturnsSelf;
+"
+`;
+
+exports[` 7`] = `
+"function foo(bar: { (): string; baz: number }): string {
+  return bar();
+}
+"
+`;
+
+exports[` 8`] = `
+"interface Foo {
+  bar: string;
+}
+interface Bar extends Foo {
+  (): void;
+}
+"
+`;
+
+exports[` 9`] = `
+"// multiple call signatures (overloads) is allowed:
+interface Overloaded {
+  (data: string): number;
+  (id: number): string;
+}
+// this is equivelent to Overloaded interface.
+type Intersection = ((data: string) => number) & ((id: number) => string);
+"
+`;

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface Example {
+  property?: string;
+}
+
+declare const example: Example;
+const includesBaz = example.property!.includes('baz');
+                    ~~~~~~~~~~~~~~~~~ Forbidden non-null assertion.
+"
+`;
+
+exports[` 2`] = `
+"interface Example {
+  property?: string;
+}
+
+declare const example: Example;
+const includesBaz = example.property?.includes('baz') ?? false;
+"
+`;

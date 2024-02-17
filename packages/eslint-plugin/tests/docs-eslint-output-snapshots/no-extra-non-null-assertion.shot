@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const foo: { bar: number } | null = null;
+const bar = foo!!!.bar;
+            ~~~~~ Forbidden extra non-null assertion.
+            ~~~~ Forbidden extra non-null assertion.
+"
+`;
+
+exports[` 2`] = `
+"function foo(bar: number | undefined) {
+  const bar: number = bar!!!;
+                      ~~~~~ Forbidden extra non-null assertion.
+                      ~~~~ Forbidden extra non-null assertion.
+}
+"
+`;
+
+exports[` 3`] = `
+"function foo(bar?: { n: number }) {
+  return bar!?.n;
+         ~~~~ Forbidden extra non-null assertion.
+}
+"
+`;
+
+exports[` 4`] = `
+"const foo: { bar: number } | null = null;
+const bar = foo!.bar;
+"
+`;
+
+exports[` 5`] = `
+"function foo(bar: number | undefined) {
+  const bar: number = bar!;
+}
+"
+`;
+
+exports[` 6`] = `
+"function foo(bar?: { n: number }) {
+  return bar?.n;
+}
+"
+`;

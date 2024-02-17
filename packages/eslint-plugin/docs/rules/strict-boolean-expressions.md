@@ -58,12 +58,6 @@ while (obj) {
 ### ✅ Correct
 
 ```tsx
-// Using logical operator short-circuiting is allowed
-const Component = () => {
-  const entry = map.get('foo') || {};
-  return entry && <p>Name: {entry.name}</p>;
-};
-
 // nullable values should be checked explicitly against null or undefined
 let num: number | undefined = 0;
 if (num != null) {

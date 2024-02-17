@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"class X {
+  private priv_prop = 123;
+}
+
+const x = new X();
+x['priv_prop'] = 123;
+"
+`;
+
+exports[` 2`] = `
+"class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+"
+`;
+
+exports[` 3`] = `
+"class X {
+  [key: string]: number;
+}
+
+const x = new X();
+x['hello'] = 123;
+"
+`;

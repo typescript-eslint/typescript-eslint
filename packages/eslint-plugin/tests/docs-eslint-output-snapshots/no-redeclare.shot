@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"interface A {
+  prop1: 1;
+}
+interface A {
+  prop2: 2;
+}
+
+namespace Foo {
+  export const a = 1;
+}
+namespace Foo {
+  export const b = 2;
+}
+
+class Bar {}
+namespace Bar {}
+
+function Baz() {}
+namespace Baz {}
+"
+`;
+
+exports[` 2`] = `
+"type something = string;
+// eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Definition for rule '@typescript-eslint/no-redeclare' was not found.
+const something = 2;
+      ~~~~~~~~~ 'something' is already defined.
+"
+`;

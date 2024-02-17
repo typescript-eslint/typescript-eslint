@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"// nullable numbers are considered unsafe by default
+let num: number | undefined = 0;
+if (num) {
+  console.log('num is defined');
+}
+
+// nullable strings are considered unsafe by default
+let str: string | null = null;
+if (!str) {
+     ~~~ Unexpected nullish value in conditional. The condition is always false.
+  console.log('str is empty');
+}
+
+// nullable booleans are considered unsafe by default
+function foo(bool?: boolean) {
+  if (bool) {
+      ~~~~ Unexpected nullable boolean value in conditional. Please handle the nullish case explicitly.
+    bar();
+  }
+}
+
+// \`any\`, unconstrained generics and unions of more than one primitive type are disallowed
+const foo = <T>(arg: T) => (arg ? 1 : 0);
+                            ~~~ Unexpected any value in conditional. An explicit comparison or type cast is required.
+
+// always-truthy and always-falsy types are disallowed
+let obj = {};
+while (obj) {
+       ~~~ Unexpected object value in conditional. The condition is always true.
+  obj = getObj();
+}
+"
+`;
+
+exports[` 2`] = `
+"// nullable values should be checked explicitly against null or undefined
+let num: number | undefined = 0;
+if (num != null) {
+  console.log('num is defined');
+}
+
+let str: string | null = null;
+if (str != null && !str) {
+  console.log('str is empty');
+}
+
+function foo(bool?: boolean) {
+  if (bool ?? false) {
+    bar();
+  }
+}
+
+// \`any\` types should be cast to boolean explicitly
+const foo = (arg: any) => (Boolean(arg) ? 1 : 0);
+"
+`;

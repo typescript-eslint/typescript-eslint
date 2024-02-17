@@ -1,10 +1,15 @@
+import 'jest-specific-snapshot';
+
 import { parseForESLint } from '@typescript-eslint/parser';
+import * as tseslintParser from '@typescript-eslint/parser';
+import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import fs from 'fs';
 import { marked } from 'marked';
 import path from 'path';
 import { titleCase } from 'title-case';
 
 import rules from '../src/rules';
+import { getFixturesRootDir } from './RuleTester';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
@@ -46,6 +51,51 @@ function tokenIsH2(
   );
 }
 
+function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
+  const output: string[] = [];
+  const lines = code.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    output.push(line);
+
+    for (const error of errors) {
+      const startLine = error.line - 1;
+      const endLine =
+        error.endLine === undefined ? startLine : error.endLine - 1;
+      const startColumn = error.column - 1;
+      const endColumn =
+        error.endColumn === undefined ? startColumn : error.endColumn - 1;
+      if (i < startLine || i > endLine) {
+        continue;
+      }
+      if (i === startLine) {
+        const squiggle = '~'.repeat(Math.max(1, endColumn - startColumn));
+        const squiggleWithIndent = ' '.repeat(startColumn) + squiggle + ' ';
+        const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
+        output.push(
+          squiggleWithIndent +
+            error.message.split('\n').join('\n' + errorMessageIndent),
+        );
+      } else {
+        const squiggle = '~'.repeat(Math.max(1, line.length - startColumn));
+        output.push(squiggle);
+      }
+    }
+  }
+
+  return output.join('\n').trim() + '\n';
+}
+
+const linter = new Linter();
+linter.defineParser('@typescript-eslint/parser', tseslintParser);
+
+const eslintOutputSnapshotFolder = path.resolve(
+  __dirname,
+  'docs-eslint-output-snapshots',
+);
+fs.mkdirSync(eslintOutputSnapshotFolder, { recursive: true });
+
 describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
     'README.md',
@@ -71,6 +121,9 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
+    if (ruleName !== 'consistent-type-assertions') {
+      // continue;
+    }
     const { description } = rule.meta.docs!;
 
     describe(`${ruleName}.md`, () => {
@@ -207,7 +260,138 @@ describe('Validating rule docs', () => {
           }
         }
       });
+
+      describe('code examples ESLint output', () => {
+        if (
+          [
+            'prefer-readonly-parameter-types', // https://github.com/typescript-eslint/typescript-eslint/pull/8461
+            'prefer-optional-chain', // https://github.com/typescript-eslint/typescript-eslint/issues/8487
+          ].includes(ruleName)
+        ) {
+          return;
+        }
+
+        // TypeScript can't infer type arguments unless we provide them explicitly
+        linter.defineRule<
+          keyof (typeof rule)['meta']['messages'],
+          (typeof rule)['defaultOptions']
+        >(ruleName, rule);
+
+        type Context =
+          | {
+              type: 'outside-the-tabs';
+            }
+          | {
+              type: 'entered-tabs';
+            }
+          | {
+              type: 'under-tab-heading';
+              headingsDepth: number;
+              sectionType: 'incorrect' | 'correct' | 'unknown';
+            };
+        let currentContext: Context = {
+          type: 'outside-the-tabs',
+        };
+
+        for (const token of tokens) {
+          if (token.type === 'html') {
+            const isOpeningTabsComment = /^<!--\s*tabs\s*-->$/.test(
+              token.text.trim(),
+            );
+            const isClosingTabsComment = /^<!--\s*\/tabs\s*-->$/.test(
+              token.text.trim(),
+            );
+
+            if (isOpeningTabsComment) {
+              currentContext = { type: 'entered-tabs' };
+            } else if (isClosingTabsComment) {
+              currentContext = { type: 'outside-the-tabs' };
+            }
+          } else if (token.type === 'heading') {
+            if (
+              currentContext.type === 'under-tab-heading' &&
+              token.depth < currentContext.headingsDepth
+            ) {
+              currentContext = { type: 'outside-the-tabs' };
+            } else if (
+              currentContext.type === 'entered-tabs' ||
+              (currentContext.type === 'under-tab-heading' &&
+                token.depth === currentContext.headingsDepth)
+            ) {
+              const heading = token.text.trim();
+              currentContext = {
+                type: 'under-tab-heading',
+                headingsDepth: token.depth,
+                sectionType: heading.startsWith('❌ Incorrect')
+                  ? 'incorrect'
+                  : heading.startsWith('✅ Correct')
+                    ? 'correct'
+                    : 'unknown',
+              };
+            }
+          }
+
+          if (
+            token.type !== 'code' ||
+            (currentContext.type !== 'under-tab-heading' &&
+              !token.lang?.includes('showPlaygroundButton'))
+          ) {
+            continue;
+          }
+
+          const lang = token.lang?.trim();
+          if (!lang || !/^tsx?\b/i.test(lang)) {
+            continue;
+          }
+
+          const optionRegex = /option='(?<option>.*?)'/;
+
+          const option = lang.match(optionRegex)?.groups?.option;
+          const ruleConfig: Linter.RuleEntry = option
+            ? JSON.parse(`["error", ${option}]`)
+            : 'error';
+          const rootPath = getFixturesRootDir();
+
+          const messages = linter.verify(
+            token.text,
+            {
+              parser: '@typescript-eslint/parser',
+              parserOptions: {
+                tsconfigRootDir: rootPath,
+                project: './tsconfig.json',
+              },
+              rules: {
+                [ruleName]: ruleConfig,
+              },
+            },
+            /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
+          );
+
+          expect(
+            renderLintResults(token.text, messages),
+          ).toMatchSpecificSnapshot(
+            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+          );
+
+          if (currentContext.type === 'under-tab-heading') {
+            if (currentContext.sectionType === 'incorrect') {
+              expect(messages).not.toHaveLength(0);
+            } else if (currentContext.sectionType === 'correct') {
+              expect(messages).toHaveLength(0);
+            }
+          }
+        }
+      });
     });
+  }
+});
+
+test('There should be no obsolete ESLint output snapshots', () => {
+  const files = fs.readdirSync(eslintOutputSnapshotFolder);
+  const names = new Set(Object.keys(rules).map(k => `${k}.shot`));
+
+  for (const file of files) {
+    expect(names).toContain(file);
   }
 });
 

@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+"const x = 1 as any,
+      ~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
+  y = 1 as any;
+  ~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
+const [x] = 1 as any;
+      ~~~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
+const [x] = [] as any[];
+      ~~~ Unsafe array destructuring of an \`any\` array value.
+const [x] = [1 as any];
+       ~ Unsafe array destructuring of a tuple element with an \`any\` value.
+[x] = [1] as [any];
+ ~ Unsafe array destructuring of a tuple element with an \`any\` value.
+
+function foo(a = 1 as any) {}
+             ~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
+class Foo {
+  constructor(private a = 1 as any) {}
+                      ~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
+}
+class Foo {
+  private a = 1 as any;
+  ~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
+}
+
+// generic position examples
+const x: Set<string> = new Set<any>();
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Set<any> to a variable of type Set<string>.
+const x: Map<string, string> = new Map<string, any>();
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Map<string, any> to a variable of type Map<string, string>.
+const x: Set<string[]> = new Set<any[]>();
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Set<any[]> to a variable of type Set<string[]>.
+const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Set<Set<Set<any>>> to a variable of type Set<Set<Set<string>>>.
+"
+`;
+
+exports[` 2`] = `
+"const x = 1,
+  y = 1;
+const [x] = [1];
+[x] = [1] as [number];
+
+function foo(a = 1) {}
+class Foo {
+  constructor(private a = 1) {}
+}
+class Foo {
+  private a = 1;
+}
+
+// generic position examples
+const x: Set<string> = new Set<string>();
+const x: Map<string, string> = new Map<string, string>();
+const x: Set<string[]> = new Set<string[]>();
+const x: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();
+"
+`;
+
+exports[` 3`] = `
+"const x: unknown = y as any;
+const x: unknown[] = y as any[];
+const x: Set<unknown> = y as Set<any>;
+"
+`;
