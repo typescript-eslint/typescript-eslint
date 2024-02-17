@@ -8,12 +8,18 @@ import {
   getOperatorPrecedence,
   getParserServices,
   OperatorPrecedence,
+  typeMatchesSpecifier,
 } from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
+    allowForKnownSafePromises?: {
+      from: 'package';
+      name: string[] | string;
+      package: string;
+    }[];
   },
 ];
 
@@ -79,6 +85,40 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
+          allowForKnownSafePromises: {
+            description:
+              'The list of promises which should be floating as per an external package/module.',
+            type: 'array',
+            items: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                from: {
+                  type: 'string',
+                  enum: ['package'],
+                },
+                name: {
+                  oneOf: [
+                    {
+                      type: 'string',
+                    },
+                    {
+                      type: 'array',
+                      minItems: 1,
+                      uniqueItems: true,
+                      items: {
+                        type: 'string',
+                      },
+                    },
+                  ],
+                },
+                package: {
+                  type: 'string',
+                },
+              },
+              required: ['from', 'name', 'package'],
+            },
+          },
         },
         additionalProperties: false,
       },
@@ -89,6 +129,7 @@ export default createRule<Options, MessageId>({
     {
       ignoreVoid: true,
       ignoreIIFE: false,
+      allowForKnownSafePromises: [],
     },
   ],
 
@@ -262,6 +303,18 @@ export default createRule<Options, MessageId>({
       }
 
       if (node.type === AST_NODE_TYPES.CallExpression) {
+        if (
+          options.allowForKnownSafePromises?.some(specifier =>
+            typeMatchesSpecifier(
+              services.getTypeAtLocation(node.callee),
+              specifier,
+              services.program,
+            ),
+          )
+        ) {
+          return { isUnhandled: false };
+        }
+
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 

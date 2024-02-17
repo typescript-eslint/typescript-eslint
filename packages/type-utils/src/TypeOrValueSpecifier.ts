@@ -160,12 +160,19 @@ function typeDeclaredInPackage(
   // Handle scoped packages - if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
+  let matcher = new RegExp(`${packageName}|${typesPackageName}`);
+
+  if (packageName.startsWith('node:')) {
+    matcher = new RegExp(packageName.substring(5));
+  }
   return declarationFiles.some(declaration => {
-    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+    const packageIdName =
+      program.resolvedModules.has(declaration.path) ||
+      program.sourceFileToPackageName.has(declaration.path);
+
     return (
-      packageIdName !== undefined &&
-      matcher.test(packageIdName) &&
+      packageIdName &&
+      matcher.test(declaration.path) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });

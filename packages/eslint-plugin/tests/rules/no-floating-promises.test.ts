@@ -1806,5 +1806,18 @@ cursed();
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
     },
+    {
+      code: `
+        fetch('https://typescript-eslint.io/');
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [
+            { from: 'package', name: 'fetch', package: 'foo' },
+          ],
+        },
+      ],
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
+    },
   ],
 });

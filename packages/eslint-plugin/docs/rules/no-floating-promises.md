@@ -109,6 +109,32 @@ await (async function () {
 })();
 ```
 
+### `allowForKnownSafePromises`
+
+This allows you to skip checking of the promise returning functions, which are supposed to be unhandled and unreturned, documented by an external package/module.
+
+Each item must be a :
+
+- A function from a package (`{from: "package", name: "test", package: "node:test"}`)
+
+Examples of code for this rule with:
+
+```json
+{
+  "allowForKnownSafePromises": [
+    { "from": "package", "name": "fetch", "package": "foo" }
+  ]
+}
+```
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{"allowForKnownSafePromises":[{"from":"package","name":"fetch","package":"foo"}]}'
+fetch('https://typescript-eslint.io/');
+```
+
 ## When Not To Use It
 
 This rule can be difficult to enable on large existing projects that set up many floating Promises.

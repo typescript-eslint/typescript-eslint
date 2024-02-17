@@ -8,6 +8,38 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
+      "allowForKnownSafePromises": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "from": {
+              "enum": ["package"],
+              "type": "string"
+            },
+            "name": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1,
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              ]
+            },
+            "package": {
+              "type": "string"
+            }
+          },
+          "required": ["from", "name", "package"],
+          "type": "object"
+        },
+        "type": "array"
+      },
       "ignoreIIFE": {
         "description": "Whether to ignore async IIFEs (Immediately Invoked Function Expressions).",
         "type": "boolean"
@@ -26,6 +58,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    allowForKnownSafePromises?: {
+      from: 'package';
+      name: [string, ...string[]] | string;
+      package: string;
+    }[];
     /** Whether to ignore async IIFEs (Immediately Invoked Function Expressions). */
     ignoreIIFE?: boolean;
     /** Whether to ignore \`void\` expressions. */
