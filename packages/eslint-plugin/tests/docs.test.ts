@@ -364,7 +364,7 @@ describe('Validating rule docs', () => {
             /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
           );
 
-          let testCaption = [];
+          const testCaption = [];
           if (tabsSearchContext.type === 'under-tab-heading') {
             if (tabsSearchContext.sectionType === 'incorrect') {
               testCaption.push('Incorrect');
