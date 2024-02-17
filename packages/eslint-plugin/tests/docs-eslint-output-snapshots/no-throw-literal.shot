@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"throw 'error';
+"Incorrect
+
+throw 'error';
       ~~~~~~~ Expected an error object to be thrown.
 
 throw 0;
@@ -40,7 +42,9 @@ throw foo.bar;
 `;
 
 exports[` 2`] = `
-"throw new Error();
+"Correct
+
+throw new Error();
 
 throw new Error('error');
 

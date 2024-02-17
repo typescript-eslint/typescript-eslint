@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const [a] = [1];
+"Incorrect
+Options: { "arrayDestructuring": true }
+
+const [a] = [1];
       ~~~ Expected a type annotation.
 const [b, c] = [1, 2];
       ~~~~~~ Expected a type annotation.
@@ -9,7 +12,10 @@ const [b, c] = [1, 2];
 `;
 
 exports[` 2`] = `
-"const [a]: number[] = [1];
+"Correct
+Options: { "arrayDestructuring": true }
+
+const [a]: number[] = [1];
 const [b]: [number] = [2];
 const [c, d]: [boolean, string] = [true, 'text'];
 
@@ -19,7 +25,10 @@ for (const [key, val] of new Map([['key', 1]])) {
 `;
 
 exports[` 3`] = `
-"const logsSize = size => console.log(size);
+"Incorrect
+Options: { "arrowParameter": true }
+
+const logsSize = size => console.log(size);
                  ~~~~ Expected size to have a type annotation.
 
 ['hello', 'world'].map(text => text.length);
@@ -33,7 +42,10 @@ const mapper = {
 `;
 
 exports[` 4`] = `
-"const logsSize = (size: number) => console.log(size);
+"Correct
+Options: { "arrowParameter": true }
+
+const logsSize = (size: number) => console.log(size);
 
 ['hello', 'world'].map((text: string) => text.length);
 
@@ -44,7 +56,10 @@ const mapper = {
 `;
 
 exports[` 5`] = `
-"class ContainsText {
+"Incorrect
+Options: { "memberVariableDeclaration": true }
+
+class ContainsText {
   delayedText;
   ~~~~~~~~~~~~ Expected delayedText to have a type annotation.
   immediateTextImplicit = 'text';
@@ -54,7 +69,10 @@ exports[` 5`] = `
 `;
 
 exports[` 6`] = `
-"class ContainsText {
+"Correct
+Options: { "memberVariableDeclaration": true }
+
+class ContainsText {
   delayedText: string;
   immediateTextImplicit: string = 'text';
 }
@@ -62,14 +80,20 @@ exports[` 6`] = `
 `;
 
 exports[` 7`] = `
-"const { length } = 'text';
+"Incorrect
+Options: { "objectDestructuring": true }
+
+const { length } = 'text';
       ~~~~~~~~~~ Expected a type annotation.
 const [b, c] = Math.random() ? [1, 2] : [3, 4];
 "
 `;
 
 exports[` 8`] = `
-"const { length }: { length: number } = 'text';
+"Correct
+Options: { "objectDestructuring": true }
+
+const { length }: { length: number } = 'text';
 const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
 
 for (const { key, val } of [{ key: 'key', val: 1 }]) {
@@ -78,7 +102,10 @@ for (const { key, val } of [{ key: 'key', val: 1 }]) {
 `;
 
 exports[` 9`] = `
-"function logsSize(size): void {
+"Incorrect
+Options: { "parameter": true }
+
+function logsSize(size): void {
                   ~~~~ Expected size to have a type annotation.
   console.log(size);
 }
@@ -110,7 +137,10 @@ class Logger {
 `;
 
 exports[` 10`] = `
-"function logsSize(size: number): void {
+"Correct
+Options: { "parameter": true }
+
+function logsSize(size: number): void {
   console.log(size);
 }
 
@@ -137,7 +167,10 @@ class Logger {
 `;
 
 exports[` 11`] = `
-"type Members = {
+"Incorrect
+Options: { "propertyDeclaration": true }
+
+type Members = {
   member;
   ~~~~~~~ Expected member to have a type annotation.
   otherMember;
@@ -147,7 +180,10 @@ exports[` 11`] = `
 `;
 
 exports[` 12`] = `
-"type Members = {
+"Correct
+Options: { "propertyDeclaration": true }
+
+type Members = {
   member: boolean;
   otherMember: string;
 };
@@ -155,7 +191,10 @@ exports[` 12`] = `
 `;
 
 exports[` 13`] = `
-"const text = 'text';
+"Incorrect
+Options: { "variableDeclaration": true }
+
+const text = 'text';
       ~~~~~~~~~~~~~ Expected text to have a type annotation.
 let initialText = 'text';
     ~~~~~~~~~~~~~~~~~~~~ Expected initialText to have a type annotation.
@@ -165,20 +204,29 @@ let delayedText;
 `;
 
 exports[` 14`] = `
-"const text: string = 'text';
+"Correct
+Options: { "variableDeclaration": true }
+
+const text: string = 'text';
 let initialText: string = 'text';
 let delayedText: string;
 "
 `;
 
 exports[` 15`] = `
-"const text = 'text';
+"Incorrect
+Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
+
+const text = 'text';
       ~~~~~~~~~~~~~ Expected text to have a type annotation.
 "
 `;
 
 exports[` 16`] = `
-"const a = (): void => {};
+"Correct
+Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
+
+const a = (): void => {};
 const b = function (): void {};
 const c: () => void = (): void => {};
 

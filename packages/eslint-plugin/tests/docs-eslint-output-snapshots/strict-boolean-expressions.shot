@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// nullable numbers are considered unsafe by default
+"Incorrect
+
+// nullable numbers are considered unsafe by default
 let num: number | undefined = 0;
 if (num) {
   console.log('num is defined');
@@ -36,7 +38,9 @@ while (obj) {
 `;
 
 exports[` 2`] = `
-"// nullable values should be checked explicitly against null or undefined
+"Correct
+
+// nullable values should be checked explicitly against null or undefined
 let num: number | undefined = 0;
 if (num != null) {
   console.log('num is defined');

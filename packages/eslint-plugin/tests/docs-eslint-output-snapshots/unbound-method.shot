@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class MyClass {
+"Incorrect
+
+class MyClass {
   public log(): void {
     console.log(this);
   }
@@ -33,7 +35,9 @@ const { double } = arith;
 `;
 
 exports[` 2`] = `
-"class MyClass {
+"Correct
+
+class MyClass {
   public logUnbound(): void {
     console.log(this);
   }
@@ -62,7 +66,9 @@ const { double } = arith;
 `;
 
 exports[` 3`] = `
-"class OtherClass {
+"Options: { "ignoreStatic": true }
+
+class OtherClass {
   static log() {
     console.log(OtherClass);
   }

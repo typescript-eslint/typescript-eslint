@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"async function invalidInTryCatch1() {
+"Incorrect
+Options: "in-try-catch"
+
+async function invalidInTryCatch1() {
   try {
     return Promise.resolve('try');
            ~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
@@ -50,7 +53,10 @@ async function invalidInTryCatch6() {
 `;
 
 exports[` 2`] = `
-"async function validInTryCatch1() {
+"Correct
+Options: "in-try-catch"
+
+async function validInTryCatch1() {
   try {
     return await Promise.resolve('try');
   } catch (e) {}
@@ -95,7 +101,10 @@ async function validInTryCatch6() {
 `;
 
 exports[` 3`] = `
-"async function invalidAlways1() {
+"Incorrect
+Options: "always"
+
+async function invalidAlways1() {
   try {
     return Promise.resolve('try');
            ~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
@@ -115,7 +124,10 @@ async function invalidAlways3() {
 `;
 
 exports[` 4`] = `
-"async function validAlways1() {
+"Correct
+Options: "always"
+
+async function validAlways1() {
   try {
     return await Promise.resolve('try');
   } catch (e) {}
@@ -132,7 +144,10 @@ async function validAlways3() {
 `;
 
 exports[` 5`] = `
-"async function invalidNever1() {
+"Incorrect
+Options: "never"
+
+async function invalidNever1() {
   try {
     return await Promise.resolve('try');
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
@@ -152,7 +167,10 @@ async function invalidNever3() {
 `;
 
 exports[` 6`] = `
-"async function validNever1() {
+"Correct
+Options: "never"
+
+async function validNever1() {
   try {
     return Promise.resolve('try');
   } catch (e) {}

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// an empty interface
+"Incorrect
+
+// an empty interface
 interface Foo {}
           ~~~ An empty interface is equivalent to \`{}\`.
 
@@ -16,7 +18,9 @@ interface Baz {}
 `;
 
 exports[` 2`] = `
-"// an interface with any number of members
+"Correct
+
+// an interface with any number of members
 interface Foo {
   name: string;
 }

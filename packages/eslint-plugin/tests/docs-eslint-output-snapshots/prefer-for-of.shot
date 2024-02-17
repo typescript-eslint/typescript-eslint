@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare const array: string[];
+"Incorrect
+
+declare const array: string[];
 
 for (let i = 0; i < array.length; i++) {
 ~ Expected a \`for-of\` loop instead of a \`for\` loop with this simple iteration.
@@ -13,7 +15,9 @@ for (let i = 0; i < array.length; i++) {
 `;
 
 exports[` 2`] = `
-"declare const array: string[];
+"Correct
+
+declare const array: string[];
 
 for (const x of array) {
   console.log(x);

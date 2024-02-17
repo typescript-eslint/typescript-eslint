@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare const someCondition: boolean;
+"Incorrect
+
+declare const someCondition: boolean;
 if (someCondition === true) {
     ~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a boolean value to a boolean instead of using it directly.
 }
@@ -9,7 +11,9 @@ if (someCondition === true) {
 `;
 
 exports[` 2`] = `
-"declare const someCondition: boolean;
+"Correct
+
+declare const someCondition: boolean;
 if (someCondition) {
 }
 
@@ -24,7 +28,10 @@ if (someStringBoolean === true) {
 `;
 
 exports[` 3`] = `
-"declare const someUndefinedCondition: boolean | undefined;
+"Incorrect
+Options: { "allowComparingNullableBooleansToTrue": false }
+
+declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition === true) {
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to true instead of using it directly.
 }
@@ -37,7 +44,10 @@ if (someNullCondition !== true) {
 `;
 
 exports[` 4`] = `
-"declare const someUndefinedCondition: boolean | undefined;
+"Correct
+Options: { "allowComparingNullableBooleansToTrue": false }
+
+declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition) {
 }
 
@@ -48,7 +58,10 @@ if (!someNullCondition) {
 `;
 
 exports[` 5`] = `
-"declare const someUndefinedCondition: boolean | undefined;
+"Incorrect
+Options: { "allowComparingNullableBooleansToFalse": false }
+
+declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition === false) {
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.
 }
@@ -61,7 +74,10 @@ if (someNullCondition !== false) {
 `;
 
 exports[` 6`] = `
-"declare const someUndefinedCondition: boolean | undefined;
+"Correct
+Options: { "allowComparingNullableBooleansToFalse": false }
+
+declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition ?? true) {
 }
 

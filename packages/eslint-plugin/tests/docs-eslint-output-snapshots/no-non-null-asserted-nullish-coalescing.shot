@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"foo! ?? bar;
+"Incorrect
+
+foo! ?? bar;
 ~~~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
 foo.bazz! ?? bar;
 ~~~~~~~~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
@@ -22,7 +24,9 @@ x! ?? '';
 `;
 
 exports[` 2`] = `
-"foo ?? bar;
+"Correct
+
+foo ?? bar;
 foo ?? bar!;
 foo!.bazz ?? bar;
 foo!.bazz ?? bar!;

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"type T1 = B | A;
+"Incorrect
+
+type T1 = B | A;
           ~~~~~ Union type T1 constituents must be sorted.
 
 type T2 = { b: string } & { a: string };
@@ -51,7 +53,9 @@ type T4 =
 `;
 
 exports[` 2`] = `
-"type T1 = A | B;
+"Correct
+
+type T1 = A | B;
 
 type T2 = { a: string } & { b: string };
 
@@ -80,34 +84,52 @@ type T4 =
 `;
 
 exports[` 3`] = `
-"type ExampleIntersection = B & A;
+"Incorrect
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = B & A;
                            ~~~~~ Intersection type ExampleIntersection constituents must be sorted.
 "
 `;
 
 exports[` 4`] = `
-"type ExampleIntersection = A & B;
+"Correct
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = A & B;
 "
 `;
 
 exports[` 5`] = `
-"type ExampleUnion = B | A;
+"Incorrect
+Options: { "checkUnions": true }
+
+type ExampleUnion = B | A;
                     ~~~~~ Union type ExampleUnion constituents must be sorted.
 "
 `;
 
 exports[` 6`] = `
-"type ExampleUnion = A | B;
+"Correct
+Options: { "checkUnions": true }
+
+type ExampleUnion = A | B;
 "
 `;
 
 exports[` 7`] = `
-"type ExampleGroup = null | 123;
+"Incorrect
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = null | 123;
                     ~~~~~~~~~~ Union type ExampleGroup constituents must be sorted.
 "
 `;
 
 exports[` 8`] = `
-"type ExampleGroup = 123 | null;
+"Correct
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = 123 | null;
 "
 `;

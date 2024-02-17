@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const map: Map<string, number> = new Map();
+"Incorrect
+Options: "constructor"
+
+const map: Map<string, number> = new Map();
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
 const set: Set<string> = new Set();
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
@@ -9,7 +12,10 @@ const set: Set<string> = new Set();
 `;
 
 exports[` 2`] = `
-"const map = new Map<string, number>();
+"Correct
+Options: "constructor"
+
+const map = new Map<string, number>();
 const map: Map<string, number> = new MyMap();
 const set = new Set<string>();
 const set = new Set();
@@ -18,7 +24,10 @@ const set: Set<string> = new Set<string>();
 `;
 
 exports[` 3`] = `
-"const map = new Map<string, number>();
+"Incorrect
+Options: "type-annotation"
+
+const map = new Map<string, number>();
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the type annotation.
 const set = new Set<string>();
       ~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the type annotation.
@@ -26,7 +35,10 @@ const set = new Set<string>();
 `;
 
 exports[` 4`] = `
-"const map: Map<string, number> = new Map();
+"Correct
+Options: "type-annotation"
+
+const map: Map<string, number> = new Map();
 const set: Set<string> = new Set();
 const set = new Set();
 const set: Set<string> = new Set<string>();

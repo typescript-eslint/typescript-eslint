@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// Passing an object or class instance to string concatenation:
+"Incorrect
+
+// Passing an object or class instance to string concatenation:
 '' + {};
      ~~ '{}' will evaluate to '[object Object]' when stringified.
 
@@ -19,7 +21,9 @@ value + '';
 `;
 
 exports[` 2`] = `
-"// These types all have useful .toString()s
+"Correct
+
+// These types all have useful .toString()s
 'Text' + true;
 \`Value: \${123}\`;
 \`Arrays too: \${[1, 2, 3]}\`;
@@ -42,7 +46,9 @@ const literalWithToString = {
 `;
 
 exports[` 3`] = `
-"\`\${/regex/}\`;
+"Options: { "ignoredTypeNames": ["RegExp"] }
+
+\`\${/regex/}\`;
 '' + /regex/;
 /regex/.toString();
 let value = /regex/;

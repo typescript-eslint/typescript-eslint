@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// primitives
+"Options: { "allowAliases": "always" }
+
+// primitives
 type Foo = 'a';
 
 type Foo = 'a' | 'b';
@@ -27,7 +29,9 @@ type Foo = Bar & Baz;
 `;
 
 exports[` 2`] = `
-"// primitives
+"Options: { "allowAliases": "in-unions" }
+
+// primitives
 type Foo = 'a';
            ~~~ Type aliases are not allowed.
 
@@ -55,7 +59,9 @@ type Foo = Bar & Baz;
 `;
 
 exports[` 3`] = `
-"// primitives
+"Options: { "allowAliases": "in-unions" }
+
+// primitives
 type Foo = 'a' | 'b';
 
 type Foo = string | string[];
@@ -71,7 +77,9 @@ type Foo = Bar | Baz;
 `;
 
 exports[` 4`] = `
-"// primitives
+"Options: { "allowAliases": "in-intersections" }
+
+// primitives
 type Foo = 'a';
            ~~~ Type aliases are not allowed.
 
@@ -104,7 +112,9 @@ type Foo = Bar | Baz;
 `;
 
 exports[` 5`] = `
-"// primitives
+"Options: { "allowAliases": "in-intersections" }
+
+// primitives
 type Foo = string & string[];
 
 type Foo = \`a-\${number}\` & \`b-\${number}\`;
@@ -118,7 +128,9 @@ type Foo = Bar & Baz;
 `;
 
 exports[` 6`] = `
-"// primitives
+"Options: { "allowAliases": "in-unions-and-intersections" }
+
+// primitives
 type Foo = 'a';
            ~~~ Type aliases are not allowed.
 
@@ -138,7 +150,9 @@ type Foo = Bar;
 `;
 
 exports[` 7`] = `
-"// primitives
+"Options: { "allowAliases": "in-unions-and-intersections" }
+
+// primitives
 type Foo = 'a' | 'b';
 
 type Foo = string | string[];
@@ -160,7 +174,9 @@ type Foo = Bar & Baz;
 `;
 
 exports[` 8`] = `
-"type Foo = () => void;
+"Options: { "allowCallbacks": "always" }
+
+type Foo = () => void;
 
 type Foo = (name: string) => string;
 
@@ -173,17 +189,23 @@ type Foo = (name: string, age: number) => string & Person;
 `;
 
 exports[` 9`] = `
-"type Foo<T> = T extends number ? number : null;
+"Options: { "allowConditionalTypes": "always" }
+
+type Foo<T> = T extends number ? number : null;
 "
 `;
 
 exports[` 10`] = `
-"type Foo = new () => void;
+"Options: { "allowConstructors": "always" }
+
+type Foo = new () => void;
 "
 `;
 
 exports[` 11`] = `
-"type Foo = {};
+"Options: { "allowLiterals": "always" }
+
+type Foo = {};
 
 type Foo = {
   name: string;
@@ -203,7 +225,9 @@ type Foo = { name: string } & { age: number };
 `;
 
 exports[` 12`] = `
-"type Foo = {};
+"Options: { "allowLiterals": "in-unions" }
+
+type Foo = {};
            ~~ Type literals are not allowed.
 
 type Foo = {
@@ -233,12 +257,16 @@ type Foo = { name: string } & { age: number };
 `;
 
 exports[` 13`] = `
-"type Foo = { name: string } | { age: number };
+"Options: { "allowLiterals": "in-unions" }
+
+type Foo = { name: string } | { age: number };
 "
 `;
 
 exports[` 14`] = `
-"type Foo = {};
+"Options: { "allowLiterals": "in-intersections" }
+
+type Foo = {};
            ~~ Type literals are not allowed.
 
 type Foo = {
@@ -268,12 +296,16 @@ type Foo = { name: string } | { age: number };
 `;
 
 exports[` 15`] = `
-"type Foo = { name: string } & { age: number };
+"Options: { "allowLiterals": "in-intersections" }
+
+type Foo = { name: string } & { age: number };
 "
 `;
 
 exports[` 16`] = `
-"type Foo = {};
+"Options: { "allowLiterals": "in-unions-and-intersections" }
+
+type Foo = {};
            ~~ Type literals are not allowed.
 
 type Foo = {
@@ -299,14 +331,18 @@ type Foo = {
 `;
 
 exports[` 17`] = `
-"type Foo = { name: string } | { age: number };
+"Options: { "allowLiterals": "in-unions-and-intersections" }
+
+type Foo = { name: string } | { age: number };
 
 type Foo = { name: string } & { age: number };
 "
 `;
 
 exports[` 18`] = `
-"type Foo<T> = { readonly [P in keyof T]: T[P] };
+"Options: { "allowMappedTypes": "always" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
 
 type Foo<T> = { [P in keyof T]?: T[P] };
 
@@ -325,7 +361,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 `;
 
 exports[` 19`] = `
-"type Foo<T> = { readonly [P in keyof T]: T[P] };
+"Options: { "allowMappedTypes": "in-unions" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -346,7 +384,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 `;
 
 exports[` 20`] = `
-"type Foo<T, U> =
+"Options: { "allowMappedTypes": "in-unions" }
+
+type Foo<T, U> =
   | { readonly [P in keyof T]: T[P] }
   | { readonly [P in keyof U]: U[P] };
 
@@ -355,7 +395,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 `;
 
 exports[` 21`] = `
-"type Foo<T> = { readonly [P in keyof T]: T[P] };
+"Options: { "allowMappedTypes": "in-intersections" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -374,7 +416,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 `;
 
 exports[` 22`] = `
-"type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+"Options: { "allowMappedTypes": "in-intersections" }
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
   readonly [P in keyof U]: U[P];
 };
 
@@ -383,7 +427,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 `;
 
 exports[` 23`] = `
-"type Foo<T> = { readonly [P in keyof T]: T[P] };
+"Options: { "allowMappedTypes": "in-unions-and-intersections" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
 
 type Foo<T> = { [P in keyof T]?: T[P] };
@@ -392,7 +438,9 @@ type Foo<T> = { [P in keyof T]?: T[P] };
 `;
 
 exports[` 24`] = `
-"type Foo<T, U> =
+"Options: { "allowMappedTypes": "in-unions-and-intersections" }
+
+type Foo<T, U> =
   | { readonly [P in keyof T]: T[P] }
   | { readonly [P in keyof U]: U[P] };
 
@@ -407,7 +455,9 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 `;
 
 exports[` 25`] = `
-"type Foo = [number];
+"Options: { "allowTupleTypes": "always" }
+
+type Foo = [number];
 
 type Foo = [number] | [number, number];
 
@@ -418,7 +468,9 @@ type Foo = [number] | ([number, number] & [string, string]);
 `;
 
 exports[` 26`] = `
-"type Foo = [number];
+"Options: { "allowTupleTypes": "in-unions" }
+
+type Foo = [number];
            ~~~~~~~~ Type tuple types are not allowed.
 
 type Foo = [number] & [number, number];
@@ -432,14 +484,18 @@ type Foo = [string] & [number];
 `;
 
 exports[` 27`] = `
-"type Foo = [number] | [number, number];
+"Options: { "allowTupleTypes": "in-unions" }
+
+type Foo = [number] | [number, number];
 
 type Foo = [string] | [number];
 "
 `;
 
 exports[` 28`] = `
-"type Foo = [number];
+"Options: { "allowTupleTypes": "in-intersections" }
+
+type Foo = [number];
            ~~~~~~~~ Type tuple types are not allowed.
 
 type Foo = [number] | [number, number];
@@ -453,14 +509,18 @@ type Foo = [string] | [number];
 `;
 
 exports[` 29`] = `
-"type Foo = [number] & [number, number];
+"Options: { "allowTupleTypes": "in-intersections" }
+
+type Foo = [number] & [number, number];
 
 type Foo = [string] & [number];
 "
 `;
 
 exports[` 30`] = `
-"type Foo = [number];
+"Options: { "allowTupleTypes": "in-unions-and-intersections" }
+
+type Foo = [number];
            ~~~~~~~~ Type tuple types are not allowed.
 
 type Foo = [string];
@@ -469,14 +529,18 @@ type Foo = [string];
 `;
 
 exports[` 31`] = `
-"type Foo = [number] & [number, number];
+"Options: { "allowTupleTypes": "in-unions-and-intersections" }
+
+type Foo = [number] & [number, number];
 
 type Foo = [string] | [number];
 "
 `;
 
 exports[` 32`] = `
-"type Foo = Bar<string>;
+"Options: { "allowGenerics": "always" }
+
+type Foo = Bar<string>;
 
 type Foo = Record<string, number>;
 

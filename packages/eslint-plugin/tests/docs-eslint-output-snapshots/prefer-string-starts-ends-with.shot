@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare const foo: string;
+"Incorrect
+
+declare const foo: string;
 
 // starts with
 foo[0] === 'b';
@@ -38,7 +40,9 @@ foo.match(/bar$/) != null;
 `;
 
 exports[` 2`] = `
-"declare const foo: string;
+"Correct
+
+declare const foo: string;
 
 // starts with
 foo.startsWith('bar');

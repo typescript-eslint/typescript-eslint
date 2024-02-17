@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const x = 1 as any,
+"Incorrect
+
+const x = 1 as any,
       ~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
   y = 1 as any;
   ~~~~~~~~~~~~ Unsafe assignment of an \`any\` value.
@@ -38,7 +40,9 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
 `;
 
 exports[` 2`] = `
-"const x = 1,
+"Correct
+
+const x = 1,
   y = 1;
 const [x] = [1];
 [x] = [1] as [number];
@@ -60,7 +64,9 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();
 `;
 
 exports[` 3`] = `
-"const x: unknown = y as any;
+"
+
+const x: unknown = y as any;
 const x: unknown[] = y as any[];
 const x: Set<unknown> = y as Set<any>;
 "

@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const x: Array<string> = ['a', 'b'];
+"Incorrect
+Options: { "default": "array" }
+
+const x: Array<string> = ['a', 'b'];
          ~~~~~~~~~~~~~ Array type using 'Array<string>' is forbidden. Use 'string[]' instead.
 const y: ReadonlyArray<string> = ['a', 'b'];
          ~~~~~~~~~~~~~~~~~~~~~ Array type using 'ReadonlyArray<string>' is forbidden. Use 'readonly string[]' instead.
@@ -9,13 +12,19 @@ const y: ReadonlyArray<string> = ['a', 'b'];
 `;
 
 exports[` 2`] = `
-"const x: string[] = ['a', 'b'];
+"Correct
+Options: { "default": "array" }
+
+const x: string[] = ['a', 'b'];
 const y: readonly string[] = ['a', 'b'];
 "
 `;
 
 exports[` 3`] = `
-"const x: string[] = ['a', 'b'];
+"Incorrect
+Options: { "default": "generic" }
+
+const x: string[] = ['a', 'b'];
          ~~~~~~~~ Array type using 'string[]' is forbidden. Use 'Array<string>' instead.
 const y: readonly string[] = ['a', 'b'];
          ~~~~~~~~~~~~~~~~~ Array type using 'readonly string[]' is forbidden. Use 'ReadonlyArray<string>' instead.
@@ -23,13 +32,19 @@ const y: readonly string[] = ['a', 'b'];
 `;
 
 exports[` 4`] = `
-"const x: Array<string> = ['a', 'b'];
+"Correct
+Options: { "default": "generic" }
+
+const x: Array<string> = ['a', 'b'];
 const y: ReadonlyArray<string> = ['a', 'b'];
 "
 `;
 
 exports[` 5`] = `
-"const a: (string | number)[] = ['a', 'b'];
+"Incorrect
+Options: { "default": "array-simple" }
+
+const a: (string | number)[] = ['a', 'b'];
          ~~~~~~~~~~~~~~~~~~~ Array type using 'T[]' is forbidden for non-simple types. Use 'Array<T>' instead.
 const b: { prop: string }[] = [{ prop: 'a' }];
          ~~~~~~~~~~~~~~~~~~ Array type using 'T[]' is forbidden for non-simple types. Use 'Array<T>' instead.
@@ -45,7 +60,10 @@ const f: ReadonlyArray<string> = ['a', 'b'];
 `;
 
 exports[` 6`] = `
-"const a: Array<string | number> = ['a', 'b'];
+"Correct
+Options: { "default": "array-simple" }
+
+const a: Array<string | number> = ['a', 'b'];
 const b: Array<{ prop: string }> = [{ prop: 'a' }];
 const c: Array<() => void> = [() => {}];
 const d: MyType[] = ['a', 'b'];

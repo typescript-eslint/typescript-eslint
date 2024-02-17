@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare class C {
+"Incorrect
+
+declare class C {
   new(): C;
   ~~~~~~~~~ Class cannot have method named \`new\`.
 }
@@ -16,7 +18,9 @@ interface I {
 `;
 
 exports[` 2`] = `
-"declare class C {
+"Correct
+
+declare class C {
   constructor();
 }
 

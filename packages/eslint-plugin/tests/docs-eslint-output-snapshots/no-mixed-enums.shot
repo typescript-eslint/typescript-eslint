@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"enum Status {
+"Incorrect
+
+enum Status {
   Unknown,
   Closed = 1,
   Open = 'open',
@@ -11,7 +13,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"enum Status {
+"Correct
+
+enum Status {
   Unknown = 0,
   Closed = 1,
   Open = 2,
@@ -20,7 +24,9 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"enum Status {
+"Correct
+
+enum Status {
   Unknown,
   Closed,
   Open,
@@ -29,7 +35,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"enum Status {
+"Correct
+
+enum Status {
   Unknown = 'unknown',
   Closed = 'closed',
   Open = 'open',

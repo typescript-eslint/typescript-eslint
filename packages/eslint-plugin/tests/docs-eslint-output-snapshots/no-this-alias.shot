@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const self = this;
+"Incorrect
+
+const self = this;
       ~~~~ Unexpected aliasing of 'this' to local variable.
 
 setTimeout(function () {
@@ -11,14 +13,19 @@ setTimeout(function () {
 `;
 
 exports[` 2`] = `
-"setTimeout(() => {
+"Correct
+
+setTimeout(() => {
   this.doWork();
 });
 "
 `;
 
 exports[` 3`] = `
-"class ComponentLike {
+"Incorrect
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
   props: unknown;
   state: unknown;
 
@@ -34,7 +41,10 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"class ComponentLike {
+"Correct
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
   props: unknown;
   state: unknown;
 
@@ -47,7 +57,10 @@ exports[` 4`] = `
 `;
 
 exports[` 5`] = `
-"class Example {
+"Incorrect
+Options: { "allowedNames": ["self"] }
+
+class Example {
   method() {
     const that = this;
           ~~~~ Unexpected aliasing of 'this' to local variable.
@@ -57,7 +70,10 @@ exports[` 5`] = `
 `;
 
 exports[` 6`] = `
-"class Example {
+"Correct
+Options: { "allowedNames": ["self"] }
+
+class Example {
   method() {
     const self = this;
   }

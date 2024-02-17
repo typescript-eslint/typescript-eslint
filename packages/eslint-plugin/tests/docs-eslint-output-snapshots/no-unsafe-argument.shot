@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare function foo(arg1: string, arg2: number, arg3: string): void;
+"Incorrect
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
 
 const anyTyped = 1 as any;
 
@@ -33,7 +35,9 @@ foo(new Set<any>(), new Map<any, string>());
 `;
 
 exports[` 2`] = `
-"declare function foo(arg1: string, arg2: number, arg3: string): void;
+"Correct
+
+declare function foo(arg1: string, arg2: number, arg3: string): void;
 
 foo('a', 1, 'b');
 
@@ -50,7 +54,9 @@ foo(new Set<string>(), new Map<string, string>());
 `;
 
 exports[` 3`] = `
-"declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
+"
+
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 "
 `;

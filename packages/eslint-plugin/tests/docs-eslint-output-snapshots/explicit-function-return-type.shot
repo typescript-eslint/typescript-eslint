@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// Should indicate that no value is returned (void)
+"Incorrect
+
+// Should indicate that no value is returned (void)
 function test() {
 ~~~~~~~~~~~~~ Missing return type on function.
   return;
@@ -28,7 +30,9 @@ class Test {
 `;
 
 exports[` 2`] = `
-"// No return value should be expected (void)
+"Correct
+
+// No return value should be expected (void)
 function test(): void {
   return;
 }
@@ -51,7 +55,10 @@ class Test {
 `;
 
 exports[` 3`] = `
-"function test() {}
+"Incorrect
+Options: { "allowExpressions": true }
+
+function test() {}
 ~~~~~~~~~~~~~ Missing return type on function.
 
 const fn = () => {};
@@ -63,7 +70,10 @@ export default () => {};
 `;
 
 exports[` 4`] = `
-"node.addEventListener('click', () => {});
+"Correct
+Options: { "allowExpressions": true }
+
+node.addEventListener('click', () => {});
 
 node.addEventListener('click', function () {});
 
@@ -72,7 +82,10 @@ const foo = arr.map(i => i * i);
 `;
 
 exports[` 5`] = `
-"let arrowFn = () => 'test';
+"Incorrect
+Options: { "allowTypedFunctionExpressions": true }
+
+let arrowFn = () => 'test';
                  ~~ Missing return type on function.
 
 let funcExpr = function () {
@@ -88,7 +101,10 @@ let objectProp = {
 `;
 
 exports[` 6`] = `
-"type FuncType = () => string;
+"Correct
+Options: { "allowTypedFunctionExpressions": true }
+
+type FuncType = () => string;
 
 let arrowFn: FuncType = () => 'test';
 
@@ -125,7 +141,10 @@ functionWithObjectArg({
 `;
 
 exports[` 7`] = `
-"var arrowFn = () => () => {};
+"Incorrect
+Options: { "allowHigherOrderFunctions": true }
+
+var arrowFn = () => () => {};
                        ~~ Missing return type on function.
 
 function fn() {
@@ -136,7 +155,10 @@ function fn() {
 `;
 
 exports[` 8`] = `
-"var arrowFn = () => (): void => {};
+"Correct
+Options: { "allowHigherOrderFunctions": true }
+
+var arrowFn = () => (): void => {};
 
 function fn() {
   return function (): void {};
@@ -145,7 +167,10 @@ function fn() {
 `;
 
 exports[` 9`] = `
-"const func = (value: number) => ({ type: 'X', value }) as any;
+"Incorrect
+Options: { "allowDirectConstAssertionInArrowFunctions": true }
+
+const func = (value: number) => ({ type: 'X', value }) as any;
                              ~~ Missing return type on function.
 const func = (value: number) => ({ type: 'X', value }) as Action;
                              ~~ Missing return type on function.
@@ -153,13 +178,19 @@ const func = (value: number) => ({ type: 'X', value }) as Action;
 `;
 
 exports[` 10`] = `
-"const func = (value: number) => ({ foo: 'bar', value }) as const;
+"Correct
+Options: { "allowDirectConstAssertionInArrowFunctions": true }
+
+const func = (value: number) => ({ foo: 'bar', value }) as const;
 const func = () => x as const;
 "
 `;
 
 exports[` 11`] = `
-"var join = (a: string, b: string) => \`\${a}\${b}\`;
+"Incorrect
+Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
+
+var join = (a: string, b: string) => \`\${a}\${b}\`;
                                   ~~ Missing return type on function.
 
 const log = (message: string) => {
@@ -170,12 +201,18 @@ const log = (message: string) => {
 `;
 
 exports[` 12`] = `
-"var log = (message: string) => void console.log(message);
+"Correct
+Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
+
+var log = (message: string) => void console.log(message);
 "
 `;
 
 exports[` 13`] = `
-"function foo<T>(t: T) {
+"Incorrect
+Options: { "allowFunctionsWithoutTypeParameters": true }
+
+function foo<T>(t: T) {
 ~~~~~~~~~~~~~~~ Missing return type on function.
   return t;
 }
@@ -186,7 +223,10 @@ const bar = <T>(t: T) => t;
 `;
 
 exports[` 14`] = `
-"function foo<T>(t: T): T {
+"Correct
+Options: { "allowFunctionsWithoutTypeParameters": true }
+
+function foo<T>(t: T): T {
   return t;
 }
 
@@ -201,13 +241,19 @@ const allowedArrow = (x: string) => x;
 `;
 
 exports[` 15`] = `
-"var func = () => 'foo';
+"Incorrect
+Options: { "allowIIFEs": true }
+
+var func = () => 'foo';
               ~~ Missing return type on function.
 "
 `;
 
 exports[` 16`] = `
-"var foo = (() => 'foo')();
+"Correct
+Options: { "allowIIFEs": true }
+
+var foo = (() => 'foo')();
 
 var bar = (function () {
   return 'bar';

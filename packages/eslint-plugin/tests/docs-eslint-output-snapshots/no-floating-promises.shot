@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const promise = new Promise((resolve, reject) => resolve('value'));
+"Incorrect
+
+const promise = new Promise((resolve, reject) => resolve('value'));
 promise;
 ~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
 
@@ -23,7 +25,9 @@ Promise.reject('value').finally();
 `;
 
 exports[` 2`] = `
-"const promise = new Promise((resolve, reject) => resolve('value'));
+"Correct
+
+const promise = new Promise((resolve, reject) => resolve('value'));
 await promise;
 
 async function returnsPromise() {
@@ -43,7 +47,9 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 `;
 
 exports[` 3`] = `
-"async function returnsPromise() {
+"Options: { "ignoreVoid": true }
+
+async function returnsPromise() {
   return 'value';
 }
 void returnsPromise();
@@ -53,7 +59,9 @@ void Promise.reject('value');
 `;
 
 exports[` 4`] = `
-"await (async function () {
+"Options: { "ignoreIIFE": true }
+
+await (async function () {
   await res(1);
 })();
 

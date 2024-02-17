@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const x = { foo: 1 } as T;
+"Incorrect
+Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
+
+const x = { foo: 1 } as T;
           ~~~~~~~~~~~~~~~ Always prefer const x: T = { ... }.
 
 function bar() {
@@ -12,7 +15,10 @@ function bar() {
 `;
 
 exports[` 2`] = `
-"const x: T = { foo: 1 };
+"Correct
+Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
+
+const x: T = { foo: 1 };
 const y = { foo: 1 } as any;
 const z = { foo: 1 } as unknown;
 
@@ -23,7 +29,10 @@ function bar(): T {
 `;
 
 exports[` 3`] = `
-"const x = { foo: 1 } as T;
+"Incorrect
+Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
+
+const x = { foo: 1 } as T;
           ~~~~~~~~~~~~~~~ Always prefer const x: T = { ... }.
 
 function bar() {
@@ -34,7 +43,10 @@ function bar() {
 `;
 
 exports[` 4`] = `
-"const x: T = { foo: 1 };
+"Correct
+Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
+
+const x: T = { foo: 1 };
 const y = { foo: 1 } as any;
 const z = { foo: 1 } as unknown;
 bar({ foo: 1 } as T);

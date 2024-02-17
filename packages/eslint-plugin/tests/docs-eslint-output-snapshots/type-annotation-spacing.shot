@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"let foo:string = "bar";
+"Incorrect
+
+let foo:string = "bar";
        ~ Expected a space after the ':'.
 let foo :string = "bar";
         ~ Expected a space after the ':'.
@@ -44,7 +46,9 @@ type Foo = ()=> {};
 `;
 
 exports[` 2`] = `
-"let foo: string = "bar";
+"Correct
+
+let foo: string = "bar";
 
 function foo(): string {}
 
@@ -57,7 +61,10 @@ type Foo = () => {};
 `;
 
 exports[` 3`] = `
-"let foo:string = "bar";
+"Incorrect
+Options: { "before": false, "after": true }
+
+let foo:string = "bar";
        ~ Expected a space after the ':'.
 let foo :string = "bar";
         ~ Expected a space after the ':'.
@@ -100,7 +107,10 @@ type Foo = () => {};
 `;
 
 exports[` 4`] = `
-"let foo: string = "bar";
+"Correct
+Options: { "before": false, "after": true }
+
+let foo: string = "bar";
 
 function foo(): string {}
 
@@ -113,7 +123,10 @@ type Foo = ()=> {};
 `;
 
 exports[` 5`] = `
-"let foo: string = "bar";
+"Incorrect
+Options: { "before": true, "after": true }
+
+let foo: string = "bar";
        ~ Expected a space before the ':'.
 let foo:string = "bar";
        ~ Expected a space after the ':'.
@@ -156,7 +169,10 @@ type Foo = ()=> {};
 `;
 
 exports[` 6`] = `
-"let foo : string = "bar";
+"Correct
+Options: { "before": true, "after": true }
+
+let foo : string = "bar";
 
 function foo() : string {}
 
@@ -169,7 +185,10 @@ type Foo = () => {};
 `;
 
 exports[` 7`] = `
-"let foo: string = "bar";
+"Incorrect
+Options: {"before":false,"after":false,"overrides":{"colon":{"before":true,"after":true}}}
+
+let foo: string = "bar";
        ~ Expected a space before the ':'.
 let foo:string = "bar";
        ~ Expected a space after the ':'.
@@ -212,7 +231,10 @@ type Foo = () => {};
 `;
 
 exports[` 8`] = `
-"let foo : string = "bar";
+"Correct
+Options: {"before":false,"after":false,"overrides":{"colon":{"before":true,"after":true}}}
+
+let foo : string = "bar";
 
 function foo() : string {}
 
@@ -229,7 +251,10 @@ type Foo = ()=>{};
 `;
 
 exports[` 9`] = `
-"let foo: string = "bar";
+"Incorrect
+Options: {"before":false,"after":false,"overrides":{"arrow":{"before":true,"after":true}}}
+
+let foo: string = "bar";
        ~ Unexpected space after the ':'.
 let foo : string = "bar";
         ~ Unexpected space after the ':'.
@@ -270,7 +295,10 @@ type Foo = ()=> {};
 `;
 
 exports[` 10`] = `
-"let foo:string = "bar";
+"Correct
+Options: {"before":false,"after":false,"overrides":{"arrow":{"before":true,"after":true}}}
+
+let foo:string = "bar";
 
 function foo():string {}
 

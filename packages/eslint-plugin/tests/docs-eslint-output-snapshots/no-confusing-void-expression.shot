@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// somebody forgot that \`alert\` doesn't return anything
+"Incorrect
+
+// somebody forgot that \`alert\` doesn't return anything
 const response = alert('Are you sure?');
 console.log(alert('Are you sure?'));
 
@@ -21,7 +23,9 @@ function doSomething() {
 `;
 
 exports[` 2`] = `
-"// just a regular void function in a statement position
+"Correct
+
+// just a regular void function in a statement position
 alert('Hello, world!');
 
 // this function returns a boolean value so it's ok
@@ -51,12 +55,16 @@ cond ? console.log('true') : console.error('false');
 `;
 
 exports[` 3`] = `
-"promise.then(value => window.postMessage(value));
+"Options: { "ignoreArrowShorthand": true }
+
+promise.then(value => window.postMessage(value));
 "
 `;
 
 exports[` 4`] = `
-"// now it's obvious that we don't expect any response
+"Options: { "ignoreVoidOperator": true }
+
+// now it's obvious that we don't expect any response
 promise.then(value => void window.postMessage(value));
 
 // now it's explicit that we don't want to return anything

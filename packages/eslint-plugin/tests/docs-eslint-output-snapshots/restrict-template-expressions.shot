@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const arg1 = [1, 2];
+"Incorrect
+
+const arg1 = [1, 2];
 const msg1 = \`arg1 = \${arg1}\`;
                        ~~~~ Invalid type "number[]" of template literal expression.
 
@@ -12,7 +14,9 @@ const msg2 = \`arg2 = \${arg2 || null}\`;
 `;
 
 exports[` 2`] = `
-"const arg = 'foo';
+"Correct
+
+const arg = 'foo';
 const msg1 = \`arg = \${arg}\`;
 const msg2 = \`arg = \${arg || 'default'}\`;
 
@@ -22,46 +26,60 @@ const msg3 = \`stringWithKindProp = \${stringWithKindProp}\`;
 `;
 
 exports[` 3`] = `
-"const arg = 123;
+"Options: { "allowNumber": true }
+
+const arg = 123;
 const msg1 = \`arg = \${arg}\`;
 const msg2 = \`arg = \${arg || 'zero'}\`;
 "
 `;
 
 exports[` 4`] = `
-"const arg = true;
+"Options: { "allowBoolean": true }
+
+const arg = true;
 const msg1 = \`arg = \${arg}\`;
 const msg2 = \`arg = \${arg || 'not truthy'}\`;
 "
 `;
 
 exports[` 5`] = `
-"const user = JSON.parse('{ "name": "foo" }');
+"Options: { "allowAny": true }
+
+const user = JSON.parse('{ "name": "foo" }');
 const msg1 = \`arg = \${user.name}\`;
 const msg2 = \`arg = \${user.name || 'the user with no name'}\`;
 "
 `;
 
 exports[` 6`] = `
-"const arg = condition ? 'ok' : null;
+"Options: { "allowNullish": true }
+
+const arg = condition ? 'ok' : null;
 const msg1 = \`arg = \${arg}\`;
 "
 `;
 
 exports[` 7`] = `
-"const arg = new RegExp('foo');
+"Options: { "allowRegExp": true }
+
+const arg = new RegExp('foo');
 const msg1 = \`arg = \${arg}\`;
 "
 `;
 
 exports[` 8`] = `
-"const arg = /foo/;
+"Options: { "allowRegExp": true }
+
+const arg = /foo/;
 const msg1 = \`arg = \${arg}\`;
 "
 `;
 
 exports[` 9`] = `
-"const arg = 'something';
+"Options: { "allowNever": true }
+
+const arg = 'something';
 const msg1 = typeof arg === 'string' ? arg : \`arg = \${arg}\`;
 "
 `;

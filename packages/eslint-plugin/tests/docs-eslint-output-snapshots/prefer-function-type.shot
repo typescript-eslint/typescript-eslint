@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface Example {
+"Incorrect
+
+interface Example {
   (): string;
   ~~~~~~~~~~~ Interface only has a call signature, you should use a function type instead.
 }
@@ -9,7 +11,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"function foo(example: { (): number }): number {
+"Incorrect
+
+function foo(example: { (): number }): number {
                         ~~~~~~~~~~ Type literal only has a call signature, you should use a function type instead.
   return example();
 }
@@ -17,7 +21,9 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"interface ReturnsSelf {
+"Incorrect
+
+interface ReturnsSelf {
   // returns the function itself, not the \`this\` argument.
   (arg: string): this;
                  ~~~~ \`this\` refers to the function type 'ReturnsSelf', did you intend to use a generic \`this\` parameter like \`<Self>(this: Self, ...) => Self\` instead?
@@ -26,32 +32,42 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"type Example = () => string;
+"Correct
+
+type Example = () => string;
 "
 `;
 
 exports[` 5`] = `
-"function foo(example: () => number): number {
+"Correct
+
+function foo(example: () => number): number {
   return bar();
 }
 "
 `;
 
 exports[` 6`] = `
-"// returns the function itself, not the \`this\` argument.
+"Correct
+
+// returns the function itself, not the \`this\` argument.
 type ReturnsSelf = (arg: string) => ReturnsSelf;
 "
 `;
 
 exports[` 7`] = `
-"function foo(bar: { (): string; baz: number }): string {
+"Correct
+
+function foo(bar: { (): string; baz: number }): string {
   return bar();
 }
 "
 `;
 
 exports[` 8`] = `
-"interface Foo {
+"Correct
+
+interface Foo {
   bar: string;
 }
 interface Bar extends Foo {
@@ -61,7 +77,9 @@ interface Bar extends Foo {
 `;
 
 exports[` 9`] = `
-"// multiple call signatures (overloads) is allowed:
+"Correct
+
+// multiple call signatures (overloads) is allowed:
 interface Overloaded {
   (data: string): number;
   (id: number): string;

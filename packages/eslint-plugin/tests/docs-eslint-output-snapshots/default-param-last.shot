@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"function f(a = 0, b: number) {}
+"Incorrect
+
+function f(a = 0, b: number) {}
            ~~~~~ Default parameters should be last.
 function f(a: number, b = 0, c: number) {}
                       ~~~~~ Default parameters should be last.
@@ -25,7 +27,9 @@ class Foo {
 `;
 
 exports[` 2`] = `
-"function f(a = 0) {}
+"Correct
+
+function f(a = 0) {}
 function f(a: number, b = 0) {}
 function f(a: number, b?: number) {}
 function f(a: number, b?: number, c = 0) {}

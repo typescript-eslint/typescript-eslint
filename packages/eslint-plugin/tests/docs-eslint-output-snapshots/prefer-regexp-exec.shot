@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"'something'.match(/thing/);
+"Incorrect
+
+'something'.match(/thing/);
             ~~~~~ Use the \`RegExp#exec()\` method instead.
 
 'some things are just things'.match(/thing/);
@@ -15,7 +17,9 @@ text.match(search);
 `;
 
 exports[` 2`] = `
-"/thing/.exec('something');
+"Correct
+
+/thing/.exec('something');
 
 'some things are just things'.match(/thing/g);
 

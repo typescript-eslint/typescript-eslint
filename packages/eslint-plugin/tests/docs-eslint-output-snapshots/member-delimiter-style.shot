@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// missing semicolon delimiter
+"Incorrect
+
+// missing semicolon delimiter
 interface Foo {
     name: string
                 ~ Expected a semicolon.
@@ -35,7 +37,9 @@ type FooBar = { name: string; greet(): string; }
 `;
 
 exports[` 2`] = `
-"interface Foo {
+"Correct
+
+interface Foo {
     name: string;
     greet(): string;
 }

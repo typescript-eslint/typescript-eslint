@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface T1 {
+"Incorrect
+Options: "property"
+
+interface T1 {
   func(arg: string): number;
   ~~~~~~~~~~~~~~~~~~~~~~~~~~ Shorthand method signature is forbidden. Use a function property instead.
 }
@@ -21,7 +24,10 @@ interface T3 {
 `;
 
 exports[` 2`] = `
-"interface T1 {
+"Correct
+Options: "property"
+
+interface T1 {
   func: (arg: string) => number;
 }
 type T2 = {
@@ -37,7 +43,10 @@ interface T3 {
 `;
 
 exports[` 3`] = `
-"interface T1 {
+"Incorrect
+Options: "method"
+
+interface T1 {
   func: (arg: string) => number;
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Function property signature is forbidden. Use a method shorthand instead.
 }
@@ -49,7 +58,10 @@ type T2 = {
 `;
 
 exports[` 4`] = `
-"interface T1 {
+"Correct
+Options: "method"
+
+interface T1 {
   func(arg: string): number;
 }
 type T2 = {

@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface Foo {
+"Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+interface Foo {
   B: string; // -> field
 
   new (); // -> constructor
@@ -17,7 +20,10 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"type Foo = {
+"Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
   B: string; // -> field
 
   // no constructor
@@ -31,7 +37,10 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"class Foo {
+"Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+class Foo {
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -51,7 +60,10 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"const Foo = class {
+"Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+const Foo = class {
   private C: string; // -> field
   public D: string; // -> field
 
@@ -72,7 +84,10 @@ exports[` 4`] = `
 `;
 
 exports[` 5`] = `
-"interface Foo {
+"Correct
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+interface Foo {
   [Z: string]: any; // -> signature
 
   A(): void; // -> method
@@ -85,7 +100,10 @@ exports[` 5`] = `
 `;
 
 exports[` 6`] = `
-"type Foo = {
+"Correct
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
   // no signature
 
   A(): void; // -> method
@@ -98,7 +116,10 @@ exports[` 6`] = `
 `;
 
 exports[` 7`] = `
-"class Foo {
+"Correct
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+class Foo {
   [Z: string]: any; // -> signature
 
   public static A(): void {} // -> method
@@ -114,7 +135,10 @@ exports[` 7`] = `
 `;
 
 exports[` 8`] = `
-"const Foo = class {
+"Correct
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+const Foo = class {
   [Z: string]: any; // -> signature
 
   public static A(): void {} // -> method
@@ -130,7 +154,10 @@ exports[` 8`] = `
 `;
 
 exports[` 9`] = `
-"class Foo {
+"Incorrect
+Options: { "default": ["public-instance-method", "public-static-field"] }
+
+class Foo {
   private C: string; // (irrelevant)
 
   public D: string; // (irrelevant)
@@ -150,7 +177,10 @@ exports[` 9`] = `
 `;
 
 exports[` 10`] = `
-"const Foo = class {
+"Incorrect
+Options: { "default": ["public-instance-method", "public-static-field"] }
+
+const Foo = class {
   private C: string; // (irrelevant)
 
   [Z: string]: any; // (irrelevant)
@@ -170,7 +200,10 @@ exports[` 10`] = `
 `;
 
 exports[` 11`] = `
-"class Foo {
+"Correct
+Options: { "default": ["public-instance-method", "public-static-field"] }
+
+class Foo {
   public B(): void {} // -> public instance method
 
   private C: string; // (irrelevant)
@@ -189,7 +222,10 @@ exports[` 11`] = `
 `;
 
 exports[` 12`] = `
-"const Foo = class {
+"Correct
+Options: { "default": ["public-instance-method", "public-static-field"] }
+
+const Foo = class {
   public B(): void {} // -> public instance method
 
   private C: string; // (irrelevant)
@@ -208,7 +244,10 @@ exports[` 12`] = `
 `;
 
 exports[` 13`] = `
-"class Foo {
+"Incorrect
+Options: { "default": ["public-static-field", "static-field", "instance-field"] }
+
+class Foo {
   private E: string; // -> instance field
 
   private static B: string; // -> static field
@@ -227,7 +266,10 @@ exports[` 13`] = `
 `;
 
 exports[` 14`] = `
-"const foo = class {
+"Incorrect
+Options: { "default": ["public-static-field", "static-field", "instance-field"] }
+
+const foo = class {
   public T(): void {} // method (irrelevant)
 
   private static B: string; // -> static field
@@ -250,7 +292,10 @@ exports[` 14`] = `
 `;
 
 exports[` 15`] = `
-"class Foo {
+"Correct
+Options: { "default": ["public-static-field", "static-field", "instance-field"] }
+
+class Foo {
   public static A: string; // -> public static field
 
   private static B: string; // -> static field
@@ -265,7 +310,10 @@ exports[` 15`] = `
 `;
 
 exports[` 16`] = `
-"const foo = class {
+"Correct
+Options: { "default": ["public-static-field", "static-field", "instance-field"] }
+
+const foo = class {
   [Z: string]: any; // -> signature (irrelevant)
 
   public static A: string; // -> public static field
@@ -284,7 +332,10 @@ exports[` 16`] = `
 `;
 
 exports[` 17`] = `
-"class Foo {
+"Incorrect
+Options: { "classes": ["method", "constructor", "field"] }
+
+class Foo {
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -301,7 +352,10 @@ exports[` 17`] = `
 `;
 
 exports[` 18`] = `
-"class Foo {
+"Correct
+Options: { "classes": ["method", "constructor", "field"] }
+
+class Foo {
   public static A(): void {} // -> method
   public B(): void {} // -> method
 
@@ -315,7 +369,10 @@ exports[` 18`] = `
 `;
 
 exports[` 19`] = `
-"const foo = class {
+"Incorrect
+Options: { "classExpressions": ["method", "constructor", "field"] }
+
+const foo = class {
   private C: string; // -> field
   public D: string; // -> field
   protected static E: string; // -> field
@@ -332,7 +389,10 @@ exports[` 19`] = `
 `;
 
 exports[` 20`] = `
-"const foo = class {
+"Correct
+Options: { "classExpressions": ["method", "constructor", "field"] }
+
+const foo = class {
   public static A(): void {} // -> method
   public B(): void {} // -> method
 
@@ -346,7 +406,10 @@ exports[` 20`] = `
 `;
 
 exports[` 21`] = `
-"interface Foo {
+"Incorrect
+Options: { "interfaces": ["signature", "method", "constructor", "field"] }
+
+interface Foo {
   B: string; // -> field
 
   new (); // -> constructor
@@ -362,7 +425,10 @@ exports[` 21`] = `
 `;
 
 exports[` 22`] = `
-"interface Foo {
+"Correct
+Options: { "interfaces": ["signature", "method", "constructor", "field"] }
+
+interface Foo {
   [Z: string]: any; // -> signature
 
   A(): void; // -> method
@@ -375,7 +441,10 @@ exports[` 22`] = `
 `;
 
 exports[` 23`] = `
-"type Foo = {
+"Incorrect
+Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
   B: string; // -> field
 
   A(): void; // -> method
@@ -391,7 +460,10 @@ exports[` 23`] = `
 `;
 
 exports[` 24`] = `
-"type Foo = {
+"Correct
+Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
   [Z: string]: any; // -> signature
 
   A(): void; // -> method
@@ -404,7 +476,10 @@ exports[` 24`] = `
 `;
 
 exports[` 25`] = `
-"interface Foo {
+"Incorrect
+Options: {"default":{"order":"alphabetically"}}
+
+interface Foo {
   a: x;
   B: x;
   ~~~~~ Member B should be declared before member a.
@@ -418,7 +493,10 @@ exports[` 25`] = `
 `;
 
 exports[` 26`] = `
-"interface Foo {
+"Correct
+Options: {"default":{"order":"alphabetically"}}
+
+interface Foo {
   B: x;
   a: x;
   c: x;
@@ -431,7 +509,10 @@ exports[` 26`] = `
 `;
 
 exports[` 27`] = `
-"interface Foo {
+"Incorrect
+Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
+
+interface Foo {
   B(): void;
   c(): void;
   a(): void;
@@ -445,7 +526,10 @@ exports[` 27`] = `
 `;
 
 exports[` 28`] = `
-"interface Foo {
+"Correct
+Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
+
+interface Foo {
   B(): void;
   a(): void;
   c(): void;
@@ -458,7 +542,10 @@ exports[` 28`] = `
 `;
 
 exports[` 29`] = `
-"interface Foo {
+"Incorrect
+Options: {"default":{"order":"alphabetically-case-insensitive"}}
+
+interface Foo {
   B: x;
   a: x;
   ~~~~~ Member a should be declared before member B.
@@ -472,7 +559,10 @@ exports[` 29`] = `
 `;
 
 exports[` 30`] = `
-"interface Foo {
+"Correct
+Options: {"default":{"order":"alphabetically-case-insensitive"}}
+
+interface Foo {
   a: x;
   B: x;
   c: x;
@@ -485,7 +575,10 @@ exports[` 30`] = `
 `;
 
 exports[` 31`] = `
-"interface Foo {
+"Incorrect
+Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
+
+interface Foo {
   b(): void;
   a: boolean;
   ~~~~~~~~~~~ Member a should be declared before member b.
@@ -499,7 +592,10 @@ exports[` 31`] = `
 `;
 
 exports[` 32`] = `
-"interface Foo {
+"Correct
+Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
+
+interface Foo {
   [a: string]: number;
   a: boolean;
   b(): void;
@@ -511,7 +607,10 @@ exports[` 32`] = `
 `;
 
 exports[` 33`] = `
-"interface Foo {
+"Incorrect
+Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
+
+interface Foo {
   a: boolean;
   ~~~~~~~~~~~ Member a should be declared after all optional members.
   b?: number;
@@ -521,7 +620,10 @@ exports[` 33`] = `
 `;
 
 exports[` 34`] = `
-"interface Foo {
+"Correct
+Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
+
+interface Foo {
   b?: number;
   a: boolean;
   c: string;
@@ -530,7 +632,10 @@ exports[` 34`] = `
 `;
 
 exports[` 35`] = `
-"interface Foo {
+"Incorrect
+Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
+
+interface Foo {
   a: boolean;
   b?: number;
   ~~~~~~~~~~~ Member b should be declared after all required members.
@@ -540,7 +645,10 @@ exports[` 35`] = `
 `;
 
 exports[` 36`] = `
-"interface Foo {
+"Correct
+Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
+
+interface Foo {
   a: boolean;
   c: string;
   b?: number;

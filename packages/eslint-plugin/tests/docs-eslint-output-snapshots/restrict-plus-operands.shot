@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"let foo = 1n + 1;
+"Incorrect
+
+let foo = 1n + 1;
           ~~~~~~ Numeric '+' operations must either be both bigints or both numbers. Got \`bigint\` + \`number\`.
 let fn = (a: string, b: never) => a + b;
                                       ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
@@ -9,13 +11,18 @@ let fn = (a: string, b: never) => a + b;
 `;
 
 exports[` 2`] = `
-"let foo = 1n + 1n;
+"Correct
+
+let foo = 1n + 1n;
 let fn = (a: string, b: string) => a + b;
 "
 `;
 
 exports[` 3`] = `
-"let fn = (a: number, b: []) => a + b;
+"Incorrect
+Options: { "allowAny": true }
+
+let fn = (a: number, b: []) => a + b;
                                    ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`[]\`.
 let fn = (a: string, b: []) => a + b;
                                    ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`[]\`.
@@ -23,13 +30,19 @@ let fn = (a: string, b: []) => a + b;
 `;
 
 exports[` 4`] = `
-"let fn = (a: number, b: any) => a + b;
+"Correct
+Options: { "allowAny": true }
+
+let fn = (a: number, b: any) => a + b;
 let fn = (a: string, b: any) => a + b;
 "
 `;
 
 exports[` 5`] = `
-"let fn = (a: number, b: unknown) => a + b;
+"Incorrect
+Options: { "allowBoolean": true }
+
+let fn = (a: number, b: unknown) => a + b;
                                         ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
 let fn = (a: string, b: unknown) => a + b;
                                         ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
@@ -37,13 +50,19 @@ let fn = (a: string, b: unknown) => a + b;
 `;
 
 exports[` 6`] = `
-"let fn = (a: number, b: boolean) => a + b;
+"Correct
+Options: { "allowBoolean": true }
+
+let fn = (a: number, b: boolean) => a + b;
 let fn = (a: string, b: boolean) => a + b;
 "
 `;
 
 exports[` 7`] = `
-"let fn = (a: number, b: unknown) => a + b;
+"Incorrect
+Options: { "allowNullish": true }
+
+let fn = (a: number, b: unknown) => a + b;
                                         ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
 let fn = (a: number, b: never) => a + b;
                                       ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
@@ -55,7 +74,10 @@ let fn = (a: string, b: never) => a + b;
 `;
 
 exports[` 8`] = `
-"let fn = (a: number, b: undefined) => a + b;
+"Correct
+Options: { "allowNullish": true }
+
+let fn = (a: number, b: undefined) => a + b;
 let fn = (a: number, b: null) => a + b;
 let fn = (a: string, b: undefined) => a + b;
 let fn = (a: string, b: null) => a + b;
@@ -63,7 +85,10 @@ let fn = (a: string, b: null) => a + b;
 `;
 
 exports[` 9`] = `
-"let fn = (a: number, b: unknown) => a + b;
+"Incorrect
+Options: { "allowNumberAndString": true }
+
+let fn = (a: number, b: unknown) => a + b;
                                         ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
 let fn = (a: number, b: never) => a + b;
                                       ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
@@ -71,24 +96,36 @@ let fn = (a: number, b: never) => a + b;
 `;
 
 exports[` 10`] = `
-"let fn = (a: number, b: string) => a + b;
+"Correct
+Options: { "allowNumberAndString": true }
+
+let fn = (a: number, b: string) => a + b;
 let fn = (a: number, b: number | string) => a + b;
 "
 `;
 
 exports[` 11`] = `
-"let fn = (a: number, b: RegExp) => a + b;
+"Incorrect
+Options: { "allowRegExp": true }
+
+let fn = (a: number, b: RegExp) => a + b;
                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`RegExp\`.
 "
 `;
 
 exports[` 12`] = `
-"let fn = (a: string, b: RegExp) => a + b;
+"Correct
+Options: { "allowRegExp": true }
+
+let fn = (a: string, b: RegExp) => a + b;
 "
 `;
 
 exports[` 13`] = `
-"let foo: bigint = 0n;
+"Incorrect
+Options: { "skipCompoundAssignments": false }
+
+let foo: bigint = 0n;
 foo += 1;
 ~~~~~~~~ Numeric '+' operations must either be both bigints or both numbers. Got \`bigint\` + \`number\`.
 
@@ -99,7 +136,10 @@ bar += 1;
 `;
 
 exports[` 14`] = `
-"let foo: bigint = 0n;
+"Correct
+Options: { "skipCompoundAssignments": false }
+
+let foo: bigint = 0n;
 foo += 1n;
 
 let bar: number = 1;

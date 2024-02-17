@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const value: number = Math.floor(Math.random() * 3);
+"Options: { "requireDefaultForNonUnion": true }
+
+const value: number = Math.floor(Math.random() * 3);
 
 switch (value) {
         ~~~~~ Switch is not exhaustive. Cases not matched: default
@@ -14,7 +16,9 @@ switch (value) {
 `;
 
 exports[` 2`] = `
-"type Day =
+"Incorrect
+
+type Day =
   | 'Monday'
   | 'Tuesday'
   | 'Wednesday'
@@ -36,7 +40,9 @@ switch (day) {
 `;
 
 exports[` 3`] = `
-"type Day =
+"Correct
+
+type Day =
   | 'Monday'
   | 'Tuesday'
   | 'Wednesday'
@@ -75,7 +81,9 @@ switch (day) {
 `;
 
 exports[` 4`] = `
-"type Day =
+"Correct
+
+type Day =
   | 'Monday'
   | 'Tuesday'
   | 'Wednesday'
@@ -98,7 +106,9 @@ switch (day) {
 `;
 
 exports[` 5`] = `
-"enum Fruit {
+"Incorrect
+
+enum Fruit {
   Apple,
   Banana,
   Cherry,
@@ -116,7 +126,9 @@ switch (fruit) {
 `;
 
 exports[` 6`] = `
-"enum Fruit {
+"Correct
+
+enum Fruit {
   Apple,
   Banana,
   Cherry,
@@ -141,7 +153,9 @@ switch (fruit) {
 `;
 
 exports[` 7`] = `
-"enum Fruit {
+"Correct
+
+enum Fruit {
   Apple,
   Banana,
   Cherry,

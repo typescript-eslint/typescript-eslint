@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"var foo = require('foo');
+"Incorrect
+
+var foo = require('foo');
           ~~~~~~~~~~~~~~ Require statement not part of import statement.
 const foo = require('foo');
             ~~~~~~~~~~~~~~ Require statement not part of import statement.
@@ -11,19 +13,27 @@ let foo = require('foo');
 `;
 
 exports[` 2`] = `
-"import foo = require('foo');
+"Correct
+
+import foo = require('foo');
 require('foo');
 import foo from 'foo';
 "
 `;
 
 exports[` 3`] = `
-"const foo = require('../data.json');
+"Incorrect
+Options: { "allow": ["/package.json$"] }
+
+const foo = require('../data.json');
             ~~~~~~~~~~~~~~~~~~~~~~~ Require statement not part of import statement.
 "
 `;
 
 exports[` 4`] = `
-"const foo = require('../package.json');
+"Correct
+Options: { "allow": ["/package.json$"] }
+
+const foo = require('../package.json');
 "
 `;

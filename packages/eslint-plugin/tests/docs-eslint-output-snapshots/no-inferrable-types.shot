@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const a: bigint = 10n;
+"Incorrect
+
+const a: bigint = 10n;
       ~~~~~~~~~~~~~~~ Type bigint trivially inferred from a bigint literal, remove type annotation.
 const a: bigint = BigInt(10);
       ~~~~~~~~~~~~~~~~~~~~~~ Type bigint trivially inferred from a bigint literal, remove type annotation.
@@ -48,7 +50,9 @@ function fn(a: number = 5, b: boolean = true) {}
 `;
 
 exports[` 2`] = `
-"const a = 10n;
+"Correct
+
+const a = 10n;
 const a = BigInt(10);
 const a = !0;
 const a = Boolean(null);
@@ -75,14 +79,18 @@ function fn(a = 5, b = true) {}
 `;
 
 exports[` 3`] = `
-"function foo(a: number = 5, b: boolean = true) {
+"Options: { "ignoreParameters": true }
+
+function foo(a: number = 5, b: boolean = true) {
   // ...
 }
 "
 `;
 
 exports[` 4`] = `
-"class Foo {
+"Options: { "ignoreProperties": true }
+
+class Foo {
   prop: number = 5;
 }
 "

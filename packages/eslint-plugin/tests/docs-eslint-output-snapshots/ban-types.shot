@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// use lower-case primitives for consistency
+"Incorrect
+
+// use lower-case primitives for consistency
 const str: String = 'foo';
            ~~~~~~ Don't use \`String\` as a type. Use string instead
 const bool: Boolean = true;
@@ -48,7 +50,9 @@ const curly2: {} = { a: 'string' };
 `;
 
 exports[` 2`] = `
-"// use lower-case primitives for consistency
+"Correct
+
+// use lower-case primitives for consistency
 const str: string = 'foo';
 const bool: boolean = true;
 const num: number = 1;

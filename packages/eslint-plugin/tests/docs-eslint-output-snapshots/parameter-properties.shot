@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class Foo {
+"Incorrect
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -39,14 +41,19 @@ class Foo {
 `;
 
 exports[` 2`] = `
-"class Foo {
+"Correct
+
+class Foo {
   constructor(name: string) {}
 }
 "
 `;
 
 exports[` 3`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["readonly"] }
+
+class Foo {
   constructor(private name: string) {}
               ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -79,7 +86,10 @@ class Foo {
 `;
 
 exports[` 4`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["readonly"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -90,7 +100,10 @@ class Foo {
 `;
 
 exports[` 5`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["private"] }
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -123,7 +136,10 @@ class Foo {
 `;
 
 exports[` 6`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["private"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -134,7 +150,10 @@ class Foo {
 `;
 
 exports[` 7`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["protected"] }
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -167,7 +186,10 @@ class Foo {
 `;
 
 exports[` 8`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["protected"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -178,7 +200,10 @@ class Foo {
 `;
 
 exports[` 9`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["public"] }
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -211,7 +236,10 @@ class Foo {
 `;
 
 exports[` 10`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["public"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -222,7 +250,10 @@ class Foo {
 `;
 
 exports[` 11`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["private readonly"] }
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -255,7 +286,10 @@ class Foo {
 `;
 
 exports[` 12`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["private readonly"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -266,7 +300,10 @@ class Foo {
 `;
 
 exports[` 13`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["protected readonly"] }
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -299,7 +336,10 @@ class Foo {
 `;
 
 exports[` 14`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["protected readonly"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -310,7 +350,10 @@ class Foo {
 `;
 
 exports[` 15`] = `
-"class Foo {
+"Incorrect
+Options: { "allow": ["public readonly"] }
+
+class Foo {
   constructor(readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
@@ -343,7 +386,10 @@ class Foo {
 `;
 
 exports[` 16`] = `
-"class Foo {
+"Correct
+Options: { "allow": ["public readonly"] }
+
+class Foo {
   constructor(name: string) {}
 }
 
@@ -354,7 +400,10 @@ class Foo {
 `;
 
 exports[` 17`] = `
-"class Foo {
+"Incorrect
+Options: { "prefer": "parameter-property" }
+
+class Foo {
   private name: string;
   ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
   constructor(name: string) {
@@ -381,7 +430,10 @@ class Foo {
 `;
 
 exports[` 18`] = `
-"class Foo {
+"Correct
+Options: { "prefer": "parameter-property" }
+
+class Foo {
   private differentName: string;
   constructor(name: string) {
     this.differentName = name;

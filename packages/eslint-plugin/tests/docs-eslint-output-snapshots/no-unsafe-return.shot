@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"function foo1() {
+"Incorrect
+
+function foo1() {
   return 1 as any;
   ~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
 }
@@ -54,7 +56,9 @@ const assignability2: TAssign = () => new Set<any>([true]);
 `;
 
 exports[` 2`] = `
-"function foo1() {
+"Correct
+
+function foo1() {
   return 1;
 }
 function foo2() {
@@ -73,7 +77,9 @@ const assignability2: TAssign = () => new Set(['foo']);
 `;
 
 exports[` 3`] = `
-"function foo1(): unknown {
+"
+
+function foo1(): unknown {
   return JSON.parse(singleObjString); // Return type for JSON.parse is any.
 }
 

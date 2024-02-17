@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"enum A {
+"Incorrect
+
+enum A {
   B,
   C = A.B,
       ~ Qualifier is unnecessary since 'B' is in scope.
@@ -10,7 +12,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"namespace A {
+"Incorrect
+
+namespace A {
   export type B = number;
   const x: A.B = 3;
            ~ Qualifier is unnecessary since 'B' is in scope.
@@ -19,7 +23,9 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"enum A {
+"Correct
+
+enum A {
   B,
   C = B,
 }
@@ -27,7 +33,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"namespace A {
+"Correct
+
+namespace A {
   export type B = number;
   const x: B = 3;
 }

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// @ts-ignore
+"Incorrect
+
+// @ts-ignore
 ~~~~~~~~~~~~~ Use "@ts-expect-error" to ensure an error is actually being suppressed.
 const str: string = 1;
 
@@ -28,7 +30,9 @@ const isOptionEnabled = (key: string): boolean => {
 `;
 
 exports[` 2`] = `
-"// @ts-expect-error
+"Correct
+
+// @ts-expect-error
 const str: string = 1;
 
 /**

@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class Mx {
+"Incorrect
+Options: "fields"
+
+class Mx {
   public static get myField1() {
                     ~~~~~~~~ Literals should be exposed using readonly fields.
     return 1;
@@ -16,7 +19,10 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"class Mx {
+"Correct
+Options: "fields"
+
+class Mx {
   public readonly myField1 = 1;
 
   // not a literal
@@ -32,7 +38,10 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"class Mx {
+"Incorrect
+Options: "getters"
+
+class Mx {
   readonly myField1 = 1;
            ~~~~~~~~ Literals should be exposed using getters.
   readonly myField2 = \`hello world\`;
@@ -44,7 +53,10 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"class Mx {
+"Correct
+Options: "getters"
+
+class Mx {
   // no readonly modifier
   public myField1 = 'hello';
 

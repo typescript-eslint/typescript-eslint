@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const ab1 = \`\${'a'}\${'b'}\`;
+"Incorrect
+
+const ab1 = \`\${'a'}\${'b'}\`;
                ~~~ Template literal expression is unnecessary and can be simplified.
                      ~~~ Template literal expression is unnecessary and can be simplified.
 const ab2 = \`a\${'b'}\`;
@@ -26,7 +28,9 @@ const wrappedIntersection = \`\${intersectionWithString}\`;
 `;
 
 exports[` 2`] = `
-"const ab1 = 'ab';
+"Correct
+
+const ab1 = 'ab';
 const ab2 = 'ab';
 
 const stringWithNumber = \`1 + 1 = 2\`;

@@ -1,31 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"function x(x: number): void;
+"Incorrect
+
+function x(x: number): void;
 function x(x: string): void;
            ~~~~~~~~~ These overloads can be combined into one signature taking \`number | string\`.
 "
 `;
 
 exports[` 2`] = `
-"function y(): void;
+"Incorrect
+
+function y(): void;
 function y(...x: number[]): void;
            ~~~~~~~~~~~~~~ These overloads can be combined into one signature with a rest parameter.
 "
 `;
 
 exports[` 3`] = `
-"function x(x: number | string): void;
+"Correct
+
+function x(x: number | string): void;
 "
 `;
 
 exports[` 4`] = `
-"function y(...x: number[]): void;
+"Correct
+
+function y(...x: number[]): void;
 "
 `;
 
 exports[` 5`] = `
-"// This rule won't check overload signatures with different rest parameter types.
+"Correct
+
+// This rule won't check overload signatures with different rest parameter types.
 // See https://github.com/microsoft/TypeScript/issues/5077
 function f(...a: number[]): void;
 function f(...a: string[]): void;
@@ -33,14 +43,20 @@ function f(...a: string[]): void;
 `;
 
 exports[` 6`] = `
-"function f(a: number): void;
+"Incorrect
+Options: { "ignoreDifferentlyNamedParameters": true }
+
+function f(a: number): void;
 function f(a: string): void;
            ~~~~~~~~~ These overloads can be combined into one signature taking \`number | string\`.
 "
 `;
 
 exports[` 7`] = `
-"function f(a: number): void;
+"Correct
+Options: { "ignoreDifferentlyNamedParameters": true }
+
+function f(a: number): void;
 function f(b: string): void;
 "
 `;

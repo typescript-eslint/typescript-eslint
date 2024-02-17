@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface Foo {
+"Incorrect
+
+interface Foo {
   bar?: string;
   num?: number;
 }
@@ -15,7 +17,9 @@ const isEqualsNum = 1 + foo.num! == 2;
 `;
 
 exports[` 2`] = `
-"interface Foo {
+"Correct
+
+interface Foo {
   bar?: string;
   num?: number;
 }

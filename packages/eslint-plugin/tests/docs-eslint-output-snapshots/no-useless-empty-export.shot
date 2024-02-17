@@ -1,25 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"export const value = 'Hello, world!';
+"Incorrect
+
+export const value = 'Hello, world!';
 export {};
 ~~~~~~~~~~ Empty export does nothing and can be removed.
 "
 `;
 
 exports[` 2`] = `
-"import 'some-other-module';
+"Incorrect
+
+import 'some-other-module';
 export {};
 ~~~~~~~~~~ Empty export does nothing and can be removed.
 "
 `;
 
 exports[` 3`] = `
-"export const value = 'Hello, world!';
+"Correct
+
+export const value = 'Hello, world!';
 "
 `;
 
 exports[` 4`] = `
-"import 'some-other-module';
+"Correct
+
+import 'some-other-module';
 "
 `;

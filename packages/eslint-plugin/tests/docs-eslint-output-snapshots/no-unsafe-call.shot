@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare const anyVar: any;
+"Incorrect
+
+declare const anyVar: any;
 declare const nestedAny: { prop: any };
 
 anyVar();
@@ -27,7 +29,9 @@ nestedAny.prop\`foo\`;
 `;
 
 exports[` 2`] = `
-"declare const typedVar: () => void;
+"Correct
+
+declare const typedVar: () => void;
 declare const typedNested: { prop: { a: () => void } };
 
 typedVar();

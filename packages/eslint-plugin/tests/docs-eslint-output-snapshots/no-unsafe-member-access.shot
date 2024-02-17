@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"declare const anyVar: any;
+"Incorrect
+
+declare const anyVar: any;
 declare const nestedAny: { prop: any };
 
 anyVar.a;
@@ -32,7 +34,9 @@ nestedAny[anyVar];
 `;
 
 exports[` 2`] = `
-"declare const properlyTyped: { prop: { a: string } };
+"Correct
+
+declare const properlyTyped: { prop: { a: string } };
 
 properlyTyped.prop.a;
 properlyTyped.prop['a'];

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"import { type A } from 'mod';
+"Incorrect
+
+import { type A } from 'mod';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
 import { type A as AA } from 'mod';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
@@ -13,7 +15,9 @@ import { type A as AA, type B as BB } from 'mod';
 `;
 
 exports[` 2`] = `
-"import type { A } from 'mod';
+"Correct
+
+import type { A } from 'mod';
 import type { A as AA } from 'mod';
 import type { A, B } from 'mod';
 import type { A as AA, B as BB } from 'mod';

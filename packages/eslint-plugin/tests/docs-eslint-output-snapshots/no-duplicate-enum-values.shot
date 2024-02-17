@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"enum E {
+"Incorrect
+
+enum E {
   A = 0,
   B = 0,
   ~~~~~ Duplicate enum member value 0.
@@ -10,7 +12,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"enum E {
+"Incorrect
+
+enum E {
   A = 'A',
   B = 'A',
   ~~~~~~~ Duplicate enum member value A.
@@ -19,7 +23,9 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"enum E {
+"Correct
+
+enum E {
   A = 0,
   B = 1,
 }
@@ -27,7 +33,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"enum E {
+"Correct
+
+enum E {
   A = 'A',
   B = 'B',
 }

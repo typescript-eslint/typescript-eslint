@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"setTimeout('alert(\`Hi!\`);', 100);
+"Incorrect
+
+setTimeout('alert(\`Hi!\`);', 100);
            ~~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
 
 setInterval('alert(\`Hi!\`);', 100);
@@ -35,7 +37,9 @@ const fn = new Function('a', 'b', 'return a + b');
 `;
 
 exports[` 2`] = `
-"setTimeout(function () {
+"Correct
+
+setTimeout(function () {
   alert('Hi!');
 }, 100);
 

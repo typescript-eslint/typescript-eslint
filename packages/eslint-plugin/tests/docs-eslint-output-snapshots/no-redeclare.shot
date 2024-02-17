@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface A {
+"Options: { "ignoreDeclarationMerge": true }
+
+interface A {
   prop1: 1;
 }
 interface A {
@@ -24,7 +26,9 @@ namespace Baz {}
 `;
 
 exports[` 2`] = `
-"type something = string;
+"Options: { "ignoreDeclarationMerge": true }
+
+type something = string;
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Definition for rule '@typescript-eslint/no-redeclare' was not found.
 const something = 2;

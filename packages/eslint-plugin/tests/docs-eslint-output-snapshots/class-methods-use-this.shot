@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class X {
+"Options: { "ignoreOverrideMethods": true }
+
+class X {
   override method() {}
   override property = () => {};
 }
@@ -9,7 +11,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"class X implements Y {
+"Options: { "ignoreClassesThatImplementAnInterface": true }
+
+class X implements Y {
   method() {}
   property = () => {};
 }
@@ -17,7 +21,10 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"class X implements Y {
+"Incorrect
+Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
+
+class X implements Y {
   method() {}
   property = () => {};
 
@@ -35,7 +42,10 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"class X implements Y {
+"Correct
+Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
+
+class X implements Y {
   method() {}
   property = () => {};
 }

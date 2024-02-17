@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"enum Status {
+"Incorrect
+
+enum Status {
   Open = 1,
   Close,
   ~~~~~ The value of the member 'Close' should be explicitly defined.
@@ -24,7 +26,9 @@ enum Color {
 `;
 
 exports[` 2`] = `
-"enum Status {
+"Correct
+
+enum Status {
   Open = 'Open',
   Close = 'Close',
 }

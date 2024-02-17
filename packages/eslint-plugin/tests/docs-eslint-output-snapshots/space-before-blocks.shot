@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"enum Breakpoint{
+"Incorrect
+
+enum Breakpoint{
                ~ Missing space before opening brace.
   Large,
   Medium,
@@ -17,7 +19,9 @@ interface State{
 `;
 
 exports[` 2`] = `
-"enum Breakpoint {
+"Correct
+
+enum Breakpoint {
   Large,
   Medium,
 }

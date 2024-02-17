@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const promise = Promise.resolve('value');
+"Incorrect
+Options: { "checksConditionals": true }
+
+const promise = Promise.resolve('value');
 
 if (promise) {
     ~~~~~~~ Expected non-Promise value in a boolean conditional.
@@ -19,7 +22,10 @@ while (promise) {
 `;
 
 exports[` 2`] = `
-"const promise = Promise.resolve('value');
+"Correct
+Options: { "checksConditionals": true }
+
+const promise = Promise.resolve('value');
 
 // Always \`await\` the Promise in a conditional
 if (await promise) {
@@ -35,7 +41,10 @@ while (await promise) {
 `;
 
 exports[` 3`] = `
-"[1, 2, 3].forEach(async value => {
+"Incorrect
+Options: { "checksVoidReturn": true }
+
+[1, 2, 3].forEach(async value => {
                   ~ Promise returned in function argument where a void return was expected.
   await doSomething(value);
 ~~~~~~~~~
@@ -61,7 +70,10 @@ eventEmitter.on('some-event', async () => {
 `;
 
 exports[` 4`] = `
-"// for-of puts \`await\` in outer context
+"Correct
+Options: { "checksVoidReturn": true }
+
+// for-of puts \`await\` in outer context
 for (const value of [1, 2, 3]) {
   await doSomething(value);
 }
@@ -102,7 +114,10 @@ eventEmitter.on('some-event', () => {
 `;
 
 exports[` 5`] = `
-"const getData = () => someAsyncOperation({ myArg: 'foo' });
+"Incorrect
+Options: { "checksSpreads": true }
+
+const getData = () => someAsyncOperation({ myArg: 'foo' });
 
 return { foo: 42, ...getData() };
 
@@ -116,7 +131,10 @@ return { foo: 42, ...getData2() };
 `;
 
 exports[` 6`] = `
-"const getData = () => someAsyncOperation({ myArg: 'foo' });
+"Correct
+Options: { "checksSpreads": true }
+
+const getData = () => someAsyncOperation({ myArg: 'foo' });
 
 return { foo: 42, ...(await getData()) };
 

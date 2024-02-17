@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class Animal {
+"
+
+class Animal {
   constructor(name) {
   ~ Missing accessibility modifier on method definition constructor.
     // No accessibility modifier
@@ -39,7 +41,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"class Animal {
+"Options: { "accessibility": "explicit" }
+
+class Animal {
   public constructor(
     public breed,
     name,
@@ -72,7 +76,9 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"class Animal {
+"Options: { "accessibility": "no-public" }
+
+class Animal {
   public constructor(
   ~ Public accessibility modifier on method definition constructor.
     public breed,
@@ -116,7 +122,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"class Animal {
+"Options: { "accessibility": "no-public" }
+
+class Animal {
   constructor(
     protected breed,
     name,
@@ -141,7 +149,9 @@ exports[` 4`] = `
 `;
 
 exports[` 5`] = `
-"class Animal {
+"Options: { "overrides": { "constructors": "no-public" } }
+
+class Animal {
   public constructor(protected animalName) {}
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on method definition constructor.
   public get name() {
@@ -152,7 +162,9 @@ exports[` 5`] = `
 `;
 
 exports[` 6`] = `
-"class Animal {
+"Options: { "overrides": { "constructors": "no-public" } }
+
+class Animal {
   constructor(protected animalName) {}
   public get name() {
     return this.animalName;
@@ -162,7 +174,9 @@ exports[` 6`] = `
 `;
 
 exports[` 7`] = `
-"class Animal {
+"Options: { "accessibility": "no-public", "overrides": { "properties": "explicit" } }
+
+class Animal {
   constructor(protected animalName) {}
   get name() {
     return this.animalName;
@@ -178,7 +192,9 @@ exports[` 7`] = `
 `;
 
 exports[` 8`] = `
-"class Animal {
+"Options: { "accessibility": "no-public", "overrides": { "properties": "explicit" } }
+
+class Animal {
   constructor(protected animalName) {}
   get name() {
     return this.animalName;
@@ -193,7 +209,9 @@ exports[` 8`] = `
 `;
 
 exports[` 9`] = `
-"class Animal {
+"Options: { "accessibility": "off", "overrides": { "parameterProperties": "explicit" } }
+
+class Animal {
   constructor(readonly animalName: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on parameter property animalName.
 }
@@ -201,7 +219,9 @@ exports[` 9`] = `
 `;
 
 exports[` 10`] = `
-"class Animal {
+"Options: { "accessibility": "off", "overrides": { "parameterProperties": "explicit" } }
+
+class Animal {
   constructor(public readonly animalName: string) {}
 }
 
@@ -216,7 +236,9 @@ class Animal {
 `;
 
 exports[` 11`] = `
-"class Animal {
+"Options: { "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }
+
+class Animal {
   constructor(public readonly animalName: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on parameter property animalName.
 }
@@ -224,14 +246,18 @@ exports[` 11`] = `
 `;
 
 exports[` 12`] = `
-"class Animal {
+"Options: { "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }
+
+class Animal {
   constructor(public animalName: string) {}
 }
 "
 `;
 
 exports[` 13`] = `
-"class Animal {
+"Options: { "overrides": { "accessors" : "off" } }
+
+class Animal {
   constructor(protected animalName) {}
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on method definition constructor.
   public get name() {
@@ -245,7 +271,9 @@ exports[` 13`] = `
 `;
 
 exports[` 14`] = `
-"class Animal {
+"Options: { "overrides": { "accessors" : "off" } }
+
+class Animal {
   public constructor(protected animalName) {}
   public get name() {
     return this.animalName;
@@ -258,7 +286,9 @@ exports[` 14`] = `
 `;
 
 exports[` 15`] = `
-"class Animal {
+"Options: { "ignoredMethodNames": ["specificMethod", "whateverMethod"] }
+
+class Animal {
   get specificMethod() {
     console.log('No error because you specified this method on option');
   }

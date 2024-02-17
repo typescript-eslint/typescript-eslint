@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"module foo {}
+"Incorrect
+
+module foo {}
 ~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 namespace foo {}
 ~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
@@ -14,14 +16,19 @@ declare namespace foo {}
 `;
 
 exports[` 2`] = `
-"declare module 'foo' {}
+"Correct
+
+declare module 'foo' {}
 
 // anything inside a d.ts file
 "
 `;
 
 exports[` 3`] = `
-"module foo {}
+"Incorrect
+Options: { "allowDeclarations": true }
+
+module foo {}
 ~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 namespace foo {}
 ~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
@@ -29,7 +36,10 @@ namespace foo {}
 `;
 
 exports[` 4`] = `
-"declare module 'foo' {}
+"Correct
+Options: { "allowDeclarations": true }
+
+declare module 'foo' {}
 declare module foo {}
 declare namespace foo {}
 
@@ -44,7 +54,10 @@ declare module foo {
 `;
 
 exports[` 5`] = `
-"module foo {}
+"Incorrect
+Options: { "allowDeclarations": false }
+
+module foo {}
 ~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 namespace foo {}
 ~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
@@ -56,12 +69,18 @@ declare namespace foo {}
 `;
 
 exports[` 6`] = `
-"declare module 'foo' {}
+"Correct
+Options: { "allowDeclarations": false }
+
+declare module 'foo' {}
 "
 `;
 
 exports[` 7`] = `
-"// if outside a d.ts file
+"Incorrect
+Options: { "allowDefinitionFiles": true }
+
+// if outside a d.ts file
 module foo {}
 ~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
 namespace foo {}
@@ -80,7 +99,10 @@ declare namespace foo {}
 `;
 
 exports[` 8`] = `
-"declare module 'foo' {}
+"Correct
+Options: { "allowDefinitionFiles": true }
+
+declare module 'foo' {}
 
 // anything inside a d.ts file
 "

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const foo: any = 'bar';
+"Options: { "ignoreTernaryTests": false }
+
+const foo: any = 'bar';
 foo !== undefined && foo !== null ? foo : 'a string';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
 foo === undefined || foo === null ? 'a string' : foo;
@@ -22,7 +24,9 @@ foo === null ? 'a string' : foo;
 `;
 
 exports[` 2`] = `
-"const foo: any = 'bar';
+"Options: { "ignoreTernaryTests": false }
+
+const foo: any = 'bar';
 foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
@@ -39,7 +43,9 @@ foo ?? 'a string';
 `;
 
 exports[` 3`] = `
-"declare const a: string | null;
+"Options: { "ignoreConditionalTests": false }
+
+declare const a: string | null;
 declare const b: string | null;
 
 if (a || b) {
@@ -60,7 +66,9 @@ a || b ? true : false;
 `;
 
 exports[` 4`] = `
-"declare const a: string | null;
+"Options: { "ignoreConditionalTests": false }
+
+declare const a: string | null;
 declare const b: string | null;
 
 if (a ?? b) {
@@ -76,7 +84,9 @@ a ?? b ? true : false;
 `;
 
 exports[` 5`] = `
-"declare const a: string | null;
+"Options: { "ignoreMixedLogicalExpressions": false }
+
+declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -96,7 +106,9 @@ a || (b && c && d);
 `;
 
 exports[` 6`] = `
-"declare const a: string | null;
+"Options: { "ignoreMixedLogicalExpressions": false }
+
+declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
 declare const d: string | null;
@@ -110,13 +122,17 @@ a ?? (b && c && d);
 `;
 
 exports[` 7`] = `
-"const foo: string | undefined = 'bar';
+"Options: { "ignorePrimitives": { "string": true } }
+
+const foo: string | undefined = 'bar';
 foo || 'a string';
 "
 `;
 
 exports[` 8`] = `
-"const foo: string | undefined = 'bar';
+"Options: { "ignorePrimitives": { "string": true } }
+
+const foo: string | undefined = 'bar';
 foo ?? 'a string';
 "
 `;

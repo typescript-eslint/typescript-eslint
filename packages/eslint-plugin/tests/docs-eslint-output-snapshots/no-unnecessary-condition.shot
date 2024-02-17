@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"function head<T>(items: T[]) {
+"Incorrect
+
+function head<T>(items: T[]) {
   // items can never be nullable, so this is unnecessary
   if (items) {
       ~~~~~ Unnecessary conditional, value is always truthy.
@@ -32,7 +34,9 @@ function bar<T>(arg: string) {
 `;
 
 exports[` 2`] = `
-"function head<T>(items: T[]) {
+"Correct
+
+function head<T>(items: T[]) {
   // Necessary, since items.length might be 0
   if (items.length) {
     return items[0].toUpperCase();
@@ -55,7 +59,9 @@ function bar(arg?: string | null) {
 `;
 
 exports[` 3`] = `
-"while (true) {}
+"Options: { "allowConstantLoopConditions": true }
+
+while (true) {}
 for (; true; ) {}
 do {} while (true);
 "

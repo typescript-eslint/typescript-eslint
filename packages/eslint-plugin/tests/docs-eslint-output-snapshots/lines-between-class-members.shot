@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class foo {
+"Options: "always", { "exceptAfterOverload": true }
+
+class foo {
   bar(a: string): void;
   bar(a: string, b: string): void;
   bar(a: string, b: string) {}
@@ -14,7 +16,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"class foo {
+"Options: "always", { "exceptAfterOverload": false }
+
+class foo {
   bar(a: string): void;
 
   bar(a: string, b: string): void;

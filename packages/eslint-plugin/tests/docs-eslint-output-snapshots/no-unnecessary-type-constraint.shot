@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface FooAny<T extends any> {}
+"Incorrect
+
+interface FooAny<T extends any> {}
                  ~~~~~~~~~~~~~ Constraining the generic type \`T\` to \`any\` does nothing and is unnecessary.
 
 interface FooUnknown<T extends unknown> {}
@@ -28,7 +30,9 @@ function QuuzAny<T extends any>() {}
 `;
 
 exports[` 2`] = `
-"interface Foo<T> {}
+"Correct
+
+interface Foo<T> {}
 
 type Bar<T> = {};
 

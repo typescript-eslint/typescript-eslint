@@ -1,13 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"module Example {}
+"Incorrect
+
+module Example {}
 ~~~~~~~~~~~~~~~~~ Use 'namespace' instead of 'module' to declare custom TypeScript modules.
 "
 `;
 
 exports[` 2`] = `
-"namespace Example {}
+"Correct
+
+namespace Example {}
 
 declare module 'foo' {}
 "

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"type PossibleValues = string | number | void;
+"Incorrect
+
+type PossibleValues = string | number | void;
                                         ~~~~ void is not valid as a constituent in a union type
 type MorePossibleValues = string | ((number & any) | (string | void));
                                                                ~~~~ void is not valid as a constituent in a union type
@@ -27,7 +29,9 @@ class MyClass {
 `;
 
 exports[` 2`] = `
-"type NoOp = () => void;
+"Correct
+
+type NoOp = () => void;
 
 function noop(): void {}
 
@@ -40,7 +44,9 @@ type stillVoid = void | never;
 `;
 
 exports[` 3`] = `
-"logAndReturn<void>(undefined);
+"Options: { "allowInGenericTypeArguments": false }
+
+logAndReturn<void>(undefined);
              ~~~~ void is only valid as a return type.
 
 let voidPromise: Promise<void> = new Promise<void>(() => {});
@@ -53,7 +59,9 @@ let voidMap: Map<string, void> = new Map<string, void>();
 `;
 
 exports[` 4`] = `
-"logAndReturn<void>(undefined);
+"Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
+
+logAndReturn<void>(undefined);
              ~~~~ void is only valid as a return type or generic type argument.
 
 type NotAllowedVoid1 = Mx.Tx<void>;
@@ -66,13 +74,17 @@ type NotAllowedVoid3 = Promise<void>;
 `;
 
 exports[` 5`] = `
-"type AllowedVoid = Ex.Mx.Tx<void>;
+"Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
+
+type AllowedVoid = Ex.Mx.Tx<void>;
 type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 "
 `;
 
 exports[` 6`] = `
-"function doThing(this: void) {}
+"Options: { "allowAsThisParameter": false }
+
+function doThing(this: void) {}
                        ~~~~ void is only valid as a return type or generic type argument.
 class Example {
   static helper(this: void) {}

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class X {
+"Options: { "allowPrivateClassPropertyAccess": true }
+
+class X {
   private priv_prop = 123;
 }
 
@@ -11,7 +13,9 @@ x['priv_prop'] = 123;
 `;
 
 exports[` 2`] = `
-"class X {
+"Options: { "allowProtectedClassPropertyAccess": true }
+
+class X {
   protected protected_prop = 123;
 }
 
@@ -21,7 +25,9 @@ x['protected_prop'] = 123;
 `;
 
 exports[` 3`] = `
-"class X {
+"Options: { "allowIndexSignaturePropertyAccess": true }
+
+class X {
   [key: string]: number;
 }
 

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface ButtonProps {
+"Incorrect
+
+interface ButtonProps {
   onClick: () => void;
 }
 
@@ -15,7 +17,9 @@ export { Button, ButtonProps };
 `;
 
 exports[` 2`] = `
-"interface ButtonProps {
+"Correct
+
+interface ButtonProps {
   onClick: () => void;
 }
 

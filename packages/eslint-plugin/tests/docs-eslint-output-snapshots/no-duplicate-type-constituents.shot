@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"type T1 = 'A' | 'A';
+"Incorrect
+
+type T1 = 'A' | 'A';
                 ~~~ Union type constituent is duplicated with 'A'.
 
 type T2 = A | A | B;
@@ -21,7 +23,9 @@ type T5 = StringA | StringB;
 `;
 
 exports[` 2`] = `
-"type T1 = 'A' | 'B';
+"Correct
+
+type T1 = 'A' | 'B';
 
 type T2 = A | B | C;
 

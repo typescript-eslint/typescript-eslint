@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"let bar: 2 = 2;
+"Incorrect
+
+let bar: 2 = 2;
          ~ Expected a \`const\` assertion instead of a literal type annotation.
 let foo = <'bar'>'bar';
            ~~~~~ Expected a \`const\` instead of a literal type assertion.
@@ -11,7 +13,9 @@ let foo = { bar: 'baz' as 'baz' };
 `;
 
 exports[` 2`] = `
-"let foo = 'bar';
+"Correct
+
+let foo = 'bar';
 let foo = 'bar' as const;
 let foo: 'bar' = 'bar' as const;
 let bar = 'bar' as string;

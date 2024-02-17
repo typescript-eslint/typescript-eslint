@@ -1,13 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"type T = { x: number };
+"Incorrect
+Options: "interface"
+
+type T = { x: number };
      ~ Use an \`interface\` instead of a \`type\`.
 "
 `;
 
 exports[` 2`] = `
-"type T = string;
+"Correct
+Options: "interface"
+
+type T = string;
 type Foo = string | {};
 
 interface T {
@@ -17,7 +23,10 @@ interface T {
 `;
 
 exports[` 3`] = `
-"interface T {
+"Incorrect
+Options: "type"
+
+interface T {
           ~ Use a \`type\` instead of an \`interface\`.
   x: number;
 }
@@ -25,6 +34,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"type T = { x: number };
+"Correct
+Options: "type"
+
+type T = { x: number };
 "
 `;

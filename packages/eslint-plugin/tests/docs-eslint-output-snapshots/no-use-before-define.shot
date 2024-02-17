@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const x = Foo.FOO;
+"Incorrect
+Options: { "enums": true }
+
+const x = Foo.FOO;
           ~~~ 'Foo' was used before it was defined.
 
 enum Foo {
@@ -11,7 +14,10 @@ enum Foo {
 `;
 
 exports[` 2`] = `
-"function foo() {
+"Correct
+Options: { "enums": false }
+
+function foo() {
   return Foo.FOO;
 }
 
@@ -22,13 +28,17 @@ enum Foo {
 `;
 
 exports[` 3`] = `
-"let myVar: StringOrNumber;
+"Options: { "typedefs": false }
+
+let myVar: StringOrNumber;
 type StringOrNumber = string | number;
 "
 `;
 
 exports[` 4`] = `
-"let var1: StringOrNumber;
+"Options: { "ignoreTypeReferences": true }
+
+let var1: StringOrNumber;
 type StringOrNumber = string | number;
 
 let var2: Enum;

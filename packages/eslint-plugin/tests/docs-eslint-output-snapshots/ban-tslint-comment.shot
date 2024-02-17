@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"/* tslint:disable */
+"Incorrect
+
+/* tslint:disable */
 ~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:disable */"
 /* tslint:enable */
 ~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:enable */"
@@ -19,7 +21,9 @@ someCode(); // tslint:disable-line
 `;
 
 exports[` 2`] = `
-"// This is a comment that just happens to mention tslint
+"Correct
+
+// This is a comment that just happens to mention tslint
 /* This is a multiline comment that just happens to mention tslint */
 someCode(); // This is a comment that just happens to mention tslint
 "

@@ -121,9 +121,6 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
-    if (ruleName !== 'consistent-type-assertions') {
-      // continue;
-    }
     const { description } = rule.meta.docs!;
 
     describe(`${ruleName}.md`, () => {
@@ -277,7 +274,7 @@ describe('Validating rule docs', () => {
           (typeof rule)['defaultOptions']
         >(ruleName, rule);
 
-        type Context =
+        type TabsSearchContext =
           | {
               type: 'outside-the-tabs';
             }
@@ -289,7 +286,7 @@ describe('Validating rule docs', () => {
               headingsDepth: number;
               sectionType: 'incorrect' | 'correct' | 'unknown';
             };
-        let currentContext: Context = {
+        let tabsSearchContext: TabsSearchContext = {
           type: 'outside-the-tabs',
         };
 
@@ -303,23 +300,23 @@ describe('Validating rule docs', () => {
             );
 
             if (isOpeningTabsComment) {
-              currentContext = { type: 'entered-tabs' };
+              tabsSearchContext = { type: 'entered-tabs' };
             } else if (isClosingTabsComment) {
-              currentContext = { type: 'outside-the-tabs' };
+              tabsSearchContext = { type: 'outside-the-tabs' };
             }
           } else if (token.type === 'heading') {
             if (
-              currentContext.type === 'under-tab-heading' &&
-              token.depth < currentContext.headingsDepth
+              tabsSearchContext.type === 'under-tab-heading' &&
+              token.depth < tabsSearchContext.headingsDepth
             ) {
-              currentContext = { type: 'outside-the-tabs' };
+              tabsSearchContext = { type: 'outside-the-tabs' };
             } else if (
-              currentContext.type === 'entered-tabs' ||
-              (currentContext.type === 'under-tab-heading' &&
-                token.depth === currentContext.headingsDepth)
+              tabsSearchContext.type === 'entered-tabs' ||
+              (tabsSearchContext.type === 'under-tab-heading' &&
+                token.depth === tabsSearchContext.headingsDepth)
             ) {
               const heading = token.text.trim();
-              currentContext = {
+              tabsSearchContext = {
                 type: 'under-tab-heading',
                 headingsDepth: token.depth,
                 sectionType: heading.startsWith('❌ Incorrect')
@@ -333,7 +330,7 @@ describe('Validating rule docs', () => {
 
           if (
             token.type !== 'code' ||
-            (currentContext.type !== 'under-tab-heading' &&
+            (tabsSearchContext.type !== 'under-tab-heading' &&
               !token.lang?.includes('showPlaygroundButton'))
           ) {
             continue;
@@ -367,19 +364,27 @@ describe('Validating rule docs', () => {
             /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
           );
 
-          expect(
-            renderLintResults(token.text, messages),
-          ).toMatchSpecificSnapshot(
-            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
-          );
-
-          if (currentContext.type === 'under-tab-heading') {
-            if (currentContext.sectionType === 'incorrect') {
+          let testCaption = [];
+          if (tabsSearchContext.type === 'under-tab-heading') {
+            if (tabsSearchContext.sectionType === 'incorrect') {
+              testCaption.push('Incorrect');
               expect(messages).not.toHaveLength(0);
-            } else if (currentContext.sectionType === 'correct') {
+            } else if (tabsSearchContext.sectionType === 'correct') {
+              testCaption.push('Correct');
               expect(messages).toHaveLength(0);
             }
           }
+          if (option) {
+            testCaption.push(`Options: ${option}`);
+          }
+
+          expect(
+            testCaption.filter(Boolean).join('\n') +
+              '\n\n' +
+              renderLintResults(token.text, messages),
+          ).toMatchSpecificSnapshot(
+            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+          );
         }
       });
     });

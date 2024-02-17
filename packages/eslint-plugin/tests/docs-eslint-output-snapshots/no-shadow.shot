@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"type Foo = number;
+"Options: { "ignoreTypeValueShadow": true }
+
+type Foo = number;
 interface Bar {
   prop: number;
 }
@@ -14,7 +16,9 @@ function f() {
 `;
 
 exports[` 2`] = `
-"const test = 1;
+"Options: { "ignoreFunctionTypeParameterNameValueShadow": true }
+
+const test = 1;
 type Func = (test: string) => typeof test;
 "
 `;

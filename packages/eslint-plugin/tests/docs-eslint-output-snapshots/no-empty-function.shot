@@ -1,21 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class Foo {
+"Options: { "allow": ["private-constructors"] }
+
+class Foo {
   private constructor() {}
 }
 "
 `;
 
 exports[` 2`] = `
-"class Foo {
+"Options: { "allow": ["protected-constructors"] }
+
+class Foo {
   protected constructor() {}
 }
 "
 `;
 
 exports[` 3`] = `
-"class Foo {
+"Options: { "allow": ["decoratedFunctions"] }
+
+class Foo {
   @decorator()
   foo() {}
 }
@@ -23,7 +29,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"abstract class Base {
+"Options: { "allow": ["overrideMethods"] }
+
+abstract class Base {
   protected greet(): void {
     console.log('Hello!');
   }

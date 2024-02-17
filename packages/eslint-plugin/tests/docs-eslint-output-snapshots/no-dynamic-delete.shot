@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"// Can be replaced with the constant equivalents, such as container.aaa
+"Incorrect
+
+// Can be replaced with the constant equivalents, such as container.aaa
 delete container['aaa'];
                  ~~~~~ Do not delete dynamically computed property keys.
 delete container['Infinity'];
@@ -17,7 +19,9 @@ delete container[name.toUpperCase()];
 `;
 
 exports[` 2`] = `
-"const container: { [i: string]: number } = {
+"Correct
+
+const container: { [i: string]: number } = {
   /* ... */
 };
 

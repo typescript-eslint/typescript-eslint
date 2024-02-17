@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class StaticConstants {
+"Incorrect
+
+class StaticConstants {
       ~~~~~~~~~~~~~~~ Unexpected class with only static properties.
   static readonly version = 42;
 
@@ -20,7 +22,9 @@ class HelloWorldLogger {
 `;
 
 exports[` 2`] = `
-"export const version = 42;
+"Correct
+
+export const version = 42;
 
 export function isProduction() {
   return process.env.NODE_ENV === 'production';
@@ -33,7 +37,9 @@ function logHelloWorld() {
 `;
 
 exports[` 3`] = `
-"export class Utilities {
+"Incorrect
+
+export class Utilities {
              ~~~~~~~~~ Unexpected class with only static properties.
   static util1() {
     return Utilities.util3();
@@ -51,7 +57,9 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"export function util1() {
+"Correct
+
+export function util1() {
   return util3();
 }
 
@@ -66,7 +74,9 @@ export function util3() {
 `;
 
 exports[` 5`] = `
-"// utilities.ts
+"Incorrect
+
+// utilities.ts
 export class Utilities {
              ~~~~~~~~~ Unexpected class with only static properties.
   static sayHello() {
@@ -82,7 +92,9 @@ Utilities.sayHello();
 `;
 
 exports[` 6`] = `
-"// utilities.ts
+"
+
+// utilities.ts
 export function sayHello() {
   console.log('Hello, world!');
 }
@@ -95,7 +107,9 @@ utilities.sayHello();
 `;
 
 exports[` 7`] = `
-"// utilities.ts
+"
+
+// utilities.ts
 export function sayHello() {
   console.log('Hello, world!');
 }
@@ -108,7 +122,9 @@ sayHello();
 `;
 
 exports[` 8`] = `
-"export class Utilities {
+"Incorrect
+
+export class Utilities {
              ~~~~~~~~~ Unexpected class with only static properties.
   static mutableCount = 1;
 
@@ -120,7 +136,9 @@ exports[` 8`] = `
 `;
 
 exports[` 9`] = `
-"let mutableCount = 1;
+"Correct
+
+let mutableCount = 1;
 
 export function getMutableCount() {
   return mutableField;
@@ -133,13 +151,19 @@ export function incrementCount() {
 `;
 
 exports[` 10`] = `
-"class NoFields {}
+"Incorrect
+Options: { "allowConstructorOnly": true }
+
+class NoFields {}
       ~~~~~~~~ Unexpected empty class.
 "
 `;
 
 exports[` 11`] = `
-"class NoFields {
+"Correct
+Options: { "allowConstructorOnly": true }
+
+class NoFields {
   constructor() {
     console.log('Hello, world!');
   }
@@ -148,7 +172,10 @@ exports[` 11`] = `
 `;
 
 exports[` 12`] = `
-"class NoFields {
+"Incorrect
+Options: { "allowEmpty": true }
+
+class NoFields {
       ~~~~~~~~ Unexpected class with only a constructor.
   constructor() {
     console.log('Hello, world!');
@@ -158,25 +185,37 @@ exports[` 12`] = `
 `;
 
 exports[` 13`] = `
-"class NoFields {}
+"Correct
+Options: { "allowEmpty": true }
+
+class NoFields {}
 "
 `;
 
 exports[` 14`] = `
-"class EmptyClass {}
+"Incorrect
+Options: { "allowStaticOnly": true }
+
+class EmptyClass {}
       ~~~~~~~~~~ Unexpected empty class.
 "
 `;
 
 exports[` 15`] = `
-"class NotEmptyClass {
+"Correct
+Options: { "allowStaticOnly": true }
+
+class NotEmptyClass {
   static version = 42;
 }
 "
 `;
 
 exports[` 16`] = `
-"class Constants {
+"Incorrect
+Options: { "allowWithDecorator": true }
+
+class Constants {
       ~~~~~~~~~ Unexpected class with only static properties.
   static readonly version = 42;
 }
@@ -184,7 +223,10 @@ exports[` 16`] = `
 `;
 
 exports[` 17`] = `
-"@logOnRead()
+"Correct
+Options: { "allowWithDecorator": true }
+
+@logOnRead()
 class Constants {
   static readonly version = 42;
 }

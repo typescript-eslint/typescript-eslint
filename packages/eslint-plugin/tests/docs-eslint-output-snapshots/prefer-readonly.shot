@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class Container {
+"Incorrect
+
+class Container {
   // These member variables could be marked as readonly
   private neverModifiedMember = true;
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedMember' is never reassigned; mark it as \`readonly\`.
@@ -23,7 +25,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"class Container {
+"Correct
+
+class Container {
   // Public members might be modified externally
   public publicMember: boolean;
 
@@ -48,7 +52,10 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"class Container {
+"Incorrect
+Options: { "onlyInlineLambdas": true }
+
+class Container {
   private onClick = () => {
   ~~ Member 'onClick' is never reassigned; mark it as \`readonly\`.
     /* ... */
@@ -60,7 +67,10 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"class Container {
+"Correct
+Options: { "onlyInlineLambdas": true }
+
+class Container {
   private neverModifiedPrivate = 'unchanged';
 }
 "

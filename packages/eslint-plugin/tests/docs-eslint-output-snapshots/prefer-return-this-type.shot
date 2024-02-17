@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"class Foo {
+"Incorrect
+
+class Foo {
   f1(): Foo {
         ~~~ Use \`this\` type instead.
     return this;
@@ -18,7 +20,9 @@ exports[` 1`] = `
 `;
 
 exports[` 2`] = `
-"class Foo {
+"Correct
+
+class Foo {
   f1(): this {
     return this;
   }

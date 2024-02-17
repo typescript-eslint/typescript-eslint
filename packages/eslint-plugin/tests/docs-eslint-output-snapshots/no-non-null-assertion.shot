@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface Example {
+"Incorrect
+
+interface Example {
   property?: string;
 }
 
@@ -12,7 +14,9 @@ const includesBaz = example.property!.includes('baz');
 `;
 
 exports[` 2`] = `
-"interface Example {
+"Correct
+
+interface Example {
   property?: string;
 }
 

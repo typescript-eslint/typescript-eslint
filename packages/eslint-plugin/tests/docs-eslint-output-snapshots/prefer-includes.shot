@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const str: string;
+"Incorrect
+
+const str: string;
 const array: any[];
 const readonlyArray: ReadonlyArray<any>;
 const typedArray: UInt8Array;
@@ -29,7 +31,9 @@ userDefined.indexOf(value) >= 0;
 `;
 
 exports[` 2`] = `
-"const str: string;
+"Correct
+
+const str: string;
 const array: any[];
 const readonlyArray: ReadonlyArray<any>;
 const typedArray: UInt8Array;

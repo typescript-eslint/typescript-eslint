@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"interface Foo {}
+"Incorrect
+
+interface Foo {}
           ~~~ Unsafe declaration merging between classes and interfaces.
 
 class Foo {}
@@ -10,7 +12,9 @@ class Foo {}
 `;
 
 exports[` 2`] = `
-"interface Foo {}
+"Correct
+
+interface Foo {}
 class Bar implements Foo {}
 
 namespace Baz {}

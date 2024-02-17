@@ -1,34 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const foo = 3;
+"Incorrect
+
+const foo = 3;
 const bar = foo!;
             ~~~~ This assertion is unnecessary since it does not change the type of the expression.
 "
 `;
 
 exports[` 2`] = `
-"const foo = <number>(3 + 5);
+"Incorrect
+
+const foo = <number>(3 + 5);
             ~~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
 "
 `;
 
 exports[` 3`] = `
-"type Foo = number;
+"Incorrect
+
+type Foo = number;
 const foo = <Foo>(3 + 5);
             ~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
 "
 `;
 
 exports[` 4`] = `
-"type Foo = number;
+"Incorrect
+
+type Foo = number;
 const foo = (3 + 5) as Foo;
             ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
 "
 `;
 
 exports[` 5`] = `
-"function foo(x: number): number {
+"Incorrect
+
+function foo(x: number): number {
   return x!; // unnecessary non-null
          ~~ This assertion is unnecessary since it does not change the type of the expression.
 }
@@ -36,29 +46,39 @@ exports[` 5`] = `
 `;
 
 exports[` 6`] = `
-"const foo = <number>3;
+"Correct
+
+const foo = <number>3;
 "
 `;
 
 exports[` 7`] = `
-"const foo = 3 as number;
+"Correct
+
+const foo = 3 as number;
 "
 `;
 
 exports[` 8`] = `
-"const foo = 'foo' as const;
+"Correct
+
+const foo = 'foo' as const;
 "
 `;
 
 exports[` 9`] = `
-"function foo(x: number | undefined): number {
+"Correct
+
+function foo(x: number | undefined): number {
   return x!;
 }
 "
 `;
 
 exports[` 10`] = `
-"type Foo = 3;
+"Options: { "typesToIgnore": ["Foo"] }
+
+type Foo = 3;
 const foo: Foo = 3;
 "
 `;

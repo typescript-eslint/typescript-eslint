@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[` 1`] = `
-"const foo: { bar: number } | null = null;
+"Incorrect
+
+const foo: { bar: number } | null = null;
 const bar = foo!!!.bar;
             ~~~~~ Forbidden extra non-null assertion.
             ~~~~ Forbidden extra non-null assertion.
@@ -9,7 +11,9 @@ const bar = foo!!!.bar;
 `;
 
 exports[` 2`] = `
-"function foo(bar: number | undefined) {
+"Incorrect
+
+function foo(bar: number | undefined) {
   const bar: number = bar!!!;
                       ~~~~~ Forbidden extra non-null assertion.
                       ~~~~ Forbidden extra non-null assertion.
@@ -18,7 +22,9 @@ exports[` 2`] = `
 `;
 
 exports[` 3`] = `
-"function foo(bar?: { n: number }) {
+"Incorrect
+
+function foo(bar?: { n: number }) {
   return bar!?.n;
          ~~~~ Forbidden extra non-null assertion.
 }
@@ -26,20 +32,26 @@ exports[` 3`] = `
 `;
 
 exports[` 4`] = `
-"const foo: { bar: number } | null = null;
+"Correct
+
+const foo: { bar: number } | null = null;
 const bar = foo!.bar;
 "
 `;
 
 exports[` 5`] = `
-"function foo(bar: number | undefined) {
+"Correct
+
+function foo(bar: number | undefined) {
   const bar: number = bar!;
 }
 "
 `;
 
 exports[` 6`] = `
-"function foo(bar?: { n: number }) {
+"Correct
+
+function foo(bar?: { n: number }) {
   return bar?.n;
 }
 "
