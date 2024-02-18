@@ -91,7 +91,7 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowArgumentsExplicitlyTypedAsAny`
 
-When this option is `true` the rule ignores arguments that are explicitly typed as any.
+When this option is `true`, the rule ignores arguments that are explicitly typed as any.
 
 <!--tabs-->
 
@@ -109,7 +109,7 @@ export const func = (value: any): number => value + 1;
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-When this option is `true` the rule ignores return type annotations on body-less arrow functions that return an `as const` type assertion.
+When this option is `true`, the rule ignores return type annotations on body-less arrow functions that return an `as const` type assertion.
 
 <!--tabs-->
 
@@ -151,7 +151,7 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 ### `allowHigherOrderFunctions`
 
-When this option is `true` the rule ignores return type annotations on function immediately returning another function expression.
+When this option is `true`, the rule ignores return type annotations on function immediately returning another function expression.
 
 <!--tabs-->
 
@@ -185,7 +185,7 @@ export function foo(outer: string) {
 
 ### `allowTypedFunctionExpressions`
 
-When this option is `true` the rule ignores type annotations on the variable of a function expression.
+When this option is `true`, the rule ignores type annotations on the variable of a function expression.
 
 <!--tabs-->
 
