@@ -563,6 +563,18 @@ const obj = {
       `,
       options: [{ ignoreTypeReferences: false }],
     },
+    {
+      code: `
+const foo = {
+  bar: 'bar',
+} satisfies {
+  bar: typeof baz;
+};
+
+const baz = '';
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
   ],
   invalid: [
     {
@@ -1134,6 +1146,25 @@ const Foo = {
         {
           messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: 'bar',
+} satisfies {
+  bar: typeof baz;
+};
+
+const baz = '';
+      `,
+      options: [{ ignoreTypeReferences: false }],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'baz' },
           type: AST_NODE_TYPES.Identifier,
         },
       ],
