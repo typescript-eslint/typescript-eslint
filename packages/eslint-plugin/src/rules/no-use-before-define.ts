@@ -315,13 +315,10 @@ export default createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       reference: TSESLint.Scope.Reference,
     ): boolean {
-      if (variable.identifiers[0].range[1] <= reference.identifier.range[1]) {
-        if (reference.isValueReference) {
-          return !isInInitializer(variable, reference);
-        }
-        return true;
-      }
-      return false;
+      return (
+        variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
+        !(reference.isValueReference && isInInitializer(variable, reference))
+      );
     }
 
     /**
