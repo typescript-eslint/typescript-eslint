@@ -45,18 +45,18 @@ exports[` 3`] = `
 Options: { "checksVoidReturn": true }
 
 [1, 2, 3].forEach(async value => {
-                  ~ Promise returned in function argument where a void return was expected.
+                  ~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
   await doSomething(value);
-~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 ~
 
 new Promise(async (resolve, reject) => {
-            ~ Promise returned in function argument where a void return was expected.
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
   await doSomething();
-~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
   resolve();
-~
+~~~~~~~~~~~~
 });
 ~
 

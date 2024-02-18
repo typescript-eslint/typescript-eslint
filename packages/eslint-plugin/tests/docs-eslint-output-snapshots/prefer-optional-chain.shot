@@ -30,9 +30,9 @@ foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
 
 // this rule also supports converting chained strict nullish checks:
 foo &&
-~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
   foo.a != null &&
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
   foo.a.b !== null &&
   foo.a.b.c != undefined &&
   foo.a.b.c.d !== undefined &&

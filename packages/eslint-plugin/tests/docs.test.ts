@@ -70,16 +70,21 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
         continue;
       }
       if (i === startLine) {
-        const squiggle = '~'.repeat(Math.max(1, endColumn - startColumn));
+        const squiggle = '~'.repeat(
+          startLine === endLine
+            ? Math.max(1, endColumn - startColumn)
+            : line.length - startColumn,
+        );
         const squiggleWithIndent = ' '.repeat(startColumn) + squiggle + ' ';
         const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
         output.push(
           squiggleWithIndent +
             error.message.split('\n').join('\n' + errorMessageIndent),
         );
+      } else if (i === endLine) {
+        output.push('~'.repeat(endColumn));
       } else {
-        const squiggle = '~'.repeat(Math.max(1, line.length - startColumn));
-        output.push(squiggle);
+        output.push('~'.repeat(line.length));
       }
     }
   }

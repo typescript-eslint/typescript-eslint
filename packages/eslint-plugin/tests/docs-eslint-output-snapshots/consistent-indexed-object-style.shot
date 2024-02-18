@@ -5,7 +5,7 @@ exports[` 1`] = `
 Options: "record"
 
 interface Foo {
-~ A record is preferred over an index signature.
+~~~~~~~~~~~~~~~ A record is preferred over an index signature.
   [key: string]: unknown;
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 }
@@ -14,7 +14,7 @@ interface Foo {
 type Foo = {
            ~ A record is preferred over an index signature.
   [key: string]: unknown;
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 };
 ~
 "

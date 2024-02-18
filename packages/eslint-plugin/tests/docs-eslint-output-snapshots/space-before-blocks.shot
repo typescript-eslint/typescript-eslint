@@ -12,7 +12,7 @@ enum Breakpoint{
 interface State{
                ~ Missing space before opening brace.
   currentBreakpoint: Breakpoint;
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 ~
 "

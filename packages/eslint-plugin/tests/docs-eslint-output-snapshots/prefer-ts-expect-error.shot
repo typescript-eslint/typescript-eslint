@@ -8,7 +8,7 @@ exports[` 1`] = `
 const str: string = 1;
 
 /**
-~~~~~~~~~~~~~~~~ Use "@ts-expect-error" to ensure an error is actually being suppressed.
+~~~ Use "@ts-expect-error" to ensure an error is actually being suppressed.
  * Explaining comment
 ~~~~~~~~~~~~~~~~~~~~~
  *

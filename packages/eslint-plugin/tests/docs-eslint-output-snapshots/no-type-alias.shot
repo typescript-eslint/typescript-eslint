@@ -233,20 +233,20 @@ type Foo = {};
 type Foo = {
            ~ Type literals are not allowed.
   name: string;
-~~~~
+~~~~~~~~~~~~~~~
   age: number;
-~~~
+~~~~~~~~~~~~~~
 };
 ~
 
 type Foo = {
            ~ Type literals are not allowed.
   name: string;
-~~~~
+~~~~~~~~~~~~~~~
   age: number;
-~~~
+~~~~~~~~~~~~~~
   walk: (miles: number) => void;
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 };
 ~
 
@@ -272,20 +272,20 @@ type Foo = {};
 type Foo = {
            ~ Type literals are not allowed.
   name: string;
-~~~~
+~~~~~~~~~~~~~~~
   age: number;
-~~~
+~~~~~~~~~~~~~~
 };
 ~
 
 type Foo = {
            ~ Type literals are not allowed.
   name: string;
-~~~~
+~~~~~~~~~~~~~~~
   age: number;
-~~~
+~~~~~~~~~~~~~~
   walk: (miles: number) => void;
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 };
 ~
 
@@ -311,20 +311,20 @@ type Foo = {};
 type Foo = {
            ~ Type literals are not allowed.
   name: string;
-~~~~
+~~~~~~~~~~~~~~~
   age: number;
-~~~
+~~~~~~~~~~~~~~
 };
 ~
 
 type Foo = {
            ~ Type literals are not allowed.
   name: string;
-~~~~
+~~~~~~~~~~~~~~~
   age: number;
-~~~
+~~~~~~~~~~~~~~
   walk: (miles: number) => void;
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 };
 ~
 "
@@ -373,7 +373,7 @@ type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
                                                      ~ Mapped types in intersection types are not allowed.
   readonly [P in keyof U]: U[P];
-~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 };
 ~
 

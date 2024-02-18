@@ -6,7 +6,7 @@ exports[` 1`] = `
 declare const array: string[];
 
 for (let i = 0; i < array.length; i++) {
-~ Expected a \`for-of\` loop instead of a \`for\` loop with this simple iteration.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected a \`for-of\` loop instead of a \`for\` loop with this simple iteration.
   console.log(array[i]);
 ~~~~~~~~~~~~~~~~~~~~~~~~
 }

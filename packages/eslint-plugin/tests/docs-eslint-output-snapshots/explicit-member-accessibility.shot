@@ -5,37 +5,37 @@ exports[` 1`] = `
 
 class Animal {
   constructor(name) {
-  ~ Missing accessibility modifier on method definition constructor.
+  ~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on method definition constructor.
     // No accessibility modifier
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     this.animalName = name;
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   animalName: string; // No accessibility modifier
   ~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on class property animalName.
   get name(): string {
-  ~ Missing accessibility modifier on get property accessor name.
+  ~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on get property accessor name.
     // No accessibility modifier
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     return this.animalName;
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   set name(value: string) {
-  ~ Missing accessibility modifier on set property accessor name.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on set property accessor name.
     // No accessibility modifier
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     this.animalName = value;
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   walk() {
-  ~ Missing accessibility modifier on method definition walk.
+  ~~~~~~~~ Missing accessibility modifier on method definition walk.
     // method
-~~~~~~~~~~~
+~~~~~~~~~~~~~
   }
-~
+~~~
 }
 "
 `;
@@ -53,21 +53,21 @@ class Animal {
   }
   private animalName: string; // Property
   get name(): string {
-  ~ Missing accessibility modifier on get property accessor name.
+  ~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on get property accessor name.
     // get accessor
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
     return this.animalName;
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   set name(value: string) {
-  ~ Missing accessibility modifier on set property accessor name.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Missing accessibility modifier on set property accessor name.
     // set accessor
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
     this.animalName = value;
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   public walk() {
     // method
   }
@@ -80,43 +80,43 @@ exports[` 3`] = `
 
 class Animal {
   public constructor(
-  ~ Public accessibility modifier on method definition constructor.
+  ~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on method definition constructor.
     public breed,
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
     name,
-~~~~~~~
+~~~~~~~~~
   ) {
-~~~
+~~~~~
     // Parameter property and constructor
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     this.animalName = name;
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   public animalName: string; // Property
   ~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on class property animalName.
   public get name(): string {
-  ~ Public accessibility modifier on get property accessor name.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on get property accessor name.
     // get accessor
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
     return this.animalName;
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   public set name(value: string) {
-  ~ Public accessibility modifier on set property accessor name.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Public accessibility modifier on set property accessor name.
     // set accessor
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
     this.animalName = value;
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
-~
+~~~
   public walk() {
-  ~ Public accessibility modifier on method definition walk.
+  ~~~~~~~~~~~~~~~ Public accessibility modifier on method definition walk.
     // method
-~~~~~~~~~~~
+~~~~~~~~~~~~~
   }
-~
+~~~
 }
 "
 `;
