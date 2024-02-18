@@ -9,6 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowForKnownSafePromises": {
+        "description": "The list of promises which should be floating as per an external package/module.",
         "items": {
           "additionalProperties": false,
           "properties": {
@@ -58,6 +59,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** The list of promises which should be floating as per an external package/module. */
     allowForKnownSafePromises?: {
       from: 'package';
       name: [string, ...string[]] | string;
