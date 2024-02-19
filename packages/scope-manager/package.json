@@ -16,6 +16,7 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": "^16.0.0 || >=18.0.0"
   },
