@@ -1832,5 +1832,19 @@ cursed();
       ],
       errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
+    {
+      code: `
+import test from 'node:test';
+test('Hi', () => Promise.reject(5));
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [
+            { from: 'package', name: 'url', package: 'node:url' },
+          ],
+        },
+      ],
+      errors: [{ line: 3, messageId: 'floatingVoid' }],
+    },
   ],
 });
