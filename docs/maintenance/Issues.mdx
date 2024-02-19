@@ -44,6 +44,7 @@ Most issues go through the following review flow when created or updated:
      - Add the `duplicate` label and remove the `triage` label
      - If it's an obvious duplicate, post a _Clearly Duplicate Issue_ response linking to the existing issue
      - If it's not an obvious duplicate, link to the existing issue and explain why
+     - Close the issue as _not planned_
    - If the code is working as intended:
      - Add the `working as intended` label and remove the `bug` and `triage` labels
      - If the behavior is due to the user doing something wrong, such as an incorrect config:
@@ -51,6 +52,14 @@ Most issues go through the following review flow when created or updated:
        - [This issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22fix%3A+user+error%22+is%3Aclosed)
      - If the behavior is otherwise expected, [this issue search has some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3A%22working+as+intended%22+-label%3A%22fix%3A+user+error%22+is%3Aclosed+)
      - You needn't go into too much detail in your comment - just enough to explain it
+     - Close the issue as _not planned_
+   - If issue contains an enhancement-like request that is unlikely to be implemented on the typescript-eslint side:
+     - Add the `wontfix` label and remove `triage` label
+     - [Issue search with some examples of closing comments](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+sort%3Aupdated-desc+label%3Awontfix+is%3Aclosed)
+     - If there're any alternatives or approaches to meet the request, it would be nice to suggest them
+     - Close the issue as _not planned_
+   - If the issue requires further discussion or community engagement evaluation:
+     - Add the `evaluating community engagement` label and remove the `triage` label
 2. If the report is valid, add the `accepting prs` label and remove the `triage` label
 3. If you know the rough steps for a fix, consider writing a comment with links to codebase to help someone put together a fix
 4. If you think that the fix is relatively straightforward, consider also adding the `good first issue` label
@@ -66,16 +75,32 @@ If your link is both a "permalink" (includes a commit hash instead of a branch n
 When viewing a file in GitHub pressing `y` will update the URL to a "permalink" with the current commit hash, then you can select the relevant lines and paste that URL into the comment.
 :::
 
+### Looking for Duplicates
+
+It's worth noting that, occasionally, a user will intentionally raise a duplicate issue because they feel the original issue was closed when it shouldn't have been.
+If this is the case, you should read the original issue to gather context, understand the reason for it being closed, and determine if the new issue raises any new or relevant point that requires addressing.
+
 ### Determining Whether Code is Working As Intended
 
 As you become more familiar with the codebase and how everything works, this will be easier to do intuitively, but to begin with, this will likely involve investigating the documentation, code, and tests to determine if it's a bug or working as intended.
 In general, if there is a passing test or documented example that is the same as or similar to the repro code — that indicates it's working as intended.
 If you can't find anything that matches, use your best judgement based on the spirit of the code.
 
-### Looking for Duplicates
+### Community Engagement Evaluation
 
-It's worth noting that, occasionally, a user will intentionally raise a duplicate issue because they feel the original issue was closed when it shouldn't have been.
-If this is the case, you should read the original issue to gather context, understand the reason for it being closed, and determine if the new issue raises any new or relevant point that requires addressing.
+In most cases, maintainers have a pretty good idea of how people write code and what most users of the typescript-eslint tooling want.
+However, there are cases when maintainers can't confidently choose the most reasonable approach to solving a particular problem:
+
+- The issue subject relates to a library/framework that the maintainers are not familiar with. Therefore, they don't know the idiomatic patterns associated with it.
+- There is a new syntax or a new feature - sometimes it's hard to guess how people might use that feature.
+- The issue was about to be closed, but someone made a compelling argument. This requires further discussion to find a viewpoint that most people agree on.
+
+3-6 months after the issue is labeled `evaluating community engagement`, the engagement of community is evaluated:
+
+- If the community was active and common ground was found, the issue is labeled as `accepting prs`
+- Otherwise, the issue is closed as _not planned_ with the `wontfix` label
+
+For requests that can be implemented outside of typescript-eslint, be sure to mention any relevant APIs such as [Custom Rules](../developers/Custom_Rules.mdx) that can be used.
 
 ## Skipping Steps
 
