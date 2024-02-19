@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
+import type { FunctionInfo } from '../util/explicitReturnTypeUtils';
 import {
   ancestorHasReturnType,
   checkFunctionReturnType,
@@ -21,6 +22,11 @@ type Options = [
   },
 ];
 type MessageIds = 'missingReturnType';
+
+type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression;
 
 export default createRule<Options, MessageIds>({
   name: 'explicit-function-return-type',
@@ -98,6 +104,19 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
+    const functionInfoStack: FunctionInfo<FunctionNode>[] = [];
+
+    function enterFunction(node: FunctionNode): void {
+      functionInfoStack.push({
+        node,
+        returns: [],
+      });
+    }
+
+    function popFunctionInfo(): FunctionInfo<FunctionNode> {
+      return functionInfoStack.pop()!;
+    }
+
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -168,41 +187,49 @@ export default createRule<Options, MessageIds>({
       return node.parent.type === AST_NODE_TYPES.CallExpression;
     }
 
+    function exitFunctionExpression(
+      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+    ): void {
+      const info = popFunctionInfo();
+
+      if (
+        options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        node.expression &&
+        node.body.type === AST_NODE_TYPES.UnaryExpression &&
+        node.body.operator === 'void'
+      ) {
+        return;
+      }
+
+      if (isAllowedFunction(node)) {
+        return;
+      }
+
+      if (
+        options.allowTypedFunctionExpressions &&
+        (isValidFunctionExpressionReturnType(node, options) ||
+          ancestorHasReturnType(node))
+      ) {
+        return;
+      }
+
+      checkFunctionReturnType(info, options, context.sourceCode, loc =>
+        context.report({
+          node,
+          loc,
+          messageId: 'missingReturnType',
+        }),
+      );
+    }
+
     return {
-      'ArrowFunctionExpression, FunctionExpression'(
-        node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-      ): void {
-        if (
-          options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
-          node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-          node.expression &&
-          node.body.type === AST_NODE_TYPES.UnaryExpression &&
-          node.body.operator === 'void'
-        ) {
-          return;
-        }
-
-        if (isAllowedFunction(node)) {
-          return;
-        }
-
-        if (
-          options.allowTypedFunctionExpressions &&
-          (isValidFunctionExpressionReturnType(node, options) ||
-            ancestorHasReturnType(node))
-        ) {
-          return;
-        }
-
-        checkFunctionReturnType(node, options, context.sourceCode, loc =>
-          context.report({
-            node,
-            loc,
-            messageId: 'missingReturnType',
-          }),
-        );
-      },
-      FunctionDeclaration(node): void {
+      'ArrowFunctionExpression, FunctionExpression': enterFunction,
+      'ArrowFunctionExpression:exit': exitFunctionExpression,
+      'FunctionExpression:exit': exitFunctionExpression,
+      FunctionDeclaration: enterFunction,
+      'FunctionDeclaration:exit'(node): void {
+        const info = popFunctionInfo();
         if (isAllowedFunction(node)) {
           return;
         }
@@ -210,13 +237,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, context.sourceCode, loc =>
+        checkFunctionReturnType(info, options, context.sourceCode, loc =>
           context.report({
             node,
             loc,
             messageId: 'missingReturnType',
           }),
         );
+      },
+      ReturnStatement(node): void {
+        const current = functionInfoStack[functionInfoStack.length - 1];
+        current.returns.push(node);
       },
     };
   },
