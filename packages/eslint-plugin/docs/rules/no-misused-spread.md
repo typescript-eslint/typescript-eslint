@@ -15,8 +15,8 @@ The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Re
 ### ❌ Incorrect
 
 ```ts
-declare const name: string;
-const chars = [...name];
+declare const userName: string;
+const chars = [...userName];
 
 declare const arr: number[];
 const arrSpread = { ...arr };
@@ -27,15 +27,15 @@ const setSpread = { ...set };
 declare const map: Map<string, number>;
 const mapSpread = { ...map };
 
-declare function getName(): string;
-const getNameSpread = { ...getName };
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj };
 ```
 
 ### ✅ Correct
 
 ```ts
-declare const name: string;
-const chars = name.split('');
+declare const userName: string;
+const chars = userName.split('');
 
 declare const arr: number[];
 const arrSpread = [...arr];
@@ -46,8 +46,8 @@ const setSpread = [...set];
 declare const map: Map<string, number>;
 const mapSpread = [...map];
 
-declare function getName(): string;
-const getNameSpread = { ...getName() };
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj() };
 ```
 
 <!--/tabs-->
