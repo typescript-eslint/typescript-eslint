@@ -100,4 +100,4 @@ If you strongly prefer to have explicit types regardless of whether they can be 
 
 ## Further Reading
 
-- [TpeScript Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
+- [TypeScript Inference](https://www.typescriptlang.org/docs/handbook/type-inference.html)
