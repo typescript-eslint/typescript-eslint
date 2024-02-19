@@ -70,7 +70,7 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      if (isBuiltinSymbolLike(services.program, type, 'Set')) {
+      if (isBuiltinSymbol(services.program, type, 'Set')) {
         context.report({
           node,
           messageId: 'noSpreadInObject',
@@ -82,7 +82,7 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      if (isBuiltinSymbolLike(services.program, type, 'Map')) {
+      if (isBuiltinSymbol(services.program, type, 'Map')) {
         context.report({
           node,
           messageId: 'noSpreadInObject',
@@ -94,13 +94,7 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      const symbol = type.getSymbol();
-
-      if (
-        symbol &&
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Function) &&
-        type.getProperties().length === 0
-      ) {
+      if (isFunctionWithoutProps(type, checker)) {
         context.report({
           node,
           messageId: 'noFunctionSpreadInObject',
@@ -157,4 +151,33 @@ function isString(type: ts.Type, checker: ts.TypeChecker): boolean {
   }
 
   return isTypeFlagSet(type, ts.TypeFlags.StringLike);
+}
+
+function isBuiltinSymbol(
+  program: ts.Program,
+  type: ts.Type,
+  symbolName: string,
+): boolean {
+  if (type.isUnion()) {
+    return type.types.some(t => isBuiltinSymbol(program, t, symbolName));
+  }
+
+  return isBuiltinSymbolLike(program, type, symbolName);
+}
+
+function isFunctionWithoutProps(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  if (type.isUnion()) {
+    return type.types.some(t => isFunctionWithoutProps(t, checker));
+  }
+
+  const symbol = type.getSymbol();
+
+  return (
+    !!symbol &&
+    tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Function) &&
+    type.getProperties().length === 0
+  );
 }

@@ -492,6 +492,24 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        declare const set: Set<number> | { a: number };
+        const o = { ...set };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
         declare function getSet(): Set<number>;
         const o = { ...getSet() };
       `,
@@ -556,6 +574,24 @@ ruleTester.run('no-misused-spread', rule, {
     {
       code: `
         declare const map: Map<string, number>;
+        const o = { ...map };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const map: Map<string, number> | { a: number };
         const o = { ...map };
       `,
       errors: [
@@ -651,6 +687,40 @@ ruleTester.run('no-misused-spread', rule, {
           line: 4,
           column: 21,
           endColumn: 37,
+        },
+      ],
+    },
+
+    {
+      skip: true,
+      code: `
+        declare const f: () => void;
+
+        const o = { ...f };
+      `,
+      errors: [
+        {
+          messageId: 'noFunctionSpreadInObject',
+          line: 4,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      skip: true,
+      code: `
+        declare const f: () => void | { a: number };
+
+        const o = { ...f };
+      `,
+      errors: [
+        {
+          messageId: 'noFunctionSpreadInObject',
+          line: 4,
+          column: 21,
+          endColumn: 25,
         },
       ],
     },
