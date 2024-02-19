@@ -125,7 +125,7 @@ export default createRule<[], MessageIds>({
 
 function isArray(type: ts.Type, checker: ts.TypeChecker): boolean {
   if (type.isUnion()) {
-    return type.types.every(t => isArray(t, checker));
+    return type.types.some(t => isArray(t, checker));
   }
 
   return checker.isArrayType(type) || checker.isTupleType(type);
@@ -133,7 +133,7 @@ function isArray(type: ts.Type, checker: ts.TypeChecker): boolean {
 
 function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
   if (type.isUnion()) {
-    return type.types.every(t => isIterable(t, checker));
+    return type.types.some(t => isIterable(t, checker));
   }
 
   const iterator = tsutils.getWellKnownSymbolPropertyOfType(
