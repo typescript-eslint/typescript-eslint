@@ -1,6 +1,7 @@
 ---
-id: troubleshooting
-title: Troubleshooting & FAQs
+id: faqs
+title: FAQs
+slug: /troubleshooting/
 ---
 
 ## I am using a rule from ESLint core, and it doesn't work correctly with TypeScript code
@@ -39,55 +40,47 @@ These errors are caused by an ESLint config requesting type information be gener
 - If you **do not** want to lint the file:
   - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information:
-      <details>
-        <summary>
-          A popular setup is to remove all rules requiring type information from the top-level configuration
-          and only apply them to TypeScript files via an override.
-        </summary>
+  - If you **do not** want to lint the file with [type-aware linting](../getting-started/Typed_Linting.mdx):
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) with our [`disable-type-checked`](../users/Shared_Configurations.mdx#disable-type-checked) config to disable type checking for just that type of file.
+    <Tabs groupId="eslint-config">
+      <TabItem value="Flat Config">
 
-        ```js title=".eslintrc.cjs"
-        module.exports = {
-          // ... the rest of your config ...
-          overrides: [
-            {
-              extends: [
-                'plugin:@typescript-eslint/recommended-requiring-type-checking',
-              ],
-              files: ['./**/*.{ts,tsx}'],
-            },
-          ],
-        };
-        ```
+      ```js title="eslint.config.js"
+      import tseslint from 'typescript-eslint';
 
-      </details>
-      <details>
-        <summary>
-          Alternatively, in our <a href="/blog/announcing-typescript-eslint-v6-beta">version v6</a>, you can use our{' '}
-          <a href="https://v6--typescript-eslint.netlify.app/linting/configs#disable-type-checked"><code>disable-type-checked</code> config</a> to disable type checking for just that type of file.
-        </summary>
+      export default tseslint.config(
+        // ... the rest of your config ...
+        {
+          files: ['**/*.js'],
+          extends: [tseslint.configs.disableTypeChecked],
+        },
+      );
+      ```
 
-        ```js title=".eslintrc.cjs"
-        module.exports = {
-          // ... the rest of your config ...
-          overrides: [
-            {
-              extends: ['plugin:@typescript-eslint/disable-type-checked'],
-              files: ['./**/*.js'],
-            },
-          ],
-        };
-        ```
-        To disable type checking for files manually, set `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work, and you'll also need to disable any rules or rule options that require type checking.
-      </details>
+      </TabItem>
+      <TabItem value="Legacy Config">
 
-  - If you **do** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
+      ```js title=".eslintrc.cjs"
+      module.exports = {
+        // ... the rest of your config ...
+        overrides: [
+          {
+            extends: ['plugin:@typescript-eslint/disable-type-checked'],
+            files: ['./**/*.js'],
+          },
+        ],
+      };
+      ```
+
+      </TabItem>
+    </Tabs>
+    - Alternatively to disable type checking for files manually, you can set `parserOptions: { project: false }` to an override for the files you wish to exclude.
+  - If you **do** want to lint the file with [type-aware linting](../getting-started/Typed_Linting.mdx):
     - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
       - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
-      - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+      - [`eslint.config.mjs`](https://github.com/typescript-eslint/typescript-eslint/blob/main/eslint.config.mjs)
 
 <!-- prettier-ignore-end -->
 
@@ -105,12 +98,12 @@ However, if no specified TSConfig includes the source file, the parser won't be 
 This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
 For example, many projects have files like:
 
-- An `.eslintrc.cjs` with `parserOptions.project: ["./tsconfig.json"]`
+- An `.eslintrc.cjs` / `eslint.config.js` with `parserOptions.project: ["./tsconfig.json"]`
 - A `tsconfig.json` with `include: ["src"]`
 
-In that case, viewing the `.eslintrc.cjs` in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
+In that case, viewing the file in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
 
-See our docs on [type aware linting](./Typed_Linting.mdx) for more information.
+See our docs on [type aware linting](../getting-started/Typed_Linting.mdx) for more information.
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
@@ -121,7 +114,7 @@ Update to the latest version to see a more informative version of this error mes
 
 First make sure you've read the docs and understand ESLint configuration files:
 
-- [Read our getting started guide](../Getting_Started.mdx) to ensure your config is properly setup to start configuring our rules.
+- [Read our getting started guide](./getting-started/Quickstart) to ensure your config is properly setup to start configuring our rules.
 - [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
 
 Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
@@ -142,8 +135,29 @@ type RuleConfig =
 
 Some examples
 
-```js title=".eslintrc.js"
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    rules: {
+      // turns a rule on with no configuration (i.e. uses the default configuration)
+      '@typescript-eslint/array-type': 'error',
+      // turns on a rule with configuration
+      '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
 module.exports = {
+  // ... the rest of your config ...
   rules: {
     // turns a rule on with no configuration (i.e. uses the default configuration)
     '@typescript-eslint/array-type': 'error',
@@ -152,6 +166,9 @@ module.exports = {
   },
 };
 ```
+
+</TabItem>
+</Tabs>
 
 ## typescript-eslint thinks my variable is never nullish / is `any` / etc., but that is clearly not the case to me
 
@@ -180,7 +197,7 @@ If the IDE provides different type information from typescript-eslint's report, 
 You can use it, but it will only work reliably for untyped rules -- and even then, not always.
 
 Any ESLint rule that checks logic across files, including many rules from `eslint-plugin-import`, creates cross-file dependencies.
-[Typed lint rules](./Typed_Linting.mdx) almost always have dependencies on types across files in practice.
+[Typed lint rules](../getting-started/Typed_Linting.mdx) almost always have dependencies on types across files in practice.
 ESLint's caching doesn't account for those cross-file dependencies.
 
 We don't recommend using `--cache`.
@@ -189,8 +206,31 @@ We don't recommend using `--cache`.
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
 
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        project: ['./tsconfig.json'],
+        // Add this line
+        extraFileExtensions: ['.vue'],
+      },
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
 ```js title=".eslintrc.js"
 module.exports = {
+  // ... the rest of your config ...
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
@@ -200,18 +240,59 @@ module.exports = {
 };
 ```
 
+</TabItem>
+</Tabs>
+
 ## I am running into errors when parsing TypeScript in my .vue files
 
 If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
 
-```diff
-- "parser": "@typescript-eslint/parser",
-+ "parser": "vue-eslint-parser",
-  "parserOptions": {
-+     "parser": "@typescript-eslint/parser",
-      "sourceType": "module"
-  }
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import tseslint from 'typescript-eslint';
+// Add this line
+import vueParser from 'vue-eslint-parser';
+
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    languageOptions: {
+      // Remove this line
+      parser: tseslint.parser,
+      // Add this line
+      parser: vueParser,
+      parserOptions: {
+        // Add this line
+        parser: tseslint.parser,
+        sourceType: 'module',
+      },
+    },
+  },
+);
 ```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  // ... the rest of your config ...
+  // Remove this line
+  parser: '@typescript-eslint/parser',
+  // Add this line
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    // Add this line
+    extraFileExtensions: ['.vue'],
+  },
+};
+```
+
+</TabItem>
+</Tabs>
 
 The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.
 
@@ -291,9 +372,29 @@ As of our v4.0.0 release, this also applies to types.
 If you use global types from a 3rd party package (i.e. anything from an `@types` package), then you will have to configure ESLint appropriately to define these global types.
 For example; the `JSX` namespace from `@types/react` is a global 3rd party type that you must define in your ESLint config.
 
-Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any rule) can be turned off for TypeScript files alone by adding an `overrides` section to `.eslintrc.cjs`:
+Note, that for a mixed project including JavaScript and TypeScript, the `no-undef` rule (like any rule) can be turned off for TypeScript files alone as follows:
 
-```js title=".eslintrc.cjs"
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    files: ['**/*.{ts,tsx,mts,cts}'],
+    rules: {
+      'no-undef': 'off',
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
 module.exports = {
   // ... the rest of your config ...
   overrides: [
@@ -306,6 +407,9 @@ module.exports = {
   ],
 };
 ```
+
+</TabItem>
+</Tabs>
 
 If you choose to leave on the ESLint `no-undef` lint rule, you can [manually define the set of allowed `globals` in your ESLint config](https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals), and/or you can use one of the [pre-defined environment (`env`) configurations](https://eslint.org/docs/user-guide/configuring/language-options#specifying-environments).
 
@@ -384,11 +488,11 @@ For developers updating ESLint rules in plugins that still need to support types
 
 For more context, see the [Some properties named typeParameters instead of typeArguments](https://github.com/typescript-eslint/typescript-eslint/issues/146) issue, and the implementing [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384) pull request.
 
-The [typescript-eslint v6 release post](https://deploy-preview-6515--typescript-eslint.netlify.app/blog/announcing-typescript-eslint-v6-beta) has more information on typescript-eslint v6.
+The [typescript-eslint v6 release post](/blog/announcing-typescript-eslint-v6-beta) has more information on typescript-eslint v6.
 
 ## My linting feels really slow
 
-If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.mdx).
+If you think you're having issues with performance, see our [Performance Troubleshooting documentation](../troubleshooting/Performance.mdx).
 
 ## Are TypeScript project references supported?
 
