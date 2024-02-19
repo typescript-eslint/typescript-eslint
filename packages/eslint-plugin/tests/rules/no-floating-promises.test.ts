@@ -504,6 +504,19 @@ void promiseArray;
 ['I', 'am', 'just', 'an', 'array'];
       `,
     },
+    {
+      code: `
+import test from 'node:test';
+test('Hi', () => Promise.reject(5));
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [
+            { from: 'package', name: 'test', package: 'node:test' },
+          ],
+        },
+      ],
+    },
   ],
 
   invalid: [
