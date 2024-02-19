@@ -64,6 +64,7 @@ import noMagicNumbers from './no-magic-numbers';
 import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
+import noMisusedSpread from './no-misused-spread';
 import noMixedEnums from './no-mixed-enums';
 import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
@@ -206,6 +207,7 @@ export default {
   'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
+  'no-misused-spread': noMisusedSpread,
   'no-mixed-enums': noMixedEnums,
   'no-namespace': noNamespace,
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
