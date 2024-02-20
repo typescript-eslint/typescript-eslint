@@ -674,8 +674,6 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      // TODO: Make this test pass.
-      skip: true,
       code: `
         declare function getFunction(): () => void;
 
@@ -692,7 +690,6 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      skip: true,
       code: `
         declare const f: () => void;
 
@@ -709,7 +706,6 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      skip: true,
       code: `
         declare const f: () => void | { a: number };
 
@@ -767,6 +763,25 @@ ruleTester.run('no-misused-spread', rule, {
     {
       code: `
         declare const iterator: Iterable<string>;
+
+        const o = { ...iterator };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Iterator',
+          },
+          line: 4,
+          column: 21,
+          endColumn: 32,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const iterator: Iterable<string> | { a: number };
 
         const o = { ...iterator };
       `,

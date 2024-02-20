@@ -173,11 +173,7 @@ function isFunctionWithoutProps(
     return type.types.some(t => isFunctionWithoutProps(t, checker));
   }
 
-  const symbol = type.getSymbol();
-
   return (
-    !!symbol &&
-    tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Function) &&
-    type.getProperties().length === 0
+    type.getCallSignatures().length > 0 && type.getProperties().length === 0
   );
 }
