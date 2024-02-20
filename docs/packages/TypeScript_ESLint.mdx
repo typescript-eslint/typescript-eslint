@@ -55,17 +55,63 @@ export default tseslint.config(
 
 This config file exports a flat config that enables both the [core eslint recommended config](https://www.npmjs.com/package/@eslint/js) and [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
-For more information on the `tseslint.config` function [see below](#config).
+For more information on the `tseslint.config` function [see `config(...)` below](#config).
 
 ### Advanced usage
 
-You can also declare our plugin and parser in your config via this package. For example this config would enable our plugin, our parser, and type-aware linting with a few of our popular type-aware rules:
+#### Manually configuring our plugin and parser
+
+You can declare our plugin and parser in your config via this package, for example:
 
 ```js title="eslint.config.js"
 // @ts-check
 
 import eslint from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
+import jestPlugin from 'eslint-plugin-jest';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config({
+  plugins: {
+    // highlight-next-line
+    '@typescript-eslint': tseslint.plugin,
+  },
+  languageOptions: {
+    // highlight-next-line
+    parser: tseslint.parser,
+    parserOptions: {
+      project: true,
+    },
+  },
+  rules: {
+    '@typescript-eslint/no-unsafe-argument': 'error',
+    '@typescript-eslint/no-unsafe-assignment': 'error',
+    '@typescript-eslint/no-unsafe-call': 'error',
+    '@typescript-eslint/no-unsafe-member-access': 'error',
+    '@typescript-eslint/no-unsafe-return': 'error',
+  },
+});
+```
+
+:::warning
+We **_strongly_** recommend declaring our plugin with the namespace `@typescript-eslint` as shown above. If you use our shared configs this is the namespace that they use. This has been the standard namespace for our plugin for many years and is what users are most familiar with.
+
+You may choose a different namespace - but note that currently [flat configs allow the same plugin to be registered, configured, and have duplicate reports under multiple namespaces](https://github.com/eslint/eslint/discussions/17766).
+:::
+
+#### Usage with other plugins
+
+Below is a more complex example of how you might use our tooling with flat configs. This config:
+
+- Ignores `build`/`dist` folders from being linted
+- Enables our plugin, our parser, and type-aware linting with a few of our popular type-aware rules
+- Disables type-aware linting on JS files
+- Enables the recommended `eslint-plugin-jest` rules on test files only
+
+```js title="eslint.config.js"
+// @ts-check
+
+import eslint from '@eslint/js';
+import jestPlugin from 'eslint-plugin-jest';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -98,18 +144,19 @@ export default tseslint.config(
     files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
   },
+  {
+    // enable jest rules on test files
+    files: ['test/**'],
+    ...jestPlugin.configs['flat/recommended'],
+  },
 );
 ```
 
-:::warning
-We **_strongly_** recommend declaring our plugin with the namespace `@typescript-eslint` as shown above. If you use our shared configs this is the namespace that they use. This has been the standard namespace for our plugin for many years and is what users are most familiar with.
-
-You may choose a different namespace - but note that currently [flat configs allow the same plugin to be registered, configured, and have duplicate reports under multiple namespaces](https://github.com/eslint/eslint/discussions/17766).
-:::
-
 ## `config(...)`
 
-The `config` function is a [variadic](https://en.wikipedia.org/wiki/Variadic_function) [identity function](https://en.wikipedia.org/wiki/Identity_function) which is a fancy way of saying that it's a function that takes `1..n` inputs and returns the inputs unchanged. It can be used to quickly and easily provide types for your flat config file. By using this function you will get autocomplete and documentation for all config properties in addition to TypeScript errors should you provide invalid values.
+The `config` function is a [variadic](https://en.wikipedia.org/wiki/Variadic_function) [identity function](https://en.wikipedia.org/wiki/Identity_function) which is a fancy way of saying that it's a function with a spread argument that accepts any number flat config objects and returns the objects unchanged. It exists as a way to quickly and easily provide types for your flat config file without the need for JSDoc type comments.
+
+By using this function you will get autocomplete and documentation for all config properties in addition to TypeScript errors, should you provide invalid values.
 
 <Tabs>
 <TabItem value="With helper">
@@ -154,7 +201,7 @@ export default [
 </Tabs>
 
 :::note
-We _**strongly**_ recommend using this utility to improve the config authoring experience — however it is entirely optional and choosing not to use it will not impact your ability to use our tooling; you'll just need to manually adjust any examples as appropriate.
+We _**strongly**_ recommend using this utility to improve the config authoring experience — however it is entirely optional. By choosing not to use it you lose editor autocomplete and type checking for config files but otherwise it _will not_ impact your ability to use our tooling.
 :::
 
 ### Flat config `extends`
@@ -194,7 +241,9 @@ export default [
 ];
 ```
 
-We found that this is a pretty common operation when writing ESLint configs which is why we provided this convenience property. For example in codebases with type-aware linting a config object like this is a very common way to disable TS-specific linting setups on JS files:
+We found that this is a pretty common operation when writing ESLint configs which is why we provided this convenience property.
+
+For example in codebases with type-aware linting a config object like this is a very common way to disable TS-specific linting setups on JS files:
 
 ```js
 export default tseslint.config([
