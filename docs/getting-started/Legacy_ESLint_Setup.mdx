@@ -1,11 +1,19 @@
 ---
-id: getting-started
-title: Getting Started
+id: legacy-eslint-setup
+title: Legacy ESLint Setup
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 ## Quickstart
 
 These steps will get you running ESLint with our recommended rules on your TypeScript code as quickly as possible.
+
+:::note
+This page is for [ESLint's legacy config format](https://eslint.org/docs/latest/use/configure/configuration-files).
+See [Getting Started](../getting-started/Quickstart.mdx) for [ESLint's new "flat" configuration format](https://eslint.org/docs/latest/use/configure/configuration-files-new).
+:::
 
 ### Step 1: Installation
 
@@ -65,9 +73,9 @@ ESLint will lint all TypeScript compatible files within the current folder, and 
 
 ## Details
 
-- `parser: '@typescript-eslint/parser'` tells ESLint to use the [`@typescript-eslint/parser`](./packages/Parser.mdx) package you installed to parse your source files.
+- `parser: '@typescript-eslint/parser'` tells ESLint to use the [`@typescript-eslint/parser`](../packages/Parser.mdx) package you installed to parse your source files.
   - This is required, or else ESLint will throw errors as it tries to parse TypeScript code as if it were regular JavaScript.
-- `plugins: ['@typescript-eslint']` tells ESLint to load the [`@typescript-eslint/eslint-plugin`](./packages/ESLint_Plugin.mdx) package as a plugin.
+- `plugins: ['@typescript-eslint']` tells ESLint to load the [`@typescript-eslint/eslint-plugin`](../packages/ESLint_Plugin.mdx) package as a plugin.
   - This allows you to use typescript-eslint's rules within your codebase.
 - `extends: [ ... ]` tells ESLint that your config extends the given configurations.
   - `eslint:recommended` is ESLint's inbuilt "recommended" config - it turns on a small, sensible set of rules which lint for well-known best-practices.
@@ -76,9 +84,9 @@ ESLint will lint all TypeScript compatible files within the current folder, and 
 
 ## Next Steps
 
-We provide a plethora of powerful rules that utilize the power of TypeScript's type information. [Visit the next page for a setup guide](./linting/Typed_Linting.mdx 'Visit the next page for a typed rules setup guide').
+We provide a plethora of powerful rules that utilize the power of TypeScript's type information. [Visit _Typed Rules_ for a setup guide](./Typed_Linting.mdx).
 
-If you're having problems getting this working, please have a look at our [Troubleshooting & FAQs](./linting/Troubleshooting.mdx).
+If you're having problems getting this working, please have a look at our [Troubleshooting & FAQs](../troubleshooting/FAQ.mdx).
 
 ### Documentation Resources
 
