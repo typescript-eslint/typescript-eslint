@@ -34,7 +34,7 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
         {
           type: 'link',
           title: null,
-          url: `/getting-started/typed-linting`,
+          url: `/linting/typed-linting`,
           children: [
             {
               type: 'text',
@@ -49,7 +49,7 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
         {
           type: 'link',
           title: null,
-          url: `/troubleshooting/performance-troubleshooting`,
+          url: `/linting/troubleshooting/performance-troubleshooting`,
           children: [
             {
               type: 'text',

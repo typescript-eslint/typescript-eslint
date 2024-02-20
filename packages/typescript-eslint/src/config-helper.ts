@@ -1,24 +1,6 @@
-/*
-This package is consumed from js config files with @ts-check. Often times these
-files are not covered by a tsconfig.json -- meaning they use the default
-`node10` module resolution.
+import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
-In order to support this use-case we need to ensure this package's module
-signature is compatible with `node10` resolution. If we use `/utils/ts-eslint`
-here then we need to make sure that that import works in `node10` -- which is a
-pain because `node10` is "simple" and just maps to the files on disk.
-
-So to avoid that problem entirely we use the root import which is easy to make
-`node10` compatible.
-
-For more context see:
-https://github.com/typescript-eslint/typescript-eslint/pull/8460
-
-TODO - convert this to /utils/ts-eslint
-*/
-import type { TSESLint } from '@typescript-eslint/utils';
-
-interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
+interface ConfigWithExtends extends FlatConfig.Config {
   /**
    * Allows you to "extend" a set of configs similar to `extends` from the
    * classic configs.
@@ -59,7 +41,7 @@ interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
    * ]
    * ```
    */
-  extends?: TSESLint.FlatConfig.ConfigArray;
+  extends?: FlatConfig.ConfigArray;
 }
 
 /**
@@ -84,7 +66,7 @@ interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
  */
 export function config(
   ...configs: ConfigWithExtends[]
-): TSESLint.FlatConfig.ConfigArray {
+): FlatConfig.ConfigArray {
   return configs.flatMap(configWithExtends => {
     const { extends: extendsArr, ...config } = configWithExtends;
     if (extendsArr == null || extendsArr.length === 0) {

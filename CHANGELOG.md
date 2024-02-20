@@ -1,18 +1,3 @@
-## 7.0.2 (2024-02-19)
-
-
-### 🩹 Fixes
-
-- fix tsconfig-less check errors, fix `@types/eslint` incompatibilities, add tests ([#8460](https://github.com/typescript-eslint/typescript-eslint/pull/8460))
-- **utils:** use mergeable interface for `settings` property ([#8485](https://github.com/typescript-eslint/typescript-eslint/pull/8485))
-
-### ❤️  Thank You
-
-- Brad Zacher @bradzacher
-- Gareth Jones @G-Rath
-
-You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
-
 ## 7.0.1 (2024-02-12)
 
 

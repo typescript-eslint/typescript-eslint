@@ -29,7 +29,7 @@ const chalk = {
 const AUTO_GENERATED_COMMENT_LINES = [
   '// THIS CODE WAS AUTOMATICALLY GENERATED',
   '// DO NOT EDIT THIS CODE BY HAND',
-  '// SEE https://typescript-eslint.io/users/configs',
+  '// SEE https://typescript-eslint.io/linting/configs',
   '//',
   '// For developers working in the typescript-eslint monorepo:',
   '// You can regenerate it using `yarn generate:configs`',

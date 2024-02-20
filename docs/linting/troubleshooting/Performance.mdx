@@ -3,10 +3,7 @@ id: performance-troubleshooting
 title: Performance Troubleshooting
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-As mentioned in the [type-aware linting doc](../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in the [type-aware linting doc](../Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
 
 If you're experiencing times much slower than that, then there are a few common culprits.
 
@@ -26,39 +23,11 @@ Always ensure you provide globs targeted at the folders you are specifically wan
 Specifying `tsconfig.json` paths in your ESLint commands is also likely to cause much more disk IO than expected.
 Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
 
-<Tabs groupId="eslint-config">
-<TabItem value="Flat Config">
-
-```js title="eslint.config.js"
-// @ts-check
-
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedRequiringTypeChecking,
-  {
-    languageOptions: {
-      parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-        // Remove this line
-        project: ['./**/tsconfig.json'],
-        // Add this line
-        project: ['./packages/*/tsconfig.json'],
-      },
-    },
-  },
-);
-```
-
-</TabItem>
-<TabItem value="Legacy Config">
-
 ```js title=".eslintrc.js"
 module.exports = {
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parser: '@typescript-eslint/parser',
@@ -73,9 +42,6 @@ module.exports = {
   root: true,
 };
 ```
-
-</TabItem>
-</Tabs>
 
 See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
 
@@ -119,7 +85,7 @@ We recommend you do not use the following rules, as TypeScript provides the same
 - `import/namespace`
 - `import/default`
 - `import/no-named-as-default-member`
-- `import/no-unresolved` (as long as you are using [`import` over `require`](/rules/no-var-requires/))
+- `import/no-unresolved` (as long as you are using [`import` over `require`](https://typescript-eslint.io/rules/no-var-requires/))
 
 The following rules do not have equivalent checks in TypeScript, so we recommend that you only run them at CI/push time, to lessen the local performance burden.
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "7.0.2",
+  "version": "7.0.1",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -20,7 +20,6 @@
       "default": "./dist/use-at-your-own-risk.js"
     }
   },
-  "types": "./dist/index.d.ts",
   "engines": {
     "node": "^16.0.0 || >=18.0.0"
   },
@@ -53,8 +52,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "7.0.2",
-    "@typescript-eslint/visitor-keys": "7.0.2",
+    "@typescript-eslint/types": "7.0.1",
+    "@typescript-eslint/visitor-keys": "7.0.1",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",

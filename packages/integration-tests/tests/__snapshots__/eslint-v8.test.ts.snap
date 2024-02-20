@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`eslint-v8 eslint should work successfully 1`] = `
+exports[`eslint-v8 should lint successfully 1`] = `
 [
   {
     "errorCount": 1,

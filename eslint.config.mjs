@@ -329,8 +329,8 @@ export default tseslint.config(
       'packages/*/tests/**/spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/integration-test-base.ts',
-      'packages/integration-tests/tools/pack-packages.ts',
+      'packages/integration-tests/tools/integration-test-base.{ts,tsx,cts,mts}',
+      'packages/integration-tests/tools/pack-packages.{ts,tsx,cts,mts}',
     ],
     rules: {
       '@typescript-eslint/no-empty-function': [

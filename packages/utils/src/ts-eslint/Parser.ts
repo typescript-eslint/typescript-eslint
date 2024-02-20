@@ -20,15 +20,13 @@ export namespace Parser {
    * A loose definition of the ParserModule type for use with configs
    * This type intended to relax validation of configs so that parsers that have
    * different AST types or scope managers can still be passed to configs
-   *
-   * @see {@link LooseRuleDefinition}, {@link LooseProcessorModule}
    */
   export type LooseParserModule =
     | {
         /**
          * Information about the parser to uniquely identify it when serializing.
          */
-        meta?: Partial<ParserMeta>;
+        meta?: ParserMeta;
         /**
          * Parses the given text into an ESTree AST
          */
@@ -38,7 +36,7 @@ export namespace Parser {
         /**
          * Information about the parser to uniquely identify it when serializing.
          */
-        meta?: Partial<ParserMeta>;
+        meta?: ParserMeta;
         /**
          * Parses the given text into an AST
          */

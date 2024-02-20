@@ -9,7 +9,7 @@ slug: /
 `@typescript-eslint/eslint-plugin` includes over 100 rules that detect best practice violations, bugs, and/or stylistic issues specifically for TypeScript code. All of our rules are listed below.
 
 :::tip
-Instead of enabling rules one by one, we recommend using one of [our pre-defined configs](/users/configs) to enable a large set of recommended rules.
+Instead of enabling rules one by one, we recommend using one of [our pre-defined configs](/linting/configs) to enable a large set of recommended rules.
 :::
 
 ## Rules
@@ -24,17 +24,17 @@ import RulesTable from "@site/src/components/RulesTable";
 
 ### Config Group (⚙️)
 
-"Config Group" refers to the [pre-defined config](/users/configs) that includes the rule. Extending from a configuration preset allow for enabling a large set of recommended rules all at once.
+"Config Group" refers to the [pre-defined config](/linting/configs) that includes the rule. Extending from a configuration preset allow for enabling a large set of recommended rules all at once.
 
 ### Metadata
 
 - `🔧 fixable` refers to whether the rule contains an [ESLint `--fix` auto-fixer](https://eslint.org/docs/latest/use/command-line-interface#--fix).
 - `💡 has suggestions` refers to whether the rule contains an ESLint suggestion fixer.
   - Sometimes, it is not safe to automatically fix the code with an auto-fixer. But in these cases, we often have a good guess of what the correct fix should be, and we can provide it as a suggestion to the developer.
-- `💭 requires type information` refers to whether the rule requires [typed linting](/getting-started/typed-linting).
+- `💭 requires type information` refers to whether the rule requires [typed linting](/linting/typed-linting).
 - `🧱 extension rule` means that the rule is an extension of an [core ESLint rule](https://eslint.org/docs/latest/rules) (see [Extension Rules](#extension-rules)).
 - `📐 formatting rule` means that the rule has to do with formatting.
-  - We [strongly recommend against using ESLint for formatting](/troubleshooting/formatting).
+  - We [strongly recommend against using ESLint for formatting](/linting/troubleshooting/formatting).
   - Soon, formatting rules will be moved to the [ESLint stylistic plugin](https://eslint.style).
 - `💀 deprecated rule` means that the rule should no longer be used and will be removed from the plugin in a future version.
 

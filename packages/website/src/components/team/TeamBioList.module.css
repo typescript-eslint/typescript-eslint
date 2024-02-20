@@ -6,7 +6,6 @@
   --ifm-list-item-margin: 0;
 
   display: flex;
-  flex-wrap: wrap;
   gap: 1.5rem;
   padding-left: 0;
 }

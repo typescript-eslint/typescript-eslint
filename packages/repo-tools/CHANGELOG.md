@@ -1,18 +1,3 @@
-## 7.0.2 (2024-02-19)
-
-
-### 🩹 Fixes
-
-- fix tsconfig-less check errors, fix `@types/eslint` incompatibilities, add tests
-
-
-### ❤️  Thank You
-
-- Brad Zacher
-- Gareth Jones
-
-You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
-
 ## 7.0.1 (2024-02-12)
 
 This was a version bump only for repo-tools to align it with other projects, there were no code changes.

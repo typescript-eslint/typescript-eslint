@@ -27,8 +27,7 @@ type EcmaVersion =
   | 2021
   | 2022
   | 2023
-  | 2024
-  | 'latest';
+  | 2024;
 
 type SourceTypeClassic = 'module' | 'script';
 type SourceType = SourceTypeClassic | 'commonjs';
@@ -42,7 +41,7 @@ interface ParserOptions {
     jsx?: boolean;
     [key: string]: unknown;
   };
-  ecmaVersion?: EcmaVersion;
+  ecmaVersion?: EcmaVersion | 'latest';
 
   // scope-manager specific
   jsxPragma?: string | null;
