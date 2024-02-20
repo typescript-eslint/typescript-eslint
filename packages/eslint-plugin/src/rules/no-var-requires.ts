@@ -43,16 +43,20 @@ export default createRule<Options, MessageIds>({
     function isImportPathAllowed(importPath: string): boolean {
       return allowPatterns.some(pattern => importPath.match(pattern));
     }
+
+    function isStringOrTemplateLiteral(node: TSESTree.Node): boolean {
+      return (
+        (node.type === AST_NODE_TYPES.Literal &&
+          typeof node.value === 'string') ||
+        node.type === AST_NODE_TYPES.TemplateLiteral
+      );
+    }
+
     return {
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
-        if (
-          node.arguments[0] &&
-          ((node.arguments[0].type === AST_NODE_TYPES.Literal &&
-            typeof node.arguments[0].value === 'string') ||
-            node.arguments[0].type === AST_NODE_TYPES.TemplateLiteral)
-        ) {
+        if (node.arguments[0] && isStringOrTemplateLiteral(node.arguments[0])) {
           const argValue = getStaticStringValue(node.arguments[0]);
           if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
             return;
