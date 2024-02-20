@@ -186,7 +186,7 @@ export default tseslint.config(
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-/** @type {import('typescript-eslint').Config} */
+/** @type {import('@typescript-eslint/utils').TSESLint.FlatConfig.ConfigFile} */
 export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
