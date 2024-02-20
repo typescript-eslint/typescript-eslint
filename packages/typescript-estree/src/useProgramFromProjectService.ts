@@ -50,7 +50,7 @@ export function useProgramFromProjectService(
     }
   }
 
-  log('Retrieving scripti nfo and then program for: %s', filePath);
+  log('Retrieving script info and then program for: %s', filePath);
 
   const scriptInfo = service.getScriptInfo(filePath);
   const program = service
