@@ -1,6 +1,7 @@
 ---
 id: typed-linting
 title: Linting with Type Information
+pagination_next: getting-started/typed-linting/monorepos
 ---
 
 import Tabs from '@theme/Tabs';
@@ -38,7 +39,7 @@ For CommonJS modules and/or older versions of Node.js, [use `__dirname` or an al
 
 In more detail:
 
-- `tseslint.configs.recommendedTypeChecked` is another [recommended configuration](./Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
+- `tseslint.configs.recommendedTypeChecked` is another [recommended configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
 - `parserOption.project` tells our parser how to find the TSConfig for each source file (`true` indicates to find the closest `tsconfig.json` for each source file)
   - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
 
@@ -69,7 +70,7 @@ module.exports = {
 
 In more detail:
 
-- `plugin:@typescript-eslint/recommended-type-checked` is another [recommended configuration](./Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
+- `plugin:@typescript-eslint/recommended-type-checked` is another [recommended configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
 - `parserOptions.project` tells our parser how to find the TSConfig for each source file (`true` indicates to find the closest `tsconfig.json` for each source file)
   - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
@@ -79,7 +80,7 @@ In more detail:
 
 :::caution
 Your ESLint config file may start receiving a parsing error about type information.
-See [our TSConfig inclusion FAQ](./Troubleshooting.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+See [our TSConfig inclusion FAQ](../troubleshooting/FAQ.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 :::
 
 With that done, run the same lint command you ran before.
@@ -137,7 +138,7 @@ If your project is a multi-package monorepo, see [our docs on configuring a mono
 
 ### How can I disable type-aware linting for a subset of files?
 
-You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns) config in conjunction with our [`disable-type-checked`](./Configurations.mdx#disable-type-checked) config to turn off type-aware linting on specific subsets of files.
+You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns) config in conjunction with our [`disable-type-checked`](../users/Shared_Configurations.mdx#disable-type-checked) config to turn off type-aware linting on specific subsets of files.
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
@@ -211,8 +212,8 @@ This means that generally they usually only run a complete lint before a push, o
 ### I get errors telling me "The file must be included in at least one of the projects provided"
 
 You're using an outdated version of `@typescript-eslint/parser`.
-Update to the latest version to see a more informative version of this error message, explained in our [Troubleshooting and FAQs page](./Troubleshooting.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+Update to the latest version to see a more informative version of this error message, explained in our [Troubleshooting and FAQs page](../troubleshooting/FAQ.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting and FAQs page](./Troubleshooting.mdx).
+If you're having problems getting this working, please have a look at our [Troubleshooting and FAQs page](../troubleshooting/FAQ.mdx).

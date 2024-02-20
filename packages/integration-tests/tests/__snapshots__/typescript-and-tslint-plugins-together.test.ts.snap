@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`typescript-and-tslint-plugins-together should lint successfully 1`] = `
+exports[`typescript-and-tslint-plugins-together eslint should work successfully 1`] = `
 [
   {
     "errorCount": 1,

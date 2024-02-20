@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`recommended-does-not-require-program should lint successfully 1`] = `
+exports[`recommended-does-not-require-program eslint should work successfully 1`] = `
 [
   {
     "errorCount": 1,

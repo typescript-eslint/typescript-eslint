@@ -6,35 +6,41 @@ module.exports = {
       collapsible: false,
       items: [
         {
-          collapsible: false,
-          items: ['linting/typed-linting/monorepos'],
-          label: 'Linting with Type Information',
-          link: {
-            id: 'linting/typed-linting',
-            type: 'doc',
-          },
-          type: 'category',
+          label: 'Quickstart',
+          id: 'getting-started/quickstart',
+          type: 'doc',
         },
-        'linting/configs',
         {
           collapsible: false,
-          items: [
-            'linting/troubleshooting/performance-troubleshooting',
-            'linting/troubleshooting/formatting',
-            'linting/troubleshooting/tslint',
-          ],
-          label: 'Troubleshooting & FAQs',
+          items: ['getting-started/typed-linting/monorepos'],
+          label: 'Linting with Type Information',
           link: {
-            id: 'linting/troubleshooting',
+            id: 'getting-started/typed-linting',
             type: 'doc',
           },
           type: 'category',
         },
-        'linting/legacy-eslint-setup',
+        'getting-started/legacy-eslint-setup',
       ],
       label: 'Getting Started',
       link: {
-        id: 'getting-started',
+        id: 'getting-started/quickstart',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+
+    {
+      collapsible: false,
+      items: [
+        'troubleshooting/faqs',
+        'troubleshooting/performance-troubleshooting',
+        'troubleshooting/formatting',
+        'troubleshooting/tslint',
+      ],
+      label: 'Troubleshooting & FAQs',
+      link: {
+        id: 'troubleshooting/faqs',
         type: 'doc',
       },
       type: 'category',
@@ -42,6 +48,12 @@ module.exports = {
     {
       collapsible: false,
       items: [
+        {
+          label: 'Rules',
+          href: '/rules/',
+          type: 'link',
+        },
+        'users/configs',
         'users/dependency-versions',
         'users/releases',
         'users/versioning',

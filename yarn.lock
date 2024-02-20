@@ -2503,6 +2503,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@docusaurus/plugin-client-redirects@npm:~2.4.3":
+  version: 2.4.3
+  resolution: "@docusaurus/plugin-client-redirects@npm:2.4.3"
+  dependencies:
+    "@docusaurus/core": 2.4.3
+    "@docusaurus/logger": 2.4.3
+    "@docusaurus/utils": 2.4.3
+    "@docusaurus/utils-common": 2.4.3
+    "@docusaurus/utils-validation": 2.4.3
+    eta: ^2.0.0
+    fs-extra: ^10.1.0
+    lodash: ^4.17.21
+    tslib: ^2.4.0
+  peerDependencies:
+    react: ^16.8.4 || ^17.0.0
+    react-dom: ^16.8.4 || ^17.0.0
+  checksum: f039f89ad2658524819543ff4a370e409053bfd3b4851be82c3cceb6fcd39e954a1ca3bfd13e99fbd1f7fbb9cd69ed28545a852c8dbca2e8300eec23586767a4
+  languageName: node
+  linkType: hard
+
 "@docusaurus/plugin-content-blog@npm:2.4.3":
   version: 2.4.3
   resolution: "@docusaurus/plugin-content-blog@npm:2.4.3"
@@ -4595,91 +4615,91 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-darwin-arm64@npm:1.4.0"
+"@swc/core-darwin-arm64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-darwin-arm64@npm:1.4.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-darwin-x64@npm:1.4.0"
+"@swc/core-darwin-x64@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-darwin-x64@npm:1.4.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.4.0"
+"@swc/core-linux-arm-gnueabihf@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.4.1"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.4.0"
+"@swc/core-linux-arm64-gnu@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.4.1"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-arm64-musl@npm:1.4.0"
+"@swc/core-linux-arm64-musl@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-linux-arm64-musl@npm:1.4.1"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-x64-gnu@npm:1.4.0"
+"@swc/core-linux-x64-gnu@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-linux-x64-gnu@npm:1.4.1"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-linux-x64-musl@npm:1.4.0"
+"@swc/core-linux-x64-musl@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-linux-x64-musl@npm:1.4.1"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.4.0"
+"@swc/core-win32-arm64-msvc@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.4.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.4.0"
+"@swc/core-win32-ia32-msvc@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.4.1"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core-win32-x64-msvc@npm:1.4.0"
+"@swc/core-win32-x64-msvc@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@swc/core-win32-x64-msvc@npm:1.4.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@swc/core@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@swc/core@npm:1.4.0"
+  version: 1.4.1
+  resolution: "@swc/core@npm:1.4.1"
   dependencies:
-    "@swc/core-darwin-arm64": 1.4.0
-    "@swc/core-darwin-x64": 1.4.0
-    "@swc/core-linux-arm-gnueabihf": 1.4.0
-    "@swc/core-linux-arm64-gnu": 1.4.0
-    "@swc/core-linux-arm64-musl": 1.4.0
-    "@swc/core-linux-x64-gnu": 1.4.0
-    "@swc/core-linux-x64-musl": 1.4.0
-    "@swc/core-win32-arm64-msvc": 1.4.0
-    "@swc/core-win32-ia32-msvc": 1.4.0
-    "@swc/core-win32-x64-msvc": 1.4.0
-    "@swc/counter": ^0.1.1
+    "@swc/core-darwin-arm64": 1.4.1
+    "@swc/core-darwin-x64": 1.4.1
+    "@swc/core-linux-arm-gnueabihf": 1.4.1
+    "@swc/core-linux-arm64-gnu": 1.4.1
+    "@swc/core-linux-arm64-musl": 1.4.1
+    "@swc/core-linux-x64-gnu": 1.4.1
+    "@swc/core-linux-x64-musl": 1.4.1
+    "@swc/core-win32-arm64-msvc": 1.4.1
+    "@swc/core-win32-ia32-msvc": 1.4.1
+    "@swc/core-win32-x64-msvc": 1.4.1
+    "@swc/counter": ^0.1.2
     "@swc/types": ^0.1.5
   peerDependencies:
     "@swc/helpers": ^0.5.0
@@ -4707,11 +4727,11 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: cef6459ba707362e88373f1c2c779c760a7fdf06c0123856be005bb012de91cb913b37fb49e485ac551494a1ee46fb6369c5aca9d453e1e5e391a8514c0db185
+  checksum: 3549b4a0ba8201be2dd39954ef8375df5d028da5688a68211dc5cbf69ff7a43533e9ffd36f629095f51555552f4df52116384ef779d5ec45c2b9de938e651d57
   languageName: node
   linkType: hard
 
-"@swc/counter@npm:^0.1.1, @swc/counter@npm:^0.1.3":
+"@swc/counter@npm:^0.1.2, @swc/counter@npm:^0.1.3":
   version: 0.1.3
   resolution: "@swc/counter@npm:0.1.3"
   checksum: df8f9cfba9904d3d60f511664c70d23bb323b3a0803ec9890f60133954173047ba9bdeabce28cd70ba89ccd3fd6c71c7b0bd58be85f611e1ffbe5d5c18616598
@@ -5281,9 +5301,9 @@ __metadata:
   linkType: hard
 
 "@types/semver@npm:^7.3.12, @types/semver@npm:^7.5.0":
-  version: 7.5.6
-  resolution: "@types/semver@npm:7.5.6"
-  checksum: 563a0120ec0efcc326567db2ed920d5d98346f3638b6324ea6b50222b96f02a8add3c51a916b6897b51523aad8ac227d21d3dcf8913559f1bfc6c15b14d23037
+  version: 7.5.7
+  resolution: "@types/semver@npm:7.5.7"
+  checksum: 5af9b13e3d74d86d4b618f6506ccbded801fb35dbc28608cd5a7bfb8bcac0021dd35ef305a72a0c2a8def0cff60acd706bfee16a9ed1c39a893d2a175e778ea7
   languageName: node
   linkType: hard
 
@@ -5395,10 +5415,10 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
   dependencies:
     "@prettier/sync": ^0.5.0
-    "@typescript-eslint/rule-tester": 7.0.1
-    "@typescript-eslint/scope-manager": 7.0.1
-    "@typescript-eslint/type-utils": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
+    "@typescript-eslint/rule-tester": 7.0.2
+    "@typescript-eslint/scope-manager": 7.0.2
+    "@typescript-eslint/type-utils": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
     jest: 29.7.0
     prettier: ^3.0.3
     rimraf: "*"
@@ -5410,8 +5430,8 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin-tslint@workspace:packages/eslint-plugin-tslint"
   dependencies:
     "@types/lodash": "*"
-    "@typescript-eslint/parser": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
+    "@typescript-eslint/parser": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
     jest: 29.7.0
     prettier: ^3.0.3
     rimraf: "*"
@@ -5422,7 +5442,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/eslint-plugin@7.0.1, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
+"@typescript-eslint/eslint-plugin@7.0.2, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
@@ -5430,12 +5450,12 @@ __metadata:
     "@types/debug": "*"
     "@types/marked": "*"
     "@types/natural-compare": "*"
-    "@typescript-eslint/rule-schema-to-typescript-types": 7.0.1
-    "@typescript-eslint/rule-tester": 7.0.1
-    "@typescript-eslint/scope-manager": 7.0.1
-    "@typescript-eslint/type-utils": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
-    "@typescript-eslint/visitor-keys": 7.0.1
+    "@typescript-eslint/rule-schema-to-typescript-types": 7.0.2
+    "@typescript-eslint/rule-tester": 7.0.2
+    "@typescript-eslint/scope-manager": 7.0.2
+    "@typescript-eslint/type-utils": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
+    "@typescript-eslint/visitor-keys": 7.0.2
     ajv: ^6.12.6
     chalk: ^5.3.0
     cross-env: ^7.0.3
@@ -5477,15 +5497,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@7.0.1, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@7.0.2, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
     "@types/glob": "*"
-    "@typescript-eslint/scope-manager": 7.0.1
-    "@typescript-eslint/types": 7.0.1
-    "@typescript-eslint/typescript-estree": 7.0.1
-    "@typescript-eslint/visitor-keys": 7.0.1
+    "@typescript-eslint/scope-manager": 7.0.2
+    "@typescript-eslint/types": 7.0.2
+    "@typescript-eslint/typescript-estree": 7.0.2
+    "@typescript-eslint/visitor-keys": 7.0.2
     debug: ^4.3.4
     downlevel-dts: "*"
     glob: "*"
@@ -5516,25 +5536,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-schema-to-typescript-types@7.0.1, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
+"@typescript-eslint/rule-schema-to-typescript-types@7.0.2, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@typescript-eslint/type-utils": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
+    "@typescript-eslint/type-utils": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
     natural-compare: ^1.4.0
     prettier: ^3.0.3
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@7.0.1, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@7.0.2, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@types/lodash.merge": 4.6.9
-    "@typescript-eslint/parser": 7.0.1
-    "@typescript-eslint/typescript-estree": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
+    "@typescript-eslint/parser": 7.0.2
+    "@typescript-eslint/typescript-estree": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
     ajv: ^6.10.0
     chai: ^4.3.7
     lodash.merge: 4.6.2
@@ -5548,14 +5568,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/scope-manager@7.0.1, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
+"@typescript-eslint/scope-manager@7.0.2, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
     "@types/glob": "*"
-    "@typescript-eslint/types": 7.0.1
-    "@typescript-eslint/typescript-estree": 7.0.1
-    "@typescript-eslint/visitor-keys": 7.0.1
+    "@typescript-eslint/types": 7.0.2
+    "@typescript-eslint/typescript-estree": 7.0.2
+    "@typescript-eslint/visitor-keys": 7.0.2
     glob: "*"
     jest-specific-snapshot: "*"
     make-dir: "*"
@@ -5584,13 +5604,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@7.0.1, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/type-utils@7.0.2, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
-    "@typescript-eslint/parser": 7.0.1
-    "@typescript-eslint/typescript-estree": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
+    "@typescript-eslint/parser": 7.0.2
+    "@typescript-eslint/typescript-estree": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
     ajv: ^6.10.0
     debug: ^4.3.4
     downlevel-dts: "*"
@@ -5607,7 +5627,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@7.0.1, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@7.0.2, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5709,14 +5729,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/typescript-estree@7.0.1, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
+"@typescript-eslint/typescript-estree@7.0.2, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@babel/code-frame": "*"
     "@babel/parser": "*"
-    "@typescript-eslint/types": 7.0.1
-    "@typescript-eslint/visitor-keys": 7.0.1
+    "@typescript-eslint/types": 7.0.2
+    "@typescript-eslint/visitor-keys": 7.0.2
     debug: ^4.3.4
     glob: "*"
     globby: ^11.1.0
@@ -5774,17 +5794,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@7.0.1, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@7.0.2, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     "@types/json-schema": ^7.0.12
     "@types/semver": ^7.5.0
-    "@typescript-eslint/parser": 7.0.1
-    "@typescript-eslint/scope-manager": 7.0.1
-    "@typescript-eslint/types": 7.0.1
-    "@typescript-eslint/typescript-estree": 7.0.1
+    "@typescript-eslint/parser": 7.0.2
+    "@typescript-eslint/scope-manager": 7.0.2
+    "@typescript-eslint/types": 7.0.2
+    "@typescript-eslint/typescript-estree": 7.0.2
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.0.3
@@ -5831,12 +5851,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/visitor-keys@7.0.1, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
+"@typescript-eslint/visitor-keys@7.0.2, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
     "@types/eslint-visitor-keys": "*"
-    "@typescript-eslint/types": 7.0.1
+    "@typescript-eslint/types": 7.0.2
     downlevel-dts: "*"
     eslint-visitor-keys: ^3.4.1
     jest: 29.7.0
@@ -5866,18 +5886,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/website-eslint@7.0.1, @typescript-eslint/website-eslint@workspace:packages/website-eslint":
+"@typescript-eslint/website-eslint@7.0.2, @typescript-eslint/website-eslint@workspace:packages/website-eslint":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/website-eslint@workspace:packages/website-eslint"
   dependencies:
     "@eslint/js": "*"
-    "@typescript-eslint/eslint-plugin": 7.0.1
-    "@typescript-eslint/parser": 7.0.1
-    "@typescript-eslint/scope-manager": 7.0.1
-    "@typescript-eslint/types": 7.0.1
-    "@typescript-eslint/typescript-estree": 7.0.1
-    "@typescript-eslint/utils": 7.0.1
-    "@typescript-eslint/visitor-keys": 7.0.1
+    "@typescript-eslint/eslint-plugin": 7.0.2
+    "@typescript-eslint/parser": 7.0.2
+    "@typescript-eslint/scope-manager": 7.0.2
+    "@typescript-eslint/types": 7.0.2
+    "@typescript-eslint/typescript-estree": 7.0.2
+    "@typescript-eslint/utils": 7.0.2
+    "@typescript-eslint/visitor-keys": 7.0.2
     esbuild: ~0.20.0
     eslint: "*"
     esquery: "*"
@@ -18479,8 +18499,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typescript-eslint@workspace:packages/typescript-eslint"
   dependencies:
-    "@typescript-eslint/eslint-plugin": 7.0.1
-    "@typescript-eslint/parser": 7.0.1
+    "@typescript-eslint/eslint-plugin": 7.0.2
+    "@typescript-eslint/parser": 7.0.2
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.0.3
@@ -19260,6 +19280,7 @@ __metadata:
     "@babel/runtime": ^7.22.6
     "@docusaurus/core": ~2.4.1
     "@docusaurus/module-type-aliases": ~2.4.1
+    "@docusaurus/plugin-client-redirects": ~2.4.3
     "@docusaurus/plugin-pwa": ~2.4.1
     "@docusaurus/preset-classic": ~2.4.1
     "@docusaurus/remark-plugin-npm2yarn": ~2.4.1
@@ -19268,11 +19289,11 @@ __metadata:
     "@types/react": "*"
     "@types/react-helmet": ^6.1.6
     "@types/react-router-dom": ^5.3.3
-    "@typescript-eslint/eslint-plugin": 7.0.1
-    "@typescript-eslint/parser": 7.0.1
-    "@typescript-eslint/rule-schema-to-typescript-types": 7.0.1
-    "@typescript-eslint/types": 7.0.1
-    "@typescript-eslint/website-eslint": 7.0.1
+    "@typescript-eslint/eslint-plugin": 7.0.2
+    "@typescript-eslint/parser": 7.0.2
+    "@typescript-eslint/rule-schema-to-typescript-types": 7.0.2
+    "@typescript-eslint/types": 7.0.2
+    "@typescript-eslint/website-eslint": 7.0.2
     clsx: ^2.0.0
     copy-webpack-plugin: ^11.0.0
     cross-fetch: "*"
