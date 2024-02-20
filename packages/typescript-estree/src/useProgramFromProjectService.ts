@@ -11,30 +11,35 @@ export function useProgramFromProjectService(
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
-  const filePath = absolutify(parseSettings.filePath);
+  const filePathAbsolute = absolutify(parseSettings.filePath);
 
   const opened = service.openClientFile(
-    filePath,
+    filePathAbsolute,
     parseSettings.codeFullText,
     /* scriptKind */ undefined,
     parseSettings.tsconfigRootDir,
   );
 
   if (hasFullTypeInformation) {
+    const isDefaultProjectAllowedPath = filePathMatchedBy(
+      parseSettings.filePath,
+      allowDefaultProjectForFiles,
+    );
+
     if (opened.configFileName) {
-      if (filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
+      if (isDefaultProjectAllowedPath) {
         throw new Error(
-          `${filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
+          `${parseSettings.filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
         );
       }
-    } else if (!filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
+    } else if (!isDefaultProjectAllowedPath) {
       throw new Error(
-        `${filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
+        `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
       );
     }
   }
 
-  const scriptInfo = service.getScriptInfo(filePath);
+  const scriptInfo = service.getScriptInfo(filePathAbsolute);
   const program = service
     .getDefaultProjectForFile(scriptInfo!.fileName, true)!
     .getLanguageService(/*ensureSynchronized*/ true)
