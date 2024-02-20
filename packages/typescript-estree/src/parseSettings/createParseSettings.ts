@@ -127,6 +127,7 @@ export function createParseSettings(
           DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
     )),
     tsconfigRootDir,
+    typeAware: !!options.programs || !!options.project,
   };
 
   // debug doesn't support multiple `enable` calls, so have to do it all at once
