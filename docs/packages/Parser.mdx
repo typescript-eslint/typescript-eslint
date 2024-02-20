@@ -60,7 +60,7 @@ interface ParserOptions {
 
 Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
 
-When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../linting/Typed_Linting.mdx), this distinction is important for performance.
+When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../getting-started/Typed_Linting.mdx), this distinction is important for performance.
 There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
 Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
 
@@ -126,7 +126,7 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 
 > Default `undefined`.
 
-This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](../linting/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ### `extraFileExtensions`
 
