@@ -1,12 +1,9 @@
 import { minimatch } from 'minimatch';
+import path from 'path';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
-import {
-  type ASTAndDefiniteProgram,
-  ensureAbsolutePath,
-  getCanonicalFileName,
-} from './create-program/shared';
+import { type ASTAndDefiniteProgram } from './create-program/shared';
 import type { MutableParseSettings } from './parseSettings';
 
 export function useProgramFromProjectService(
@@ -14,10 +11,10 @@ export function useProgramFromProjectService(
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
-  const filePath = getCanonicalFileName(parseSettings.filePath);
+  const filePath = absolutify(parseSettings.filePath);
 
   const opened = service.openClientFile(
-    ensureAbsolutePath(filePath, service.host.getCurrentDirectory()),
+    filePath,
     parseSettings.codeFullText,
     /* scriptKind */ undefined,
     parseSettings.tsconfigRootDir,
@@ -48,6 +45,12 @@ export function useProgramFromProjectService(
   }
 
   return createProjectProgram(parseSettings, [program]);
+
+  function absolutify(filePath: string): string {
+    return path.isAbsolute(filePath)
+      ? filePath
+      : path.join(service.host.getCurrentDirectory(), filePath);
+  }
 }
 
 function filePathMatchedBy(
