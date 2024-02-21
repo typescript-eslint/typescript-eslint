@@ -614,26 +614,28 @@ export type RuleListener = RuleListenerBaseSelectors &
   RuleListenerExitSelectors;
 
 export interface RuleModule<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[] = [],
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
+  ExtendedRuleListener extends RuleListener = RuleListener,
 > {
   /**
    * Default options the rule will be run with
    */
-  defaultOptions: TOptions;
+  defaultOptions: Options;
 
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<TMessageIds>;
+  meta: RuleMetaData<MessageIds>;
 
   /**
    * Function which returns an object with methods that ESLint calls to “visit”
    * nodes while traversing the abstract syntax tree.
    */
-  create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): ExtendedRuleListener;
 }
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
