@@ -530,7 +530,7 @@ export default createRule<Options, MessageIds>({
       const removeRange: TSESTree.Range = [first.range[0], last.range[1]];
       const textRange: TSESTree.Range = [...removeRange];
       const before = nullThrows(
-        context.sourceCode.getTokenAfter(first),
+        context.sourceCode.getTokenBefore(first),
         NullThrowsReasons.MissingToken('token', 'first specifier'),
       );
       textRange[0] = before.range[1];
