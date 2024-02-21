@@ -273,12 +273,11 @@ declare class SourceCodeBase extends TokenStore {
    * Determines if two nodes or tokens have at least one whitespace character
    * between them. Order does not matter. Returns false if the given nodes or
    * tokens overlap.
-   * @since 6.7.0
    * @param first The first node or token to check between.
    * @param second The second node or token to check between.
    * @returns True if there is a whitespace character between any of the tokens found between the two given nodes or tokens.
    */
-  isSpaceBetween?(
+  isSpaceBetween(
     first: TSESTree.Node | TSESTree.Token,
     second: TSESTree.Node | TSESTree.Token,
   ): boolean;
@@ -298,28 +297,24 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * Returns the scope of the given node.
    * This information can be used track references to variables.
-   * @since 8.37.0
    */
-  getScope?(node: TSESTree.Node): Scope.Scope;
+  getScope(node: TSESTree.Node): Scope.Scope;
   /**
    * Returns an array of the ancestors of the given node, starting at
    * the root of the AST and continuing through the direct parent of the current node.
    * This array does not include the currently-traversed node itself.
-   * @since 8.38.0
    */
-  getAncestors?(node: TSESTree.Node): TSESTree.Node[];
+  getAncestors(node: TSESTree.Node): TSESTree.Node[];
   /**
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
-   * @since 8.38.0
    */
-  getDeclaredVariables?(node: TSESTree.Node): readonly Scope.Variable[];
+  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
   /**
    * Marks a variable with the given name in the current scope as used.
    * This affects the no-unused-vars rule.
-   * @since 8.39.0
    */
-  markVariableAsUsed?(name: string, node: TSESTree.Node): boolean;
+  markVariableAsUsed(name: string, node: TSESTree.Node): boolean;
   /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.
@@ -332,7 +327,7 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * The parser services of this source code.
    */
-  parserServices: ParserServices;
+  parserServices?: Partial<ParserServices>;
   /**
    * The scope of this source code.
    */

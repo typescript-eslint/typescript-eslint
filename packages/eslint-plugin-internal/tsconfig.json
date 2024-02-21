@@ -5,6 +5,6 @@
     "target": "ES2022",
     "rootDir": "."
   },
-  "include": ["src", "typings", "tests"],
+  "include": ["src", "typings", "tests", "index.d.ts"],
   "references": [{ "path": "../utils/tsconfig.build.json" }]
 }

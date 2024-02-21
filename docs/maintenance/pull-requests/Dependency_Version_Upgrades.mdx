@@ -116,6 +116,7 @@ A single PR can remove support for old TypeScript versions as a breaking change:
 1. Update the `SUPPORTED_TYPESCRIPT_VERSIONS` constant in `warnAboutTSVersion.ts`
 1. Update the `versions` constant in `version-check.ts`
 1. Update [Users > Dependency Versions > TypeScript](../../users/Dependency_Versions.mdx#typescript)
+1. Update `MIN_TS_VERSION_SEMVER` in `packages/website/src/components/OptionsSelector.tsx`
 1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a now-unsupported version of TypeScript.
    - For example, to remove support for v4.3, searches might include:
      - `4.3`

@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -29,8 +28,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['record'],
   create(context, [mode]) {
-    const sourceCode = getSourceCode(context);
-
     function checkMembers(
       members: TSESTree.TypeElement[],
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
@@ -64,7 +61,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (parentId) {
-        const scope = getScope(context);
+        const scope = context.sourceCode.getScope(parentId);
         const superVar = ASTUtils.findVariable(scope, parentId.name);
         if (superVar) {
           const isCircular = superVar.references.some(
@@ -84,8 +81,10 @@ export default createRule<Options, MessageIds>({
         messageId: 'preferRecord',
         fix: safeFix
           ? (fixer): TSESLint.RuleFix => {
-              const key = sourceCode.getText(keyType.typeAnnotation);
-              const value = sourceCode.getText(valueType.typeAnnotation);
+              const key = context.sourceCode.getText(keyType.typeAnnotation);
+              const value = context.sourceCode.getText(
+                valueType.typeAnnotation,
+              );
               const record = member.readonly
                 ? `Readonly<Record<${key}, ${value}>>`
                 : `Record<${key}, ${value}>`;
@@ -115,8 +114,8 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'preferIndexSignature',
             fix(fixer) {
-              const key = sourceCode.getText(params[0]);
-              const type = sourceCode.getText(params[1]);
+              const key = context.sourceCode.getText(params[0]);
+              const type = context.sourceCode.getText(params[1]);
               return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
             },
           });
@@ -132,7 +131,7 @@ export default createRule<Options, MessageIds>({
 
           if (node.typeParameters?.params.length) {
             genericTypes = `<${node.typeParameters.params
-              .map(p => sourceCode.getText(p))
+              .map(p => context.sourceCode.getText(p))
               .join(', ')}>`;
           }
 

@@ -219,9 +219,8 @@ namespace ESLint {
     errorCount: number;
     /**
      * The number of fatal errors.
-     * @since 7.32.0
      */
-    fatalErrorCount?: number;
+    fatalErrorCount: number;
     /**
      * The absolute path to the file of this result. This is the string "<text>" if the file path is unknown (when you
      * didn't pass the options.filePath option to the eslint.lintText() method).
@@ -250,10 +249,8 @@ namespace ESLint {
     source?: string;
     /**
      * The array of SuppressedLintMessage objects.
-     *
-     * @since 8.8.0
      */
-    suppressedMessages?: SuppressedLintMessage[];
+    suppressedMessages: SuppressedLintMessage[];
     /**
      * The information about the deprecated rules that were used to check this file.
      */
@@ -296,7 +293,6 @@ namespace ESLint {
     endLine: number | undefined;
     /**
      * `true` if this is a fatal error unrelated to a rule, like a parsing error.
-     * @since 7.24.0
      */
     fatal?: boolean | undefined;
     /**
@@ -383,24 +379,12 @@ namespace ESLint {
   }
 }
 
-// We want to export this class always so it's easy for end users to consume.
-// However on ESLint v6, this class will not exist, so we provide a fallback to make it clear
-// The only users of this should be users scripting ESLint locally, so _they_ should have the correct version installed.
-const _ESLint = (ESLintESLint ??
-  function (): void {
-    throw new Error(
-      'Attempted to construct an ESLint instance on less than ESLint v7.0.0',
-    );
-  }) as typeof ESLintBase;
-
 /**
  * The ESLint class is the primary class to use in Node.js applications.
  * This class depends on the Node.js fs module and the file system, so you cannot use it in browsers.
  *
  * If you want to lint code on browsers, use the Linter class instead.
- *
- * @since 7.0.0
  */
-class ESLint extends _ESLint {}
+class ESLint extends (ESLintESLint as typeof ESLintBase) {}
 
 export { ESLint };

@@ -114,15 +114,15 @@ Example configuration:
         // add a custom message, AND tell the plugin how to fix it
         "OldAPI": {
           "message": "Use NewAPI instead",
-          "fixWith": "NewAPI"
+          "fixWith": "NewAPI",
         },
 
         // un-ban a type that's banned by default
-        "{}": false
+        "{}": false,
       },
-      "extendDefaults": true
-    }
-  ]
+      "extendDefaults": true,
+    },
+  ],
 }
 ```
 
