@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -55,7 +54,6 @@ export default createRule({
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
 
     const scopeInfoStack: ScopeInfo[] = [];
 
@@ -138,7 +136,7 @@ export default createRule({
         return null;
       }
 
-      const awaitToken = sourceCode.getFirstToken(node, isAwaitKeyword);
+      const awaitToken = context.sourceCode.getFirstToken(node, isAwaitKeyword);
       // Should always be the case; but let's be safe.
       /* istanbul ignore if */ if (!awaitToken) {
         return null;
@@ -147,7 +145,7 @@ export default createRule({
       const startAt = awaitToken.range[0];
       let endAt = awaitToken.range[1];
       // Also remove any extraneous whitespace after `await`, if there is any.
-      const nextToken = sourceCode.getTokenAfter(awaitToken, {
+      const nextToken = context.sourceCode.getTokenAfter(awaitToken, {
         includeComments: true,
       });
       if (nextToken) {

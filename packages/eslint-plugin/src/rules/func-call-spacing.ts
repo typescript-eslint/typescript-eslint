@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -78,8 +77,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['never', {}],
   create(context, [option, config]) {
-    const sourceCode = getSourceCode(context);
-    const text = sourceCode.getText();
+    const text = context.sourceCode.getText();
 
     /**
      * Check if open space is present in a function name
@@ -91,11 +89,10 @@ export default createRule<Options, MessageIds>({
     ): void {
       const isOptionalCall = isOptionalCallExpression(node);
 
-      const closingParenToken = sourceCode.getLastToken(node)!;
-      const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
-        node.typeArguments ?? node.callee,
-      )!;
-      const openingParenToken = sourceCode.getFirstTokenBetween(
+      const closingParenToken = context.sourceCode.getLastToken(node)!;
+      const lastCalleeTokenWithoutPossibleParens =
+        context.sourceCode.getLastToken(node.typeArguments ?? node.callee)!;
+      const openingParenToken = context.sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,
         closingParenToken,
         isOpeningParenToken,
@@ -104,7 +101,7 @@ export default createRule<Options, MessageIds>({
         // new expression with no parens...
         return;
       }
-      const lastCalleeToken = sourceCode.getTokenBefore(
+      const lastCalleeToken = context.sourceCode.getTokenBefore(
         openingParenToken,
         isNotOptionalChainPunctuator,
       )!;

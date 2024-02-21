@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -103,7 +102,6 @@ export default createRule<Options, MessageIds>({
     ]);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
 
     function validateNode(
       node:
@@ -150,14 +148,14 @@ export default createRule<Options, MessageIds>({
         return context.report({
           messageId: 'missingAsync',
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
         });
       }
 
       context.report({
         messageId: 'missingAsync',
         node,
-        loc: getFunctionHeadLoc(node, sourceCode),
+        loc: getFunctionHeadLoc(node, context.sourceCode),
         fix: fixer => {
           if (
             node.parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -168,7 +166,7 @@ export default createRule<Options, MessageIds>({
 
             // the token to put `async` before
             let keyToken = nullThrows(
-              sourceCode.getFirstToken(method),
+              context.sourceCode.getFirstToken(method),
               NullThrowsReasons.MissingToken('key token', 'method'),
             );
 
@@ -180,7 +178,7 @@ export default createRule<Options, MessageIds>({
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
               keyToken = nullThrows(
-                sourceCode.getTokenAfter(lastDecorator),
+                context.sourceCode.getTokenAfter(lastDecorator),
                 NullThrowsReasons.MissingToken('key token', 'last decorator'),
               );
             }
@@ -191,16 +189,15 @@ export default createRule<Options, MessageIds>({
               keyToken.range[0] < method.key.range[0]
             ) {
               keyToken = nullThrows(
-                sourceCode.getTokenAfter(keyToken),
+                context.sourceCode.getTokenAfter(keyToken),
                 NullThrowsReasons.MissingToken('token', 'keyword'),
               );
             }
 
             // check if there is a space between key and previous token
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const insertSpace = sourceCode.isSpaceBetween!(
+            const insertSpace = !context.sourceCode.isSpaceBetween(
               nullThrows(
-                sourceCode.getTokenBefore(keyToken),
+                context.sourceCode.getTokenBefore(keyToken),
                 NullThrowsReasons.MissingToken('token', 'keyword'),
               ),
               keyToken,

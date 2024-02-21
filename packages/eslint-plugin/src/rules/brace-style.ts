@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -36,7 +35,7 @@ export default createRule<Options, MessageIds>({
       context.options;
 
     const isAllmanStyle = style === 'allman';
-    const sourceCode = getSourceCode(context);
+
     const rules = baseRule.create(context);
 
     /**
@@ -54,11 +53,11 @@ export default createRule<Options, MessageIds>({
       }
 
       const tokenBeforeOpeningCurly =
-        sourceCode.getTokenBefore(openingCurlyToken)!;
+        context.sourceCode.getTokenBefore(openingCurlyToken)!;
       const tokenBeforeClosingCurly =
-        sourceCode.getTokenBefore(closingCurlyToken)!;
+        context.sourceCode.getTokenBefore(closingCurlyToken)!;
       const tokenAfterOpeningCurly =
-        sourceCode.getTokenAfter(openingCurlyToken)!;
+        context.sourceCode.getTokenAfter(openingCurlyToken)!;
 
       if (
         !isAllmanStyle &&
@@ -72,7 +71,7 @@ export default createRule<Options, MessageIds>({
               tokenBeforeOpeningCurly.range[1],
               openingCurlyToken.range[0],
             ];
-            const textBetween = sourceCode.text.slice(
+            const textBetween = context.sourceCode.text.slice(
               textRange[0],
               textRange[1],
             );
@@ -125,14 +124,14 @@ export default createRule<Options, MessageIds>({
       'TSInterfaceBody, TSModuleBlock'(
         node: TSESTree.TSInterfaceBody | TSESTree.TSModuleBlock,
       ): void {
-        const openingCurly = sourceCode.getFirstToken(node)!;
-        const closingCurly = sourceCode.getLastToken(node)!;
+        const openingCurly = context.sourceCode.getFirstToken(node)!;
+        const closingCurly = context.sourceCode.getLastToken(node)!;
 
         validateCurlyPair(openingCurly, closingCurly);
       },
       TSEnumDeclaration(node): void {
-        const closingCurly = sourceCode.getLastToken(node)!;
-        const openingCurly = sourceCode.getTokenBefore(
+        const closingCurly = context.sourceCode.getLastToken(node)!;
+        const openingCurly = context.sourceCode.getTokenBefore(
           node.members.length ? node.members[0] : closingCurly,
         )!;
 

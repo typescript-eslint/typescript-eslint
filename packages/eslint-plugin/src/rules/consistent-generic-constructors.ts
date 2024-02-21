@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
@@ -32,7 +31,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['constructor'],
   create(context, [mode]) {
-    const sourceCode = getSourceCode(context);
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
@@ -79,7 +77,8 @@ export default createRule<Options, MessageIds>({
           if (!lhs && rhs.typeArguments) {
             const { typeArguments, callee } = rhs;
             const typeAnnotation =
-              sourceCode.getText(callee) + sourceCode.getText(typeArguments);
+              context.sourceCode.getText(callee) +
+              context.sourceCode.getText(typeArguments);
             context.report({
               node,
               messageId: 'preferTypeAnnotation',
@@ -96,7 +95,7 @@ export default createRule<Options, MessageIds>({
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
                   return nullThrows(
-                    sourceCode.getTokenAfter(node.key),
+                    context.sourceCode.getTokenAfter(node.key),
                     NullThrowsReasons.MissingToken(']', 'key'),
                   );
                 }
@@ -114,11 +113,12 @@ export default createRule<Options, MessageIds>({
         }
 
         if (lhs?.typeArguments && !rhs.typeArguments) {
-          const hasParens = sourceCode.getTokenAfter(rhs.callee)?.value === '(';
+          const hasParens =
+            context.sourceCode.getTokenAfter(rhs.callee)?.value === '(';
           const extraComments = new Set(
-            sourceCode.getCommentsInside(lhs.parent),
+            context.sourceCode.getCommentsInside(lhs.parent),
           );
-          sourceCode
+          context.sourceCode
             .getCommentsInside(lhs.typeArguments)
             .forEach(c => extraComments.delete(c));
           context.report({
@@ -129,12 +129,12 @@ export default createRule<Options, MessageIds>({
               for (const comment of extraComments) {
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  sourceCode.getText(comment),
+                  context.sourceCode.getText(comment),
                 );
               }
               yield fixer.insertTextAfter(
                 rhs.callee,
-                sourceCode.getText(lhs.typeArguments),
+                context.sourceCode.getText(lhs.typeArguments),
               );
               if (!hasParens) {
                 yield fixer.insertTextAfter(rhs.callee, '()');

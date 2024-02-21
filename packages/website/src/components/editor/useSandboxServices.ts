@@ -72,9 +72,7 @@ export const useSandboxServices = (
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        // registerInlayHintsProvider was added in TS 4.4 and isn't in TS <= 4.3.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        sandboxInstance.monaco.languages.registerInlayHintsProvider?.(
+        sandboxInstance.monaco.languages.registerInlayHintsProvider(
           sandboxInstance.language,
           createTwoslashInlayProvider(sandboxInstance),
         );

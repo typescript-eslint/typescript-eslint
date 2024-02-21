@@ -2,7 +2,6 @@ import type { Scope } from '@typescript-eslint/scope-manager';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -46,7 +45,7 @@ export default createRule({
         imports: [],
         previousSibling: undefined,
       };
-      let scope: Scope | null = getScope(context);
+      let scope: Scope | null = context.sourceCode.getScope(node);
 
       for (const definition of scope.upper?.set.get(name)?.defs ?? []) {
         if (

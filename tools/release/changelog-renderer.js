@@ -1,4 +1,6 @@
-const { default: defaultChangelogRenderer } = require('nx/changelog-renderer');
+const {
+  default: defaultChangelogRenderer,
+} = require('nx/release/changelog-renderer');
 
 const changelogRenderer = async ({
   projectGraph,

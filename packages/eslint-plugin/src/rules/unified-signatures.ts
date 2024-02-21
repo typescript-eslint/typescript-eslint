@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type { Equal } from '../util';
 import { arraysAreEqual, createRule, nullThrows } from '../util';
@@ -100,8 +99,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreDifferentlyNamedParameters }]) {
-    const sourceCode = getSourceCode(context);
-
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -135,8 +132,12 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: sourceCode.getText(typeAnnotation0?.typeAnnotation),
-                type2: sourceCode.getText(typeAnnotation1?.typeAnnotation),
+                type1: context.sourceCode.getText(
+                  typeAnnotation0?.typeAnnotation,
+                ),
+                type2: context.sourceCode.getText(
+                  typeAnnotation1?.typeAnnotation,
+                ),
               },
               node: p1,
             });
@@ -443,8 +444,8 @@ export default createRule<Options, MessageIds>({
         a === b ||
         (a !== undefined &&
           b !== undefined &&
-          sourceCode.getText(a.typeAnnotation) ===
-            sourceCode.getText(b.typeAnnotation))
+          context.sourceCode.getText(a.typeAnnotation) ===
+            context.sourceCode.getText(b.typeAnnotation))
       );
     }
 

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
@@ -49,8 +48,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
-    const sourceCode = getSourceCode(context);
-
     function isFunctionCall(
       init: TSESTree.Expression,
       callName: string,
@@ -228,7 +225,7 @@ export default createRule<Options, MessageIds>({
           ) {
             yield fixer.remove(
               nullThrows(
-                sourceCode.getTokenBefore(typeNode),
+                context.sourceCode.getTokenBefore(typeNode),
                 NullThrowsReasons.MissingToken('token before', 'type node'),
               ),
             );

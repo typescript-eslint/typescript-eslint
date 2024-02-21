@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -58,7 +57,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -237,7 +235,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         if (
           options.typesToIgnore?.includes(
-            sourceCode.getText(node.typeAnnotation),
+            context.sourceCode.getText(node.typeAnnotation),
           ) ||
           isConstAssertion(node.typeAnnotation)
         ) {
@@ -266,7 +264,7 @@ export default createRule<Options, MessageIds>({
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
                 const openingAngleBracket = nullThrows(
-                  sourceCode.getTokenBefore(
+                  context.sourceCode.getTokenBefore(
                     node.typeAnnotation,
                     token =>
                       token.type === AST_TOKEN_TYPES.Punctuator &&
@@ -275,7 +273,7 @@ export default createRule<Options, MessageIds>({
                   NullThrowsReasons.MissingToken('<', 'type annotation'),
                 );
                 const closingAngleBracket = nullThrows(
-                  sourceCode.getTokenAfter(
+                  context.sourceCode.getTokenAfter(
                     node.typeAnnotation,
                     token =>
                       token.type === AST_TOKEN_TYPES.Punctuator &&
@@ -283,6 +281,7 @@ export default createRule<Options, MessageIds>({
                   ),
                   NullThrowsReasons.MissingToken('>', 'type annotation'),
                 );
+
                 // < ( number ) > ( 3 + 5 )
                 // ^---remove---^
                 return fixer.removeRange([
@@ -292,7 +291,7 @@ export default createRule<Options, MessageIds>({
               }
               // `as` is always present in TSAsExpression
               const asToken = nullThrows(
-                sourceCode.getTokenAfter(
+                context.sourceCode.getTokenAfter(
                   node.expression,
                   token =>
                     token.type === AST_TOKEN_TYPES.Identifier &&
@@ -301,11 +300,12 @@ export default createRule<Options, MessageIds>({
                 NullThrowsReasons.MissingToken('>', 'type annotation'),
               );
               const tokenBeforeAs = nullThrows(
-                sourceCode.getTokenBefore(asToken, {
+                context.sourceCode.getTokenBefore(asToken, {
                   includeComments: true,
                 }),
                 NullThrowsReasons.MissingToken('comment', 'as'),
               );
+
               // ( 3 + 5 )  as  number
               //          ^--remove--^
               return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);

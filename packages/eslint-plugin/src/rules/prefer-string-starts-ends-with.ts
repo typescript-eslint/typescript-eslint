@@ -2,7 +2,6 @@ import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -39,8 +38,8 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = getScope(context);
-    const sourceCode = getSourceCode(context);
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
+
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -108,8 +107,8 @@ export default createRule({
      * @param node2 Another node to compare.
      */
     function isSameTokens(node1: TSESTree.Node, node2: TSESTree.Node): boolean {
-      const tokens1 = sourceCode.getTokens(node1);
-      const tokens2 = sourceCode.getTokens(node2);
+      const tokens1 = context.sourceCode.getTokens(node1);
+      const tokens2 = context.sourceCode.getTokens(node2);
 
       if (tokens1.length !== tokens2.length) {
         return false;
@@ -213,7 +212,7 @@ export default createRule({
       node: TSESTree.MemberExpression,
     ): [number, number] {
       const dotOrOpenBracket = nullThrows(
-        sourceCode.getTokenAfter(node.object, isNotClosingParenToken),
+        context.sourceCode.getTokenAfter(node.object, isNotClosingParenToken),
         NullThrowsReasons.MissingToken('closing parenthesis', 'member'),
       );
       return [dotOrOpenBracket.range[0], node.range[1]];
