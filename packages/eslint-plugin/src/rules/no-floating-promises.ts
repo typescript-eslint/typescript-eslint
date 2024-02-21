@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  TSESLint,
+  TSESTree,
+  ParserServicesWithTypeInformation,
+} from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -8,18 +12,17 @@ import {
   getOperatorPrecedence,
   getParserServices,
   OperatorPrecedence,
+  readonlynessOptionsDefaults,
+  readonlynessOptionsSchema,
   typeMatchesSpecifier,
+  TypeOrValueSpecifier,
 } from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
-    allowForKnownSafePromises?: {
-      from: 'package';
-      name: string[] | string;
-      package: string;
-    }[];
+    allowForKnownSafePromises?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -85,40 +88,7 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
-          allowForKnownSafePromises: {
-            description:
-              'The list of promises which should be floating as per an external package/module.',
-            type: 'array',
-            items: {
-              type: 'object',
-              additionalProperties: false,
-              properties: {
-                from: {
-                  type: 'string',
-                  enum: ['package'],
-                },
-                name: {
-                  oneOf: [
-                    {
-                      type: 'string',
-                    },
-                    {
-                      type: 'array',
-                      minItems: 1,
-                      uniqueItems: true,
-                      items: {
-                        type: 'string',
-                      },
-                    },
-                  ],
-                },
-                package: {
-                  type: 'string',
-                },
-              },
-              required: ['from', 'name', 'package'],
-            },
-          },
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -129,7 +99,7 @@ export default createRule<Options, MessageId>({
     {
       ignoreVoid: true,
       ignoreIIFE: false,
-      allowForKnownSafePromises: [],
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
     },
   ],
 
@@ -303,13 +273,15 @@ export default createRule<Options, MessageId>({
       }
 
       if (node.type === AST_NODE_TYPES.CallExpression) {
+        const member =
+          node.callee.type === AST_NODE_TYPES.MemberExpression
+            ? node.callee.object
+            : node;
         if (
-          options.allowForKnownSafePromises?.some(specifier =>
-            typeMatchesSpecifier(
-              services.getTypeAtLocation(node.callee),
-              specifier,
-              services.program,
-            ),
+          doesTypeMatchesSpecifier(
+            services,
+            member,
+            options.allowForKnownSafePromises,
           )
         ) {
           return { isUnhandled: false };
@@ -356,6 +328,15 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.Identifier ||
         node.type === AST_NODE_TYPES.NewExpression
       ) {
+        if (
+          doesTypeMatchesSpecifier(
+            services,
+            node,
+            options.allowForKnownSafePromises,
+          )
+        ) {
+          return { isUnhandled: false };
+        }
         // If it is just a property access chain or a `new` call (e.g. `foo.bar` or
         // `new Promise()`), the promise is not handled because it doesn't have the
         // necessary then/catch call at the end of the chain.
@@ -366,6 +347,20 @@ export default createRule<Options, MessageId>({
           return leftResult;
         }
         return isUnhandledPromise(checker, node.right);
+      } else if (
+        node.type === AST_NODE_TYPES.TSAsExpression ||
+        node.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        if (
+          doesTypeMatchesSpecifier(
+            services,
+            node,
+            options.allowForKnownSafePromises,
+          )
+        ) {
+          return { isUnhandled: false };
+        }
+        return isUnhandledPromise(checker, node.expression);
       }
 
       // We conservatively return false for all other types of expressions because
@@ -375,6 +370,24 @@ export default createRule<Options, MessageId>({
     }
   },
 });
+
+function doesTypeMatchesSpecifier(
+  services: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
+  options: TypeOrValueSpecifier[] | undefined,
+) {
+  if (Array.isArray(options) && options.length > 0) {
+    const result = options.some(specifier =>
+      typeMatchesSpecifier(
+        services.getTypeAtLocation(node),
+        specifier,
+        services.program,
+      ),
+    );
+    return result;
+  }
+  return false;
+}
 
 function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);

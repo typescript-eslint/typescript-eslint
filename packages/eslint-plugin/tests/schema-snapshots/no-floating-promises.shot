@@ -9,35 +9,96 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowForKnownSafePromises": {
-        "description": "The list of promises which should be floating as per an external package/module.",
         "items": {
-          "additionalProperties": false,
-          "properties": {
-            "from": {
-              "enum": ["package"],
+          "oneOf": [
+            {
               "type": "string"
             },
-            "name": {
-              "oneOf": [
-                {
+            {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "enum": ["file"],
                   "type": "string"
                 },
-                {
-                  "items": {
-                    "type": "string"
-                  },
-                  "minItems": 1,
-                  "type": "array",
-                  "uniqueItems": true
+                "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                },
+                "path": {
+                  "type": "string"
                 }
-              ]
+              },
+              "required": ["from", "name"],
+              "type": "object"
             },
-            "package": {
-              "type": "string"
+            {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "enum": ["lib"],
+                  "type": "string"
+                },
+                "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                }
+              },
+              "required": ["from", "name"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "from": {
+                  "enum": ["package"],
+                  "type": "string"
+                },
+                "name": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
+                      "minItems": 1,
+                      "type": "array",
+                      "uniqueItems": true
+                    }
+                  ]
+                },
+                "package": {
+                  "type": "string"
+                }
+              },
+              "required": ["from", "name", "package"],
+              "type": "object"
             }
-          },
-          "required": ["from", "name", "package"],
-          "type": "object"
+          ]
         },
         "type": "array"
       },
@@ -59,12 +120,23 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** The list of promises which should be floating as per an external package/module. */
-    allowForKnownSafePromises?: {
-      from: 'package';
-      name: [string, ...string[]] | string;
-      package: string;
-    }[];
+    allowForKnownSafePromises?: (
+      | {
+          from: 'file';
+          name: [string, ...string[]] | string;
+          path?: string;
+        }
+      | {
+          from: 'lib';
+          name: [string, ...string[]] | string;
+        }
+      | {
+          from: 'package';
+          name: [string, ...string[]] | string;
+          package: string;
+        }
+      | string
+    )[];
     /** Whether to ignore async IIFEs (Immediately Invoked Function Expressions). */
     ignoreIIFE?: boolean;
     /** Whether to ignore \`void\` expressions. */

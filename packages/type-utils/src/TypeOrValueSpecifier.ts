@@ -162,8 +162,8 @@ function typeDeclaredInPackage(
 
   let matcher = new RegExp(`${packageName}|${typesPackageName}`);
 
-  if (packageName.startsWith('node:')) {
-    matcher = new RegExp(packageName.substring(5));
+  if (packageName.includes(':')) {
+    matcher = new RegExp(packageName.substring(0, packageName.indexOf(":")));
   }
   return declarationFiles.some(declaration => {
     const packageIdName =
@@ -207,9 +207,9 @@ export function typeMatchesSpecifier(
   if (!specifierNameMatches(type, specifier.name)) {
     return false;
   }
+  const symbol = type.getSymbol() || type.aliasSymbol;
   const declarationFiles =
-    type
-      .getSymbol()
+    symbol
       ?.getDeclarations()
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   switch (specifier.from) {

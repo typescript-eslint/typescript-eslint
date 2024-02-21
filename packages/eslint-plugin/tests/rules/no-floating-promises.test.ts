@@ -506,17 +506,76 @@ void promiseArray;
     },
     {
       code: `
-import test from 'node:test';
-test('Hi', () => Promise.reject(5));
+type Foo = Promise<number> & { hey?: string };
+let guzz: Foo = Promise.resolve(5);
+guzz;
+guzz.then(() => {});
+guzz.catch();
+guzz.finally();
+0 ? guzz.catch() : 2;
+null ?? guzz.catch();
       `,
-      options: [
-        {
-          allowForKnownSafePromises: [
-            { from: 'package', name: 'test', package: 'node:test' },
-          ],
-        },
-      ],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+guzz as Foo;
+(guzz as Foo).then(() => {});
+(guzz as Foo).catch();
+(guzz as Foo).finally();
+0 ? (guzz as Foo).catch() : 2;
+null ?? (guzz as Foo).catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
+guzz() as Foo;
+(guzz() as Foo).then(() => {});
+(guzz() as Foo).catch();
+(guzz() as Foo).finally();
+0 ? (guzz() as Foo).catch() : 2;
+null ?? (guzz() as Foo).catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz: () => Foo = () => Promise.resolve(5);
+guzz();
+guzz().then(() => {});
+guzz().catch();
+guzz().finally();
+0 ? guzz().catch() : 2;
+null ?? guzz().catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
+(guzz() as Foo).then(() => {}, () => {});
+(guzz() as Foo).catch(() => {});
+0 ? (guzz() as Foo).catch(() => {}) : 2;
+null ?? (guzz() as Foo).catch(() => {});
+      `,
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+(guzz as Foo).then(() => {}, () => {});
+(guzz as Foo).catch(() => {});
+0 ? (guzz as Foo).catch(() => {}) : 2;
+null ?? (guzz as Foo).catch(() => {});
+      `,
+    }
   ],
 
   invalid: [
@@ -1821,30 +1880,43 @@ cursed();
     },
     {
       code: `
-        fetch('https://typescript-eslint.io/');
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+guzz as Foo;
+(guzz as Foo).then((x) => {});
+(guzz as Foo).catch();
+(guzz as Foo).finally();
+0 ? (guzz as Foo).catch() : 2;
+null ?? (guzz as Foo).catch();
       `,
-      options: [
-        {
-          allowForKnownSafePromises: [
-            { from: 'package', name: 'fetch', package: 'foo' },
-          ],
-        },
+      errors: [
+        { line: 4, messageId: 'floatingVoid' },
+        { line: 5, messageId: 'floatingVoid' },
+        { line: 6, messageId: 'floatingVoid' },
+        { line: 7, messageId: 'floatingVoid' },
+        { line: 8, messageId: 'floatingVoid' },
+        { line: 9, messageId: 'floatingVoid' },
       ],
-      errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
     {
       code: `
-import test from 'node:test';
-test('Hi', () => Promise.reject(5));
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
+guzz() as Foo;
+(guzz() as Foo).then((x) => {});
+(guzz() as Foo).catch();
+(guzz() as Foo).finally();
+0 ? (guzz() as Foo).catch() : 2;
+null ?? (guzz() as Foo).catch();
       `,
-      options: [
-        {
-          allowForKnownSafePromises: [
-            { from: 'package', name: 'url', package: 'node:url' },
-          ],
-        },
+      errors: [
+        { line: 4, messageId: 'floatingVoid' },
+        { line: 5, messageId: 'floatingVoid' },
+        { line: 6, messageId: 'floatingVoid' },
+        { line: 7, messageId: 'floatingVoid' },
+        { line: 8, messageId: 'floatingVoid' },
+        { line: 9, messageId: 'floatingVoid' },
       ],
-      errors: [{ line: 3, messageId: 'floatingVoid' }],
-    },
+    }
   ],
 });
