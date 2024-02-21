@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`vue-jsx should lint successfully 1`] = `
+exports[`vue-jsx eslint should work successfully 1`] = `
 [
   {
     "errorCount": 1,

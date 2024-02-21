@@ -582,9 +582,6 @@ foo?.[key]?.trim();
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -599,9 +596,6 @@ foo?.[key].trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -620,9 +614,6 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -643,9 +634,6 @@ function Foo(outer: Outer, key: Foo): number | undefined {
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -660,9 +648,6 @@ foo?.[key]?.trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
@@ -829,9 +814,6 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `

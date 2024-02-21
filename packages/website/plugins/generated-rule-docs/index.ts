@@ -18,7 +18,7 @@ import {
 } from './utils';
 
 export const generatedRuleDocs: Plugin = () => {
-  return (root, file) => {
+  return async (root, file) => {
     if (!nodeIsParent(root) || !isVFileWithStem(file)) {
       return;
     }
@@ -36,7 +36,7 @@ export const generatedRuleDocs: Plugin = () => {
 
     const eslintrc = rule.meta.docs.extendsBaseRule
       ? insertBaseRuleReferences(page)
-      : insertNewRuleReferences(page);
+      : await insertNewRuleReferences(page);
 
     insertSpecialCaseOptions(page);
     insertWhenNotToUseIt(page);
