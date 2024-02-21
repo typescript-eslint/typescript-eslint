@@ -461,7 +461,6 @@ export function analyzeChain(
     PreferOptionalChainMessageIds,
     [PreferOptionalChainOptions]
   >,
-  sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
   operator: TSESTree.LogicalExpression['operator'],
@@ -497,7 +496,13 @@ export function analyzeChain(
           start: subChain[0].node.loc.start,
           end: subChain[subChain.length - 1].node.loc.end,
         },
-        ...getFixer(sourceCode, parserServices, operator, options, subChain),
+        ...getFixer(
+          context.sourceCode,
+          parserServices,
+          operator,
+          options,
+          subChain,
+        ),
       });
     }
 

@@ -51,13 +51,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "ignorePath": ".eslintignore"
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/jest:jest"
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "packages/scope-manager/jest.config.js"
+      }
     },
     "generate-lib": {
       "executor": "nx:run-commands",

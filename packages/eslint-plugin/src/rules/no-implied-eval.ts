@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -122,10 +121,13 @@ export default createRule({
       }
     }
 
-    function isReferenceToGlobalFunction(calleeName: string): boolean {
-      const ref = getScope(context).references.find(
-        ref => ref.identifier.name === calleeName,
-      );
+    function isReferenceToGlobalFunction(
+      calleeName: string,
+      node: TSESTree.Node,
+    ): boolean {
+      const ref = context.sourceCode
+        .getScope(node)
+        .references.find(ref => ref.identifier.name === calleeName);
 
       // ensure it's the "global" version
       return !ref?.resolved || ref.resolved.defs.length === 0;
@@ -165,7 +167,7 @@ export default createRule({
       if (
         EVAL_LIKE_METHODS.has(calleeName) &&
         !isFunction(handler) &&
-        isReferenceToGlobalFunction(calleeName)
+        isReferenceToGlobalFunction(calleeName, node)
       ) {
         context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }

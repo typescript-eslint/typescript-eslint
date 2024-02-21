@@ -1,5 +1,4 @@
 export * from './AST';
-export * from './CLIEngine';
 export * from './Config';
 export * from './ESLint';
 export * from './Linter';
