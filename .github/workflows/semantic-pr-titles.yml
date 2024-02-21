@@ -29,7 +29,6 @@ jobs:
             ast-spec
             eslint-plugin
             eslint-plugin-internal
-            eslint-plugin-tslint
             parser
             rule-tester
             scope-manager
