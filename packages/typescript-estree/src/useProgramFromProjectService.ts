@@ -3,7 +3,7 @@ import path from 'path';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
-import { type ASTAndDefiniteProgram } from './create-program/shared';
+import type { ASTAndDefiniteProgram } from './create-program/shared';
 import type { MutableParseSettings } from './parseSettings';
 
 export function useProgramFromProjectService(
