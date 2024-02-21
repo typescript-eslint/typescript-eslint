@@ -64,7 +64,7 @@
     "stylelint-config-standard": "^34.0.0",
     "stylelint-order": "^6.0.3",
     "tsx": "*",
-    "webpack": "^5.90.3"
+    "webpack": "^5.88.1"
   },
   "browserslist": {
     "production": [
