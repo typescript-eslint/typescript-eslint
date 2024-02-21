@@ -71,10 +71,8 @@ function getParserServices(
   // This check allows us to handle bad user setups whilst providing a nice user-facing
   // error message explaining the problem.
   if (
-    // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-    context.parserServices?.esTreeNodeToTSNodeMap == null ||
-    // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unnecessary-condition -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-    context.parserServices.tsNodeToESTreeNodeMap == null
+    context.sourceCode.parserServices?.esTreeNodeToTSNodeMap == null ||
+    context.sourceCode.parserServices.tsNodeToESTreeNodeMap == null
   ) {
     throwError(context.parserPath);
   }
@@ -82,15 +80,13 @@ function getParserServices(
   // if a rule requires full type information, then hard fail if it doesn't exist
   // this forces the user to supply parserOptions.project
   if (
-    // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-    context.parserServices.program == null &&
+    context.sourceCode.parserServices.program == null &&
     !allowWithoutFullTypeInformation
   ) {
     throwError(context.parserPath);
   }
 
-  // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-  return context.parserServices;
+  return context.sourceCode.parserServices as ParserServices;
 }
 /* eslint-enable @typescript-eslint/unified-signatures */
 

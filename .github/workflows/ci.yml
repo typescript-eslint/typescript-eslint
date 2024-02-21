@@ -113,6 +113,8 @@ jobs:
 
       - name: Run Check
         run: yarn ${{ matrix.lint-task }}
+        env:
+          ESLINT_USE_FLAT_CONFIG: true
 
   stylelint:
     name: Stylelint
@@ -156,10 +158,10 @@ jobs:
       matrix:
         exclude:
           - os: windows-latest
-            node-version: 16
+            node-version: 18
         os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [16, 20]
+        node-version: [18, 20]
         package:
           [
             'ast-spec',

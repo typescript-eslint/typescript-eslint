@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getFilename } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -131,9 +130,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
-    const currentSourceFile = services.program.getSourceFile(
-      getFilename(context),
-    );
+    const currentSourceFile = services.program.getSourceFile(context.filename);
 
     function checkMethodAndReport(
       node: TSESTree.Node,
