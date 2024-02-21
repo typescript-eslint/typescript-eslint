@@ -118,12 +118,12 @@ export default createRule<Options, MessageIds>({
       return functionReturnsMap.get(node) ?? [];
     }
 
-    function enterFunction(node: FunctionNode) {
+    function enterFunction(node: FunctionNode): void {
       functionStack.push(node);
       functionReturnsMap.set(node, []);
     }
 
-    function exitFunction() {
+    function exitFunction(): void {
       functionStack.pop();
     }
 
