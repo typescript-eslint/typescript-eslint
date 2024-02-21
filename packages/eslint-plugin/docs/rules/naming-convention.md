@@ -265,7 +265,10 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `default` - matches everything.
   - Allowed `modifiers`: all modifiers.
   - Allowed `types`: none.
-- `memberLike` - matches the same as `accessor`, `autoAccessor`, `enumMember`, `method`, `parameterProperty`, `property`.
+- `accessor` - matches the same as `classicAccessor` and `autoAccessor`.
+  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `memberLike` - matches the same as `classicAccessor`, `autoAccessor`, `enumMember`, `method`, `parameterProperty`, `property`.
   - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
   - Allowed `types`: none.
 - `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
@@ -280,9 +283,6 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `variableLike` - matches the same as `function`, `parameter` and `variable`.
   - Allowed `modifiers`: `async`, `unused`.
   - Allowed `types`: none.
-- `accessor` - matches the same as `classicAccessor` and `autoAccessor`.
-  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
-  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 
 ## FAQ
 
