@@ -3,12 +3,8 @@
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  type ImperativePanelHandle,
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
-} from 'react-resizable-panels';
+import type { ImperativePanelHandle } from 'react-resizable-panels';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 import ASTViewer from './ast/ASTViewer';
 import ConfigEslint from './config/ConfigEslint';
