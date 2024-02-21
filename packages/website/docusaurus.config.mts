@@ -285,6 +285,10 @@ const config: Config = {
     'The tooling that enables ESLint and Prettier to support TypeScript.',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
+
+  // See https://github.com/typescript-eslint/typescript-eslint/pull/8209#discussion_r1444033533
+  onBrokenAnchors: 'ignore',
+
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.ico',
