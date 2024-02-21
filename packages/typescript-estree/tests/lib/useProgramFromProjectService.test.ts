@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
+import path from 'path';
+
 import type { TypeScriptProjectService } from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
@@ -51,7 +53,7 @@ describe('useProgramFromProjectService', () => {
     );
 
     expect(service.openClientFile).toHaveBeenCalledWith(
-      '/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts',
+      path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts'),
       undefined,
       undefined,
       undefined,
@@ -136,5 +138,3 @@ describe('useProgramFromProjectService', () => {
     expect(actual).toBe(program);
   });
 });
-
-/* eslint-enable @typescript-eslint/explicit-function-return-type */
