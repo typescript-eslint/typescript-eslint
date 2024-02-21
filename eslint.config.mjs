@@ -237,7 +237,8 @@ export default tseslint.config(
       //
       // eslint-plugin-import
       //
-
+      // enforces consistent type specifier style for named imports
+      'import/consistent-type-specifier-style': 'error',
       // disallow non-import statements appearing before import statements
       'import/first': 'error',
       // Require a newline after the last import/require in a group
