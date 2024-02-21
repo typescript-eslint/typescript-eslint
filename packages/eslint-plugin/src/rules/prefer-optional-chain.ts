@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
@@ -103,7 +102,6 @@ export default createRule<
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context);
 
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
@@ -150,12 +148,12 @@ export default createRule<
             {
               messageId: 'optionalChainSuggest',
               fix: (fixer): RuleFix => {
-                const leftNodeText = sourceCode.getText(leftNode);
+                const leftNodeText = context.sourceCode.getText(leftNode);
                 // Any node that is made of an operator with higher or equal precedence,
                 const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
                   ? `(${leftNodeText})`
                   : leftNodeText;
-                const propertyToBeOptionalText = sourceCode.getText(
+                const propertyToBeOptionalText = context.sourceCode.getText(
                   parentNode.property,
                 );
                 const maybeWrappedProperty = parentNode.computed
@@ -193,7 +191,6 @@ export default createRule<
           if (operand.type === OperandValidity.Invalid) {
             analyzeChain(
               context,
-              sourceCode,
               parserServices,
               options,
               node.operator,
@@ -209,7 +206,6 @@ export default createRule<
         if (currentChain.length > 0) {
           analyzeChain(
             context,
-            sourceCode,
             parserServices,
             options,
             node.operator,

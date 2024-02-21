@@ -1,12 +1,6 @@
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import {
-  getDeclaredVariables,
-  getFilename,
-  getScope,
-  getSourceCode,
-} from '@typescript-eslint/utils/eslint-utils';
 
 import {
   collectUnusedVariables as _collectUnusedVariables,
@@ -103,8 +97,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [firstOption]) {
-    const filename = getFilename(context);
-    const sourceCode = getSourceCode(context);
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
     const options = ((): TranslatedOptions => {
@@ -200,7 +192,7 @@ export default createRule<Options, MessageIds>({
        */
       function isAfterLastUsedArg(variable: TSESLint.Scope.Variable): boolean {
         const def = variable.defs[0];
-        const params = getDeclaredVariables(context, def.node);
+        const params = context.sourceCode.getDeclaredVariables(def.node);
         const posteriorParams = params.slice(params.indexOf(variable) + 1);
 
         // If any used parameters occur after this parameter, do not report.
@@ -306,27 +298,10 @@ export default createRule<Options, MessageIds>({
       [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
         node: DeclarationSelectorNode,
       ): void {
-        if (!isDefinitionFile(filename)) {
+        if (!isDefinitionFile(context.filename)) {
           return;
         }
         markDeclarationChildAsUsed(node);
-      },
-
-      // module declaration in module declaration should not report unused vars error
-      // this is workaround as this change should be done in better way
-      'TSModuleDeclaration > TSModuleDeclaration'(
-        node: TSESTree.TSModuleDeclaration,
-      ): void {
-        if (node.id.type === AST_NODE_TYPES.Identifier) {
-          let scope = getScope(context);
-          if (scope.upper) {
-            scope = scope.upper;
-          }
-          const superVar = scope.set.get(node.id.name);
-          if (superVar) {
-            superVar.eslintUsed = true;
-          }
-        }
       },
 
       // children of a namespace that is a child of a declared namespace are auto-exported
@@ -464,7 +439,7 @@ export default createRule<Options, MessageIds>({
             context.report({
               node: programNode,
               loc: getNameLocationInGlobalDirectiveComment(
-                sourceCode,
+                context.sourceCode,
                 directiveComment,
                 unusedVar.name,
               ),
@@ -550,7 +525,7 @@ export default createRule<Options, MessageIds>({
           break;
       }
 
-      let scope = getScope(context);
+      let scope = context.sourceCode.getScope(node);
       const shouldUseUpperScope = [
         AST_NODE_TYPES.TSModuleDeclaration,
         AST_NODE_TYPES.TSDeclareFunction,

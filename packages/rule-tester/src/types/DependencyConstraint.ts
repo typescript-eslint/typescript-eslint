@@ -1,4 +1,9 @@
-import type { RangeOptions } from 'semver';
+// `Options` and `RangeOptions` are defined in the 'semver' package.
+// We redeclare them here to avoid a peer dependency on that package:
+export interface RangeOptions {
+  includePrerelease?: boolean | undefined;
+  loose?: boolean | undefined;
+}
 
 export interface SemverVersionConstraint {
   readonly range: string;

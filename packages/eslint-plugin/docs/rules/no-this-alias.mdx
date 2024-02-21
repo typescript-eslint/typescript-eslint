@@ -17,7 +17,7 @@ or not managing scope well.
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```js
+```ts
 const self = this;
 
 setTimeout(function () {
@@ -28,7 +28,7 @@ setTimeout(function () {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```js
+```ts
 setTimeout(() => {
   this.doWork();
 });

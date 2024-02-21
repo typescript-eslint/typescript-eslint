@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
@@ -34,6 +36,7 @@ import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
+import noArrayDelete from './no-array-delete';
 import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
@@ -102,6 +105,7 @@ import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferDestructuring from './prefer-destructuring';
 import preferEnumInitializers from './prefer-enum-initializers';
+import preferFind from './prefer-find';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
@@ -109,6 +113,7 @@ import preferLiteralEnumMember from './prefer-literal-enum-member';
 import preferNamespaceKeyword from './prefer-namespace-keyword';
 import preferNullishCoalescing from './prefer-nullish-coalescing';
 import preferOptionalChain from './prefer-optional-chain';
+import preferPromiseRejectErrors from './prefer-promise-reject-errors';
 import preferReadonly from './prefer-readonly';
 import preferReadonlyParameterTypes from './prefer-readonly-parameter-types';
 import preferReduceTypeParameter from './prefer-reduce-type-parameter';
@@ -173,6 +178,7 @@ export default {
   'method-signature-style': methodSignatureStyle,
   'naming-convention': namingConvention,
   'no-array-constructor': noArrayConstructor,
+  'no-array-delete': noArrayDelete,
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
@@ -241,6 +247,7 @@ export default {
   'prefer-as-const': preferAsConst,
   'prefer-destructuring': preferDestructuring,
   'prefer-enum-initializers': preferEnumInitializers,
+  'prefer-find': preferFind,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
@@ -248,6 +255,7 @@ export default {
   'prefer-namespace-keyword': preferNamespaceKeyword,
   'prefer-nullish-coalescing': preferNullishCoalescing,
   'prefer-optional-chain': preferOptionalChain,
+  'prefer-promise-reject-errors': preferPromiseRejectErrors,
   'prefer-readonly': preferReadonly,
   'prefer-readonly-parameter-types': preferReadonlyParameterTypes,
   'prefer-reduce-type-parameter': preferReduceTypeParameter,
@@ -274,4 +282,4 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-};
+} satisfies Linter.PluginRules;

@@ -1,7 +1,6 @@
 import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getNameLocationInGlobalDirectiveComment } from '../util';
 
@@ -50,8 +49,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
-
     const CLASS_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSInterfaceDeclaration,
       AST_NODE_TYPES.TSModuleDeclaration,
@@ -92,7 +89,7 @@ export default createRule<Options, MessageIds>({
             type: 'comment',
             node: comment,
             loc: getNameLocationInGlobalDirectiveComment(
-              sourceCode,
+              context.sourceCode,
               comment,
               variable.name,
             ),
@@ -237,7 +234,7 @@ export default createRule<Options, MessageIds>({
      * Find variables in the current scope.
      */
     function checkForBlock(node: TSESTree.Node): void {
-      const scope = getScope(context);
+      const scope = context.sourceCode.getScope(node);
 
       /*
        * In ES5, some node type such as `BlockStatement` doesn't have that scope.
@@ -249,8 +246,8 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Program(): void {
-        const scope = getScope(context);
+      Program(node): void {
+        const scope = context.sourceCode.getScope(node);
 
         findVariablesInScope(scope);
 

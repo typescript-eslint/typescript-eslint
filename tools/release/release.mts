@@ -1,12 +1,8 @@
 import { execaSync } from 'execa';
-import {
-  releaseChangelog,
-  releasePublish,
-  releaseVersion,
-} from 'nx/src/command-line/release';
+import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release';
 import yargs from 'yargs';
 
-const options = await yargs
+const options = await yargs(process.argv.slice(2))
   .version(false)
   .option('version', {
     description:
@@ -46,12 +42,16 @@ if (!options.dryRun) {
 }
 
 // This will create a release on GitHub
-await releaseChangelog({
+const changelogStatus = await releaseChangelog({
   versionData: projectsVersionData,
   version: workspaceVersion,
   dryRun: options.dryRun,
   verbose: options.verbose,
 });
+if (changelogStatus !== 0) {
+  console.error('🚨 Failed to generate changelog');
+  process.exit(changelogStatus);
+}
 
 // An explicit null value here means that no changes were detected across any package
 // eslint-disable-next-line eqeqeq
@@ -60,8 +60,9 @@ if (workspaceVersion === null) {
     '⏭️ No changes detected across any package, skipping publish step altogether',
   );
 } else {
-  await releasePublish({
+  const publishStatus = await releasePublish({
     dryRun: options.dryRun,
     verbose: options.verbose,
   });
+  process.exit(publishStatus);
 }

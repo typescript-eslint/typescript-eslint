@@ -4,7 +4,7 @@ import {
   expectToBeGlobalScope,
   expectToBeIdentifier,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('Class fields', () => {
   it('class C { f = g }', () => {

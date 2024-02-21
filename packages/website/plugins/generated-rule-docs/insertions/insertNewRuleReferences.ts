@@ -1,8 +1,8 @@
-import prettier from '@prettier/sync';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
+import prettier from 'prettier';
 import type * as unist from 'unist';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
@@ -27,12 +27,32 @@ const SPECIAL_CASE_DEFAULTS = new Map([
   ['ban-types', '[{ /* See below for default options */ }]'],
 ]);
 
-const prettierConfig = {
-  ...(prettier.resolveConfig(__filename) ?? {}),
-  filepath: path.join(__dirname, '../defaults.ts'),
-};
+const PRETTIER_CONFIG_PATH = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  '..',
+  '.prettierrc.json',
+);
+const prettierConfig = (async () => {
+  const filepath = path.join(__dirname, 'file.ts');
+  const config = await prettier.resolveConfig(filepath, {
+    config: PRETTIER_CONFIG_PATH,
+  });
+  if (config == null) {
+    throw new Error('Unable to resolve prettier config');
+  }
+  return {
+    ...config,
+    filepath,
+  };
+})();
 
-export function insertNewRuleReferences(page: RuleDocsPage): string {
+export async function insertNewRuleReferences(
+  page: RuleDocsPage,
+): Promise<string> {
   // For non-extended rules, the code snippet is placed before the first h2
   // (i.e. at the end of the initial explanation)
   const firstH2Index = page.children.findIndex(
@@ -97,10 +117,10 @@ export function insertNewRuleReferences(page: RuleDocsPage): string {
         lang: 'ts',
         type: 'code',
         value: [
-          compile(page.rule.meta.schema),
-          prettier.format(
+          await compile(page.rule.meta.schema, prettierConfig),
+          await prettier.format(
             `const defaultOptions: Options = ${defaults};`,
-            prettierConfig,
+            await prettierConfig,
           ),
         ]
           .join(EOL)

@@ -1,9 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  getFilename,
-  getSourceCode,
-} from '@typescript-eslint/utils/eslint-utils';
 import { extname } from 'path';
 import * as ts from 'typescript';
 
@@ -60,9 +56,7 @@ export default createRule({
     }
 
     const requiresGenericDeclarationDisambiguation =
-      checkRequiresGenericDeclarationDisambiguation(getFilename(context));
-
-    const source = getSourceCode(context);
+      checkRequiresGenericDeclarationDisambiguation(context.filename);
 
     const checkNode = (
       node: TypeParameterWithConstraint,
@@ -77,7 +71,7 @@ export default createRule({
         return (
           (node.parent as TSESTree.TSTypeParameterDeclaration).params.length ===
             1 &&
-          source.getTokensAfter(node)[0].value !== ',' &&
+          context.sourceCode.getTokensAfter(node)[0].value !== ',' &&
           !node.default
         );
       }

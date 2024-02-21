@@ -20,7 +20,7 @@ This rule recommends a for-of loop when the loop index is only used to read from
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```js
+```ts
 declare const array: string[];
 
 for (let i = 0; i < array.length; i++) {
@@ -31,7 +31,7 @@ for (let i = 0; i < array.length; i++) {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```js
+```ts
 declare const array: string[];
 
 for (const x of array) {

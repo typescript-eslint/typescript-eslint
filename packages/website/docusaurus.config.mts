@@ -1,4 +1,5 @@
 import type { MDXPlugin } from '@docusaurus/mdx-loader';
+import type { Options as PluginRedirectOptions } from '@docusaurus/plugin-client-redirects';
 import type { Options as PluginContentDocsOptions } from '@docusaurus/plugin-content-docs';
 import type { Options as PluginPwaOptions } from '@docusaurus/plugin-pwa';
 import type { Options as PresetClassicOptions } from '@docusaurus/preset-classic';
@@ -16,6 +17,10 @@ const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
 const presetClassicOptions: PresetClassicOptions = {
+  blog: {
+    blogSidebarCount: 'ALL',
+    remarkPlugins,
+  },
   docs: {
     id: 'rules-docs',
     path: '../eslint-plugin/docs/rules',
@@ -23,7 +28,7 @@ const presetClassicOptions: PresetClassicOptions = {
     routeBasePath: 'rules',
     editUrl: `${githubUrl}/edit/main/packages/website/`,
     beforeDefaultRemarkPlugins: [generatedRuleDocs],
-    remarkPlugins: remarkPlugins,
+    remarkPlugins,
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
   },
@@ -83,8 +88,8 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       },
       {
         position: 'right',
-        value: `<div class="menu__version-item">v${version}</div>`,
-        type: 'html',
+        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
+        label: `v${version}`,
       },
       {
         to: 'play',
@@ -241,6 +246,39 @@ const pluginPwaOptions: PluginPwaOptions = {
   ],
 };
 
+const redirects: PluginRedirectOptions = {
+  redirects: [
+    {
+      from: '/linting/configs',
+      to: '/users/configs',
+    },
+    {
+      from: '/linting/troubleshooting',
+      to: '/troubleshooting',
+    },
+    {
+      from: '/linting/troubleshooting/formatting',
+      to: '/troubleshooting/formatting',
+    },
+    {
+      from: '/linting/troubleshooting/performance-troubleshooting',
+      to: '/troubleshooting/performance-troubleshooting',
+    },
+    {
+      from: '/linting/troubleshooting/tslint',
+      to: '/troubleshooting/tslint',
+    },
+    {
+      from: '/linting/typed-linting',
+      to: '/getting-started/typed-linting',
+    },
+    {
+      from: '/linting/typed-linting/monorepos',
+      to: '/getting-started/typed-linting/monorepos',
+    },
+  ],
+};
+
 const config: Config = {
   title: 'typescript-eslint',
   tagline:
@@ -261,6 +299,7 @@ const config: Config = {
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],
+    ['@docusaurus/plugin-client-redirects', redirects],
   ],
   themeConfig,
   // Misleading API name, but these are just <link> tags

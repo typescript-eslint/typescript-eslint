@@ -37,15 +37,6 @@
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
-    "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.js",
-        "{workspaceRoot}/yarn.lock",
-        "{workspaceRoot}/.eslintignore"
-      ],
-      "cache": true
-    },
     "@nx/jest:jest": {
       "inputs": [
         "default",
@@ -64,6 +55,21 @@
           "codeCoverage": true
         }
       }
+    },
+    "@nx/eslint:lint": {
+      "dependsOn": ["eslint-plugin:build"],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/eslint.config.mjs",
+        "{workspaceRoot}/yarn.lock",
+        "{workspaceRoot}/.eslintignore",
+        {
+          "dependentTasksOutputFiles": "**/*.js",
+          "transitive": false
+        }
+      ],
+      "cache": true
     }
   },
   "namedInputs": {

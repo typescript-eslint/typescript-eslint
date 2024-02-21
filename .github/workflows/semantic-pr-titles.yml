@@ -35,6 +35,7 @@ jobs:
             scope-manager
             type-utils
             types
+            typescript-eslint
             typescript-estree
             utils
             visitor-keys

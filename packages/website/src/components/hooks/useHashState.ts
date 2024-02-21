@@ -71,6 +71,13 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       );
     }
 
+    let esQuery: ConfigModel['esQuery'] | undefined;
+    if (searchParams.has('esQuery')) {
+      esQuery = JSON.parse(
+        readQueryParam(searchParams.get('esQuery'), ''),
+      ) as ConfigModel['esQuery'];
+    }
+
     const fileType =
       searchParams.get('jsx') === 'true'
         ? '.tsx'
@@ -90,6 +97,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       eslintrc: eslintrc ?? '',
       tsconfig: tsconfig ?? '',
       showTokens: searchParams.get('tokens') === 'true',
+      esQuery,
     };
   } catch (e) {
     console.warn(e);
@@ -109,6 +117,12 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
     }
     if (newState.fileType) {
       searchParams.set('fileType', newState.fileType);
+    }
+    if (newState.esQuery) {
+      searchParams.set(
+        'esQuery',
+        writeQueryParam(JSON.stringify(newState.esQuery)),
+      );
     }
     searchParams.set('code', writeQueryParam(newState.code));
     searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));

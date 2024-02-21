@@ -1,6 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isNonNullAssertionPunctuator } from '../util';
 
@@ -25,37 +24,22 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
     return {
       TSNonNullExpression(node): void {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-        function convertTokenToOptional(
-          replacement: '?.' | '?',
-        ): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.replaceText(operator, replacement);
-            }
 
-            return null;
-          };
+        // it always exists in non-null assertion
+        const nonNullOperator = context.sourceCode.getTokenAfter(
+          node.expression,
+          isNonNullAssertionPunctuator,
+        )!;
+
+        function replaceTokenWithOptional(): TSESLint.ReportFixFunction {
+          return fixer => fixer.replaceText(nonNullOperator, '?.');
         }
-        function removeToken(): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.remove(operator);
-            }
 
-            return null;
-          };
+        function removeToken(): TSESLint.ReportFixFunction {
+          return fixer => fixer.remove(nonNullOperator);
         }
 
         if (
@@ -67,13 +51,22 @@ export default createRule<[], MessageIds>({
               // it is x![y]?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?.'),
+                fix: replaceTokenWithOptional(),
               });
             } else {
               // it is x!.y?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?'),
+                fix(fixer) {
+                  // x!.y?.z
+                  //   ^ punctuator
+                  const punctuator =
+                    context.sourceCode.getTokenAfter(nonNullOperator)!;
+                  return [
+                    fixer.remove(nonNullOperator),
+                    fixer.insertTextBefore(punctuator, '?'),
+                  ];
+                },
               });
             }
           } else {
@@ -99,7 +92,7 @@ export default createRule<[], MessageIds>({
             // it is x.y?.z!()
             suggest.push({
               messageId: 'suggestOptionalChain',
-              fix: convertTokenToOptional('?.'),
+              fix: replaceTokenWithOptional(),
             });
           } else {
             // it is x.y.z!?.()

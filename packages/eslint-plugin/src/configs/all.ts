@@ -1,9 +1,11 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/linting/configs
+// SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
+
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -39,6 +41,7 @@ export = {
     '@typescript-eslint/naming-convention': 'error',
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
+    '@typescript-eslint/no-array-delete': 'error',
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
@@ -118,6 +121,7 @@ export = {
     'prefer-destructuring': 'off',
     '@typescript-eslint/prefer-destructuring': 'error',
     '@typescript-eslint/prefer-enum-initializers': 'error',
+    '@typescript-eslint/prefer-find': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
     '@typescript-eslint/prefer-includes': 'error',
@@ -125,6 +129,8 @@ export = {
     '@typescript-eslint/prefer-namespace-keyword': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
+    'prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-readonly-parameter-types': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
@@ -148,4 +154,4 @@ export = {
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
   },
-};
+} satisfies ClassicConfig.Config;
