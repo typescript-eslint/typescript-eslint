@@ -2,6 +2,9 @@
 description: 'Disallow using the `delete` operator on array values.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-array-delete** for documentation.
@@ -15,9 +18,8 @@ the recommended way to remove an element from an array is by using the
 
 ## Examples
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 declare const arr: number[];
@@ -25,7 +27,8 @@ declare const arr: number[];
 delete arr[0];
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 declare const arr: number[];
@@ -33,7 +36,8 @@ declare const arr: number[];
 arr.splice(0, 1);
 ```
 
-<!--/tabs-->
+</TabItem>
+</Tabs>
 
 ## When Not To Use It
 

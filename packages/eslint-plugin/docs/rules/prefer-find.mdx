@@ -2,6 +2,9 @@
 description: 'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-find** for documentation.
@@ -18,9 +21,8 @@ Therefore, when fixing errors from this rule, be sure that your `.filter()` call
 
 :::
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 [1, 2, 3].filter(x => x > 1)[0];
@@ -28,11 +30,15 @@ Therefore, when fixing errors from this rule, be sure that your `.filter()` call
 [1, 2, 3].filter(x => x > 1).at(0);
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 [1, 2, 3].find(x => x > 1);
 ```
+
+</TabItem>
+</Tabs>
 
 ## When Not To Use It
 

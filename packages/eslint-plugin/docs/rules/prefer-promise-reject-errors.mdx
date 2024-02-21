@@ -2,6 +2,9 @@
 description: 'Require using Error objects as Promise rejection reasons.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/prefer-promise-reject-errors** for documentation.
@@ -11,9 +14,8 @@ It uses type information to enforce that `Promise`s are only rejected with `Erro
 
 ## Examples
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 Promise.reject('error');
@@ -29,7 +31,8 @@ new Promise((resolve, reject) => {
 });
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 Promise.reject(new Error());
@@ -48,3 +51,6 @@ new Promise((resolve, reject) => {
   return reject(new CustomError());
 });
 ```
+
+</TabItem>
+</Tabs>
