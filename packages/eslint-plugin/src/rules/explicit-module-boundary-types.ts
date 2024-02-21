@@ -112,6 +112,21 @@ export default createRule<Options, MessageIds>({
     // (such as class member referring to itself)
     const alreadyVisited = new Set<TSESTree.Node>();
 
+    function getReturnsInFunction(
+      node: FunctionNode,
+    ): TSESTree.ReturnStatement[] {
+      return functionReturnsMap.get(node) ?? [];
+    }
+
+    function enterFunction(node: FunctionNode) {
+      functionStack.push(node);
+      functionReturnsMap.set(node, []);
+    }
+
+    function exitFunction() {
+      functionStack.pop();
+    }
+
     /*
     # How the rule works:
 
@@ -122,12 +137,6 @@ export default createRule<Options, MessageIds>({
     After it's finished traversing the AST, it then iterates through the list of found functions, and checks to see if
     any of them are part of a higher-order function
     */
-
-    function getReturnsInFunction(
-      node: FunctionNode,
-    ): TSESTree.ReturnStatement[] {
-      return functionReturnsMap.get(node) ?? [];
-    }
 
     return {
       'ExportDefaultDeclaration:exit'(node): void {
@@ -147,21 +156,11 @@ export default createRule<Options, MessageIds>({
       'TSExportAssignment:exit'(node): void {
         checkNode(node.expression);
       },
-      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression'(
-        node: FunctionNode,
-      ): void {
-        functionStack.push(node);
-        functionReturnsMap.set(node, []);
-      },
-      'ArrowFunctionExpression:exit'(): void {
-        functionStack.pop();
-      },
-      'FunctionDeclaration:exit'(): void {
-        functionStack.pop();
-      },
-      'FunctionExpression:exit'(): void {
-        functionStack.pop();
-      },
+      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression':
+        enterFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
+      'FunctionDeclaration:exit': exitFunction,
+      'FunctionExpression:exit': exitFunction,
       'Program:exit'(): void {
         for (const [node, returns] of functionReturnsMap) {
           if (isExportedHigherOrderFunction({ node, returns })) {

@@ -224,10 +224,10 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      'ArrowFunctionExpression, FunctionExpression': enterFunction,
+      'ArrowFunctionExpression, FunctionExpression, FunctionDeclaration':
+        enterFunction,
       'ArrowFunctionExpression:exit': exitFunctionExpression,
       'FunctionExpression:exit': exitFunctionExpression,
-      FunctionDeclaration: enterFunction,
       'FunctionDeclaration:exit'(node): void {
         const info = popFunctionInfo();
         if (isAllowedFunction(node)) {
