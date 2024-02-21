@@ -1,7 +1,6 @@
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isFunction } from '../util';
 import type {
@@ -99,8 +98,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
-
     // tracks all of the functions we've already checked
     const checkedFunctions = new Set<FunctionNode>();
 
@@ -297,7 +294,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function followReference(node: TSESTree.Identifier): void {
-      const scope = getScope(context);
+      const scope = context.sourceCode.getScope(node);
       const variable = scope.set.get(node.name);
       /* istanbul ignore if */ if (!variable) {
         return;
@@ -456,13 +453,18 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      checkFunctionExpressionReturnType(node, options, sourceCode, loc => {
-        context.report({
-          node,
-          loc,
-          messageId: 'missingReturnType',
-        });
-      });
+      checkFunctionExpressionReturnType(
+        node,
+        options,
+        context.sourceCode,
+        loc => {
+          context.report({
+            node,
+            loc,
+            messageId: 'missingReturnType',
+          });
+        },
+      );
 
       checkParameters(node);
     }
@@ -477,7 +479,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      checkFunctionReturnType(node, options, sourceCode, loc => {
+      checkFunctionReturnType(node, options, context.sourceCode, loc => {
         context.report({
           node,
           loc,

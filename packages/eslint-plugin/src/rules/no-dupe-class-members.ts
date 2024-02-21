@@ -50,23 +50,9 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      // for ESLint <= v7
-      ...(rules.MethodDefinition
-        ? {
-            MethodDefinition: wrapMemberDefinitionListener(
-              rules.MethodDefinition,
-            ),
-          }
-        : {}),
-      // for ESLint v8
-      ...(rules['MethodDefinition, PropertyDefinition']
-        ? {
-            'MethodDefinition, PropertyDefinition':
-              wrapMemberDefinitionListener(
-                rules['MethodDefinition, PropertyDefinition'],
-              ),
-          }
-        : {}),
+      'MethodDefinition, PropertyDefinition': wrapMemberDefinitionListener(
+        rules['MethodDefinition, PropertyDefinition'],
+      ),
     };
   },
 });

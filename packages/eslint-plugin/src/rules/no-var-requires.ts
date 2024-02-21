@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -70,7 +69,10 @@ export default createRule<Options, MessageIds>({
             AST_NODE_TYPES.VariableDeclarator,
           ].includes(parent.type)
         ) {
-          const variable = ASTUtils.findVariable(getScope(context), 'require');
+          const variable = ASTUtils.findVariable(
+            context.sourceCode.getScope(node),
+            'require',
+          );
 
           if (!variable?.identifiers.length) {
             context.report({

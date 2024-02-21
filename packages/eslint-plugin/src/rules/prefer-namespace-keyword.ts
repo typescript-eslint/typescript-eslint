@@ -1,5 +1,4 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -21,8 +20,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
-
     return {
       TSModuleDeclaration(node): void {
         // Do nothing if the name is a string.
@@ -30,7 +27,7 @@ export default createRule({
           return;
         }
         // Get tokens of the declaration header.
-        const moduleType = sourceCode.getTokenBefore(node.id);
+        const moduleType = context.sourceCode.getTokenBefore(node.id);
 
         if (
           moduleType &&

@@ -5,7 +5,8 @@ import {
 import CopyIcon from '@theme/Icon/Copy';
 import IconExternalLink from '@theme/Icon/ExternalLink';
 import SuccessIcon from '@theme/Icon/Success';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import semverSatisfies from 'semver/functions/satisfies';
 
 import { useClipboard } from '../hooks/useClipboard';
 import Checkbox from './inputs/Checkbox';
@@ -23,6 +24,8 @@ export interface OptionsSelectorParams {
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
 }
+
+const MIN_TS_VERSION_SEMVER = '>=4.7.4';
 
 function OptionsSelectorContent({
   state,
@@ -47,6 +50,14 @@ function OptionsSelectorContent({
       ?.focus();
   }, [state]);
 
+  const tsVersionsFiltered = useMemo(
+    () =>
+      tsVersions.filter(version =>
+        semverSatisfies(version, MIN_TS_VERSION_SEMVER),
+      ),
+    [tsVersions],
+  );
+
   return (
     <>
       <Expander label="Info">
@@ -55,11 +66,13 @@ function OptionsSelectorContent({
             name="ts"
             className="text--right"
             value={state.ts}
-            disabled={!tsVersions.length}
+            disabled={!tsVersionsFiltered.length}
             onChange={(ts): void => {
               setState({ ts });
             }}
-            options={tsVersions.length ? tsVersions : [state.ts]}
+            options={
+              tsVersionsFiltered.length ? tsVersionsFiltered : [state.ts]
+            }
           />
         </InputLabel>
         <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>

@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getEnumNames, typeNodeRequiresParentheses } from '../util';
 
@@ -166,8 +165,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ checkIntersections, checkUnions, groupOrder }]) {
-    const sourceCode = getSourceCode(context);
-
     const collator = new Intl.Collator('en', {
       sensitivity: 'base',
       numeric: true,
@@ -181,7 +178,7 @@ export default createRule<Options, MessageIds>({
         return {
           group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           node: type,
-          text: sourceCode.getText(type),
+          text: context.sourceCode.getText(type),
         };
       });
       const expectedOrder = [...sourceOrder].sort((a, b) => {
@@ -197,8 +194,8 @@ export default createRule<Options, MessageIds>({
 
       const hasComments = node.types.some(type => {
         const count =
-          sourceCode.getCommentsBefore(type).length +
-          sourceCode.getCommentsAfter(type).length;
+          context.sourceCode.getCommentsBefore(type).length +
+          context.sourceCode.getCommentsAfter(type).length;
         return count > 0;
       });
 

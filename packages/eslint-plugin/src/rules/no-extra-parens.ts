@@ -3,7 +3,6 @@
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -34,7 +33,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['all'],
   create(context) {
-    const sourceCode = getSourceCode(context);
     const rules = baseRule.create(context);
 
     function binaryExp(
@@ -91,8 +89,11 @@ export default createRule<Options, MessageIds>({
       if (
         node.arguments.length === 1 &&
         // is there any opening parenthesis in type arguments
-        sourceCode.getTokenAfter(node.callee, isOpeningParenToken) !==
-          sourceCode.getTokenBefore(node.arguments[0], isOpeningParenToken)
+        context.sourceCode.getTokenAfter(node.callee, isOpeningParenToken) !==
+          context.sourceCode.getTokenBefore(
+            node.arguments[0],
+            isOpeningParenToken,
+          )
       ) {
         rule({
           ...node,
@@ -214,8 +215,32 @@ export default createRule<Options, MessageIds>({
         }
         rules.ConditionalExpression(node);
       },
+      ForInStatement(node): void {
+        if (isTypeAssertion(node.right)) {
+          // as of 7.20.0 there's no way to skip checking the right of the ForIn
+          // so just don't validate it at all
+          return;
+        }
+
+        rules.ForInStatement(node);
+      },
+      ForOfStatement(node): void {
+        if (isTypeAssertion(node.right)) {
+          // makes the rule skip checking of the right
+          rules.ForOfStatement({
+            ...node,
+            type: AST_NODE_TYPES.ForOfStatement,
+            right: {
+              ...node.right,
+              type: AST_NODE_TYPES.SequenceExpression as any,
+            },
+          });
+          return;
+        }
+
+        rules.ForOfStatement(node);
+      },
       // DoWhileStatement
-      // ForIn and ForOf are guarded by eslint version
       ForStatement(node) {
         // make the rule skip the piece by removing it entirely
         if (node.init && isTypeAssertion(node.init)) {
@@ -300,53 +325,6 @@ export default createRule<Options, MessageIds>({
         }
       },
     };
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (rules.ForInStatement && rules.ForOfStatement) {
-      overrides.ForInStatement = function (node): void {
-        if (isTypeAssertion(node.right)) {
-          // as of 7.20.0 there's no way to skip checking the right of the ForIn
-          // so just don't validate it at all
-          return;
-        }
-
-        rules.ForInStatement(node);
-      };
-      overrides.ForOfStatement = function (node): void {
-        if (isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          rules.ForOfStatement({
-            ...node,
-            type: AST_NODE_TYPES.ForOfStatement,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
-          return;
-        }
-
-        rules.ForOfStatement(node);
-      };
-    } else {
-      overrides['ForInStatement, ForOfStatement'] = function (
-        node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
-      ): void {
-        if (isTypeAssertion(node.right)) {
-          // makes the rule skip checking of the right
-          rules['ForInStatement, ForOfStatement']({
-            ...node,
-            type: AST_NODE_TYPES.ForOfStatement as any,
-            right: {
-              ...node.right,
-              type: AST_NODE_TYPES.SequenceExpression as any,
-            },
-          });
-          return;
-        }
-
-        rules['ForInStatement, ForOfStatement'](node);
-      };
-    }
     return Object.assign({}, rules, overrides);
   },
 });

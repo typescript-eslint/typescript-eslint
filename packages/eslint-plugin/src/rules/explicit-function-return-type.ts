@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 import {
@@ -99,7 +98,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -196,7 +194,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc => {
+        checkFunctionReturnType(node, options, context.sourceCode, loc => {
           context.report({
             node,
             loc,
@@ -212,7 +210,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc => {
+        checkFunctionReturnType(node, options, context.sourceCode, loc => {
           context.report({
             node,
             loc,
