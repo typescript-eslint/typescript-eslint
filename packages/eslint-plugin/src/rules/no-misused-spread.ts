@@ -108,7 +108,7 @@ export default createRule<[], MessageIds>({
           node,
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Iterator',
+            type: 'Iterable',
           },
         });
 

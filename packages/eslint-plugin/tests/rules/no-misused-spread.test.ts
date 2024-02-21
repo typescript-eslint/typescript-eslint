@@ -751,7 +751,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Iterator',
+            type: 'Iterable',
           },
           line: 8,
           column: 21,
@@ -770,7 +770,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Iterator',
+            type: 'Iterable',
           },
           line: 4,
           column: 21,
@@ -789,7 +789,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Iterator',
+            type: 'Iterable',
           },
           line: 4,
           column: 21,
@@ -808,7 +808,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Iterator',
+            type: 'Iterable',
           },
           line: 4,
           column: 21,
