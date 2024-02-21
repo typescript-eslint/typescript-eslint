@@ -1,5 +1,5 @@
 import type * as mdast from 'mdast';
-import type * as unist from 'unist';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 
@@ -22,8 +22,15 @@ export function insertRuleDescription(page: RuleDocsPage): void {
       type: 'blockquote',
     } as mdast.Blockquote,
     {
-      type: 'jsx',
-      value: `<RuleAttributes name="${page.file.stem}" />`,
-    } as unist.Node,
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'name',
+          value: page.file.stem,
+        },
+      ],
+      name: 'RuleAttributes',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
   );
 }

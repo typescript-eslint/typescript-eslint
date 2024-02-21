@@ -1,9 +1,9 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 import { EOL } from 'os';
 import * as path from 'path';
 import prettier from 'prettier';
-import type * as unist from 'unist';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 import { convertToPlaygroundHash, nodeIsHeading } from '../utils';
@@ -75,11 +75,27 @@ export async function insertNewRuleReferences(
       value: `module.exports = ${eslintrc};`,
     } as mdast.Code,
     {
-      value: `<TryInPlayground eslintrcHash="${convertToPlaygroundHash(
-        eslintrc,
-      )}">Try this rule in the playground ↗</TryInPlayground>`,
-      type: 'jsx',
-    } as unist.Node,
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'eslintrcHash',
+          value: convertToPlaygroundHash(eslintrc),
+        },
+      ],
+      children: [
+        {
+          children: [
+            {
+              value: 'Try this rule in the playground ↗',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      name: 'TryInPlayground',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
   );
 
   const hasNoConfig = Array.isArray(page.rule.meta.schema)
