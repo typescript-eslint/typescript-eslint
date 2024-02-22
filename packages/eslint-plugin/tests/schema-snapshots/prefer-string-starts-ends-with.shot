@@ -10,7 +10,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "allowSingleElementEquality": {
         "description": "Whether to allow equality checks against the first or last element of a string.",
-        "type": "boolean"
+        "enum": ["always", "never"],
+        "type": "string"
       }
     },
     "type": "object"
@@ -23,7 +24,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     /** Whether to allow equality checks against the first or last element of a string. */
-    allowSingleElementEquality?: boolean;
+    allowSingleElementEquality?:
+      | 'never'
+      /** Whether to allow equality checks against the first or last element of a string. */
+      | 'always';
   },
 ];
 "
