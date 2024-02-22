@@ -474,6 +474,11 @@ restTuple('Hello');
         };
       }
     `,
+    `
+declare function foo(cb: undefined | (() => void));
+declare const bar: undefined | (() => void);
+foo(bar);
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6637
     {
       code: `
@@ -1226,6 +1231,14 @@ const test: ReturnsRecord = () => {
 };
       `,
       errors: [{ line: 7, messageId: 'voidReturnProperty' }],
+    },
+    {
+      code: `
+declare function foo(cb: undefined | (() => void));
+declare const bar: undefined | (() => Promise<void>);
+foo(bar);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
   ],
 });
