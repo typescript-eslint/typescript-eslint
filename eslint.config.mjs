@@ -237,7 +237,8 @@ export default tseslint.config(
       //
       // eslint-plugin-import
       //
-
+      // enforces consistent type specifier style for named imports
+      'import/consistent-type-specifier-style': 'error',
       // disallow non-import statements appearing before import statements
       'import/first': 'error',
       // Require a newline after the last import/require in a group
@@ -329,8 +330,8 @@ export default tseslint.config(
       'packages/*/tests/**/spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/integration-test-base.{ts,tsx,cts,mts}',
-      'packages/integration-tests/tools/pack-packages.{ts,tsx,cts,mts}',
+      'packages/integration-tests/tools/integration-test-base.ts',
+      'packages/integration-tests/tools/pack-packages.ts',
     ],
     rules: {
       '@typescript-eslint/no-empty-function': [

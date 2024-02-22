@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "6.21.0",
+  "version": "7.0.2",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
@@ -17,6 +17,7 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": "^16.0.0 || >=18.0.0"
   },
@@ -45,7 +46,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.21.0",
+    "@typescript-eslint/types": "7.0.2",
     "eslint-visitor-keys": "^3.4.1"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@ description: 'Enforce using `@ts-expect-error` over `@ts-ignore`.'
 TypeScript allows you to suppress all errors on a line by placing a comment starting with `@ts-ignore` or `@ts-expect-error` immediately before the erroring line.
 The two directives work the same, except `@ts-expect-error` causes a type error if placed before a line that's not erroring in the first place.
 
-This means its easy for `@ts-ignore`s to be forgotten about, and remain in code even after the error they were suppressing is fixed.
+This means it's easy for `@ts-ignore`s to be forgotten about, and remain in code even after the error they were suppressing is fixed.
 This is dangerous, as if a new error arises on that line it'll be suppressed by the forgotten about `@ts-ignore`, and so be missed.
 
 ## Examples
