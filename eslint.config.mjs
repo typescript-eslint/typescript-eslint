@@ -158,7 +158,11 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+        {
+          caughtErrors: 'all',
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+        },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': [
         'error',
@@ -472,7 +476,7 @@ export default tseslint.config(
     files: ['packages/ast-spec/src/**/*.{ts,tsx,cts,mts}'],
     rules: {
       // disallow ALL unused vars
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
       '@typescript-eslint/sort-type-constituents': 'error',
     },
   },
