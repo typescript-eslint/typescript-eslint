@@ -30,9 +30,6 @@ interface Foo {
 }
     `,
     {
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       code: `
 // no accessibility === public
 interface Foo {
@@ -1313,9 +1310,6 @@ class Foo {
   f = 1;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
     },
     {
@@ -1326,9 +1320,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
     },
     {
@@ -1339,9 +1330,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
     },
     `
@@ -4675,9 +4663,6 @@ class Foo {
   f = 1;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
       errors: [
         {
@@ -4708,9 +4693,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
       errors: [
         {
@@ -4732,9 +4714,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'field', 'method'] }],
       errors: [
         {
@@ -4756,9 +4735,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
       errors: [
         {
@@ -4782,9 +4758,6 @@ class Foo {
   md() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [
         { default: ['decorated-method', 'static-initialization', 'method'] },
       ],

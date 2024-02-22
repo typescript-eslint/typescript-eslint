@@ -10,7 +10,6 @@ import {
   ESLintUtils,
   TSESLint,
 } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,
@@ -30,7 +29,7 @@ class UnusedVarsVisitor<
     });
 
     this.#scopeManager = ESLintUtils.nullThrows(
-      getSourceCode(context).scopeManager,
+      context.sourceCode.scopeManager,
       'Missing required scope manager',
     );
   }
@@ -41,7 +40,7 @@ class UnusedVarsVisitor<
   >(
     context: TSESLint.RuleContext<TMessageIds, TOptions>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
-    const program = getSourceCode(context).ast;
+    const program = context.sourceCode.ast;
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;

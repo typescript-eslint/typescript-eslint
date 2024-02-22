@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
 import { createRule } from '../util';
@@ -67,11 +66,9 @@ export default createRule({
     }
 
     function getTokenRange(property: TSESTree.Expression): [number, number] {
-      const sourceCode = getSourceCode(context);
-
       return [
-        sourceCode.getTokenBefore(property)!.range[0],
-        sourceCode.getTokenAfter(property)!.range[1],
+        context.sourceCode.getTokenBefore(property)!.range[0],
+        context.sourceCode.getTokenAfter(property)!.range[1],
       ];
     }
   },

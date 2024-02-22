@@ -2,7 +2,6 @@ import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -62,8 +61,8 @@ export default createRule<Options, MessageIds>({
   },
 
   create(context, [{ allowSingleElementEquality }]) {
-    const globalScope = getScope(context);
-    const sourceCode = getSourceCode(context);
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
+
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -131,8 +130,8 @@ export default createRule<Options, MessageIds>({
      * @param node2 Another node to compare.
      */
     function isSameTokens(node1: TSESTree.Node, node2: TSESTree.Node): boolean {
-      const tokens1 = sourceCode.getTokens(node1);
-      const tokens2 = sourceCode.getTokens(node2);
+      const tokens1 = context.sourceCode.getTokens(node1);
+      const tokens2 = context.sourceCode.getTokens(node2);
 
       if (tokens1.length !== tokens2.length) {
         return false;
@@ -235,7 +234,7 @@ export default createRule<Options, MessageIds>({
     function getPropertyRange(
       node: TSESTree.MemberExpression,
     ): [number, number] {
-      const dotOrOpenBracket = sourceCode.getTokenAfter(
+      const dotOrOpenBracket = context.sourceCode.getTokenAfter(
         node.object,
         isNotClosingParenToken,
       )!;

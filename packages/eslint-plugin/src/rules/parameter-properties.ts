@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -150,8 +149,6 @@ export default createRule<Options, MessageIds>({
       return created;
     }
 
-    const sourceCode = getSourceCode(context);
-
     function typeAnnotationsMatch(
       classProperty: TSESTree.PropertyDefinition,
       constructorParameter: TSESTree.Identifier,
@@ -166,8 +163,8 @@ export default createRule<Options, MessageIds>({
       }
 
       return (
-        sourceCode.getText(classProperty.typeAnnotation) ===
-        sourceCode.getText(constructorParameter.typeAnnotation)
+        context.sourceCode.getText(classProperty.typeAnnotation) ===
+        context.sourceCode.getText(constructorParameter.typeAnnotation)
       );
     }
 

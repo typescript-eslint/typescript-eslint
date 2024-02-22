@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -154,7 +153,7 @@ export default createRule<Options, MessageId>({
   ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
+
     const compilerOptions = services.program.getCompilerOptions();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -672,7 +671,7 @@ export default createRule<Options, MessageId>({
       }
 
       const questionDotOperator = nullThrows(
-        sourceCode.getTokenAfter(
+        context.sourceCode.getTokenAfter(
           beforeOperator,
           token =>
             token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.',

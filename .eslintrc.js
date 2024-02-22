@@ -313,7 +313,6 @@ module.exports = {
     {
       files: [
         './packages/eslint-plugin-internal/**/*.ts',
-        './packages/eslint-plugin-tslint/**/*.ts',
         './packages/eslint-plugin/**/*.ts',
       ],
       rules: {
@@ -324,7 +323,6 @@ module.exports = {
     {
       files: [
         './packages/eslint-plugin-internal/src/rules/**/*.ts',
-        './packages/eslint-plugin-tslint/src/rules/**/*.ts',
         './packages/eslint-plugin/src/configs/**/*.ts',
         './packages/eslint-plugin/src/rules/**/*.ts',
       ],
@@ -352,7 +350,6 @@ module.exports = {
     {
       files: [
         './packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
-        './packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
         './packages/eslint-plugin/tests/rules/**/*.test.ts',
         './packages/eslint-plugin/tests/eslint-rules/**/*.test.ts',
       ],

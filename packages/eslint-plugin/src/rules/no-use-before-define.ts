@@ -1,7 +1,6 @@
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -378,8 +377,8 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Program(): void {
-        findVariablesInScope(getScope(context));
+      Program(node): void {
+        findVariablesInScope(context.sourceCode.getScope(node));
       },
     };
   },

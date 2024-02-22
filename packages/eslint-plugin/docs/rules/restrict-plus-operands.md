@@ -18,15 +18,15 @@ This rule reports when a `+` operation combines two values of different types, o
 ### ❌ Incorrect
 
 ```ts
-let foo = '5.5' + 5;
 let foo = 1n + 1;
+let fn = (a: string, b: never) => a + b;
 ```
 
 ### ✅ Correct
 
 ```ts
-let foo = parseInt('5.5', 10) + 10;
 let foo = 1n + 1n;
+let fn = (a: string, b: string) => a + b;
 ```
 
 ## Options

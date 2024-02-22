@@ -8,7 +8,7 @@ import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
-interface RuleMetaDataDocs {
+export interface RuleMetaDataDocs {
   /**
    * Concise description of the rule
    */
@@ -35,7 +35,7 @@ interface RuleMetaDataDocs {
    */
   extendsBaseRule?: boolean | string;
 }
-interface RuleMetaData<TMessageIds extends string> {
+export interface RuleMetaData<TMessageIds extends string> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -75,12 +75,12 @@ interface RuleMetaData<TMessageIds extends string> {
   schema: JSONSchema4 | readonly JSONSchema4[];
 }
 
-interface RuleFix {
+export interface RuleFix {
   range: Readonly<AST.Range>;
   text: string;
 }
 
-interface RuleFixer {
+export interface RuleFixer {
   insertTextAfter(
     nodeOrToken: TSESTree.Node | TSESTree.Token,
     text: string,
@@ -107,18 +107,18 @@ interface RuleFixer {
   replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
-interface SuggestionReportDescriptor<TMessageIds extends string>
+export interface SuggestionReportDescriptor<TMessageIds extends string>
   extends Omit<ReportDescriptorBase<TMessageIds>, 'fix'> {
   readonly fix: ReportFixFunction;
 }
 
-type ReportFixFunction = (
+export type ReportFixFunction = (
   fixer: RuleFixer,
 ) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
-type ReportSuggestionArray<TMessageIds extends string> =
+export type ReportSuggestionArray<TMessageIds extends string> =
   SuggestionReportDescriptor<TMessageIds>[];
 
-type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
+export type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -163,7 +163,7 @@ interface ReportDescriptorLocOnly {
    */
   loc: Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
 }
-type ReportDescriptor<TMessageIds extends string> =
+export type ReportDescriptor<TMessageIds extends string> =
   ReportDescriptorWithSuggestion<TMessageIds> &
     (ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc);
 
@@ -171,9 +171,12 @@ type ReportDescriptor<TMessageIds extends string> =
  * Plugins can add their settings using declaration
  * merging against this interface.
  */
-type SharedConfigurationSettings = Record<string, unknown>;
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface SharedConfigurationSettings {
+  [name: string]: unknown;
+}
 
-interface RuleContext<
+export interface RuleContext<
   TMessageIds extends string,
   TOptions extends readonly unknown[],
 > {
@@ -192,9 +195,8 @@ interface RuleContext<
   parserPath: string;
   /**
    * The language options configured for this run
-   * @since 8.4.0
    */
-  languageOptions?: FlatConfig.LanguageOptions;
+  languageOptions: FlatConfig.LanguageOptions;
   /**
    * The parser options configured for this run
    */
@@ -231,7 +233,6 @@ interface RuleContext<
   /**
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * @since 6.6.0
    * @deprecated in favor of `RuleContext#cwd`
    */
   getCwd(): string;
@@ -239,7 +240,6 @@ interface RuleContext<
   /**
    * The current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * @since 8.40.0
    */
   cwd: string;
 
@@ -252,22 +252,19 @@ interface RuleContext<
 
   /**
    * The filename associated with the source.
-   * @since 8.40.0
    */
   filename: string;
 
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
-   * @since 7.28.0
    * @deprecated in favor of `RuleContext#physicalFilename`
    */
-  getPhysicalFilename?(): string;
+  getPhysicalFilename(): string;
 
   /**
    * The full path of the file on disk without any code block information (unlike `filename`).
-   * @since 8.40.0
    */
-  physicalFilename?: string;
+  physicalFilename: string;
 
   /**
    * Returns the scope of the currently-traversed node.
@@ -288,7 +285,6 @@ interface RuleContext<
   /**
    * A SourceCode object that you can use to work with the source that
    * was passed to ESLint.
-   * @since 8.40.0
    */
   sourceCode: Readonly<SourceCode>;
 
@@ -315,7 +311,7 @@ interface RuleContext<
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
-interface CodePath {
+export interface CodePath {
   /**
    * A unique string. Respective rules can use `id` to save additional
    * information for each code path.
@@ -356,7 +352,7 @@ interface CodePath {
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
-interface CodePathSegment {
+export interface CodePathSegment {
   /**
    * A unique string. Respective rules can use `id` to save additional
    * information for each segment.
@@ -392,7 +388,7 @@ interface CodePathSegment {
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
-type CodePathFunction =
+export type CodePathFunction =
   | ((
       fromSegment: CodePathSegment,
       toSegment: CodePathSegment,
@@ -403,7 +399,7 @@ type CodePathFunction =
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
-type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
+export type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
   node: T,
 ) => void;
 
@@ -572,7 +568,7 @@ type RuleListenerExitSelectors = {
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface RuleListenerExtension {
+export interface RuleListenerExtension {
   // The code path functions below were introduced in ESLint v8.7.0 but are
   // intentionally commented out because they cause unresolvable compiler
   // errors:
@@ -613,11 +609,11 @@ interface RuleListenerExtension {
   */
 }
 
-type RuleListener = RuleListenerBaseSelectors &
+export type RuleListener = RuleListenerBaseSelectors &
   RuleListenerCatchAllBaseCase &
   RuleListenerExitSelectors;
 
-interface RuleModule<
+export interface RuleModule<
   TMessageIds extends string,
   TOptions extends readonly unknown[] = [],
   // for extending base rules
@@ -639,33 +635,48 @@ interface RuleModule<
    */
   create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
 }
-type AnyRuleModule = RuleModule<string, readonly unknown[]>;
+export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
-type RuleCreateFunction<
+/**
+ * A loose definition of the RuleModule type for use with configs. This type is
+ * intended to relax validation of types so that we can have basic validation
+ * without being overly strict about nitty gritty details matching.
+ *
+ * For example the plugin might be declared using an old version of our types or
+ * they might use the DefinitelyTyped eslint types. Ultimately we don't need
+ * super strict validation in a config - a loose shape match is "good enough" to
+ * help validate the config is correct.
+ *
+ * @see {@link LooseParserModule}, {@link LooseProcessorModule}
+ */
+export type LooseRuleDefinition =
+  // TODO - ESLint v9 will remove support for RuleCreateFunction
+  | LooseRuleCreateFunction
+  | {
+      meta?: object;
+      create: LooseRuleCreateFunction;
+    };
+/*
+eslint-disable-next-line @typescript-eslint/no-explicit-any --
+intentionally using `any` to allow bi-directional assignment (unknown and
+never only allow unidirectional)
+*/
+export type LooseRuleCreateFunction = (context: any) => Record<
+  string,
+  /*
+  eslint-disable-next-line @typescript-eslint/ban-types --
+  intentionally use Function here to give us the basic "is a function" validation
+  without enforcing specific argument types so that different AST types can still
+  be passed to configs
+  */
+  Function | undefined
+>;
+
+export type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
 > = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
-type AnyRuleCreateFunction = RuleCreateFunction<string, readonly unknown[]>;
-
-export {
-  AnyRuleCreateFunction,
-  AnyRuleModule,
-  CodePath,
-  CodePathFunction,
-  CodePathSegment,
-  ReportDescriptor,
-  ReportDescriptorMessageData,
-  ReportFixFunction,
-  ReportSuggestionArray,
-  RuleContext,
-  RuleCreateFunction,
-  RuleFix,
-  RuleFixer,
-  RuleFunction,
-  RuleListener,
-  RuleListenerExtension,
-  RuleMetaData,
-  RuleMetaDataDocs,
-  RuleModule,
-  SharedConfigurationSettings,
-};
+export type AnyRuleCreateFunction = RuleCreateFunction<
+  string,
+  readonly unknown[]
+>;

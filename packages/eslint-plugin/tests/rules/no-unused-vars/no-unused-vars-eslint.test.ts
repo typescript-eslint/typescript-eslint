@@ -3,7 +3,7 @@
 // License      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
@@ -21,9 +21,8 @@ ruleTester.defineRule('use-every-a', context => {
   /**
    * Mark a variable as used
    */
-  function useA(): void {
-    // eslint-disable-next-line deprecation/deprecation
-    context.markVariableAsUsed('a');
+  function useA(node: TSESTree.Node): void {
+    context.sourceCode.markVariableAsUsed('a', node);
   }
   return {
     VariableDeclaration: useA,
