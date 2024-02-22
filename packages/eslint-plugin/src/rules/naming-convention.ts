@@ -532,8 +532,7 @@ export default createRule<Options, MessageIds>({
 
       [[
         'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
-        ':matches(TSAbstractMethodDefinition)[computed = false][kind="get"]',
-        ':matches(TSAbstractMethodDefinition)[computed = false][kind="set"]',
+        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
       ].join(', ')]: {
         validator: validators.classicAccessor,
         handler: (
