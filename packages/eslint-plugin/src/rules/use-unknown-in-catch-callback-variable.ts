@@ -4,7 +4,7 @@ import type {
   ReportDescriptor,
   Scope,
 } from '@typescript-eslint/utils/ts-eslint';
-import * as tsUtils from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import {
@@ -81,7 +81,7 @@ export default createRule<[], MessageIds>({
 
       const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      return tsUtils.isThenableType(
+      return tsutils.isThenableType(
         checker,
         tsNode,
         checker.getTypeAtLocation(objectTsNode),
@@ -89,8 +89,8 @@ export default createRule<[], MessageIds>({
     }
 
     function isFlaggableHandlerType(type: ts.Type): boolean {
-      for (const unionPart of tsUtils.unionTypeParts(type)) {
-        const callSignatures = tsUtils.getCallSignaturesOfType(unionPart);
+      for (const unionPart of tsutils.unionTypeParts(type)) {
+        const callSignatures = tsutils.getCallSignaturesOfType(unionPart);
         if (callSignatures.length === 0) {
           // Ignore any non-function components to the type. Those are not this rule's problem.
           continue;
@@ -117,7 +117,7 @@ export default createRule<[], MessageIds>({
             }
           }
 
-          if (!tsUtils.isIntrinsicUnknownType(firstParamType)) {
+          if (!tsutils.isIntrinsicUnknownType(firstParamType)) {
             return true;
           }
         }
