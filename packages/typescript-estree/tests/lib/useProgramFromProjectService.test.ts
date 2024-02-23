@@ -13,6 +13,8 @@ jest.mock('../../src/create-program/createProjectProgram', () => ({
   },
 }));
 
+const mockGetProgram = jest.fn();
+
 const currentDirectory = '/repos/repo';
 
 function createMockProjectService() {
@@ -20,9 +22,7 @@ function createMockProjectService() {
   const service = {
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
-        getProgram: () => ({
-          getSourceFile: () => ({}),
-        }),
+        getProgram: mockGetProgram,
       }),
     }),
     getScriptInfo: () => ({}),
@@ -63,7 +63,9 @@ describe('useProgramFromProjectService', () => {
   it('throws an error when hasFullTypeInformation is enabled and the file is both in the project service and allowDefaultProjectForFiles', () => {
     const { service } = createMockProjectService();
 
-    service.openClientFile.mockReturnValue({ configFileName: 'tsconfig.json' });
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
 
     expect(() =>
       useProgramFromProjectService(
@@ -79,7 +81,7 @@ describe('useProgramFromProjectService', () => {
   it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProjectForFiles', () => {
     const { service } = createMockProjectService();
 
-    service.openClientFile.mockReturnValue({});
+    service.openClientFile.mockReturnValueOnce({});
 
     expect(() =>
       useProgramFromProjectService(
@@ -95,7 +97,11 @@ describe('useProgramFromProjectService', () => {
   it('returns undefined when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProjectForFiles, and the service does not have a matching program', () => {
     const { service } = createMockProjectService();
 
-    service.openClientFile.mockReturnValue({ configFileName: 'tsconfig.json' });
+    mockGetProgram.mockReturnValue(undefined);
+
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
 
     const actual = useProgramFromProjectService(
       { allowDefaultProjectForFiles: [mockParseSettings.filePath], service },
@@ -110,8 +116,12 @@ describe('useProgramFromProjectService', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
-    service.openClientFile.mockReturnValue({ configFileName: 'tsconfig.json' });
-    mockCreateProjectProgram.mockReturnValue(program);
+    mockGetProgram.mockReturnValue(program);
+
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
 
     const actual = useProgramFromProjectService(
       { allowDefaultProjectForFiles: [mockParseSettings.filePath], service },
@@ -126,8 +136,10 @@ describe('useProgramFromProjectService', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
-    service.openClientFile.mockReturnValue({});
-    mockCreateProjectProgram.mockReturnValue(program);
+    mockGetProgram.mockReturnValue(program);
+
+    service.openClientFile.mockReturnValueOnce({});
+    mockCreateProjectProgram.mockReturnValueOnce(program);
 
     const actual = useProgramFromProjectService(
       { allowDefaultProjectForFiles: [], service },
