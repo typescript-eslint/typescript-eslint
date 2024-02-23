@@ -674,14 +674,7 @@ function isVoidReturningFunctionType(
  */
 function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
-
-  if (type.isUnion()) {
-    return type.types.some(t => anySignatureIsThenableType(checker, node, t));
-  }
-
-  if (anySignatureIsThenableType(checker, node, type)) {
-    return true;
-  }
-
-  return false;
+  return tsutils
+    .unionTypeParts(type)
+    .some(t => anySignatureIsThenableType(checker, node, t));
 }

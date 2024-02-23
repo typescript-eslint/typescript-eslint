@@ -1240,5 +1240,13 @@ foo(bar);
       `,
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
+    {
+      code: `
+declare function foo(cb: string & (() => void));
+declare const bar: string & (() => Promise<void>);
+foo(bar);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
   ],
 });
