@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-floating-promises.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const promise = new Promise((resolve, reject) => resolve('value'));
@@ -24,7 +24,7 @@ Promise.reject('value').finally();
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-floating-promises.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 const promise = new Promise((resolve, reject) => resolve('value'));
@@ -46,7 +46,7 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-floating-promises.md code examples ESLint output snapshot 3`] = `
 "Options: { "ignoreVoid": true }
 
 async function returnsPromise() {
@@ -58,7 +58,7 @@ void Promise.reject('value');
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-floating-promises.md code examples ESLint output snapshot 4`] = `
 "Options: { "ignoreIIFE": true }
 
 await (async function () {

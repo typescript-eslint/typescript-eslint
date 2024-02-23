@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 class StaticConstants {
@@ -21,7 +21,7 @@ class HelloWorldLogger {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 export const version = 42;
@@ -36,7 +36,7 @@ function logHelloWorld() {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 
 export class Utilities {
@@ -56,7 +56,7 @@ export class Utilities {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 4`] = `
 "Correct
 
 export function util1() {
@@ -73,7 +73,7 @@ export function util3() {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 
 // utilities.ts
@@ -91,7 +91,7 @@ Utilities.sayHello();
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 6`] = `
 "
 
 // utilities.ts
@@ -106,7 +106,7 @@ utilities.sayHello();
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 7`] = `
 "
 
 // utilities.ts
@@ -121,7 +121,7 @@ sayHello();
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 8`] = `
 "Incorrect
 
 export class Utilities {
@@ -135,7 +135,7 @@ export class Utilities {
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 9`] = `
 "Correct
 
 let mutableCount = 1;
@@ -150,7 +150,7 @@ export function incrementCount() {
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 10`] = `
 "Incorrect
 Options: { "allowConstructorOnly": true }
 
@@ -159,7 +159,7 @@ class NoFields {}
 "
 `;
 
-exports[` 11`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 11`] = `
 "Correct
 Options: { "allowConstructorOnly": true }
 
@@ -171,7 +171,7 @@ class NoFields {
 "
 `;
 
-exports[` 12`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 12`] = `
 "Incorrect
 Options: { "allowEmpty": true }
 
@@ -184,7 +184,7 @@ class NoFields {
 "
 `;
 
-exports[` 13`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 13`] = `
 "Correct
 Options: { "allowEmpty": true }
 
@@ -192,7 +192,7 @@ class NoFields {}
 "
 `;
 
-exports[` 14`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 14`] = `
 "Incorrect
 Options: { "allowStaticOnly": true }
 
@@ -201,7 +201,7 @@ class EmptyClass {}
 "
 `;
 
-exports[` 15`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 15`] = `
 "Correct
 Options: { "allowStaticOnly": true }
 
@@ -211,7 +211,7 @@ class NotEmptyClass {
 "
 `;
 
-exports[` 16`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 16`] = `
 "Incorrect
 Options: { "allowWithDecorator": true }
 
@@ -222,7 +222,7 @@ class Constants {
 "
 `;
 
-exports[` 17`] = `
+exports[`Validating rule docs no-extraneous-class.md code examples ESLint output snapshot 17`] = `
 "Correct
 Options: { "allowWithDecorator": true }
 

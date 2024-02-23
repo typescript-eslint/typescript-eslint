@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 1`] = `
 "Options: { "ignoreTernaryTests": false }
 
 const foo: any = 'bar';
@@ -23,7 +23,7 @@ foo === null ? 'a string' : foo;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 2`] = `
 "Options: { "ignoreTernaryTests": false }
 
 const foo: any = 'bar';
@@ -42,7 +42,7 @@ foo ?? 'a string';
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 3`] = `
 "Options: { "ignoreConditionalTests": false }
 
 declare const a: string | null;
@@ -65,7 +65,7 @@ a || b ? true : false;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 4`] = `
 "Options: { "ignoreConditionalTests": false }
 
 declare const a: string | null;
@@ -83,7 +83,7 @@ a ?? b ? true : false;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 5`] = `
 "Options: { "ignoreMixedLogicalExpressions": false }
 
 declare const a: string | null;
@@ -105,7 +105,7 @@ a || (b && c && d);
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 6`] = `
 "Options: { "ignoreMixedLogicalExpressions": false }
 
 declare const a: string | null;
@@ -121,7 +121,7 @@ a ?? (b && c && d);
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 7`] = `
 "Options: { "ignorePrimitives": { "string": true } }
 
 const foo: string | undefined = 'bar';
@@ -129,7 +129,7 @@ foo || 'a string';
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs prefer-nullish-coalescing.md code examples ESLint output snapshot 8`] = `
 "Options: { "ignorePrimitives": { "string": true } }
 
 const foo: string | undefined = 'bar';

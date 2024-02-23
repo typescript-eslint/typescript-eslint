@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const foo = 3;
@@ -9,7 +9,7 @@ const bar = foo!;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 2`] = `
 "Incorrect
 
 const foo = <number>(3 + 5);
@@ -17,7 +17,7 @@ const foo = <number>(3 + 5);
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 
 type Foo = number;
@@ -26,7 +26,7 @@ const foo = <Foo>(3 + 5);
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 4`] = `
 "Incorrect
 
 type Foo = number;
@@ -35,7 +35,7 @@ const foo = (3 + 5) as Foo;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 
 function foo(x: number): number {
@@ -45,28 +45,28 @@ function foo(x: number): number {
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 6`] = `
 "Correct
 
 const foo = <number>3;
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 7`] = `
 "Correct
 
 const foo = 3 as number;
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 8`] = `
 "Correct
 
 const foo = 'foo' as const;
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 9`] = `
 "Correct
 
 function foo(x: number | undefined): number {
@@ -75,7 +75,7 @@ function foo(x: number | undefined): number {
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 10`] = `
 "Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-empty-function.md code examples ESLint output snapshot 1`] = `
 "Options: { "allow": ["private-constructors"] }
 
 class Foo {
@@ -9,7 +9,7 @@ class Foo {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-empty-function.md code examples ESLint output snapshot 2`] = `
 "Options: { "allow": ["protected-constructors"] }
 
 class Foo {
@@ -18,7 +18,7 @@ class Foo {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-empty-function.md code examples ESLint output snapshot 3`] = `
 "Options: { "allow": ["decoratedFunctions"] }
 
 class Foo {
@@ -28,7 +28,7 @@ class Foo {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-empty-function.md code examples ESLint output snapshot 4`] = `
 "Options: { "allow": ["overrideMethods"] }
 
 abstract class Base {

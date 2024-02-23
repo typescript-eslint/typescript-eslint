@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-return-this-type.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 class Foo {
@@ -19,7 +19,7 @@ class Foo {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-return-this-type.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 class Foo {

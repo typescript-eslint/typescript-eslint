@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-unsafe-call.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 declare const anyVar: any;
@@ -28,7 +28,7 @@ nestedAny.prop\`foo\`;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-unsafe-call.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 declare const typedVar: () => void;

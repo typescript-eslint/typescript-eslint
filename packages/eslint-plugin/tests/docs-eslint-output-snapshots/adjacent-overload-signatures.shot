@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs adjacent-overload-signatures.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 declare namespace Foo {
@@ -43,7 +43,7 @@ export function foo(sn: string | number): void;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs adjacent-overload-signatures.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 declare namespace Foo {

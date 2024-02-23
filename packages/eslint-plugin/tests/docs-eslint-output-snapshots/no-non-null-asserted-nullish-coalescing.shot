@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-non-null-asserted-nullish-coalescing.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 foo! ?? bar;
@@ -23,7 +23,7 @@ x! ?? '';
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-non-null-asserted-nullish-coalescing.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 foo ?? bar;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-inferrable-types.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const a: bigint = 10n;
@@ -49,7 +49,7 @@ function fn(a: number = 5, b: boolean = true) {}
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-inferrable-types.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 const a = 10n;
@@ -78,7 +78,7 @@ function fn(a = 5, b = true) {}
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-inferrable-types.md code examples ESLint output snapshot 3`] = `
 "Options: { "ignoreParameters": true }
 
 function foo(a: number = 5, b: boolean = true) {
@@ -87,7 +87,7 @@ function foo(a: number = 5, b: boolean = true) {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-inferrable-types.md code examples ESLint output snapshot 4`] = `
 "Options: { "ignoreProperties": true }
 
 class Foo {

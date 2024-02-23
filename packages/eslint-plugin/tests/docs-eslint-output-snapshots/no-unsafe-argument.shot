@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-unsafe-argument.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
@@ -34,7 +34,7 @@ foo(new Set<any>(), new Map<any, string>());
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-unsafe-argument.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 declare function foo(arg1: string, arg2: number, arg3: string): void;
@@ -53,7 +53,7 @@ foo(new Set<string>(), new Map<string, string>());
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-unsafe-argument.md code examples ESLint output snapshot 3`] = `
 "
 
 declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;

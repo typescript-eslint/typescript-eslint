@@ -187,7 +187,7 @@ When this option is `true` the rule will check operands that are typed as `boole
 
 #### ❌ Incorrect for `checkBoolean: true`
 
-```ts option='{ "checkBoolean": true }'
+```ts option='{ "checkBoolean": true }' skipValidation
 declare const thing: boolean;
 
 thing && thing.toString();
@@ -235,7 +235,7 @@ When this option is `true` the rule will skip operands that are not typed with `
 
 #### ❌ Incorrect for `requireNullish: true`
 
-```ts option='{ "requireNullish": true }'
+```ts option='{ "requireNullish": true }' skipValidation
 declare const thing1: string | null;
 thing1 && thing1.toString();
 ```

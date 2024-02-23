@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-invalid-void-type.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 type PossibleValues = string | number | void;
@@ -28,7 +28,7 @@ class MyClass {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-invalid-void-type.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 type NoOp = () => void;
@@ -43,7 +43,7 @@ type stillVoid = void | never;
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-invalid-void-type.md code examples ESLint output snapshot 3`] = `
 "Options: { "allowInGenericTypeArguments": false }
 
 logAndReturn<void>(undefined);
@@ -58,7 +58,7 @@ let voidMap: Map<string, void> = new Map<string, void>();
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-invalid-void-type.md code examples ESLint output snapshot 4`] = `
 "Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
 
 logAndReturn<void>(undefined);
@@ -73,7 +73,7 @@ type NotAllowedVoid3 = Promise<void>;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs no-invalid-void-type.md code examples ESLint output snapshot 5`] = `
 "Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
 
 type AllowedVoid = Ex.Mx.Tx<void>;
@@ -81,7 +81,7 @@ type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs no-invalid-void-type.md code examples ESLint output snapshot 6`] = `
 "Options: { "allowAsThisParameter": false }
 
 function doThing(this: void) {}

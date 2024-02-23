@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-unnecessary-type-constraint.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 interface FooAny<T extends any> {}
@@ -29,7 +29,7 @@ function QuuzAny<T extends any>() {}
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-unnecessary-type-constraint.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 interface Foo<T> {}

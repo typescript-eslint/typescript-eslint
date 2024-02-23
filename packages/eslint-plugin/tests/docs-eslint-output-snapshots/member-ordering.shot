@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -19,7 +19,7 @@ interface Foo {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 2`] = `
 "Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -36,7 +36,7 @@ type Foo = {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -59,7 +59,7 @@ class Foo {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 4`] = `
 "Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -83,7 +83,7 @@ const Foo = class {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 5`] = `
 "Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -99,7 +99,7 @@ interface Foo {
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -115,7 +115,7 @@ type Foo = {
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 7`] = `
 "Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -134,7 +134,7 @@ class Foo {
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
@@ -153,7 +153,7 @@ const Foo = class {
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 9`] = `
 "Incorrect
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
@@ -176,7 +176,7 @@ class Foo {
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 10`] = `
 "Incorrect
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
@@ -199,7 +199,7 @@ const Foo = class {
 "
 `;
 
-exports[` 11`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 11`] = `
 "Correct
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
@@ -221,7 +221,7 @@ class Foo {
 "
 `;
 
-exports[` 12`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 12`] = `
 "Correct
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
@@ -243,7 +243,7 @@ const Foo = class {
 "
 `;
 
-exports[` 13`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 13`] = `
 "Incorrect
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
@@ -265,7 +265,7 @@ class Foo {
 "
 `;
 
-exports[` 14`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 14`] = `
 "Incorrect
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
@@ -291,7 +291,7 @@ const foo = class {
 "
 `;
 
-exports[` 15`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 15`] = `
 "Correct
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
@@ -309,7 +309,7 @@ class Foo {
 "
 `;
 
-exports[` 16`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 16`] = `
 "Correct
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
@@ -331,7 +331,7 @@ const foo = class {
 "
 `;
 
-exports[` 17`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 17`] = `
 "Incorrect
 Options: { "classes": ["method", "constructor", "field"] }
 
@@ -351,7 +351,7 @@ class Foo {
 "
 `;
 
-exports[` 18`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 18`] = `
 "Correct
 Options: { "classes": ["method", "constructor", "field"] }
 
@@ -368,7 +368,7 @@ class Foo {
 "
 `;
 
-exports[` 19`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 19`] = `
 "Incorrect
 Options: { "classExpressions": ["method", "constructor", "field"] }
 
@@ -388,7 +388,7 @@ const foo = class {
 "
 `;
 
-exports[` 20`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 20`] = `
 "Correct
 Options: { "classExpressions": ["method", "constructor", "field"] }
 
@@ -405,7 +405,7 @@ const foo = class {
 "
 `;
 
-exports[` 21`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 21`] = `
 "Incorrect
 Options: { "interfaces": ["signature", "method", "constructor", "field"] }
 
@@ -424,7 +424,7 @@ interface Foo {
 "
 `;
 
-exports[` 22`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 22`] = `
 "Correct
 Options: { "interfaces": ["signature", "method", "constructor", "field"] }
 
@@ -440,7 +440,7 @@ interface Foo {
 "
 `;
 
-exports[` 23`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 23`] = `
 "Incorrect
 Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
 
@@ -459,7 +459,7 @@ type Foo = {
 "
 `;
 
-exports[` 24`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 24`] = `
 "Correct
 Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
 
@@ -475,7 +475,7 @@ type Foo = {
 "
 `;
 
-exports[` 25`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 25`] = `
 "Incorrect
 Options: {"default":{"order":"alphabetically"}}
 
@@ -492,7 +492,7 @@ interface Foo {
 "
 `;
 
-exports[` 26`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 26`] = `
 "Correct
 Options: {"default":{"order":"alphabetically"}}
 
@@ -508,7 +508,7 @@ interface Foo {
 "
 `;
 
-exports[` 27`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 27`] = `
 "Incorrect
 Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
 
@@ -525,7 +525,7 @@ interface Foo {
 "
 `;
 
-exports[` 28`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 28`] = `
 "Correct
 Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
 
@@ -541,7 +541,7 @@ interface Foo {
 "
 `;
 
-exports[` 29`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 29`] = `
 "Incorrect
 Options: {"default":{"order":"alphabetically-case-insensitive"}}
 
@@ -558,7 +558,7 @@ interface Foo {
 "
 `;
 
-exports[` 30`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 30`] = `
 "Correct
 Options: {"default":{"order":"alphabetically-case-insensitive"}}
 
@@ -574,7 +574,7 @@ interface Foo {
 "
 `;
 
-exports[` 31`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 31`] = `
 "Incorrect
 Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
 
@@ -591,7 +591,7 @@ interface Foo {
 "
 `;
 
-exports[` 32`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 32`] = `
 "Correct
 Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
 
@@ -606,7 +606,7 @@ interface Foo {
 "
 `;
 
-exports[` 33`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 33`] = `
 "Incorrect
 Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
 
@@ -619,7 +619,7 @@ interface Foo {
 "
 `;
 
-exports[` 34`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 34`] = `
 "Correct
 Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
 
@@ -631,7 +631,7 @@ interface Foo {
 "
 `;
 
-exports[` 35`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 35`] = `
 "Incorrect
 Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
 
@@ -644,7 +644,7 @@ interface Foo {
 "
 `;
 
-exports[` 36`] = `
+exports[`Validating rule docs member-ordering.md code examples ESLint output snapshot 36`] = `
 "Correct
 Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
 

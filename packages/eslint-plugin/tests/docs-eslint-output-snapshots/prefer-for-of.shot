@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-for-of.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 declare const array: string[];
@@ -14,7 +14,7 @@ for (let i = 0; i < array.length; i++) {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-for-of.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 declare const array: string[];

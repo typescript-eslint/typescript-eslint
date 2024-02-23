@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-regexp-exec.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 'something'.match(/thing/);
@@ -16,7 +16,7 @@ text.match(search);
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-regexp-exec.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 /thing/.exec('something');

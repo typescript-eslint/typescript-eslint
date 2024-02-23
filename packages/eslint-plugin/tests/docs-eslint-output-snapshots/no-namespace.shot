@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 module foo {}
@@ -15,7 +15,7 @@ declare namespace foo {}
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 declare module 'foo' {}
@@ -24,7 +24,7 @@ declare module 'foo' {}
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "allowDeclarations": true }
 
@@ -35,7 +35,7 @@ namespace foo {}
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "allowDeclarations": true }
 
@@ -53,7 +53,7 @@ declare module foo {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "allowDeclarations": false }
 
@@ -68,7 +68,7 @@ declare namespace foo {}
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "allowDeclarations": false }
 
@@ -76,7 +76,7 @@ declare module 'foo' {}
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 Options: { "allowDefinitionFiles": true }
 
@@ -98,7 +98,7 @@ declare namespace foo {}
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs no-namespace.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: { "allowDefinitionFiles": true }
 

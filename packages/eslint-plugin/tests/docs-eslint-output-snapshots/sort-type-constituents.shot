@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 type T1 = B | A;
@@ -52,7 +52,7 @@ type T4 =
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 type T1 = A | B;
@@ -83,7 +83,7 @@ type T4 =
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "checkIntersections": true }
 
@@ -92,7 +92,7 @@ type ExampleIntersection = B & A;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "checkIntersections": true }
 
@@ -100,7 +100,7 @@ type ExampleIntersection = A & B;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "checkUnions": true }
 
@@ -109,7 +109,7 @@ type ExampleUnion = B | A;
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "checkUnions": true }
 
@@ -117,7 +117,7 @@ type ExampleUnion = A | B;
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 Options: { "groupOrder": ["literal", "nullish" ]}
 
@@ -126,7 +126,7 @@ type ExampleGroup = null | 123;
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: { "groupOrder": ["literal", "nullish" ]}
 

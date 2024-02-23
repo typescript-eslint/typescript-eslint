@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs promise-function-async.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const arrowFunctionReturnsPromise = () => Promise.resolve('value');
@@ -18,7 +18,7 @@ function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs promise-function-async.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
@@ -40,7 +40,7 @@ async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs promise-function-async.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "allowAny": false }
 
@@ -49,7 +49,7 @@ const returnsAny = () => ({}) as any;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs promise-function-async.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "allowAny": false }
 
@@ -57,7 +57,7 @@ const returnsAny = async () => ({}) as any;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs promise-function-async.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "allowedPromiseNames": ["Bluebird"] }
 
@@ -68,7 +68,7 @@ const returnsBluebird = () => new Bluebird(() => {});
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs promise-function-async.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "allowedPromiseNames": ["Bluebird"] }
 

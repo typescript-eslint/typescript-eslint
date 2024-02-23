@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-restricted-imports.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: {"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}
 
@@ -16,7 +16,7 @@ export { Baz } from 'import-baz';
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-restricted-imports.md code examples ESLint output snapshot 2`] = `
 "Correct
 Options: {"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}
 

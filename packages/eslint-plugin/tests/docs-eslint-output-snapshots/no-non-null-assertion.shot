@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-non-null-assertion.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 interface Example {
@@ -13,7 +13,7 @@ const includesBaz = example.property!.includes('baz');
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-non-null-assertion.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 interface Example {

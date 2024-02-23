@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 let foo = 1n + 1;
@@ -10,7 +10,7 @@ let fn = (a: string, b: never) => a + b;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 let foo = 1n + 1n;
@@ -18,7 +18,7 @@ let fn = (a: string, b: string) => a + b;
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "allowAny": true }
 
@@ -29,7 +29,7 @@ let fn = (a: string, b: []) => a + b;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "allowAny": true }
 
@@ -38,7 +38,7 @@ let fn = (a: string, b: any) => a + b;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "allowBoolean": true }
 
@@ -49,7 +49,7 @@ let fn = (a: string, b: unknown) => a + b;
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "allowBoolean": true }
 
@@ -58,7 +58,7 @@ let fn = (a: string, b: boolean) => a + b;
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 Options: { "allowNullish": true }
 
@@ -73,7 +73,7 @@ let fn = (a: string, b: never) => a + b;
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: { "allowNullish": true }
 
@@ -84,7 +84,7 @@ let fn = (a: string, b: null) => a + b;
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 9`] = `
 "Incorrect
 Options: { "allowNumberAndString": true }
 
@@ -95,7 +95,7 @@ let fn = (a: number, b: never) => a + b;
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 10`] = `
 "Correct
 Options: { "allowNumberAndString": true }
 
@@ -104,7 +104,7 @@ let fn = (a: number, b: number | string) => a + b;
 "
 `;
 
-exports[` 11`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 11`] = `
 "Incorrect
 Options: { "allowRegExp": true }
 
@@ -113,7 +113,7 @@ let fn = (a: number, b: RegExp) => a + b;
 "
 `;
 
-exports[` 12`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 12`] = `
 "Correct
 Options: { "allowRegExp": true }
 
@@ -121,7 +121,7 @@ let fn = (a: string, b: RegExp) => a + b;
 "
 `;
 
-exports[` 13`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 13`] = `
 "Incorrect
 Options: { "skipCompoundAssignments": false }
 
@@ -135,7 +135,7 @@ bar += 1;
 "
 `;
 
-exports[` 14`] = `
+exports[`Validating rule docs restrict-plus-operands.md code examples ESLint output snapshot 14`] = `
 "Correct
 Options: { "skipCompoundAssignments": false }
 

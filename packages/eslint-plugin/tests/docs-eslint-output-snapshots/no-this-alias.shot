@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-this-alias.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const self = this;
@@ -12,7 +12,7 @@ setTimeout(function () {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-this-alias.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 setTimeout(() => {
@@ -21,7 +21,7 @@ setTimeout(() => {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-this-alias.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "allowDestructuring": false }
 
@@ -40,7 +40,7 @@ class ComponentLike {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-this-alias.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "allowDestructuring": false }
 
@@ -56,7 +56,7 @@ class ComponentLike {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs no-this-alias.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "allowedNames": ["self"] }
 
@@ -69,7 +69,7 @@ class Example {
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs no-this-alias.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "allowedNames": ["self"] }
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-redeclare.md code examples ESLint output snapshot 1`] = `
 "Options: { "ignoreDeclarationMerge": true }
 
 interface A {
@@ -25,7 +25,7 @@ namespace Baz {}
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-redeclare.md code examples ESLint output snapshot 2`] = `
 "Options: { "ignoreDeclarationMerge": true }
 
 type something = string;

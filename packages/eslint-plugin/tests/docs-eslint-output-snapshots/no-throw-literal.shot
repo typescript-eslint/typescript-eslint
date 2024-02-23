@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-throw-literal.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 throw 'error';
@@ -41,7 +41,7 @@ throw foo.bar;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-throw-literal.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 throw new Error();

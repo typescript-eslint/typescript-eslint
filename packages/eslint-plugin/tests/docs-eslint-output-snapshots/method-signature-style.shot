@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs method-signature-style.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: "property"
 
@@ -23,7 +23,7 @@ interface T3 {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs method-signature-style.md code examples ESLint output snapshot 2`] = `
 "Correct
 Options: "property"
 
@@ -42,7 +42,7 @@ interface T3 {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs method-signature-style.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: "method"
 
@@ -57,7 +57,7 @@ type T2 = {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs method-signature-style.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: "method"
 

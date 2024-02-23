@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-import-type-side-effects.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 import { type A } from 'mod';
@@ -14,7 +14,7 @@ import { type A as AA, type B as BB } from 'mod';
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-import-type-side-effects.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 import type { A } from 'mod';

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs consistent-type-definitions.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: "interface"
 
@@ -9,7 +9,7 @@ type T = { x: number };
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs consistent-type-definitions.md code examples ESLint output snapshot 2`] = `
 "Correct
 Options: "interface"
 
@@ -22,7 +22,7 @@ interface T {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs consistent-type-definitions.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: "type"
 
@@ -33,7 +33,7 @@ interface T {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs consistent-type-definitions.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: "type"
 

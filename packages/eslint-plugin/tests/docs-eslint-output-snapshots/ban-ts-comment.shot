@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: { "ts-ignore": true }
 
@@ -21,7 +21,7 @@ if (false) {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 2`] = `
 "Correct
 Options: { "ts-ignore": true }
 
@@ -32,7 +32,7 @@ if (false) {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "ts-expect-error": "allow-with-description" }
 
@@ -49,7 +49,7 @@ if (false) {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "ts-expect-error": "allow-with-description" }
 
@@ -66,7 +66,7 @@ if (false) {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "ts-expect-error": { "descriptionFormat": "^: TS\\\\d+ because .+$" } }
 
@@ -76,7 +76,7 @@ const a = doSomething('hello');
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "ts-expect-error": { "descriptionFormat": "^: TS\\\\d+ because .+$" } }
 
@@ -85,7 +85,7 @@ const a = doSomething('hello');
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 Options: { "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }
 
@@ -97,7 +97,7 @@ if (false) {
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: { "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }
 

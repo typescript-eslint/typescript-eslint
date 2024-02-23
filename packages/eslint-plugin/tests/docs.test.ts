@@ -264,15 +264,6 @@ describe('Validating rule docs', () => {
       });
 
       describe('code examples ESLint output', () => {
-        if (
-          [
-            'prefer-readonly-parameter-types', // https://github.com/typescript-eslint/typescript-eslint/pull/8461
-            'prefer-optional-chain', // https://github.com/typescript-eslint/typescript-eslint/issues/8487
-          ].includes(ruleName)
-        ) {
-          return;
-        }
-
         // TypeScript can't infer type arguments unless we provide them explicitly
         linter.defineRule<
           keyof (typeof rule)['meta']['messages'],
@@ -336,7 +327,8 @@ describe('Validating rule docs', () => {
           if (
             token.type !== 'code' ||
             (tabsSearchContext.type !== 'under-tab-heading' &&
-              !token.lang?.includes('showPlaygroundButton'))
+              !token.lang?.includes('showPlaygroundButton')) ||
+            token.lang?.includes('skipValidation')
           ) {
             continue;
           }
@@ -369,27 +361,33 @@ describe('Validating rule docs', () => {
             /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
           );
 
-          const testCaption = [];
+          const testCaption: string[] = [];
           if (tabsSearchContext.type === 'under-tab-heading') {
             if (tabsSearchContext.sectionType === 'incorrect') {
               testCaption.push('Incorrect');
-              expect(messages).not.toHaveLength(0);
+              test('contains at least 1 lint error:\n' + token.text, () => {
+                expect(messages).not.toHaveLength(0);
+              });
             } else if (tabsSearchContext.sectionType === 'correct') {
               testCaption.push('Correct');
-              expect(messages).toHaveLength(0);
+              test("doesn't contain lint errors:\n" + token.text, () => {
+                expect(messages).toHaveLength(0);
+              });
             }
           }
           if (option) {
             testCaption.push(`Options: ${option}`);
           }
 
-          expect(
-            testCaption.filter(Boolean).join('\n') +
-              '\n\n' +
-              renderLintResults(token.text, messages),
-          ).toMatchSpecificSnapshot(
-            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
-          );
+          test('snapshot', () => {
+            expect(
+              testCaption.filter(Boolean).join('\n') +
+                '\n\n' +
+                renderLintResults(token.text, messages),
+            ).toMatchSpecificSnapshot(
+              path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+            );
+          });
         }
       });
     });

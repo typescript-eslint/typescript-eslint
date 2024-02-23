@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-namespace-keyword.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 module Example {}
@@ -8,7 +8,7 @@ module Example {}
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-namespace-keyword.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 namespace Example {}

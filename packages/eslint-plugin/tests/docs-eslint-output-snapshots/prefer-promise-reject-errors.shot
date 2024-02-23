@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-promise-reject-errors.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 Promise.reject('error');
@@ -21,7 +21,7 @@ new Promise((resolve, reject) => {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-promise-reject-errors.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 Promise.reject(new Error());

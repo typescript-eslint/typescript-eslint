@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-useless-empty-export.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 export const value = 'Hello, world!';
@@ -9,7 +9,7 @@ export {};
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-useless-empty-export.md code examples ESLint output snapshot 2`] = `
 "Incorrect
 
 import 'some-other-module';
@@ -18,14 +18,14 @@ export {};
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-useless-empty-export.md code examples ESLint output snapshot 3`] = `
 "Correct
 
 export const value = 'Hello, world!';
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-useless-empty-export.md code examples ESLint output snapshot 4`] = `
 "Correct
 
 import 'some-other-module';

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 class Foo {
@@ -40,7 +40,7 @@ class Foo {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 class Foo {
@@ -49,7 +49,7 @@ class Foo {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "allow": ["readonly"] }
 
@@ -85,7 +85,7 @@ class Foo {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "allow": ["readonly"] }
 
@@ -99,7 +99,7 @@ class Foo {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "allow": ["private"] }
 
@@ -135,7 +135,7 @@ class Foo {
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "allow": ["private"] }
 
@@ -149,7 +149,7 @@ class Foo {
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 Options: { "allow": ["protected"] }
 
@@ -185,7 +185,7 @@ class Foo {
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: { "allow": ["protected"] }
 
@@ -199,7 +199,7 @@ class Foo {
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 9`] = `
 "Incorrect
 Options: { "allow": ["public"] }
 
@@ -235,7 +235,7 @@ class Foo {
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 10`] = `
 "Correct
 Options: { "allow": ["public"] }
 
@@ -249,7 +249,7 @@ class Foo {
 "
 `;
 
-exports[` 11`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 11`] = `
 "Incorrect
 Options: { "allow": ["private readonly"] }
 
@@ -285,7 +285,7 @@ class Foo {
 "
 `;
 
-exports[` 12`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 12`] = `
 "Correct
 Options: { "allow": ["private readonly"] }
 
@@ -299,7 +299,7 @@ class Foo {
 "
 `;
 
-exports[` 13`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 13`] = `
 "Incorrect
 Options: { "allow": ["protected readonly"] }
 
@@ -335,7 +335,7 @@ class Foo {
 "
 `;
 
-exports[` 14`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 14`] = `
 "Correct
 Options: { "allow": ["protected readonly"] }
 
@@ -349,7 +349,7 @@ class Foo {
 "
 `;
 
-exports[` 15`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 15`] = `
 "Incorrect
 Options: { "allow": ["public readonly"] }
 
@@ -385,7 +385,7 @@ class Foo {
 "
 `;
 
-exports[` 16`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 16`] = `
 "Correct
 Options: { "allow": ["public readonly"] }
 
@@ -399,7 +399,7 @@ class Foo {
 "
 `;
 
-exports[` 17`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 17`] = `
 "Incorrect
 Options: { "prefer": "parameter-property" }
 
@@ -429,7 +429,7 @@ class Foo {
 "
 `;
 
-exports[` 18`] = `
+exports[`Validating rule docs parameter-properties.md code examples ESLint output snapshot 18`] = `
 "Correct
 Options: { "prefer": "parameter-property" }
 

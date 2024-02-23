@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const age: any = 'seventeen';
@@ -8,7 +8,7 @@ const age: any = 'seventeen';
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 2`] = `
 "Incorrect
 
 const ages: any[] = ['seventeen'];
@@ -16,7 +16,7 @@ const ages: any[] = ['seventeen'];
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 
 const ages: Array<any> = ['seventeen'];
@@ -24,7 +24,7 @@ const ages: Array<any> = ['seventeen'];
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 4`] = `
 "Incorrect
 
 function greet(): any {}
@@ -32,7 +32,7 @@ function greet(): any {}
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 
 function greet(): any[] {}
@@ -40,7 +40,7 @@ function greet(): any[] {}
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 6`] = `
 "Incorrect
 
 function greet(): Array<any> {}
@@ -48,7 +48,7 @@ function greet(): Array<any> {}
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 
 function greet(): Array<Array<any>> {}
@@ -56,7 +56,7 @@ function greet(): Array<Array<any>> {}
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 8`] = `
 "Incorrect
 
 function greet(param: Array<any>): string {}
@@ -64,7 +64,7 @@ function greet(param: Array<any>): string {}
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 9`] = `
 "Incorrect
 
 function greet(param: Array<any>): Array<any> {}
@@ -73,70 +73,70 @@ function greet(param: Array<any>): Array<any> {}
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 10`] = `
 "Correct
 
 const age: number = 17;
 "
 `;
 
-exports[` 11`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 11`] = `
 "Correct
 
 const ages: number[] = [17];
 "
 `;
 
-exports[` 12`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 12`] = `
 "Correct
 
 const ages: Array<number> = [17];
 "
 `;
 
-exports[` 13`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 13`] = `
 "Correct
 
 function greet(): string {}
 "
 `;
 
-exports[` 14`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 14`] = `
 "Correct
 
 function greet(): string[] {}
 "
 `;
 
-exports[` 15`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 15`] = `
 "Correct
 
 function greet(): Array<string> {}
 "
 `;
 
-exports[` 16`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 16`] = `
 "Correct
 
 function greet(): Array<Array<string>> {}
 "
 `;
 
-exports[` 17`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 17`] = `
 "Correct
 
 function greet(param: Array<string>): string {}
 "
 `;
 
-exports[` 18`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 18`] = `
 "Correct
 
 function greet(param: Array<string>): Array<string> {}
 "
 `;
 
-exports[` 19`] = `
+exports[`Validating rule docs no-explicit-any.md code examples ESLint output snapshot 19`] = `
 "Options: { "ignoreRestArgs": false }
 
 function foo1(...args: any[]): void {}

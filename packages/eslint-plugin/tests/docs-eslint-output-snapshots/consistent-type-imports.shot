@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs consistent-type-imports.md code examples ESLint output snapshot 1`] = `
 "Options: { "prefer": "type-imports" }
 
 import type { Foo } from 'Foo';
@@ -10,7 +10,7 @@ const x: Bar = 1;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs consistent-type-imports.md code examples ESLint output snapshot 2`] = `
 "Options: { "prefer": "type-imports" }
 
 import { Foo } from 'Foo';
@@ -22,7 +22,7 @@ const x: Bar = 1;
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs consistent-type-imports.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 
 import { Foo } from 'Foo';
@@ -34,7 +34,7 @@ const x: Bar = 1;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs consistent-type-imports.md code examples ESLint output snapshot 4`] = `
 "Options: { "fixStyle": "separate-type-imports" }
 
 import type { Foo } from 'Foo';
@@ -44,7 +44,7 @@ const x: Bar = 1;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs consistent-type-imports.md code examples ESLint output snapshot 5`] = `
 "Options: { "fixStyle": "inline-type-imports" }
 
 import { type Foo } from 'Foo';
@@ -54,7 +54,7 @@ const x: Bar = 1;
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs consistent-type-imports.md code examples ESLint output snapshot 6`] = `
 "Options: { "disallowTypeAnnotations": true }
 
 type T = import('Foo').Foo;

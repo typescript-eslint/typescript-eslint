@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-redundant-type-constituents.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 type UnionAny = any | 'foo';
@@ -33,7 +33,7 @@ type IntersectionStringLiteral = string & 'foo';
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-redundant-type-constituents.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 type UnionAny = any;

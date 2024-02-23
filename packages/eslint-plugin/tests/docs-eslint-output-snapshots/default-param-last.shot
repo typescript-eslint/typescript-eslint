@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs default-param-last.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 function f(a = 0, b: number) {}
@@ -26,7 +26,7 @@ class Foo {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs default-param-last.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 function f(a = 0) {}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-require-imports.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const lib1 = require('lib1');
@@ -12,7 +12,7 @@ import lib3 = require('lib3');
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-require-imports.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 import * as lib1 from 'lib1';
@@ -21,7 +21,7 @@ import * as lib3 from 'lib3';
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-require-imports.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "allow": ["/package.json$"] }
 
@@ -30,7 +30,7 @@ console.log(require('../data.json').version);
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-require-imports.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "allow": ["/package.json$"] }
 

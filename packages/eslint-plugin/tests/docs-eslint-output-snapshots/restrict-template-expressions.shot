@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 const arg1 = [1, 2];
@@ -13,7 +13,7 @@ const msg2 = \`arg2 = \${arg2 || null}\`;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 const arg = 'foo';
@@ -25,7 +25,7 @@ const msg3 = \`stringWithKindProp = \${stringWithKindProp}\`;
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 3`] = `
 "Options: { "allowNumber": true }
 
 const arg = 123;
@@ -34,7 +34,7 @@ const msg2 = \`arg = \${arg || 'zero'}\`;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 4`] = `
 "Options: { "allowBoolean": true }
 
 const arg = true;
@@ -43,7 +43,7 @@ const msg2 = \`arg = \${arg || 'not truthy'}\`;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 5`] = `
 "Options: { "allowAny": true }
 
 const user = JSON.parse('{ "name": "foo" }');
@@ -52,7 +52,7 @@ const msg2 = \`arg = \${user.name || 'the user with no name'}\`;
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 6`] = `
 "Options: { "allowNullish": true }
 
 const arg = condition ? 'ok' : null;
@@ -60,7 +60,7 @@ const msg1 = \`arg = \${arg}\`;
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 7`] = `
 "Options: { "allowRegExp": true }
 
 const arg = new RegExp('foo');
@@ -68,7 +68,7 @@ const msg1 = \`arg = \${arg}\`;
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 8`] = `
 "Options: { "allowRegExp": true }
 
 const arg = /foo/;
@@ -76,7 +76,7 @@ const msg1 = \`arg = \${arg}\`;
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs restrict-template-expressions.md code examples ESLint output snapshot 9`] = `
 "Options: { "allowNever": true }
 
 const arg = 'something';

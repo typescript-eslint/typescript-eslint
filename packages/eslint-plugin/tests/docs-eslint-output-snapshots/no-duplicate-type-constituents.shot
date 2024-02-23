@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-duplicate-type-constituents.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 type T1 = 'A' | 'A';
@@ -22,7 +22,7 @@ type T5 = StringA | StringB;
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-duplicate-type-constituents.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 type T1 = 'A' | 'B';

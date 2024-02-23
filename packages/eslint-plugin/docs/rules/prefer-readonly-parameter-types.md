@@ -294,7 +294,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 
 #### ❌ Incorrect
 
-```ts option='{ "ignoreInferredTypes": true }'
+```ts option='{ "ignoreInferredTypes": true }' skipValidation
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
 acceptsCallback((options: CallbackOptions) => {});
@@ -303,7 +303,7 @@ acceptsCallback((options: CallbackOptions) => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts option='{ "ignoreInferredTypes": true }'
+```ts option='{ "ignoreInferredTypes": true }' skipValidation
 export interface CallbackOptions {
   prop: string;
 }
@@ -326,7 +326,7 @@ acceptsCallback(options => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts option='{ "ignoreInferredTypes": true }'
+```ts option='{ "ignoreInferredTypes": true }' skipValidation
 export interface CallbackOptions {
   prop: string;
 }

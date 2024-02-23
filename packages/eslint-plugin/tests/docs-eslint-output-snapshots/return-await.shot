@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs return-await.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: "in-try-catch"
 
@@ -52,7 +52,7 @@ async function invalidInTryCatch6() {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs return-await.md code examples ESLint output snapshot 2`] = `
 "Correct
 Options: "in-try-catch"
 
@@ -100,7 +100,7 @@ async function validInTryCatch6() {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs return-await.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: "always"
 
@@ -123,7 +123,7 @@ async function invalidAlways3() {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs return-await.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: "always"
 
@@ -143,7 +143,7 @@ async function validAlways3() {
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs return-await.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: "never"
 
@@ -166,7 +166,7 @@ async function invalidNever3() {
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs return-await.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: "never"
 

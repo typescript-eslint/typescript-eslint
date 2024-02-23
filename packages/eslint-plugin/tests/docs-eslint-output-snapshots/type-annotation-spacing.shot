@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 let foo:string = "bar";
@@ -45,7 +45,7 @@ type Foo = ()=> {};
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 let foo: string = "bar";
@@ -60,7 +60,7 @@ type Foo = () => {};
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: { "before": false, "after": true }
 
@@ -106,7 +106,7 @@ type Foo = () => {};
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: { "before": false, "after": true }
 
@@ -122,7 +122,7 @@ type Foo = ()=> {};
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 5`] = `
 "Incorrect
 Options: { "before": true, "after": true }
 
@@ -168,7 +168,7 @@ type Foo = ()=> {};
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: { "before": true, "after": true }
 
@@ -184,7 +184,7 @@ type Foo = () => {};
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 7`] = `
 "Incorrect
 Options: {"before":false,"after":false,"overrides":{"colon":{"before":true,"after":true}}}
 
@@ -230,7 +230,7 @@ type Foo = () => {};
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 8`] = `
 "Correct
 Options: {"before":false,"after":false,"overrides":{"colon":{"before":true,"after":true}}}
 
@@ -250,7 +250,7 @@ type Foo = ()=>{};
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 9`] = `
 "Incorrect
 Options: {"before":false,"after":false,"overrides":{"arrow":{"before":true,"after":true}}}
 
@@ -294,7 +294,7 @@ type Foo = ()=> {};
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs type-annotation-spacing.md code examples ESLint output snapshot 10`] = `
 "Correct
 Options: {"before":false,"after":false,"overrides":{"arrow":{"before":true,"after":true}}}
 

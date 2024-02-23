@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs no-mixed-enums.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 enum Status {
@@ -12,7 +12,7 @@ enum Status {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs no-mixed-enums.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 enum Status {
@@ -23,7 +23,7 @@ enum Status {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs no-mixed-enums.md code examples ESLint output snapshot 3`] = `
 "Correct
 
 enum Status {
@@ -34,7 +34,7 @@ enum Status {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs no-mixed-enums.md code examples ESLint output snapshot 4`] = `
 "Correct
 
 enum Status {

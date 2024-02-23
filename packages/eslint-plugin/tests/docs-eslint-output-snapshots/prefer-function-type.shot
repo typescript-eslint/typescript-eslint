@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 interface Example {
@@ -10,7 +10,7 @@ interface Example {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 2`] = `
 "Incorrect
 
 function foo(example: { (): number }): number {
@@ -20,7 +20,7 @@ function foo(example: { (): number }): number {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 
 interface ReturnsSelf {
@@ -31,14 +31,14 @@ interface ReturnsSelf {
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 4`] = `
 "Correct
 
 type Example = () => string;
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 5`] = `
 "Correct
 
 function foo(example: () => number): number {
@@ -47,7 +47,7 @@ function foo(example: () => number): number {
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 6`] = `
 "Correct
 
 // returns the function itself, not the \`this\` argument.
@@ -55,7 +55,7 @@ type ReturnsSelf = (arg: string) => ReturnsSelf;
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 7`] = `
 "Correct
 
 function foo(bar: { (): string; baz: number }): string {
@@ -64,7 +64,7 @@ function foo(bar: { (): string; baz: number }): string {
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 8`] = `
 "Correct
 
 interface Foo {
@@ -76,7 +76,7 @@ interface Bar extends Foo {
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs prefer-function-type.md code examples ESLint output snapshot 9`] = `
 "Correct
 
 // multiple call signatures (overloads) is allowed:

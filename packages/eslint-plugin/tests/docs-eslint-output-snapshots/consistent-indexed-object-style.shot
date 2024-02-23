@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs consistent-indexed-object-style.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 Options: "record"
 
@@ -20,7 +20,7 @@ type Foo = {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs consistent-indexed-object-style.md code examples ESLint output snapshot 2`] = `
 "Correct
 Options: "record"
 
@@ -28,7 +28,7 @@ type Foo = Record<string, unknown>;
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs consistent-indexed-object-style.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: "index-signature"
 
@@ -37,7 +37,7 @@ type Foo = Record<string, unknown>;
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs consistent-indexed-object-style.md code examples ESLint output snapshot 4`] = `
 "Correct
 Options: "index-signature"
 

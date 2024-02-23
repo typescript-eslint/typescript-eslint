@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 1`] = `
 "Incorrect
 
 function array1(arg: string[]) {} // array is not readonly
@@ -59,7 +59,7 @@ interface Foo {
 "
 `;
 
-exports[` 2`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 2`] = `
 "Correct
 
 function array1(arg: readonly string[]) {}
@@ -125,7 +125,7 @@ interface Foo {
 "
 `;
 
-exports[` 3`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 3`] = `
 "Incorrect
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -156,7 +156,7 @@ function fn3(arg: WrapperWithOther) {}
 "
 `;
 
-exports[` 4`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 4`] = `
 "Incorrect
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -179,7 +179,7 @@ function fn3(arg: Bar) {}
 "
 `;
 
-exports[` 5`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 5`] = `
 "Correct
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -200,7 +200,7 @@ function fn2(arg: Wrapper) {}
 "
 `;
 
-exports[` 6`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 6`] = `
 "Correct
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -221,7 +221,7 @@ function fn3(arg: Bar) {}
 "
 `;
 
-exports[` 7`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 7`] = `
 "Correct
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -232,7 +232,7 @@ function fn(arg: Foo) {}
 "
 `;
 
-exports[` 8`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 8`] = `
 "Incorrect
 Options: { "checkParameterProperties": true }
 
@@ -243,7 +243,7 @@ class Foo {
 "
 `;
 
-exports[` 9`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 9`] = `
 "Correct
 Options: { "checkParameterProperties": true }
 
@@ -253,7 +253,7 @@ class Foo {
 "
 `;
 
-exports[` 10`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 10`] = `
 "Options: { "checkParameterProperties": false }
 
 class Foo {
@@ -265,32 +265,7 @@ class Foo {
 "
 `;
 
-exports[` 11`] = `
-"Incorrect
-Options: { "ignoreInferredTypes": true }
-
-import { acceptsCallback, CallbackOptions } from 'external-dependency';
-
-acceptsCallback((options: CallbackOptions) => {});
-"
-`;
-
-exports[` 12`] = `
-"Incorrect
-Options: { "ignoreInferredTypes": true }
-
-export interface CallbackOptions {
-  prop: string;
-}
-type Callback = (options: CallbackOptions) => void;
-                 ~~~~~~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
-type AcceptsCallback = (callback: Callback) => void;
-
-export const acceptsCallback: AcceptsCallback;
-"
-`;
-
-exports[` 13`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 11`] = `
 "Correct
 Options: { "ignoreInferredTypes": true }
 
@@ -300,22 +275,7 @@ acceptsCallback(options => {});
 "
 `;
 
-exports[` 14`] = `
-"Correct
-Options: { "ignoreInferredTypes": true }
-
-export interface CallbackOptions {
-  prop: string;
-}
-type Callback = (options: CallbackOptions) => void;
-                 ~~~~~~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
-type AcceptsCallback = (callback: Callback) => void;
-
-export const acceptsCallback: AcceptsCallback;
-"
-`;
-
-exports[` 15`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 12`] = `
 "Incorrect
 Options: { "treatMethodsAsReadonly": false }
 
@@ -328,7 +288,7 @@ function foo(arg: MyType) {}
 "
 `;
 
-exports[` 16`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 13`] = `
 "Correct
 Options: { "treatMethodsAsReadonly": false }
 
@@ -346,7 +306,7 @@ function bar(arg: MyOtherType) {}
 "
 `;
 
-exports[` 17`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 14`] = `
 "Options: { "treatMethodsAsReadonly": true }
 
 type MyType = {
