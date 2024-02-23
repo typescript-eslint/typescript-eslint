@@ -907,6 +907,7 @@ describe('hand-crafted cases', () => {
         declare const x: 0n | { a: string };
         !x || x.a;
       `,
+      "typeof globalThis !== 'undefined' && globalThis.Array();",
     ],
     invalid: [
       // two  errors
@@ -1909,6 +1910,42 @@ describe('hand-crafted cases', () => {
                 output: `
           declare const foo: { bar: number } | null | undefined;
           foo?.bar;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          function foo(globalThis?: { Array: Function }) {
+            typeof globalThis !== 'undefined' && globalThis.Array();
+          }
+        `,
+        output: `
+          function foo(globalThis?: { Array: Function }) {
+            globalThis?.Array();
+          }
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+          },
+        ],
+      },
+      {
+        code: `
+          typeof globalThis !== 'undefined' && globalThis.Array && globalThis.Array();
+        `,
+        output: null,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          typeof globalThis !== 'undefined' && globalThis.Array?.();
         `,
               },
             ],

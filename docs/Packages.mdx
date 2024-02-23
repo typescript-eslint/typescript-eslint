@@ -6,14 +6,24 @@ title: Packages
 The `@typescript-eslint/*` packages are all stored in [our GitHub monorepo](https://github.com/typescript-eslint/typescript-eslint).
 The monorepo is built and released with [Nx](https://nx.dev).
 
+## `typescript-eslint`
+
+As of v7 and ESLint 9, most users should be using the **[`typescript-eslint`](./packages/TypeScript_ESLint.mdx)** package.
+It exports configurations for ESLint and brings along the corresponding versions of other packages as dependencies.
+
+:::tip
+See [Getting Started](./getting-started/Quickstart.mdx) for guidance on setting up typescript-eslint on a project.
+:::
+
+## Other Packages
+
 Each page in this section corresponds to a package we intentionally expose to users.
-They are:
+Alongside [`typescript-eslint`](./packages/TypeScript_ESLint.mdx), they are:
 
 - [`@typescript-eslint/eslint-plugin`](./packages/ESLint_Plugin.mdx): An ESLint plugin which provides lint rules for TypeScript codebases.
 - [`@typescript-eslint/eslint-plugin-tslint`](./packages/ESLint_Plugin_TSLint.mdx): An ESLint plugin that allows running TSLint rules within ESLint to help you migrate from TSLint to ESLint.
 - [`@typescript-eslint/parser`](./packages/Parser.mdx): An ESLint parser which allows for ESLint to lint TypeScript source code.
 - [`@typescript-eslint/rule-tester`](./packages/Rule_Tester.mdx): A utility for testing ESLint rules.
 - [`@typescript-eslint/scope-manager`](./packages/Scope_Manager.mdx): A fork of [`eslint-scope`](https://github.com/eslint/eslint-scope), enhanced to support TypeScript functionality.
-- [`@typescript-eslint/typescript-eslint`](./packages/TypeScript_ESLint.mdx): Tooling which enables you to use TypeScript with ESLint.
 - [`@typescript-eslint/typescript-estree`](./packages/TypeScript_ESTree.mdx): The underlying code used by [`@typescript-eslint/parser`](./packages/Parser.mdx) that converts TypeScript source code into an [ESTree](https://github.com/estree/estree)-compatible form.
 - [`@typescript-eslint/utils`](./packages/Utils.mdx): Utilities for working with TypeScript + ESLint together.
