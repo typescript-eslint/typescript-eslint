@@ -327,8 +327,7 @@ describe('Validating rule docs', () => {
           if (
             token.type !== 'code' ||
             (tabsSearchContext.type !== 'under-tab-heading' &&
-              !token.lang?.includes('showPlaygroundButton')) ||
-            token.lang?.includes('skipValidation')
+              !token.lang?.includes('showPlaygroundButton'))
           ) {
             continue;
           }
@@ -365,14 +364,34 @@ describe('Validating rule docs', () => {
           if (tabsSearchContext.type === 'under-tab-heading') {
             if (tabsSearchContext.sectionType === 'incorrect') {
               testCaption.push('Incorrect');
-              test('contains at least 1 lint error:\n' + token.text, () => {
-                expect(messages).not.toHaveLength(0);
-              });
+              if (lang.includes('skipValidation')) {
+                test(
+                  "doesn't contain lint errors (with skipValidation):\n" +
+                    token.text,
+                  () => {
+                    expect(messages).toHaveLength(0);
+                  },
+                );
+              } else {
+                test('contains at least 1 lint error:\n' + token.text, () => {
+                  expect(messages).not.toHaveLength(0);
+                });
+              }
             } else if (tabsSearchContext.sectionType === 'correct') {
               testCaption.push('Correct');
-              test("doesn't contain lint errors:\n" + token.text, () => {
-                expect(messages).toHaveLength(0);
-              });
+              if (lang.includes('skipValidation')) {
+                test(
+                  'contains at least 1 lint error (with skipValidation):\n' +
+                    token.text,
+                  () => {
+                    expect(messages).not.toHaveLength(0);
+                  },
+                );
+              } else {
+                test("doesn't contain lint errors:\n" + token.text, () => {
+                  expect(messages).toHaveLength(0);
+                });
+              }
             }
           }
           if (option) {

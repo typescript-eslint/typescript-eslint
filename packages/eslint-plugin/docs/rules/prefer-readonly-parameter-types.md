@@ -303,7 +303,7 @@ acceptsCallback((options: CallbackOptions) => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts option='{ "ignoreInferredTypes": true }' skipValidation
+```ts option='{ "ignoreInferredTypes": true }'
 export interface CallbackOptions {
   prop: string;
 }

@@ -154,6 +154,16 @@ thing && thing.toString();
 `;
 
 exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 12`] = `
+"Incorrect
+Options: { "checkBoolean": true }
+
+declare const thing: boolean;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 13`] = `
 "Correct
 Options: { "checkBoolean": false }
 
@@ -163,7 +173,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 14`] = `
 "Incorrect
 Options: { "checkBigInt": true }
 
@@ -174,7 +184,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 15`] = `
 "Correct
 Options: { "checkBigInt": false }
 
@@ -184,7 +194,16 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 16`] = `
+"Incorrect
+Options: { "requireNullish": true }
+
+declare const thing1: string | null;
+thing1 && thing1.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 17`] = `
 "Correct
 Options: { "requireNullish": true }
 

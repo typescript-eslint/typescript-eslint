@@ -266,6 +266,31 @@ class Foo {
 `;
 
 exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 11`] = `
+"Incorrect
+Options: { "ignoreInferredTypes": true }
+
+import { acceptsCallback, CallbackOptions } from 'external-dependency';
+
+acceptsCallback((options: CallbackOptions) => {});
+"
+`;
+
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 12`] = `
+"Incorrect
+Options: { "ignoreInferredTypes": true }
+
+export interface CallbackOptions {
+  prop: string;
+}
+type Callback = (options: CallbackOptions) => void;
+                 ~~~~~~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
+type AcceptsCallback = (callback: Callback) => void;
+
+export const acceptsCallback: AcceptsCallback;
+"
+`;
+
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 13`] = `
 "Correct
 Options: { "ignoreInferredTypes": true }
 
@@ -275,7 +300,22 @@ acceptsCallback(options => {});
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 14`] = `
+"Correct
+Options: { "ignoreInferredTypes": true }
+
+export interface CallbackOptions {
+  prop: string;
+}
+type Callback = (options: CallbackOptions) => void;
+                 ~~~~~~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
+type AcceptsCallback = (callback: Callback) => void;
+
+export const acceptsCallback: AcceptsCallback;
+"
+`;
+
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 15`] = `
 "Incorrect
 Options: { "treatMethodsAsReadonly": false }
 
@@ -288,7 +328,7 @@ function foo(arg: MyType) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 16`] = `
 "Correct
 Options: { "treatMethodsAsReadonly": false }
 
@@ -306,7 +346,7 @@ function bar(arg: MyOtherType) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 17`] = `
 "Options: { "treatMethodsAsReadonly": true }
 
 type MyType = {
