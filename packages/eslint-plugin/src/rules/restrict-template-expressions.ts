@@ -12,35 +12,53 @@ import {
   isTypeNeverType,
 } from '../util';
 
-const optionsObj = {
-  Any: isTypeAnyType,
-  Array: (type, checker, rec): boolean => {
-    if (!checker.isArrayType(type)) {
-      return false;
-    }
-    const numberIndexType = type.getNumberIndexType();
-    return !numberIndexType || rec(numberIndexType);
-  },
-  Boolean: (type): boolean => isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
-  Nullish: (type): boolean =>
-    isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined),
-  Number: (type): boolean =>
-    isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike),
-  RegExp: (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
-  Never: isTypeNeverType,
-} satisfies Record<
-  string,
-  (
-    type: ts.Type,
-    checker: ts.TypeChecker,
-    rec: (type: ts.Type) => boolean,
-  ) => boolean
->;
-const optionsArr = Object.entries(optionsObj).map(([_type, fn]) => {
-  const type = _type as keyof typeof optionsObj;
-  return { type, option: `allow${type}` as const, fn };
-});
-type Options = [{ [Type in (typeof optionsArr)[number]['option']]?: boolean }];
+type OptionTester = (
+  type: ts.Type,
+  checker: ts.TypeChecker,
+  recursivelyCheckType: (type: ts.Type) => boolean,
+) => boolean;
+
+const optionTesters = (
+  [
+    ['Any', isTypeAnyType],
+    [
+      'Array',
+      (type, checker, recursivelyCheckType): boolean => {
+        const maybeNumberIndexType =
+          checker.isArrayType(type) && type.getNumberIndexType();
+        return (
+          !maybeNumberIndexType || recursivelyCheckType(maybeNumberIndexType)
+        );
+      },
+    ],
+    [
+      'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+      (type): boolean => isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
+    ],
+    [
+      'Nullish',
+      (type): boolean =>
+        isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined),
+    ],
+    [
+      'Number',
+      (type): boolean =>
+        isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike),
+    ],
+    [
+      'RegExp',
+      (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
+    ],
+    ['Never', isTypeNeverType],
+  ] as const satisfies [string, OptionTester][]
+).map(([type, tester]) => ({
+  type,
+  option: `allow${type}` as const,
+  tester,
+}));
+type Options = [
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean },
+];
 
 type MessageId = 'invalidType';
 
@@ -62,7 +80,7 @@ export default createRule<Options, MessageId>({
         type: 'object',
         additionalProperties: false,
         properties: Object.fromEntries(
-          optionsArr.map(({ option, type }) => [
+          optionTesters.map(({ option, type }) => [
             option,
             {
               description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
@@ -85,6 +103,9 @@ export default createRule<Options, MessageId>({
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const enabledOptionTesters = optionTesters.filter(
+      ({ option }) => options[option],
+    );
 
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
@@ -99,7 +120,7 @@ export default createRule<Options, MessageId>({
             expression,
           );
 
-          if (!isInnerUnionOrIntersectionConformingTo(expressionType)) {
+          if (!recursivelyCheckType(expressionType)) {
             context.report({
               node: expression,
               messageId: 'invalidType',
@@ -110,25 +131,21 @@ export default createRule<Options, MessageId>({
       },
     };
 
-    function isInnerUnionOrIntersectionConformingTo(type: ts.Type): boolean {
-      return rec(type);
-
-      function rec(innerType: ts.Type): boolean {
-        if (innerType.isUnion()) {
-          return innerType.types.every(rec);
-        }
-
-        if (innerType.isIntersection()) {
-          return innerType.types.some(rec);
-        }
-
-        return (
-          isTypeFlagSet(innerType, ts.TypeFlags.StringLike) ||
-          optionsArr.some(
-            ({ option, fn }) => options[option] && fn(innerType, checker, rec),
-          )
-        );
+    function recursivelyCheckType(innerType: ts.Type): boolean {
+      if (innerType.isUnion()) {
+        return innerType.types.every(recursivelyCheckType);
       }
+
+      if (innerType.isIntersection()) {
+        return innerType.types.some(recursivelyCheckType);
+      }
+
+      return (
+        isTypeFlagSet(innerType, ts.TypeFlags.StringLike) ||
+        enabledOptionTesters.some(({ tester }) =>
+          tester(innerType, checker, recursivelyCheckType),
+        )
+      );
     }
   },
 });
