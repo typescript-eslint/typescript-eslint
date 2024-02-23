@@ -1,3 +1,4 @@
+import debug from 'debug';
 import { minimatch } from 'minimatch';
 import path from 'path';
 
@@ -6,12 +7,21 @@ import type { ProjectServiceSettings } from './create-program/createProjectServi
 import type { ASTAndDefiniteProgram } from './create-program/shared';
 import type { MutableParseSettings } from './parseSettings';
 
+const log = debug(
+  'typescript-eslint:typescript-estree:useProgramFromProjectService',
+);
+
 export function useProgramFromProjectService(
   { allowDefaultProjectForFiles, service }: ProjectServiceSettings,
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
   const filePathAbsolute = absolutify(parseSettings.filePath);
+  log(
+    'Opening project service file for: %s at absolute path %s',
+    parseSettings.filePath,
+    filePathAbsolute,
+  );
 
   const opened = service.openClientFile(
     filePathAbsolute,
@@ -20,10 +30,21 @@ export function useProgramFromProjectService(
     parseSettings.tsconfigRootDir,
   );
 
+  log('Opened project service file: %o', opened);
+
   if (hasFullTypeInformation) {
+    log(
+      'Project service type information enabled; checking for file path match on: %o',
+      allowDefaultProjectForFiles,
+    );
     const isDefaultProjectAllowedPath = filePathMatchedBy(
       parseSettings.filePath,
       allowDefaultProjectForFiles,
+    );
+
+    log(
+      'Default project allowed path: %s, based on config file: %s',
+      opened.configFileName,
     );
 
     if (opened.configFileName) {
@@ -38,6 +59,7 @@ export function useProgramFromProjectService(
       );
     }
   }
+  log('Retrieving script info and then program for: %s', filePathAbsolute);
 
   const scriptInfo = service.getScriptInfo(filePathAbsolute);
   const program = service
@@ -46,8 +68,11 @@ export function useProgramFromProjectService(
     .getProgram();
 
   if (!program) {
+    log('Could not find project service program for: %s', filePathAbsolute);
     return undefined;
   }
+
+  log('Found project service program for: %s', filePathAbsolute);
 
   return createProjectProgram(parseSettings, [program]);
 
