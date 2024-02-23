@@ -150,8 +150,8 @@ Examples of code for this rule with:
 {
   "allow": [
     "$",
-    { "source": "file", "name": "Foo" },
-    { "source": "lib", "name": "HTMLElement" },
+    { "from": "file", "name": "Foo" },
+    { "from": "lib", "name": "HTMLElement" },
     { "from": "package", "name": "Bar", "package": "bar-lib" }
   ]
 }
@@ -161,7 +161,7 @@ Examples of code for this rule with:
 
 #### ❌ Incorrect
 
-```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface ThisIsMutable {
   prop: string;
 }
@@ -185,7 +185,7 @@ function fn2(arg: Wrapper) {}
 function fn3(arg: WrapperWithOther) {}
 ```
 
-```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from 'some-lib';
 import { Bar } from 'incorrect-lib';
 
@@ -205,7 +205,7 @@ function fn3(arg: Bar) {}
 
 #### ✅ Correct
 
-```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface Foo {
   prop: string;
 }
@@ -222,7 +222,7 @@ function fn1(arg: Foo) {}
 function fn2(arg: Wrapper) {}
 ```
 
-```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Bar } from 'bar-lib';
 
 interface Foo {
@@ -239,7 +239,7 @@ function fn2(arg: HTMLElement) {}
 function fn3(arg: Bar) {}
 ```
 
-```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from './foo';
 
 // Works because Foo is still a local type - it has to be in the same package
