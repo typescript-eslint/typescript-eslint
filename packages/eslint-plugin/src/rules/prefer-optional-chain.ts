@@ -179,6 +179,7 @@ export default createRule<
         const { operands, newlySeenLogicals } = gatherLogicalOperands(
           node,
           parserServices,
+          context.sourceCode,
           options,
         );
 

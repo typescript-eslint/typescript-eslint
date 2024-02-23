@@ -109,7 +109,8 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSAbstractMethodDefinitionNonComputedName
         | TSESTree.TSAbstractPropertyDefinitionNonComputedName
         | TSESTree.TSMethodSignatureNonComputedName
-        | TSESTree.TSPropertySignatureNonComputedName,
+        | TSESTree.TSPropertySignatureNonComputedName
+        | TSESTree.AccessorPropertyNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
       const key = node.key;
@@ -126,7 +127,9 @@ export default createRule<Options, MessageIds>({
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
-        | TSESTree.TSParameterProperty,
+        | TSESTree.TSParameterProperty
+        | TSESTree.AccessorProperty
+        | TSESTree.TSAbstractAccessorProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -147,7 +150,8 @@ export default createRule<Options, MessageIds>({
       }
       if (
         node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
-        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+        node.type === AST_NODE_TYPES.TSAbstractAccessorProperty
       ) {
         modifiers.add(Modifiers.abstract);
       }
@@ -519,26 +523,46 @@ export default createRule<Options, MessageIds>({
       // #region accessor
 
       'Property[computed = false]:matches([kind = "get"], [kind = "set"])': {
-        validator: validators.accessor,
+        validator: validators.classicAccessor,
         handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
           const modifiers = new Set<Modifiers>([Modifiers.public]);
           handleMember(validator, node, modifiers);
         },
       },
 
-      'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])':
-        {
-          validator: validators.accessor,
-          handler: (
-            node: TSESTree.MethodDefinitionNonComputedName,
-            validator,
-          ): void => {
-            const modifiers = getMemberModifiers(node);
-            handleMember(validator, node, modifiers);
-          },
+      [[
+        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
+        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
+      ].join(', ')]: {
+        validator: validators.classicAccessor,
+        handler: (
+          node: TSESTree.MethodDefinitionNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
         },
+      },
 
       // #endregion accessor
+
+      // #region autoAccessor
+
+      [[
+        AST_NODE_TYPES.AccessorProperty,
+        AST_NODE_TYPES.TSAbstractAccessorProperty,
+      ].join(', ')]: {
+        validator: validators.autoAccessor,
+        handler: (
+          node: TSESTree.AccessorPropertyNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
+        },
+      },
+
+      // #endregion autoAccessor
 
       // #region enumMember
 
