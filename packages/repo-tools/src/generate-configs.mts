@@ -29,7 +29,7 @@ const chalk = {
 const AUTO_GENERATED_COMMENT_LINES = [
   '// THIS CODE WAS AUTOMATICALLY GENERATED',
   '// DO NOT EDIT THIS CODE BY HAND',
-  '// SEE https://typescript-eslint.io/linting/configs',
+  '// SEE https://typescript-eslint.io/users/configs',
   '//',
   '// For developers working in the typescript-eslint monorepo:',
   '// You can regenerate it using `yarn generate:configs`',
@@ -251,7 +251,7 @@ async function main(): Promise<void> {
   }
 
   async function writeExtendedConfig({
-    filters: ruleFilter,
+    filters,
     name,
     ruleEntries,
   }: ExtendedConfigSettings): Promise<void> {
@@ -259,7 +259,7 @@ async function main(): Promise<void> {
       () => ({
         extends: [...CLASSIC_EXTENDS],
         rules: ruleEntries.reduce(
-          (config, entry) => reducer(config, entry, ruleFilter),
+          (config, entry) => reducer(config, entry, filters),
           {},
         ),
       }),
@@ -298,6 +298,14 @@ async function main(): Promise<void> {
 
   await writeExtendedConfig({
     filters: {
+      typeChecked: 'include-only',
+    },
+    name: 'recommended-type-checked-only',
+    ruleEntries: filterRuleEntriesTo('recommended'),
+  });
+
+  await writeExtendedConfig({
+    filters: {
       typeChecked: 'exclude',
     },
     name: 'strict',
@@ -311,6 +319,14 @@ async function main(): Promise<void> {
 
   await writeExtendedConfig({
     filters: {
+      typeChecked: 'include-only',
+    },
+    name: 'strict-type-checked-only',
+    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
+  });
+
+  await writeExtendedConfig({
+    filters: {
       typeChecked: 'exclude',
     },
     name: 'stylistic',
@@ -319,6 +335,14 @@ async function main(): Promise<void> {
 
   await writeExtendedConfig({
     name: 'stylistic-type-checked',
+    ruleEntries: filterRuleEntriesTo('stylistic'),
+  });
+
+  await writeExtendedConfig({
+    filters: {
+      typeChecked: 'include-only',
+    },
+    name: 'stylistic-type-checked-only',
     ruleEntries: filterRuleEntriesTo('stylistic'),
   });
 
