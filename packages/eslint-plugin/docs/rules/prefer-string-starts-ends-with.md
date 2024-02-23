@@ -63,7 +63,7 @@ This can be preferable in projects that don't deal with special character encodi
 
 The following code is considered incorrect by default, but is allowed with `allowSingleElementEquality: 'always'`:
 
-```ts
+```ts option='{ "allowSingleElementEquality": "always" }' showPlaygroundButton
 declare const text: string;
 
 text[0] === 'a';
