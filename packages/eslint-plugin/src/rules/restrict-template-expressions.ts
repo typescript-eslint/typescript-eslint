@@ -19,7 +19,7 @@ type OptionTester = (
   recursivelyCheckType: (type: Type) => boolean,
 ) => boolean;
 
-const makeTypeFlagTester =
+const testTypeFlag =
   (flagsToCheck: TypeFlags): OptionTester =>
   type =>
     isTypeFlagSet(type, flagsToCheck);
@@ -38,9 +38,9 @@ const optionTesters = (
       },
     ],
     // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-    ['Boolean', makeTypeFlagTester(TypeFlags.BooleanLike)],
-    ['Nullish', makeTypeFlagTester(TypeFlags.Null | TypeFlags.Undefined)],
-    ['Number', makeTypeFlagTester(TypeFlags.NumberLike | TypeFlags.BigIntLike)],
+    ['Boolean', testTypeFlag(TypeFlags.BooleanLike)],
+    ['Nullish', testTypeFlag(TypeFlags.Null | TypeFlags.Undefined)],
+    ['Number', testTypeFlag(TypeFlags.NumberLike | TypeFlags.BigIntLike)],
     [
       'RegExp',
       (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
