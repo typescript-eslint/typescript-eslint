@@ -1060,24 +1060,22 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
   ]),
 });
 
-type Case<TMessageIds extends string, TOptions extends Readonly<unknown[]>> =
-  | TSESLint.InvalidTestCase<TMessageIds, TOptions>
-  | TSESLint.ValidTestCase<TOptions>;
-function addOptional<TOptions extends Readonly<unknown[]>>(
-  cases: (TSESLint.ValidTestCase<TOptions> | string)[],
-): TSESLint.ValidTestCase<TOptions>[];
+type Case<MessageIds extends string, Options extends Readonly<unknown[]>> =
+  | TSESLint.InvalidTestCase<MessageIds, Options>
+  | TSESLint.ValidTestCase<Options>;
+function addOptional<Options extends Readonly<unknown[]>>(
+  cases: (TSESLint.ValidTestCase<Options> | string)[],
+): TSESLint.ValidTestCase<Options>[];
 function addOptional<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
+  MessageIds extends string,
+  Options extends Readonly<unknown[]>,
 >(
-  cases: TSESLint.InvalidTestCase<TMessageIds, TOptions>[],
-): TSESLint.InvalidTestCase<TMessageIds, TOptions>[];
+  cases: TSESLint.InvalidTestCase<MessageIds, Options>[],
+): TSESLint.InvalidTestCase<MessageIds, Options>[];
 function addOptional<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
->(
-  cases: (Case<TMessageIds, TOptions> | string)[],
-): Case<TMessageIds, TOptions>[] {
+  MessageIds extends string,
+  Options extends Readonly<unknown[]>,
+>(cases: (Case<MessageIds, Options> | string)[]): Case<MessageIds, Options>[] {
   function makeOptional(code: string): string;
   function makeOptional(code: string | null | undefined): string | null;
   function makeOptional(code: string | null | undefined): string | null {
@@ -1093,7 +1091,7 @@ function addOptional<
     );
   }
 
-  return cases.reduce<Case<TMessageIds, TOptions>[]>((acc, c) => {
+  return cases.reduce<Case<MessageIds, Options>[]>((acc, c) => {
     if (typeof c === 'string') {
       acc.push({
         code: c,

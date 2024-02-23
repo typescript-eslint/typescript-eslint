@@ -17,20 +17,20 @@ const ERROR_MESSAGE_UNKNOWN_PARSER =
  * This **_will_** throw if it is not available.
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): ParserServicesWithTypeInformation;
 /**
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: false,
 ): ParserServicesWithTypeInformation;
 /**
@@ -38,10 +38,10 @@ function getParserServices<
  * This **_will not_** throw if it is not available.
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: true,
 ): ParserServices;
 /**
@@ -49,10 +49,10 @@ function getParserServices<
  * This may or may not throw if it is not available, depending on if `allowWithoutFullTypeInformation` is `true`
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: boolean,
 ): ParserServices;
 
