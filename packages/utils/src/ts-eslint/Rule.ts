@@ -678,9 +678,9 @@ export type LooseRuleCreateFunction = (context: any) => Record<
 >;
 
 export type RuleCreateFunction<
-  TMessageIds extends string = never,
-  TOptions extends readonly unknown[] = unknown[],
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
+  MessageIds extends string = never,
+  Options extends readonly unknown[] = unknown[],
+> = (context: Readonly<RuleContext<MessageIds, Options>>) => RuleListener;
 export type AnyRuleCreateFunction = RuleCreateFunction<
   string,
   readonly unknown[]
