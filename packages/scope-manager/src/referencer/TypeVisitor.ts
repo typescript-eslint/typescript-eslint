@@ -2,7 +2,8 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import { ParameterDefinition, TypeDefinition } from '../definition';
-import { type Scope, ScopeType } from '../scope';
+import type { Scope } from '../scope';
+import { ScopeType } from '../scope';
 import type { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 
