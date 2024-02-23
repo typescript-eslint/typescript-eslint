@@ -44,6 +44,7 @@ export function useProgramFromProjectService(
 
     log(
       'Default project allowed path: %s, based on config file: %s',
+      isDefaultProjectAllowedPath,
       opened.configFileName,
     );
 
