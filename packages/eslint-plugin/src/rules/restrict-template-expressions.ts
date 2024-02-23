@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type { Type, TypeChecker } from 'typescript';
+import { TypeFlags } from 'typescript';
 
 import {
   createRule,
@@ -13,10 +14,15 @@ import {
 } from '../util';
 
 type OptionTester = (
-  type: ts.Type,
-  checker: ts.TypeChecker,
-  recursivelyCheckType: (type: ts.Type) => boolean,
+  type: Type,
+  checker: TypeChecker,
+  recursivelyCheckType: (type: Type) => boolean,
 ) => boolean;
+
+const makeTypeFlagTester =
+  (flagsToCheck: TypeFlags): OptionTester =>
+  type =>
+    isTypeFlagSet(type, flagsToCheck);
 
 const optionTesters = (
   [
@@ -31,26 +37,16 @@ const optionTesters = (
         );
       },
     ],
-    [
-      'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
-      (type): boolean => isTypeFlagSet(type, ts.TypeFlags.BooleanLike),
-    ],
-    [
-      'Nullish',
-      (type): boolean =>
-        isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined),
-    ],
-    [
-      'Number',
-      (type): boolean =>
-        isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike),
-    ],
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    ['Boolean', makeTypeFlagTester(TypeFlags.BooleanLike)],
+    ['Nullish', makeTypeFlagTester(TypeFlags.Null | TypeFlags.Undefined)],
+    ['Number', makeTypeFlagTester(TypeFlags.NumberLike | TypeFlags.BigIntLike)],
     [
       'RegExp',
       (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
     ],
     ['Never', isTypeNeverType],
-  ] as const satisfies [string, OptionTester][]
+  ] satisfies [string, OptionTester][]
 ).map(([type, tester]) => ({
   type,
   option: `allow${type}` as const,
@@ -131,7 +127,7 @@ export default createRule<Options, MessageId>({
       },
     };
 
-    function recursivelyCheckType(innerType: ts.Type): boolean {
+    function recursivelyCheckType(innerType: Type): boolean {
       if (innerType.isUnion()) {
         return innerType.types.every(recursivelyCheckType);
       }
@@ -141,7 +137,7 @@ export default createRule<Options, MessageId>({
       }
 
       return (
-        isTypeFlagSet(innerType, ts.TypeFlags.StringLike) ||
+        isTypeFlagSet(innerType, TypeFlags.StringLike) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )
