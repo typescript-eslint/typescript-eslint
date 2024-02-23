@@ -5,10 +5,8 @@ import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import {
-  type HistorySelector,
-  useHistorySelector,
-} from '../../hooks/useHistorySelector';
+import type { HistorySelector } from '../../hooks/useHistorySelector';
+import { useHistorySelector } from '../../hooks/useHistorySelector';
 import {
   CONFIG_EMOJI,
   DEPRECATED_RULE_EMOJI,

@@ -25,20 +25,66 @@ const plugin: TSESLint.FlatConfig.Plugin = {
   rules: pluginBase.rules,
 };
 
-export = {
+const configs = {
+  all: allConfig(plugin, parser),
+  base: baseConfig(plugin, parser),
+  disableTypeChecked: disableTypeCheckedConfig(plugin, parser),
+  eslintRecommended: eslintRecommendedConfig(plugin, parser),
+  recommended: recommendedConfig(plugin, parser),
+  recommendedTypeChecked: recommendedTypeCheckedConfig(plugin, parser),
+  strict: strictConfig(plugin, parser),
+  strictTypeChecked: strictTypeCheckedConfig(plugin, parser),
+  stylistic: stylisticConfig(plugin, parser),
+  stylisticTypeChecked: stylisticTypeCheckedConfig(plugin, parser),
+};
+
+export type Config = TSESLint.FlatConfig.ConfigFile;
+/*
+eslint-disable-next-line import/no-default-export --
+we do both a default and named exports to allow people to use this package from
+both CJS and ESM in very natural ways.
+
+EG it means that all of the following are valid:
+
+```ts
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  ...tseslint.configs.recommended,
+);
+```
+```ts
+import { config, parser, plugin } from 'typescript-eslint';
+
+export default config(
+  {
+    languageOptions: { parser }
+    plugins: { ts: plugin },
+  }
+);
+```
+```ts
+const tseslint = require('typescript-eslint');
+
+module.exports = tseslint.config(
+  ...tseslint.configs.recommended,
+);
+```
+```ts
+const { config, parser, plugin } = require('typescript-eslint');
+
+module.exports = config(
+  {
+    languageOptions: { parser }
+    plugins: { ts: plugin },
+  }
+);
+```
+*/
+export default {
   config,
-  configs: {
-    all: allConfig(plugin, parser),
-    base: baseConfig(plugin, parser),
-    disableTypeChecked: disableTypeCheckedConfig(plugin, parser),
-    eslintRecommended: eslintRecommendedConfig(plugin, parser),
-    recommended: recommendedConfig(plugin, parser),
-    recommendedTypeChecked: recommendedTypeCheckedConfig(plugin, parser),
-    strict: strictConfig(plugin, parser),
-    strictTypeChecked: strictTypeCheckedConfig(plugin, parser),
-    stylistic: stylisticConfig(plugin, parser),
-    stylisticTypeChecked: stylisticTypeCheckedConfig(plugin, parser),
-  },
+  configs,
   parser,
   plugin,
 };
+export { config, configs, parser, plugin };
