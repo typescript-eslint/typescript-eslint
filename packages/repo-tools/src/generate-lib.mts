@@ -296,7 +296,7 @@ async function main(): Promise<void> {
   console.log('Autofixed lint errors');
 }
 
-main().catch(e => {
+main().catch((e: unknown) => {
   console.error(e);
   // eslint-disable-next-line no-process-exit
   process.exit(1);

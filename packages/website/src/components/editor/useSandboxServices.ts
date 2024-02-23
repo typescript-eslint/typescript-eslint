@@ -115,8 +115,13 @@ export const useSandboxServices = (
           sandboxInstance,
         });
       })
-      .catch(setServices);
-
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          setServices(err);
+        } else {
+          setServices(new Error(String(err)));
+        }
+      });
     return (): void => {
       if (!sandboxInstance) {
         return;
