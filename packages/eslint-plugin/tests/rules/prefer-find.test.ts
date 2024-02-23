@@ -592,6 +592,52 @@ arr.find(f, thisArg);
     },
     {
       code: `
+(Math.random() < 0.5
+  ? [1, 2, 3].filter(x => false)
+  : [1, 2, 3].filter(x => true))[0];
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+(Math.random() < 0.5
+  ? [1, 2, 3].find(x => false)
+  : [1, 2, 3].find(x => true));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Math.random() < 0.5
+  ? [1, 2, 3].find(x => true)
+  : [1, 2, 3].filter(x => true)[0];
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+Math.random() < 0.5
+  ? [1, 2, 3].find(x => true)
+  : [1, 2, 3].find(x => true);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const f: any, g: any;
 const nestedTernaries = (
   Math.random() < 0.5
