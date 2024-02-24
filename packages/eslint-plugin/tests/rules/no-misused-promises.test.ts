@@ -1248,5 +1248,32 @@ foo(bar);
       `,
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
+    {
+      code: `
+function consume(..._callbacks: Array<() => void>): void {}
+let cbs: Array<() => Promise<boolean>> = [
+  () => Promise.resolve(true),
+  () => Promise.resolve(true),
+];
+consume(...cbs);
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function consume(..._callbacks: Array<() => void>): void {}
+let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)] as const;
+consume(...cbs);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function consume(..._callbacks: Array<() => void>): void {}
+let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)];
+consume(...cbs);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
   ],
 });
