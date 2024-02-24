@@ -16,6 +16,7 @@ export function useProgramFromProjectService(
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
+  // we don't use canonicalized filename here because it causes massive perf regressions for some reason
   const filePathAbsolute = absolutify(parseSettings.filePath);
   log(
     'Opening project service file for: %s at absolute path %s',
