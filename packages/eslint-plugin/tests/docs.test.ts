@@ -9,6 +9,7 @@ import path from 'path';
 import { titleCase } from 'title-case';
 
 import rules from '../src/rules';
+import { areOptionsValid } from './areOptionsValid';
 import { getFixturesRootDir } from './RuleTester';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
@@ -340,9 +341,21 @@ describe('Validating rule docs', () => {
           const optionRegex = /option='(?<option>.*?)'/;
 
           const option = lang.match(optionRegex)?.groups?.option;
-          const ruleConfig: Linter.RuleEntry = option
-            ? JSON.parse(`["error", ${option}]`)
-            : 'error';
+          let ruleConfig: Linter.RuleEntry;
+          if (option) {
+            const [, ...options] = (ruleConfig = JSON.parse(
+              `["error", ${option}]`,
+            ));
+            test('options are valid', () => {
+              if (!areOptionsValid(rule, options)) {
+                throw new Error(
+                  `Options failed validation against rule's schema - ${JSON.stringify(options)}`,
+                );
+              }
+            });
+          } else {
+            ruleConfig = 'error';
+          }
           const rootPath = getFixturesRootDir();
 
           const messages = linter.verify(
