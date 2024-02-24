@@ -16,7 +16,8 @@ export function useProgramFromProjectService(
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
-  // we don't use canonicalized filename here because it causes massive perf regressions for some reason
+  // We don't canonicalize the filename because it caused a performance regression.
+  // See https://github.com/typescript-eslint/typescript-eslint/issues/8519
   const filePathAbsolute = absolutify(parseSettings.filePath);
   log(
     'Opening project service file for: %s at absolute path %s',
