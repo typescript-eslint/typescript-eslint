@@ -643,27 +643,26 @@ function getRank(
  * @returns The array of groups of members.
  */
 function groupMembersByType(
-  memberSet: Member[],
-  memberType: MemberType[],
+  members: Member[],
+  memberTypes: MemberType[],
   supportsModifiers: boolean,
 ): Member[][] {
   const groupedMembers: Member[][] = [];
+  const memberRanks = members.map(member =>
+    getRank(member, memberTypes, supportsModifiers),
+  );
   let previousRank: number | undefined = undefined;
-  memberSet.forEach((member, index) => {
-    if (index === memberSet.length - 1) {
+  members.forEach((member, index) => {
+    if (index === members.length - 1) {
       return;
     }
-    const rankOfcurrentMember = getRank(member, memberType, supportsModifiers);
-    const rankOfNextMember = getRank(
-      memberSet[index + 1],
-      memberType,
-      supportsModifiers,
-    );
-    if (rankOfcurrentMember === previousRank) {
+    const rankOfCurrentMember = memberRanks[index];
+    const rankOfNextMember = memberRanks[index + 1];
+    if (rankOfCurrentMember === previousRank) {
       groupedMembers.at(-1)?.push(member);
-    } else if (rankOfcurrentMember === rankOfNextMember) {
+    } else if (rankOfCurrentMember === rankOfNextMember) {
       groupedMembers.push([member]);
-      previousRank = rankOfcurrentMember;
+      previousRank = rankOfCurrentMember;
     }
   });
   return groupedMembers;
@@ -996,8 +995,8 @@ export default createRule<Options, MessageIds>({
         const hasAlphaSort = !!(order && order !== 'as-written');
         if (hasAlphaSort && Array.isArray(memberTypes)) {
           groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
-            groupMember => {
-              checkAlphaSort(groupMember, order as AlphabeticalOrder);
+            groupMembers => {
+              checkAlphaSort(groupMembers, order as AlphabeticalOrder);
             },
           );
         }
