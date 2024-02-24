@@ -616,30 +616,31 @@ function getRank(
 }
 
 /**
- * If there are more than 1 consecutive same ranked member in 1 class, those members are put in an array & an array of these members' array is returned as a result. If, for example, the memberSet parameter looks like the below example - (contd. after the example tag)
+ * Groups members into arrays of consecutive members with the same rank.
+ * If, for example, the memberSet parameter looks like the following...
  * @example
  * ```
  * interface Foo {
-      [a: string]: number;
- 
-      a: x;
-      B: x;
-      c: x;
- 
-      c(): void;
-      B(): void;
-      a(): void;
- 
-      (): Baz;
- 
-      new (): Bar;
-    }
+ *   [a: string]: number;
+ *
+ *   a: x;
+ *   B: x;
+ *   c: x;
+ *
+ *   c(): void;
+ *   B(): void;
+ *   a(): void;
+ *
+ *   (): Baz;
+ *
+ *   new (): Bar;
+ * }
  * ```
-  The resulting array will look like this - [[a, B, c], [c, B, a]].
- * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
- * @param memberType The member type order listed in the eslint config file.
- * @param supportsModifiers it'll get passed to getRank()
- * @returns the array of groups of members
+ * ...the resulting array will look like: [[a, B, c], [c, B, a]].
+ * @param memberSet The members to be grouped.
+ * @param memberType The configured order of member types.
+ * @param supportsModifiers It'll get passed to getRank().
+ * @returns The array of groups of members.
  */
 function groupMembersByType(
   memberSet: Member[],
