@@ -183,12 +183,26 @@ thing && thing.toString();
 
 When this option is `true` the rule will check operands that are typed as `boolean` when inspecting "loose boolean" operands.
 
+:::note
+
+This rule intentionally ignores the following case:
+
+```ts
+declare const x: false | { a: string };
+x && x.a;
+!x || x.a;
+```
+
+The boolean expression narrows out the non-nullish falsy cases - so converting the chain to `x?.a` would introduce a type error.
+
+:::
+
 <!--tabs-->
 
 #### ❌ Incorrect for `checkBoolean: true`
 
-```ts option='{ "checkBoolean": true }' skipValidation
-declare const thing: boolean;
+```ts option='{ "checkBoolean": true }'
+declare const thing: true;
 
 thing && thing.toString();
 ```
@@ -196,7 +210,7 @@ thing && thing.toString();
 #### ✅ Correct for `checkBoolean: false`
 
 ```ts option='{ "checkBoolean": false }'
-declare const thing: boolean;
+declare const thing: true;
 
 thing && thing.toString();
 ```
