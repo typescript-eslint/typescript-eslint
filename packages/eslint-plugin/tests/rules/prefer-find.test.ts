@@ -638,7 +638,7 @@ Math.random() < 0.5
     },
     {
       code: `
-declare const f: any, g: any;
+declare const f: (arg0: unknown) => boolean, g: (arg0: unknown) => boolean;
 const nestedTernaries = (
   Math.random() < 0.5
     ? Math.random() < 0.5
@@ -655,7 +655,7 @@ const nestedTernaries = (
             {
               messageId: 'preferFindSuggestion',
               output: `
-declare const f: any, g: any;
+declare const f: (arg0: unknown) => boolean, g: (arg0: unknown) => boolean;
 const nestedTernaries = (
   Math.random() < 0.5
     ? Math.random() < 0.5
@@ -672,7 +672,7 @@ const nestedTernaries = (
 
     {
       code: `
-declare const f: any, g: any;
+declare const f: (arg0: unknown) => boolean, g: (arg0: unknown) => boolean;
 const nestedTernariesWithSequenceExpression = (
   Math.random() < 0.5
     ? ('sequence',
@@ -689,7 +689,7 @@ const nestedTernariesWithSequenceExpression = (
             {
               messageId: 'preferFindSuggestion',
               output: `
-declare const f: any, g: any;
+declare const f: (arg0: unknown) => boolean, g: (arg0: unknown) => boolean;
 const nestedTernariesWithSequenceExpression = (
   Math.random() < 0.5
     ? ('sequence',
