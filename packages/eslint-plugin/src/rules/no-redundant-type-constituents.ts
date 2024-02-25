@@ -328,9 +328,9 @@ export default createRule({
             }
           }
 
-          typePartFlags.length >= 2
-            ? seenUnionTypes.set(typeNode, typePartFlags)
-            : null;
+          if (typePartFlags.length >= 2) {
+            seenUnionTypes.set(typeNode, typePartFlags);
+          }
         }
         const checkIfUnionsAreAssignable = (): undefined => {
           let typeFlagsOfUnions: ts.TypeFlags[] = [];
