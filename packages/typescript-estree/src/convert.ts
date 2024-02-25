@@ -3120,15 +3120,7 @@ export class Converter {
 
       // Tuple
       case SyntaxKind.TupleType: {
-        // In TS 4.0, the `elementTypes` property was changed to `elements`.
-        // To support both at compile time, we cast to access the newer version
-        // if the former does not exist.
-        const elementTypes =
-          'elementTypes' in node
-            ? (node as any).elementTypes.map((el: ts.Node) =>
-                this.convertChild(el),
-              )
-            : node.elements.map(el => this.convertChild(el));
+        const elementTypes = node.elements.map(el => this.convertChild(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
@@ -3417,6 +3409,27 @@ export class Converter {
             modifier.kind,
           )}' modifier cannot appear on a parameter.`,
         );
+      }
+
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.PublicKeyword ||
+        modifier.kind === SyntaxKind.ProtectedKeyword ||
+        modifier.kind === SyntaxKind.PrivateKeyword
+      ) {
+        for (const anotherModifier of getModifiers(node) ?? []) {
+          if (
+            anotherModifier !== modifier &&
+            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
+              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
+              anotherModifier.kind === SyntaxKind.PrivateKeyword)
+          ) {
+            this.#throwError(
+              anotherModifier,
+              `Accessibility modifier already seen.`,
+            );
+          }
+        }
       }
 
       // `checkParameter` function in `typescript`

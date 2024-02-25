@@ -10,11 +10,10 @@ import {
   ESLintUtils,
   TSESLint,
 } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 class UnusedVarsVisitor<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 > extends Visitor {
   private static readonly RESULTS_CACHE = new WeakMap<
     TSESTree.Program,
@@ -24,24 +23,24 @@ class UnusedVarsVisitor<
   readonly #scopeManager: TSESLint.Scope.ScopeManager;
   // readonly #unusedVariables = new Set<TSESLint.Scope.Variable>();
 
-  private constructor(context: TSESLint.RuleContext<TMessageIds, TOptions>) {
+  private constructor(context: TSESLint.RuleContext<MessageIds, Options>) {
     super({
       visitChildrenEvenIfSelectorExists: true,
     });
 
     this.#scopeManager = ESLintUtils.nullThrows(
-      getSourceCode(context).scopeManager,
+      context.sourceCode.scopeManager,
       'Missing required scope manager',
     );
   }
 
   public static collectUnusedVariables<
-    TMessageIds extends string,
-    TOptions extends readonly unknown[],
+    MessageIds extends string,
+    Options extends readonly unknown[],
   >(
-    context: TSESLint.RuleContext<TMessageIds, TOptions>,
+    context: TSESLint.RuleContext<MessageIds, Options>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
-    const program = getSourceCode(context).ast;
+    const program = context.sourceCode.ast;
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
@@ -750,10 +749,10 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
  * - variables within ambient module declarations
  */
 function collectUnusedVariables<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): ReadonlySet<TSESLint.Scope.Variable> {
   return UnusedVarsVisitor.collectUnusedVariables(context);
 }

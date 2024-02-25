@@ -1,9 +1,11 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/linting/configs
+// SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
+
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -75,4 +77,4 @@ export = {
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
   },
-};
+} satisfies ClassicConfig.Config;

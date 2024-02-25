@@ -15,7 +15,7 @@ or not managing scope well.
 
 ### ❌ Incorrect
 
-```js
+```ts
 const self = this;
 
 setTimeout(function () {
@@ -25,7 +25,7 @@ setTimeout(function () {
 
 ### ✅ Correct
 
-```js
+```ts
 setTimeout(() => {
   this.doWork();
 });

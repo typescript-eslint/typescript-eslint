@@ -2,14 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
-import type * as ESQuery from 'esquery';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  type ImperativePanelHandle,
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
-} from 'react-resizable-panels';
+import type { ImperativePanelHandle } from 'react-resizable-panels';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 import ASTViewer from './ast/ASTViewer';
 import ConfigEslint from './config/ConfigEslint';
@@ -39,7 +34,6 @@ function Playground(): React.JSX.Element {
   const [selectedRange, setSelectedRange] = useState<SelectedRange>();
   const [position, setPosition] = useState<number>();
   const [activeTab, setTab] = useState<TabType>('code');
-  const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
   const [esQueryError, setEsQueryError] = useState<Error>();
   const [visualEslintRc, setVisualEslintRc] = useState(false);
   const [visualTSConfig, setVisualTSConfig] = useState(false);
@@ -94,7 +88,7 @@ function Playground(): React.JSX.Element {
         <Panel
           id="playgroundMenu"
           className={styles.PanelColumn}
-          defaultSize={windowSize === 'mobile' ? 0 : optionsSize}
+          defaultSizePercentage={windowSize === 'mobile' ? 0 : optionsSize}
           collapsible={true}
           ref={playgroundMenuRef}
         >
@@ -178,7 +172,12 @@ function Playground(): React.JSX.Element {
             />
             {state.showAST === 'es' && (
               <ESQueryFilter
-                onChange={setEsQueryFilter}
+                defaultValue={state.esQuery?.filter}
+                onChange={(filter, selector) =>
+                  setState({
+                    esQuery: { filter, selector },
+                  })
+                }
                 onError={setEsQueryError}
               />
             )}
@@ -202,7 +201,9 @@ function Playground(): React.JSX.Element {
               (state.showAST && astModel && (
                 <ASTViewer
                   key={String(state.showAST)}
-                  filter={state.showAST === 'es' ? esQueryFilter : undefined}
+                  filter={
+                    state.showAST === 'es' ? state.esQuery?.selector : undefined
+                  }
                   value={
                     state.showAST === 'ts'
                       ? astModel.storedTsAST

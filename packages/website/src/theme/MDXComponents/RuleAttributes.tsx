@@ -43,7 +43,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Extending{' '}
-          <Link to={`/linting/configs#${recommendation}`} target="_blank">
+          <Link to={`/users/configs#${recommendation}`} target="_blank">
             <code className={styles.code}>
               "plugin:@typescript-eslint/{recommendation}"
             </code>
@@ -94,7 +94,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           This rule requires{' '}
-          <Link href="/linting/typed-linting" target="_blank">
+          <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
           to run.

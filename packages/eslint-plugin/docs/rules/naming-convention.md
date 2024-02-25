@@ -200,7 +200,10 @@ There are two types of selectors, individual selectors, and grouped selectors.
 
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
-- `accessor` - matches any accessor.
+- `classicAccessor` - matches any accessor. It refers to the methods attached to `get` and `set` syntax.
+  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `autoAccessor` - matches any auto-accessor. An auto-accessor is just a class field starting with an `accessor` keyword.
   - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 - `class` - matches any class declaration.
@@ -262,7 +265,10 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `default` - matches everything.
   - Allowed `modifiers`: all modifiers.
   - Allowed `types`: none.
-- `memberLike` - matches the same as `accessor`, `enumMember`, `method`, `parameterProperty`, `property`.
+- `accessor` - matches the same as `classicAccessor` and `autoAccessor`.
+  - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `memberLike` - matches the same as `classicAccessor`, `autoAccessor`, `enumMember`, `method`, `parameterProperty`, `property`.
   - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
   - Allowed `types`: none.
 - `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
@@ -602,12 +608,12 @@ If you simply want to allow all property names that require quotes, you can use 
         "objectLiteralMethod",
         "typeMethod",
         "accessor",
-        "enumMember"
+        "enumMember",
       ],
       "format": null,
-      "modifiers": ["requiresQuotes"]
-    }
-  ]
+      "modifiers": ["requiresQuotes"],
+    },
+  ],
 }
 ```
 
@@ -623,10 +629,10 @@ If you have a small and known list of exceptions, you can use the `filter` optio
       "filter": {
         // you can expand this regex to add more allowed names
         "regex": "^(Property-Name-One|Property-Name-Two)$",
-        "match": false
-      }
-    }
-  ]
+        "match": false,
+      },
+    },
+  ],
 }
 ```
 
@@ -642,10 +648,10 @@ You can use the `filter` option to ignore names with specific characters:
       "filter": {
         // you can expand this regex as you find more cases that require quoting that you want to allow
         "regex": "[- ]",
-        "match": false
-      }
-    }
-  ]
+        "match": false,
+      },
+    },
+  ],
 }
 ```
 
@@ -666,9 +672,9 @@ You can use the `destructured` modifier to match these names, and explicitly set
     {
       "selector": "variable",
       "modifiers": ["destructured"],
-      "format": null
-    }
-  ]
+      "format": null,
+    },
+  ],
 }
 ```
 

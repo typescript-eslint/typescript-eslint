@@ -156,25 +156,15 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type B = string;
       type T = B & null;
     `,
+    'type T = `${string}` & null;',
+    `
+      type B = \`\${string}\`;
+      type T = B & null;
+    `,
     `
       type T = 'a' | 1;
       type U = T & string;
     `,
-    {
-      code: 'type T = `${string}` & null;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
-    },
-    {
-      code: `
-        type B = \`\${string}\`;
-        type T = B & null;
-      `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
-    },
   ],
 
   invalid: [
@@ -458,9 +448,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: 'type T = `a${number}c` | string;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       errors: [
         {
           column: 10,
@@ -477,9 +464,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         type B = \`a\${number}c\`;
         type T = B | string;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       errors: [
         {
           column: 18,
@@ -493,9 +477,6 @@ ruleTester.run('no-redundant-type-constituents', rule, {
     },
     {
       code: 'type T = `${number}` | string;',
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       errors: [
         {
           column: 10,

@@ -7,9 +7,11 @@ import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
-import { type CreateLinter, createLinter } from '../linter/createLinter';
+import type { CreateLinter } from '../linter/createLinter';
+import { createLinter } from '../linter/createLinter';
 import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
+import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
@@ -69,6 +71,11 @@ export const useSandboxServices = (
         );
         sandboxInstance.monaco.editor.setTheme(
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
+        );
+
+        sandboxInstance.monaco.languages.registerInlayHintsProvider(
+          sandboxInstance.language,
+          createTwoslashInlayProvider(sandboxInstance),
         );
 
         const system = createFileSystem(props, sandboxInstance.tsvfs);

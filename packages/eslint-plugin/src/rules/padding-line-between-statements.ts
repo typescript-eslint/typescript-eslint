@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -407,8 +406,8 @@ function verifyForNever(
       const nextToken = paddingLines[0][1];
       const start = prevToken.range[1];
       const end = nextToken.range[0];
-      const text = getSourceCode(context)
-        .text.slice(start, end)
+      const text = context.sourceCode.text
+        .slice(start, end)
         .replace(PADDING_LINE_SEQUENCE, replacerToRemovePaddingLines);
 
       return fixer.replaceTextRange([start, end], text);
@@ -443,10 +442,9 @@ function verifyForAlways(
     node: nextNode,
     messageId: 'expectedBlankLine',
     fix(fixer) {
-      const sourceCode = getSourceCode(context);
-      let prevToken = getActualLastToken(prevNode, sourceCode)!;
+      let prevToken = getActualLastToken(prevNode, context.sourceCode)!;
       const nextToken =
-        sourceCode.getFirstTokenBetween(prevToken, nextNode, {
+        context.sourceCode.getFirstTokenBetween(prevToken, nextNode, {
           includeComments: true,
 
           /**
@@ -476,7 +474,7 @@ function verifyForAlways(
             }
             return true;
           },
-        }) || nextNode;
+        }) ?? nextNode;
       const insertText = isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';
@@ -645,7 +643,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
     // eslint-disable-next-line no-restricted-syntax -- We need all raw options.
     const configureList = context.options;
 
@@ -698,7 +695,7 @@ export default createRule<Options, MessageIds>({
         return type.some(match.bind(null, innerStatementNode));
       }
 
-      return StatementTypes[type].test(innerStatementNode, sourceCode);
+      return StatementTypes[type].test(innerStatementNode, context.sourceCode);
     }
 
     /**
@@ -737,13 +734,19 @@ export default createRule<Options, MessageIds>({
       nextNode: TSESTree.Node,
     ): [TSESTree.Token, TSESTree.Token][] {
       const pairs: [TSESTree.Token, TSESTree.Token][] = [];
-      let prevToken: TSESTree.Token = getActualLastToken(prevNode, sourceCode)!;
+      let prevToken: TSESTree.Token = getActualLastToken(
+        prevNode,
+        context.sourceCode,
+      )!;
 
       if (nextNode.loc.start.line - prevToken.loc.end.line >= 2) {
         do {
-          const token: TSESTree.Token = sourceCode.getTokenAfter(prevToken, {
-            includeComments: true,
-          })!;
+          const token: TSESTree.Token = context.sourceCode.getTokenAfter(
+            prevToken,
+            {
+              includeComments: true,
+            },
+          )!;
 
           if (token.loc.start.line - prevToken.loc.end.line >= 2) {
             pairs.push([prevToken, token]);

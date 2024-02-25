@@ -13,9 +13,11 @@ It adds support for interfaces and enums.
 
 ### ❌ Incorrect
 
+<!-- prettier-ignore -->
 ```ts
 enum Breakpoint{
-  Large, Medium;
+  Large,
+  Medium,
 }
 
 interface State{
@@ -27,7 +29,8 @@ interface State{
 
 ```ts
 enum Breakpoint {
-  Large, Medium;
+  Large,
+  Medium,
 }
 
 interface State {

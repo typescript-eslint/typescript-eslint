@@ -17,7 +17,6 @@ ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     "const string = 'a';",
     'const string = `a`;',
-
     `
       declare const string: 'a';
       \`\${string}b\`;
@@ -147,6 +146,30 @@ ruleTester.run('no-useless-template-literals', rule, {
         },
       ],
     },
+    {
+      code: '`${1n}`;',
+      output: '`1`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 6,
+        },
+      ],
+    },
+    {
+      code: '`${/a/}`;',
+      output: '`/a/`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 7,
+        },
+      ],
+    },
 
     {
       code: noFormat`\`\${    1    }\`;`,
@@ -253,6 +276,32 @@ ruleTester.run('no-useless-template-literals', rule, {
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+
+    {
+      code: '`${Infinity}`;',
+      output: '`Infinity`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 12,
+        },
+      ],
+    },
+
+    {
+      code: '`${NaN}`;',
+      output: '`NaN`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 7,
         },
       ],
     },

@@ -51,9 +51,6 @@ module.exports = {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
 
-    // TODO(#7338): Investigate enabling these soon ✨
-    '@typescript-eslint/prefer-nullish-coalescing': 'off',
-
     // TODO(#7130): Investigate changing these in or removing these from presets
     '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/prefer-string-starts-ends-with': 'off',
@@ -108,6 +105,13 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
+    '@typescript-eslint/prefer-nullish-coalescing': [
+      'error',
+      {
+        ignoreConditionalTests: true,
+        ignorePrimitives: true,
+      },
     ],
 
     //
@@ -304,7 +308,6 @@ module.exports = {
     {
       files: [
         './packages/eslint-plugin-internal/**/*.ts',
-        './packages/eslint-plugin-tslint/**/*.ts',
         './packages/eslint-plugin/**/*.ts',
       ],
       rules: {
@@ -315,7 +318,6 @@ module.exports = {
     {
       files: [
         './packages/eslint-plugin-internal/src/rules/**/*.ts',
-        './packages/eslint-plugin-tslint/src/rules/**/*.ts',
         './packages/eslint-plugin/src/configs/**/*.ts',
         './packages/eslint-plugin/src/rules/**/*.ts',
       ],
@@ -343,7 +345,6 @@ module.exports = {
     {
       files: [
         './packages/eslint-plugin-internal/tests/rules/**/*.test.ts',
-        './packages/eslint-plugin-tslint/tests/rules/**/*.test.ts',
         './packages/eslint-plugin/tests/rules/**/*.test.ts',
         './packages/eslint-plugin/tests/eslint-rules/**/*.test.ts',
       ],

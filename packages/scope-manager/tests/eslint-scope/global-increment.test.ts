@@ -2,7 +2,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('global increment', () => {
   it('becomes read/write', () => {
