@@ -367,12 +367,12 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     {
       code: `
-        const msg = \`arg = \${[null, 2]}\`;
+        const msg = \`arg = \${[, 2]}\`;
       `,
       errors: [
         {
           messageId: 'invalidType',
-          data: { type: '(number | null)[]' },
+          data: { type: '(number | undefined)[]' },
           line: 2,
           column: 30,
         },
