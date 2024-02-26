@@ -1,3 +1,4 @@
+import debug from 'debug';
 import { minimatch } from 'minimatch';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
@@ -9,12 +10,17 @@ import {
 } from './create-program/shared';
 import type { MutableParseSettings } from './parseSettings';
 
+const log = debug(
+  'typescript-eslint:typescript-estree:useProgramFromProjectService',
+);
+
 export function useProgramFromProjectService(
   { allowDefaultProjectForFiles, service }: ProjectServiceSettings,
   parseSettings: Readonly<MutableParseSettings>,
   hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
   const filePath = getCanonicalFileName(parseSettings.filePath);
+  log('Opening project service file for: %s', filePath);
 
   const opened = service.openClientFile(
     ensureAbsolutePath(filePath, service.host.getCurrentDirectory()),
@@ -23,7 +29,14 @@ export function useProgramFromProjectService(
     parseSettings.tsconfigRootDir,
   );
 
+  log('Opened project service file: %o', opened);
+
   if (hasFullTypeInformation) {
+    log(
+      'Project service type information enabled; checking for file path match on: %o',
+      allowDefaultProjectForFiles,
+    );
+
     if (opened.configFileName) {
       if (filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
         throw new Error(
@@ -37,6 +50,8 @@ export function useProgramFromProjectService(
     }
   }
 
+  log('Retrieving script info and then program for: %s', filePath);
+
   const scriptInfo = service.getScriptInfo(filePath);
   const program = service
     .getDefaultProjectForFile(scriptInfo!.fileName, true)!
@@ -44,8 +59,11 @@ export function useProgramFromProjectService(
     .getProgram();
 
   if (!program) {
+    log('Could not find project service program for: %s', filePath);
     return undefined;
   }
+
+  log('Found project service program for: %s', filePath);
 
   return createProjectProgram(parseSettings, [program]);
 }
