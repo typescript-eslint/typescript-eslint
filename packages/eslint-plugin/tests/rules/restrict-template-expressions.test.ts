@@ -131,6 +131,30 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allowArray
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [];
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [];
+        const msg = \`arg = \${arg || 'default'}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [];
+        function test<T extends string[]>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
     // allowAny
     {
       options: [{ allowAny: true }],
@@ -343,6 +367,20 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     {
       code: `
+        const msg = \`arg = \${[null, 2]}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '(number | null)[]' },
+          line: 2,
+          column: 30,
+        },
+      ],
+      options: [{ allowNullish: false, allowArray: true }],
+    },
+    {
+      code: `
         declare const arg: number;
         const msg = \`arg = \${arg}\`;
       `,
@@ -369,11 +407,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           column: 30,
         },
       ],
-      options: [
-        {
-          allowBoolean: false,
-        },
-      ],
+      options: [{ allowBoolean: false }],
     },
     {
       options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],

@@ -29,13 +29,9 @@ const optionTesters = (
     ['Any', isTypeAnyType],
     [
       'Array',
-      (type, checker, recursivelyCheckType): boolean => {
-        const maybeNumberIndexType =
-          checker.isArrayType(type) && type.getNumberIndexType();
-        return (
-          !maybeNumberIndexType || recursivelyCheckType(maybeNumberIndexType)
-        );
-      },
+      (type, checker, recursivelyCheckType): boolean =>
+        checker.isArrayType(type) &&
+        recursivelyCheckType(type.getNumberIndexType()!),
     ],
     // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
     ['Boolean', testTypeFlag(TypeFlags.BooleanLike)],
