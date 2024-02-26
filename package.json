@@ -40,7 +40,7 @@
     "lint-fix": "yarn lint --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
-    "lint": "npx nx run-many --target=lint --parallel",
+    "lint": "npx nx lint eslint-plugin --skip-nx-cache && npx nx run-many --target=lint --parallel --exclude eslint-plugin",
     "postinstall": "npx nx run repo-tools:postinstall-script",
     "pre-commit": "yarn lint-staged",
     "release": "tsx tools/release/release.mts",
