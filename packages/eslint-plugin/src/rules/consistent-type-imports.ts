@@ -74,16 +74,16 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          prefer: {
-            type: 'string',
-            enum: ['type-imports', 'no-type-imports'],
-          },
           disallowTypeAnnotations: {
             type: 'boolean',
           },
           fixStyle: {
             type: 'string',
             enum: ['separate-type-imports', 'inline-type-imports'],
+          },
+          prefer: {
+            type: 'string',
+            enum: ['type-imports', 'no-type-imports'],
           },
         },
         additionalProperties: false,
@@ -94,9 +94,9 @@ export default createRule<Options, MessageIds>({
 
   defaultOptions: [
     {
-      prefer: 'type-imports',
       disallowTypeAnnotations: true,
       fixStyle: 'separate-type-imports',
+      prefer: 'type-imports',
     },
   ],
 
