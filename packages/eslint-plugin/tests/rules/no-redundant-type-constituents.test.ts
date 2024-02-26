@@ -162,7 +162,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = B & null;
     `,
     `
-      type T = 'a' | 1;
+      type T = 'a' | 1 | 'b';
       type U = T & string;
     `,
   ],

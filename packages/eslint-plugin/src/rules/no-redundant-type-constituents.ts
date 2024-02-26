@@ -327,53 +327,53 @@ export default createRule({
               }
             }
           }
-
+          // if any typeNode is TSTypeReference and typePartFlags have more than 1 element, than the referenced type is definitely a union.
           if (typePartFlags.length >= 2) {
             seenUnionTypes.set(typeNode, typePartFlags);
           }
         }
+        /**
+         * @example
+         * ```ts
+         * type F = "a"|2|"b";
+         * type I = F & string;
+         * ```
+         * This function checks if all the union members of `F` are assignable to the other member of `I`. If every member is assignable, then its reported else not.
+         */
         const checkIfUnionsAreAssignable = (): undefined => {
-          let typeFlagsOfUnions: ts.TypeFlags[] = [];
-          let result = true;
-          let primitiveUnit: number;
-
-          seenUnionTypes.forEach((value, key) => {
-            value.forEach(union => {
-              typeFlagsOfUnions.push(union.typeFlags);
-            });
-            for (const iterator of typeFlagsOfUnions) {
+          for (const [typeRef, typeValues] of seenUnionTypes) {
+            let primitive: number | undefined = undefined;
+            for (const { typeFlags } of typeValues) {
               if (
                 seenPrimitiveTypes.has(
                   literalToPrimitiveTypeFlags[
-                    iterator as keyof typeof literalToPrimitiveTypeFlags
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
                   ],
                 )
               ) {
-                result = true;
-                primitiveUnit =
+                primitive =
                   literalToPrimitiveTypeFlags[
-                    iterator as keyof typeof literalToPrimitiveTypeFlags
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
                   ];
               } else {
-                result = false;
+                primitive = undefined;
                 break;
               }
             }
-            if (result) {
+            if (Number.isInteger(primitive)) {
               context.report({
                 data: {
-                  literal: value.map(name => name.typeName).join(' | '),
+                  literal: typeValues.map(name => name.typeName).join(' | '),
                   primitive:
                     primitiveTypeFlagNames[
-                      primitiveUnit as keyof typeof primitiveTypeFlagNames
+                      primitive as keyof typeof primitiveTypeFlagNames
                     ],
                 },
                 messageId: 'primitiveOverridden',
-                node: key,
+                node: typeRef,
               });
             }
-            typeFlagsOfUnions = [];
-          });
+          }
         };
         if (seenUnionTypes.size > 0) {
           checkIfUnionsAreAssignable();
