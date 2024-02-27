@@ -18,8 +18,8 @@
  * };
  */
 
-import type { ESLintRules } from 'eslint/rules';
 import type { Linter } from 'eslint';
+import type { ESLintRules } from 'eslint/rules';
 
 // 获取eslint规则参数
 type ESLintRuleOption = {
@@ -130,7 +130,7 @@ type NameSelectorSchema<S extends (NameMetaSelectors | NameSelector), T extends 
     ? {
       types?: NameTypeSelectors[];
     }
-    : {}
+    : Record<string, never>
 );
 type NamingConventionOption = (
   NameSelectorSchema<'default', false, NameModifierSelectors>
