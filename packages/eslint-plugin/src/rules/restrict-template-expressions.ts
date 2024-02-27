@@ -49,7 +49,9 @@ const optionTesters = (
   tester,
 }));
 type Options = [
-  { [Type in (typeof optionTesters)[number]['option']]?: boolean },
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
+    ignoredTypeNames?: string[];
+  },
 ];
 
 type MessageId = 'invalidType';
@@ -71,15 +73,23 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         additionalProperties: false,
-        properties: Object.fromEntries(
-          optionTesters.map(({ option, type }) => [
-            option,
-            {
-              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
-              type: 'boolean',
+        properties: {
+          ...Object.fromEntries(
+            optionTesters.map(({ option, type }) => [
+              option,
+              {
+                description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+                type: 'boolean',
+              },
+            ]),
+          ),
+          ignoredTypeNames: {
+            type: 'array',
+            items: {
+              type: 'string',
             },
-          ]),
-        ),
+          },
+        },
       },
     ],
   },
@@ -90,9 +100,10 @@ export default createRule<Options, MessageId>({
       allowNullish: true,
       allowNumber: true,
       allowRegExp: true,
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
-  create(context, [options]) {
+  create(context, [{ ignoredTypeNames = [], ...options }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const enabledOptionTesters = optionTesters.filter(
@@ -134,6 +145,7 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
+        ignoredTypeNames.includes(getTypeName(checker, innerType)) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )
