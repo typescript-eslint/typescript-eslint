@@ -211,13 +211,13 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
 
-        const { parent } = node.parent;
+        const grandparent = node.parent.parent!;
 
         if (
           // It's not safe to remove a cast to a literal type, unless we are in a `const` variable declaration, as that
           // type would otherwise be widened without the cast.
-          ((parent?.type === AST_NODE_TYPES.VariableDeclaration &&
-            parent.kind === 'const') ||
+          ((grandparent.type === AST_NODE_TYPES.VariableDeclaration &&
+            grandparent.kind === 'const') ||
             !castType.isLiteral()) &&
           services.getTypeAtLocation(node.expression) === castType
         ) {
