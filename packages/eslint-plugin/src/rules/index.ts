@@ -14,6 +14,7 @@ import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
 import consistentGenericConstructors from './consistent-generic-constructors';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
+import consistentReturn from './consistent-return';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeExports from './consistent-type-exports';
@@ -157,6 +158,7 @@ export default {
   'comma-spacing': commaSpacing,
   'consistent-generic-constructors': consistentGenericConstructors,
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
+  'consistent-return': consistentReturn,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'consistent-type-exports': consistentTypeExports,

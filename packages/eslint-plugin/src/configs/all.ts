@@ -21,6 +21,8 @@ export = {
     '@typescript-eslint/class-methods-use-this': 'error',
     '@typescript-eslint/consistent-generic-constructors': 'error',
     '@typescript-eslint/consistent-indexed-object-style': 'error',
+    'consistent-return': 'off',
+    '@typescript-eslint/consistent-return': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',
     '@typescript-eslint/consistent-type-exports': 'error',

@@ -15,7 +15,8 @@ import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
 import * as lz from 'lz-string';
-import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
+import type { Language } from 'prism-react-renderer';
+import Highlight, { defaultProps } from 'prism-react-renderer';
 import React from 'react';
 
 import { TryInPlayground } from '../../MDXComponents/TryInPlayground';
