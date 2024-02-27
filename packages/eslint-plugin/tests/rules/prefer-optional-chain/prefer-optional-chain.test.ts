@@ -1872,7 +1872,7 @@ describe('hand-crafted cases', () => {
           declare const thing1: string | null;
           thing1 && thing1.toString();
         `,
-        options: [{ requireNullish: false }],
+        options: [{ requireNullish: true }],
         errors: [{ messageId: `preferOptionalChain` }],
       },
 
