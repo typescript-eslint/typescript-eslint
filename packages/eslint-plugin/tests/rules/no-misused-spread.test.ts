@@ -163,6 +163,18 @@ ruleTester.run('no-misused-spread', rule, {
 
       const o = { ...generator };
     `,
+
+    `
+      declare const promise: Promise<number>;
+
+      const o = { ...promise };
+    `,
+
+    `
+      declare const promise: PromiseLike<number>;
+
+      const o = { ...promise };
+    `,
   ],
 
   invalid: [
@@ -405,6 +417,24 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        declare const arr: number[] & string[];
+        const o = { ...arr };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Array',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
         declare function getArray(): number[];
         const o = { ...getArray() };
       `,
@@ -475,6 +505,24 @@ ruleTester.run('no-misused-spread', rule, {
     {
       code: `
         declare const set: Set<number>;
+        const o = { ...set };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const set: ReadonlySet<number>;
         const o = { ...set };
       `,
       errors: [
@@ -591,6 +639,24 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        declare const map: ReadonlyMap<string, number>;
+        const o = { ...map };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
         declare const map: Map<string, number> | { a: number };
         const o = { ...map };
       `,
@@ -621,6 +687,24 @@ ruleTester.run('no-misused-spread', rule, {
           line: 3,
           column: 21,
           endColumn: 32,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const a: Map<boolean, string> & Set<number>;
+        const o = { ...a };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 25,
         },
       ],
     },

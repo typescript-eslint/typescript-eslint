@@ -1,12 +1,12 @@
 ---
-description: "Disallow using the spread operator on types that can't be spread."
+description: 'Disallow using the spread operator when it might cause unexpected behavior.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
 
-The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript, but it can only be used with types that support it. This rule disallows using the spread operator on types that can't be spread, or types that spreading them in specific cases can lead to unexpected behavior.
+The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript, but it can only be used with types that support it. This rule disallows using the spread operator on types where spreading can lead to unexpected behavior.
 
 ## Examples
 
@@ -54,4 +54,8 @@ const getObjSpread = { ...getObj() };
 
 ## When Not To Use It
 
-When you want to allow using the spread operator on types that can't be spread.
+If you intentionally want to use the spread operator in those cases, and expect
+the specific behavior that comes with it, you might not want this rule.
+For example, when you want to spread an array into an object and expect the
+result to be an object with the array elements as values and the array indices
+as keys.

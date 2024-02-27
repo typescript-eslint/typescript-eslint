@@ -21,7 +21,7 @@ export default createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description:
-        "Disallow using the spread operator on types that can't be spread",
+        'Disallow using the spread operator when it might cause unexpected behavior',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
@@ -70,7 +70,10 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      if (isBuiltinSymbol(services.program, type, 'Set')) {
+      if (
+        isBuiltinSymbol(services.program, type, 'Set') ||
+        isBuiltinSymbol(services.program, type, 'ReadonlySet')
+      ) {
         context.report({
           node,
           messageId: 'noSpreadInObject',
@@ -82,7 +85,10 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      if (isBuiltinSymbol(services.program, type, 'Map')) {
+      if (
+        isBuiltinSymbol(services.program, type, 'Map') ||
+        isBuiltinSymbol(services.program, type, 'ReadonlyMap')
+      ) {
         context.report({
           node,
           messageId: 'noSpreadInObject',
@@ -124,7 +130,7 @@ export default createRule<[], MessageIds>({
 });
 
 function isArray(type: ts.Type, checker: ts.TypeChecker): boolean {
-  if (type.isUnion()) {
+  if (type.isUnion() || type.isIntersection()) {
     return type.types.some(t => isArray(t, checker));
   }
 
@@ -132,7 +138,7 @@ function isArray(type: ts.Type, checker: ts.TypeChecker): boolean {
 }
 
 function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
-  if (type.isUnion()) {
+  if (type.isUnion() || type.isIntersection()) {
     return type.types.some(t => isIterable(t, checker));
   }
 
@@ -146,7 +152,7 @@ function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
 }
 
 function isString(type: ts.Type, checker: ts.TypeChecker): boolean {
-  if (type.isIntersection()) {
+  if (type.isUnion() || type.isIntersection()) {
     return type.types.some(t => isString(t, checker));
   }
 
@@ -158,7 +164,7 @@ function isBuiltinSymbol(
   type: ts.Type,
   symbolName: string,
 ): boolean {
-  if (type.isUnion()) {
+  if (type.isUnion() || type.isIntersection()) {
     return type.types.some(t => isBuiltinSymbol(program, t, symbolName));
   }
 
@@ -169,7 +175,7 @@ function isFunctionWithoutProps(
   type: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  if (type.isUnion()) {
+  if (type.isUnion() || type.isIntersection()) {
     return type.types.some(t => isFunctionWithoutProps(t, checker));
   }
 
