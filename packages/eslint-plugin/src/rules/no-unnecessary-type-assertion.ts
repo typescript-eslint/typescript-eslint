@@ -216,11 +216,14 @@ export default createRule<Options, MessageIds>({
         if (
           // It's not safe to remove a cast to a literal type, unless we are in a `const` variable declaration, as that
           // type would otherwise be widened without the cast.
-          ((grandparent.type === AST_NODE_TYPES.VariableDeclaration &&
-            grandparent.kind === 'const') ||
-            !castType.isLiteral()) &&
-          services.getTypeAtLocation(node.expression) === castType
+          castType.isLiteral() &&
+          (grandparent.type !== AST_NODE_TYPES.VariableDeclaration ||
+            grandparent.kind !== 'const')
         ) {
+          return;
+        }
+
+        if (services.getTypeAtLocation(node.expression) === castType) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
