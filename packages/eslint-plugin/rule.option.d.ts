@@ -323,9 +323,7 @@ type TypedefOption = Partial<{
   variableDeclarationIgnoreFunction: boolean;
 }>;
 
-interface CustomRuleOption {
-  [K: string]: any[];
-}
+type CustomRuleOption = Record<string, any[]>;
 /**
  * @typescript-eslint/eslint-plugin插件包含rule的参数类型
  * @see https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/rules/index.ts
