@@ -7,6 +7,7 @@
     "docs",
     "index.d.ts",
     "rules.d.ts",
+    "rule.option.d.ts",
     "package.json",
     "README.md",
     "LICENSE"
