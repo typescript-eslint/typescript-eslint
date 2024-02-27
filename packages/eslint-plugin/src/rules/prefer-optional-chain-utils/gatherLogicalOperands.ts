@@ -61,7 +61,7 @@ type Operand = ValidOperand | InvalidOperand;
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
-  operator: TSESTree.LogicalExpression['operator'],
+  operatorNode: TSESTree.LogicalExpression,
   checkType: 'true' | 'false',
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
@@ -69,6 +69,7 @@ function isValidFalseBooleanCheckType(
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
+  const { operator } = operatorNode;
   const disallowFalseyLiteral =
     (operator === '||' && checkType === 'false') ||
     (operator === '&&' && checkType === 'true');
@@ -94,7 +95,7 @@ function isValidFalseBooleanCheckType(
     }
   }
 
-  if (options.requireNullish === true) {
+  if (options.requireNullish === true && operatorNode.right !== node) {
     return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
   }
 
@@ -258,7 +259,7 @@ export function gatherLogicalOperands(
           operand.operator === '!' &&
           isValidFalseBooleanCheckType(
             operand.argument,
-            node.operator,
+            node,
             'false',
             parserServices,
             options,
@@ -285,7 +286,7 @@ export function gatherLogicalOperands(
         if (
           isValidFalseBooleanCheckType(
             operand,
-            node.operator,
+            node,
             'true',
             parserServices,
             options,

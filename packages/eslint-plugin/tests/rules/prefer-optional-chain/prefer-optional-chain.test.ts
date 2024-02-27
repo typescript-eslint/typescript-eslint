@@ -1866,6 +1866,16 @@ describe('hand-crafted cases', () => {
         ],
       },
 
+      // requireNullish
+      {
+        code: `
+          declare const thing1: string | null;
+          thing1 && thing1.toString();
+        `,
+        options: [{ requireNullish: false }],
+        errors: [{ messageId: `preferOptionalChain` }],
+      },
+
       // allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing
       {
         code: `
