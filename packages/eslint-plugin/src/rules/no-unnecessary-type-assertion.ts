@@ -242,20 +242,16 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
 
+        const { parent } = node.parent;
+
         if (
-          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-          (tsutils.isObjectType(castType) &&
-            (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
-              couldBeTupleType(castType)))
+          // It's not safe to remove a cast to a literal type, unless we are in a `const` variable declaration, as that
+          // type would otherwise be widened without the cast.
+          ((parent?.type === AST_NODE_TYPES.VariableDeclaration &&
+            parent.kind === 'const') ||
+            !castType.isLiteral()) &&
+          services.getTypeAtLocation(node.expression) === castType
         ) {
-          // It's not always safe to remove a cast to a literal type or tuple
-          // type, as those types are sometimes widened without the cast.
-          return;
-        }
-
-        const uncastType = services.getTypeAtLocation(node.expression);
-
-        if (uncastType === castType) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',

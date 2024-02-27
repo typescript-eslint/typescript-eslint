@@ -25,10 +25,21 @@ if (
   const name = member.id as TSESTree.StringLiteral;
 }
     `,
+    `
+      type Bar = 'bar';
+      const data = {
+        x: 'foo' as 'foo',
+        y: 'bar' as Bar,
+      };
+    `,
+    "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
+    `
+      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+        x => [x, 'A' + x] as [number, string],
+      );
+    `,
     'const foo = 3 as number;',
     'const foo = <number>3;',
-    'const foo = <3>3;',
-    'const foo = 3 as 3;',
     `
 type Tuple = [3, 'hi', 'bye'];
 const foo = [3, 'hi', 'bye'] as Tuple;
@@ -245,6 +256,16 @@ const item = <object>arr[0];
   ],
 
   invalid: [
+    {
+      code: 'const foo = <3>3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: 'const foo = 3 as 3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
     {
       code: `
 const foo = 3;
