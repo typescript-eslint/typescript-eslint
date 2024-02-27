@@ -268,6 +268,28 @@ const item = <object>arr[0];
     },
     {
       code: `
+        type Foo = 3;
+        const foo = <Foo>3;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = 3 as Foo;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
+    {
+      code: `
 const foo = 3;
 const bar = foo!;
       `,
