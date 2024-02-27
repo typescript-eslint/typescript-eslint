@@ -132,8 +132,7 @@ type NameSelectorSchema<S extends (NameMetaSelectors | NameSelector), T extends 
     }
     : {}
 );
-
-type NamingConventionOption = Array<
+type NamingConventionOption = (
   NameSelectorSchema<'default', false, NameModifierSelectors>
   | NameSelectorSchema<'variableLike', false, 'unused' |'async'>
   | NameSelectorSchema<'variable', true, 'const' |'destructured' |'exported' |'global' |'unused' |'async'>
@@ -158,15 +157,15 @@ type NamingConventionOption = Array<
   | NameSelectorSchema<'enum', false, 'exported' | 'unused'>
   | NameSelectorSchema<'typeParameter', false, 'unused'>
   | NameSelectorSchema<'import', false, 'default' | 'namespace'>
->;
+)[];
 type NoConfusingVoidExpressionOption = Partial<{
   ignoreArrowShorthand: boolean;
   ignoreVoidOperator: boolean;
 }>;
 type NoEmptyFunctionOption = ESLintRuleOption['no-empty-function'] extends [infer U, ...infer args]
-  ? U extends {allow?: Array<infer A>}
+  ? U extends {allow?: (infer A)[]}
     ? [Omit<U, 'allow'> & Partial<{
-      allow: Array<A | 'private-constructors' | 'protected-constructors' | 'decoratedFunctions' | 'overrideMethods'>;
+      allow: (A | 'private-constructors' | 'protected-constructors' | 'decoratedFunctions' | 'overrideMethods')[];
     }>, ...args]
     : never
   : never;
@@ -200,14 +199,13 @@ type NoMisusedPromisesOption = Partial<{
 interface NoRestrictedImportsAppend {
   allowTypeImports?: boolean;
 }
-type NoRestrictedImportsOption = ESLintRuleOption['no-restricted-imports'] extends Array<infer U>
-  ? Array<
-    U extends {paths?: Array<infer O>}
+type NoRestrictedImportsOption = ESLintRuleOption['no-restricted-imports'] extends (infer U)[]
+  ? (U extends {paths?: (infer O)[]}
       ? Omit<U, 'paths'> & Partial<{
         paths: MergeIntersectionObject<O, NoRestrictedImportsAppend>;
       }>
       : MergeIntersectionObject<U, NoRestrictedImportsAppend>
-  >
+    )[]
   : never;
 type NoShadowOption = ExtendsTupleFirstEl<ESLintRuleOption['no-shadow'], Partial<{
   ignoreOnInitialization: boolean;
@@ -255,7 +253,7 @@ type PreferReadonlyParameterTypesOption = Partial<{
   checkParameterProperties: boolean;
   ignoreInferredTypes: boolean;
   treatMethodsAsReadonly: boolean;
-  allow: Array<string | {
+  allow: (string | {
     from: 'file';
     name: string[] | string;
     path?: string;
@@ -266,7 +264,7 @@ type PreferReadonlyParameterTypesOption = Partial<{
     from: 'package';
     name: string[] | string;
     package: string;
-  }>;
+  })[];
 }>;
 type PromiseFunctionAsyncOption = Partial<{
   allowAny: boolean;
