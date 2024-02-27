@@ -214,12 +214,12 @@ export default createRule<Options, MessageIds>({
         const grandparent = node.parent.parent!;
 
         if (
-          // It's not safe to remove a cast to a literal type, unless we are in a `const` variable declaration, as that
-          // type would otherwise be widened without the cast.
           castType.isLiteral() &&
           (grandparent.type !== AST_NODE_TYPES.VariableDeclaration ||
             grandparent.kind !== 'const')
         ) {
+          // It's not safe to remove a cast to a literal type, unless we are in a `const` variable declaration, as that
+          // type would otherwise be widened without the cast.
           return;
         }
 
