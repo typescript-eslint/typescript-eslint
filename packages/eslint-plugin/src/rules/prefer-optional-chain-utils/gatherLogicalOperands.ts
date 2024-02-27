@@ -95,8 +95,11 @@ function isValidFalseBooleanCheckType(
     }
   }
 
-  if (options.requireNullish === true && operatorNode.left === node) {
-    return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
+  if (options.requireNullish === true) {
+    return (
+      operatorNode.right === node ||
+      types.some(t => isTypeFlagSet(t, NULLISH_FLAGS))
+    );
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;

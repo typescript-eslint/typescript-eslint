@@ -801,7 +801,6 @@ describe('hand-crafted cases', () => {
           foo && foo.bar && foo.bar.toString();
         `,
         options: [{ requireNullish: true }],
-        only: true,
       },
       {
         code: `
