@@ -34,7 +34,6 @@ body:
       description: Select the package against which you want to report the bug.
       options:
         - ast-spec
-        - eslint-plugin-tslint
         - parser
         - rule-tester
         - scope-manager

@@ -15,10 +15,10 @@ import type {
 import type { SourceCode } from './SourceCode';
 
 export type MinimalRuleModule<
-  TMessageIds extends string = string,
-  TOptions extends readonly unknown[] = [],
-> = Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>> &
-  Pick<RuleModule<TMessageIds, TOptions>, 'create'>;
+  MessageIds extends string = string,
+  Options extends readonly unknown[] = [],
+> = Partial<Omit<RuleModule<MessageIds, Options>, 'create'>> &
+  Pick<RuleModule<MessageIds, Options>, 'create'>;
 
 declare class LinterBase {
   /**
@@ -39,20 +39,20 @@ declare class LinterBase {
    * @param ruleId A unique rule identifier
    * @param ruleModule Function from context to object mapping AST node types to event handlers
    */
-  defineRule<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  defineRule<MessageIds extends string, Options extends readonly unknown[]>(
     ruleId: string,
-    ruleModule: MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction,
+    ruleModule: MinimalRuleModule<MessageIds, Options> | RuleCreateFunction,
   ): void;
 
   /**
    * Defines many new linting rules.
    * @param rulesToDefine map from unique rule identifier to rule
    */
-  defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  defineRules<MessageIds extends string, Options extends readonly unknown[]>(
     rulesToDefine: Record<
       string,
-      | MinimalRuleModule<TMessageIds, TOptions>
-      | RuleCreateFunction<TMessageIds, TOptions>
+      | MinimalRuleModule<MessageIds, Options>
+      | RuleCreateFunction<MessageIds, Options>
     >,
   ): void;
 

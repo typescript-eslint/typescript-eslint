@@ -3,6 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 import {
   isBigIntLiteralType,
   isBooleanLiteralType,
@@ -122,6 +123,7 @@ function isValidFalseBooleanCheckType(
 export function gatherLogicalOperands(
   node: TSESTree.LogicalExpression,
   parserServices: ParserServicesWithTypeInformation,
+  sourceCode: Readonly<SourceCode>,
   options: PreferOptionalChainOptions,
 ): {
   operands: Operand[];
@@ -157,7 +159,20 @@ export function gatherLogicalOperands(
             comparedExpression.type === AST_NODE_TYPES.UnaryExpression &&
             comparedExpression.operator === 'typeof'
           ) {
-            // typeof x === 'undefined'
+            const argument = comparedExpression.argument;
+            if (argument.type === AST_NODE_TYPES.Identifier) {
+              const reference = sourceCode
+                .getScope(argument)
+                .references.find(ref => ref.identifier.name === argument.name);
+
+              if (!reference?.resolved?.defs.length) {
+                // typeof window === 'undefined'
+                result.push({ type: OperandValidity.Invalid });
+                continue;
+              }
+            }
+
+            // typeof x.y === 'undefined'
             result.push({
               type: OperandValidity.Valid,
               comparedName: comparedExpression.argument,
