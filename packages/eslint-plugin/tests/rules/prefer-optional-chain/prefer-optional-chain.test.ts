@@ -786,22 +786,22 @@ describe('hand-crafted cases', () => {
           declare const x: string;
           x && x.length;
         `,
-        options: [
-          {
-            requireNullish: true,
-          },
-        ],
+        options: [{ requireNullish: true }],
       },
       {
         code: `
           declare const x: string | number | boolean | object;
           x && x.toString();
         `,
-        options: [
-          {
-            requireNullish: true,
-          },
-        ],
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string };
+          foo && foo.bar && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+        only: true,
       },
       {
         code: `
