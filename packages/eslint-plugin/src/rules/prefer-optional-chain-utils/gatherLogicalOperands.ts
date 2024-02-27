@@ -95,7 +95,7 @@ function isValidFalseBooleanCheckType(
     }
   }
 
-  if (options.requireNullish === true && operatorNode.right !== node) {
+  if (options.requireNullish === true && operatorNode.left === node) {
     return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
   }
 
