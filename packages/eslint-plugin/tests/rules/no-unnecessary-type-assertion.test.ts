@@ -16,6 +16,27 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     `
+      let x = 1; // typeof x = number
+      let y = 1 as 1; // typeof y = 1
+      const x = 1; // typeof x = 1
+      let y = x; // typeof y = number
+      let z2 = x as 1; // okay - typeof z2 = 1
+      const foo = 3 as number;
+      const foon = <number>3;
+      const foom = 3 as number;
+    `,
+    {
+      code: `
+        const cx = 1;
+        // bad
+        let z0 = cx as number;
+        // bad, nice to check but not necessary
+        let z1 = cx as const;
+        // good
+        let z2 = cx as 1;
+      `,
+    },
+    `
 import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
 if (
@@ -186,9 +207,6 @@ const c = [...a, ...b] as const;
       code: 'const a = [1, 2] as const;',
     },
     {
-      code: "const a = 'a' as const;",
-    },
-    {
       code: "const a = { foo: 'foo' } as const;",
     },
     {
@@ -200,9 +218,6 @@ const c = <const>[...a, ...b];
     },
     {
       code: 'const a = <const>[1, 2];',
-    },
-    {
-      code: "const a = <const>'a';",
     },
     {
       code: "const a = <const>{ foo: 'foo' };",
@@ -256,6 +271,66 @@ const item = <object>arr[0];
   ],
 
   invalid: [
+    {
+      code: "const fool = 'foo' as const;",
+      output: "const fool = 'foo';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = 'a' as const;",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = <const>'a';",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foox: Foo = 3 as 3;
+        const fooy = 3 as Foo;
+        const fooz: Foo = 3;
+        const fooa = <3>3;
+        const foob = <Foo>3;
+        const fooc = 3;
+        const bar = fooc!;
+        function foo(x: number): number {
+          return x!;
+        }
+        function fook(x: number | undefined): number {
+          return x!;
+        }
+        const foos = fook(3) as number;
+      `,
+      output: `
+        type Foo = 3;
+        const foox: Foo = 3;
+        const fooy = 3;
+        const fooz: Foo = 3;
+        const fooa = 3;
+        const foob = 3;
+        const fooc = 3;
+        const bar = fooc;
+        function foo(x: number): number {
+          return x;
+        }
+        function fook(x: number | undefined): number {
+          return x!;
+        }
+        const foos = fook(3);
+      `,
+      errors: [
+        { messageId: 'unnecessaryAssertion', line: 3 },
+        { messageId: 'unnecessaryAssertion', line: 4 },
+        { messageId: 'unnecessaryAssertion', line: 6 },
+        { messageId: 'unnecessaryAssertion', line: 7 },
+        { messageId: 'unnecessaryAssertion', line: 9 },
+        { messageId: 'unnecessaryAssertion', line: 11 },
+        { messageId: 'unnecessaryAssertion', line: 16 },
+      ],
+    },
     {
       code: 'const foo = <3>3;',
       output: 'const foo = 3;',

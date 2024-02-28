@@ -106,6 +106,13 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isConstVariableDeclaration(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.VariableDeclaration &&
+        node.kind === 'const'
+      );
+    }
+
     return {
       TSNonNullExpression(node): void {
         if (
@@ -203,27 +210,21 @@ export default createRule<Options, MessageIds>({
         if (
           options.typesToIgnore?.includes(
             context.sourceCode.getText(node.typeAnnotation),
-          ) ||
-          isConstAssertion(node.typeAnnotation)
+          )
         ) {
           return;
         }
 
+        const uncastType = services.getTypeAtLocation(node.expression);
         const castType = services.getTypeAtLocation(node);
 
-        const grandparent = node.parent.parent!;
+        const typeIsUnchanged = uncastType === castType;
 
-        if (
-          castType.isLiteral() &&
-          (grandparent.type !== AST_NODE_TYPES.VariableDeclaration ||
-            grandparent.kind !== 'const')
-        ) {
-          // It's not safe to remove a cast to a literal type, unless we are in a `const` variable declaration, as that
-          // type would otherwise be widened without the cast.
-          return;
-        }
+        const wouldSameTypeBeInferred = castType.isLiteral()
+          ? isConstVariableDeclaration(node.parent.parent!)
+          : !isConstAssertion(node.typeAnnotation);
 
-        if (services.getTypeAtLocation(node.expression) === castType) {
+        if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
