@@ -35,7 +35,8 @@ export interface RuleMetaDataDocs {
    */
   extendsBaseRule?: boolean | string;
 }
-export interface RuleMetaData<TMessageIds extends string> {
+
+export interface RuleMetaData<MessageIds extends string> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -57,7 +58,7 @@ export interface RuleMetaData<TMessageIds extends string> {
    * The key is the messageId, and the string is the parameterised error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids
    */
-  messages: Record<TMessageIds, string>;
+  messages: Record<MessageIds, string>;
   /**
    * The type of rule.
    * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
@@ -107,20 +108,21 @@ export interface RuleFixer {
   replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
-export interface SuggestionReportDescriptor<TMessageIds extends string>
-  extends Omit<ReportDescriptorBase<TMessageIds>, 'fix'> {
+export interface SuggestionReportDescriptor<MessageIds extends string>
+  extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
   readonly fix: ReportFixFunction;
 }
 
 export type ReportFixFunction = (
   fixer: RuleFixer,
 ) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
-export type ReportSuggestionArray<TMessageIds extends string> =
-  SuggestionReportDescriptor<TMessageIds>[];
+
+export type ReportSuggestionArray<MessageIds extends string> =
+  SuggestionReportDescriptor<MessageIds>[];
 
 export type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
 
-interface ReportDescriptorBase<TMessageIds extends string> {
+interface ReportDescriptorBase<MessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
@@ -132,17 +134,17 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The messageId which is being reported.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId: MessageIds;
 
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // readonly desc?: string;
 }
-interface ReportDescriptorWithSuggestion<TMessageIds extends string>
-  extends ReportDescriptorBase<TMessageIds> {
+interface ReportDescriptorWithSuggestion<MessageIds extends string>
+  extends ReportDescriptorBase<MessageIds> {
   /**
    * 6.7's Suggestions API
    */
-  readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
+  readonly suggest?: Readonly<ReportSuggestionArray<MessageIds>> | null;
 }
 
 interface ReportDescriptorNodeOptionalLoc {
@@ -163,8 +165,9 @@ interface ReportDescriptorLocOnly {
    */
   loc: Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
 }
-export type ReportDescriptor<TMessageIds extends string> =
-  ReportDescriptorWithSuggestion<TMessageIds> &
+
+export type ReportDescriptor<MessageIds extends string> =
+  ReportDescriptorWithSuggestion<MessageIds> &
     (ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc);
 
 /**
@@ -177,8 +180,8 @@ export interface SharedConfigurationSettings {
 }
 
 export interface RuleContext<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 > {
   /**
    * The rule ID.
@@ -188,7 +191,7 @@ export interface RuleContext<
    * An array of the configured options for this rule.
    * This array does not include the rule severity.
    */
-  options: TOptions;
+  options: Options;
   /**
    * The name of the parser from configuration.
    */
@@ -299,7 +302,7 @@ export interface RuleContext<
   /**
    * Reports a problem in the code.
    */
-  report(descriptor: ReportDescriptor<TMessageIds>): void;
+  report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
 /**
@@ -614,26 +617,28 @@ export type RuleListener = RuleListenerBaseSelectors &
   RuleListenerExitSelectors;
 
 export interface RuleModule<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[] = [],
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
+  ExtendedRuleListener extends RuleListener = RuleListener,
 > {
   /**
    * Default options the rule will be run with
    */
-  defaultOptions: TOptions;
+  defaultOptions: Options;
 
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<TMessageIds>;
+  meta: RuleMetaData<MessageIds>;
 
   /**
    * Function which returns an object with methods that ESLint calls to “visit”
    * nodes while traversing the abstract syntax tree.
    */
-  create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): ExtendedRuleListener;
 }
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
@@ -673,9 +678,9 @@ export type LooseRuleCreateFunction = (context: any) => Record<
 >;
 
 export type RuleCreateFunction<
-  TMessageIds extends string = never,
-  TOptions extends readonly unknown[] = unknown[],
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
+  MessageIds extends string = never,
+  Options extends readonly unknown[] = unknown[],
+> = (context: Readonly<RuleContext<MessageIds, Options>>) => RuleListener;
 export type AnyRuleCreateFunction = RuleCreateFunction<
   string,
   readonly unknown[]

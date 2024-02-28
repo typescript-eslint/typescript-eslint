@@ -211,3 +211,61 @@ describe('stylistic-type-checked.ts', () => {
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
 });
+
+describe('config helper', () => {
+  it('works without extends', () => {
+    expect(
+      plugin.config({
+        files: ['file'],
+        rules: { rule: 'error' },
+        ignores: ['ignored'],
+      }),
+    ).toEqual([
+      {
+        files: ['file'],
+        rules: { rule: 'error' },
+        ignores: ['ignored'],
+      },
+    ]);
+  });
+
+  it('flattens extended configs', () => {
+    expect(
+      plugin.config({
+        rules: { rule: 'error' },
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      }),
+    ).toEqual([
+      { rules: { rule1: 'error' } },
+      { rules: { rule2: 'error' } },
+      { rules: { rule: 'error' } },
+    ]);
+  });
+
+  it('flattens extended configs with files and ignores', () => {
+    expect(
+      plugin.config({
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule: 'error' },
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+      }),
+    ).toEqual([
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule2: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule: 'error' },
+      },
+    ]);
+  });
+});
