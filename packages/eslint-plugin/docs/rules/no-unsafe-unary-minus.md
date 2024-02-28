@@ -17,6 +17,8 @@ This rule restricts the unary `-` operator to `number | bigint`.
 
 ## Examples
 
+<!-- tabs -->
+
 ### ❌ Incorrect
 
 ```ts

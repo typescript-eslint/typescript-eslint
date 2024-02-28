@@ -56,7 +56,7 @@
         }
       }
     },
-    "@nx/eslint:lint": {
+    "lint": {
       "dependsOn": ["eslint-plugin:build"],
       "inputs": [
         "default",
