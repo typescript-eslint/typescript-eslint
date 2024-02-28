@@ -215,9 +215,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const uncastType = services.getTypeAtLocation(node.expression);
         const castType = services.getTypeAtLocation(node);
-
+        const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = uncastType === castType;
 
         const wouldSameTypeBeInferred = castType.isLiteral()
