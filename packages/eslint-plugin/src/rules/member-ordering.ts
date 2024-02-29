@@ -1020,11 +1020,9 @@ export default createRule<Options, MessageIds>({
           }
 
           if (hasAlphaSort) {
-            return grouped
-              .map(groupMember =>
-                checkAlphaSort(groupMember, order as AlphabeticalOrder),
-              )
-              .some(result => !result);
+            grouped.map(groupMember =>
+              checkAlphaSort(groupMember, order as AlphabeticalOrder),
+            );
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
