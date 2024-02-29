@@ -13,6 +13,11 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
+const optionsWithOnUncheckedIndexedAccess = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+};
+
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     `
@@ -242,6 +247,17 @@ const item = arr[0] as object;
 declare const arr: (object | undefined)[];
 const item = <object>arr[0];
     `,
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      parserOptions: optionsWithOnUncheckedIndexedAccess,
+    },
   ],
 
   invalid: [
@@ -812,6 +828,32 @@ const foo = (3 + 5);
           messageId: 'unnecessaryAssertion',
           line: 2,
           column: 13,
+        },
+      ],
+    },
+    // onUncheckedIndexedAccess = false
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      output: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]);
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 9,
         },
       ],
     },
