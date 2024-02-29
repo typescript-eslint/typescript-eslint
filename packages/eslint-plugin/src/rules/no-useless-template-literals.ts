@@ -54,7 +54,10 @@ export default createRule<[], MessageId>({
     }
 
     function isLiteral(expression: TSESTree.Expression): boolean {
-      return expression.type === AST_NODE_TYPES.Literal;
+      return (
+        expression.type === AST_NODE_TYPES.Literal ||
+        expression.type === AST_NODE_TYPES.TemplateLiteral
+      );
     }
 
     function isInfinityIdentifier(expression: TSESTree.Expression): boolean {
@@ -110,7 +113,12 @@ export default createRule<[], MessageId>({
         }
 
         const fixableExpressions = node.expressions.filter(
-          (expression): expression is TSESTree.Literal | TSESTree.Identifier =>
+          (
+            expression,
+          ): expression is
+            | TSESTree.Literal
+            | TSESTree.TemplateLiteral
+            | TSESTree.Identifier =>
             isLiteral(expression) ||
             isUndefinedIdentifier(expression) ||
             isInfinityIdentifier(expression) ||

@@ -371,6 +371,19 @@ ruleTester.run('no-useless-template-literals', rule, {
     },
 
     {
+      code: '`a${`b`}`;',
+      output: '`ab`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 5,
+          endColumn: 8,
+        },
+      ],
+    },
+
+    {
       code: "`${'1 + 1 ='} ${2}`;",
       output: '`1 + 1 = 2`;',
       errors: [
