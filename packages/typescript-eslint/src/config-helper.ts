@@ -91,14 +91,17 @@ export function config(
       return config;
     }
 
-    if (config.files) {
-      const files = config.files;
-      return [
-        ...extendsArr.map(conf => ({ ...conf, files: [...files] })),
-        config,
-      ];
-    }
+    const extension = {
+      ...(config.files && { files: config.files }),
+      ...(config.ignores && { ignores: config.ignores }),
+    };
 
-    return [...extendsArr, config];
+    return [
+      ...extendsArr.map(conf => ({
+        ...conf,
+        ...extension,
+      })),
+      config,
+    ];
   });
 }

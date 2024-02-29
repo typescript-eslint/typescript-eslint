@@ -11,6 +11,7 @@ declare module 'eslint/use-at-your-own-risk' {
     'block-spacing': typeof import('eslint/lib/rules/block-spacing');
     'brace-style': typeof import('eslint/lib/rules/brace-style');
     'comma-dangle': typeof import('eslint/lib/rules/comma-dangle');
+    'consistent-return': typeof import('eslint/lib/rules/consistent-return');
     'dot-notation': typeof import('eslint/lib/rules/dot-notation');
     indent: typeof import('eslint/lib/rules/indent');
     'init-declarations': typeof import('eslint/lib/rules/init-declarations');
@@ -66,6 +67,28 @@ declare module 'eslint/lib/rules/arrow-parens' {
     ],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/consistent-return' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missingReturn' | 'missingReturnValue' | 'unexpectedReturnValue',
+    [
+      {
+        treatUndefinedAsUnspecified?: boolean;
+      }?,
+    ],
+    {
+      ReturnStatement(node: TSESTree.ReturnStatement): void;
+      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
+      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void;
+      'ArrowFunctionExpression:exit'(
+        node: TSESTree.ArrowFunctionExpression,
+      ): void;
     }
   >;
   export = rule;

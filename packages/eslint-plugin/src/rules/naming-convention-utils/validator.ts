@@ -419,7 +419,7 @@ const SelectorsAllowedToHaveTypes =
   Selectors.objectLiteralProperty |
   Selectors.typeProperty |
   Selectors.parameterProperty |
-  Selectors.accessor;
+  Selectors.classicAccessor;
 
 function isCorrectType(
   node: TSESTree.Node,
