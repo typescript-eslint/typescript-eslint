@@ -995,8 +995,8 @@ export default createRule<Options, MessageIds>({
         const hasAlphaSort = !!(order && order !== 'as-written');
         if (hasAlphaSort && Array.isArray(memberTypes)) {
           groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
-            groupMembers => {
-              checkAlphaSort(groupMembers, order as AlphabeticalOrder);
+            members => {
+              checkAlphaSort(members, order as AlphabeticalOrder);
             },
           );
         }
