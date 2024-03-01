@@ -61,6 +61,11 @@ ruleTester.run('no-useless-template-literals', rule, {
       \`\${left}\${center}\${right}\`;
     `,
 
+    `
+      declare const num: 1;
+      \`a\${\`b\${num}\`}c\`;
+    `,
+
     '`1 + 1 = ${1 + 1}`;',
 
     '`true && false = ${true && false}`;',
@@ -371,14 +376,27 @@ ruleTester.run('no-useless-template-literals', rule, {
     },
 
     {
-      code: '`a${`b`}`;',
-      output: '`ab`;',
+      code: '`a${`${`b`}c`}`;',
+      output: '`a${`bc`}`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 8,
+          endColumn: 11,
+        },
+      ],
+    },
+
+    {
+      code: '`a${`bc`}`;',
+      output: '`abc`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 5,
-          endColumn: 8,
+          endColumn: 9,
         },
       ],
     },

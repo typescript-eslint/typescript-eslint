@@ -56,7 +56,9 @@ export default createRule<[], MessageId>({
     function isLiteral(expression: TSESTree.Expression): boolean {
       return (
         expression.type === AST_NODE_TYPES.Literal ||
-        expression.type === AST_NODE_TYPES.TemplateLiteral
+        (expression.type === AST_NODE_TYPES.TemplateLiteral &&
+          expression.expressions.length === 0 &&
+          expression.quasis.length === 1)
       );
     }
 
