@@ -6,6 +6,7 @@ import rule from '../../src/rules/no-unnecessary-type-assertion';
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     sourceType: 'module',
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
