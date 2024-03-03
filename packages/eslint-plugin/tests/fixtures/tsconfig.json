@@ -6,7 +6,8 @@
     "strict": true,
     "esModuleInterop": true,
     "lib": ["es2015", "es2017", "esnext"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noUncheckedIndexedAccess": false
   },
   "include": [
     "file.ts",
