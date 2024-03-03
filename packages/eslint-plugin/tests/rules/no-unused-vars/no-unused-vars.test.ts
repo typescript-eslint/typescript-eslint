@@ -1123,6 +1123,63 @@ export namespace Bar {
   export import TheFoo = Foo;
 }
     `,
+    `
+const foo = 1;
+export = foo;
+    `,
+    `
+const Foo = 1;
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = {} as Foo;
+    `,
+    `
+declare module 'foo' {
+  type Foo = 1;
+  export = Foo;
+}
+    `,
+    `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  export import TheFoo = Foo;
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2867
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  export import Bar = Something.Bar;
+  const foo: 1234;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
   ],
 
   invalid: [
@@ -1944,6 +2001,56 @@ export namespace Bar {
           column: 10,
           data: {
             varName: 'TheFoo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2867
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+  export const bar: string;
+  export namespace NS {
+    const baz: 1234;
+  }
+}
+      `,
+      filename: 'foo.d.ts',
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          column: 9,
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+export namespace Foo {
+  export import Bar = Something.Bar;
+  const foo: 1234;
+  export const bar: string;
+  export namespace NS {
+    const baz: 1234;
+  }
+}
+      `,
+      filename: 'foo.d.ts',
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 4,
+          column: 9,
+          data: {
+            varName: 'foo',
             action: 'defined',
             additional: '',
           },
