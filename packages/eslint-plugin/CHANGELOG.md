@@ -1,3 +1,32 @@
+## 7.1.0 (2024-02-26)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** add *-type-checked-only configs
+
+- **eslint-plugin:** [naming-convention] support the auto-accessor syntax
+
+- **eslint-plugin:** [consistent-return] add new rule
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chan] allow typeof for avoiding reference error
+
+- **eslint-plugin:** [no-misused-promises] improve check union types
+
+- **eslint-plugin:** [no-use-before-define] fix false positive type reference in as, satisfies
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.0.2 (2024-02-19)
 
 
