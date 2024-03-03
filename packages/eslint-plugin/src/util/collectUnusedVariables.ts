@@ -70,7 +70,6 @@ class UnusedVarsVisitor<
       this.#isDefinitionFile,
     );
 
-    // TODO: do this better than the ternary
     for (const variable of implicitlyExported ? [] : scope.variables) {
       if (
         // skip function expression names,
@@ -454,9 +453,19 @@ function allVariablesImplicitlyExported(
   isDefinitionFile: boolean,
 ): boolean {
   // TODO: does this also happen in ambient module declarations?
-  if (!isDefinitionFile || scope.type !== ScopeType.tsModule) {
+  if (
+    !isDefinitionFile ||
+    !(
+      scope.type === ScopeType.tsModule ||
+      scope.type === ScopeType.module ||
+      scope.type === ScopeType.global
+    )
+  ) {
     return false;
   }
+
+  // TODO: test modules, globals
+  // TODO: look for `export {}`
 
   function isExportImportEquals(variable: Variable): boolean {
     for (const def of variable.defs) {

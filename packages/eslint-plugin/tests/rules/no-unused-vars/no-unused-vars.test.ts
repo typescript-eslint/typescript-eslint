@@ -1180,6 +1180,15 @@ export namespace Foo {
       `,
       filename: 'foo.d.ts',
     },
+    {
+      code: `
+declare module 'foo' {
+  export import Bar = Something.Bar;
+  const foo: 1234;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
   ],
 
   invalid: [
@@ -2035,6 +2044,31 @@ export namespace Foo {
     {
       code: `
 export namespace Foo {
+  export import Bar = Something.Bar;
+  const foo: 1234;
+  export const bar: string;
+  export namespace NS {
+    const baz: 1234;
+  }
+}
+      `,
+      filename: 'foo.d.ts',
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 4,
+          column: 9,
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare module 'foo' {
   export import Bar = Something.Bar;
   const foo: 1234;
   export const bar: string;
