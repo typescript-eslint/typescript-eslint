@@ -16,27 +16,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     `
-      let x = 1; // typeof x = number
-      let y = 1 as 1; // typeof y = 1
-      const x = 1; // typeof x = 1
-      let y = x; // typeof y = number
-      let z2 = x as 1; // okay - typeof z2 = 1
-      const foo = 3 as number;
-      const foon = <number>3;
-      const foom = 3 as number;
-    `,
-    {
-      code: `
-        const cx = 1;
-        // bad
-        let z0 = cx as number;
-        // bad, nice to check but not necessary
-        let z1 = cx as const;
-        // good
-        let z2 = cx as 1;
-      `,
-    },
-    `
 import { TSESTree } from '@typescript-eslint/utils';
 declare const member: TSESTree.TSEnumMember;
 if (
@@ -45,6 +24,12 @@ if (
 ) {
   const name = member.id as TSESTree.StringLiteral;
 }
+    `,
+    `
+      const cx = 1;
+      let z0 = cx as number;
+      let z1 = cx as const;
+      let z2 = cx as 1;
     `,
     `
       type Bar = 'bar';
@@ -59,6 +44,11 @@ if (
         x => [x, 'A' + x] as [number, string],
       );
     `,
+    'let x = 1;',
+    'let y = 1 as 1;',
+    'const x = 1;',
+    'let y = x;',
+    'let z2 = x as 1;',
     'const foo = 3 as number;',
     'const foo = <number>3;',
     `
