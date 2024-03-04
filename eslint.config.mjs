@@ -177,6 +177,8 @@ export default tseslint.config(
       //
 
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+      '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
+        'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
