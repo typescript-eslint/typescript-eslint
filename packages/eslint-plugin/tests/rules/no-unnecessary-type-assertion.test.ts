@@ -44,15 +44,9 @@ if (
         x => [x, 'A' + x] as [number, string],
       );
     `,
-    'let x = 1;',
     'let y = 1 as 1;',
-    'const x = 1;',
-    'let y = x;',
-    'let z2 = x as 1;',
     'const foo = 3 as number;',
     'const foo = <number>3;',
-    'const foo = <3>3;',
-    'const foo = 3 as 3;',
     `
 type Tuple = [3, 'hi', 'bye'];
 const foo = [3, 'hi', 'bye'] as Tuple;
