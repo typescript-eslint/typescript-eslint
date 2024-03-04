@@ -268,51 +268,6 @@ const item = <object>arr[0];
       errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
     },
     {
-      code: `
-        type Foo = 3;
-        const foox: Foo = 3 as 3;
-        const fooy = 3 as Foo;
-        const fooz: Foo = 3;
-        const fooa = <3>3;
-        const foob = <Foo>3;
-        const fooc = 3;
-        const bar = fooc!;
-        function foo(x: number): number {
-          return x!;
-        }
-        function fook(x: number | undefined): number {
-          return x!;
-        }
-        const foos = fook(3) as number;
-      `,
-      output: `
-        type Foo = 3;
-        const foox: Foo = 3;
-        const fooy = 3;
-        const fooz: Foo = 3;
-        const fooa = 3;
-        const foob = 3;
-        const fooc = 3;
-        const bar = fooc;
-        function foo(x: number): number {
-          return x;
-        }
-        function fook(x: number | undefined): number {
-          return x!;
-        }
-        const foos = fook(3);
-      `,
-      errors: [
-        { messageId: 'unnecessaryAssertion', line: 3 },
-        { messageId: 'unnecessaryAssertion', line: 4 },
-        { messageId: 'unnecessaryAssertion', line: 6 },
-        { messageId: 'unnecessaryAssertion', line: 7 },
-        { messageId: 'unnecessaryAssertion', line: 9 },
-        { messageId: 'unnecessaryAssertion', line: 11 },
-        { messageId: 'unnecessaryAssertion', line: 16 },
-      ],
-    },
-    {
       code: 'const foo = <3>3;',
       output: 'const foo = 3;',
       errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
