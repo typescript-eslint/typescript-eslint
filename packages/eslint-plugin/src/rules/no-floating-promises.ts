@@ -52,7 +52,7 @@ export default createRule<Options, MessageId>({
         'Require Promise-like statements to be handled appropriately',
       recommended: {
         recommended: true,
-        strict: [{ ignoreVoid: true }],
+        strict: [{ ignoreVoid: false }],
       },
       requiresTypeChecking: true,
     },
