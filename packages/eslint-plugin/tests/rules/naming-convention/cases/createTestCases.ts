@@ -291,7 +291,8 @@ export function createTestCases(cases: Cases): void {
               selector !== 'memberLike' &&
               selector !== 'typeLike' &&
               selector !== 'property' &&
-              selector !== 'method'
+              selector !== 'method' &&
+              selector !== 'accessor'
                 ? {
                     data: {
                       type: selectorTypeToMessageString(selector),

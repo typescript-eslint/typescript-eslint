@@ -62,7 +62,7 @@ jobs:
         uses: ./.github/actions/prepare-build
 
   generate_configs:
-    name: Lint
+    name: Generate Configs
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +78,7 @@ jobs:
         run: echo "Outdated result detected from yarn generate-configs. Please check in any file changes."
 
   lint_without_build:
-    name: Lint
+    name: Lint without build
     needs: [install]
     runs-on: ubuntu-latest
     strategy:
@@ -96,7 +96,7 @@ jobs:
         run: yarn ${{ matrix.lint-task }}
 
   lint_with_build:
-    name: Lint
+    name: Lint with build
     # because we lint with our own tooling, we need to build
     needs: [build]
     runs-on: ubuntu-latest

@@ -65,7 +65,6 @@ declare class TokenStore {
    * Gets the first `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getFirstTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -109,7 +108,6 @@ declare class TokenStore {
    * Gets the last `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getLastTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -183,7 +181,6 @@ declare class TokenStore {
    * Gets the `count` tokens that follows a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
@@ -193,7 +190,6 @@ declare class TokenStore {
    * Gets the `count` tokens that precedes a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
@@ -216,7 +212,6 @@ declare class TokenStore {
 declare class SourceCodeBase extends TokenStore {
   /**
    * Represents parsed source code.
-   * @param text The source code text.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
    */
   constructor(text: string, ast: SourceCode.Program);
@@ -396,19 +391,18 @@ namespace SourceCode {
   export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
-  export type GetFilterPredicate<TFilter, TDefault> =
+  export type GetFilterPredicate<Filter, Default> =
     // https://github.com/prettier/prettier/issues/14275
     // prettier-ignore
-    TFilter extends ((
+    Filter extends ((
       token: TSESTree.Token,
     ) => token is infer U extends TSESTree.Token)
       ? U
-      : TDefault;
-  export type GetFilterPredicateFromOptions<TOptions, TDefault> =
-    TOptions extends { filter?: FilterPredicate }
-      ? GetFilterPredicate<TOptions['filter'], TDefault>
-      : GetFilterPredicate<TOptions, TDefault>;
-
+      : Default;
+  export type GetFilterPredicateFromOptions<Options, Default> =
+    Options extends { filter?: FilterPredicate }
+      ? GetFilterPredicate<Options['filter'], Default>
+      : GetFilterPredicate<Options, Default>;
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? GetFilterPredicateFromOptions<T, TSESTree.Token>
     : GetFilterPredicateFromOptions<

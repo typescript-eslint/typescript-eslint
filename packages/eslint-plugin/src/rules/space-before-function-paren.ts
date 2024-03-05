@@ -68,8 +68,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Determines whether a function has a name.
-     * @param node The function node.
-     * @returns Whether the function has a name.
      */
     function isNamedFunction(
       node:
@@ -95,7 +93,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Gets the config for a given function
-     * @param node The function node
      */
     function getConfigForFunction(
       node:
