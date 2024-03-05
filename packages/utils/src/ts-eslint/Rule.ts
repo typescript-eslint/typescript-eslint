@@ -15,7 +15,7 @@ export interface RuleRecommendationAcrossConfigs<
   strict: Partial<Options>;
 }
 
-export interface RuleMetaDataDocs<TOptions extends readonly unknown[]> {
+export interface RuleMetaDataDocs<Options extends readonly unknown[]> {
   /**
    * Concise description of the rule
    */
@@ -25,7 +25,7 @@ export interface RuleMetaDataDocs<TOptions extends readonly unknown[]> {
    * Used by the build tools to generate the recommended and strict configs.
    * Exclude to not include it as a recommendation.
    */
-  recommended?: RuleRecommendation | RuleRecommendationAcrossConfigs<TOptions>;
+  recommended?: RuleRecommendation | RuleRecommendationAcrossConfigs<Options>;
   /**
    * The URL of the rule's docs
    */

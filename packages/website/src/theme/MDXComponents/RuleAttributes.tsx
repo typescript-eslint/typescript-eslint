@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from '@docusaurus/Link';
 import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
@@ -20,8 +21,12 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
-  const recommendation = recommendations[docs.recommended!];
+const getRecommendation = (docs: RuleMetaDataDocs<unknown[]>): string[] => {
+  const recommended = docs.recommended!;
+  const recommendation =
+    recommendations[
+      typeof recommended === 'object' ? 'recommended' : recommended
+    ];
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
