@@ -1,3 +1,41 @@
+## 7.1.1 (2024-03-04)
+
+
+### 🩹 Fixes
+
+- **typescript-eslint:** apply `ignores` to all extended configs passed to `config` helper function ([#8567](https://github.com/typescript-eslint/typescript-eslint/pull/8567))
+
+### ❤️  Thank You
+
+- auvred @auvred
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.0 (2024-02-26)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** add *-type-checked-only configs ([#8367](https://github.com/typescript-eslint/typescript-eslint/pull/8367))
+- **eslint-plugin:** [naming-convention] support the auto-accessor syntax ([#8084](https://github.com/typescript-eslint/typescript-eslint/pull/8084))
+- **eslint-plugin:** [consistent-return] add new rule ([#8289](https://github.com/typescript-eslint/typescript-eslint/pull/8289))
+- **typescript-estree:** add debug logs for useProgramFromProjectService ([#8426](https://github.com/typescript-eslint/typescript-eslint/pull/8426))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chan] allow typeof for avoiding reference error ([#8472](https://github.com/typescript-eslint/typescript-eslint/pull/8472))
+- **eslint-plugin:** [no-misused-promises] improve check union types ([#8534](https://github.com/typescript-eslint/typescript-eslint/pull/8534))
+- **eslint-plugin:** [no-use-before-define] fix false positive type reference in as, satisfies ([#8474](https://github.com/typescript-eslint/typescript-eslint/pull/8474))
+- **typescript-estree:** use simpler absolutify behavior for project service client file paths ([#8520](https://github.com/typescript-eslint/typescript-eslint/pull/8520))
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri @arka1002
+- Josh Goldberg ✨
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.0.2 (2024-02-19)
 
 
