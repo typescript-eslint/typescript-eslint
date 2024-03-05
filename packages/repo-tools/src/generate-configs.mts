@@ -313,6 +313,7 @@ async function main(): Promise<void> {
 
   await writeExtendedConfig({
     settings: {
+      getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'exclude',
     },
     name: 'recommended',
@@ -323,13 +324,13 @@ async function main(): Promise<void> {
     name: 'recommended-type-checked',
     ruleEntries: filterRuleEntriesTo('recommended'),
     settings: {
-      getOptions: createGetOptionsForLevel('strict'),
+      getOptions: createGetOptionsForLevel('recommended'),
     },
   });
 
   await writeExtendedConfig({
     settings: {
-      getOptions: createGetOptionsForLevel('strict'),
+      getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'include-only',
     },
     name: 'recommended-type-checked-only',

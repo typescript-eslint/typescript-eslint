@@ -13,7 +13,7 @@ export = {
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-duplicate-type-constituents': 'error',
-    '@typescript-eslint/no-floating-promises': ['error', { ignoreVoid: true }],
+    '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
@@ -28,27 +28,8 @@ export = {
     '@typescript-eslint/no-unsafe-return': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
-    '@typescript-eslint/restrict-plus-operands': [
-      'error',
-      {
-        allowAny: false,
-        allowBoolean: false,
-        allowNullish: false,
-        allowNumberAndString: false,
-        allowRegExp: false,
-      },
-    ],
-    '@typescript-eslint/restrict-template-expressions': [
-      'error',
-      {
-        allowAny: false,
-        allowBoolean: false,
-        allowNullish: false,
-        allowNumber: false,
-        allowRegExp: false,
-        allowNever: false,
-      },
-    ],
+    '@typescript-eslint/restrict-plus-operands': 'error',
+    '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/unbound-method': 'error',
   },
 } satisfies ClassicConfig.Config;

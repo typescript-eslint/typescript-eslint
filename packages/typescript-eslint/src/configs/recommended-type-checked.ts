@@ -19,10 +19,7 @@ export default (
   {
     rules: {
       '@typescript-eslint/await-thenable': 'error',
-      '@typescript-eslint/ban-ts-comment': [
-        'error',
-        { minimumDescriptionLength: 10 },
-      ],
+      '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/ban-types': 'error',
       'no-array-constructor': 'off',
       '@typescript-eslint/no-array-constructor': 'error',
@@ -31,10 +28,7 @@ export default (
       '@typescript-eslint/no-duplicate-type-constituents': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
-      '@typescript-eslint/no-floating-promises': [
-        'error',
-        { ignoreVoid: true },
-      ],
+      '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
       'no-implied-eval': 'off',
       '@typescript-eslint/no-implied-eval': 'error',
@@ -61,27 +55,8 @@ export default (
       '@typescript-eslint/prefer-as-const': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',
-      '@typescript-eslint/restrict-plus-operands': [
-        'error',
-        {
-          allowAny: false,
-          allowBoolean: false,
-          allowNullish: false,
-          allowNumberAndString: false,
-          allowRegExp: false,
-        },
-      ],
-      '@typescript-eslint/restrict-template-expressions': [
-        'error',
-        {
-          allowAny: false,
-          allowBoolean: false,
-          allowNullish: false,
-          allowNumber: false,
-          allowRegExp: false,
-          allowNever: false,
-        },
-      ],
+      '@typescript-eslint/restrict-plus-operands': 'error',
+      '@typescript-eslint/restrict-template-expressions': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
       '@typescript-eslint/unbound-method': 'error',
     },
