@@ -391,19 +391,18 @@ namespace SourceCode {
   export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
-  export type GetFilterPredicate<TFilter, TDefault> =
+  export type GetFilterPredicate<Filter, Default> =
     // https://github.com/prettier/prettier/issues/14275
     // prettier-ignore
-    TFilter extends ((
+    Filter extends ((
       token: TSESTree.Token,
     ) => token is infer U extends TSESTree.Token)
       ? U
-      : TDefault;
-  export type GetFilterPredicateFromOptions<TOptions, TDefault> =
-    TOptions extends { filter?: FilterPredicate }
-      ? GetFilterPredicate<TOptions['filter'], TDefault>
-      : GetFilterPredicate<TOptions, TDefault>;
-
+      : Default;
+  export type GetFilterPredicateFromOptions<Options, Default> =
+    Options extends { filter?: FilterPredicate }
+      ? GetFilterPredicate<Options['filter'], Default>
+      : GetFilterPredicate<Options, Default>;
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? GetFilterPredicateFromOptions<T, TSESTree.Token>
     : GetFilterPredicateFromOptions<

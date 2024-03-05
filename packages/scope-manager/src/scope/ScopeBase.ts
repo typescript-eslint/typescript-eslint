@@ -133,9 +133,9 @@ const VARIABLE_SCOPE_TYPES = new Set([
 
 type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
 abstract class ScopeBase<
-  TType extends ScopeType,
-  TBlock extends TSESTree.Node,
-  TUpper extends Scope | null,
+  Type extends ScopeType,
+  Block extends TSESTree.Node,
+  Upper extends Scope | null,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
@@ -146,7 +146,7 @@ abstract class ScopeBase<
    * The AST node which created this scope.
    * @public
    */
-  public readonly block: TBlock;
+  public readonly block: Block;
   /**
    * The array of child scopes. This does not include grandchild scopes.
    * @public
@@ -197,12 +197,12 @@ abstract class ScopeBase<
    * @public
    */
   public readonly through: Reference[] = [];
-  public readonly type: TType;
+  public readonly type: Type;
   /**
    * Reference to the parent {@link Scope}.
    * @public
    */
-  public readonly upper: TUpper;
+  public readonly upper: Upper;
   /**
    * The scoped {@link Variable}s of this scope.
    * In the case of a 'function' scope this includes the automatic argument `arguments` as its first element, as well
@@ -220,9 +220,9 @@ abstract class ScopeBase<
 
   constructor(
     scopeManager: ScopeManager,
-    type: TType,
-    upperScope: TUpper,
-    block: TBlock,
+    type: Type,
+    upperScope: Upper,
+    block: Block,
     isMethodDefinition: boolean,
   ) {
     const upperScopeAsScopeBase = upperScope;
