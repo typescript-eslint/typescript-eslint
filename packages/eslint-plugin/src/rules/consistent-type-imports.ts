@@ -529,7 +529,10 @@ export default createRule<Options, MessageIds>({
       const last = namedSpecifierGroup[namedSpecifierGroup.length - 1];
       const removeRange: TSESTree.Range = [first.range[0], last.range[1]];
       const textRange: TSESTree.Range = [...removeRange];
-      const before = context.sourceCode.getTokenBefore(first)!;
+      const before = nullThrows(
+        context.sourceCode.getTokenBefore(first),
+        NullThrowsReasons.MissingToken('token', 'first specifier'),
+      );
       textRange[0] = before.range[1];
       if (isCommaToken(before)) {
         removeRange[0] = before.range[0];
@@ -539,7 +542,10 @@ export default createRule<Options, MessageIds>({
 
       const isFirst = allNamedSpecifiers[0] === first;
       const isLast = allNamedSpecifiers[allNamedSpecifiers.length - 1] === last;
-      const after = context.sourceCode.getTokenAfter(last)!;
+      const after = nullThrows(
+        context.sourceCode.getTokenAfter(last),
+        NullThrowsReasons.MissingToken('token', 'last specifier'),
+      );
       textRange[1] = after.range[0];
       if (isFirst || isLast) {
         if (isCommaToken(after)) {
@@ -566,13 +572,20 @@ export default createRule<Options, MessageIds>({
     ): TSESLint.RuleFix {
       const closingBraceToken = nullThrows(
         context.sourceCode.getFirstTokenBetween(
-          context.sourceCode.getFirstToken(target)!,
+          nullThrows(
+            context.sourceCode.getFirstToken(target),
+            NullThrowsReasons.MissingToken('token before', 'import'),
+          ),
           target.source,
           isClosingBraceToken,
         ),
         NullThrowsReasons.MissingToken('}', target.type),
       );
-      const before = context.sourceCode.getTokenBefore(closingBraceToken)!;
+      const before = nullThrows(
+        context.sourceCode.getTokenBefore(closingBraceToken),
+        NullThrowsReasons.MissingToken('token before', 'closing brace'),
+      );
+
       if (!isCommaToken(before) && !isOpeningBraceToken(before)) {
         insertText = `,${insertText}`;
       }
