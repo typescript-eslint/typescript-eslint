@@ -45,4 +45,43 @@ export namespace Processor {
      */
     supportsAutofix?: boolean;
   }
+
+  /**
+   * A loose definition of the ParserModule type for use with configs
+   * This type intended to relax validation of configs so that parsers that have
+   * different AST types or scope managers can still be passed to configs
+   *
+   * @see {@link LooseRuleDefinition}, {@link LooseParserModule}
+   */
+  export interface LooseProcessorModule {
+    /**
+     * Information about the processor to uniquely identify it when serializing.
+     */
+    meta?: Partial<ProcessorMeta>;
+
+    /**
+     * The function to extract code blocks.
+     */
+    /*
+    eslint-disable-next-line @typescript-eslint/no-explicit-any --
+    intentionally using `any` to allow bi-directional assignment (unknown and
+    never only allow unidirectional)
+    */
+    preprocess?: (text: string, filename: string) => any;
+
+    /**
+     * The function to merge messages.
+     */
+    /*
+    eslint-disable-next-line @typescript-eslint/no-explicit-any --
+    intentionally using `any` to allow bi-directional assignment (unknown and
+    never only allow unidirectional)
+    */
+    postprocess?: (messagesList: any, filename: string) => any;
+
+    /**
+     * If `true` then it means the processor supports autofix.
+     */
+    supportsAutofix?: boolean;
+  }
 }

@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -80,7 +79,7 @@ export default createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: true,
   },
-  defaultOptions: [{}],
+  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
 
   create(context, [options]) {
     return {
@@ -103,9 +102,8 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        const sourceCode = getSourceCode(context);
         const wrapVoidFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
-          const nodeText = sourceCode.getText(node);
+          const nodeText = context.sourceCode.getText(node);
           const newNodeText = `void ${nodeText}`;
           return fixer.replaceText(node, newNodeText);
         };
@@ -132,14 +130,14 @@ export default createRule<Options, MessageId>({
                 return null;
               }
               const arrowBody = arrowFunction.body;
-              const arrowBodyText = sourceCode.getText(arrowBody);
+              const arrowBodyText = context.sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
-              if (isParenthesized(arrowBody, sourceCode)) {
-                const bodyOpeningParen = sourceCode.getTokenBefore(
+              if (isParenthesized(arrowBody, context.sourceCode)) {
+                const bodyOpeningParen = context.sourceCode.getTokenBefore(
                   arrowBody,
                   isOpeningParenToken,
                 )!;
-                const bodyClosingParen = sourceCode.getTokenAfter(
+                const bodyClosingParen = context.sourceCode.getTokenAfter(
                   arrowBody,
                   isClosingParenToken,
                 )!;
@@ -177,9 +175,9 @@ export default createRule<Options, MessageId>({
                   return null;
                 }
                 const returnValue = returnStmt.argument!;
-                const returnValueText = sourceCode.getText(returnValue);
+                const returnValueText = context.sourceCode.getText(returnValue);
                 let newReturnStmtText = `${returnValueText};`;
-                if (isPreventingASI(returnValue, sourceCode)) {
+                if (isPreventingASI(returnValue)) {
                   // put a semicolon at the beginning of the line
                   newReturnStmtText = `;${newReturnStmtText}`;
                 }
@@ -194,9 +192,9 @@ export default createRule<Options, MessageId>({
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
               const returnValue = returnStmt.argument!;
-              const returnValueText = sourceCode.getText(returnValue);
+              const returnValueText = context.sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
-              if (isPreventingASI(returnValue, sourceCode)) {
+              if (isPreventingASI(returnValue)) {
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
@@ -333,12 +331,9 @@ export default createRule<Options, MessageId>({
      *
      * This happens if the line begins with `(`, `[` or `` ` ``
      */
-    function isPreventingASI(
-      node: TSESTree.Expression,
-      sourceCode: Readonly<TSESLint.SourceCode>,
-    ): boolean {
+    function isPreventingASI(node: TSESTree.Expression): boolean {
       const startToken = nullThrows(
-        sourceCode.getFirstToken(node),
+        context.sourceCode.getFirstToken(node),
         NullThrowsReasons.MissingToken('first token', node.type),
       );
 

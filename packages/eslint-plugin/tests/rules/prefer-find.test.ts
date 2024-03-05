@@ -56,6 +56,20 @@ ruleTester.run('prefer-find', rule, {
     "['Just', 'a', 'find'].find(x => x.length > 4);",
     'undefined.filter(x => x)[0];',
     'null?.filter(x => x)[0];',
+    // Should not throw. See https://github.com/typescript-eslint/typescript-eslint/issues/8386
+    `
+      declare function foo(param: any): any;
+      foo(Symbol.for('foo'));
+    `,
+    // Specifically need to test Symbol.for(), not just Symbol(), since only
+    // Symbol.for() creates a static value that the rule inspects.
+    `
+      declare const arr: string[];
+      const s = Symbol.for("Don't throw!");
+      arr.filter(item => item === 'aha').at(s);
+    `,
+    "[1, 2, 3].filter(x => x)[Symbol('0')];",
+    "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
   ],
 
   invalid: [

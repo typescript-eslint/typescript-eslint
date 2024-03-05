@@ -10,6 +10,7 @@ import type {
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
 import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
+import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
 import type * as ts from 'typescript';
@@ -24,7 +25,7 @@ interface ParseForESLintResult {
     comments?: TSESTree.Comment[];
   };
   services: ParserServices;
-  visitorKeys: typeof visitorKeys;
+  visitorKeys: VisitorKeys;
   scopeManager: ScopeManager;
 }
 

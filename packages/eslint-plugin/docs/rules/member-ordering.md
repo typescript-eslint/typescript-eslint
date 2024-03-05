@@ -249,9 +249,9 @@ The default configuration looks as follows:
 
       "decorated-method",
 
-      "method"
-    ]
-  }
+      "method",
+    ],
+  },
 }
 ```
 
@@ -279,9 +279,9 @@ It also ignores accessibility and scope.
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": ["signature", "method", "constructor", "field"] }
-    ]
-  }
+      { "default": ["signature", "method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -414,9 +414,9 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": ["public-instance-method", "public-static-field"] }
-    ]
-  }
+      { "default": ["public-instance-method", "public-static-field"] },
+    ],
+  },
 }
 ```
 
@@ -508,9 +508,9 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": ["public-static-field", "static-field", "instance-field"] }
-    ]
-  }
+      { "default": ["public-static-field", "static-field", "instance-field"] },
+    ],
+  },
 }
 ```
 
@@ -597,9 +597,9 @@ Default settings will be used for class declarations and all other syntax constr
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "classes": ["method", "constructor", "field"] }
-    ]
-  }
+      { "classes": ["method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -647,9 +647,9 @@ Default settings will be used for class declarations and all other syntax constr
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "classExpressions": ["method", "constructor", "field"] }
-    ]
-  }
+      { "classExpressions": ["method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -701,9 +701,9 @@ These member types are the only ones allowed for `interfaces`.
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "interfaces": ["signature", "method", "constructor", "field"] }
-    ]
-  }
+      { "interfaces": ["signature", "method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -753,9 +753,9 @@ These member types are the only ones allowed for `typeLiterals`.
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "typeLiterals": ["signature", "method", "constructor", "field"] }
-    ]
-  }
+      { "typeLiterals": ["signature", "method", "constructor", "field"] },
+    ],
+  },
 }
 ```
 
@@ -805,11 +805,11 @@ You can see the default order in [Default Configuration](#default-configuration)
       "error",
       {
         "default": {
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -856,11 +856,11 @@ This config specifies that within each custom `memberTypes` group, members are i
       {
         "default": {
           "memberTypes": ["method", "field"],
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -908,11 +908,11 @@ You can see the default order in [Default Configuration](#default-configuration)
       "error",
       {
         "default": {
-          "order": "alphabetically-case-insensitive"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically-case-insensitive",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -957,9 +957,9 @@ It ignores any member group types completely by specifying `"never"` for `member
   "rules": {
     "@typescript-eslint/member-ordering": [
       "error",
-      { "default": { "memberTypes": "never", "order": "alphabetically" } }
-    ]
-  }
+      { "default": { "memberTypes": "never", "order": "alphabetically" } },
+    ],
+  },
 }
 ```
 
@@ -1006,11 +1006,11 @@ This config places all optional members before all required members:
       {
         "default": {
           "optionalityOrder": "optional-first",
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -1049,11 +1049,11 @@ This config places all required members before all optional members:
       {
         "default": {
           "optionalityOrder": "required-first",
-          "order": "alphabetically"
-        }
-      }
-    ]
-  }
+          "order": "alphabetically",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -1271,7 +1271,7 @@ It is also possible to group member types by their accessibility (`static`, `ins
   // Methods
   "public-method", // = ["public-static-method", "public-instance-method"]
   "protected-method", // = ["protected-static-method", "protected-instance-method"]
-  "private-method" // = ["private-static-method", "private-instance-method"]
+  "private-method", // = ["private-static-method", "private-instance-method"]
 ]
 ```
 
@@ -1317,7 +1317,7 @@ their accessibility.
   "protected-decorated-method",
   "private-decorated-method",
 
-  "decorated-method" // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
+  "decorated-method", // = ["public-decorated-method", "protected-decorated-method", "private-decorated-method"]
 ]
 ```
 
@@ -1354,7 +1354,7 @@ Another option is to group the member types by their scope (`public`, `protected
   // Methods
   "static-method", // = ["public-static-method", "protected-static-method", "private-static-method"]
   "instance-method", // = ["public-instance-method", "protected-instance-method", "private-instance-method"]
-  "abstract-method" // = ["public-abstract-method", "protected-abstract-method"]
+  "abstract-method", // = ["public-abstract-method", "protected-abstract-method"]
 ]
 ```
 
@@ -1386,7 +1386,7 @@ The third grouping option is to ignore both scope and accessibility.
   //                "public-abstract-set", "protected-abstract-set"]
 
   // Methods
-  "method" // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
+  "method", // = ["public-static-method", "protected-static-method", "private-static-method", "public-instance-method", "protected-instance-method", "private-instance-method",
   //                "public-abstract-method", "protected-abstract-method"]
 ]
 ```
@@ -1403,7 +1403,7 @@ It is possible to group fields by their `readonly` modifiers.
 
   // Fields
   "readonly-field", // = ["public-static-readonly-field", "protected-static-readonly-field", "private-static-readonly-field", "public-instance-readonly-field", "protected-instance-readonly-field", "private-instance-readonly-field", "public-abstract-readonly-field", "protected-abstract-readonly-field"]
-  "field" // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field", "public-abstract-field", "protected-abstract-field"]
+  "field", // = ["public-static-field", "protected-static-field", "private-static-field", "public-instance-field", "protected-instance-field", "private-instance-field", "public-abstract-field", "protected-abstract-field"]
 ]
 ```
 
@@ -1429,7 +1429,7 @@ It is also possible to group different member types at the same rank.
   ["get", "set"],
 
   // Methods
-  "method"
+  "method",
 ]
 ```
 

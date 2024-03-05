@@ -22,7 +22,7 @@ const useMediaQuery = (mediaQuery: string): boolean => {
 
     try {
       mediaQueryList.addEventListener('change', documentChangeHandler);
-    } catch (e) {
+    } catch {
       // Safari isn't supporting mediaQueryList.addEventListener
       // eslint-disable-next-line deprecation/deprecation
       mediaQueryList.addListener(documentChangeHandler);
@@ -32,7 +32,7 @@ const useMediaQuery = (mediaQuery: string): boolean => {
     return () => {
       try {
         mediaQueryList.removeEventListener('change', documentChangeHandler);
-      } catch (e) {
+      } catch {
         // Safari isn't supporting mediaQueryList.removeEventListener
         // eslint-disable-next-line deprecation/deprecation
         mediaQueryList.removeListener(documentChangeHandler);

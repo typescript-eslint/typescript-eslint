@@ -28,17 +28,17 @@ You can specify this option for a specific path or pattern as follows:
           {
             "name": "import-foo",
             "message": "Please use import-bar instead.",
-            "allowTypeImports": true
+            "allowTypeImports": true,
           },
           {
             "name": "import-baz",
             "message": "Please use import-quux instead.",
-            "allowTypeImports": true
-          }
-        ]
-      }
-    ]
-  }
+            "allowTypeImports": true,
+          },
+        ],
+      },
+    ],
+  },
 }
 ```
 

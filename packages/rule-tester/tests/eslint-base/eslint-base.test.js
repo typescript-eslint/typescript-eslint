@@ -1508,9 +1508,6 @@ describe("RuleTester", () => {
     it("should throw an error if rule uses start and end properties on nodes, tokens or comments", () => {
         const usesStartEndRule = {
             create(context) {
-
-                const sourceCode = context.getSourceCode();
-
                 return {
                     CallExpression(node) {
                         noop(node.arguments[1].start);
@@ -1519,16 +1516,16 @@ describe("RuleTester", () => {
                         noop(node.end);
                     },
                     "UnaryExpression[operator='-']"(node) {
-                        noop(sourceCode.getFirstToken(node).start);
+                        noop(context.sourceCode.getFirstToken(node).start);
                     },
                     ConditionalExpression(node) {
-                        noop(sourceCode.getFirstToken(node).end);
+                        noop(context.sourceCode.getFirstToken(node).end);
                     },
                     BlockStatement(node) {
-                        noop(sourceCode.getCommentsInside(node)[0].start);
+                        noop(context.sourceCode.getCommentsInside(node)[0].start);
                     },
                     ObjectExpression(node) {
-                        noop(sourceCode.getCommentsInside(node)[0].end);
+                        noop(context.sourceCode.getCommentsInside(node)[0].end);
                     },
                     Decorator(node) {
                         noop(node.start);

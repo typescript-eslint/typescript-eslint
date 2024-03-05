@@ -195,3 +195,7 @@ h6 {
 .markdown a {
   text-decoration: underline;
 }
+
+.markdown a * {
+  vertical-align: baseline;
+}
