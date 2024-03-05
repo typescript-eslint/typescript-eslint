@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 type Options = ['constructor' | 'type-annotation'];
@@ -94,7 +94,10 @@ export default createRule<Options, MessageIds>({
                   }
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
-                  return context.sourceCode.getTokenAfter(node.key)!;
+                  return nullThrows(
+                    context.sourceCode.getTokenAfter(node.key),
+                    NullThrowsReasons.MissingToken(']', 'key'),
+                  );
                 }
                 return [
                   fixer.remove(typeArguments),
