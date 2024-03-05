@@ -30,7 +30,7 @@ A change to the AST **_shall not_** be considered breaking if it:
 - Refines a type to be more specific (i.e. `string` to `'literal' | 'union'`).
 - Removes a type from a union that was erroneously added and did not match the runtime AST.
 
-### `eslint-plugin` and `eslint-plugin-tslint`
+### `eslint-plugin`
 
 A change to the plugins **_shall_** be considered breaking if it will require the user to change their config. More specifically:
 

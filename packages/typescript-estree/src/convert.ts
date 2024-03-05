@@ -138,8 +138,6 @@ export class Converter {
 
   /**
    * Fixes the exports of the given ts.Node
-   * @param node the ts.Node
-   * @param result result
    * @returns the ESTreeNode with fixed exports
    */
   private fixExports<
@@ -749,8 +747,6 @@ export class Converter {
    * Converts a TypeScript node into an ESTree node.
    * The core of the conversion logic:
    * Identify and convert each relevant TypeScript SyntaxKind
-   * @param node the child ts.Node
-   * @param parent parentNode
    * @returns the converted ESTree node
    */
   private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {

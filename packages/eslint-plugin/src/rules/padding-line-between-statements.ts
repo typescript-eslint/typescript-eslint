@@ -124,7 +124,7 @@ function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
 /**
  * Skips a chain expression node
  * @param node The node to test
- * @returnsA non-chain expression
+ * @returns A non-chain expression
  * @private
  */
 function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
@@ -325,7 +325,6 @@ function isExpression(
  *     ;[1, 2, 3].forEach(bar)
  * @param node The node to get.
  * @param sourceCode The source code to get tokens.
- * @returns The actual last token.
  * @private
  */
 function getActualLastToken(

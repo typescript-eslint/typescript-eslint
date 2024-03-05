@@ -3,7 +3,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { extname } from 'path';
 import * as ts from 'typescript';
 
-import { createRule, type MakeRequired } from '../util';
+import type { MakeRequired } from '../util';
+import { createRule } from '../util';
 
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,

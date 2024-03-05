@@ -1,4 +1,5 @@
-import { AST_TOKEN_TYPES, type TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength } from '../util';
 

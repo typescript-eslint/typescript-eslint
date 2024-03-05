@@ -157,7 +157,11 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+        {
+          caughtErrors: 'all',
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+        },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': [
         'error',
@@ -236,7 +240,8 @@ export default tseslint.config(
       //
       // eslint-plugin-import
       //
-
+      // enforces consistent type specifier style for named imports
+      'import/consistent-type-specifier-style': 'error',
       // disallow non-import statements appearing before import statements
       'import/first': 'error',
       // Require a newline after the last import/require in a group
@@ -291,6 +296,7 @@ export default tseslint.config(
       // eslint-plugin-unicorn
       //
 
+      'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
     },
   },
@@ -471,7 +477,7 @@ export default tseslint.config(
     files: ['packages/ast-spec/src/**/*.{ts,tsx,cts,mts}'],
     rules: {
       // disallow ALL unused vars
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
       '@typescript-eslint/sort-type-constituents': 'error',
     },
   },
