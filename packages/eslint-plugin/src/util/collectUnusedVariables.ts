@@ -437,7 +437,7 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return node.parent!.type.indexOf('Export') === 0;
+    return node.parent!.type.startsWith('Export');
   });
 }
 

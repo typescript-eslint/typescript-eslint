@@ -52,6 +52,26 @@ foo.startsWith('bar');
 foo.endsWith('bar');
 ```
 
+<!--/tabs-->
+
+## Options
+
+### `allowSingleElementEquality`
+
+If switched to `'always'`, the rule will allow equality checks against the first or last character in a string.
+This can be preferable in projects that don't deal with special character encodings and prefer a more succinct style.
+
+The following code is considered incorrect by default, but is allowed with `allowSingleElementEquality: 'always'`:
+
+```ts option='{ "allowSingleElementEquality": "always" }' showPlaygroundButton
+declare const text: string;
+
+text[0] === 'a';
+text[0] === text[0].toUpperCase();
+text[0] === text[1];
+text[text.length - 1] === 'b';
+```
+
 ## When Not To Use It
 
 If you don't mind which style of string checking is used, you can turn this rule off safely.
