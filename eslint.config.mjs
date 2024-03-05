@@ -297,6 +297,7 @@ export default tseslint.config(
       // eslint-plugin-unicorn
       //
 
+      'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
     },
   },
