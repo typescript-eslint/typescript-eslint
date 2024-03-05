@@ -25,7 +25,7 @@ export default (
       '@typescript-eslint/no-duplicate-type-constituents': 'error',
       '@typescript-eslint/no-floating-promises': [
         'error',
-        { ignoreVoid: true },
+        { ignoreVoid: false },
       ],
       '@typescript-eslint/no-for-in-array': 'error',
       'no-implied-eval': 'off',
