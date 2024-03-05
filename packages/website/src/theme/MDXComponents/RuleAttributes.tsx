@@ -21,8 +21,21 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-const getRecommendation = (docs: RuleMetaDataDocs<unknown[]>): string[] => {
-  const recommended = docs.recommended!;
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
+  [K in Key]-?: NonNullable<Base[Key]>;
+};
+
+type RecommendedRuleMetaDataDocs<Options extends readonly unknown[]> =
+  MakeRequired<RuleMetaDataDocs<Options>, 'recommended'>;
+
+const isRecommendedDocs = (
+  docs: RuleMetaDataDocs<unknown[]>,
+): docs is RecommendedRuleMetaDataDocs<unknown[]> => !!docs.recommended;
+
+const getRecommendation = (
+  docs: RecommendedRuleMetaDataDocs<unknown[]>,
+): string[] => {
+  const recommended = docs.recommended;
   const recommendation =
     recommendations[
       typeof recommended === 'object' ? 'recommended' : recommended
@@ -42,7 +55,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
 
   const features: FeatureProps[] = [];
 
-  if (rule.docs.recommended) {
+  if (isRecommendedDocs(rule.docs)) {
     const [emoji, recommendation] = getRecommendation(rule.docs);
     features.push({
       children: (

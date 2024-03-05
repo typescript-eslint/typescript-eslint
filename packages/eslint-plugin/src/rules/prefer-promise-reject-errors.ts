@@ -132,6 +132,7 @@ export default createRule<Options, MessageIds>({
         }
 
         // reject param is always present in variables declared by executor
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const rejectVariable = context.sourceCode
           .getDeclaredVariables(executor)
           .find(variable => variable.identifiers.includes(rejectParamNode))!;

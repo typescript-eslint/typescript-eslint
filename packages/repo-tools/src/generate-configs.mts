@@ -141,6 +141,7 @@ async function main(): Promise<void> {
       settings.baseRuleForExtensionRule !== 'exclude' &&
       BASE_RULES_TO_BE_OVERRIDDEN.has(key)
     ) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const baseRuleName = BASE_RULES_TO_BE_OVERRIDDEN.get(key)!;
       console.log(
         baseRuleName

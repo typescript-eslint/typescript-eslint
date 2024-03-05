@@ -211,10 +211,10 @@ export default createRule({
     function getPropertyRange(
       node: TSESTree.MemberExpression,
     ): [number, number] {
-      const dotOrOpenBracket = context.sourceCode.getTokenAfter(
-        node.object,
-        isNotClosingParenToken,
-      )!;
+      const dotOrOpenBracket = nullThrows(
+        context.sourceCode.getTokenAfter(node.object, isNotClosingParenToken),
+        NullThrowsReasons.MissingToken('closing parenthesis', 'member'),
+      );
       return [dotOrOpenBracket.range[0], node.range[1]];
     }
 
