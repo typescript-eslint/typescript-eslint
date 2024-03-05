@@ -47,15 +47,11 @@ function filterAndMapRuleConfigs({
   }
 
   if (typeChecked) {
-    if (typeChecked === 'exclude') {
-      result = result.filter(
-        ([, rule]) => !rule.meta.docs?.requiresTypeChecking,
-      );
-    } else if (typeChecked === 'include-only') {
-      result = result.filter(
-        ([, rule]) => rule.meta.docs?.requiresTypeChecking,
-      );
-    }
+    result = result.filter(([, rule]) =>
+      typeChecked === 'exclude'
+        ? !rule.meta.docs?.requiresTypeChecking
+        : rule.meta.docs?.requiresTypeChecking,
+    );
   }
 
   if (recommendations) {
