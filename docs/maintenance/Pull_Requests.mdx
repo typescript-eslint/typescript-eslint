@@ -32,17 +32,13 @@ Don't treat these as exact responses you must use: they're just a starting copy+
 Please do adopt your specific responses to your personal tone and to match the thread for non-straightforward PRs.
 :::
 
-Open pull requests generally switch between two states:
+Open pull requests ideally switch between two states:
 
 - Ready for review: either newly created or after [review is re-requested](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#re-requesting-a-review)
 - Waiting for author activity: either by virtue of [being a draft](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) or having the [`awaiting response` label](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+label%3A%22awaiting+response%22)
 
 Add the `awaiting response` label to a PR whenever you post a review.
 It will be automatically removed if the author re-requests review.
-
-Authors sometimes separately ask questions as comments on PRs, sometimes including an `@` tag.
-Put back the `awaiting response` label if you answer the questions.
-Don't worry if you miss some of these questions; we prefer going through the formal re-requesting review to make sure the `awaiting response` label is removed as needed.
 
 ### Be Kind
 
@@ -65,7 +61,29 @@ You may find it useful to:
 - Attempt to simplify the provided reduction ("code golf")
 - Look back through previous issues and PRs around the same area of code / lint rule
 
-#### Posting Comments
+If there's no backing issue:
+
+- If the PR is a straightforward docs or tooling fix that doesn't impact users, it's ok to review it as-is
+- Otherwise, add the `please fill out the template` label and post a comment like the _Needs Issue_ template
+
+Upon completing your review, if the build is passing and you feel comfortable merging it in, go ahead and squash merge.
+Otherwise, add the `1 approval` label.
+
+#### Common Things to Look For
+
+- Style: that can you read through the code easily, there are comments for necessary tricky areas, and not unnecessary comments otherwise.
+  - Try not to nitpick things that don't matter.
+  - If something is standard in the repo but not enforced, consider mentioning it as a non-blocking comment and filing an issue to enforce it.
+- Thoroughness: does it handle relevant edge cases? Commonly:
+  - Generics and type parameters (see: `getConstrainedTypeAtLocation`).
+  - Parenthesis and whitespace (see: `getWrappingFixer`).
+  - Unions and intersections (see: `unionTypeParts` and `intersectionTypeParts`).
+- Unit tests:
+  - That both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
+  - That all lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
+  - That `invalid` lint rule errors include line and column information
+
+#### Individual Comments
 
 Post about one comment per area of praise note, suggested change, or non-actionable note.
 It's fine to use multiple ancillary comments to indicate _"(also here)"_ notes, but don't overwhelm with requests.
@@ -81,7 +99,7 @@ Err on the side of providing more information than you think is needed.
 Try to default to a questioning tone for points that aren't clear bugs.
 Encourage authors to think on your suggestions: _"I think {xyz}, but am not sure - what do you think?"_.
 
-#### Posting Preliminary or Repeat Reviews
+#### Preliminary or Repeat Reviews
 
 Sometimes you may want to post a preliminary review, and/or realize later on you missed something in an earlier review.
 Both are reasonable and fine.
@@ -89,21 +107,20 @@ Both are reasonable and fine.
 For preliminary reviews, be clear with what scale you're reviewing at: _"Reviewing on architecture now, will look in more detail once it's settled"_.
 
 For repeat reviews, be clear when it's something you missed earlier and/or there's new information.
-Don't apologize if the missed information was only made clear because of changes due to comments - this is part of the review process!
+Don't apologize if the missed information was only made clear because of requested changes - this is part of the review process!
 
-### Common Things to Look For
+### Other States
 
-- Style: that can you read through the code easily, there are comments for necessary tricky areas, and not unnecessary comments otherwise.
-  - Try not to nitpick things that don't matter.
-  - If something is standard in the repo but not enforced, consider mentioning it as a non-blocking comment and filing an issue to enforce it.
-- Thoroughness: does it handle relevant edge cases? Commonly:
-  - Generics and type parameters (see: `getConstrainedTypeAtLocation`).
-  - Parenthesis and whitespace (see: `getWrappingFixer`).
-  - Unions and intersections (see: `unionTypeParts` and `intersectionTypeParts`).
-- Unit tests:
-  - That both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
-  - That all lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
-  - That `invalid` lint rule errors include line and column information
+#### External Blockers
+
+If the PR is blocked on something, such as an external API or discussion in an issue, add the `status: blocked` and appropriate `blocked by *` label.
+Explain why in a comment that links to at least a tracking issue for the blocker.
+
+#### Out-of-Band Questions
+
+Authors sometimes separately ask questions as comments on PRs, sometimes including an `@` tag.
+Put back the `awaiting response` label if you answer the questions.
+Don't worry if you miss some of these questions; we prefer going through the formal re-requesting review to make sure the `awaiting response` label is removed as needed.
 
 ## Pruning Old PRs
 
