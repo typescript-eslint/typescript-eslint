@@ -99,6 +99,7 @@ Don't apologize if the missed information was only made clear because of changes
 - Thoroughness: does it handle relevant edge cases? Commonly:
   - Generics and type parameters (see: `getConstrainedTypeAtLocation`).
   - Parenthesis and whitespace (see: `getWrappingFixer`).
+  - Unions and intersections (see: `unionTypeParts` and `intersectionTypeParts`).
 - Unit tests:
   - That both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
   - That all lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
