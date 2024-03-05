@@ -2,6 +2,9 @@
 description: 'Require `return` statements to either always or never specify values.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/consistent-return** for documentation.
@@ -9,9 +12,8 @@ description: 'Require `return` statements to either always or never specify valu
 This rule extends the base [`eslint/consistent-return`](https://eslint.org/docs/rules/consistent-return) rule.
 This version adds support for functions that return `void` or `Promise<void>`.
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 function foo(): undefined {}
@@ -26,7 +28,8 @@ async function baz(flag: boolean): Promise<undefined> {
 }
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 function foo(): void {}
@@ -40,3 +43,6 @@ async function baz(flag: boolean): Promise<void | number> {
   return;
 }
 ```
+
+</TabItem>
+</Tabs>
