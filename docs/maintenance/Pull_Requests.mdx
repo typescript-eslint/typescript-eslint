@@ -79,9 +79,11 @@ Otherwise, add the `1 approval` label.
   - Parenthesis and whitespace (see: `getWrappingFixer`).
   - Unions and intersections (see: `unionTypeParts` and `intersectionTypeParts`).
 - Unit tests:
-  - That both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
-  - That all lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
-  - That `invalid` lint rule errors include line and column information
+  - All lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
+  - Both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
+  - Fixes and suggestions, if present, don't remove `//` or `/*` comments
+  - `invalid` lint rule errors include line and column information
+  - Valid syntax edge cases don't cause the rule to crash, even if they cause a type error in TypeScript
 
 #### Individual Comments
 
