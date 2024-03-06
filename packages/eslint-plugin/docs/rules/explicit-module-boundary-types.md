@@ -151,7 +151,7 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 ### `allowHigherOrderFunctions`
 
-When this option is `true`, the rule ignores return type annotations on function immediately returning another function expression.
+When this option is `true`, the rule ignores return type annotations on function, which is immediately returning another function expression.
 
 <!--tabs-->
 
