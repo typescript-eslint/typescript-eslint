@@ -124,10 +124,6 @@ export default createRule({
       }
     }
 
-    /**
-     * Check the body for overload methods.
-     * @param node the body to be inspected.
-     */
     function checkBodyForOverloadMethods(node: RuleNode): void {
       const members = getMembers(node);
 

@@ -1,7 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, getNameFromMember } from '../util';
+import {
+  createRule,
+  getNameFromMember,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -182,7 +187,7 @@ export default createRule<Options, MessageIds>({
     ): TSESLint.ReportFixFunction {
       return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
         const tokens = context.sourceCode.getTokens(node);
-        let rangeToRemove: TSESLint.AST.Range;
+        let rangeToRemove!: TSESLint.AST.Range;
         for (let i = 0; i < tokens.length; i++) {
           const token = tokens[i];
           if (
@@ -207,7 +212,7 @@ export default createRule<Options, MessageIds>({
             }
           }
         }
-        return fixer.removeRange(rangeToRemove!);
+        return fixer.removeRange(rangeToRemove);
       };
     }
 
@@ -228,7 +233,10 @@ export default createRule<Options, MessageIds>({
       ): TSESLint.RuleFix | null {
         if (node.decorators.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
-          const nextToken = context.sourceCode.getTokenAfter(lastDecorator)!;
+          const nextToken = nullThrows(
+            context.sourceCode.getTokenAfter(lastDecorator),
+            NullThrowsReasons.MissingToken('token', 'last decorator'),
+          );
           return fixer.insertTextBefore(nextToken, `${accessibility} `);
         }
         return fixer.insertTextBefore(node, `${accessibility} `);

@@ -53,7 +53,6 @@ module.exports = {
 
     // TODO(#7130): Investigate changing these in or removing these from presets
     '@typescript-eslint/no-confusing-void-expression': 'off',
-    '@typescript-eslint/prefer-string-starts-ends-with': 'off',
 
     //
     // our plugin :D
@@ -89,6 +88,12 @@ module.exports = {
       'error',
       {
         allowBitwiseExpressions: true,
+      },
+    ],
+    '@typescript-eslint/prefer-string-starts-ends-with': [
+      'error',
+      {
+        allowSingleElementEquality: 'always',
       },
     ],
     '@typescript-eslint/unbound-method': 'off',
