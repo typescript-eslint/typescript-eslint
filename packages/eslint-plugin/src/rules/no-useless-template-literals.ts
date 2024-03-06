@@ -54,12 +54,11 @@ export default createRule<[], MessageId>({
     }
 
     function isLiteral(expression: TSESTree.Expression): boolean {
-      return (
-        expression.type === AST_NODE_TYPES.Literal ||
-        (expression.type === AST_NODE_TYPES.TemplateLiteral &&
-          expression.expressions.length === 0 &&
-          expression.quasis.length === 1)
-      );
+      return expression.type === AST_NODE_TYPES.Literal;
+    }
+
+    function isTemplateLiteral(expression: TSESTree.Expression): boolean {
+      return expression.type === AST_NODE_TYPES.TemplateLiteral;
     }
 
     function isInfinityIdentifier(expression: TSESTree.Expression): boolean {
@@ -115,13 +114,9 @@ export default createRule<[], MessageId>({
         }
 
         const fixableExpressions = node.expressions.filter(
-          (
-            expression,
-          ): expression is
-            | TSESTree.Literal
-            | TSESTree.TemplateLiteral
-            | TSESTree.Identifier =>
+          expression =>
             isLiteral(expression) ||
+            isTemplateLiteral(expression) ||
             isUndefinedIdentifier(expression) ||
             isInfinityIdentifier(expression) ||
             isNaNIdentifier(expression),
@@ -155,6 +150,19 @@ export default createRule<[], MessageId>({
                 const escapedValue = stringValue.replace(/([`$\\])/g, '\\$1');
 
                 fixes.push(fixer.replaceText(expression, escapedValue));
+              } else if (isTemplateLiteral(expression)) {
+                // Note that some template literals get handled in the previous branch too.
+                // Remove the beginning and trailing backtick characters.
+                fixes.push(
+                  fixer.removeRange([
+                    expression.range[0],
+                    expression.range[0] + 1,
+                  ]),
+                  fixer.removeRange([
+                    expression.range[1] - 1,
+                    expression.range[1],
+                  ]),
+                );
               }
 
               return fixes;
