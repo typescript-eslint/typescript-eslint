@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export function getTokenAtPosition(
   sourceFile: ts.SourceFile,
   position: number,
@@ -26,5 +27,7 @@ export function getTokenAtPosition(
       }
     }
   }
+
   return current!;
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

@@ -11,6 +11,8 @@ import {
   getParserServices,
   isNullableType,
   isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -261,18 +263,25 @@ export default createRule<Options, MessageIds>({
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const openingAngleBracket = context.sourceCode.getTokenBefore(
-                  node.typeAnnotation,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Punctuator &&
-                    token.value === '<',
-                )!;
-                const closingAngleBracket = context.sourceCode.getTokenAfter(
-                  node.typeAnnotation,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Punctuator &&
-                    token.value === '>',
-                )!;
+                const openingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '<',
+                  ),
+                  NullThrowsReasons.MissingToken('<', 'type annotation'),
+                );
+                const closingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '>',
+                  ),
+                  NullThrowsReasons.MissingToken('>', 'type annotation'),
+                );
+
                 // < ( number ) > ( 3 + 5 )
                 // ^---remove---^
                 return fixer.removeRange([
@@ -281,15 +290,22 @@ export default createRule<Options, MessageIds>({
                 ]);
               }
               // `as` is always present in TSAsExpression
-              const asToken = context.sourceCode.getTokenAfter(
-                node.expression,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Identifier &&
-                  token.value === 'as',
-              )!;
-              const tokenBeforeAs = context.sourceCode.getTokenBefore(asToken, {
-                includeComments: true,
-              })!;
+              const asToken = nullThrows(
+                context.sourceCode.getTokenAfter(
+                  node.expression,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Identifier &&
+                    token.value === 'as',
+                ),
+                NullThrowsReasons.MissingToken('>', 'type annotation'),
+              );
+              const tokenBeforeAs = nullThrows(
+                context.sourceCode.getTokenBefore(asToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('comment', 'as'),
+              );
+
               // ( 3 + 5 )  as  number
               //          ^--remove--^
               return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
