@@ -88,7 +88,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       : '';
 
     return {
-      ts: searchParams.get('ts') ?? process.env.TS_VERSION!,
+      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
       showAST: readShowAST(searchParams.get('showAST')),
       sourceType:
         searchParams.get('sourceType') === 'script' ? 'script' : 'module',

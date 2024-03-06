@@ -121,6 +121,7 @@ export default function CodeBlockString({
             )}
             codeHash={lz.compressToEncodedURIComponent(copiedCode)}
             eslintrcHash={eslintrcHash}
+            language={language}
           >
             Open in Playground
           </TryInPlayground>
