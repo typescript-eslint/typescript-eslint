@@ -51,3 +51,15 @@ foo.startsWith('bar');
 foo.endsWith('bar');
 "
 `;
+
+exports[`Validating rule docs prefer-string-starts-ends-with.md code examples ESLint output snapshot 3`] = `
+"Options: { "allowSingleElementEquality": "always" }
+
+declare const text: string;
+
+text[0] === 'a';
+text[0] === text[0].toUpperCase();
+text[0] === text[1];
+text[text.length - 1] === 'b';
+"
+`;
