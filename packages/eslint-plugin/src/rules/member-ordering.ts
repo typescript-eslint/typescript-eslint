@@ -506,6 +506,7 @@ function getRankOrder(
   const stack = memberGroups.slice(); // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const memberGroup = stack.shift()!;
     rank = orderConfig.findIndex(memberType =>
       Array.isArray(memberType)
@@ -630,7 +631,7 @@ function getRank(
  * public-instance-method.
  * If a lowest possible rank is a member group, a comma separated list of ranks is returned.
  * @param ranks the existing ranks in the object.
- * @param target the target rank.
+ * @param target the minimum target rank to filter on.
  * @param order the current order to be validated.
  * @returns the name(s) of the lowest possible rank without dashes (-).
  */
@@ -993,6 +994,8 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     return {
       ClassDeclaration(node): void {
         validateMembersOrder(
@@ -1023,5 +1026,6 @@ export default createRule<Options, MessageIds>({
         );
       },
     };
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
 });

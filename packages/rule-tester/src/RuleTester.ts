@@ -612,8 +612,10 @@ export class RuleTester extends TestFramework {
       messages,
       output,
       // is definitely assigned within the `rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeAST: beforeAST!,
       // is definitely assigned within the `rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
     };
   }

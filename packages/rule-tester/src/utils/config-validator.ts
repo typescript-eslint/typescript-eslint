@@ -172,6 +172,7 @@ function validateRules(
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     validateRuleOptions(rule, id, rulesConfig[id]!, source);
   });
 }
@@ -255,6 +256,7 @@ function validateConfigSchema(
   if (!validateSchema(config)) {
     throw new Error(
       `ESLint configuration in ${source} is invalid:\n${formatErrors(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         validateSchema.errors!,
       )}`,
     );

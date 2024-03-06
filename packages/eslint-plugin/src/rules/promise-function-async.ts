@@ -8,6 +8,8 @@ import {
   getFunctionHeadLoc,
   getParserServices,
   isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -94,6 +96,8 @@ export default createRule<Options, MessageIds>({
   ) {
     const allAllowedPromiseNames = new Set([
       'Promise',
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ...allowedPromiseNames!,
     ]);
     const services = getParserServices(context);
@@ -114,6 +118,7 @@ export default createRule<Options, MessageIds>({
       if (
         !containsAllTypesByName(
           returnType,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           allowAny!,
           allAllowedPromiseNames,
           // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
@@ -160,7 +165,10 @@ export default createRule<Options, MessageIds>({
             const method = node.parent;
 
             // the token to put `async` before
-            let keyToken = context.sourceCode.getFirstToken(method)!;
+            let keyToken = nullThrows(
+              context.sourceCode.getFirstToken(method),
+              NullThrowsReasons.MissingToken('key token', 'method'),
+            );
 
             // if there are decorators then skip past them
             if (
@@ -169,7 +177,10 @@ export default createRule<Options, MessageIds>({
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
-              keyToken = context.sourceCode.getTokenAfter(lastDecorator)!;
+              keyToken = nullThrows(
+                context.sourceCode.getTokenAfter(lastDecorator),
+                NullThrowsReasons.MissingToken('key token', 'last decorator'),
+              );
             }
 
             // if current token is a keyword like `static` or `public` then skip it
@@ -177,12 +188,18 @@ export default createRule<Options, MessageIds>({
               keyToken.type === AST_TOKEN_TYPES.Keyword &&
               keyToken.range[0] < method.key.range[0]
             ) {
-              keyToken = context.sourceCode.getTokenAfter(keyToken)!;
+              keyToken = nullThrows(
+                context.sourceCode.getTokenAfter(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              );
             }
 
             // check if there is a space between key and previous token
             const insertSpace = !context.sourceCode.isSpaceBetween(
-              context.sourceCode.getTokenBefore(keyToken)!,
+              nullThrows(
+                context.sourceCode.getTokenBefore(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              ),
               keyToken,
             );
 
