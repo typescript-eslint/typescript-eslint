@@ -205,6 +205,8 @@ export default createRule<[Options], MessageIds>({
         // default cases
         if (
           validParents.includes(node.parent.type) &&
+          // https://github.com/typescript-eslint/typescript-eslint/issues/6225
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           !invalidGrandParents.includes(node.parent.parent!.type)
         ) {
           return;

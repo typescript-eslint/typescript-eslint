@@ -64,6 +64,7 @@ export function sanitize(text: string): string {
   return text.replace(
     // eslint-disable-next-line no-control-regex
     /[\u0000-\u0009\u000b-\u001a]/gu,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     c => `\\u${c.codePointAt(0)!.toString(16).padStart(4, '0')}`,
   );
 }
