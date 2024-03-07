@@ -53,7 +53,6 @@ interface ParserOptions {
   emitDecoratorMetadata?: boolean;
 
   // typescript-estree specific
-  comment?: boolean;
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
@@ -62,13 +61,10 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   filePath?: string;
   jsDocParsingMode?: JSDocParsingMode;
-  loc?: boolean;
   programs?: Program[] | null;
   project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: (RegExp | string)[];
-  range?: boolean;
   sourceType?: SourceType;
-  tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   cacheLifetime?: {
