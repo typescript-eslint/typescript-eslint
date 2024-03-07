@@ -1873,6 +1873,7 @@ describe('hand-crafted cases', () => {
         `,
         options: [{ requireNullish: true }],
         errors: [{ messageId: `preferOptionalChain` }],
+        only: true,
       },
       {
         code: `
@@ -1881,7 +1882,6 @@ describe('hand-crafted cases', () => {
         `,
         options: [{ requireNullish: true }],
         errors: [{ messageId: `preferOptionalChain` }],
-        only: true,
       },
 
       // allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing

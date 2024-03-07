@@ -95,31 +95,35 @@ function isValidFalseBooleanCheckType(
     }
   }
 
-  if (options.requireNullish === true) {
-    return (
-      operatorNode.right === node ||
-      types.some(t => isTypeFlagSet(t, NULLISH_FLAGS))
-    );
-  }
+  /* if (
+    options.requireNullish === true &&
+    !types.some(t => isTypeFlagSet(t, NULLISH_FLAGS))
+  ) {
+    return;
+  }*/
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
-  if (options.checkAny === true) {
-    allowedFlags |= ts.TypeFlags.Any;
-  }
-  if (options.checkUnknown === true) {
-    allowedFlags |= ts.TypeFlags.Unknown;
-  }
-  if (options.checkString === true) {
-    allowedFlags |= ts.TypeFlags.StringLike;
-  }
-  if (options.checkNumber === true) {
-    allowedFlags |= ts.TypeFlags.NumberLike;
-  }
-  if (options.checkBoolean === true) {
-    allowedFlags |= ts.TypeFlags.BooleanLike;
-  }
-  if (options.checkBigInt === true) {
-    allowedFlags |= ts.TypeFlags.BigIntLike;
+  if (options.requireNullish === true) {
+    allowedFlags = NULLISH_FLAGS;
+  } else {
+    if (options.checkAny === true) {
+      allowedFlags |= ts.TypeFlags.Any;
+    }
+    if (options.checkUnknown === true) {
+      allowedFlags |= ts.TypeFlags.Unknown;
+    }
+    if (options.checkString === true) {
+      allowedFlags |= ts.TypeFlags.StringLike;
+    }
+    if (options.checkNumber === true) {
+      allowedFlags |= ts.TypeFlags.NumberLike;
+    }
+    if (options.checkBoolean === true) {
+      allowedFlags |= ts.TypeFlags.BooleanLike;
+    }
+    if (options.checkBigInt === true) {
+      allowedFlags |= ts.TypeFlags.BigIntLike;
+    }
   }
   return types.every(t => isTypeFlagSet(t, allowedFlags));
 }
