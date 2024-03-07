@@ -26,10 +26,16 @@ if (
 }
     `,
     `
-      const cx = 1;
-      let z0 = cx as number;
-      let z1 = cx as const;
-      let z2 = cx as 1;
+      const c = 1;
+      let z = c as number;
+    `,
+    `
+      const c = 1;
+      let z = c as const;
+    `,
+    `
+      const c = 1;
+      let z = c as 1;
     `,
     `
       type Bar = 'bar';
