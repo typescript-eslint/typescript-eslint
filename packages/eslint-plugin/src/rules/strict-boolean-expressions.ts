@@ -244,7 +244,10 @@ export default createRule<Options, MessageId>({
      * unless `isCondition` flag is set to false, in which case
      * it's assumed to be used for side effects only and is skipped.
      */
-    function traverseNode(node: TSESTree.Node, isCondition: boolean): void {
+    function traverseNode(
+      node: TSESTree.Expression,
+      isCondition: boolean,
+    ): void {
       // prevent checking the same node multiple times
       if (traversedNodes.has(node)) {
         return;
@@ -272,7 +275,7 @@ export default createRule<Options, MessageId>({
      * This function does the actual type check on a node.
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
-    function checkNode(node: TSESTree.Node): void {
+    function checkNode(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
@@ -307,7 +310,7 @@ export default createRule<Options, MessageId>({
       // nullable boolean
       if (is('nullish', 'boolean')) {
         if (!options.allowNullableBoolean) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableBoolean)
             context.report({
               node,
@@ -372,7 +375,7 @@ export default createRule<Options, MessageId>({
       // string
       if (is('string') || is('truthy string')) {
         if (!options.allowString) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!string)
             context.report({
               node,
@@ -447,7 +450,7 @@ export default createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableString)
             context.report({
               node,
@@ -546,7 +549,7 @@ export default createRule<Options, MessageId>({
                 }),
               });
             }
-          } else if (isLogicalNegationExpression(node.parent!)) {
+          } else if (isLogicalNegationExpression(node.parent)) {
             // if (!number)
             context.report({
               node,
@@ -623,7 +626,7 @@ export default createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableNumber)
             context.report({
               node,
@@ -704,7 +707,7 @@ export default createRule<Options, MessageId>({
       // nullable object
       if (is('nullish', 'object')) {
         if (!options.allowNullableObject) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableObject)
             context.report({
               node,
@@ -755,7 +758,7 @@ export default createRule<Options, MessageId>({
         is('nullish', 'number', 'string', 'enum')
       ) {
         if (!options.allowNullableEnum) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',

@@ -122,6 +122,15 @@ interface Example {
           line: 10,
           messageId: 'incorrectOrder',
         },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'B1',
+            member: 'a1',
+          },
+          line: 15,
+          messageId: 'incorrectOrder',
+        },
       ],
       options: [
         {

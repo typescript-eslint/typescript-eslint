@@ -230,7 +230,11 @@ export default createRule<[Options], MessageIds>({
             const { minimumDescriptionLength } = options;
             const format = descriptionFormats.get(fullDirective);
             if (
-              getStringLength(description.trim()) < minimumDescriptionLength!
+              getStringLength(description.trim()) <
+              nullThrows(
+                minimumDescriptionLength,
+                'Expected minimumDescriptionLength to be set',
+              )
             ) {
               context.report({
                 data: { directive, minimumDescriptionLength },

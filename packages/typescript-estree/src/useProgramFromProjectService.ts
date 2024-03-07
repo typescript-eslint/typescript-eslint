@@ -65,10 +65,12 @@ export function useProgramFromProjectService(
   log('Retrieving script info and then program for: %s', filePathAbsolute);
 
   const scriptInfo = service.getScriptInfo(filePathAbsolute);
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const program = service
     .getDefaultProjectForFile(scriptInfo!.fileName, true)!
     .getLanguageService(/*ensureSynchronized*/ true)
     .getProgram();
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   if (!program) {
     log('Could not find project service program for: %s', filePathAbsolute);

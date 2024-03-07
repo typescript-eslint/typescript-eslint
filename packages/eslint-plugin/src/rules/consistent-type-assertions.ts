@@ -9,6 +9,8 @@ import {
   isClosingParenToken,
   isOpeningParenToken,
   isParenthesized,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
@@ -109,14 +111,14 @@ export default createRule<Options, MessageIds>({
       let afterCount = 0;
 
       if (isParenthesized(node, context.sourceCode)) {
-        const bodyOpeningParen = context.sourceCode.getTokenBefore(
-          node,
-          isOpeningParenToken,
-        )!;
-        const bodyClosingParen = context.sourceCode.getTokenAfter(
-          node,
-          isClosingParenToken,
-        )!;
+        const bodyOpeningParen = nullThrows(
+          context.sourceCode.getTokenBefore(node, isOpeningParenToken),
+          NullThrowsReasons.MissingToken('(', 'node'),
+        );
+        const bodyClosingParen = nullThrows(
+          context.sourceCode.getTokenAfter(node, isClosingParenToken),
+          NullThrowsReasons.MissingToken(')', 'node'),
+        );
 
         beforeCount = node.range[0] - bodyOpeningParen.range[0];
         afterCount = bodyClosingParen.range[1] - node.range[1];
