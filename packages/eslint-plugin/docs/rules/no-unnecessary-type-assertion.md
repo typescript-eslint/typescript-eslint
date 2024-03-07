@@ -36,6 +36,10 @@ const foo = 3 as Foo;
 ```
 
 ```ts
+const foo = 'foo' as const;
+```
+
+```ts
 function foo(x: number): number {
   return x!; // unnecessary non-null
 }
@@ -52,7 +56,7 @@ const foo = 3 as number;
 ```
 
 ```ts
-const foo = 'foo' as const;
+let foo = 'foo' as const;
 ```
 
 ```ts
