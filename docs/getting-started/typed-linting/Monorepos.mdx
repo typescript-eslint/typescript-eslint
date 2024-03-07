@@ -53,15 +53,17 @@ For each file being linted, the first matching project path will be used as its 
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  languageOptions: {
-    parserOptions: {
-      // Remove this line
-      project: true,
-      // Add this line
-      project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-      tsconfigRootDir: import.meta.dirname,
+  {
+    languageOptions: {
+      parserOptions: {
+        // Remove this line
+        project: true,
+        // Add this line
+        project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname,
+      }
     }
-  },
+  }
 );
 ```
 
@@ -103,15 +105,17 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  languageOptions: {
-    parserOptions: {
-      // Remove this line
-      project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
-      // Add this line
-      project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
-      tsconfigRootDir: import.meta.dirname
+  {
+    languageOptions: {
+      parserOptions: {
+        // Remove this line
+        project: ['./tsconfig.eslint.json', './**/tsconfig.json'],
+        // Add this line
+        project: ['./tsconfig.eslint.json', './packages/*/tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname
+      }
     }
-  },
+  }
 );
 ```
 
