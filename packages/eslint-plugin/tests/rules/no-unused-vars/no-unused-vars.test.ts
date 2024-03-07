@@ -1115,6 +1115,14 @@ declare module 'foo' {
   export = Foo;
 }
     `,
+    `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  export import TheFoo = Foo;
+}
+    `,
   ],
 
   invalid: [
@@ -1914,6 +1922,28 @@ export = Foo;
           column: 6,
           data: {
             varName: 'Bar',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  import TheFoo = Foo;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 6,
+          column: 10,
+          data: {
+            varName: 'TheFoo',
             action: 'defined',
             additional: '',
           },

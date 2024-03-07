@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -68,8 +69,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Determines whether a function has a name.
-     * @param node The function node.
-     * @returns Whether the function has a name.
      */
     function isNamedFunction(
       node:
@@ -95,7 +94,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Gets the config for a given function
-     * @param node The function node
      */
     function getConfigForFunction(
       node:
