@@ -222,7 +222,8 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = uncastType === castType;
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isConstVariableDeclaration(node.parent.parent!)
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            isConstVariableDeclaration(node.parent.parent!)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
