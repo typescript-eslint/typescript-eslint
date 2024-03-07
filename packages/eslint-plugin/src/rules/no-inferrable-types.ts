@@ -2,7 +2,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 type Options = [
   {
@@ -223,7 +223,12 @@ export default createRule<Options, MessageIds>({
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
-            yield fixer.remove(context.sourceCode.getTokenBefore(typeNode)!);
+            yield fixer.remove(
+              nullThrows(
+                context.sourceCode.getTokenBefore(typeNode),
+                NullThrowsReasons.MissingToken('token before', 'type node'),
+              ),
+            );
           }
           yield fixer.remove(typeNode);
         },

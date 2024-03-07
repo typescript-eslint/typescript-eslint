@@ -160,10 +160,12 @@ export default createRule({
         node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration &&
         node.parent.parent.type === AST_NODE_TYPES.TSModuleBlock
       ) {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/8352
         // TODO: We don't need to dip into the TypeScript type checker here!
         // Merged namespaces must all exist in the same file.
         // We could instead compare this file's nodes to find the merges.
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.id);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const declarations = typeChecker
           .getSymbolAtLocation(tsNode)!
           .getDeclarations()!;

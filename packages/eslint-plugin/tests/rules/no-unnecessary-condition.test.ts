@@ -365,6 +365,20 @@ if (arr?.[42]) {
 }
     `,
     `
+type ItemA = { bar: string; baz: string };
+type ItemB = { bar: string; qux: string };
+declare const foo: ItemA[] | ItemB[];
+foo[0]?.bar;
+    `,
+    `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
+    `,
+    `
 declare const returnsArr: undefined | (() => string[]);
 if (returnsArr?.()[42]) {
 }
