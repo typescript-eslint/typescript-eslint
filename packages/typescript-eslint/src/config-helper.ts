@@ -18,7 +18,7 @@ TODO - convert this to /utils/ts-eslint
 */
 import type { TSESLint } from '@typescript-eslint/utils';
 
-interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
+export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
    * Allows you to "extend" a set of configs similar to `extends` from the
    * classic configs.
