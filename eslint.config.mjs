@@ -83,7 +83,6 @@ export default tseslint.config(
           // in the rare case that we do - just need to manually restart their IDE.
           glob: 'Infinity',
         },
-        sourceType: 'module',
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
