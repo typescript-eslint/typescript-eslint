@@ -409,11 +409,16 @@ declare const nested: string, interpolation: string;
   \`le\${  \`ss\`  }\`
 }\`;
       `,
-      output: `
+      output: [
+        `
 \`use\${
   \`less\`
 }\`;
       `,
+        `
+\`useless\`;
+      `,
+      ],
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
