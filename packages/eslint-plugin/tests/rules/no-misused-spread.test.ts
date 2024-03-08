@@ -121,26 +121,6 @@ ruleTester.run('no-misused-spread', rule, {
     `,
 
     `
-      class A {
-        a = 1;
-        b = 2;
-      }
-
-      const o = { ...new A() };
-    `,
-
-    `
-      class A {
-        a = 1;
-        b = 2;
-      }
-
-      const a = new A();
-
-      const o = { ...a };
-    `,
-
-    `
       function f() {}
 
       f.prop = 1;
@@ -165,16 +145,90 @@ ruleTester.run('no-misused-spread', rule, {
     `,
 
     `
-      declare const promise: Promise<number>;
+      declare const promiseLike: PromiseLike<number>;
 
-      const o = { ...promise };
+      const o = { ...promiseLike };
     `,
 
-    `
-      declare const promise: PromiseLike<number>;
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          a = 1;
+          public b = 2;
+          private c = 3;
+          protected d = 4;
+          static e = 5;
+        }
 
-      const o = { ...promise };
-    `,
+        const o = { ...new A() };
+      `,
+    },
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          a = 1;
+        }
+
+        const a = new A();
+
+        const o = { ...a };
+      `,
+    },
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare const a: A;
+
+        const o = { ...a };
+      `,
+    },
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          a = 1;
+        }
+
+        class B extends A {}
+
+        const o = { ...new B() };
+      `,
+    },
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare const a: A | { b: string };
+
+        const o = { ...a };
+      `,
+    },
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare const a: A & { b: string };
+
+        const o = { ...a };
+      `,
+    },
   ],
 
   invalid: [
@@ -711,6 +765,96 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        declare const promise: Promise<number>;
+        const o = { ...promise };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Promise',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 31,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const maybePromise: Promise<number> | { a: number };
+        const o = { ...maybePromise };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Promise',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 36,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const promise: Promise<number> & { a: number };
+        const o = { ...promise };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Promise',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 31,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare function getPromise(): Promise<number>;
+        const o = { ...getPromise() };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Promise',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 36,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare function getPromise<T extends Promise<number>>(arg: T): T;
+        const o = { ...getPromise() };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Promise',
+          },
+          line: 3,
+          column: 21,
+          endColumn: 36,
+        },
+      ],
+    },
+
+    {
+      code: `
         function f() {}
 
         const o = { ...f };
@@ -897,6 +1041,182 @@ ruleTester.run('no-misused-spread', rule, {
           line: 4,
           column: 21,
           endColumn: 37,
+        },
+      ],
+    },
+
+    {
+      code: `
+        const o = { ...new Date() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 2,
+          column: 21,
+          endColumn: 34,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+          public b = 2;
+          private c = 3;
+          protected d = 4;
+          static e = 5;
+        }
+
+        const o = { ...new A() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 10,
+          column: 21,
+          endColumn: 31,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        const a = new A();
+
+        const o = { ...a };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare const a: A;
+
+        const o = { ...a };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare function getA(): A;
+
+        const o = { ...getA() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 30,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare function getA<T extends A>(arg: T): T;
+
+        const o = { ...getA() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 30,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        class B extends A {}
+
+        const o = { ...new B() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 31,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare const a: A | { b: string };
+
+        const o = { ...a };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {
+          a = 1;
+        }
+
+        declare const a: A & { b: string };
+
+        const o = { ...a };
+      `,
+      errors: [
+        {
+          messageId: 'noClassSpreadInObject',
+          line: 8,
+          column: 21,
+          endColumn: 25,
         },
       ],
     },

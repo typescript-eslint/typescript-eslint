@@ -4,11 +4,27 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 "
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowClassInstances": {
+        "description": "Whether to allow spreading class instances in objects.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];"
+type Options = [
+  {
+    /** Whether to allow spreading class instances in objects. */
+    allowClassInstances?: boolean;
+  },
+];
+"
 `;

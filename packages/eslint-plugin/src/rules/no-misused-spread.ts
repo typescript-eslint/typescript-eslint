@@ -7,15 +7,23 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   isBuiltinSymbolLike,
+  isPromiseLike,
   isTypeFlagSet,
 } from '../util';
+
+type Options = [
+  {
+    allowClassInstances: boolean;
+  },
+];
 
 type MessageIds =
   | 'noStringSpreadInArray'
   | 'noSpreadInObject'
-  | 'noFunctionSpreadInObject';
+  | 'noFunctionSpreadInObject'
+  | 'noClassSpreadInObject';
 
-export default createRule<[], MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-misused-spread',
   meta: {
     type: 'problem',
@@ -27,18 +35,39 @@ export default createRule<[], MessageIds>({
     },
     messages: {
       noStringSpreadInArray:
-        "Using the spread operator on a string is not allowed in an array. Use `String.split('')` instead.",
+        "Using the spread operator on a string can cause unexpected behavior. Prefer `String.split('')` instead.",
 
       noSpreadInObject:
-        'Using the spread operator on `{{type}}` is not allowed in an object.',
+        'Using the spread operator on `{{type}}` can cause unexpected behavior.',
 
       noFunctionSpreadInObject:
-        'Using the spread operator on `Function` without properties is not allowed in an object. Did you forget to call the function?',
+        'Using the spread operator on `Function` without additional properties can cause unexpected behavior. Did you forget to call the function?',
+
+      noClassSpreadInObject:
+        'Using the spread operator on class instances can cause unexpected behavior.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowClassInstances: {
+            description:
+              'Whether to allow spreading class instances in objects.',
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+
+  defaultOptions: [
+    {
+      allowClassInstances: false,
+    },
+  ],
+
+  create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -100,6 +129,18 @@ export default createRule<[], MessageIds>({
         return;
       }
 
+      if (isPromise(services.program, type, checker)) {
+        context.report({
+          node,
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Promise',
+          },
+        });
+
+        return;
+      }
+
       if (isFunctionWithoutProps(type, checker)) {
         context.report({
           node,
@@ -116,6 +157,15 @@ export default createRule<[], MessageIds>({
           data: {
             type: 'Iterable',
           },
+        });
+
+        return;
+      }
+
+      if (!options.allowClassInstances && isClassInstance(type, checker)) {
+        context.report({
+          node,
+          messageId: 'noClassSpreadInObject',
         });
 
         return;
@@ -182,4 +232,24 @@ function isFunctionWithoutProps(
   return (
     type.getCallSignatures().length > 0 && type.getProperties().length === 0
   );
+}
+
+function isPromise(
+  program: ts.Program,
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  if (type.isUnion() || type.isIntersection()) {
+    return type.types.some(t => isPromise(program, t, checker));
+  }
+
+  return isPromiseLike(program, type);
+}
+
+function isClassInstance(type: ts.Type, checker: ts.TypeChecker): boolean {
+  if (type.isUnion() || type.isIntersection()) {
+    return type.types.some(t => isClassInstance(t, checker));
+  }
+
+  return type.isClassOrInterface();
 }

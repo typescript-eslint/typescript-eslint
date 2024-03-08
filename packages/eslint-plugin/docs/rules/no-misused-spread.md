@@ -52,6 +52,45 @@ const getObjSpread = { ...getObj() };
 
 <!--/tabs-->
 
+## Options
+
+### `allowClassInstances`
+
+By default, this rule disallows using the spread operator on instances of classes:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "allowClassInstances": false }'
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const user = new User('John');
+
+const userSpread = { ...user };
+```
+
+<!--/tabs-->
+
+If you want to allow this behavior, you can configure the rule with `"allowClassInstances": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowClassInstances": true
+    }
+  ]
+}
+```
+
 ## When Not To Use It
 
 If you intentionally want to use the spread operator in those cases, and expect
