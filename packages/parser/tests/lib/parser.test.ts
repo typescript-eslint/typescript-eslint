@@ -24,10 +24,6 @@ describe('parser', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
     const config: ParserOptions = {
-      loc: false,
-      comment: false,
-      range: false,
-      tokens: false,
       sourceType: 'module' as const,
       ecmaFeatures: {
         globalReturn: false,
@@ -43,7 +39,11 @@ describe('parser', () => {
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenLastCalledWith(code, {
+      comment: true,
       jsx: false,
+      loc: true,
+      range: true,
+      tokens: true,
       ...config,
     });
   });
@@ -51,21 +51,33 @@ describe('parser', () => {
   it('`warnOnUnsupportedTypeScriptVersion: false` should set `loggerFn: false` on typescript-estree', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
-    parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: true });
-    expect(spy).toHaveBeenCalledWith(code, {
-      ecmaFeatures: {},
-      jsx: false,
-      sourceType: 'script',
-      warnOnUnsupportedTypeScriptVersion: true,
-    });
-    spy.mockClear();
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: false });
     expect(spy).toHaveBeenCalledWith(code, {
+      comment: true,
       ecmaFeatures: {},
       jsx: false,
-      sourceType: 'script',
+      loc: true,
       loggerFn: false,
+      range: true,
+      sourceType: 'script',
+      tokens: true,
       warnOnUnsupportedTypeScriptVersion: false,
+    });
+  });
+
+  it('`warnOnUnsupportedTypeScriptVersion: true` should not set `loggerFn: false` on typescript-estree', () => {
+    const code = 'const valid = true;';
+    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: true });
+    expect(spy).toHaveBeenCalledWith(code, {
+      comment: true,
+      ecmaFeatures: {},
+      jsx: false,
+      loc: true,
+      range: true,
+      sourceType: 'script',
+      tokens: true,
+      warnOnUnsupportedTypeScriptVersion: true,
     });
   });
 
@@ -73,10 +85,6 @@ describe('parser', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(scopeManager, 'analyze');
     const config: ParserOptions = {
-      loc: false,
-      comment: false,
-      range: false,
-      tokens: false,
       sourceType: 'module' as const,
       ecmaFeatures: {
         globalReturn: false,
