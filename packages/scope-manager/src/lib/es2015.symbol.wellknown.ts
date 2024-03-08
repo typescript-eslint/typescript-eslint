@@ -4,8 +4,8 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE } from './base-config';
 import { es2015_symbol } from './es2015.symbol';
+import { TYPE } from './base-config';
 
 export const es2015_symbol_wellknown = {
   ...es2015_symbol,

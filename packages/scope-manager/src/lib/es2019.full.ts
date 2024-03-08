@@ -4,11 +4,12 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { dom } from './dom';
-import { dom_iterable } from './dom.iterable';
 import { es2019 } from './es2019';
-import { scripthost } from './scripthost';
+import { dom } from './dom';
 import { webworker_importscripts } from './webworker.importscripts';
+import { scripthost } from './scripthost';
+import { dom_iterable } from './dom.iterable';
+import { dom_asynciterable } from './dom.asynciterable';
 
 export const es2019_full = {
   ...es2019,
@@ -16,4 +17,5 @@ export const es2019_full = {
   ...webworker_importscripts,
   ...scripthost,
   ...dom_iterable,
+  ...dom_asynciterable,
 } as Record<string, ImplicitLibVariableOptions>;

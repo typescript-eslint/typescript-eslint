@@ -4,10 +4,8 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { es2020_intl } from './es2020.intl';
 import { TYPE } from './base-config';
 
-export const es2020_number = {
-  ...es2020_intl,
-  Number: TYPE,
+export const webworker_asynciterable = {
+  FileSystemDirectoryHandle: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

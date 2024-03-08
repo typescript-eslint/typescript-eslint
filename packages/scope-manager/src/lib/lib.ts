@@ -4,10 +4,10 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { dom } from './dom';
 import { es5 } from './es5';
-import { scripthost } from './scripthost';
+import { dom } from './dom';
 import { webworker_importscripts } from './webworker.importscripts';
+import { scripthost } from './scripthost';
 
 export const lib = {
   ...es5,

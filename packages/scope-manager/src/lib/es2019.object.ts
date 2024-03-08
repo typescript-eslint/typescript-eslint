@@ -4,8 +4,8 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
+import { TYPE } from './base-config';
 
 export const es2019_object = {
   ...es2015_iterable,

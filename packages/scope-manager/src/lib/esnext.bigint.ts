@@ -4,8 +4,8 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE, TYPE_VALUE } from './base-config';
 import { es2020_intl } from './es2020.intl';
+import { TYPE, TYPE_VALUE } from './base-config';
 
 export const esnext_bigint = {
   ...es2020_intl,
