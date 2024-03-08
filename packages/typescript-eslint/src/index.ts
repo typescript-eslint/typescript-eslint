@@ -3,6 +3,7 @@ import * as parserBase from '@typescript-eslint/parser';
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
+import type { ConfigWithExtends } from './config-helper';
 import { config } from './config-helper';
 import allConfig from './configs/all';
 import baseConfig from './configs/base';
@@ -45,6 +46,7 @@ const configs = {
 };
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
+export type { ConfigWithExtends };
 /*
 eslint-disable-next-line import/no-default-export --
 we do both a default and named exports to allow people to use this package from
