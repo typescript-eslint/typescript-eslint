@@ -125,8 +125,9 @@ function parseForESLint(
     range: true,
     tokens: true,
     ...(!warnOnUnsupportedTypeScriptVersion && { loggerFn: false }),
+    ...parserOptions,
   } satisfies TSESTreeOptions;
-  Object.assign(tsestreeOptions, parserOptions); // this is fine
+
   const analyzeOptions: AnalyzeOptions = {
     globalReturn: parserOptions.ecmaFeatures.globalReturn,
     jsxPragma: parserOptions.jsxPragma,

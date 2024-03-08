@@ -63,7 +63,7 @@ interface ParserOptions {
   jsDocParsingMode?: JSDocParsingMode;
   programs?: Program[] | null;
   project?: string[] | string | boolean | null;
-  projectFolderIgnoreList?: (RegExp | string)[];
+  projectFolderIgnoreList?: string[];
   sourceType?: SourceType;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
