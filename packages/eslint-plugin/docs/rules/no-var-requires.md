@@ -34,7 +34,7 @@ import foo from 'foo';
 
 A array of strings. These strings will be compiled into regular expressions with the `u` flag and be used to test against the imported path. A common use case is to allow importing `package.json`. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled. You can also use it to allow importing any JSON if your environment doesn't support JSON modules, or use it for other cases where `import` statements cannot work.
 
-With `{allow: ['/package\\.json$']}`:
+With `'@typescript-eslint/no-var-requires': ['error', { allow: ['/package\\.json$'] }] `:
 
 <!--tabs-->
 
