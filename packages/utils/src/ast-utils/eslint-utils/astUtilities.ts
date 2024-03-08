@@ -50,7 +50,7 @@ const getPropertyName = eslintUtils.getPropertyName as (
  * If the 2nd parameter `initialScope` was given, this function tries to resolve identifier references which are in the
  * given node as much as possible. In the resolving way, it does on the assumption that built-in global objects have
  * not been modified.
- * For example, it considers `Symbol.iterator`, ` String.raw``hello`` `, and `Object.freeze({a: 1}).a` as static.
+ * For example, it considers `Symbol.iterator`, `Symbol.for('k')` ` String.raw``hello`` `, and `Object.freeze({a: 1}).a` as static but `Symbol('k')` is not static.
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#getstaticvalue}
  * @returns The `{ value: any }` shaped object. The `value` property is the static value. If it couldn't compute the
