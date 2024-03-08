@@ -5,12 +5,12 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { es2016 } from './es2016';
+import { es2017_date } from './es2017.date';
+import { es2017_intl } from './es2017.intl';
 import { es2017_object } from './es2017.object';
 import { es2017_sharedmemory } from './es2017.sharedmemory';
 import { es2017_string } from './es2017.string';
-import { es2017_intl } from './es2017.intl';
 import { es2017_typedarrays } from './es2017.typedarrays';
-import { es2017_date } from './es2017.date';
 
 export const es2017 = {
   ...es2016,

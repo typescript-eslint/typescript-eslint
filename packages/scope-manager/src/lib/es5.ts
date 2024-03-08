@@ -4,9 +4,9 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
+import { TYPE, TYPE_VALUE } from './base-config';
 import { decorators } from './decorators';
 import { decorators_legacy } from './decorators.legacy';
-import { TYPE, TYPE_VALUE } from './base-config';
 
 export const es5 = {
   ...decorators,
