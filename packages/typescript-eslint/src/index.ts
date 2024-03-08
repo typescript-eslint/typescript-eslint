@@ -3,6 +3,7 @@ import * as parserBase from '@typescript-eslint/parser';
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
+import type { ConfigWithExtends } from './config-helper';
 import { config } from './config-helper';
 import allConfig from './configs/all';
 import baseConfig from './configs/base';
@@ -10,10 +11,13 @@ import disableTypeCheckedConfig from './configs/disable-type-checked';
 import eslintRecommendedConfig from './configs/eslint-recommended';
 import recommendedConfig from './configs/recommended';
 import recommendedTypeCheckedConfig from './configs/recommended-type-checked';
+import recommendedTypeCheckedOnlyConfig from './configs/recommended-type-checked-only';
 import strictConfig from './configs/strict';
 import strictTypeCheckedConfig from './configs/strict-type-checked';
+import strictTypeCheckedOnlyConfig from './configs/strict-type-checked-only';
 import stylisticConfig from './configs/stylistic';
 import stylisticTypeCheckedConfig from './configs/stylistic-type-checked';
+import stylisticTypeCheckedOnlyConfig from './configs/stylistic-type-checked-only';
 
 const parser: TSESLint.FlatConfig.Parser = {
   meta: parserBase.meta,
@@ -32,13 +36,17 @@ const configs = {
   eslintRecommended: eslintRecommendedConfig(plugin, parser),
   recommended: recommendedConfig(plugin, parser),
   recommendedTypeChecked: recommendedTypeCheckedConfig(plugin, parser),
+  recommendedTypeCheckedOnly: recommendedTypeCheckedOnlyConfig(plugin, parser),
   strict: strictConfig(plugin, parser),
   strictTypeChecked: strictTypeCheckedConfig(plugin, parser),
+  strictTypeCheckedOnly: strictTypeCheckedOnlyConfig(plugin, parser),
   stylistic: stylisticConfig(plugin, parser),
   stylisticTypeChecked: stylisticTypeCheckedConfig(plugin, parser),
+  stylisticTypeCheckedOnly: stylisticTypeCheckedOnlyConfig(plugin, parser),
 };
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
+export type { ConfigWithExtends };
 /*
 eslint-disable-next-line import/no-default-export --
 we do both a default and named exports to allow people to use this package from
