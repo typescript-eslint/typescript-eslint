@@ -19,6 +19,7 @@ export type Options = [
   {
     ignoreArrowShorthand?: boolean;
     ignoreVoidOperator?: boolean;
+    ignoreVoidInVoid?: boolean;
   },
 ];
 
@@ -72,6 +73,7 @@ export default createRule<Options, MessageId>({
         properties: {
           ignoreArrowShorthand: { type: 'boolean' },
           ignoreVoidOperator: { type: 'boolean' },
+          ignoreVoidInVoid: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -80,7 +82,13 @@ export default createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: true,
   },
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  defaultOptions: [
+    {
+      ignoreArrowShorthand: false,
+      ignoreVoidOperator: false,
+      ignoreVoidInVoid: false,
+    },
+  ],
 
   create(context, [options]) {
     return {
@@ -111,6 +119,15 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
+
+          if (options.ignoreVoidInVoid) {
+            if (
+              invalidAncestor.returnType?.typeAnnotation.type ===
+              AST_NODE_TYPES.TSVoidKeyword
+            ) {
+              return;
+            }
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
@@ -166,6 +183,26 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
+
+          if (options.ignoreVoidInVoid) {
+            if (
+              invalidAncestor.parent.parent?.type ===
+                AST_NODE_TYPES.FunctionDeclaration &&
+              invalidAncestor.parent.parent.returnType?.typeAnnotation.type ===
+                AST_NODE_TYPES.TSVoidKeyword
+            ) {
+              return;
+            }
+
+            if (
+              invalidAncestor.parent.parent?.type ===
+                AST_NODE_TYPES.ArrowFunctionExpression &&
+              invalidAncestor.parent.parent.returnType?.typeAnnotation.type ===
+                AST_NODE_TYPES.TSVoidKeyword
+            ) {
+              return;
+            }
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
