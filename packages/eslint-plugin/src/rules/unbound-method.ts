@@ -132,7 +132,7 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(context.filename);
 
-    function checkMethodAndReport(
+    function checkIfMethodAndReport(
       node: TSESTree.Node,
       symbol: ts.Symbol | undefined,
     ): void {
@@ -140,7 +140,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { dangerous, firstParamIsThis } = checkMethod(symbol, ignoreStatic);
+      const { dangerous, firstParamIsThis } = checkIfMethod(
+        symbol,
+        ignoreStatic,
+      );
       if (dangerous) {
         context.report({
           messageId:
@@ -168,7 +171,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkMethodAndReport(node, services.getSymbolAtLocation(node));
+        checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
       },
       'VariableDeclarator, AssignmentExpression'(
         node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
@@ -200,7 +203,7 @@ export default createRule<Options, MessageIds>({
                 return;
               }
 
-              checkMethodAndReport(
+              checkIfMethodAndReport(
                 property.key,
                 initTypes.getProperty(property.key.name),
               );
@@ -212,10 +215,15 @@ export default createRule<Options, MessageIds>({
   },
 });
 
-function checkMethod(
+interface CheckMethodResult {
+  dangerous: boolean;
+  firstParamIsThis?: boolean;
+}
+
+function checkIfMethod(
   symbol: ts.Symbol,
   ignoreStatic: boolean,
-): { dangerous: boolean; firstParamIsThis?: boolean } {
+): CheckMethodResult {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
@@ -229,35 +237,54 @@ function checkMethod(
           (valueDeclaration as ts.PropertyDeclaration).initializer?.kind ===
           ts.SyntaxKind.FunctionExpression,
       };
+    case ts.SyntaxKind.PropertyAssignment: {
+      const assignee = (valueDeclaration as ts.PropertyAssignment).initializer;
+      if (assignee.kind !== ts.SyntaxKind.FunctionExpression) {
+        return {
+          dangerous: false,
+        };
+      }
+      return checkMethod(assignee as ts.FunctionExpression, ignoreStatic);
+    }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
-      const decl = valueDeclaration as
-        | ts.MethodDeclaration
-        | ts.MethodSignature;
-      const firstParam = decl.parameters.at(0);
-      const firstParamIsThis =
-        firstParam?.name.kind === ts.SyntaxKind.Identifier &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-        firstParam.name.escapedText === 'this';
-      const thisArgIsVoid =
-        firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
-
-      return {
-        dangerous:
-          !thisArgIsVoid &&
-          !(
-            ignoreStatic &&
-            tsutils.includesModifier(
-              getModifiers(valueDeclaration),
-              ts.SyntaxKind.StaticKeyword,
-            )
-          ),
-        firstParamIsThis,
-      };
+      return checkMethod(
+        valueDeclaration as ts.MethodDeclaration | ts.MethodSignature,
+        ignoreStatic,
+      );
     }
   }
 
   return { dangerous: false };
+}
+
+function checkMethod(
+  valueDeclaration:
+    | ts.MethodDeclaration
+    | ts.MethodSignature
+    | ts.FunctionExpression,
+  ignoreStatic: boolean,
+): CheckMethodResult {
+  const firstParam = valueDeclaration.parameters.at(0);
+  const firstParamIsThis =
+    firstParam?.name.kind === ts.SyntaxKind.Identifier &&
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+    firstParam.name.escapedText === 'this';
+  const thisArgIsVoid =
+    firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
+
+  return {
+    dangerous:
+      !thisArgIsVoid &&
+      !(
+        ignoreStatic &&
+        tsutils.includesModifier(
+          getModifiers(valueDeclaration),
+          ts.SyntaxKind.StaticKeyword,
+        )
+      ),
+    firstParamIsThis,
+  };
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {

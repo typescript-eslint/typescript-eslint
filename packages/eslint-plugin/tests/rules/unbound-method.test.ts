@@ -58,6 +58,12 @@ ruleTester.run('unbound-method', rule, {
     '[5.2, 7.1, 3.6].map(Math.floor);',
     'const x = console.log;',
     'const x = Object.defineProperty;',
+    `
+      const o = {
+        f: function (this: void) {},
+      };
+      const f = o.f;
+    `,
     ...[
       'instance.bound();',
       'instance.unbound();',
@@ -640,6 +646,21 @@ const { b, a } = values;
           line: 7,
           column: 12,
           endColumn: 13,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8636
+    {
+      code: `
+const objectLiteral = {
+  f: function () {},
+};
+const f = objectLiteral.f;
+      `,
+      errors: [
+        {
+          line: 5,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
