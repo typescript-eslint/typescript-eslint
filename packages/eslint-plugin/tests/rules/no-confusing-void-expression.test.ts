@@ -119,6 +119,34 @@ function cool(input: string) {
 }
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnsVoid(): void {}
+
+function test1(): void {
+  return returnsVoid(); // should be fine
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnsVoid(): void {}
+
+const test2 = (): void => returnsVoid();
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnsVoid(): void {}
+
+const test2 = (): void => {
+  return returnsVoid();
+};
+      `,
+    },
   ],
 
   invalid: [
