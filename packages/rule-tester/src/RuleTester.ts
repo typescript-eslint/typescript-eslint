@@ -1002,7 +1002,7 @@ export class RuleTester extends TestFramework {
           assert.strictEqual(
             result.outputs[0],
             item.code,
-            'Expected no autofixes to be suggested',
+            'Expected no autofixes to be suggested.',
           );
         }
       } else if (typeof item.output === 'string') {
