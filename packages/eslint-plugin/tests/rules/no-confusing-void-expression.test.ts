@@ -501,5 +501,73 @@ function notcool(input: string) {
         },
       ],
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnsVoid(): void {}
+
+function test1() {
+  return returnsVoid(); // should be fine
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function returnsVoid(): void {}
+
+function test1() {
+  returnsVoid(); // should be fine
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnsVoid(): void {}
+
+const test2 = () => returnsVoid();
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 21,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+function returnsVoid(): void {}
+
+const test2 = () => { returnsVoid(); };
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnsVoid(): void {}
+
+const test3 = () => {
+  return returnsVoid();
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function returnsVoid(): void {}
+
+const test3 = () => {
+  returnsVoid();
+};
+      `,
+    },
   ],
 });
