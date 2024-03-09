@@ -109,6 +109,29 @@ function doSomething() {
 console.log(void alert('Hello, world!'));
 ```
 
+### `ignoreVoidInVoid`
+
+Allow using `void` type expressions in return value of a function that specified as `void`
+
+Examples of additional **correct** code with this option enabled:
+
+```ts option='{ "ignoreVoidInVoid": true }' showPlaygroundButton
+function returnsVoid(): void {}
+
+// type is correct with void, so not evoke error
+function test1(): void {
+  return returnsVoid();
+}
+
+// type is correct with void, so not evoke error
+const test2 = (): void => returnsVoid();
+
+// type is correct with void, so not evoke error
+const test3 = (): void => {
+  return returnsVoid();
+};
+```
+
 ## When Not To Use It
 
 The return type of a function can be inspected by going to its definition or hovering over it in an IDE.
