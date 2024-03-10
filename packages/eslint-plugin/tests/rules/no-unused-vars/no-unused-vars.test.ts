@@ -1950,5 +1950,24 @@ export namespace Bar {
         },
       ],
     },
+    {
+      code: `
+const foo: number = 1;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 7,
+          endLine: 2,
+          endColumn: 10,
+        },
+      ],
+    },
   ],
 });
