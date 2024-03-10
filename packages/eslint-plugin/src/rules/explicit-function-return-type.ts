@@ -249,9 +249,8 @@ export default createRule<Options, MessageIds>({
         );
       },
       ReturnStatement(node): void {
-        const current: FunctionInfo<FunctionNode> | undefined =
-          functionInfoStack[functionInfoStack.length - 1];
-        current?.returns.push(node);
+        const current = functionInfoStack[functionInfoStack.length - 1];
+        (current as FunctionInfo<FunctionNode> | undefined)?.returns.push(node);
       },
     };
   },
