@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows } from '../util';
 import type { FunctionInfo } from '../util/explicitReturnTypeUtils';
 import {
   ancestorHasReturnType,
@@ -113,8 +113,11 @@ export default createRule<Options, MessageIds>({
       });
     }
 
-    function popFunctionInfo(): FunctionInfo<FunctionNode> {
-      return functionInfoStack.pop()!;
+    function popFunctionInfo(exitNodeType: string): FunctionInfo<FunctionNode> {
+      return nullThrows(
+        functionInfoStack.pop(),
+        `Stack should exist on ${exitNodeType} exit`,
+      );
     }
 
     function isAllowedFunction(
@@ -190,7 +193,7 @@ export default createRule<Options, MessageIds>({
     function exitFunctionExpression(
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
-      const info = popFunctionInfo();
+      const info = popFunctionInfo('function expression');
 
       if (
         options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
@@ -229,7 +232,7 @@ export default createRule<Options, MessageIds>({
       'ArrowFunctionExpression:exit': exitFunctionExpression,
       'FunctionExpression:exit': exitFunctionExpression,
       'FunctionDeclaration:exit'(node): void {
-        const info = popFunctionInfo();
+        const info = popFunctionInfo('function declaration');
         if (isAllowedFunction(node)) {
           return;
         }
@@ -246,8 +249,9 @@ export default createRule<Options, MessageIds>({
         );
       },
       ReturnStatement(node): void {
-        const current = functionInfoStack[functionInfoStack.length - 1];
-        current.returns.push(node);
+        const current: FunctionInfo<FunctionNode> | undefined =
+          functionInfoStack[functionInfoStack.length - 1];
+        current?.returns.push(node);
       },
     };
   },

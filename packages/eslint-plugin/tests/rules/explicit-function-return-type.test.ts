@@ -8,6 +8,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
+    'return;',
     {
       code: `
 function test(): void {
