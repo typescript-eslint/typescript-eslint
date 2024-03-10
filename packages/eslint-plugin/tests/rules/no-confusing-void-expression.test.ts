@@ -147,6 +147,52 @@ const test2 = (): void => {
 };
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+declare function returnsVoid(): void;
+
+function test(): void {
+  {
+    return returnsVoid();
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+declare function returnsVoid(): void;
+
+const data = {
+  foo(): void {
+    return returnsVoid();
+  },
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+declare function returnsVoid(): void;
+
+class Foo {
+  foo(): void {
+    return returnsVoid();
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+declare function returnsVoid(): void;
+
+const foo = function (): void {
+  return returnsVoid();
+};
+      `,
+    },
   ],
 
   invalid: [
