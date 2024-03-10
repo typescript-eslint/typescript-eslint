@@ -583,5 +583,29 @@ const test = () => {
 };
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function foo(): void {
+  const bar = () => {
+    return console.log();
+  };
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function foo(): void {
+  const bar = () => {
+    console.log();
+  };
+}
+      `,
+    },
   ],
 });

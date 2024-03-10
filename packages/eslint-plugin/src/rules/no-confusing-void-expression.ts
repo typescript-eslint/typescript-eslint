@@ -120,13 +120,12 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
 
-          if (options.ignoreVoidInVoid) {
-            if (
-              invalidAncestor.returnType?.typeAnnotation.type ===
+          if (
+            options.ignoreVoidInVoid &&
+            invalidAncestor.returnType?.typeAnnotation.type ===
               AST_NODE_TYPES.TSVoidKeyword
-            ) {
-              return;
-            }
+          ) {
+            return;
           }
 
           if (options.ignoreVoidOperator) {
@@ -186,11 +185,7 @@ export default createRule<Options, MessageId>({
 
           if (options.ignoreVoidInVoid) {
             if (
-              targetNodeAncestorHasVoidReturnType(invalidAncestor, [
-                AST_NODE_TYPES.FunctionDeclaration,
-                AST_NODE_TYPES.ArrowFunctionExpression,
-                AST_NODE_TYPES.FunctionExpression,
-              ])
+              targetNodeFunctionAncestorNodeHasVoidReturnType(invalidAncestor)
             ) {
               return;
             }
@@ -406,35 +401,38 @@ export default createRule<Options, MessageId>({
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
 
-    function targetNodeAncestorHasVoidReturnType(
+    function targetNodeFunctionAncestorNodeHasVoidReturnType(
       node: TSESTree.Node,
-      targets: (
-        | AST_NODE_TYPES.FunctionDeclaration
-        | AST_NODE_TYPES.ArrowFunctionExpression
-        | AST_NODE_TYPES.FunctionExpression
-      )[],
     ): boolean {
+      const targets: [
+        AST_NODE_TYPES.FunctionDeclaration,
+        AST_NODE_TYPES.ArrowFunctionExpression,
+        AST_NODE_TYPES.FunctionExpression,
+      ] = [
+        AST_NODE_TYPES.FunctionDeclaration,
+        AST_NODE_TYPES.ArrowFunctionExpression,
+        AST_NODE_TYPES.FunctionExpression,
+      ];
+
       if (!node.parent) {
         return false;
       }
 
-      const filter = targets.filter(target => {
-        if (target === node.parent.type) {
-          if (
-            node.parent.returnType?.typeAnnotation.type ===
-            AST_NODE_TYPES.TSVoidKeyword
-          ) {
-            return true;
-          }
+      if (
+        targets[0] === node.parent.type ||
+        targets[1] === node.parent.type ||
+        targets[2] === node.parent.type
+      ) {
+        if (
+          node.parent.returnType?.typeAnnotation.type ===
+          AST_NODE_TYPES.TSVoidKeyword
+        ) {
+          return true;
         }
         return false;
-      });
-
-      if (filter.length > 0) {
-        return true;
       }
 
-      return targetNodeAncestorHasVoidReturnType(node.parent, targets);
+      return targetNodeFunctionAncestorNodeHasVoidReturnType(node.parent);
     }
   },
 });
