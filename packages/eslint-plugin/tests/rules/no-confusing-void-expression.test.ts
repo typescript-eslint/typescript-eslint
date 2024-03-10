@@ -122,39 +122,29 @@ function cool(input: string) {
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-function returnsVoid(): void {}
-
-function test1(): void {
-  return returnsVoid(); // should be fine
+function test(): void {
+  return console.log('foo');
 }
       `,
     },
     {
       options: [{ ignoreVoidInVoid: true }],
-      code: `
-function returnsVoid(): void {}
-
-const test2 = (): void => returnsVoid();
-      `,
+      code: "const test = (): void => console.log('foo');",
     },
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-function returnsVoid(): void {}
-
-const test2 = (): void => {
-  return returnsVoid();
+const test = (): void => {
+  return console.log('foo');
 };
       `,
     },
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-declare function returnsVoid(): void;
-
 function test(): void {
   {
-    return returnsVoid();
+    return console.log('foo');
   }
 }
       `,
@@ -162,11 +152,9 @@ function test(): void {
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-declare function returnsVoid(): void;
-
 const data = {
-  foo(): void {
-    return returnsVoid();
+  test(): void {
+    return console.log('foo');
   },
 };
       `,
@@ -174,11 +162,9 @@ const data = {
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-declare function returnsVoid(): void;
-
 class Foo {
-  foo(): void {
-    return returnsVoid();
+  test(): void {
+    return console.log('foo');
   }
 }
       `,
@@ -186,10 +172,8 @@ class Foo {
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-declare function returnsVoid(): void;
-
-const foo = function (): void {
-  return returnsVoid();
+const test = function (): void {
+  return console.log('foo');
 };
       `,
     },
@@ -550,68 +534,52 @@ function notcool(input: string) {
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-function returnsVoid(): void {}
-
-function test1() {
-  return returnsVoid(); // should be fine
+function test() {
+  return console.log('foo');
 }
       `,
       errors: [
         {
-          line: 5,
+          line: 3,
           column: 10,
           messageId: 'invalidVoidExprReturnLast',
         },
       ],
       output: `
-function returnsVoid(): void {}
-
-function test1() {
-  returnsVoid(); // should be fine
+function test() {
+  console.log('foo');
 }
       `,
     },
     {
       options: [{ ignoreVoidInVoid: true }],
-      code: `
-function returnsVoid(): void {}
-
-const test2 = () => returnsVoid();
-      `,
+      code: "const test = () => console.log('foo');",
       errors: [
         {
-          line: 4,
-          column: 21,
+          line: 1,
+          column: 20,
           messageId: 'invalidVoidExprArrow',
         },
       ],
-      output: `
-function returnsVoid(): void {}
-
-const test2 = () => { returnsVoid(); };
-      `,
+      output: "const test = () => { console.log('foo'); };",
     },
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-function returnsVoid(): void {}
-
-const test3 = () => {
-  return returnsVoid();
+const test = () => {
+  return console.log('foo');
 };
       `,
       errors: [
         {
-          line: 5,
+          line: 3,
           column: 10,
           messageId: 'invalidVoidExprReturnLast',
         },
       ],
       output: `
-function returnsVoid(): void {}
-
-const test3 = () => {
-  returnsVoid();
+const test = () => {
+  console.log('foo');
 };
       `,
     },
