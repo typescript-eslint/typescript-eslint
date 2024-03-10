@@ -64,6 +64,17 @@ ruleTester.run('unbound-method', rule, {
       };
       const f = o.f;
     `,
+    `
+      const { alert } = window;
+    `,
+    `
+      let b = window.blur;
+    `,
+    `
+      function foo() {}
+      const fooObject = { foo };
+      const { foo: bar } = fooObject;
+    `,
     ...[
       'instance.bound();',
       'instance.unbound();',
