@@ -116,19 +116,17 @@ Allow using `void` type expressions in return value of a function that specified
 Examples of additional **correct** code with this option enabled:
 
 ```ts option='{ "ignoreVoidInVoid": true }' showPlaygroundButton
-function returnsVoid(): void {}
-
 // type is correct with void, so not evoke error
-function test1(): void {
-  return returnsVoid();
+function test1(value: string): void {
+  return window.postMessage(value);
 }
 
 // type is correct with void, so not evoke error
-const test2 = (): void => returnsVoid();
+const test2 = (value: string): void => window.postMessage(value);
 
 // type is correct with void, so not evoke error
-const test3 = (): void => {
-  return returnsVoid();
+const test3 = (value: string): void => {
+  return window.postMessage(value);
 };
 ```
 
