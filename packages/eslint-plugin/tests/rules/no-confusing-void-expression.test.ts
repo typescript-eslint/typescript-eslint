@@ -177,6 +177,47 @@ const test = function (): void {
 };
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test() {
+  function nestedTest(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+
+function test(): Foo {
+  return console.log();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnVoid(): void {}
+
+function test(): void {
+  return returnVoid();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+function returnVoid(): void {}
+
+function test(): Foo {
+  return returnVoid();
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -605,6 +646,22 @@ function foo(): void {
     console.log();
   };
 }
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+return console.log('foo');
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 8,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+{ console.log('foo'); return; }
       `,
     },
   ],

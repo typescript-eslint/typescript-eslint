@@ -183,12 +183,11 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
 
-          if (options.ignoreVoidInVoid) {
-            if (
-              targetNodeFunctionAncestorNodeHasVoidReturnType(invalidAncestor)
-            ) {
-              return;
-            }
+          if (
+            options.ignoreVoidInVoid &&
+            targetNodeFunctionAncestorNodeHasVoidReturnType(invalidAncestor)
+          ) {
+            return;
           }
 
           if (options.ignoreVoidOperator) {
@@ -404,28 +403,22 @@ export default createRule<Options, MessageId>({
     function targetNodeFunctionAncestorNodeHasVoidReturnType(
       node: TSESTree.Node,
     ): boolean {
-      const targets: [
-        AST_NODE_TYPES.FunctionDeclaration,
-        AST_NODE_TYPES.ArrowFunctionExpression,
-        AST_NODE_TYPES.FunctionExpression,
-      ] = [
-        AST_NODE_TYPES.FunctionDeclaration,
-        AST_NODE_TYPES.ArrowFunctionExpression,
-        AST_NODE_TYPES.FunctionExpression,
-      ];
-
       if (!node.parent) {
         return false;
       }
 
       if (
-        targets[0] === node.parent.type ||
-        targets[1] === node.parent.type ||
-        targets[2] === node.parent.type
+        AST_NODE_TYPES.FunctionDeclaration === node.parent.type ||
+        AST_NODE_TYPES.ArrowFunctionExpression === node.parent.type ||
+        AST_NODE_TYPES.FunctionExpression === node.parent.type
       ) {
+        const services = getParserServices(context);
         if (
-          node.parent.returnType?.typeAnnotation.type ===
-          AST_NODE_TYPES.TSVoidKeyword
+          node.parent.returnType &&
+          !tsutils.isTypeFlagSet(
+            getConstrainedTypeAtLocation(services, node.parent.returnType),
+            ts.TypeFlags.VoidLike,
+          )
         ) {
           return true;
         }
