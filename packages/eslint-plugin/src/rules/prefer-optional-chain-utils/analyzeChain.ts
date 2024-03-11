@@ -20,10 +20,10 @@ import {
   NullThrowsReasons,
   OperatorPrecedence,
 } from '../../util';
+import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
 import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
-import { checkNullishAndReport } from './checkNullishAndReport';
 import type {
   PreferOptionalChainMessageIds,
   PreferOptionalChainOptions,

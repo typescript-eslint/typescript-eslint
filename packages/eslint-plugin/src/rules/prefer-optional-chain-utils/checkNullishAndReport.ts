@@ -1,5 +1,9 @@
 import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import type {
+  ParserServicesWithTypeInformation,
+  TSESTree,
+} from '@typescript-eslint/utils';
+import type {
   ReportDescriptor,
   RuleContext,
 } from '@typescript-eslint/utils/ts-eslint';
@@ -10,10 +14,6 @@ import type {
   PreferOptionalChainMessageIds,
   PreferOptionalChainOptions,
 } from './PreferOptionalChainOptions';
-import {
-  ParserServicesWithTypeInformation,
-  TSESTree,
-} from '@typescript-eslint/typescript-estree';
 
 export function checkNullishAndReport(
   context: RuleContext<

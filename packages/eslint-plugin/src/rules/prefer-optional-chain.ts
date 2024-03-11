@@ -10,6 +10,7 @@ import {
   OperatorPrecedence,
 } from '../util';
 import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
+import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import {
   gatherLogicalOperands,
@@ -19,7 +20,6 @@ import type {
   PreferOptionalChainMessageIds,
   PreferOptionalChainOptions,
 } from './prefer-optional-chain-utils/PreferOptionalChainOptions';
-import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 
 export default createRule<
   [PreferOptionalChainOptions],
