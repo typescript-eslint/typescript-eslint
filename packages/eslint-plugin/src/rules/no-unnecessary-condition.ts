@@ -175,11 +175,16 @@ export default createRule<Options, MessageId>({
 
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
-      return checker.isArrayType(nodeType);
+      return tsutils
+        .unionTypeParts(nodeType)
+        .some(part => checker.isArrayType(part));
     }
+
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
-      return checker.isTupleType(nodeType);
+      return tsutils
+        .unionTypeParts(nodeType)
+        .some(part => checker.isTupleType(part));
     }
 
     function isArrayIndexExpression(node: TSESTree.Expression): boolean {

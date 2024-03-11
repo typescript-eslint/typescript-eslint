@@ -131,6 +131,24 @@ interface Example {
           line: 10,
           messageId: 'incorrectOrder',
         },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'a10',
+            member: 'B1',
+          },
+          line: 14,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'a1',
+            member: 'B5',
+          },
+          line: 16,
+          messageId: 'incorrectOrder',
+        },
       ],
       options: [
         {
