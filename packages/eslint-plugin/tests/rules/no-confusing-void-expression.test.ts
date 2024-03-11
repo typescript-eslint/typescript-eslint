@@ -243,6 +243,13 @@ type Foo = void;
 const test: Foo = () => console.log('err');
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true, ignoreArrowShorthand: true }],
+      code: `
+type Foo = void;
+const test = (): Foo => console.log('err');
+      `,
+    },
   ],
 
   invalid: [
