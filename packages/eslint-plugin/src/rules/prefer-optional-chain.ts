@@ -19,6 +19,7 @@ import type {
   PreferOptionalChainMessageIds,
   PreferOptionalChainOptions,
 } from './prefer-optional-chain-utils/PreferOptionalChainOptions';
+import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 
 export default createRule<
   [PreferOptionalChainOptions],
@@ -141,9 +142,9 @@ export default createRule<
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
-        context.report({
-          node: parentNode,
+        checkNullishAndReport(context, parserServices, options, [leftNode], {
           messageId: 'preferOptionalChain',
+          node: parentNode,
           suggest: [
             {
               messageId: 'optionalChainSuggest',

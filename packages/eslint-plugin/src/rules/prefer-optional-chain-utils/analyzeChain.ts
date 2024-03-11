@@ -23,6 +23,7 @@ import {
 import { compareNodes, NodeComparisonResult } from './compareNodes';
 import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
+import { checkNullishAndReport } from './checkNullishAndReport';
 import type {
   PreferOptionalChainMessageIds,
   PreferOptionalChainOptions,
@@ -490,20 +491,26 @@ export function analyzeChain(
     newChainSeed?: readonly ValidOperand[],
   ): void => {
     if (subChain.length > 1) {
-      context.report({
-        messageId: 'preferOptionalChain',
-        loc: {
-          start: subChain[0].node.loc.start,
-          end: subChain[subChain.length - 1].node.loc.end,
+      checkNullishAndReport(
+        context,
+        parserServices,
+        options,
+        subChain.map(({ node }) => node),
+        {
+          messageId: 'preferOptionalChain',
+          loc: {
+            start: subChain[0].node.loc.start,
+            end: subChain[subChain.length - 1].node.loc.end,
+          },
+          ...getFixer(
+            context.sourceCode,
+            parserServices,
+            operator,
+            options,
+            subChain,
+          ),
         },
-        ...getFixer(
-          context.sourceCode,
-          parserServices,
-          operator,
-          options,
-          subChain,
-        ),
-      });
+      );
     }
 
     // we've reached the end of a chain of logical expressions

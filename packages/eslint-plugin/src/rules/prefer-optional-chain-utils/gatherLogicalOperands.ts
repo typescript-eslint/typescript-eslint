@@ -61,7 +61,7 @@ type Operand = ValidOperand | InvalidOperand;
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
-  operatorNode: TSESTree.LogicalExpression,
+  operator: TSESTree.LogicalExpression['operator'],
   checkType: 'true' | 'false',
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
@@ -69,7 +69,6 @@ function isValidFalseBooleanCheckType(
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  const { operator } = operatorNode;
   const disallowFalseyLiteral =
     (operator === '||' && checkType === 'false') ||
     (operator === '&&' && checkType === 'true');
@@ -95,35 +94,24 @@ function isValidFalseBooleanCheckType(
     }
   }
 
-  /* if (
-    options.requireNullish === true &&
-    !types.some(t => isTypeFlagSet(t, NULLISH_FLAGS))
-  ) {
-    return;
-  }*/
-
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
-  if (options.requireNullish === true) {
-    allowedFlags = NULLISH_FLAGS;
-  } else {
-    if (options.checkAny === true) {
-      allowedFlags |= ts.TypeFlags.Any;
-    }
-    if (options.checkUnknown === true) {
-      allowedFlags |= ts.TypeFlags.Unknown;
-    }
-    if (options.checkString === true) {
-      allowedFlags |= ts.TypeFlags.StringLike;
-    }
-    if (options.checkNumber === true) {
-      allowedFlags |= ts.TypeFlags.NumberLike;
-    }
-    if (options.checkBoolean === true) {
-      allowedFlags |= ts.TypeFlags.BooleanLike;
-    }
-    if (options.checkBigInt === true) {
-      allowedFlags |= ts.TypeFlags.BigIntLike;
-    }
+  if (options.checkAny === true) {
+    allowedFlags |= ts.TypeFlags.Any;
+  }
+  if (options.checkUnknown === true) {
+    allowedFlags |= ts.TypeFlags.Unknown;
+  }
+  if (options.checkString === true) {
+    allowedFlags |= ts.TypeFlags.StringLike;
+  }
+  if (options.checkNumber === true) {
+    allowedFlags |= ts.TypeFlags.NumberLike;
+  }
+  if (options.checkBoolean === true) {
+    allowedFlags |= ts.TypeFlags.BooleanLike;
+  }
+  if (options.checkBigInt === true) {
+    allowedFlags |= ts.TypeFlags.BigIntLike;
   }
   return types.every(t => isTypeFlagSet(t, allowedFlags));
 }
@@ -266,7 +254,7 @@ export function gatherLogicalOperands(
           operand.operator === '!' &&
           isValidFalseBooleanCheckType(
             operand.argument,
-            node,
+            node.operator,
             'false',
             parserServices,
             options,
@@ -293,7 +281,7 @@ export function gatherLogicalOperands(
         if (
           isValidFalseBooleanCheckType(
             operand,
-            node,
+            node.operator,
             'true',
             parserServices,
             options,
