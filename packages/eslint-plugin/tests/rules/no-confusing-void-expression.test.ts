@@ -218,6 +218,31 @@ function test(): Foo {
 }
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test(): void & void {
+  return console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+declare function foo(): Foo;
+function test(): Foo {
+  return foo();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true, ignoreArrowShorthand: true }],
+      code: `
+type Foo = void;
+const test: Foo = () => console.log('err');
+      `,
+    },
   ],
 
   invalid: [
