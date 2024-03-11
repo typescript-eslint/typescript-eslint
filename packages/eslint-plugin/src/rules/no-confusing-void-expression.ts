@@ -413,16 +413,13 @@ export default createRule<Options, MessageId>({
         AST_NODE_TYPES.FunctionExpression === node.parent.type
       ) {
         const services = getParserServices(context);
-        if (
-          node.parent.returnType &&
+        return (
+          !!node.parent.returnType &&
           !tsutils.isTypeFlagSet(
             getConstrainedTypeAtLocation(services, node.parent.returnType),
             ts.TypeFlags.VoidLike,
           )
-        ) {
-          return true;
-        }
-        return false;
+        );
       }
 
       return targetNodeFunctionAncestorNodeHasVoidReturnType(node.parent);
