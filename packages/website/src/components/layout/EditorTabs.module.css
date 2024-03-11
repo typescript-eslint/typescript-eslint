@@ -12,9 +12,22 @@
   --ifm-button-border-color: var(--ifm-color-emphasis-200);
 
   font-size: 0.75rem;
+  display: flex;
 }
 
 .tabStyle svg {
+  margin-left: 0.3rem;
+}
+
+.tabStyle div {
+  background-color: #fb575b;
+  border-radius: 50%;
+  color: white;
+  width: 17px;
+  height: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-left: 0.3rem;
 }
 
