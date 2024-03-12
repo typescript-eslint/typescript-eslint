@@ -1907,7 +1907,7 @@ describe('hand-crafted cases', () => {
           thing1 && thing1.toString();
         `,
         options: [{ requireNullish: true }],
-        errors: [{ messageId: `preferOptionalChain` }],
+        errors: [{ messageId: 'preferOptionalChain' }],
       },
       {
         code: `
@@ -1915,7 +1915,7 @@ describe('hand-crafted cases', () => {
           thing1 && thing1.toString() && true;
         `,
         options: [{ requireNullish: true }],
-        errors: [{ messageId: `preferOptionalChain` }],
+        errors: [{ messageId: 'preferOptionalChain' }],
       },
       {
         code: `
@@ -1923,7 +1923,7 @@ describe('hand-crafted cases', () => {
           foo && foo.toString() && foo.toString();
         `,
         options: [{ requireNullish: true }],
-        errors: [{ messageId: `preferOptionalChain` }],
+        errors: [{ messageId: 'preferOptionalChain' }],
       },
       {
         code: `
