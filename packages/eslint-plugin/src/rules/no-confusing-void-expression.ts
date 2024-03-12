@@ -106,6 +106,7 @@ export default createRule<Options, MessageId>({
         }
 
         const invalidAncestor = findInvalidAncestor(node);
+
         if (invalidAncestor == null) {
           // void expression is in valid position
           return;
@@ -120,12 +121,23 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
 
-          if (
-            options.ignoreVoidInVoid &&
-            invalidAncestor.returnType?.typeAnnotation.type ===
-              AST_NODE_TYPES.TSVoidKeyword
-          ) {
-            return;
+          // console.log(invalidAncestor.parent.type === AST_NODE_TYPES.VariableDeclaration)
+
+          if (options.ignoreVoidInVoid) {
+            if (
+              invalidAncestor.returnType &&
+              isVoidLikeType(invalidAncestor.returnType)
+            ) {
+              return;
+            }
+            if (
+              !invalidAncestor.returnType &&
+              invalidAncestor.parent.type ===
+                AST_NODE_TYPES.VariableDeclarator &&
+              isVoidLikeType(invalidAncestor.parent.id.typeAnnotation)
+            ) {
+              return;
+            }
           }
 
           if (options.ignoreVoidOperator) {
@@ -400,6 +412,17 @@ export default createRule<Options, MessageId>({
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
 
+    function isVoidLikeType(typeNode?: TSESTree.TSTypeAnnotation): boolean {
+      const services = getParserServices(context);
+      return (
+        !!typeNode &&
+        !tsutils.isTypeFlagSet(
+          getConstrainedTypeAtLocation(services, typeNode),
+          ts.TypeFlags.VoidLike,
+        )
+      );
+    }
+
     function targetNodeFunctionAncestorNodeHasVoidReturnType(
       node: TSESTree.Node,
     ): boolean {
@@ -412,13 +435,11 @@ export default createRule<Options, MessageId>({
         AST_NODE_TYPES.ArrowFunctionExpression === node.parent.type ||
         AST_NODE_TYPES.FunctionExpression === node.parent.type
       ) {
-        const services = getParserServices(context);
         return (
-          !!node.parent.returnType &&
-          !tsutils.isTypeFlagSet(
-            getConstrainedTypeAtLocation(services, node.parent.returnType),
-            ts.TypeFlags.VoidLike,
-          )
+          (node.parent.returnType && isVoidLikeType(node.parent.returnType)) ||
+          (!node.parent.returnType &&
+            node.parent.parent.type === AST_NODE_TYPES.VariableDeclarator &&
+            isVoidLikeType(node.parent.parent.id.typeAnnotation))
         );
       }
 

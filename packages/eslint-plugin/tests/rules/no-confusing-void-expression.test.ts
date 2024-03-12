@@ -237,17 +237,26 @@ function test(): Foo {
       `,
     },
     {
-      options: [{ ignoreVoidInVoid: true, ignoreArrowShorthand: true }],
+      options: [{ ignoreVoidInVoid: true }],
       code: `
 type Foo = void;
 const test: Foo = () => console.log('err');
       `,
     },
     {
-      options: [{ ignoreVoidInVoid: true, ignoreArrowShorthand: true }],
+      options: [{ ignoreVoidInVoid: true }],
       code: `
 type Foo = void;
 const test = (): Foo => console.log('err');
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = () => void;
+const test: Foo = function () {
+  return console.log('err');
+};
       `,
     },
   ],
