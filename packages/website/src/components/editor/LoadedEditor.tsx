@@ -81,8 +81,14 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const markers = monaco.editor.getModelMarkers({
       resource: model.uri,
     });
-    onMarkersChange(parseMarkers(markers, codeActions, editor));
-  }, [codeActions, onMarkersChange, editor, monaco.editor]);
+
+    console.log(markers);
+
+    onMarkersChange(prev => ({
+      ...prev,
+      [activeTab]: parseMarkers(markers, codeActions, editor),
+    }));
+  }, [codeActions, onMarkersChange, editor, monaco.editor, activeTab]);
 
   useEffect(() => {
     webLinter.updateParserOptions(sourceType);
