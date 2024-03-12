@@ -121,20 +121,10 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
 
-          // console.log(invalidAncestor.parent.type === AST_NODE_TYPES.VariableDeclaration)
-
           if (options.ignoreVoidInVoid) {
             if (
               invalidAncestor.returnType &&
               isVoidLikeType(invalidAncestor.returnType)
-            ) {
-              return;
-            }
-            if (
-              !invalidAncestor.returnType &&
-              invalidAncestor.parent.type ===
-                AST_NODE_TYPES.VariableDeclarator &&
-              isVoidLikeType(invalidAncestor.parent.id.typeAnnotation)
             ) {
               return;
             }
@@ -436,10 +426,7 @@ export default createRule<Options, MessageId>({
         AST_NODE_TYPES.FunctionExpression === node.parent.type
       ) {
         return (
-          (node.parent.returnType && isVoidLikeType(node.parent.returnType)) ||
-          (!node.parent.returnType &&
-            node.parent.parent.type === AST_NODE_TYPES.VariableDeclarator &&
-            isVoidLikeType(node.parent.parent.id.typeAnnotation))
+          !!node.parent.returnType && isVoidLikeType(node.parent.returnType)
         );
       }
 
