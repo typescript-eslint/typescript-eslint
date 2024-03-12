@@ -21,14 +21,14 @@
 
 .tabStyle div {
   background-color: #fb575b;
-  border-radius: 50%;
+  border-radius: 20px;
   color: white;
-  width: 17px;
   height: 17px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 0.3rem;
+  padding: 0 5px;
 }
 
 .tabStyle:hover {

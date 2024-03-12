@@ -40,8 +40,8 @@ function EditorTabs<T extends boolean | string>({
             {item.label}
             {additionalTabsInfo?.[item.label] ? (
               <div>
-                {additionalTabsInfo[item.label] > 9
-                  ? '9+'
+                {additionalTabsInfo[item.label] > 99
+                  ? '99+'
                   : additionalTabsInfo[item.label]}
               </div>
             ) : null}
