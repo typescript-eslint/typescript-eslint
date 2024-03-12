@@ -1930,6 +1930,10 @@ describe('hand-crafted cases', () => {
           declare const foo: { bar: string | null | undefined } | null | undefined;
           foo && foo.bar && foo.bar.toString() && foo.bar.toString();
         `,
+        output: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo?.bar?.toString() && foo.bar.toString();
+        `,
         options: [{ requireNullish: true }],
         errors: [{ messageId: 'preferOptionalChain' }],
       },
