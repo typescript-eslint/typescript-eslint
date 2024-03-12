@@ -790,6 +790,13 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
+          declare const foo: string;
+          foo && foo.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
           declare const x: string | number | boolean | object;
           x && x.toString();
         `,
@@ -799,6 +806,34 @@ describe('hand-crafted cases', () => {
         code: `
           declare const foo: { bar: string };
           foo && foo.bar && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: string;
+          foo && foo.toString() && foo.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo && foo.bar && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string };
+          foo && foo.bar && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string };
+          foo && foo.bar && foo.bar.toString() && foo.bar.toString();
         `,
         options: [{ requireNullish: true }],
       },
@@ -1881,6 +1916,22 @@ describe('hand-crafted cases', () => {
         `,
         options: [{ requireNullish: true }],
         errors: [{ messageId: `preferOptionalChain` }],
+      },
+      {
+        code: `
+          declare const foo: string | null;
+          foo && foo.toString() && foo.toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: `preferOptionalChain` }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo && foo.bar && foo.bar.toString() && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: 'preferOptionalChain' }],
       },
 
       // allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing
