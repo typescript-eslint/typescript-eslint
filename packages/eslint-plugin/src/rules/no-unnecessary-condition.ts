@@ -636,6 +636,23 @@ export default createRule<Options, MessageId>({
 
     function isOptionableExpression(node: TSESTree.Expression): boolean {
       const type = getConstrainedTypeAtLocation(services, node);
+
+      // We would like to test for `undefined` here as well,
+      // but it's always present in case of nested optional chaining, resulting in false positives.
+      // TODO(#8652): Is there a way to get the type for TS, after optional-chain short-circuiting?
+      if (
+        isTypeFlagSet(
+          type,
+          ts.TypeFlags.Any |
+            ts.TypeFlags.Unknown |
+            ts.TypeFlags.Null |
+            // ts.TypeFlags.Undefined |
+            ts.TypeFlags.Void,
+        )
+      ) {
+        return true;
+      }
+
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isMemberExpressionNullableOriginFromObject(node)
@@ -644,10 +661,7 @@ export default createRule<Options, MessageId>({
             : true;
 
       const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
-      return (
-        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
-        (isOwnNullable && (isNullableType(type) || possiblyVoid))
-      );
+      return isOwnNullable && (isNullableType(type) || possiblyVoid);
     }
 
     function checkOptionalChain(

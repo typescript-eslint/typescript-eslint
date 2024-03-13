@@ -852,6 +852,28 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8652
+    `
+declare const x: (<T>(x: T) => T) | null;
+declare const y: (() => void) | null
+
+x?.(y)?.()
+    `,
+    `
+declare const x: (<T>(x: T) => T) | null;
+declare const y: (() => void) | void
+
+x?.(y)?.()
+    `,
+    // TODO(#8652): The following should be valid, but currently fails.
+    /*
+    `
+declare const x: (<T>(x: T) => T) | null;
+declare const y: (() => void) | undefined
+
+x?.(y)?.()
+    `,
+    */
   ],
   invalid: [
     // Ensure that it's checking in all the right places
