@@ -331,8 +331,8 @@ Foo<string>;
         {
           line: 1,
           endLine: 1,
-          column: 1,
-          endColumn: 47,
+          column: 40,
+          endColumn: 44,
         },
       ]),
     },
@@ -342,8 +342,8 @@ Foo<string>;
         {
           line: 1,
           endLine: 1,
-          column: 1,
-          endColumn: 50,
+          column: 40,
+          endColumn: 51,
         },
       ],
     },
@@ -353,8 +353,8 @@ Foo<string>;
         {
           line: 1,
           endLine: 1,
-          column: 1,
-          endColumn: 48,
+          column: 40,
+          endColumn: 49,
         },
       ],
     },
@@ -364,8 +364,8 @@ Foo<string>;
         {
           line: 1,
           endLine: 1,
-          column: 1,
-          endColumn: 44,
+          column: 40,
+          endColumn: 45,
         },
       ],
     },
