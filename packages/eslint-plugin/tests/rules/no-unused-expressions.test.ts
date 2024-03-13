@@ -325,5 +325,49 @@ Foo<string>;
         },
       ]),
     },
+    {
+      code: 'declare const foo: number | undefined; foo;',
+      errors: error([
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 47,
+        },
+      ]),
+    },
+    {
+      code: 'declare const foo: number | undefined; foo as any;',
+      errors: [
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 50,
+        },
+      ],
+    },
+    {
+      code: 'declare const foo: number | undefined; <any>foo;',
+      errors: [
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 48,
+        },
+      ],
+    },
+    {
+      code: 'declare const foo: number | undefined; foo!;',
+      errors: [
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 44,
+        },
+      ],
+    },
   ],
 });
