@@ -825,6 +825,13 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
+          declare const foo1: { bar: string | null };
+          foo1 && foo1.bar;
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
           declare const x: any;
           x && x.length;
         `,

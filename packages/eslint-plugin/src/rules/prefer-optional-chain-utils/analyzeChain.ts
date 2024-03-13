@@ -495,7 +495,7 @@ export function analyzeChain(
         context,
         parserServices,
         options,
-        subChain.map(({ node }) => node),
+        subChain.slice(0, -1).map(({ node }) => node),
         {
           messageId: 'preferOptionalChain',
           loc: {
