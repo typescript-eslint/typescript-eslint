@@ -159,7 +159,23 @@ export function createLinter(
       console.log('[Editor] Updating', fileName, compilerOptions);
       parser.updateConfig(compilerOptions);
     } catch (e) {
-      console.error(e);
+      const lintMessage: Linter.LintMessage = {
+        source: 'eslint',
+        ruleId: '',
+        severity: 2,
+        nodeType: '',
+        column: 1,
+        line: 1,
+        message: String(e instanceof Error ? e.message : e),
+      };
+      if (typeof e === 'object' && e && 'currentNode' in e) {
+        const node = e.currentNode as TSESTree.Node;
+        lintMessage.column = node.loc.start.column + 1;
+        lintMessage.line = node.loc.start.line;
+        lintMessage.endColumn = node.loc.end.column + 1;
+        lintMessage.endLine = node.loc.end.line;
+      }
+      onLint.trigger('/tsconfig.json', [lintMessage]);
     }
   };
 
