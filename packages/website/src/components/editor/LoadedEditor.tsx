@@ -14,12 +14,27 @@ import {
 import { parseTSConfig, tryParseEslintModule } from '../lib/parseConfig';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
-import type { TabType } from '../types';
+import type { ErrorGroup, TabType } from '../types';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import type { CommonEditorProps } from './types';
 import type { SandboxServices } from './useSandboxServices';
 
-export type LoadedEditorProps = CommonEditorProps & SandboxServices;
+interface ExtendsCommonEditorProps
+  extends Omit<CommonEditorProps, 'onMarkersChange'> {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  onMarkersChange: React.Dispatch<
+    React.SetStateAction<
+      | {
+          code: ErrorGroup[];
+          tsconfig: ErrorGroup[];
+          eslintrc: ErrorGroup[];
+        }
+      | undefined
+    >
+  >;
+}
+
+export type LoadedEditorProps = ExtendsCommonEditorProps & SandboxServices;
 
 function applyEdit(
   model: Monaco.editor.ITextModel,
@@ -49,6 +64,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   sourceType,
   webLinter,
   activeTab,
+  setIsLoading,
 }) => {
   const { colorMode } = useColorMode();
   const [_, setDecorations] = useState<string[]>([]);
@@ -75,20 +91,30 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return tabsDefault;
   });
 
-  const updateMarkers = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const model = editor.getModel()!;
-    const markers = monaco.editor.getModelMarkers({
-      resource: model.uri,
-    });
+  const updateMarkers = useCallback(
+    (tab?: TabType) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const model = editor.getModel()!;
+      const markers = monaco.editor.getModelMarkers({
+        resource: model.uri,
+      });
 
-    console.log(markers);
+      const selectTab = !tab ? activeTab : tab;
 
-    onMarkersChange(prev => ({
-      ...prev,
-      [activeTab]: parseMarkers(markers, codeActions, editor),
-    }));
-  }, [codeActions, onMarkersChange, editor, monaco.editor, activeTab]);
+      onMarkersChange(prev => {
+        if (!prev) {
+          return {
+            [selectTab]: parseMarkers(markers, codeActions, editor),
+          };
+        }
+        return {
+          ...prev,
+          [selectTab]: parseMarkers(markers, codeActions, editor),
+        };
+      });
+    },
+    [codeActions, onMarkersChange, editor, monaco.editor, activeTab],
+  );
 
   useEffect(() => {
     webLinter.updateParserOptions(sourceType);
@@ -128,6 +154,22 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       updateMarkers();
     }
   }, [activeTab, editor, tabs, updateMarkers]);
+
+  useEffect(() => {
+    setTimeout(
+      () => {
+        editor.setModel(tabs.tsconfig);
+        updateMarkers('tsconfig');
+        editor.setModel(tabs.eslintrc);
+        updateMarkers('eslintrc');
+        editor.setModel(tabs.code);
+        updateMarkers('code');
+        setIsLoading(false);
+      },
+      // waiting editor creating
+      500,
+    );
+  }, []);
 
   useEffect(() => {
     const disposable = webLinter.onLint((uri, messages) => {

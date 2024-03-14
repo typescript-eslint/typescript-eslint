@@ -10,7 +10,7 @@ import { createFileSystem } from '../linter/bridge';
 import type { CreateLinter } from '../linter/createLinter';
 import { createLinter } from '../linter/createLinter';
 import type { PlaygroundSystem } from '../linter/types';
-import type { RuleDetails } from '../types';
+import type { ErrorGroup, RuleDetails } from '../types';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
@@ -32,8 +32,23 @@ export interface SandboxServices {
   webLinter: CreateLinter;
 }
 
+interface ExtendsCommonEditorProps
+  extends Omit<CommonEditorProps, 'onMarkersChange'> {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  onMarkersChange: React.Dispatch<
+    React.SetStateAction<
+      | {
+          code: ErrorGroup[];
+          tsconfig: ErrorGroup[];
+          eslintrc: ErrorGroup[];
+        }
+      | undefined
+    >
+  >;
+}
+
 export const useSandboxServices = (
-  props: CommonEditorProps & SandboxServicesProps,
+  props: ExtendsCommonEditorProps & SandboxServicesProps,
 ): Error | SandboxServices | undefined => {
   const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
