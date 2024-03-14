@@ -38,9 +38,9 @@ interface ExtendsCommonEditorProps
   onMarkersChange: React.Dispatch<
     React.SetStateAction<
       | {
-          code: ErrorGroup[];
-          tsconfig: ErrorGroup[];
-          eslintrc: ErrorGroup[];
+          code?: ErrorGroup[];
+          tsconfig?: ErrorGroup[];
+          eslintrc?: ErrorGroup[];
         }
       | undefined
     >
