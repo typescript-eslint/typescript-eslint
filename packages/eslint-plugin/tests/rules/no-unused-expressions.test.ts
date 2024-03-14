@@ -338,36 +338,36 @@ Foo<string>;
     },
     {
       code: 'declare const foo: number | undefined; foo as any;',
-      errors: [
+      errors: error([
         {
           line: 1,
           endLine: 1,
           column: 40,
           endColumn: 51,
         },
-      ],
+      ]),
     },
     {
       code: 'declare const foo: number | undefined; <any>foo;',
-      errors: [
+      errors: error([
         {
           line: 1,
           endLine: 1,
           column: 40,
           endColumn: 49,
         },
-      ],
+      ]),
     },
     {
       code: 'declare const foo: number | undefined; foo!;',
-      errors: [
+      errors: error([
         {
           line: 1,
           endLine: 1,
           column: 40,
           endColumn: 45,
         },
-      ],
+      ]),
     },
   ],
 });
