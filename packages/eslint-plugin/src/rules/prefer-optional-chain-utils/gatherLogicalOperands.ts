@@ -84,10 +84,8 @@ function isValidFalseBooleanCheckType(
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
     */
-    const booleanLiteralTypes = types.filter(isBooleanLiteralType);
     if (
-      (booleanLiteralTypes.length === 1 &&
-        booleanLiteralTypes[0].intrinsicName === 'false') ||
+      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
       types.some(t => isStringLiteralType(t) && t.value === '') ||
       types.some(t => isNumberLiteralType(t) && t.value === 0) ||
       types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
