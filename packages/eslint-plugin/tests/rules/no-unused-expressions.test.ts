@@ -326,46 +326,58 @@ Foo<string>;
       ]),
     },
     {
-      code: 'declare const foo: number | undefined; foo;',
+      code: `
+declare const foo: number | undefined;
+foo;
+      `,
       errors: error([
         {
-          line: 1,
-          endLine: 1,
-          column: 40,
-          endColumn: 44,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 5,
         },
       ]),
     },
     {
-      code: 'declare const foo: number | undefined; foo as any;',
+      code: `
+declare const foo: number | undefined;
+foo as any;
+      `,
       errors: error([
         {
-          line: 1,
-          endLine: 1,
-          column: 40,
-          endColumn: 51,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 12,
         },
       ]),
     },
     {
-      code: 'declare const foo: number | undefined; <any>foo;',
+      code: `
+declare const foo: number | undefined;
+<any>foo;
+      `,
       errors: error([
         {
-          line: 1,
-          endLine: 1,
-          column: 40,
-          endColumn: 49,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 10,
         },
       ]),
     },
     {
-      code: 'declare const foo: number | undefined; foo!;',
+      code: `
+declare const foo: number | undefined;
+foo!;
+      `,
       errors: error([
         {
-          line: 1,
-          endLine: 1,
-          column: 40,
-          endColumn: 45,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 6,
         },
       ]),
     },
