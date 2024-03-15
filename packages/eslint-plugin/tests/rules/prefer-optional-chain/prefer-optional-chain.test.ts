@@ -1918,6 +1918,25 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
+          declare const foo: { bar: boolean } | null | undefined;
+          declare function acceptsBoolean(arg: boolean): void;
+          acceptsBoolean(foo != null && foo.bar);
+        `,
+        output: `
+          declare const foo: { bar: boolean } | null | undefined;
+          declare function acceptsBoolean(arg: boolean): void;
+          acceptsBoolean(foo?.bar);
+        `,
+        options: [
+          {
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
+              true,
+          },
+        ],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
           function foo(globalThis?: { Array: Function }) {
             typeof globalThis !== 'undefined' && globalThis.Array();
           }
