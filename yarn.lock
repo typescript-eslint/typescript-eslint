@@ -3870,15 +3870,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:18.0.5":
-  version: 18.0.5
-  resolution: "@nrwl/devkit@npm:18.0.5"
-  dependencies:
-    "@nx/devkit": 18.0.5
-  checksum: 5e49a0833a65e2074004414db3f2bf3c22b49821cefca808ce2f059d9124656a0fa5d725f29b73fccf20da4f0f0fb849c708bce3279c567b078c716727df8f74
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:18.0.7":
   version: 18.0.7
   resolution: "@nrwl/devkit@npm:18.0.7"
@@ -3927,25 +3918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:18.0.5":
-  version: 18.0.5
-  resolution: "@nx/devkit@npm:18.0.5"
-  dependencies:
-    "@nrwl/devkit": 18.0.5
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: ^7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-    yargs-parser: 21.1.1
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: 42033bde8583327b5c60295e7fd1bb94d8c1534c5fecf901366cc147ec280b1cd0d2eb57b47d89e7b69add15a0fe9258766f9b6da2cc48d7d427f52b057773dc
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:18.0.7":
+"@nx/devkit@npm:*, @nx/devkit@npm:18.0.7":
   version: 18.0.7
   resolution: "@nx/devkit@npm:18.0.7"
   dependencies:
@@ -5276,13 +5249,13 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:^18.2.14":
-  version: 18.2.64
-  resolution: "@types/react@npm:18.2.64"
+  version: 18.2.66
+  resolution: "@types/react@npm:18.2.66"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 1fd28dc5e5d191619e0b001485f428a070bad11f55683a212d3bd937bdc979335913f90f4ca4f0510871e5f35d8f46b169a23276fb048d06584623d3652cc0f3
+  checksum: 266cdd046bd1bb4f1e2d07bba305e1264e91bedcb9e8643e303fc80468f3cf0860c82982589c67fc07a10f5496eb04c1cc2bf8283484f27a605c2651c6c8f3f3
   languageName: node
   linkType: hard
 
