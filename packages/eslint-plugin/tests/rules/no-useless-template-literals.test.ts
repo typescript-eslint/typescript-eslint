@@ -516,7 +516,6 @@ declare const nested: string, interpolation: string;
     {
       code: "`${'a'} ${true}`;",
       output: '`a true`;',
-      // only: true,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
