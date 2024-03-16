@@ -175,13 +175,10 @@ function Playground(): React.JSX.Element {
                 value={esQueryError}
               />
             ) : state.showAST && astModel ? (
-              state.showAST === 'types' ? (
+              state.showAST === 'types' && astModel.storedTsAST ? (
                 <TypesDetails
                   typeChecker={astModel.typeChecker}
-                  value={
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    astModel.storedTsAST!
-                  }
+                  value={astModel.storedTsAST}
                   onHoverNode={setSelectedRange}
                   cursorPosition={position}
                 />
@@ -192,9 +189,11 @@ function Playground(): React.JSX.Element {
                     state.showAST === 'es' ? state.esQuery?.selector : undefined
                   }
                   value={
-                    astModel[
-                      `stored${({ ts: 'TsAST', scope: 'Scope', es: 'AST' } as const)[state.showAST]}` as const
-                    ]
+                    state.showAST === 'types'
+                      ? undefined
+                      : astModel[
+                          `stored${({ ts: 'TsAST', scope: 'Scope', es: 'AST' } as const)[state.showAST]}` as const
+                        ]
                   }
                   showTokens={state.showTokens}
                   enableScrolling={state.scroll}
