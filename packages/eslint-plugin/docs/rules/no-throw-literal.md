@@ -28,19 +28,19 @@ throw undefined;
 
 throw null;
 
-const err = new Error();
-throw 'an ' + err;
+const err1 = new Error();
+throw 'an ' + err1;
 
-const err = new Error();
-throw `${err}`;
+const err2 = new Error();
+throw `${err2}`;
 
-const err = '';
-throw err;
+const err3 = '';
+throw err3;
 
-function err() {
+function getErr() {
   return '';
 }
-throw err();
+throw getErr();
 
 const foo = {
   bar: '',
@@ -67,10 +67,10 @@ try {
 const err = new Error();
 throw err;
 
-function err() {
+function getErr() {
   return new Error();
 }
-throw err();
+throw getErr();
 
 const foo = {
   bar: new Error(),

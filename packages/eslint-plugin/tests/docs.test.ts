@@ -1,10 +1,16 @@
+import 'jest-specific-snapshot';
+
 import { parseForESLint } from '@typescript-eslint/parser';
+import * as tseslintParser from '@typescript-eslint/parser';
+import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import fs from 'fs';
 import { marked } from 'marked';
 import path from 'path';
 import { titleCase } from 'title-case';
 
 import rules from '../src/rules';
+import { areOptionsValid } from './areOptionsValid';
+import { getFixturesRootDir } from './RuleTester';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
@@ -45,6 +51,56 @@ function tokenIsH2(
     tokenIsHeading(token) && token.depth === 2 && !/[a-z]+: /.test(token.text)
   );
 }
+
+function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
+  const output: string[] = [];
+  const lines = code.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    output.push(line);
+
+    for (const error of errors) {
+      const startLine = error.line - 1;
+      const endLine =
+        error.endLine === undefined ? startLine : error.endLine - 1;
+      const startColumn = error.column - 1;
+      const endColumn =
+        error.endColumn === undefined ? startColumn : error.endColumn - 1;
+      if (i < startLine || i > endLine) {
+        continue;
+      }
+      if (i === startLine) {
+        const squiggle = '~'.repeat(
+          startLine === endLine
+            ? Math.max(1, endColumn - startColumn)
+            : line.length - startColumn,
+        );
+        const squiggleWithIndent = ' '.repeat(startColumn) + squiggle + ' ';
+        const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
+        output.push(
+          squiggleWithIndent +
+            error.message.split('\n').join('\n' + errorMessageIndent),
+        );
+      } else if (i === endLine) {
+        output.push('~'.repeat(endColumn));
+      } else {
+        output.push('~'.repeat(line.length));
+      }
+    }
+  }
+
+  return output.join('\n').trim() + '\n';
+}
+
+const linter = new Linter();
+linter.defineParser('@typescript-eslint/parser', tseslintParser);
+
+const eslintOutputSnapshotFolder = path.resolve(
+  __dirname,
+  'docs-eslint-output-snapshots',
+);
+fs.mkdirSync(eslintOutputSnapshotFolder, { recursive: true });
 
 describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
@@ -207,7 +263,175 @@ describe('Validating rule docs', () => {
           }
         }
       });
+
+      describe('code examples ESLint output', () => {
+        // TypeScript can't infer type arguments unless we provide them explicitly
+        linter.defineRule<
+          keyof (typeof rule)['meta']['messages'],
+          (typeof rule)['defaultOptions']
+        >(ruleName, rule);
+
+        type TabsSearchContext =
+          | {
+              type: 'outside-the-tabs';
+            }
+          | {
+              type: 'entered-tabs';
+            }
+          | {
+              type: 'under-tab-heading';
+              headingsDepth: number;
+              sectionType: 'incorrect' | 'correct' | 'unknown';
+            };
+        let tabsSearchContext: TabsSearchContext = {
+          type: 'outside-the-tabs',
+        };
+
+        for (const token of tokens) {
+          if (token.type === 'html') {
+            const isOpeningTabsComment = /^<!--\s*tabs\s*-->$/.test(
+              token.text.trim(),
+            );
+            const isClosingTabsComment = /^<!--\s*\/tabs\s*-->$/.test(
+              token.text.trim(),
+            );
+
+            if (isOpeningTabsComment) {
+              tabsSearchContext = { type: 'entered-tabs' };
+            } else if (isClosingTabsComment) {
+              tabsSearchContext = { type: 'outside-the-tabs' };
+            }
+          } else if (token.type === 'heading') {
+            if (
+              tabsSearchContext.type === 'under-tab-heading' &&
+              token.depth < tabsSearchContext.headingsDepth
+            ) {
+              tabsSearchContext = { type: 'outside-the-tabs' };
+            } else if (
+              tabsSearchContext.type === 'entered-tabs' ||
+              (tabsSearchContext.type === 'under-tab-heading' &&
+                token.depth === tabsSearchContext.headingsDepth)
+            ) {
+              const heading = token.text.trim();
+              tabsSearchContext = {
+                type: 'under-tab-heading',
+                headingsDepth: token.depth,
+                sectionType: heading.startsWith('❌ Incorrect')
+                  ? 'incorrect'
+                  : heading.startsWith('✅ Correct')
+                    ? 'correct'
+                    : 'unknown',
+              };
+            }
+          }
+
+          if (
+            token.type !== 'code' ||
+            (tabsSearchContext.type !== 'under-tab-heading' &&
+              !token.lang?.includes('showPlaygroundButton'))
+          ) {
+            continue;
+          }
+
+          const lang = token.lang?.trim();
+          if (!lang || !/^tsx?\b/i.test(lang)) {
+            continue;
+          }
+
+          const optionRegex = /option='(?<option>.*?)'/;
+
+          const option = lang.match(optionRegex)?.groups?.option;
+          let ruleConfig: Linter.RuleEntry;
+          if (option) {
+            const [, ...options] = (ruleConfig = JSON.parse(
+              `["error", ${option}]`,
+            ));
+            test('options are valid', () => {
+              if (!areOptionsValid(rule, options)) {
+                throw new Error(
+                  `Options failed validation against rule's schema - ${JSON.stringify(options)}`,
+                );
+              }
+            });
+          } else {
+            ruleConfig = 'error';
+          }
+          const rootPath = getFixturesRootDir();
+
+          const messages = linter.verify(
+            token.text,
+            {
+              parser: '@typescript-eslint/parser',
+              parserOptions: {
+                tsconfigRootDir: rootPath,
+                project: './tsconfig.json',
+              },
+              rules: {
+                [ruleName]: ruleConfig,
+              },
+            },
+            /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
+          );
+
+          const testCaption: string[] = [];
+          if (tabsSearchContext.type === 'under-tab-heading') {
+            if (tabsSearchContext.sectionType === 'incorrect') {
+              testCaption.push('Incorrect');
+              if (lang.includes('skipValidation')) {
+                test(
+                  "doesn't contain lint errors (with skipValidation):\n" +
+                    token.text,
+                  () => {
+                    expect(messages).toHaveLength(0);
+                  },
+                );
+              } else {
+                test('contains at least 1 lint error:\n' + token.text, () => {
+                  expect(messages).not.toHaveLength(0);
+                });
+              }
+            } else if (tabsSearchContext.sectionType === 'correct') {
+              testCaption.push('Correct');
+              if (lang.includes('skipValidation')) {
+                test(
+                  'contains at least 1 lint error (with skipValidation):\n' +
+                    token.text,
+                  () => {
+                    expect(messages).not.toHaveLength(0);
+                  },
+                );
+              } else {
+                test("doesn't contain lint errors:\n" + token.text, () => {
+                  expect(messages).toHaveLength(0);
+                });
+              }
+            }
+          }
+          if (option) {
+            testCaption.push(`Options: ${option}`);
+          }
+
+          test('snapshot', () => {
+            expect(
+              testCaption.filter(Boolean).join('\n') +
+                '\n\n' +
+                renderLintResults(token.text, messages),
+            ).toMatchSpecificSnapshot(
+              path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+            );
+          });
+        }
+      });
     });
+  }
+});
+
+test('There should be no obsolete ESLint output snapshots', () => {
+  const files = fs.readdirSync(eslintOutputSnapshotFolder);
+  const names = new Set(Object.keys(rules).map(k => `${k}.shot`));
+
+  for (const file of files) {
+    expect(names).toContain(file);
   }
 });
 

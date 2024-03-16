@@ -245,7 +245,7 @@ class Foo {
 }
 
 type Foo = {
-    name: (name : string)=>string;
+    name : (name : string)=>string;
 }
 
 type Foo = ()=>{};
