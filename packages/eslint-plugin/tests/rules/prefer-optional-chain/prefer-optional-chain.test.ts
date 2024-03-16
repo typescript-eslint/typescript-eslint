@@ -832,6 +832,21 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
+          declare const foo: string;
+          (foo || {}).toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+
+      {
+        code: `
+          declare const foo: string | null;
+          (foo || 'a' || {}).toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
           declare const x: any;
           x && x.length;
         `,
@@ -1938,6 +1953,30 @@ describe('hand-crafted cases', () => {
         output: `
           declare const foo: { bar: string | null | undefined } | null | undefined;
           foo?.bar?.toString() && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
+          declare const foo: string | null;
+          (foo || {}).toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
+          declare const foo: string;
+          (foo || undefined || {}).toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
+          declare const foo: string | null;
+          (foo || undefined || {}).toString();
         `,
         options: [{ requireNullish: true }],
         errors: [{ messageId: 'preferOptionalChain' }],
