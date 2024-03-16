@@ -17,23 +17,23 @@ describe('getDeclaration', () => {
     it('start with dollorSign', () => {
       const name = '$bar';
       const result = requiresQuoting(name);
-      expect(result).toBe(true);
+      expect(result).toBe(false);
     });
     it('include dollorSign not start position', () => {
       const name = 'foo$bar';
       const result = requiresQuoting(name);
-      expect(result).toBe(true);
+      expect(result).toBe(false);
     });
 
     it('start with underScore', () => {
       const name = '_bar';
       const result = requiresQuoting(name);
-      expect(result).toBe(true);
+      expect(result).toBe(false);
     });
     it('include underScore not start position', () => {
       const name = 'foo_bar';
       const result = requiresQuoting(name);
-      expect(result).toBe(true);
+      expect(result).toBe(false);
     });
 
     it('non-alphabet characters', () => {
