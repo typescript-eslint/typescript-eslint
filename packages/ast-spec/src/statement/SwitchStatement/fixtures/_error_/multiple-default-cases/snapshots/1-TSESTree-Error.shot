@@ -7,5 +7,6 @@ exports[`AST Fixtures statement SwitchStatement _error_ multiple-default-cases T
 > 2 | 	default: default:
     | ^^^^^^^^^^^^^^^^^^
 > 3 | }
-    | ^^ A 'default' clause cannot appear more than once in a 'switch' statement."
+    | ^^ A 'default' clause cannot appear more than once in a 'switch' statement.
+  4 |"
 `;
