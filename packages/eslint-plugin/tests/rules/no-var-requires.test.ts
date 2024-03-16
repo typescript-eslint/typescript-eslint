@@ -36,6 +36,10 @@ const json = require('./some.json');
       code: "const pkg = require('some-package');",
       options: [{ allow: ['^some-package$'] }],
     },
+    {
+      code: 'const pkg = require(`some-package`);',
+      options: [{ allow: ['^some-package$'] }],
+    },
   ],
   invalid: [
     {
@@ -200,6 +204,17 @@ configValidator.addSchema(require('./a.json'));
     },
     {
       code: "const pkg = require('./package.json');",
+      options: [{ allow: ['^some-package$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require(`./package.json`);',
       options: [{ allow: ['^some-package$'] }],
       errors: [
         {

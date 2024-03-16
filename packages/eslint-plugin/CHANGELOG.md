@@ -1,3 +1,47 @@
+## 7.2.0 (2024-03-11)
+
+
+### 🚀 Features
+
+- support TS 5.4
+
+- **eslint-plugin:** [prefer-string-starts-ends-with] add allowSingleElementEquality option
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** expose *-type-checked-only configs for extension
+
+- **eslint-plugin:** [member-ordering] report alphabetical sorting for all groups instead of just the first failing group
+
+- **eslint-plugin:** [no-var-requires, no-require-imports] support template literal
+
+- **eslint-plugin:** [no-useless-template-literals] detect TemplateLiteral
+
+- **eslint-plugin:** [no-unnecessary-condition] handle union array and tuple type
+
+- **eslint-plugin:** [prefer-find] support ternary branches in prefer-find
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- auvred
+- Chris Plummer
+- Fotis Papadogeorgopoulos
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Wayne Zhang
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.1 (2024-03-04)
+
+This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.1.0 (2024-02-26)
 
 
