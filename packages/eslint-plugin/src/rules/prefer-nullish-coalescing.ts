@@ -321,6 +321,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const ignorableFlags = [
           (ignorePrimitives === true || ignorePrimitives!.bigint) &&
             ts.TypeFlags.BigInt,
@@ -342,6 +344,7 @@ export default createRule<Options, MessageIds>({
         ) {
           return;
         }
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
         const barBarOperator = nullThrows(
           context.sourceCode.getTokenAfter(

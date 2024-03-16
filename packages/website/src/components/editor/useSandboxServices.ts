@@ -121,7 +121,11 @@ export const useSandboxServices = (
         return;
       }
 
-      const editorModel = sandboxInstance.editor.getModel()!;
+      const editorModel = sandboxInstance.editor.getModel();
+      if (!editorModel) {
+        return;
+      }
+
       sandboxInstance.monaco.editor.setModelMarkers(
         editorModel,
         sandboxInstance.editor.getId(),

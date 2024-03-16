@@ -83,7 +83,6 @@ export default tseslint.config(
           // in the rare case that we do - just need to manually restart their IDE.
           glob: 'Infinity',
         },
-        sourceType: 'module',
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -132,7 +131,6 @@ export default tseslint.config(
         { allowIIFEs: true },
       ],
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-non-null-assertion': 'off',
       'no-constant-condition': 'off',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
@@ -297,6 +295,7 @@ export default tseslint.config(
       // eslint-plugin-unicorn
       //
 
+      'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
     },
   },
@@ -342,6 +341,7 @@ export default tseslint.config(
         'error',
         { allow: ['arrowFunctions'] },
       ],
+      '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
