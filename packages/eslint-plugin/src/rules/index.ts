@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
@@ -12,6 +14,7 @@ import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
 import consistentGenericConstructors from './consistent-generic-constructors';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
+import consistentReturn from './consistent-return';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeExports from './consistent-type-exports';
@@ -103,6 +106,7 @@ import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferDestructuring from './prefer-destructuring';
 import preferEnumInitializers from './prefer-enum-initializers';
+import preferFind from './prefer-find';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
@@ -153,6 +157,7 @@ export default {
   'comma-spacing': commaSpacing,
   'consistent-generic-constructors': consistentGenericConstructors,
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
+  'consistent-return': consistentReturn,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'consistent-type-exports': consistentTypeExports,
@@ -244,6 +249,7 @@ export default {
   'prefer-as-const': preferAsConst,
   'prefer-destructuring': preferDestructuring,
   'prefer-enum-initializers': preferEnumInitializers,
+  'prefer-find': preferFind,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
@@ -278,4 +284,4 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-};
+} satisfies Linter.PluginRules;

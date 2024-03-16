@@ -64,7 +64,7 @@ Specifically the argument of the not operator (`!loose`) or a bare value in a lo
 
 ### `allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing`
 
-When this option is `true`, the rule will not provide an auto-fixer for cases where the return type of the expression would change. For example for the expression `!foo || foo.bar` the return type of the expression is `true | T`, however for the equivalent optional chain `foo?.bar` the return type of the expression is `undefined | T`. Thus changing the code from a logical expression to an optional chain expression has altered the type of the expression.
+When this option is `true`, the rule will provide an auto-fixer for cases where the return type of the expression would change. For example for the expression `!foo || foo.bar` the return type of the expression is `true | T`, however for the equivalent optional chain `foo?.bar` the return type of the expression is `undefined | T`. Thus changing the code from a logical expression to an optional chain expression has altered the type of the expression.
 
 In some cases this distinction _may_ matter - which is why these fixers are considered unsafe - they may break the build! For example in the following code:
 

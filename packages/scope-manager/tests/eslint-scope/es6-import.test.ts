@@ -4,8 +4,8 @@ import {
   expectToBeModuleScope,
   expectToBeVariableDefinition,
   getRealVariables,
-} from '../util';
-import { parseAndAnalyze } from '../util/parse';
+} from '../test-utils';
+import { parseAndAnalyze } from '../test-utils/parse';
 
 describe('import declaration', () => {
   // http://people.mozilla.org/~jorendorff/es6-draft.html#sec-static-and-runtme-semantics-module-records

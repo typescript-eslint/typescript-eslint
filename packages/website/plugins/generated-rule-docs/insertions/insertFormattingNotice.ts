@@ -12,7 +12,7 @@ export function insertFormattingNotice(page: RuleDocsPage): void {
 
   const url =
     replacement &&
-    `https://eslint.style/rules/ts/${replacement.replace('@stylistic/', '')}`;
+    `https://eslint.style/rules/${replacement.replace('@stylistic/', '')}`;
 
   page.spliceChildren(0, 0, {
     value: `

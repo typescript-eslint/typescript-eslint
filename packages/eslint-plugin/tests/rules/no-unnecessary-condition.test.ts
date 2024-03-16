@@ -22,6 +22,11 @@ const ruleTester = new RuleTester({
   },
 });
 
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootPath,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
+
 const ruleError = (
   line: number,
   column: number,
@@ -360,6 +365,20 @@ if (arr?.[42]) {
 }
     `,
     `
+type ItemA = { bar: string; baz: string };
+type ItemB = { bar: string; qux: string };
+declare const foo: ItemA[] | ItemB[];
+foo[0]?.bar;
+    `,
+    `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
+    `,
+    `
 declare const returnsArr: undefined | (() => string[]);
 if (returnsArr?.()[42]) {
 }
@@ -577,9 +596,6 @@ foo?.[key]?.trim();
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -594,9 +610,6 @@ foo?.[key].trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -615,9 +628,6 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -638,9 +648,6 @@ function Foo(outer: Outer, key: Foo): number | undefined {
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -655,9 +662,6 @@ foo?.[key]?.trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
@@ -748,6 +752,48 @@ declare let foo: number;
 foo ||= 1;
     `,
     `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+    `,
+    `
+enum Keys {
+  A = 'A',
+  B = 'B',
+}
+type Foo = {
+  [Keys.A]: number | null;
+  [Keys.B]: number;
+};
+declare const foo: Foo;
+declare const key: Keys;
+foo[key] ??= 1;
+    `,
+    {
+      code: `
+declare const foo: { bar?: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number } };
+foo['bar'].baz ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    `
 declare let foo: number;
 foo &&= 1;
     `,
@@ -782,9 +828,6 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
@@ -2032,6 +2075,22 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 8,
         },
       ],
     },

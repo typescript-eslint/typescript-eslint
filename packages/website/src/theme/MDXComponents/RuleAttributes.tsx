@@ -20,8 +20,14 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
-  const recommendation = recommendations[docs.recommended!];
+type RecommendedRuleMetaDataDocs = RuleMetaDataDocs & { recommended: string };
+
+const isRecommendedDocs = (
+  docs: RuleMetaDataDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
+
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
+  const recommendation = recommendations[docs.recommended];
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
@@ -37,13 +43,13 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
 
   const features: FeatureProps[] = [];
 
-  if (rule.docs.recommended) {
+  if (isRecommendedDocs(rule.docs)) {
     const [emoji, recommendation] = getRecommendation(rule.docs);
     features.push({
       children: (
         <>
           Extending{' '}
-          <Link to={`/linting/configs#${recommendation}`} target="_blank">
+          <Link to={`/users/configs#${recommendation}`} target="_blank">
             <code className={styles.code}>
               "plugin:@typescript-eslint/{recommendation}"
             </code>
@@ -94,7 +100,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           This rule requires{' '}
-          <Link href="/linting/typed-linting" target="_blank">
+          <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
           to run.

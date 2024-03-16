@@ -76,17 +76,17 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 {
   "rules": {
     // disable the rule for all files
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "@typescript-eslint/explicit-function-return-type": "off",
   },
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": "error"
-      }
-    }
-  ]
+        "@typescript-eslint/explicit-function-return-type": "error",
+      },
+    },
+  ],
 }
 ```
 
@@ -143,7 +143,7 @@ type FuncType = () => string;
 
 let arrowFn: FuncType = () => 'test';
 
-let funcExpr: FuncType = function() {
+let funcExpr: FuncType = function () {
   return 'test';
 };
 
@@ -163,19 +163,15 @@ let objectPropCast = <ObjectType>{
   foo: () => 1,
 };
 
-declare functionWithArg(arg: () => number);
+declare function functionWithArg(arg: () => number);
 functionWithArg(() => 1);
 
-declare functionWithObjectArg(arg: { method: () => number });
+declare function functionWithObjectArg(arg: { method: () => number });
 functionWithObjectArg({
   method() {
     return 1;
   },
 });
-
-const Comp: FC = () => {
-  return <button onClick={() => {}} />;
-};
 ```
 
 ### `allowHigherOrderFunctions`
@@ -271,7 +267,7 @@ function foo<T>(t: T): T {
 
 const bar = <T>(t: T): T => t;
 
-const allowedFunction(x: string) {
+function allowedFunction(x: string) {
   return x;
 }
 

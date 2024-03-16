@@ -30,17 +30,17 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 {
   "rules": {
     // disable the rule for all files
-    "@typescript-eslint/explicit-member-accessibility": "off"
+    "@typescript-eslint/explicit-member-accessibility": "off",
   },
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-member-accessibility": "error"
-      }
-    }
-  ]
+        "@typescript-eslint/explicit-member-accessibility": "error",
+      },
+    },
+  ],
 }
 ```
 
@@ -48,16 +48,16 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 This rule in its default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
 
-```ts
+```jsonc
 {
-  accessibility: 'explicit',
-  overrides: {
-    accessors: 'explicit',
-    constructors: 'no-public',
-    methods: 'explicit',
-    properties: 'off',
-    parameterProperties: 'explicit'
-  }
+  "accessibility": "explicit",
+  "overrides": {
+    "accessors": "explicit",
+    "constructors": "no-public",
+    "methods": "explicit",
+    "properties": "off",
+    "parameterProperties": "explicit",
+  },
 }
 ```
 

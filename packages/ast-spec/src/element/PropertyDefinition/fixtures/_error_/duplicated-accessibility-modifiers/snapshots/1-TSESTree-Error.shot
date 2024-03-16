@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element PropertyDefinition _error_ duplicated-accessibility-modifiers TSESTree - Error 1`] = `
+"TSError
+  1 | class Foo {
+> 2 |   public public bar;
+    |          ^^^^^^ Accessibility modifier already seen.
+  3 | }
+  4 |"
+`;

@@ -298,13 +298,13 @@ const text = 'text';
 
 ```ts option='{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }'
 const a = (): void => {};
-const b = function (): void => {};
+const b = function (): void {};
 const c: () => void = (): void => {};
 
 class Foo {
   a = (): void => {};
-  b = function (): void => {};
-  c = () => void = (): void => {};
+  b = function (): void {};
+  c: () => void = (): void => {};
 }
 ```
 
