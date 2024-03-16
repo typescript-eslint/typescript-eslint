@@ -1,8 +1,12 @@
-// See https://github.com/typescript-eslint/typescript-eslint/issues/7630.
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type { ImperativePanelHandle } from 'react-resizable-panels';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
@@ -29,7 +33,7 @@ function Playground(): React.JSX.Element {
   const [astModel, setAstModel] = useState<UpdateModel>();
   const [markers, setMarkers] = useState<ErrorGroup[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
   const [selectedRange, setSelectedRange] = useState<SelectedRange>();
   const [position, setPosition] = useState<number>();
@@ -38,37 +42,23 @@ function Playground(): React.JSX.Element {
   const [visualEslintRc, setVisualEslintRc] = useState(false);
   const [visualTSConfig, setVisualTSConfig] = useState(false);
   const playgroundMenuRef = useRef<ImperativePanelHandle>(null);
-  const [optionsSize] = useState(() => {
-    return Math.round(
-      (parseFloat(getComputedStyle(document.documentElement).fontSize) * 2000) /
-        window.innerWidth,
-    );
-  });
-
-  const onLoaded = useCallback(
-    (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
-      setRuleNames(ruleNames);
-      setTSVersion(tsVersions);
-      setIsLoading(false);
-    },
+  const optionsSize = useMemo(
+    () =>
+      Math.round(
+        (parseFloat(getComputedStyle(document.documentElement).fontSize) *
+          2000) /
+          innerWidth,
+      ),
     [],
   );
 
-  const activeVisualEditor = !isLoading
-    ? visualEslintRc && activeTab === 'eslintrc'
-      ? 'eslintrc'
-      : visualTSConfig && activeTab === 'tsconfig'
-        ? 'tsconfig'
-        : undefined
-    : undefined;
-
-  const onVisualEditor = useCallback((tab: TabType): void => {
-    if (tab === 'tsconfig') {
-      setVisualTSConfig(val => !val);
-    } else if (tab === 'eslintrc') {
-      setVisualEslintRc(val => !val);
-    }
-  }, []);
+  const ActiveVisualEditor =
+    !isLoading &&
+    {
+      code: undefined,
+      eslintrc: visualEslintRc && ConfigEslint,
+      tsconfig: visualTSConfig && ConfigTypeScript,
+    }[activeTab];
 
   useEffect(() => {
     if (windowSize === 'mobile') {
@@ -115,46 +105,43 @@ function Playground(): React.JSX.Element {
             active={activeTab}
             change={setTab}
             showVisualEditor={activeTab !== 'code'}
-            showModal={onVisualEditor}
+            showModal={useCallback(tab => {
+              if (tab === 'tsconfig') {
+                setVisualTSConfig(val => !val);
+              } else if (tab === 'eslintrc') {
+                setVisualEslintRc(val => !val);
+              }
+            }, [])}
           />
-          {(activeVisualEditor === 'eslintrc' && (
-            <ConfigEslint
+          {ActiveVisualEditor && (
+            <ActiveVisualEditor
               className={styles.tabCode}
               ruleOptions={ruleNames}
-              config={state.eslintrc}
+              config={state[activeTab]}
               onChange={setState}
             />
-          )) ||
-            (activeVisualEditor === 'tsconfig' && (
-              <ConfigTypeScript
-                className={styles.tabCode}
-                config={state.tsconfig}
-                onChange={setState}
-              />
-            ))}
+          )}
           <div
             key="monacoEditor"
             className={clsx(
               styles.tabCode,
-              !!activeVisualEditor && styles.hidden,
+              ActiveVisualEditor && styles.hidden,
             )}
           >
             <EditorEmbed />
           </div>
           <LoadingEditor
-            ts={state.ts}
-            fileType={state.fileType}
+            {...state}
             activeTab={activeTab}
-            code={state.code}
-            tsconfig={state.tsconfig}
-            eslintrc={state.eslintrc}
-            sourceType={state.sourceType}
-            showAST={state.showAST}
             onASTChange={setAstModel}
             onMarkersChange={setMarkers}
             selectedRange={selectedRange}
             onChange={setState}
-            onLoaded={onLoaded}
+            onLoaded={useCallback((ruleNames, tsVersions) => {
+              setRuleNames(ruleNames);
+              setTSVersion(tsVersions);
+              setIsLoading(false);
+            }, [])}
             onSelect={setPosition}
           />
         </Panel>
@@ -168,57 +155,55 @@ function Playground(): React.JSX.Element {
             <EditorTabs
               tabs={detailTabs}
               active={state.showAST ?? false}
-              change={(v): void => setState({ showAST: v })}
+              change={showAST => setState({ showAST })}
             />
             {state.showAST === 'es' && (
               <ESQueryFilter
                 defaultValue={state.esQuery?.filter}
                 onChange={(filter, selector) =>
-                  setState({
-                    esQuery: { filter, selector },
-                  })
+                  setState({ esQuery: { filter, selector } })
                 }
                 onError={setEsQueryError}
               />
             )}
           </div>
           <div className={styles.playgroundInfoContainer}>
-            {(state.showAST === 'es' && esQueryError && (
+            {state.showAST === 'es' && esQueryError ? (
               <ErrorViewer
                 type="warning"
                 title="Invalid Selector"
                 value={esQueryError}
               />
-            )) ||
-              (state.showAST === 'types' && astModel?.storedTsAST && (
+            ) : state.showAST && astModel ? (
+              state.showAST === 'types' && astModel.storedTsAST ? (
                 <TypesDetails
                   typeChecker={astModel.typeChecker}
                   value={astModel.storedTsAST}
                   onHoverNode={setSelectedRange}
                   cursorPosition={position}
                 />
-              )) ||
-              (state.showAST && astModel && (
+              ) : (
                 <ASTViewer
-                  key={String(state.showAST)}
+                  key={state.showAST}
                   filter={
                     state.showAST === 'es' ? state.esQuery?.selector : undefined
                   }
                   value={
-                    state.showAST === 'ts'
-                      ? astModel.storedTsAST
-                      : state.showAST === 'scope'
-                        ? astModel.storedScope
-                        : state.showAST === 'es'
-                          ? astModel.storedAST
-                          : undefined
+                    state.showAST === 'types'
+                      ? undefined
+                      : astModel[
+                          `stored${({ ts: 'TsAST', scope: 'Scope', es: 'AST' } as const)[state.showAST]}` as const
+                        ]
                   }
                   showTokens={state.showTokens}
                   enableScrolling={state.scroll}
                   cursorPosition={position}
                   onHoverNode={setSelectedRange}
                 />
-              )) || <ErrorsViewer value={markers} />}
+              )
+            ) : (
+              <ErrorsViewer value={markers} />
+            )}
           </div>
         </Panel>
       </PanelGroup>
