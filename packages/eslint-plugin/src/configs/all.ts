@@ -151,6 +151,7 @@ export = {
     '@typescript-eslint/sort-type-constituents': 'error',
     '@typescript-eslint/strict-boolean-expressions': 'error',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
+    '@typescript-eslint/thenable-in-promise-aggregators': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/typedef': 'error',
     '@typescript-eslint/unbound-method': 'error',
