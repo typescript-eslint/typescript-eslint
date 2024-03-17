@@ -61,7 +61,10 @@ async function main(): Promise<void> {
     config: PRETTIER_CONFIG_PATH,
   });
 
-  type LinterConfigRules = Record<string, ClassicConfig.RuleLevel>;
+  type LinterConfigRules = Record<
+    string,
+    ClassicConfig.RuleLevel | [ClassicConfig.RuleLevel, ...unknown[]]
+  >;
 
   interface LinterConfig extends ClassicConfig.Config {
     extends?: string[] | string;
@@ -93,8 +96,13 @@ async function main(): Promise<void> {
     (a, b) => a[0].localeCompare(b[0]),
   );
 
-  interface RuleFilter {
+  type GetRuleOptions = (
+    rule: RuleModule<string, readonly unknown[]>,
+  ) => true | readonly unknown[] | undefined;
+
+  interface ConfigRuleSettings {
     deprecated?: 'exclude';
+    getOptions?: GetRuleOptions | undefined;
     typeChecked?: 'exclude' | 'include-only';
     baseRuleForExtensionRule?: 'exclude';
     forcedRuleLevel?: Linter.RuleLevel;
@@ -106,7 +114,7 @@ async function main(): Promise<void> {
   function reducer(
     config: LinterConfigRules,
     [key, value]: RuleEntry,
-    settings: RuleFilter = {},
+    settings: ConfigRuleSettings = {},
   ): LinterConfigRules {
     if (settings.deprecated && value.meta.deprecated) {
       return config;
@@ -149,7 +157,14 @@ async function main(): Promise<void> {
       '=',
       chalk.red('error'),
     );
-    config[ruleName] = settings.forcedRuleLevel ?? 'error';
+
+    const ruleLevel = settings.forcedRuleLevel ?? 'error';
+    const ruleOptions = settings.getOptions?.(value);
+
+    config[ruleName] =
+      ruleOptions && ruleOptions !== true
+        ? [ruleLevel, ...ruleOptions]
+        : ruleLevel;
 
     return config;
   }
@@ -247,20 +262,20 @@ async function main(): Promise<void> {
 
   interface ExtendedConfigSettings {
     name: string;
-    filters?: RuleFilter;
     ruleEntries: readonly RuleEntry[];
+    settings?: ConfigRuleSettings;
   }
 
   async function writeExtendedConfig({
-    filters,
     name,
     ruleEntries,
+    settings,
   }: ExtendedConfigSettings): Promise<void> {
     await writeConfig(
       () => ({
         extends: [...CLASSIC_EXTENDS],
         rules: ruleEntries.reduce(
-          (config, entry) => reducer(config, entry, filters),
+          (config, entry) => reducer(config, entry, settings),
           {},
         ),
       }),
@@ -272,20 +287,34 @@ async function main(): Promise<void> {
     ...recommendations: (RuleRecommendation | undefined)[]
   ): RuleEntry[] {
     return allRuleEntries.filter(([, rule]) =>
-      recommendations.includes(rule.meta.docs?.recommended),
+      typeof rule.meta.docs?.recommended === 'object'
+        ? Object.keys(rule.meta.docs.recommended).some(level =>
+            recommendations.includes(level as RuleRecommendation),
+          )
+        : recommendations.includes(rule.meta.docs?.recommended),
     );
+  }
+
+  function createGetOptionsForLevel(
+    level: 'recommended' | 'strict',
+  ): GetRuleOptions {
+    return rule =>
+      typeof rule.meta.docs?.recommended === 'object'
+        ? rule.meta.docs.recommended[level]
+        : undefined;
   }
 
   await writeExtendedConfig({
     name: 'all',
-    filters: {
+    settings: {
       deprecated: 'exclude',
     },
     ruleEntries: allRuleEntries,
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
+      getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'exclude',
     },
     name: 'recommended',
@@ -295,10 +324,14 @@ async function main(): Promise<void> {
   await writeExtendedConfig({
     name: 'recommended-type-checked',
     ruleEntries: filterRuleEntriesTo('recommended'),
+    settings: {
+      getOptions: createGetOptionsForLevel('recommended'),
+    },
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
+      getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'include-only',
     },
     name: 'recommended-type-checked-only',
@@ -306,7 +339,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
+      getOptions: createGetOptionsForLevel('strict'),
       typeChecked: 'exclude',
     },
     name: 'strict',
@@ -314,12 +348,16 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    settings: {
+      getOptions: createGetOptionsForLevel('strict'),
+    },
     name: 'strict-type-checked',
     ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
+      getOptions: createGetOptionsForLevel('strict'),
       typeChecked: 'include-only',
     },
     name: 'strict-type-checked-only',
@@ -327,7 +365,7 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
       typeChecked: 'exclude',
     },
     name: 'stylistic',
@@ -340,7 +378,7 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
-    filters: {
+    settings: {
       typeChecked: 'include-only',
     },
     name: 'stylistic-type-checked-only',

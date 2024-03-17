@@ -18,7 +18,10 @@ export default (
   eslintRecommendedConfig(plugin, parser),
   {
     rules: {
-      '@typescript-eslint/ban-ts-comment': 'error',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        { minimumDescriptionLength: 10 },
+      ],
       '@typescript-eslint/ban-types': 'error',
       'no-array-constructor': 'off',
       '@typescript-eslint/no-array-constructor': 'error',
