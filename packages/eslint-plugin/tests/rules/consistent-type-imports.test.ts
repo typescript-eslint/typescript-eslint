@@ -9,10 +9,6 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  // type-only imports were first added in TS3.8
-  dependencyConstraints: {
-    typescript: '3.8',
-  },
 });
 
 const withMetaParserOptions = {
@@ -131,9 +127,6 @@ ruleTester.run('consistent-type-imports', rule, {
         const a: typeof Type = Type;
       `,
       options: [{ prefer: 'no-type-imports' }],
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
     },
     `
       import { type A } from 'foo';
@@ -208,9 +201,6 @@ ruleTester.run('consistent-type-imports', rule, {
         const b = B;
       `,
       options: [{ prefer: 'no-type-imports', fixStyle: 'inline-type-imports' }],
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
     },
     // exports
     `
@@ -1939,9 +1929,6 @@ import { A, B } from 'foo';
 type T = A;
 const b = B;
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ prefer: 'no-type-imports' }],
       errors: [
         {
@@ -1962,9 +1949,6 @@ import { B, type C } from 'foo';
 type T = A | C;
 const b = B;
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ prefer: 'type-imports' }],
       errors: [
         {
@@ -2245,6 +2229,49 @@ let baz: D;
           column: 1,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7209
+    {
+      code: `
+import 'foo';
+import type { Foo, Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+      `,
+      output: `
+import 'foo';
+import { Foo} from 'foo';
+import type { Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+      `,
+      errors: [{ messageId: 'aImportInDecoMeta', line: 3, column: 1 }],
+      parserOptions: withMetaConfigParserOptions,
+    },
+    {
+      code: `
+import {} from 'foo';
+import type { Foo, Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+      `,
+      output: `
+import {} from 'foo';
+import { Foo} from 'foo';
+import type { Bar } from 'foo';
+@deco
+class A {
+  constructor(foo: Foo) {}
+}
+      `,
+      errors: [{ messageId: 'aImportInDecoMeta', line: 3, column: 1 }],
+      parserOptions: withMetaConfigParserOptions,
     },
     {
       code: `

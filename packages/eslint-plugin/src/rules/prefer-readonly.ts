@@ -1,10 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, typeIsOrHasBaseType } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  typeIsOrHasBaseType,
+} from '../util';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -184,15 +188,17 @@ export default createRule<Options, MessageIds>({
         );
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
-        const finalizedClassScope = classScopeStack.pop()!;
-        const sourceCode = getSourceCode(context);
+        const finalizedClassScope = nullThrows(
+          classScopeStack.pop(),
+          'Stack should exist on class exit',
+        );
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
             getEsNodesFromViolatingNode(violatingNode);
           context.report({
             data: {
-              name: sourceCode.getText(nameNode),
+              name: context.sourceCode.getText(nameNode),
             },
             fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
             messageId: 'preferReadonly',

@@ -1,9 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  getDeclaredVariables,
-  getSourceCode,
-} from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -78,16 +74,16 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          prefer: {
-            type: 'string',
-            enum: ['type-imports', 'no-type-imports'],
-          },
           disallowTypeAnnotations: {
             type: 'boolean',
           },
           fixStyle: {
             type: 'string',
             enum: ['separate-type-imports', 'inline-type-imports'],
+          },
+          prefer: {
+            type: 'string',
+            enum: ['type-imports', 'no-type-imports'],
           },
         },
         additionalProperties: false,
@@ -98,9 +94,9 @@ export default createRule<Options, MessageIds>({
 
   defaultOptions: [
     {
-      prefer: 'type-imports',
       disallowTypeAnnotations: true,
       fixStyle: 'separate-type-imports',
+      prefer: 'type-imports',
     },
   ],
 
@@ -108,7 +104,6 @@ export default createRule<Options, MessageIds>({
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
-    const sourceCode = getSourceCode(context);
 
     const sourceImportsMap: Record<string, SourceImports> = {};
 
@@ -141,6 +136,7 @@ export default createRule<Options, MessageIds>({
               } else {
                 if (
                   !sourceImports.valueOnlyNamedImport &&
+                  node.specifiers.length &&
                   node.specifiers.every(
                     specifier =>
                       specifier.type === AST_NODE_TYPES.ImportSpecifier,
@@ -172,7 +168,8 @@ export default createRule<Options, MessageIds>({
                   continue;
                 }
 
-                const [variable] = getDeclaredVariables(context, specifier);
+                const [variable] =
+                  context.sourceCode.getDeclaredVariables(specifier);
                 if (variable.references.length === 0) {
                   unusedSpecifiers.push(specifier);
                 } else {
@@ -456,18 +453,18 @@ export default createRule<Options, MessageIds>({
         // import Foo, {Type1, Type2} from 'foo'
         // import DefType, {Type1, Type2} from 'foo'
         const openingBraceToken = nullThrows(
-          sourceCode.getTokenBefore(
+          context.sourceCode.getTokenBefore(
             subsetNamedSpecifiers[0],
             isOpeningBraceToken,
           ),
           NullThrowsReasons.MissingToken('{', node.type),
         );
         const commaToken = nullThrows(
-          sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
+          context.sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
           NullThrowsReasons.MissingToken(',', node.type),
         );
         const closingBraceToken = nullThrows(
-          sourceCode.getFirstTokenBetween(
+          context.sourceCode.getFirstTokenBetween(
             openingBraceToken,
             node.source,
             isClosingBraceToken,
@@ -482,7 +479,7 @@ export default createRule<Options, MessageIds>({
         );
 
         typeNamedSpecifiersTexts.push(
-          sourceCode.text.slice(
+          context.sourceCode.text.slice(
             openingBraceToken.range[1],
             closingBraceToken.range[0],
           ),
@@ -508,7 +505,9 @@ export default createRule<Options, MessageIds>({
           );
           removeTypeNamedSpecifiers.push(fixer.removeRange(removeRange));
 
-          typeNamedSpecifiersTexts.push(sourceCode.text.slice(...textRange));
+          typeNamedSpecifiersTexts.push(
+            context.sourceCode.text.slice(...textRange),
+          );
         }
       }
       return {
@@ -531,7 +530,10 @@ export default createRule<Options, MessageIds>({
       const last = namedSpecifierGroup[namedSpecifierGroup.length - 1];
       const removeRange: TSESTree.Range = [first.range[0], last.range[1]];
       const textRange: TSESTree.Range = [...removeRange];
-      const before = sourceCode.getTokenBefore(first)!;
+      const before = nullThrows(
+        context.sourceCode.getTokenBefore(first),
+        NullThrowsReasons.MissingToken('token', 'first specifier'),
+      );
       textRange[0] = before.range[1];
       if (isCommaToken(before)) {
         removeRange[0] = before.range[0];
@@ -541,7 +543,10 @@ export default createRule<Options, MessageIds>({
 
       const isFirst = allNamedSpecifiers[0] === first;
       const isLast = allNamedSpecifiers[allNamedSpecifiers.length - 1] === last;
-      const after = sourceCode.getTokenAfter(last)!;
+      const after = nullThrows(
+        context.sourceCode.getTokenAfter(last),
+        NullThrowsReasons.MissingToken('token', 'last specifier'),
+      );
       textRange[1] = after.range[0];
       if (isFirst || isLast) {
         if (isCommaToken(after)) {
@@ -567,14 +572,21 @@ export default createRule<Options, MessageIds>({
       insertText: string,
     ): TSESLint.RuleFix {
       const closingBraceToken = nullThrows(
-        sourceCode.getFirstTokenBetween(
-          sourceCode.getFirstToken(target)!,
+        context.sourceCode.getFirstTokenBetween(
+          nullThrows(
+            context.sourceCode.getFirstToken(target),
+            NullThrowsReasons.MissingToken('token before', 'import'),
+          ),
           target.source,
           isClosingBraceToken,
         ),
         NullThrowsReasons.MissingToken('}', target.type),
       );
-      const before = sourceCode.getTokenBefore(closingBraceToken)!;
+      const before = nullThrows(
+        context.sourceCode.getTokenBefore(closingBraceToken),
+        NullThrowsReasons.MissingToken('token before', 'closing brace'),
+      );
+
       if (!isCommaToken(before) && !isOpeningBraceToken(before)) {
         insertText = `,${insertText}`;
       }
@@ -592,7 +604,7 @@ export default createRule<Options, MessageIds>({
       typeSpecifiers: TSESTree.ImportSpecifier[],
     ): IterableIterator<TSESLint.RuleFix> {
       for (const spec of typeSpecifiers) {
-        const insertText = sourceCode.text.slice(...spec.range);
+        const insertText = context.sourceCode.text.slice(...spec.range);
         yield fixer.replaceTextRange(spec.range, `type ${insertText}`);
       }
     }
@@ -717,17 +729,21 @@ export default createRule<Options, MessageIds>({
               node,
               `import {${typeNamedSpecifiers
                 .map(spec => {
-                  const insertText = sourceCode.text.slice(...spec.range);
+                  const insertText = context.sourceCode.text.slice(
+                    ...spec.range,
+                  );
                   return `type ${insertText}`;
                 })
-                .join(', ')}} from ${sourceCode.getText(node.source)};\n`,
+                .join(
+                  ', ',
+                )}} from ${context.sourceCode.getText(node.source)};\n`,
             );
           } else {
             yield fixer.insertTextBefore(
               node,
               `import type {${
                 fixesNamedSpecifiers.typeNamedSpecifiersText
-              }} from ${sourceCode.getText(node.source)};\n`,
+              }} from ${context.sourceCode.getText(node.source)};\n`,
             );
           }
         }
@@ -742,7 +758,7 @@ export default createRule<Options, MessageIds>({
         // import DefType, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
         const commaToken = nullThrows(
-          sourceCode.getTokenBefore(namespaceSpecifier, isCommaToken),
+          context.sourceCode.getTokenBefore(namespaceSpecifier, isCommaToken),
           NullThrowsReasons.MissingToken(',', node.type),
         );
 
@@ -756,9 +772,9 @@ export default createRule<Options, MessageIds>({
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ insert
         yield fixer.insertTextBefore(
           node,
-          `import type ${sourceCode.getText(
+          `import type ${context.sourceCode.getText(
             namespaceSpecifier,
-          )} from ${sourceCode.getText(node.source)};\n`,
+          )} from ${context.sourceCode.getText(node.source)};\n`,
         );
       }
       if (
@@ -767,7 +783,7 @@ export default createRule<Options, MessageIds>({
       ) {
         if (report.typeSpecifiers.length === node.specifiers.length) {
           const importToken = nullThrows(
-            sourceCode.getFirstToken(node, isImportKeyword),
+            context.sourceCode.getFirstToken(node, isImportKeyword),
             NullThrowsReasons.MissingToken('import', node.type),
           );
           // import type Type from 'foo'
@@ -775,22 +791,24 @@ export default createRule<Options, MessageIds>({
           yield fixer.insertTextAfter(importToken, ' type');
         } else {
           const commaToken = nullThrows(
-            sourceCode.getTokenAfter(defaultSpecifier, isCommaToken),
+            context.sourceCode.getTokenAfter(defaultSpecifier, isCommaToken),
             NullThrowsReasons.MissingToken(',', defaultSpecifier.type),
           );
           // import Type , {...} from 'foo'
           //        ^^^^^ pick
-          const defaultText = sourceCode.text
+          const defaultText = context.sourceCode.text
             .slice(defaultSpecifier.range[0], commaToken.range[0])
             .trim();
           yield fixer.insertTextBefore(
             node,
-            `import type ${defaultText} from ${sourceCode.getText(
+            `import type ${defaultText} from ${context.sourceCode.getText(
               node.source,
             )};\n`,
           );
           const afterToken = nullThrows(
-            sourceCode.getTokenAfter(commaToken, { includeComments: true }),
+            context.sourceCode.getTokenAfter(commaToken, {
+              includeComments: true,
+            }),
             NullThrowsReasons.MissingToken('any token', node.type),
           );
           // import Type , {...} from 'foo'
@@ -816,14 +834,14 @@ export default createRule<Options, MessageIds>({
       // import type Foo from 'foo'
       //       ^^^^^ insert
       const importToken = nullThrows(
-        sourceCode.getFirstToken(node, isImportKeyword),
+        context.sourceCode.getFirstToken(node, isImportKeyword),
         NullThrowsReasons.MissingToken('import', node.type),
       );
       yield fixer.insertTextAfter(importToken, ' type');
 
       if (isDefaultImport) {
         // Has default import
-        const openingBraceToken = sourceCode.getFirstTokenBetween(
+        const openingBraceToken = context.sourceCode.getFirstTokenBetween(
           importToken,
           node.source,
           isOpeningBraceToken,
@@ -831,11 +849,11 @@ export default createRule<Options, MessageIds>({
         if (openingBraceToken) {
           // Only braces. e.g. import Foo, {} from 'foo'
           const commaToken = nullThrows(
-            sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
+            context.sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
             NullThrowsReasons.MissingToken(',', node.type),
           );
           const closingBraceToken = nullThrows(
-            sourceCode.getFirstTokenBetween(
+            context.sourceCode.getFirstTokenBetween(
               openingBraceToken,
               node.source,
               isClosingBraceToken,
@@ -849,14 +867,14 @@ export default createRule<Options, MessageIds>({
             commaToken.range[0],
             closingBraceToken.range[1],
           ]);
-          const specifiersText = sourceCode.text.slice(
+          const specifiersText = context.sourceCode.text.slice(
             commaToken.range[1],
             closingBraceToken.range[1],
           );
           if (node.specifiers.length > 1) {
             yield fixer.insertTextAfter(
               node,
-              `\nimport type${specifiersText} from ${sourceCode.getText(
+              `\nimport type${specifiersText} from ${context.sourceCode.getText(
                 node.source,
               )};`,
             );
@@ -944,7 +962,7 @@ export default createRule<Options, MessageIds>({
             node,
             `import {${
               fixesNamedSpecifiers.typeNamedSpecifiersText
-            }} from ${sourceCode.getText(node.source)};\n`,
+            }} from ${context.sourceCode.getText(node.source)};\n`,
           );
         }
       }
@@ -961,11 +979,11 @@ export default createRule<Options, MessageIds>({
       // import type Foo from 'foo'
       //        ^^^^ remove
       const importToken = nullThrows(
-        sourceCode.getFirstToken(node, isImportKeyword),
+        context.sourceCode.getFirstToken(node, isImportKeyword),
         NullThrowsReasons.MissingToken('import', node.type),
       );
       const typeToken = nullThrows(
-        sourceCode.getFirstTokenBetween(
+        context.sourceCode.getFirstTokenBetween(
           importToken,
           node.specifiers[0]?.local ?? node.source,
           isTypeKeyword,
@@ -973,7 +991,7 @@ export default createRule<Options, MessageIds>({
         NullThrowsReasons.MissingToken('type', node.type),
       );
       const afterToken = nullThrows(
-        sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+        context.sourceCode.getTokenAfter(typeToken, { includeComments: true }),
         NullThrowsReasons.MissingToken('any token', node.type),
       );
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
@@ -986,11 +1004,11 @@ export default createRule<Options, MessageIds>({
       // import { type Foo } from 'foo'
       //          ^^^^ remove
       const typeToken = nullThrows(
-        sourceCode.getFirstToken(node, isTypeKeyword),
+        context.sourceCode.getFirstToken(node, isTypeKeyword),
         NullThrowsReasons.MissingToken('type', node.type),
       );
       const afterToken = nullThrows(
-        sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+        context.sourceCode.getTokenAfter(typeToken, { includeComments: true }),
         NullThrowsReasons.MissingToken('any token', node.type),
       );
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);

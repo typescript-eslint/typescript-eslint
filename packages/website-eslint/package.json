@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "6.20.0",
+  "version": "7.2.0",
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
@@ -14,7 +14,7 @@
     }
   },
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "scripts": {
     "build": "yarn tsx ./build.ts",
@@ -23,16 +23,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.20.0",
-    "@typescript-eslint/utils": "6.20.0"
+    "@typescript-eslint/types": "7.2.0",
+    "@typescript-eslint/utils": "7.2.0"
   },
   "devDependencies": {
-    "@eslint/js": "8.56.0",
-    "@typescript-eslint/eslint-plugin": "6.20.0",
-    "@typescript-eslint/parser": "6.20.0",
-    "@typescript-eslint/scope-manager": "6.20.0",
-    "@typescript-eslint/typescript-estree": "6.20.0",
-    "@typescript-eslint/visitor-keys": "6.20.0",
+    "@eslint/js": "*",
+    "@typescript-eslint/eslint-plugin": "7.2.0",
+    "@typescript-eslint/parser": "7.2.0",
+    "@typescript-eslint/scope-manager": "7.2.0",
+    "@typescript-eslint/typescript-estree": "7.2.0",
+    "@typescript-eslint/visitor-keys": "7.2.0",
     "esbuild": "~0.20.0",
     "eslint": "*",
     "esquery": "*",

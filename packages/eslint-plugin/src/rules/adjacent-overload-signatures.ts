@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getNameFromMember, MemberNameType } from '../util';
 
@@ -31,8 +30,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
-
     interface Method {
       name: string;
       static: boolean;
@@ -74,7 +71,7 @@ export default createRule({
         }
         case AST_NODE_TYPES.TSMethodSignature:
           return {
-            ...getNameFromMember(member, sourceCode),
+            ...getNameFromMember(member, context.sourceCode),
             static: isStatic,
             callSignature: false,
           };
@@ -94,7 +91,7 @@ export default createRule({
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
-            ...getNameFromMember(member, sourceCode),
+            ...getNameFromMember(member, context.sourceCode),
             static: isStatic,
             callSignature: false,
           };
@@ -127,10 +124,6 @@ export default createRule({
       }
     }
 
-    /**
-     * Check the body for overload methods.
-     * @param node the body to be inspected.
-     */
     function checkBodyForOverloadMethods(node: RuleNode): void {
       const members = getMembers(node);
 

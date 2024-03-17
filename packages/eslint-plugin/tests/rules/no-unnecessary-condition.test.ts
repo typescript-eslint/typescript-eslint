@@ -365,6 +365,20 @@ if (arr?.[42]) {
 }
     `,
     `
+type ItemA = { bar: string; baz: string };
+type ItemB = { bar: string; qux: string };
+declare const foo: ItemA[] | ItemB[];
+foo[0]?.bar;
+    `,
+    `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
+    `,
+    `
 declare const returnsArr: undefined | (() => string[]);
 if (returnsArr?.()[42]) {
 }
@@ -582,9 +596,6 @@ foo?.[key]?.trim();
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -599,9 +610,6 @@ foo?.[key].trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -620,9 +628,6 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -643,9 +648,6 @@ function Foo(outer: Outer, key: Foo): number | undefined {
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -660,9 +662,6 @@ foo?.[key]?.trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
@@ -829,9 +828,6 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
