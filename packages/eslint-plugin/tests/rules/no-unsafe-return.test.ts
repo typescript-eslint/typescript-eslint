@@ -58,6 +58,16 @@ function foo(): Set<any> {
   return new Set<any>();
 }
     `,
+    `
+async function foo(): any {
+  return {} as any;
+}
+    `,
+    `
+async function foo(): Promise<any> {
+  return Promise.resolve({} as any);
+}
+    `,
     // TODO - this should error, but it's hard to detect, as the type references are different
     `
 function foo(): ReadonlySet<number> {
@@ -405,6 +415,54 @@ function bar() {
           line: 7,
           column: 16,
           endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: any;
+async function foo() {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 4,
+          column: 3,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: Promise<any>;
+function foo() {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 4,
+          column: 3,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: Promise<any>;
+async function foo(): Promise<number> {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 4,
+          column: 3,
+          endColumn: 16,
         },
       ],
     },

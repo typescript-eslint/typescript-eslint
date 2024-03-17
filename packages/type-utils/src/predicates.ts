@@ -131,10 +131,9 @@ export enum AnyType {
  *          otherwise it returns `AnyType.Safe`.
  */
 export function isAnyOrAnyArrayTypeDiscriminated(
-  node: ts.Node,
+  type: ts.Type,
   checker: ts.TypeChecker,
 ): AnyType {
-  const type = checker.getTypeAtLocation(node);
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }

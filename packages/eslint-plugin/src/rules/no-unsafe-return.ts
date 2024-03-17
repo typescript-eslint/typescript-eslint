@@ -73,12 +73,27 @@ export default createRule({
       /* istanbul ignore next */ return null;
     }
 
+    function getAwaitedType(node: ts.Node): ts.Type {
+      const type = checker.getTypeAtLocation(node);
+      if (
+        tsutils.isThenableType(checker, node, type) &&
+        tsutils.isTypeReference(type)
+      ) {
+        const awaitedType = type.typeArguments?.[0];
+        if (awaitedType) {
+          return awaitedType;
+        }
+      }
+      return type;
+    }
+
     function checkReturn(
       returnNode: TSESTree.Node,
       reportingNode: TSESTree.Node = returnNode,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
-      const anyType = isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
+      const awaitedType = getAwaitedType(tsNode);
+      const anyType = isAnyOrAnyArrayTypeDiscriminated(awaitedType, checker);
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
