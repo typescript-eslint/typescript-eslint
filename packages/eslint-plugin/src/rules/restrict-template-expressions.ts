@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type { Type, TypeChecker } from 'typescript';
+import { TypeFlags } from 'typescript';
 
 import {
   createRule,
@@ -12,15 +13,44 @@ import {
   isTypeNeverType,
 } from '../util';
 
+type OptionTester = (
+  type: Type,
+  checker: TypeChecker,
+  recursivelyCheckType: (type: Type) => boolean,
+) => boolean;
+
+const testTypeFlag =
+  (flagsToCheck: TypeFlags): OptionTester =>
+  type =>
+    isTypeFlagSet(type, flagsToCheck);
+
+const optionTesters = (
+  [
+    ['Any', isTypeAnyType],
+    [
+      'Array',
+      (type, checker, recursivelyCheckType): boolean =>
+        checker.isArrayType(type) &&
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        recursivelyCheckType(type.getNumberIndexType()!),
+    ],
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    ['Boolean', testTypeFlag(TypeFlags.BooleanLike)],
+    ['Nullish', testTypeFlag(TypeFlags.Null | TypeFlags.Undefined)],
+    ['Number', testTypeFlag(TypeFlags.NumberLike | TypeFlags.BigIntLike)],
+    [
+      'RegExp',
+      (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
+    ],
+    ['Never', isTypeNeverType],
+  ] satisfies [string, OptionTester][]
+).map(([type, tester]) => ({
+  type,
+  option: `allow${type}` as const,
+  tester,
+}));
 type Options = [
-  {
-    allowAny?: boolean;
-    allowBoolean?: boolean;
-    allowNullish?: boolean;
-    allowNumber?: boolean;
-    allowRegExp?: boolean;
-    allowNever?: boolean;
-  },
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean },
 ];
 
 type MessageId = 'invalidType';
@@ -54,38 +84,15 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         additionalProperties: false,
-        properties: {
-          allowAny: {
-            description:
-              'Whether to allow `any` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowBoolean: {
-            description:
-              'Whether to allow `boolean` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowNullish: {
-            description:
-              'Whether to allow `nullish` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowNumber: {
-            description:
-              'Whether to allow `number` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowRegExp: {
-            description:
-              'Whether to allow `regexp` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowNever: {
-            description:
-              'Whether to allow `never` typed values in template expressions.',
-            type: 'boolean',
-          },
-        },
+        properties: Object.fromEntries(
+          optionTesters.map(({ option, type }) => [
+            option,
+            {
+              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+              type: 'boolean',
+            },
+          ]),
+        ),
       },
     ],
   },
@@ -101,47 +108,9 @@ export default createRule<Options, MessageId>({
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-
-    function isUnderlyingTypePrimitive(type: ts.Type): boolean {
-      if (isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
-        return true;
-      }
-
-      if (
-        options.allowNumber &&
-        isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)
-      ) {
-        return true;
-      }
-
-      if (
-        options.allowBoolean &&
-        isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
-      ) {
-        return true;
-      }
-
-      if (options.allowAny && isTypeAnyType(type)) {
-        return true;
-      }
-
-      if (options.allowRegExp && getTypeName(checker, type) === 'RegExp') {
-        return true;
-      }
-
-      if (
-        options.allowNullish &&
-        isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
-      ) {
-        return true;
-      }
-
-      if (options.allowNever && isTypeNeverType(type)) {
-        return true;
-      }
-
-      return false;
-    }
+    const enabledOptionTesters = optionTesters.filter(
+      ({ option }) => options[option],
+    );
 
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
@@ -156,12 +125,7 @@ export default createRule<Options, MessageId>({
             expression,
           );
 
-          if (
-            !isInnerUnionOrIntersectionConformingTo(
-              expressionType,
-              isUnderlyingTypePrimitive,
-            )
-          ) {
+          if (!recursivelyCheckType(expressionType)) {
             context.report({
               node: expression,
               messageId: 'invalidType',
@@ -172,23 +136,21 @@ export default createRule<Options, MessageId>({
       },
     };
 
-    function isInnerUnionOrIntersectionConformingTo(
-      type: ts.Type,
-      predicate: (underlyingType: ts.Type) => boolean,
-    ): boolean {
-      return rec(type);
-
-      function rec(innerType: ts.Type): boolean {
-        if (innerType.isUnion()) {
-          return innerType.types.every(rec);
-        }
-
-        if (innerType.isIntersection()) {
-          return innerType.types.some(rec);
-        }
-
-        return predicate(innerType);
+    function recursivelyCheckType(innerType: Type): boolean {
+      if (innerType.isUnion()) {
+        return innerType.types.every(recursivelyCheckType);
       }
+
+      if (innerType.isIntersection()) {
+        return innerType.types.some(recursivelyCheckType);
+      }
+
+      return (
+        isTypeFlagSet(innerType, TypeFlags.StringLike) ||
+        enabledOptionTesters.some(({ tester }) =>
+          tester(innerType, checker, recursivelyCheckType),
+        )
+      );
     }
   },
 });
