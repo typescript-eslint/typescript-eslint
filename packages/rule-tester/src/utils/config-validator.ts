@@ -78,7 +78,8 @@ function validateRuleSchema(
   const validateRule = ruleValidators.get(rule);
 
   if (validateRule) {
-    void validateRule(localOptions);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    validateRule(localOptions);
     if (validateRule.errors) {
       throw new Error(
         validateRule.errors

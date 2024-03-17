@@ -155,5 +155,6 @@ export = {
     '@typescript-eslint/typedef': 'error',
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
   },
 } satisfies ClassicConfig.Config;
