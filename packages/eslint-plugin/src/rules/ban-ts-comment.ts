@@ -32,7 +32,10 @@ export default createRule<[Options], MessageIds>({
     docs: {
       description:
         'Disallow `@ts-<directive>` comments or require descriptions after directives',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [{ minimumDescriptionLength: 10 }],
+      },
     },
     messages: {
       tsDirectiveComment:
