@@ -229,6 +229,9 @@ const RawBaseCases = (operator: '&&' | '||') =>
   ] as const;
 
 export const identity: MutateFn = c => c;
+
+// https://github.com/eslint-community/eslint-plugin-eslint-plugin/issues/450
+// eslint-disable-next-line eslint-plugin/prefer-message-ids, eslint-plugin/prefer-object-rule, eslint-plugin/require-meta-type, eslint-plugin/require-meta-schema
 export const BaseCases: BaseCaseCreator = ({
   operator,
   mutateCode = identity,

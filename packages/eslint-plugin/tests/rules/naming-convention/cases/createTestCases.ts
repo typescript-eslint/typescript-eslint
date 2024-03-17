@@ -82,6 +82,8 @@ type Cases = {
   options: Omit<Options[0], 'format'>;
 }[];
 
+// https://github.com/eslint-community/eslint-plugin-eslint-plugin/issues/450
+// eslint-disable-next-line eslint-plugin/prefer-message-ids, eslint-plugin/prefer-object-rule, eslint-plugin/require-meta-type, eslint-plugin/require-meta-schema
 export function createTestCases(cases: Cases): void {
   const ruleTester = new RuleTester({
     parser: '@typescript-eslint/parser',
