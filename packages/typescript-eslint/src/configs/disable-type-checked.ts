@@ -64,6 +64,7 @@ export default (
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
   languageOptions: { parserOptions: { project: false, program: null } },
 });

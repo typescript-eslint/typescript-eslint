@@ -46,5 +46,6 @@ export = {
     '@typescript-eslint/restrict-plus-operands': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error',
     '@typescript-eslint/unbound-method': 'error',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
   },
 } satisfies ClassicConfig.Config;
