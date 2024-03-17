@@ -14,6 +14,7 @@ export * from './isNullLiteral';
 export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './objectIterators';
+export * from './types';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';

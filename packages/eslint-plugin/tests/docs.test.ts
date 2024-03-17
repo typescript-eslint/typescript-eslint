@@ -53,8 +53,8 @@ describe('Validating rule docs', () => {
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
     'camelcase.md',
-    'no-duplicate-imports.md',
-    'no-parameter-properties.md',
+    'no-duplicate-imports.mdx',
+    'no-parameter-properties.mdx',
   ]);
 
   const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
@@ -64,7 +64,7 @@ describe('Validating rule docs', () => {
       .readdirSync(docsRoot)
       .filter(rule => !ignoredFiles.has(rule));
     const ruleFiles = Object.keys(rules)
-      .map(rule => `${rule}.md`)
+      .map(rule => `${rule}.mdx`)
       .sort();
 
     expect(files.sort()).toEqual(ruleFiles);
@@ -73,11 +73,11 @@ describe('Validating rule docs', () => {
   for (const [ruleName, rule] of rulesData) {
     const { description } = rule.meta.docs!;
 
-    describe(`${ruleName}.md`, () => {
-      const filePath = path.join(docsRoot, `${ruleName}.md`);
+    describe(`${ruleName}.mdx`, () => {
+      const filePath = path.join(docsRoot, `${ruleName}.mdx`);
       const { fullText, tokens } = parseMarkdownFile(filePath);
 
-      test(`${ruleName}.md must start with frontmatter description`, () => {
+      test(`${ruleName}.mdx must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
           raw: '---\n',
           type: 'hr',
@@ -91,8 +91,8 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`${ruleName}.md must next have a blockquote directing to website`, () => {
-        expect(tokens[2]).toMatchObject({
+      test(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
+        expect(tokens[4]).toMatchObject({
           text: [
             `🛑 This file is source code, not the primary documentation location! 🛑`,
             ``,
@@ -139,7 +139,7 @@ describe('Validating rule docs', () => {
           );
 
           for (const requiredHeading of requiredHeadings) {
-            const omissionComment = `<!-- Intentionally Omitted: ${requiredHeading} -->`;
+            const omissionComment = `{/* Intentionally Omitted: ${requiredHeading} */}`;
 
             if (
               !headingTexts.has(requiredHeading) &&

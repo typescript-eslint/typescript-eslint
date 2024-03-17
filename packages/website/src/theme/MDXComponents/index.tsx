@@ -1,10 +1,12 @@
 import MDXComponents from '@theme-original/MDXComponents';
 
+import { BaseRuleReference } from './BaseRuleReference';
 import { RuleAttributes } from './RuleAttributes';
 import { TryInPlayground } from './TryInPlayground';
 
 export default {
   ...MDXComponents,
-  'rule-attributes': RuleAttributes,
-  'try-in-playground': TryInPlayground,
+  BaseRuleReference,
+  RuleAttributes,
+  TryInPlayground,
 };
