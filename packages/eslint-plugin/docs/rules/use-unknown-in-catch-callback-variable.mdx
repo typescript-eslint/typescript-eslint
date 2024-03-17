@@ -2,15 +2,17 @@
 description: 'Enforce typing arguments in `.catch()` callbacks as `unknown`.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable** for documentation.
 
 This rule enforces that you always use the `unknown` type for the parameter of a `Promise.prototype.catch()` callback.
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 Promise.reject(new Error('I will reject!')).catch(err => {
@@ -26,7 +28,8 @@ Promise.reject(new Error('I will reject!')).catch((err: Error) => {
 });
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 Promise.reject(new Error('I will reject!')).catch((err: unknown) => {
@@ -34,7 +37,8 @@ Promise.reject(new Error('I will reject!')).catch((err: unknown) => {
 });
 ```
 
-<!--/tabs-->
+</TabItem>
+</Tabs>
 
 The reason for this rule is to enable programmers to impose constraints on `Promise` error handling analogously to what TypeScript provides for ordinary exception handling.
 
