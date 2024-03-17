@@ -109,6 +109,7 @@ export default (
       '@typescript-eslint/triple-slash-reference': 'error',
       '@typescript-eslint/unbound-method': 'error',
       '@typescript-eslint/unified-signatures': 'error',
+      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
     },
   },
 ];
