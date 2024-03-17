@@ -31,6 +31,7 @@ Program {
               end: { column: 26, line: 3 },
             },
           },
+          options: null,
 
           range: [89, 100],
           loc: {
@@ -77,6 +78,7 @@ Program {
             end: { column: 19, line: 4 },
           },
         },
+        options: null,
         qualifier: Identifier {
           type: "Identifier",
           name: "X",
