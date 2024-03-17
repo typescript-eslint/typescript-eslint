@@ -107,9 +107,6 @@ function isStrictScope(
   return false;
 }
 
-/**
- * Register scope
- */
 function registerScope(scopeManager: ScopeManager, scope: Scope): void {
   scopeManager.scopes.push(scope);
 
@@ -200,10 +197,6 @@ abstract class ScopeBase<
    * @public
    */
   public readonly through: Reference[] = [];
-  /**
-   * The type of scope
-   * @public
-   */
   public readonly type: Type;
   /**
    * Reference to the parent {@link Scope}.
@@ -240,7 +233,8 @@ abstract class ScopeBase<
     this.block = block;
     this.variableScope = this.isVariableScope()
       ? this
-      : upperScopeAsScopeBase!.variableScope;
+      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        upperScopeAsScopeBase!.variableScope;
     this.upper = upperScope;
 
     /**
@@ -337,8 +331,10 @@ abstract class ScopeBase<
     let current = this as Scope | null;
 
     do {
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       current!.through.push(ref);
       current = current!.upper;
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
     } while (current);
   };
 
