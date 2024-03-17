@@ -73,8 +73,7 @@ export default createRule({
       /* istanbul ignore next */ return null;
     }
 
-    function getAwaitedType(node: ts.Node): ts.Type {
-      const type = checker.getTypeAtLocation(node);
+    function getAwaitedType(node: ts.Node, type: ts.Type): ts.Type {
       if (
         tsutils.isThenableType(checker, node, type) &&
         tsutils.isTypeReference(type)
@@ -92,7 +91,8 @@ export default createRule({
       reportingNode: TSESTree.Node = returnNode,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
-      const awaitedType = getAwaitedType(tsNode);
+      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
+      const awaitedType = getAwaitedType(tsNode, returnNodeType);
       const anyType = isAnyOrAnyArrayTypeDiscriminated(awaitedType, checker);
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
@@ -100,7 +100,6 @@ export default createRule({
       }
 
       // function has an explicit return type, so ensure it's a safe return
-      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
       // function expressions will not have their return type modified based on receiver typing
@@ -123,7 +122,7 @@ export default createRule({
           if (
             returnNodeType === signature.getReturnType() ||
             isTypeFlagSet(
-              signature.getReturnType(),
+              getAwaitedType(functionTSNode, signature.getReturnType()),
               ts.TypeFlags.Any | ts.TypeFlags.Unknown,
             )
           ) {
