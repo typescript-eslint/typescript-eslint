@@ -123,6 +123,7 @@ function writeTable(contributors: User[], perLine = 5): void {
     lines.push('  </tr>');
   }
 
+  lines.push('  </tr>');
   lines.push('</table>');
   lines.push('');
   lines.push('<!-- markdownlint-restore -->');
