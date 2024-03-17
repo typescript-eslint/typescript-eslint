@@ -19,6 +19,7 @@ export type Options = [
   {
     ignoreArrowShorthand?: boolean;
     ignoreVoidOperator?: boolean;
+    ignoreVoidInVoid?: boolean;
   },
 ];
 
@@ -72,6 +73,7 @@ export default createRule<Options, MessageId>({
         properties: {
           ignoreArrowShorthand: { type: 'boolean' },
           ignoreVoidOperator: { type: 'boolean' },
+          ignoreVoidInVoid: { type: 'boolean' },
         },
         additionalProperties: false,
       },
@@ -80,7 +82,13 @@ export default createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: true,
   },
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  defaultOptions: [
+    {
+      ignoreArrowShorthand: false,
+      ignoreVoidOperator: false,
+      ignoreVoidInVoid: false,
+    },
+  ],
 
   create(context, [options]) {
     return {
@@ -98,6 +106,7 @@ export default createRule<Options, MessageId>({
         }
 
         const invalidAncestor = findInvalidAncestor(node);
+
         if (invalidAncestor == null) {
           // void expression is in valid position
           return;
@@ -111,6 +120,15 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
+
+          if (options.ignoreVoidInVoid) {
+            if (
+              invalidAncestor.returnType &&
+              isVoidLikeType(invalidAncestor.returnType)
+            ) {
+              return;
+            }
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
@@ -166,6 +184,13 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
+
+          if (
+            options.ignoreVoidInVoid &&
+            targetNodeFunctionAncestorNodeHasVoidReturnType(invalidAncestor)
+          ) {
+            return;
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
@@ -375,6 +400,37 @@ export default createRule<Options, MessageId>({
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+    }
+
+    function isVoidLikeType(typeNode?: TSESTree.TSTypeAnnotation): boolean {
+      const services = getParserServices(context);
+      return (
+        !!typeNode &&
+        !tsutils.isTypeFlagSet(
+          getConstrainedTypeAtLocation(services, typeNode),
+          ts.TypeFlags.VoidLike,
+        )
+      );
+    }
+
+    function targetNodeFunctionAncestorNodeHasVoidReturnType(
+      node: TSESTree.Node,
+    ): boolean {
+      if (!node.parent) {
+        return false;
+      }
+
+      if (
+        AST_NODE_TYPES.FunctionDeclaration === node.parent.type ||
+        AST_NODE_TYPES.ArrowFunctionExpression === node.parent.type ||
+        AST_NODE_TYPES.FunctionExpression === node.parent.type
+      ) {
+        return (
+          !!node.parent.returnType && isVoidLikeType(node.parent.returnType)
+        );
+      }
+
+      return targetNodeFunctionAncestorNodeHasVoidReturnType(node.parent);
     }
   },
 });

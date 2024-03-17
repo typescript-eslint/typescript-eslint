@@ -119,6 +119,130 @@ function cool(input: string) {
 }
       `,
     },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test(): void {
+  return console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: "const test = (): void => console.log('foo');",
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+const test = (): void => {
+  return console.log('foo');
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test(): void {
+  {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+const data = {
+  test(): void {
+    return console.log('foo');
+  },
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+class Foo {
+  test(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+const test = function (): void {
+  return console.log('foo');
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test() {
+  function nestedTest(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+
+function test(): Foo {
+  return console.log();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function returnVoid(): void {}
+
+function test(): void {
+  return returnVoid();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+function returnVoid(): void {}
+
+function test(): Foo {
+  return returnVoid();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test(): void & void {
+  return console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+declare function foo(): Foo;
+function test(): Foo {
+  return foo();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+type Foo = void;
+const test = (): Foo => console.log('err');
+      `,
+    },
   ],
 
   invalid: [
@@ -472,6 +596,98 @@ function notcool(input: string) {
           ],
         },
       ],
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function test() {
+  return console.log('foo');
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function test() {
+  console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: "const test = () => console.log('foo');",
+      errors: [
+        {
+          line: 1,
+          column: 20,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: "const test = () => { console.log('foo'); };",
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+const test = () => {
+  return console.log('foo');
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+const test = () => {
+  console.log('foo');
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function foo(): void {
+  const bar = () => {
+    return console.log();
+  };
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function foo(): void {
+  const bar = () => {
+    console.log();
+  };
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+return console.log('foo');
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 8,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+      output: `
+{ console.log('foo'); return; }
+      `,
     },
   ],
 });

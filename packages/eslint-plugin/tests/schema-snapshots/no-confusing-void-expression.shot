@@ -11,6 +11,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "ignoreArrowShorthand": {
         "type": "boolean"
       },
+      "ignoreVoidInVoid": {
+        "type": "boolean"
+      },
       "ignoreVoidOperator": {
         "type": "boolean"
       }
@@ -25,6 +28,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     ignoreArrowShorthand?: boolean;
+    ignoreVoidInVoid?: boolean;
     ignoreVoidOperator?: boolean;
   },
 ];
