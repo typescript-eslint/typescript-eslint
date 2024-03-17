@@ -229,7 +229,7 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('strict-type-checked-only.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs['strict-type-checked-only'].rules;
 
   it('contains only type-checked strict rules', () => {
