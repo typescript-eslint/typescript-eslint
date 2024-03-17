@@ -112,6 +112,16 @@ function foo(): Set<number> {
         return x as Set<any>;
       }
     `,
+    `
+      async function fn<T extends any>(x: T): Promise<unknown> {
+        return x as any;
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): Promise<unknown> {
+        return Promise.resolve(x as any);
+      }
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     `
       function test(): Map<string, string> {
@@ -463,6 +473,36 @@ async function foo(): Promise<number> {
           line: 4,
           column: 3,
           endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo(arg: number) {
+  return arg as any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          endColumn: 21,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo(arg: number) {
+  return arg as Promise<any>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          endColumn: 30,
         },
       ],
     },
