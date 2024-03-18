@@ -9,7 +9,7 @@ export function useClipboard(code: () => string): useClipboardResult {
 
   const copy = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    navigator.clipboard.writeText(code()).then(() => {
+    void navigator.clipboard.writeText(code()).then(() => {
       setCopied(true);
     });
   }, [setCopied, code]);
