@@ -13,6 +13,7 @@ import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import {
   gatherLogicalOperands,
+  NullishComparisonType,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import type {
@@ -141,6 +142,7 @@ export default createRule<
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
+
         context.report({
           node: parentNode,
           messageId: 'preferOptionalChain',
@@ -168,7 +170,6 @@ export default createRule<
           ],
         });
       },
-
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
@@ -183,35 +184,33 @@ export default createRule<
           options,
         );
 
+        const hasNullableAndTruthyOperand = operands.some(
+          operand =>
+            operand.type === OperandValidity.Valid &&
+            operand.comparisonType ===
+              NullishComparisonType.NotEqualNullOrUndefined &&
+            operand.isYoda,
+        );
+
+        if (!hasNullableAndTruthyOperand) {
+          seenLogicals.add(node);
+          return;
+        }
+
+        // Analyze the chain for potential fixes
+        analyzeChain(
+          context,
+          parserServices,
+          options,
+          node.operator,
+          operands.filter(
+            (operand): operand is ValidOperand =>
+              operand.type === OperandValidity.Valid,
+          ),
+        );
+
         for (const logical of newlySeenLogicals) {
           seenLogicals.add(logical);
-        }
-
-        let currentChain: ValidOperand[] = [];
-        for (const operand of operands) {
-          if (operand.type === OperandValidity.Invalid) {
-            analyzeChain(
-              context,
-              parserServices,
-              options,
-              node.operator,
-              currentChain,
-            );
-            currentChain = [];
-          } else {
-            currentChain.push(operand);
-          }
-        }
-
-        // make sure to check whatever's left
-        if (currentChain.length > 0) {
-          analyzeChain(
-            context,
-            parserServices,
-            options,
-            node.operator,
-            currentChain,
-          );
         }
       },
     };
