@@ -249,8 +249,7 @@ export default createRule<Options, MessageIds>({
         );
       },
       ReturnStatement(node): void {
-        const current = functionInfoStack[functionInfoStack.length - 1];
-        (current as FunctionInfo<FunctionNode> | undefined)?.returns.push(node);
+        functionInfoStack.at(-1)?.returns.push(node);
       },
     };
   },
