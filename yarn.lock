@@ -1708,16 +1708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.3, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4":
-  version: 7.23.9
-  resolution: "@babel/runtime@npm:7.23.9"
-  dependencies:
-    regenerator-runtime: ^0.14.0
-  checksum: 6bbebe8d27c0c2dd275d1ac197fc1a6c00e18dab68cc7aaff0adc3195b45862bae9c4cc58975629004b0213955b2ed91e99eccb3d9b39cabea246c657323d667
-  languageName: node
-  linkType: hard
-
-"@babel/runtime@npm:^7.24.0":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.3, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.23.2, @babel/runtime@npm:^7.24.0, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4":
   version: 7.24.0
   resolution: "@babel/runtime@npm:7.24.0"
   dependencies:
@@ -3868,15 +3859,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:18.0.7":
-  version: 18.0.7
-  resolution: "@nrwl/devkit@npm:18.0.7"
-  dependencies:
-    "@nx/devkit": 18.0.7
-  checksum: 154d200e7b59516250b33f1c6b82481a22885fe615af20d93fa8394893f7fecdffa853f8ab9df4d9ef1fddafb5fafc10ad60682b69304298a5774fcd13799b17
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:18.0.8":
   version: 18.0.8
   resolution: "@nrwl/devkit@npm:18.0.8"
@@ -3925,25 +3907,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:18.0.7":
-  version: 18.0.7
-  resolution: "@nx/devkit@npm:18.0.7"
-  dependencies:
-    "@nrwl/devkit": 18.0.7
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: ^7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-    yargs-parser: 21.1.1
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: 86a43df0fc493317e08dc7e01b4c170dc551aeee6894eb8a5a21457d4313ffca698621dd39258e09961515e4077c92f39aa227f3cb0f93727e8f3d7879c7bc49
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:18.0.8":
+"@nx/devkit@npm:*, @nx/devkit@npm:18.0.8":
   version: 18.0.8
   resolution: "@nx/devkit@npm:18.0.8"
   dependencies:
@@ -5268,11 +5232,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^20.0.0":
-  version: 20.11.27
-  resolution: "@types/node@npm:20.11.27"
+  version: 20.11.28
+  resolution: "@types/node@npm:20.11.28"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 24a134a3c18e7261b6d6385c2b7714b6cf93663f30d5df8ca95c649f9cef917a422d77bfd4a18b2c7d190d3a39f445b345ecd9ef6f994e61c7e92f400ecbe80f
+  checksum: 83fe7e649c6439103872a292f7b9808233e1eea4bf7d5afa6fce71729e3f7a06933cd792543db84cf65b89ca985fb6f44efaeb748e2ce51a6525ade030338af8
   languageName: node
   linkType: hard
 
