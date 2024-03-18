@@ -3,7 +3,6 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -161,7 +160,7 @@ export default createRule<Options, MessageId>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
-    const sourceCode = getSourceCode(context);
+
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
@@ -245,7 +244,10 @@ export default createRule<Options, MessageId>({
      * unless `isCondition` flag is set to false, in which case
      * it's assumed to be used for side effects only and is skipped.
      */
-    function traverseNode(node: TSESTree.Node, isCondition: boolean): void {
+    function traverseNode(
+      node: TSESTree.Expression,
+      isCondition: boolean,
+    ): void {
       // prevent checking the same node multiple times
       if (traversedNodes.has(node)) {
         return;
@@ -273,7 +275,7 @@ export default createRule<Options, MessageId>({
      * This function does the actual type check on a node.
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
-    function checkNode(node: TSESTree.Node): void {
+    function checkNode(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
@@ -308,7 +310,7 @@ export default createRule<Options, MessageId>({
       // nullable boolean
       if (is('nullish', 'boolean')) {
         if (!options.allowNullableBoolean) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableBoolean)
             context.report({
               node,
@@ -317,7 +319,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultFalse',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? false`,
                   }),
@@ -325,7 +327,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareFalse',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} === false`,
@@ -342,7 +344,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultFalse',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? false`,
                   }),
@@ -350,7 +352,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareTrue',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} === true`,
                   }),
@@ -373,7 +375,7 @@ export default createRule<Options, MessageId>({
       // string
       if (is('string') || is('truthy string')) {
         if (!options.allowString) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!string)
             context.report({
               node,
@@ -382,7 +384,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code}.length === 0`,
@@ -391,7 +393,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} === ""`,
@@ -400,7 +402,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -417,7 +419,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code}.length > 0`,
                   }),
@@ -425,7 +427,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} !== ""`,
                   }),
@@ -433,7 +435,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -448,7 +450,7 @@ export default createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableString)
             context.report({
               node,
@@ -457,7 +459,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
@@ -466,7 +468,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? ""`,
                   }),
@@ -474,7 +476,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -491,7 +493,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
@@ -499,7 +501,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? ""`,
                   }),
@@ -507,7 +509,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -529,7 +531,7 @@ export default createRule<Options, MessageId>({
                 node,
                 messageId: 'conditionErrorNumber',
                 fix: getWrappingFixer({
-                  sourceCode,
+                  sourceCode: context.sourceCode,
                   node: node.parent,
                   innerNode: node,
                   wrap: code => `${code} === 0`,
@@ -541,13 +543,13 @@ export default createRule<Options, MessageId>({
                 node,
                 messageId: 'conditionErrorNumber',
                 fix: getWrappingFixer({
-                  sourceCode,
+                  sourceCode: context.sourceCode,
                   node,
                   wrap: code => `${code} > 0`,
                 }),
               });
             }
-          } else if (isLogicalNegationExpression(node.parent!)) {
+          } else if (isLogicalNegationExpression(node.parent)) {
             // if (!number)
             context.report({
               node,
@@ -556,7 +558,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareZero',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     // TODO: we have to compare to 0n if the type is bigint
@@ -567,7 +569,7 @@ export default createRule<Options, MessageId>({
                   // TODO: don't suggest this for bigint because it can't be NaN
                   messageId: 'conditionFixCompareNaN',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `Number.isNaN(${code})`,
@@ -576,7 +578,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -593,7 +595,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareZero',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} !== 0`,
                   }),
@@ -601,7 +603,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNaN',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `!Number.isNaN(${code})`,
                   }),
@@ -609,7 +611,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -624,7 +626,7 @@ export default createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableNumber)
             context.report({
               node,
@@ -633,7 +635,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
@@ -642,7 +644,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultZero',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? 0`,
                   }),
@@ -650,7 +652,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `!Boolean(${code})`,
@@ -667,7 +669,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
@@ -675,7 +677,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultZero',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} ?? 0`,
                   }),
@@ -683,7 +685,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `Boolean(${code})`,
                   }),
@@ -705,7 +707,7 @@ export default createRule<Options, MessageId>({
       // nullable object
       if (is('nullish', 'object')) {
         if (!options.allowNullableObject) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableObject)
             context.report({
               node,
@@ -714,7 +716,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
                     wrap: code => `${code} == null`,
@@ -731,7 +733,7 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode,
+                    sourceCode: context.sourceCode,
                     node,
                     wrap: code => `${code} != null`,
                   }),
@@ -756,12 +758,12 @@ export default createRule<Options, MessageId>({
         is('nullish', 'number', 'string', 'enum')
       ) {
         if (!options.allowNullableEnum) {
-          if (isLogicalNegationExpression(node.parent!)) {
+          if (isLogicalNegationExpression(node.parent)) {
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
               fix: getWrappingFixer({
-                sourceCode,
+                sourceCode: context.sourceCode,
                 node: node.parent,
                 innerNode: node,
                 wrap: code => `${code} == null`,
@@ -772,7 +774,7 @@ export default createRule<Options, MessageId>({
               node,
               messageId: 'conditionErrorNullableEnum',
               fix: getWrappingFixer({
-                sourceCode,
+                sourceCode: context.sourceCode,
                 node,
                 wrap: code => `${code} != null`,
               }),
@@ -792,7 +794,7 @@ export default createRule<Options, MessageId>({
               {
                 messageId: 'conditionFixCastBoolean',
                 fix: getWrappingFixer({
-                  sourceCode,
+                  sourceCode: context.sourceCode,
                   node,
                   wrap: code => `Boolean(${code})`,
                 }),

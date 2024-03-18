@@ -5,10 +5,8 @@ import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import {
-  type HistorySelector,
-  useHistorySelector,
-} from '../../hooks/useHistorySelector';
+import type { HistorySelector } from '../../hooks/useHistorySelector';
+import { useHistorySelector } from '../../hooks/useHistorySelector';
 import {
   CONFIG_EMOJI,
   DEPRECATED_RULE_EMOJI,
@@ -43,6 +41,8 @@ function RuleRow({
   }
   const { fixable, hasSuggestions, type, deprecated } = rule;
   const { recommended, requiresTypeChecking, extendsBaseRule } = rule.docs;
+  const actualRecommended =
+    typeof recommended === 'object' ? 'recommended' : recommended;
   const formatting = type === 'layout';
   return (
     <tr>
@@ -53,9 +53,9 @@ function RuleRow({
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
-      <td className={styles.attrCol} title={recommended}>
+      <td className={styles.attrCol} title={actualRecommended}>
         {(() => {
-          switch (recommended) {
+          switch (actualRecommended) {
             case 'recommended':
               return RECOMMENDED_CONFIG_EMOJI;
             case 'strict':
@@ -82,7 +82,7 @@ function RuleRow({
         }
       >
         {fixable ? FIXABLE_EMOJI : ''}
-        <br />
+        {fixable && hasSuggestions ? <br /> : ''}
         {hasSuggestions ? SUGGESTIONS_EMOJI : ''}
       </td>
       <td

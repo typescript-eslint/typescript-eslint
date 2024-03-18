@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
@@ -657,6 +657,161 @@ const item = arr[0];
       errors: [
         {
           messageId: 'unnecessaryAssertion',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (  3 + 5  ) as number;
+      `,
+      output: `
+const foo = (  3 + 5  );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (  3 + 5  ) /*as*/ as number;
+      `,
+      output: `
+const foo = (  3 + 5  ) /*as*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (  3 + 5
+  ) /*as*/ as //as
+  (
+    number
+  );
+      `,
+      output: `
+const foo = (  3 + 5
+  ) /*as*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (3 + (5 as number) ) as number;
+      `,
+      output: `
+const foo = (3 + (5 as number) );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = 3 + 5/*as*/ as number;
+      `,
+      output: `
+const foo = 3 + 5/*as*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = 3 + 5/*a*/ /*b*/ as number;
+      `,
+      output: `
+const foo = 3 + 5/*a*/ /*b*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <(number)>(3 + 5);
+      `,
+      output: `
+const foo = (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = < ( number ) >( 3 + 5 );
+      `,
+      output: `
+const foo = ( 3 + 5 );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <number> /* a */ (3 + 5);
+      `,
+      output: `
+const foo =  /* a */ (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <number /* a */>(3 + 5);
+      `,
+      output: `
+const foo = (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
         },
       ],
     },

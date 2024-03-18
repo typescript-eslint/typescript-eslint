@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
@@ -72,7 +71,7 @@ export default createRule<Options, MessageIds>({
       context.report({
         data: {
           certainty,
-          name: getSourceCode(context).getText(node),
+          name: context.sourceCode.getText(node),
         },
         messageId: 'baseToString',
         node,

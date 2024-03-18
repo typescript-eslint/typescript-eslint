@@ -6,7 +6,7 @@ import type {
 
 import type { DependencyConstraint } from './DependencyConstraint';
 
-export interface ValidTestCase<TOptions extends readonly unknown[]> {
+export interface ValidTestCase<Options extends Readonly<unknown[]>> {
   /**
    * Name for the test case.
    */
@@ -30,7 +30,7 @@ export interface ValidTestCase<TOptions extends readonly unknown[]> {
   /**
    * Options for the test case.
    */
-  readonly options?: Readonly<TOptions>;
+  readonly options?: Readonly<Options>;
   /**
    * The absolute path for the parser.
    */

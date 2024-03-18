@@ -1,5 +1,4 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -9,6 +8,8 @@ import {
   getParserServices,
   isClosingBraceToken,
   isOpeningBraceToken,
+  nullThrows,
+  NullThrowsReasons,
   requiresQuoting,
 } from '../util';
 
@@ -86,7 +87,6 @@ export default createRule<Options, MessageIds>({
     context,
     [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
   ) {
-    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -214,7 +214,8 @@ export default createRule<Options, MessageIds>({
           missingBranchType,
           ts.TypeFlags.ESSymbolLike,
         )
-          ? missingBranchName!
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            missingBranchName!
           : checker.typeToString(missingBranchType);
 
         if (
@@ -247,14 +248,20 @@ export default createRule<Options, MessageIds>({
       }
 
       // There were no existing cases.
-      const openingBrace = sourceCode.getTokenAfter(
-        node.discriminant,
-        isOpeningBraceToken,
-      )!;
-      const closingBrace = sourceCode.getTokenAfter(
-        node.discriminant,
-        isClosingBraceToken,
-      )!;
+      const openingBrace = nullThrows(
+        context.sourceCode.getTokenAfter(
+          node.discriminant,
+          isOpeningBraceToken,
+        ),
+        NullThrowsReasons.MissingToken('{', 'discriminant'),
+      );
+      const closingBrace = nullThrows(
+        context.sourceCode.getTokenAfter(
+          node.discriminant,
+          isClosingBraceToken,
+        ),
+        NullThrowsReasons.MissingToken('}', 'discriminant'),
+      );
 
       return fixer.replaceTextRange(
         [openingBrace.range[0], closingBrace.range[1]],

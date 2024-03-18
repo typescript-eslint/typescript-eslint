@@ -1,7 +1,6 @@
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -318,7 +317,7 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return (
         variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-        !isInInitializer(variable, reference)
+        !(reference.isValueReference && isInInitializer(variable, reference))
       );
     }
 
@@ -378,8 +377,8 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Program(): void {
-        findVariablesInScope(getScope(context));
+      Program(node): void {
+        findVariablesInScope(context.sourceCode.getScope(node));
       },
     };
   },

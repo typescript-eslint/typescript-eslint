@@ -67,6 +67,7 @@ export function createParser(
         throw new Error('Failed to get program');
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const tsAst = program.getSourceFile(filePath)!;
 
       const converted = utils.astConverter(tsAst, parseSettings, true);

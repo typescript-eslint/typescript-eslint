@@ -94,7 +94,7 @@ We generally start the process of supporting a new TypeScript version just after
 1. Once all PRs needed for the RC update PR are merged, merge the RC update PR
 1. Once TypeScript releases the stable X.Y version, create and merge a PR with a title like `chore: bump TypeScript from X.YRC to X.Y` and the following changes:
    - In the root `package.json`, remove `|| X.Y.1-rc2` from the `dependency` on `typescript`, and bump its `<` version to the next version of TypeScript
-   - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.3`
+   - In the root `package.json`, change the `resolutions` on `typescript` to `X.Y.3`
    - Rename and update `patches/typescript*` to the new TypeScript version
    - Any other changes made necessary due to changes in TypeScript between the RC version and stable version
 1. Send a PR that updates this documentation page to point to your newer issues and PRs
@@ -116,6 +116,7 @@ A single PR can remove support for old TypeScript versions as a breaking change:
 1. Update the `SUPPORTED_TYPESCRIPT_VERSIONS` constant in `warnAboutTSVersion.ts`
 1. Update the `versions` constant in `version-check.ts`
 1. Update [Users > Dependency Versions > TypeScript](../../users/Dependency_Versions.mdx#typescript)
+1. Update `MIN_TS_VERSION_SEMVER` in `packages/website/src/components/OptionsSelector.tsx`
 1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a now-unsupported version of TypeScript.
    - For example, to remove support for v4.3, searches might include:
      - `4.3`

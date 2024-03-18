@@ -6,7 +6,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 class', () => {
   it('declaration name creates class scope', () => {

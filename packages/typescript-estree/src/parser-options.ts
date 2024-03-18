@@ -166,8 +166,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
+   *
+   * If set to `false`, `null` or `undefined` type information will not be returned.
    */
-  project?: string[] | string | true | null;
+  project?: string[] | string | boolean | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -231,15 +233,15 @@ export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
-export interface ParserWeakMap<TKey, TValueBase> {
-  get<TValue extends TValueBase>(key: TKey): TValue;
+export interface ParserWeakMap<Key, ValueBase> {
+  get<Value extends ValueBase>(key: Key): Value;
   has(key: unknown): boolean;
 }
 
 export interface ParserWeakMapESTreeToTSNode<
-  TKey extends TSESTree.Node = TSESTree.Node,
+  Key extends TSESTree.Node = TSESTree.Node,
 > {
-  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  get<KeyBase extends Key>(key: KeyBase): TSESTreeToTSNode<KeyBase>;
   has(key: unknown): boolean;
 }
 
