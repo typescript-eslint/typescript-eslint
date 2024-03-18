@@ -3,6 +3,7 @@ import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 import semverSatisfies from 'semver/functions/satisfies';
 
+// eslint-disable-next-line @typescript-eslint/internal/no-relative-paths-to-internal-packages
 import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
