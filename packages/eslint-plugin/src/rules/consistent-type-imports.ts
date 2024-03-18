@@ -45,11 +45,10 @@ interface ReportValueImport {
 }
 
 type MessageIds =
-  | 'aImportIsOnlyTypes'
-  | 'noImportTypeAnnotations'
-  | 'someImportsAreOnlyTypes'
   | 'typeOverValue'
-  | 'valueOverType';
+  | 'someImportsAreOnlyTypes'
+  | 'avoidImportType'
+  | 'noImportTypeAnnotations';
 export default createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
@@ -60,10 +59,9 @@ export default createRule<Options, MessageIds>({
     messages: {
       typeOverValue:
         'All imports in the declaration are only used as types. Use `import type`.',
-      someImportsAreOnlyTypes:
-        'Imports {{typeImports}} are only used as types.',
-      aImportIsOnlyTypes: 'Import {{typeImports}} is only used as types.',
-      valueOverType: 'Use an `import` instead of an `import type`.',
+      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
+
+      avoidImportType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
     },
     schema: [
@@ -112,7 +110,6 @@ export default createRule<Options, MessageIds>({
     }
 
     if (prefer === 'no-type-imports') {
-      // prefer no type imports
       return {
         ...selectors,
         'ImportDeclaration[importKind = "type"]'(
@@ -120,7 +117,7 @@ export default createRule<Options, MessageIds>({
         ): void {
           context.report({
             node,
-            messageId: 'valueOverType',
+            messageId: 'avoidImportType',
             fix(fixer) {
               return fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
             },
@@ -131,7 +128,7 @@ export default createRule<Options, MessageIds>({
         ): void {
           context.report({
             node,
-            messageId: 'valueOverType',
+            messageId: 'avoidImportType',
             fix(fixer) {
               return fixRemoveTypeSpecifierFromImportSpecifier(fixer, node);
             },
@@ -290,10 +287,7 @@ export default createRule<Options, MessageIds>({
           }
         }
 
-        if (
-          (node.importKind === 'value' && typeSpecifiers.length) ||
-          (node.importKind === 'type' && valueSpecifiers.length)
-        ) {
+        if (node.importKind === 'value' && typeSpecifiers.length) {
           sourceImports.reportValueImports.push({
             node,
             typeSpecifiers,
@@ -306,8 +300,8 @@ export default createRule<Options, MessageIds>({
 
       'Program:exit'(): void {
         if (hasDecoratorMetadata) {
-          // Decorator metadata is bowl of poop that cannot be supported based
-          // on pure syntactic analysis.
+          // Experimental decorator metadata is bowl of poop that cannot be
+          // supported based on pure syntactic analysis.
           //
           // So we can do one of two things:
           // 1) add type-information to the rule in a breaking change and
@@ -374,15 +368,10 @@ export default createRule<Options, MessageIds>({
                 });
               }
             } else {
-              const isTypeImport = report.node.importKind === 'type';
-
               // we have a mixed type/value import or just value imports, so we need to split them out into multiple imports if separate-type-imports is configured
-              const importNames = (
-                isTypeImport
-                  ? report.valueSpecifiers // import type { A } from 'roo'; // WHERE A is used in value position
-                  : report.typeSpecifiers
-              ) // import { A, B } from 'roo'; // WHERE A is used in type position and B is in value position
-                .map(specifier => `"${specifier.local.name}"`);
+              const importNames = report.typeSpecifiers.map(
+                specifier => `"${specifier.local.name}"`,
+              );
 
               const message = ((): {
                 messageId: MessageIds;
@@ -392,13 +381,17 @@ export default createRule<Options, MessageIds>({
 
                 if (importNames.length === 1) {
                   return {
-                    messageId: 'aImportIsOnlyTypes',
-                    data: { typeImports },
+                    messageId: 'someImportsAreOnlyTypes',
+                    data: {
+                      typeImports,
+                    },
                   };
                 }
                 return {
                   messageId: 'someImportsAreOnlyTypes',
-                  data: { typeImports }, // typeImports are all the type specifiers in the value position
+                  data: {
+                    typeImports,
+                  },
                 };
               })();
 
@@ -406,21 +399,12 @@ export default createRule<Options, MessageIds>({
                 node: report.node,
                 ...message,
                 *fix(fixer) {
-                  if (isTypeImport) {
-                    // take all the valueSpecifiers and put them on a new line
-                    yield* fixToValueImportDeclaration(
-                      fixer,
-                      report,
-                      sourceImports,
-                    );
-                  } else {
-                    // take all the typeSpecifiers and put them on a new line
-                    yield* fixToTypeImportDeclaration(
-                      fixer,
-                      report,
-                      sourceImports,
-                    );
-                  }
+                  // take all the typeSpecifiers and put them on a new line
+                  yield* fixToTypeImportDeclaration(
+                    fixer,
+                    report,
+                    sourceImports,
+                  );
                 },
               });
             }
@@ -915,85 +899,6 @@ export default createRule<Options, MessageIds>({
           yield* fixRemoveTypeSpecifierFromImportSpecifier(fixer, specifier);
         }
       }
-    }
-
-    function* fixToValueImportDeclaration(
-      fixer: TSESLint.RuleFixer,
-      report: ReportValueImport,
-      sourceImports: SourceImports,
-    ): IterableIterator<TSESLint.RuleFix> {
-      const { node } = report;
-
-      const { defaultSpecifier, namespaceSpecifier, namedSpecifiers } =
-        classifySpecifier(node);
-
-      if (namespaceSpecifier) {
-        // import type * as types from 'foo'
-        yield* fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
-        return;
-      } else if (defaultSpecifier) {
-        if (
-          report.valueSpecifiers.includes(defaultSpecifier) &&
-          namedSpecifiers.length === 0
-        ) {
-          // import type Type from 'foo'
-          yield* fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
-          return;
-        }
-      } else {
-        if (
-          namedSpecifiers.every(specifier =>
-            report.valueSpecifiers.includes(specifier),
-          )
-        ) {
-          // import type {Type1, Type2} from 'foo'
-          yield* fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
-          return;
-        }
-      }
-
-      // we have some valueSpecifiers intermixed in types that need to be put on their own line
-      // import type { Type1, A } from 'foo'
-      // import type { A } from 'foo'
-      const valueNamedSpecifiers = namedSpecifiers.filter(specifier =>
-        report.valueSpecifiers.includes(specifier),
-      );
-
-      const fixesNamedSpecifiers = getFixesNamedSpecifiers(
-        fixer,
-        node,
-        valueNamedSpecifiers,
-        namedSpecifiers,
-      );
-      const afterFixes: TSESLint.RuleFix[] = [];
-      if (valueNamedSpecifiers.length) {
-        if (sourceImports.valueOnlyNamedImport) {
-          const insertTypeNamedSpecifiers =
-            fixInsertNamedSpecifiersInNamedSpecifierList(
-              fixer,
-              sourceImports.valueOnlyNamedImport,
-              fixesNamedSpecifiers.typeNamedSpecifiersText,
-            );
-          if (sourceImports.valueOnlyNamedImport.range[1] <= node.range[0]) {
-            yield insertTypeNamedSpecifiers;
-          } else {
-            afterFixes.push(insertTypeNamedSpecifiers);
-          }
-        } else {
-          // some are types.
-          // Add new value import and later remove those value specifiers from import type
-          yield fixer.insertTextBefore(
-            node,
-            `import {${
-              fixesNamedSpecifiers.typeNamedSpecifiersText
-            }} from ${context.sourceCode.getText(node.source)};\n`,
-          );
-        }
-      }
-
-      yield* fixesNamedSpecifiers.removeTypeNamedSpecifiers;
-
-      yield* afterFixes;
     }
 
     function* fixRemoveTypeSpecifierFromImportDeclaration(

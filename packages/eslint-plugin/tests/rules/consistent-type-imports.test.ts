@@ -356,6 +356,22 @@ export const ComponentFoo: Fragment = () => {
           import { type A } from 'foo';
           export = {} as A;
         `,
+
+        // semantically these are insane but syntactically they are valid
+        // we don't want to handle them because it means changing invalid code
+        // to valid code which is dangerous "undefined" behavior.
+        `
+import type T from 'mod';
+const x = T;
+        `,
+        `
+import type { T } from 'mod';
+const x = T;
+        `,
+        `
+import { type T } from 'mod';
+const x = T;
+        `,
       ],
       invalid: [
         {
@@ -568,7 +584,7 @@ const foo: A = B();
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"A"' },
               line: 2,
             },
@@ -649,7 +665,7 @@ type T = A;
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"A"' },
               line: 2,
             },
@@ -674,7 +690,7 @@ type T = { b: B; c: C; d: D };
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"B"' },
               line: 4,
             },
@@ -697,7 +713,7 @@ type T = B;
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"B"' },
               line: 2,
             },
@@ -718,12 +734,12 @@ type T = A | D;
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"A"' },
               line: 2,
             },
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"D"' },
               line: 3,
             },
@@ -744,12 +760,12 @@ type T = B | E;
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"B"' },
               line: 2,
             },
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"E"' },
               line: 3,
             },
@@ -770,12 +786,12 @@ type T = C | F;
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"C"' },
               line: 2,
             },
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"F"' },
               line: 3,
             },
@@ -840,17 +856,17 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"Type1"' },
               line: 2,
             },
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"Type2"' },
               line: 3,
             },
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"Type3"' },
               line: 4,
             },
@@ -904,7 +920,7 @@ let foo: Foo;
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -921,7 +937,7 @@ let foo: Foo;
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1003,7 +1019,7 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1024,7 +1040,7 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1045,7 +1061,7 @@ type T = typeof Type.foo;
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1123,7 +1139,7 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1146,7 +1162,7 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1169,7 +1185,7 @@ export type { Type }; // is a type-only export
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1195,15 +1211,15 @@ type T = { a: AllType; b: DefType; c: Type };
           `,
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 3,
             },
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 5,
             },
           ],
@@ -1222,7 +1238,7 @@ const a: Rest.A = '';
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1240,7 +1256,7 @@ const a: Default = '';
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1279,7 +1295,7 @@ const a: Default = '';
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1298,7 +1314,7 @@ const a: Default = '';
           `,
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1339,7 +1355,7 @@ const b = B;
           options: [{ prefer: 'no-type-imports' }],
           errors: [
             {
-              messageId: 'valueOverType',
+              messageId: 'avoidImportType',
               line: 2,
             },
           ],
@@ -1359,7 +1375,7 @@ const b = B;
           options: [{ prefer: 'type-imports' }],
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               data: { typeImports: '"A"' },
               line: 2,
             },
@@ -1406,7 +1422,7 @@ B();
           ],
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1427,7 +1443,7 @@ B();
           ],
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1571,7 +1587,7 @@ type T = A;
           ],
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1590,7 +1606,7 @@ type T = A;
           ],
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1642,7 +1658,7 @@ let baz: D;
           ],
           errors: [
             {
-              messageId: 'aImportIsOnlyTypes',
+              messageId: 'someImportsAreOnlyTypes',
               line: 2,
             },
           ],
@@ -1902,7 +1918,9 @@ import type { Foo} from 'foo';
 import { Bar } from 'foo';
 function test(foo: Foo) {}
           `,
-          errors: [{ messageId: 'aImportIsOnlyTypes', line: 3, column: 1 }],
+          errors: [
+            { messageId: 'someImportsAreOnlyTypes', line: 3, column: 1 },
+          ],
         },
         {
           code: `
@@ -1916,7 +1934,9 @@ import type { Foo} from 'foo';
 import { Bar } from 'foo';
 function test(foo: Foo) {}
           `,
-          errors: [{ messageId: 'aImportIsOnlyTypes', line: 3, column: 1 }],
+          errors: [
+            { messageId: 'someImportsAreOnlyTypes', line: 3, column: 1 },
+          ],
         },
       ],
     });
