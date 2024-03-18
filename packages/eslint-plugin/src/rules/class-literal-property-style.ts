@@ -97,9 +97,12 @@ export default createRule<Options, MessageIds>({
 
       properties.forEach(node => {
         const { value } = node;
-        const name = getStringValue(node.key);
+        if (!value || !isSupportedLiteral(value)) {
+          return;
+        }
 
-        if (!value || excludeSet.has(name) || !isSupportedLiteral(value)) {
+        const name = getStringValue(node.key);
+        if (excludeSet.has(name)) {
           return;
         }
 
