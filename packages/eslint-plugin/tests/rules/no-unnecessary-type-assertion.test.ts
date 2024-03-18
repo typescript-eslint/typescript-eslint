@@ -31,10 +31,34 @@ if (
   const name = member.id as TSESTree.StringLiteral;
 }
     `,
+    `
+      const c = 1;
+      let z = c as number;
+    `,
+    `
+      const c = 1;
+      let z = c as const;
+    `,
+    `
+      const c = 1;
+      let z = c as 1;
+    `,
+    `
+      type Bar = 'bar';
+      const data = {
+        x: 'foo' as 'foo',
+        y: 'bar' as Bar,
+      };
+    `,
+    "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
+    `
+      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+        x => [x, 'A' + x] as [number, string],
+      );
+    `,
+    'let y = 1 as 1;',
     'const foo = 3 as number;',
     'const foo = <number>3;',
-    'const foo = <3>3;',
-    'const foo = 3 as 3;',
     `
 type Tuple = [3, 'hi', 'bye'];
 const foo = [3, 'hi', 'bye'] as Tuple;
@@ -181,9 +205,6 @@ const c = [...a, ...b] as const;
       code: 'const a = [1, 2] as const;',
     },
     {
-      code: "const a = 'a' as const;",
-    },
-    {
       code: "const a = { foo: 'foo' } as const;",
     },
     {
@@ -195,9 +216,6 @@ const c = <const>[...a, ...b];
     },
     {
       code: 'const a = <const>[1, 2];',
-    },
-    {
-      code: "const a = <const>'a';",
     },
     {
       code: "const a = <const>{ foo: 'foo' };",
@@ -262,6 +280,48 @@ function bar(items: string[]) {
   ],
 
   invalid: [
+    {
+      code: "const a = 'a' as const;",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = <const>'a';",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: 'const foo = <3>3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: 'const foo = 3 as 3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = <Foo>3;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = 3 as Foo;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
     {
       code: `
 const foo = 3;
