@@ -109,20 +109,18 @@ Otherwise you can explicitly tell our tooling to analyze your code as if the com
 
 ## Comparison with `importsNotUsedAsValues` / `verbatimModuleSyntax`
 
-[`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) was introduced in TypeScript v5.0 (as a replacement for `importsNotUsedAsValues`). That being said we **do not** recommend that you use both this rule and `verbatimModuleSyntax` / `importsNotUsedAsValues` together at the same time.
+[`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) was introduced in TypeScript v5.0 (as a replacement for `importsNotUsedAsValues`).
+This rule and `verbatimModuleSyntax` _mostly_ behave in the same way.
+There are a few behavior differences:
+| Situation | `consistent-type-imports` (ESLint) | `verbatimModuleSyntax` (TypeScript) |
+| -------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
+| Unused imports | Ignored (consider using [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars)) | Type error |
+| Usage with `emitDecoratorMetadata` & `experimentalDecorations` | Ignores files that contain decorators | Reports on files that contain decorators |
+| Failures detected | Does not fail `tsc` build; can be auto-fixed with `--fix` | Fails `tsc` build; cannot be auto-fixed on the command-line |
+| `import { type T } from 'T';` | TypeScript will emit nothing (it "elides" the import) | TypeScript emits `import {} from 'T'` |
 
-As a comparison both this rule and `verbatimModuleSyntax` should _mostly_ behave in the same way. The main differences being:
-
-- This rule includes an auto-fixer which can be applied from the ESLint CLI `--fix` flag or via your IDE's auto-fix-on-save feature.
-- `verbatimModuleSyntax` will error on unused imports, where as this rule will ignore them
-- `verbatimModuleSyntax` will work correctly when paired with both `experimentalDecorators` and `emitDecoratorMetadata`
-- `verbatimModuleSyntax` will break your build if you have [`noEmitOnError`](https://www.typescriptlang.org/tsconfig#noEmitOnError) turned on
-- `verbatimModuleSyntax` can change how imports are emitted from your build.
-  - Given the code `import { type T } from 'T';`:
-    - With `verbatimModuleSyntax: true` TS will emit `import {} from 'T'`.
-    - With `verbatimModuleSyntax: false` TS will emit nothing (it will "elide" the entire import).
-
-Because there are some differences - using both this rule and `verbatimModuleSyntax` at the same time can lead to conflicting errors. As such we recommend that you only ever use one _or_ the other -- never both.
+Because there are some differences, using both this rule and `verbatimModuleSyntax` at the same time can lead to conflicting errors.
+As such we recommend that you only ever use one _or_ the other -- never both.
 
 ## When Not To Use It
 
