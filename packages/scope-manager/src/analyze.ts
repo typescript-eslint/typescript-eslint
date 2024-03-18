@@ -57,9 +57,9 @@ interface AnalyzeOptions {
    */
   sourceType?: SourceType;
 
-  // TODO - remove this in v7
+  // TODO - remove this in v8
   /**
-   * This option no longer does anything and will be removed in a future major release.
+   * @deprecated This option no longer does anything and will be removed in a future major release.
    */
   emitDecoratorMetadata?: boolean;
 }
