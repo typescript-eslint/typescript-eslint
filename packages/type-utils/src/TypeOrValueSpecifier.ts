@@ -163,7 +163,7 @@ function typeDeclaredInPackage(
   let matcher = new RegExp(`${packageName}|${typesPackageName}`);
 
   if (packageName.includes(':')) {
-    matcher = new RegExp(packageName.substring(0, packageName.indexOf(":")));
+    matcher = new RegExp(packageName.substring(0, packageName.indexOf(':')));
   }
   return declarationFiles.some(declaration => {
     const packageIdName =

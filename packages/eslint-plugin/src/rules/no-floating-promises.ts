@@ -1,12 +1,13 @@
 import type {
+  ParserServicesWithTypeInformation,
   TSESLint,
   TSESTree,
-  ParserServicesWithTypeInformation,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getOperatorPrecedence,
@@ -15,7 +16,6 @@ import {
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
   typeMatchesSpecifier,
-  TypeOrValueSpecifier,
 } from '../util';
 
 type Options = [
@@ -371,11 +371,18 @@ export default createRule<Options, MessageId>({
   },
 });
 
+/**
+ * It checks whether a node's type matches one of the types listed in the `allowForKnownSafePromises` config
+ * @param services services variable passed from context function to check the type of a node
+ * @param node the node whose type is to be calculated to know whether it is a safe promise or not
+ * @param options The config object of `allowForKnownSafePromises`
+ * @returns `true` if the type matches, `false` if it isnt
+ */
 function doesTypeMatchesSpecifier(
   services: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
   options: TypeOrValueSpecifier[] | undefined,
-) {
+): boolean {
   if (Array.isArray(options) && options.length > 0) {
     const result = options.some(specifier =>
       typeMatchesSpecifier(

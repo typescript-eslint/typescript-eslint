@@ -570,7 +570,10 @@ guzz() as PromiseLike<number>;
       code: `
 type Foo = Promise<number> & { hey?: string };
 let guzz = () => Promise.resolve(5);
-(guzz() as Foo).then(() => {}, () => {});
+(guzz() as Foo).then(
+  () => {},
+  () => {},
+);
 (guzz() as Foo).catch(() => {});
 0 ? (guzz() as Foo).catch(() => {}) : 2;
 null ?? (guzz() as Foo).catch(() => {});
@@ -580,7 +583,10 @@ null ?? (guzz() as Foo).catch(() => {});
       code: `
 type Foo = Promise<number> & { hey?: string };
 let guzz = Promise.resolve(5);
-(guzz as Foo).then(() => {}, () => {});
+(guzz as Foo).then(
+  () => {},
+  () => {},
+);
 (guzz as Foo).catch(() => {});
 0 ? (guzz as Foo).catch(() => {}) : 2;
 null ?? (guzz as Foo).catch(() => {});
@@ -1893,7 +1899,7 @@ cursed();
 type Foo = Promise<number> & { hey?: string };
 let guzz = Promise.resolve(5);
 guzz as Foo;
-(guzz as Foo).then((x) => {});
+(guzz as Foo).then(x => {});
 (guzz as Foo).catch();
 (guzz as Foo).finally();
 0 ? (guzz as Foo).catch() : 2;
@@ -1913,7 +1919,7 @@ null ?? (guzz as Foo).catch();
 type Foo = Promise<number> & { hey?: string };
 let guzz = () => Promise.resolve(5);
 guzz() as Foo;
-(guzz() as Foo).then((x) => {});
+(guzz() as Foo).then(x => {});
 (guzz() as Foo).catch();
 (guzz() as Foo).finally();
 0 ? (guzz() as Foo).catch() : 2;
