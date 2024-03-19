@@ -376,7 +376,7 @@ export default createRule<Options, MessageId>({
  * @param services services variable passed from context function to check the type of a node
  * @param node the node whose type is to be calculated to know whether it is a safe promise or not
  * @param options The config object of `allowForKnownSafePromises`
- * @returns `true` if the type matches, `false` if it isnt
+ * @returns `true` if the type matches, `false` if it isn't
  */
 function doesTypeMatchesSpecifier(
   services: ParserServicesWithTypeInformation,
