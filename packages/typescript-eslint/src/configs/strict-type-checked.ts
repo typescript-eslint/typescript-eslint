@@ -35,10 +35,7 @@ export default (
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
       '@typescript-eslint/no-extraneous-class': 'error',
-      '@typescript-eslint/no-floating-promises': [
-        'error',
-        { ignoreVoid: false },
-      ],
+      '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
       'no-implied-eval': 'off',
       '@typescript-eslint/no-implied-eval': 'error',
