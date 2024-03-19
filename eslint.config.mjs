@@ -24,20 +24,15 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
 export default tseslint.config(
-  // register all of the plugins up-front
+  // register all plugins that do NOT have a preset, up-front
   {
     // note - intentionally uses computed syntax to make it easy to sort the keys
     plugins: {
-      ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['deprecation']: deprecationPlugin,
       ['eslint-comments']: eslintCommentsPlugin,
       ['import']: importPlugin,
       ['jest']: jestPlugin,
-      ['jsdoc']: jsdocPlugin,
-      ['jsx-a11y']: jsxA11yPlugin,
-      ['react-hooks']: reactHooksPlugin,
-      ['react']: reactPlugin,
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
     },
