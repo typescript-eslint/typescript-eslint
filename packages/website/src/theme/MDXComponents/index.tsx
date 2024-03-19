@@ -1,3 +1,4 @@
+import Admonition from '@theme/Admonition';
 import MDXComponents from '@theme-original/MDXComponents';
 
 import { BaseRuleReference } from './BaseRuleReference';
@@ -9,4 +10,5 @@ export default {
   BaseRuleReference,
   RuleAttributes,
   TryInPlayground,
+  Admonition,
 };
