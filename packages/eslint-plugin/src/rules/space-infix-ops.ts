@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 import type {

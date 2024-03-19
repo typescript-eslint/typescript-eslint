@@ -257,6 +257,8 @@ export default createRule<Options, MessageIds>({
       type: TypeWithLabel,
       isTopLevel = false,
     ): void {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       if (type.node.type === AST_NODE_TYPES.TSFunctionType) {
         // callback
         if (allowCallbacks === 'never') {
@@ -309,6 +311,7 @@ export default createRule<Options, MessageIds>({
         // unhandled type - shouldn't happen
         reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
       }
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
     }
 
     /**

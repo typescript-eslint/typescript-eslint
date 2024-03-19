@@ -233,15 +233,15 @@ export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
-export interface ParserWeakMap<TKey, TValueBase> {
-  get<TValue extends TValueBase>(key: TKey): TValue;
+export interface ParserWeakMap<Key, ValueBase> {
+  get<Value extends ValueBase>(key: Key): Value;
   has(key: unknown): boolean;
 }
 
 export interface ParserWeakMapESTreeToTSNode<
-  TKey extends TSESTree.Node = TSESTree.Node,
+  Key extends TSESTree.Node = TSESTree.Node,
 > {
-  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  get<KeyBase extends Key>(key: KeyBase): TSESTreeToTSNode<KeyBase>;
   has(key: unknown): boolean;
 }
 

@@ -3,7 +3,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isRestParameterDeclaration,
+} from '../util';
 
 type Options = [
   {
@@ -549,9 +553,7 @@ function voidFunctionArguments(
 
         // If this is a array 'rest' parameter, check all of the argument indices
         // from the current argument to the end.
-        // Note - we currently do not support 'spread' arguments - adding support for them
-        // is tracked in https://github.com/typescript-eslint/typescript-eslint/issues/5744
-        if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
+        if (decl && isRestParameterDeclaration(decl)) {
           if (checker.isArrayType(type)) {
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
@@ -674,10 +676,7 @@ function isVoidReturningFunctionType(
  */
 function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getApparentType(checker.getTypeAtLocation(node));
-
-  if (anySignatureIsThenableType(checker, node, type)) {
-    return true;
-  }
-
-  return false;
+  return tsutils
+    .unionTypeParts(type)
+    .some(t => anySignatureIsThenableType(checker, node, t));
 }

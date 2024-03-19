@@ -316,6 +316,28 @@ export default () => () => {
     },
     {
       code: `
+export default () => () => {
+  const foo = 'foo';
+  return (): void => {
+    return;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+export default () => () => {
+  const foo = () => (): string => 'foo';
+  return (): void => {
+    return;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
 export class Accumulator {
   private count: number = 0;
 
@@ -1722,6 +1744,27 @@ export function foo(outer) {
           messageId: 'missingArgType',
           line: 3,
           column: 20,
+          data: {
+            name: 'inner',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+export function foo(outer: boolean) {
+  if (outer) {
+    return 'string';
+  }
+  return function (inner): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 8,
           data: {
             name: 'inner',
           },

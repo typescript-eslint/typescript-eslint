@@ -1,3 +1,106 @@
+## 7.3.1 (2024-03-18)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.0 (2024-03-18)
+
+
+### 🚀 Features
+
+- **typescript-estree:** disallow switch statements with multiple default cases
+
+
+### 🩹 Fixes
+
+- correct `engines.node` constraints in `package.json`
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix false negative for const variable declarations
+
+- **typescript-estree:** fix the issue of single run inferring in the pnpm repo
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alexu
+- Arka Pratim Chaudhuri
+- auvred
+- Derrick Isaacson
+- fnx
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Marta Cardoso
+- Michaël De Boey
+- Tristan Rasmussen
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.2.0 (2024-03-11)
+
+
+### 🚀 Features
+
+- support TS 5.4
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- auvred
+- Chris Plummer
+- Fotis Papadogeorgopoulos
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Wayne Zhang
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.1 (2024-03-04)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.0 (2024-02-26)
+
+
+### 🚀 Features
+
+- **typescript-estree:** add debug logs for useProgramFromProjectService
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** use simpler absolutify behavior for project service client file paths
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.0.2 (2024-02-19)
+
+
+### 🩹 Fixes
+
+- fix tsconfig-less check errors, fix `@types/eslint` incompatibilities, add tests
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Gareth Jones
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.0.1 (2024-02-12)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

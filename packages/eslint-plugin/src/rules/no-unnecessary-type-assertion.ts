@@ -11,6 +11,8 @@ import {
   getParserServices,
   isNullableType,
   isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -60,37 +62,6 @@ export default createRule<Options, MessageIds>({
     const compilerOptions = services.program.getCompilerOptions();
 
     /**
-     * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
-     * So, in addition, check if there are integer properties 0..n and no other numeric keys
-     */
-    function couldBeTupleType(type: ts.ObjectType): boolean {
-      const properties = type.getProperties();
-
-      if (properties.length === 0) {
-        return false;
-      }
-      let i = 0;
-
-      for (; i < properties.length; ++i) {
-        const name = properties[i].name;
-
-        if (String(i) !== name) {
-          if (i === 0) {
-            // if there are no integer properties, this is not a tuple
-            return false;
-          }
-          break;
-        }
-      }
-      for (; i < properties.length; ++i) {
-        if (String(+properties[i].name) === properties[i].name) {
-          return false; // if there are any other numeric properties, this is not a tuple
-        }
-      }
-      return true;
-    }
-
-    /**
      * Returns true if there's a chance the variable has been used before a value has been assigned to it
      */
     function isPossiblyUsedBeforeAssigned(node: TSESTree.Expression): boolean {
@@ -134,6 +105,13 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.TSTypeReference &&
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'const'
+      );
+    }
+
+    function isConstVariableDeclaration(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.VariableDeclaration &&
+        node.kind === 'const'
       );
     }
 
@@ -234,45 +212,45 @@ export default createRule<Options, MessageIds>({
         if (
           options.typesToIgnore?.includes(
             context.sourceCode.getText(node.typeAnnotation),
-          ) ||
-          isConstAssertion(node.typeAnnotation)
+          )
         ) {
           return;
         }
 
         const castType = services.getTypeAtLocation(node);
-
-        if (
-          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-          (tsutils.isObjectType(castType) &&
-            (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
-              couldBeTupleType(castType)))
-        ) {
-          // It's not always safe to remove a cast to a literal type or tuple
-          // type, as those types are sometimes widened without the cast.
-          return;
-        }
-
         const uncastType = services.getTypeAtLocation(node.expression);
+        const typeIsUnchanged = uncastType === castType;
 
-        if (uncastType === castType) {
+        const wouldSameTypeBeInferred = castType.isLiteral()
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            isConstVariableDeclaration(node.parent.parent!)
+          : !isConstAssertion(node.typeAnnotation);
+
+        if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const openingAngleBracket = context.sourceCode.getTokenBefore(
-                  node.typeAnnotation,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Punctuator &&
-                    token.value === '<',
-                )!;
-                const closingAngleBracket = context.sourceCode.getTokenAfter(
-                  node.typeAnnotation,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Punctuator &&
-                    token.value === '>',
-                )!;
+                const openingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '<',
+                  ),
+                  NullThrowsReasons.MissingToken('<', 'type annotation'),
+                );
+                const closingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '>',
+                  ),
+                  NullThrowsReasons.MissingToken('>', 'type annotation'),
+                );
+
                 // < ( number ) > ( 3 + 5 )
                 // ^---remove---^
                 return fixer.removeRange([
@@ -281,15 +259,22 @@ export default createRule<Options, MessageIds>({
                 ]);
               }
               // `as` is always present in TSAsExpression
-              const asToken = context.sourceCode.getTokenAfter(
-                node.expression,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Identifier &&
-                  token.value === 'as',
-              )!;
-              const tokenBeforeAs = context.sourceCode.getTokenBefore(asToken, {
-                includeComments: true,
-              })!;
+              const asToken = nullThrows(
+                context.sourceCode.getTokenAfter(
+                  node.expression,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Identifier &&
+                    token.value === 'as',
+                ),
+                NullThrowsReasons.MissingToken('>', 'type annotation'),
+              );
+              const tokenBeforeAs = nullThrows(
+                context.sourceCode.getTokenBefore(asToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('comment', 'as'),
+              );
+
               // ( 3 + 5 )  as  number
               //          ^--remove--^
               return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
