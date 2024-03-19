@@ -65,6 +65,18 @@ export default tseslint.config(
   jsdocPlugin.configs['flat/recommended-typescript-error'],
   ...compat.config(perfectionistPlugin.configs['recommended-natural']),
 
+  {
+    rules: Object.fromEntries(
+      Object.keys(perfectionistPlugin.configs['recommended-natural'].rules)
+        .filter(rule =>
+          ['array-includes'].every(
+            postfix => rule != `perfectionist/sort-${postfix}`,
+          ),
+        )
+        .map(rule => [rule, 'off']),
+    ),
+  },
+
   // base config
   {
     languageOptions: {
