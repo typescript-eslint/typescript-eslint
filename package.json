@@ -93,6 +93,7 @@
     "eslint-plugin-jest": "^27.6.3",
     "eslint-plugin-jsdoc": "^47.0.2",
     "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-perfectionist": "^2.7.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",

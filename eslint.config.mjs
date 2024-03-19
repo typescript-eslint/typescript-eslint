@@ -12,6 +12,7 @@ import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
@@ -31,7 +32,6 @@ export default tseslint.config(
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['deprecation']: deprecationPlugin,
       ['eslint-comments']: eslintCommentsPlugin,
-      ['eslint-plugin']: eslintPluginPlugin,
       ['import']: importPlugin,
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
@@ -68,6 +68,7 @@ export default tseslint.config(
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
+  ...compat.config(perfectionistPlugin.configs['recommended-natural']),
 
   // base config
   {
