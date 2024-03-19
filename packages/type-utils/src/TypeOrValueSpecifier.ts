@@ -207,7 +207,7 @@ export function typeMatchesSpecifier(
   if (!specifierNameMatches(type, specifier.name)) {
     return false;
   }
-  const symbol = type.getSymbol() || type.aliasSymbol;
+  const symbol = type.getSymbol() ?? type.aliasSymbol;
   const declarationFiles =
     symbol
       ?.getDeclarations()
