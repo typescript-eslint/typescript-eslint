@@ -558,6 +558,16 @@ null ?? guzz().catch();
     },
     {
       code: `
+let guzz = () => Promise.resolve(5);
+guzz() as PromiseLike<number>;
+(guzz() as PromiseLike<number>).then(() => {});
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
+      ],
+    },
+    {
+      code: `
 type Foo = Promise<number> & { hey?: string };
 let guzz = () => Promise.resolve(5);
 (guzz() as Foo).then(() => {}, () => {});
@@ -575,7 +585,7 @@ let guzz = Promise.resolve(5);
 0 ? (guzz as Foo).catch(() => {}) : 2;
 null ?? (guzz as Foo).catch(() => {});
       `,
-    }
+    },
   ],
 
   invalid: [
@@ -1917,6 +1927,6 @@ null ?? (guzz() as Foo).catch();
         { line: 8, messageId: 'floatingVoid' },
         { line: 9, messageId: 'floatingVoid' },
       ],
-    }
+    },
   ],
 });
