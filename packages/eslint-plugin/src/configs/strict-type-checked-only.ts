@@ -15,7 +15,7 @@ export = {
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
     '@typescript-eslint/no-duplicate-type-constituents': 'error',
-    '@typescript-eslint/no-floating-promises': ['error', { ignoreVoid: false }],
+    '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',

@@ -20,8 +20,7 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(async function (): Promise<void> {
+void (async function (): Promise<void> {
   // make sure we're running from the workspace root
   const {
     default: { workspaceRoot },
