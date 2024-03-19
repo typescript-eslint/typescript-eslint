@@ -13,7 +13,6 @@ import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import {
   gatherLogicalOperands,
-  NullishComparisonType,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import type {
@@ -170,9 +169,27 @@ export default createRule<
           ],
         });
       },
+
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
+        const leftNode = node.left;
+        const rightNode = node.right;
+
+        const isUndefinedIdentifier =
+          leftNode.type === AST_NODE_TYPES.Identifier;
+
+        const isNotNullCheck =
+          rightNode.type === AST_NODE_TYPES.BinaryExpression &&
+          rightNode.operator === '!==' &&
+          rightNode.right.type === AST_NODE_TYPES.Literal &&
+          rightNode.right.value === null;
+
+        if (isUndefinedIdentifier && isNotNullCheck) {
+          // Skip && with strict null equality checks on the right side: data && data.value !== null
+          return;
+        }
+
         if (seenLogicals.has(node)) {
           return;
         }
@@ -183,19 +200,6 @@ export default createRule<
           context.sourceCode,
           options,
         );
-
-        const hasNullableAndTruthyOperand = operands.some(
-          operand =>
-            operand.type === OperandValidity.Valid &&
-            operand.comparisonType ===
-              NullishComparisonType.NotEqualNullOrUndefined &&
-            operand.isYoda,
-        );
-
-        if (!hasNullableAndTruthyOperand) {
-          seenLogicals.add(node);
-          return;
-        }
 
         // Analyze the chain for potential fixes
         analyzeChain(
