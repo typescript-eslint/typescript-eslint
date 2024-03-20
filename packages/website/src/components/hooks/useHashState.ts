@@ -1,4 +1,3 @@
-import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
@@ -189,7 +188,6 @@ const writeStateToLocalStorage = (newState: ConfigModel): void => {
 function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
-  const history = useHistory();
   const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...retrieveStateFromLocalStorage(),
@@ -208,11 +206,7 @@ function useHashState(
         }
 
         writeStateToLocalStorage(newState);
-
-        history.replace({
-          ...history.location,
-          hash: writeStateToUrl(newState),
-        });
+        window.history.replaceState(null, '', `#${writeStateToUrl(newState)}`);
 
         if (cfg.ts) {
           window.location.reload();
@@ -220,7 +214,7 @@ function useHashState(
         return newState;
       });
     },
-    [setState, history],
+    [setState],
   );
 
   return [state, updateState];
