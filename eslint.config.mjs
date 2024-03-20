@@ -48,6 +48,7 @@ export default tseslint.config(
       '**/__snapshots__/**',
       '**/.docusaurus/**',
       '**/build/**',
+      '.yarn/releases/*.cjs',
       // Files copied as part of the build
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
