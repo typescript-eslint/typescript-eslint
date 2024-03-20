@@ -527,8 +527,8 @@ export default createRule<Options, MessageIds>({
 
       let scope = context.sourceCode.getScope(node);
       const shouldUseUpperScope = [
-        AST_NODE_TYPES.TSModuleDeclaration,
         AST_NODE_TYPES.TSDeclareFunction,
+        AST_NODE_TYPES.TSModuleDeclaration,
       ].includes(node.type);
 
       if (scope.variableScope !== scope) {

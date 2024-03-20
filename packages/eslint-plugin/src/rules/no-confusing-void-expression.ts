@@ -329,9 +329,9 @@ export default createRule<Options, MessageId>({
       );
       if (
         ![
+          AST_NODE_TYPES.ArrowFunctionExpression,
           AST_NODE_TYPES.FunctionDeclaration,
           AST_NODE_TYPES.FunctionExpression,
-          AST_NODE_TYPES.ArrowFunctionExpression,
         ].includes(blockParent.type)
       ) {
         // e.g. `if (cond) { return; }`

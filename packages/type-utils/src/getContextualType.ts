@@ -34,7 +34,7 @@ export function getContextualType(
     // is RHS of assignment
     return checker.getTypeAtLocation(parent.left);
   } else if (
-    ![ts.SyntaxKind.TemplateSpan, ts.SyntaxKind.JsxExpression].includes(
+    ![ts.SyntaxKind.JsxExpression, ts.SyntaxKind.TemplateSpan].includes(
       parent.kind,
     )
   ) {

@@ -434,14 +434,14 @@ export default createRule<Options, MessageIds>({
           }
         } else if (
           [
-            AST_NODE_TYPES.FunctionDeclaration,
-            AST_NODE_TYPES.ClassDeclaration,
-            AST_NODE_TYPES.FunctionExpression,
-            AST_NODE_TYPES.ClassExpression,
             AST_NODE_TYPES.ArrowFunctionExpression,
             AST_NODE_TYPES.CatchClause,
-            AST_NODE_TYPES.ImportDeclaration,
+            AST_NODE_TYPES.ClassDeclaration,
+            AST_NODE_TYPES.ClassExpression,
             AST_NODE_TYPES.ExportNamedDeclaration,
+            AST_NODE_TYPES.FunctionDeclaration,
+            AST_NODE_TYPES.FunctionExpression,
+            AST_NODE_TYPES.ImportDeclaration,
           ].includes(node.type)
         ) {
           break;

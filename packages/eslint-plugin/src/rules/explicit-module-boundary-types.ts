@@ -331,9 +331,9 @@ export default createRule<Options, MessageIds>({
         // cases we don't care about in this rule
         if (
           [
+            DefinitionType.CatchClause,
             DefinitionType.ImplicitGlobalVariable,
             DefinitionType.ImportBinding,
-            DefinitionType.CatchClause,
             DefinitionType.Parameter,
           ].includes(definition.type)
         ) {

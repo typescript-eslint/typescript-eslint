@@ -62,7 +62,7 @@ export default createRule({
         if (
           allowBitwiseExpressions &&
           node.initializer.type === AST_NODE_TYPES.BinaryExpression &&
-          ['|', '&', '^', '<<', '>>', '>>>'].includes(
+          ['&', '<<', '>>', '>>>', '^', '|'].includes(
             node.initializer.operator,
           ) &&
           node.initializer.left.type === AST_NODE_TYPES.Literal &&

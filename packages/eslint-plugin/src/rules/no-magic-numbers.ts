@@ -135,7 +135,7 @@ export default createRule<Options, MessageIds>({
 function getLiteralParent(node: TSESTree.Literal): TSESTree.Node | undefined {
   if (
     node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-    ['-', '+'].includes(node.parent.operator)
+    ['+', '-'].includes(node.parent.operator)
   ) {
     return node.parent.parent;
   }

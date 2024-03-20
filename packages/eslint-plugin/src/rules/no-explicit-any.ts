@@ -64,13 +64,13 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrowFunctionExpression, // const x = (...args: any[]) => {};
         AST_NODE_TYPES.FunctionDeclaration, // function f(...args: any[]) {}
         AST_NODE_TYPES.FunctionExpression, // const x = function(...args: any[]) {};
-        AST_NODE_TYPES.TSEmptyBodyFunctionExpression, // declare class A { f(...args: any[]): unknown; }
-        AST_NODE_TYPES.TSFunctionType, // type T = (...args: any[]) => unknown;
-        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
         AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
         AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
-        AST_NODE_TYPES.TSMethodSignature, // type T = {f(...args: any[]): unknown};
+        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
         AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
+        AST_NODE_TYPES.TSEmptyBodyFunctionExpression, // declare class A { f(...args: any[]): unknown; }
+        AST_NODE_TYPES.TSFunctionType, // type T = (...args: any[]) => unknown;
+        AST_NODE_TYPES.TSMethodSignature, // type T = {f(...args: any[]): unknown};
       ].includes(node.type);
     }
 
