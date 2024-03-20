@@ -48,16 +48,23 @@ export default util.createRule<Options, MessageIds>({
     function isImportPathAllowed(importPath: string): boolean | undefined {
       return allowPatterns?.some(pattern => importPath.match(pattern));
     }
+    function isStringOrTemplateLiteral(node: TSESTree.Node): boolean {
+      return (
+        (node.type === AST_NODE_TYPES.Literal &&
+          typeof node.value === 'string') ||
+        node.type === AST_NODE_TYPES.TemplateLiteral
+      );
+    }
+
     return {
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
-        if (
-          node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
-          typeof node.arguments[0].value === 'string' &&
-          isImportPathAllowed(node.arguments[0].value)
-        ) {
-          return;
+        if (node.arguments[0] && isStringOrTemplateLiteral(node.arguments[0])) {
+          const argValue = util.getStaticStringValue(node.arguments[0]);
+          if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
+            return;
+          }
         }
         const variable = ASTUtils.findVariable(
           context.sourceCode.getScope(node),
@@ -98,12 +105,11 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       TSExternalModuleReference(node): void {
-        if (
-          node.expression.type === AST_NODE_TYPES.Literal &&
-          typeof node.expression.value === 'string' &&
-          isImportPathAllowed(node.expression.value)
-        ) {
-          return;
+        if (isStringOrTemplateLiteral(node.expression)) {
+          const argValue = util.getStaticStringValue(node.expression);
+          if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
+            return;
+          }
         }
         if (
           allowAsImport &&

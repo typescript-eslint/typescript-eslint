@@ -32,6 +32,10 @@ require('remark-preset-prettier');
       options: [{ allow: ['/package\\.json$'] }],
     },
     {
+      code: 'const pkg = require(`./package.json`);',
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
       code: "const pkg = require('../packages/package.json');",
       options: [{ allow: ['/package\\.json$'] }],
     },
@@ -203,6 +207,17 @@ var lib5 = require?.('lib5'),
     },
     {
       code: "const pkg = require('./package.jsonc');",
+      options: [{ allow: ['/package\\.json$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require(`./package.jsonc`);',
       options: [{ allow: ['/package\\.json$'] }],
       errors: [
         {

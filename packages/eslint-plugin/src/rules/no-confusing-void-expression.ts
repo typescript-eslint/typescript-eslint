@@ -3,6 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { MakeRequired } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -79,7 +80,7 @@ export default createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: true,
   },
-  defaultOptions: [{}],
+  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
 
   create(context, [options]) {
     return {
@@ -133,14 +134,26 @@ export default createRule<Options, MessageId>({
               const arrowBodyText = context.sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
               if (isParenthesized(arrowBody, context.sourceCode)) {
-                const bodyOpeningParen = context.sourceCode.getTokenBefore(
-                  arrowBody,
-                  isOpeningParenToken,
-                )!;
-                const bodyClosingParen = context.sourceCode.getTokenAfter(
-                  arrowBody,
-                  isClosingParenToken,
-                )!;
+                const bodyOpeningParen = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    arrowBody,
+                    isOpeningParenToken,
+                  ),
+                  NullThrowsReasons.MissingToken(
+                    'opening parenthesis',
+                    'arrow body',
+                  ),
+                );
+                const bodyClosingParen = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    arrowBody,
+                    isClosingParenToken,
+                  ),
+                  NullThrowsReasons.MissingToken(
+                    'closing parenthesis',
+                    'arrow body',
+                  ),
+                );
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
                   newArrowBodyText,
@@ -163,25 +176,23 @@ export default createRule<Options, MessageId>({
             });
           }
 
-          const returnStmt = invalidAncestor;
-
-          if (isFinalReturn(returnStmt)) {
+          if (isFinalReturn(invalidAncestor)) {
             // remove the `return` keyword
             return context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
-                if (!canFix(returnStmt)) {
+                if (!canFix(invalidAncestor)) {
                   return null;
                 }
-                const returnValue = returnStmt.argument!;
+                const returnValue = invalidAncestor.argument;
                 const returnValueText = context.sourceCode.getText(returnValue);
                 let newReturnStmtText = `${returnValueText};`;
                 if (isPreventingASI(returnValue)) {
                   // put a semicolon at the beginning of the line
                   newReturnStmtText = `;${newReturnStmtText}`;
                 }
-                return fixer.replaceText(returnStmt, newReturnStmtText);
+                return fixer.replaceText(invalidAncestor, newReturnStmtText);
               },
             });
           }
@@ -191,19 +202,21 @@ export default createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
-              const returnValue = returnStmt.argument!;
+              const returnValue = invalidAncestor.argument;
               const returnValueText = context.sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
               if (isPreventingASI(returnValue)) {
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
-              if (returnStmt.parent.type !== AST_NODE_TYPES.BlockStatement) {
+              if (
+                invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
+              ) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;
               }
-              return fixer.replaceText(returnStmt, newReturnStmtText);
+              return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
           });
         }
@@ -225,6 +238,15 @@ export default createRule<Options, MessageId>({
       },
     };
 
+    type ReturnStatementWithArgument = MakeRequired<
+      TSESTree.ReturnStatement,
+      'argument'
+    >;
+
+    type InvalidAncestor =
+      | Exclude<TSESTree.Node, TSESTree.ReturnStatement>
+      | ReturnStatementWithArgument;
+
     /**
      * Inspects the void expression's ancestors and finds closest invalid one.
      * By default anything other than an ExpressionStatement is invalid.
@@ -233,7 +255,7 @@ export default createRule<Options, MessageId>({
      * @param node The void expression node to check.
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
-    function findInvalidAncestor(node: TSESTree.Node): TSESTree.Node | null {
+    function findInvalidAncestor(node: TSESTree.Node): InvalidAncestor | null {
       const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
       if (parent.type === AST_NODE_TYPES.SequenceExpression) {
         if (node !== parent.expressions[parent.expressions.length - 1]) {
@@ -286,8 +308,9 @@ export default createRule<Options, MessageId>({
         return findInvalidAncestor(parent);
       }
 
-      // any other parent is invalid
-      return parent;
+      // Any other parent is invalid.
+      // We can assume a return statement will have an argument.
+      return parent as InvalidAncestor;
     }
 
     /** Checks whether the return statement is the last statement in a function body. */
@@ -341,13 +364,13 @@ export default createRule<Options, MessageId>({
     }
 
     function canFix(
-      node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
+      node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
     ): boolean {
       const services = getParserServices(context);
 
       const targetNode =
         node.type === AST_NODE_TYPES.ReturnStatement
-          ? node.argument!
+          ? node.argument
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);

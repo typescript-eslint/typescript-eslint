@@ -1,4 +1,5 @@
-import { AST_TOKEN_TYPES, type TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength } from '../util';
 
@@ -31,7 +32,10 @@ export default createRule<[Options], MessageIds>({
     docs: {
       description:
         'Disallow `@ts-<directive>` comments or require descriptions after directives',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [{ minimumDescriptionLength: 10 }],
+      },
     },
     messages: {
       tsDirectiveComment:
@@ -130,6 +134,7 @@ export default createRule<[Options], MessageIds>({
           if (!match) {
             return;
           }
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const { directive, description } = match.groups!;
 
           const fullDirective = `ts-${directive}` as keyof Options;

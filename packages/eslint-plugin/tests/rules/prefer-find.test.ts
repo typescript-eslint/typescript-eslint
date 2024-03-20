@@ -56,6 +56,26 @@ ruleTester.run('prefer-find', rule, {
     "['Just', 'a', 'find'].find(x => x.length > 4);",
     'undefined.filter(x => x)[0];',
     'null?.filter(x => x)[0];',
+    // Should not throw. See https://github.com/typescript-eslint/typescript-eslint/issues/8386
+    `
+      declare function foo(param: any): any;
+      foo(Symbol.for('foo'));
+    `,
+    // Specifically need to test Symbol.for(), not just Symbol(), since only
+    // Symbol.for() creates a static value that the rule inspects.
+    `
+      declare const arr: string[];
+      const s = Symbol.for("Don't throw!");
+      arr.filter(item => item === 'aha').at(s);
+    `,
+    "[1, 2, 3].filter(x => x)[Symbol('0')];",
+    "[1, 2, 3].filter(x => x)[Symbol.for('0')];",
+    '(Math.random() < 0.5 ? [1, 2, 3].filter(x => true) : [1, 2, 3])[0];',
+    `
+      (Math.random() < 0.5
+        ? [1, 2, 3].find(x => true)
+        : [1, 2, 3].filter(x => true))[0];
+    `,
   ],
 
   invalid: [
@@ -564,6 +584,143 @@ arr.filter(f, thisArg)[0];
               output: `
 declare const arr: { a: 1 }[] & ({ b: 2 }[] | { c: 3 }[]);
 arr.find(f, thisArg);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+(Math.random() < 0.5
+  ? [1, 2, 3].filter(x => false)
+  : [1, 2, 3].filter(x => true))[0];
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+(Math.random() < 0.5
+  ? [1, 2, 3].find(x => false)
+  : [1, 2, 3].find(x => true));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+Math.random() < 0.5
+  ? [1, 2, 3].find(x => true)
+  : [1, 2, 3].filter(x => true)[0];
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+Math.random() < 0.5
+  ? [1, 2, 3].find(x => true)
+  : [1, 2, 3].find(x => true);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const f: (arg0: unknown, arg1: number, arg2: Array<unknown>) => boolean,
+  g: (arg0: unknown) => boolean;
+const nestedTernaries = (
+  Math.random() < 0.5
+    ? Math.random() < 0.5
+      ? [1, 2, 3].filter(f)
+      : []?.filter(x => 'shrug')
+    : [2, 3, 4]['filter'](g)
+).at(0.2);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const f: (arg0: unknown, arg1: number, arg2: Array<unknown>) => boolean,
+  g: (arg0: unknown) => boolean;
+const nestedTernaries = (
+  Math.random() < 0.5
+    ? Math.random() < 0.5
+      ? [1, 2, 3].find(f)
+      : []?.find(x => 'shrug')
+    : [2, 3, 4]["find"](g)
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const f: (arg0: unknown) => boolean, g: (arg0: unknown) => boolean;
+const nestedTernariesWithSequenceExpression = (
+  Math.random() < 0.5
+    ? ('sequence',
+      'expression',
+      Math.random() < 0.5 ? [1, 2, 3].filter(f) : []?.filter(x => 'shrug'))
+    : [2, 3, 4]['filter'](g)
+).at(0.2);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const f: (arg0: unknown) => boolean, g: (arg0: unknown) => boolean;
+const nestedTernariesWithSequenceExpression = (
+  Math.random() < 0.5
+    ? ('sequence',
+      'expression',
+      Math.random() < 0.5 ? [1, 2, 3].find(f) : []?.find(x => 'shrug'))
+    : [2, 3, 4]["find"](g)
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const spreadArgs: [(x: unknown) => boolean];
+[1, 2, 3].filter(...spreadArgs).at(0);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'preferFind',
+          suggestions: [
+            {
+              messageId: 'preferFindSuggestion',
+              output: `
+declare const spreadArgs: [(x: unknown) => boolean];
+[1, 2, 3].find(...spreadArgs);
       `,
             },
           ],

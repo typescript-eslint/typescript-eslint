@@ -25,6 +25,16 @@ const createMockRuleContext = (
     ...overrides,
   }) as unknown as UnknownRuleContext;
 
+const requiresParserServicesMessageTemplate =
+  'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.\n' +
+  'Parser: \\S*';
+const baseErrorRegex = new RegExp(requiresParserServicesMessageTemplate);
+const unknownParserErrorRegex = new RegExp(
+  requiresParserServicesMessageTemplate +
+    '\n' +
+    'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.',
+);
+
 describe('getParserServices', () => {
   it('throws a standard error when parserOptions.esTreeNodeToTSNodeMap is missing and the parser is known', () => {
     const context = createMockRuleContext({
@@ -38,9 +48,7 @@ describe('getParserServices', () => {
     });
 
     expect(() => ESLintUtils.getParserServices(context)).toThrow(
-      new Error(
-        'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
-      ),
+      baseErrorRegex,
     );
   });
 
@@ -55,12 +63,8 @@ describe('getParserServices', () => {
         },
       },
     });
-
     expect(() => ESLintUtils.getParserServices(context)).toThrow(
-      new Error(
-        'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.\n' +
-          'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.',
-      ),
+      unknownParserErrorRegex,
     );
   });
 
@@ -76,9 +80,7 @@ describe('getParserServices', () => {
     });
 
     expect(() => ESLintUtils.getParserServices(context)).toThrow(
-      new Error(
-        'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
-      ),
+      baseErrorRegex,
     );
   });
 
@@ -94,9 +96,7 @@ describe('getParserServices', () => {
     });
 
     expect(() => ESLintUtils.getParserServices(context)).toThrow(
-      new Error(
-        'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.',
-      ),
+      baseErrorRegex,
     );
   });
 

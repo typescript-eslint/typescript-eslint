@@ -1,6 +1,6 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/linting/configs
+// SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
@@ -8,9 +8,10 @@
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
-  parserOptions: { project: null, program: null },
+  parserOptions: { project: false, program: null },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
+    '@typescript-eslint/consistent-return': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/naming-convention': 'off',
@@ -61,5 +62,6 @@ export = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
 } satisfies ClassicConfig.Config;

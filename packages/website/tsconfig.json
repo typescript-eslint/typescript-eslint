@@ -1,8 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react",
@@ -12,9 +12,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@site/*": ["./*"],
+      "@site/*": ["./*"]
     },
-    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
+    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
   },
   "include": [
     "src",
@@ -23,6 +23,7 @@
     "plugins",
     "typings",
     "sidebars/*.js",
-    "./*.ts",
-  ],
+    "./*.mts",
+    "./*.ts"
+  ]
 }

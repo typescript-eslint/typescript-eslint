@@ -7,7 +7,8 @@ import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
-import { type CreateLinter, createLinter } from '../linter/createLinter';
+import type { CreateLinter } from '../linter/createLinter';
+import { createLinter } from '../linter/createLinter';
 import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
@@ -113,14 +114,23 @@ export const useSandboxServices = (
           sandboxInstance,
         });
       })
-      .catch(setServices);
-
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          setServices(err);
+        } else {
+          setServices(new Error(String(err)));
+        }
+      });
     return (): void => {
       if (!sandboxInstance) {
         return;
       }
 
-      const editorModel = sandboxInstance.editor.getModel()!;
+      const editorModel = sandboxInstance.editor.getModel();
+      if (!editorModel) {
+        return;
+      }
+
       sandboxInstance.monaco.editor.setModelMarkers(
         editorModel,
         sandboxInstance.editor.getId(),

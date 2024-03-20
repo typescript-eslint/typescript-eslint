@@ -3,10 +3,6 @@
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
     "changelog": {
-      "git": {
-        "commit": true,
-        "tag": true
-      },
       "workspaceChangelog": {
         "createRelease": "github",
         "renderer": "tools/release/changelog-renderer"
@@ -16,10 +12,7 @@
       }
     },
     "version": {
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
+      "conventionalCommits": true
     }
   },
   "targetDefaults": {
@@ -31,6 +24,7 @@
     "test": {
       "inputs": [
         "default",
+        "^production",
         "{workspaceRoot}/jest.config.js",
         "{workspaceRoot}/jest.config.base.js"
       ],
@@ -40,6 +34,7 @@
     "@nx/jest:jest": {
       "inputs": [
         "default",
+        "^production",
         "{workspaceRoot}/jest.config.js",
         "{workspaceRoot}/jest.config.base.js"
       ],
@@ -56,13 +51,13 @@
         }
       }
     },
-    "@nx/eslint:lint": {
+    "lint": {
       "dependsOn": ["eslint-plugin:build"],
       "inputs": [
         "default",
-        "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/eslint.config.mjs",
         "{workspaceRoot}/yarn.lock",
-        "{workspaceRoot}/.eslintignore",
         {
           "dependentTasksOutputFiles": "**/*.js",
           "transitive": false
@@ -85,6 +80,12 @@
         "runtime": "yarn -v"
       }
     ],
-    "production": ["default", "!{projectRoot}/src/test-setup.[jt]s"]
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ]
   }
 }
