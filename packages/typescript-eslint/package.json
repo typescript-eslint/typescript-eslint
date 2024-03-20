@@ -51,6 +51,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
+    "@typescript-eslint/utils": "7.3.1",
     "eslint": "^8.56.0"
   },
   "dependencies": {
@@ -65,6 +66,9 @@
     "typescript": "*"
   },
   "peerDependenciesMeta": {
+    "@typescript-eslint/utils": {
+      "optional": true
+    },
     "typescript": {
       "optional": true
     }
