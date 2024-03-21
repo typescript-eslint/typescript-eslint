@@ -169,6 +169,12 @@ export default tseslint.config(
           ignorePrimitives: true,
         },
       ],
+      '@typescript-eslint/no-require-imports': [
+        'error',
+        {
+          allow: ['/package\\.json$'],
+        },
+      ],
 
       //
       // Internal repo rules
