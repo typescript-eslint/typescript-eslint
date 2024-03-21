@@ -255,7 +255,7 @@ var lib5 = require?.('lib5'),
       ],
     },
     {
-      code: "import pkg = require('./package.json');",
+      code: 'import pkg = require(`./package.json`);',
       options: [{ allow: ['^some-package$'] }],
       errors: [
         {
