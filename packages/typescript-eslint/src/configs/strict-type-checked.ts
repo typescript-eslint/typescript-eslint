@@ -54,6 +54,7 @@ export default (
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-redundant-type-constituents': 'error',
+      '@typescript-eslint/no-require-imports': 'error',
       '@typescript-eslint/no-this-alias': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/no-throw-literal': 'error',
