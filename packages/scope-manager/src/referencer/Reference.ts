@@ -6,8 +6,8 @@ import type { Variable } from '../variable';
 
 enum ReferenceFlag {
   Read = 0x1,
-  Write = 0x2,
   ReadWrite = 0x3,
+  Write = 0x2,
 }
 
 interface ReferenceImplicitGlobal {
@@ -19,8 +19,8 @@ interface ReferenceImplicitGlobal {
 const generator = createIdGenerator();
 
 enum ReferenceTypeFlag {
-  Value = 0x1,
   Type = 0x2,
+  Value = 0x1,
 }
 
 /**

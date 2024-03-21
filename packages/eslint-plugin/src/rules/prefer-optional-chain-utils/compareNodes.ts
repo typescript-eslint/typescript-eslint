@@ -5,10 +5,10 @@ import { visitorKeys } from '@typescript-eslint/visitor-keys';
 export const enum NodeComparisonResult {
   /** the two nodes are comparably the same */
   Equal = 'Equal',
-  /** the left node is a subset of the right node */
-  Subset = 'Subset',
   /** the left node is not the same or is a superset of the right node */
   Invalid = 'Invalid',
+  /** the left node is a subset of the right node */
+  Subset = 'Subset',
 }
 
 function compareArrays(

@@ -77,8 +77,8 @@ const SHARED_CONFIG_MODULE = path.join(
 );
 enum BASE_CONFIG_EXPORT_NAMES {
   TYPE = 'TYPE',
-  VALUE = 'VALUE',
   TYPE_AND_VALUE = 'TYPE_VALUE',
+  VALUE = 'VALUE',
 }
 
 async function formatCode(code: string[]): Promise<string> {

@@ -11,12 +11,12 @@ import {
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
-  /** the type cannot be handled by the function */
-  UnknownType = 1,
   /** the type is mutable */
   Mutable = 2,
   /** the type is readonly */
   Readonly = 3,
+  /** the type cannot be handled by the function */
+  UnknownType = 1,
 }
 
 export interface ReadonlynessOptions {

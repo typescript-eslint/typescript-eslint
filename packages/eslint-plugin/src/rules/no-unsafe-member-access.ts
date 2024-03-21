@@ -11,8 +11,8 @@ import {
 } from '../util';
 
 const enum State {
-  Unsafe = 1,
   Safe = 2,
+  Unsafe = 1,
 }
 
 export default createRule({

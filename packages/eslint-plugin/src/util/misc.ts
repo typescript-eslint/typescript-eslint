@@ -97,10 +97,10 @@ function getNameFromIndexSignature(node: TSESTree.TSIndexSignature): string {
 }
 
 enum MemberNameType {
+  Expression = 4,
+  Normal = 3,
   Private = 1,
   Quoted = 2,
-  Normal = 3,
-  Expression = 4,
 }
 
 /**

@@ -28,10 +28,10 @@ const fixturesWithASTDifferences = new Set<string>();
 const fixturesWithTokenDifferences = new Set<string>();
 const fixturesConfiguredToExpectBabelToNotSupport = new Map<string, string>();
 enum ErrorLabel {
-  TSESTree = "TSESTree errored but Babel didn't",
   Babel = "Babel errored but TSESTree didn't",
   Both = 'Both errored',
   None = 'No errors',
+  TSESTree = "TSESTree errored but Babel didn't",
 }
 const fixturesWithErrorDifferences = {
   [ErrorLabel.TSESTree]: new Set<string>(),

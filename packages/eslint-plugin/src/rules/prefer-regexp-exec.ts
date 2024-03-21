@@ -14,8 +14,9 @@ import {
 
 enum ArgumentType {
   Other = 0,
-  String = 1 << 0,
   RegExp = 1 << 1,
+  String = 1 << 0,
+  // eslint-disable-next-line perfectionist/sort-enums
   Both = String | RegExp,
 }
 

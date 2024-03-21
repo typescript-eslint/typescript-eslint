@@ -22,29 +22,29 @@ const enum ComparisonValueType {
   UndefinedStringLiteral = 'UndefinedStringLiteral',
 }
 export const enum OperandValidity {
-  Valid = 'Valid',
   Invalid = 'Invalid',
+  Valid = 'Valid',
 }
 export const enum NullishComparisonType {
-  /** `x != null`, `x != undefined` */
-  NotEqualNullOrUndefined = 'NotEqualNullOrUndefined',
+  /** `x` */
+  Boolean = 'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
   /** `x == null`, `x == undefined` */
   EqualNullOrUndefined = 'EqualNullOrUndefined',
 
-  /** `x !== null` */
-  NotStrictEqualNull = 'NotStrictEqualNull',
-  /** `x === null` */
-  StrictEqualNull = 'StrictEqualNull',
-
-  /** `x !== undefined`, `typeof x !== 'undefined'` */
-  NotStrictEqualUndefined = 'NotStrictEqualUndefined',
-  /** `x === undefined`, `typeof x === 'undefined'` */
-  StrictEqualUndefined = 'StrictEqualUndefined',
-
   /** `!x` */
   NotBoolean = 'NotBoolean',
-  /** `x` */
-  Boolean = 'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+  /** `x != null`, `x != undefined` */
+  NotEqualNullOrUndefined = 'NotEqualNullOrUndefined',
+
+  /** `x !== null` */
+  NotStrictEqualNull = 'NotStrictEqualNull',
+  /** `x !== undefined`, `typeof x !== 'undefined'` */
+  NotStrictEqualUndefined = 'NotStrictEqualUndefined',
+
+  /** `x === null` */
+  StrictEqualNull = 'StrictEqualNull',
+  /** `x === undefined`, `typeof x === 'undefined'` */
+  StrictEqualUndefined = 'StrictEqualUndefined',
 }
 export interface ValidOperand {
   type: OperandValidity.Valid;
