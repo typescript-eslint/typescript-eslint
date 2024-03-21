@@ -85,6 +85,7 @@ export default util.createRule<Options, MessageIds>({
               AST_NODE_TYPES.TSAsExpression,
               AST_NODE_TYPES.TSTypeAssertion,
               AST_NODE_TYPES.VariableDeclarator,
+              AST_NODE_TYPES.ExpressionStatement,
             ].includes(parent.type)
           ) {
             if (!variable?.identifiers.length) {

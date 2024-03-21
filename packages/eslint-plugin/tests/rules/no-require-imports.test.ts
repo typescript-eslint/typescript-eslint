@@ -56,46 +56,52 @@ require('remark-preset-prettier');
       options: [{ allowAsImport: true }],
     },
     {
-      code: 'require(foo);',
-      options: [{ allowAsImport: true }],
-    },
-    {
-      code: 'require?.(foo);',
-      options: [{ allowAsImport: true }],
-    },
-    {
       code: `
-declare function require(path: string): unknown;
+let require = bazz;
 trick(require('foo'));
       `,
       options: [{ allowAsImport: true }],
     },
     {
       code: `
-declare function require(path: string): unknown;
+let require = bazz;
 const foo = require('./foo.json') as Foo;
       `,
       options: [{ allowAsImport: true }],
     },
     {
       code: `
-declare function require(path: string): unknown;
+let require = bazz;
 const foo: Foo = require('./foo.json').default;
       `,
       options: [{ allowAsImport: true }],
     },
     {
       code: `
-declare function require(path: string): unknown;
+let require = bazz;
 const foo = <Foo>require('./foo.json');
       `,
       options: [{ allowAsImport: true }],
     },
     {
       code: `
-declare function require(path: string): unknown;
+let require = bazz;
 const configValidator = new Validator(require('./a.json'));
 configValidator.addSchema(require('./a.json'));
+      `,
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+let require = bazz;
+require('foo');
+      `,
+      options: [{ allowAsImport: true }],
+    },
+    {
+      code: `
+let require = bazz;
+require?.('foo');
       `,
       options: [{ allowAsImport: true }],
     },
@@ -341,6 +347,28 @@ configValidator.addSchema(require('./a.json'));
           messageId: 'noRequireImports',
           line: 3,
           column: 27,
+        },
+      ],
+    },
+    {
+      code: 'require(foo);',
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: 'require?.(foo);',
+      options: [{ allowAsImport: true }],
+      errors: [
+        {
+          messageId: 'noRequireImports',
+          line: 1,
+          column: 1,
         },
       ],
     },
