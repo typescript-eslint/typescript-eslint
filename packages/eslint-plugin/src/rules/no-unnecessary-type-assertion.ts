@@ -108,10 +108,23 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isConstVariableDeclaration(node: TSESTree.Node): boolean {
+    function isLiteralVariableDeclarationChangingTypeWithConst(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      /**
+       * If the type assertion is on a template literal WITH expressions we
+       * should keep the `const` casting
+       * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
+       */
+      if (node.expression.type === AST_NODE_TYPES.TemplateLiteral) {
+        return node.expression.expressions.length === 0;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const maybeDeclarationNode = node.parent.parent!;
       return (
-        node.type === AST_NODE_TYPES.VariableDeclaration &&
-        node.kind === 'const'
+        maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
+        maybeDeclarationNode.kind === 'const'
       );
     }
 
@@ -222,8 +235,7 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = uncastType === castType;
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            isConstVariableDeclaration(node.parent.parent!)
+          ? isLiteralVariableDeclarationChangingTypeWithConst(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
