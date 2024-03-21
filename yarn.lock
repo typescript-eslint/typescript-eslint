@@ -19365,6 +19365,7 @@ __metadata:
   dependencies:
     "@typescript-eslint/eslint-plugin": 7.3.1
     "@typescript-eslint/parser": 7.3.1
+    "@typescript-eslint/utils": 7.3.1
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.0.3
