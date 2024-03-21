@@ -124,7 +124,6 @@ export default (
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
       '@typescript-eslint/no-useless-template-literals': 'error',
-      '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',
       '@typescript-eslint/parameter-properties': 'error',
       '@typescript-eslint/prefer-as-const': 'error',

@@ -13,10 +13,11 @@ type MessageIds = 'noVarReqs';
 export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/no-require-imports'],
     type: 'problem',
     docs: {
       description: 'Disallow `require` statements except in import statements',
-      recommended: 'recommended',
     },
     messages: {
       noVarReqs: 'Require statement not part of import statement.',
