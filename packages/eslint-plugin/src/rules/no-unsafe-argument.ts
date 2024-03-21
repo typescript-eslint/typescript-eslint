@@ -40,7 +40,14 @@ type RestType =
     };
 
 class FunctionSignature {
+  private hasConsumedArguments = false;
+
   private parameterTypeIndex = 0;
+
+  private constructor(
+    private paramTypes: ts.Type[],
+    private restType: RestType | null,
+  ) {}
 
   public static create(
     checker: ts.TypeChecker,
@@ -90,12 +97,9 @@ class FunctionSignature {
     return new this(paramTypes, restType);
   }
 
-  private hasConsumedArguments = false;
-
-  private constructor(
-    private paramTypes: ts.Type[],
-    private restType: RestType | null,
-  ) {}
+  public consumeRemainingArguments(): void {
+    this.hasConsumedArguments = true;
+  }
 
   public getNextParameterType(): ts.Type | null {
     const index = this.parameterTypeIndex;
@@ -131,10 +135,6 @@ class FunctionSignature {
       }
     }
     return this.paramTypes[index];
-  }
-
-  public consumeRemainingArguments(): void {
-    this.hasConsumedArguments = true;
   }
 }
 

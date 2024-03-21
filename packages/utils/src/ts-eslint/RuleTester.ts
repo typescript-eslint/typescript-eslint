@@ -155,6 +155,37 @@ declare class RuleTesterBase {
   constructor(testerConfig?: RuleTesterConfig);
 
   /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   */
+  static get describe(): RuleTesterTestFrameworkFunction;
+
+  static set describe(value: RuleTesterTestFrameworkFunction | undefined);
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   */
+  static get it(): RuleTesterTestFrameworkFunction;
+
+  static set it(value: RuleTesterTestFrameworkFunction | undefined);
+  /**
+   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
+   * the global namespace.
+   */
+  static get itOnly(): RuleTesterTestFrameworkFunction;
+
+  static set itOnly(value: RuleTesterTestFrameworkFunction | undefined);
+  /**
+   * Define a rule for one particular run of tests.
+   */
+  defineRule<MessageIds extends string, Options extends Readonly<unknown[]>>(
+    name: string,
+    rule:
+      | RuleCreateFunction<MessageIds, Options>
+      | RuleModule<MessageIds, Options>,
+  ): void;
+
+  /**
    * Adds a new rule test to execute.
    * @param ruleName The name of the rule to run.
    * @param rule The rule to test.
@@ -164,37 +195,6 @@ declare class RuleTesterBase {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     tests: RunTests<MessageIds, Options>,
-  ): void;
-
-  /**
-   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
-   * the global namespace.
-   */
-  static get describe(): RuleTesterTestFrameworkFunction;
-  static set describe(value: RuleTesterTestFrameworkFunction | undefined);
-
-  /**
-   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
-   * the global namespace.
-   */
-  static get it(): RuleTesterTestFrameworkFunction;
-  static set it(value: RuleTesterTestFrameworkFunction | undefined);
-
-  /**
-   * If you supply a value to this property, the rule tester will call this instead of using the version defined on
-   * the global namespace.
-   */
-  static get itOnly(): RuleTesterTestFrameworkFunction;
-  static set itOnly(value: RuleTesterTestFrameworkFunction | undefined);
-
-  /**
-   * Define a rule for one particular run of tests.
-   */
-  defineRule<MessageIds extends string, Options extends Readonly<unknown[]>>(
-    name: string,
-    rule:
-      | RuleCreateFunction<MessageIds, Options>
-      | RuleModule<MessageIds, Options>,
   ): void;
 }
 

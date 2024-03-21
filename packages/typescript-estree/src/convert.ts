@@ -70,12 +70,12 @@ export interface ASTMaps {
 }
 
 export class Converter {
-  private readonly ast: ts.SourceFile;
-  private readonly options: ConverterOptions;
-  private readonly esTreeNodeToTSNodeMap = new WeakMap();
-  private readonly tsNodeToESTreeNodeMap = new WeakMap();
-
   private allowPattern = false;
+  private readonly ast: ts.SourceFile;
+  private readonly esTreeNodeToTSNodeMap = new WeakMap();
+  private readonly options: ConverterOptions;
+
+  private readonly tsNodeToESTreeNodeMap = new WeakMap();
 
   /**
    * Converts a TypeScript node into an ESTree node
@@ -88,186 +88,353 @@ export class Converter {
     this.options = { ...options };
   }
 
-  getASTMaps(): ASTMaps {
-    return {
-      esTreeNodeToTSNodeMap: this.esTreeNodeToTSNodeMap,
-      tsNodeToESTreeNodeMap: this.tsNodeToESTreeNodeMap,
-    };
-  }
-
-  convertProgram(): TSESTree.Program {
-    return this.converter(this.ast) as TSESTree.Program;
-  }
-
-  /**
-   * Converts a TypeScript node into an ESTree node.
-   * @param node the child ts.Node
-   * @param parent parentNode
-   * @param allowPattern flag to determine if patterns are allowed
-   * @returns the converted ESTree node
-   */
-  private converter(
-    node?: ts.Node,
-    parent?: ts.Node,
-    allowPattern?: boolean,
-  ): any {
-    /**
-     * Exit early for null and undefined
-     */
-    if (!node) {
-      return null;
-    }
-
-    this.#checkModifiers(node);
-
-    const pattern = this.allowPattern;
-    if (allowPattern !== undefined) {
-      this.allowPattern = allowPattern;
-    }
-
-    const result = this.convertNode(
-      node as TSNode,
-      (parent ?? node.parent) as TSNode,
-    );
-
-    this.registerTSNodeInNodeMap(node, result);
-
-    this.allowPattern = pattern;
-    return result;
-  }
-
-  /**
-   * Fixes the exports of the given ts.Node
-   * @returns the ESTreeNode with fixed exports
-   */
-  private fixExports<
-    T extends
-      | TSESTree.DefaultExportDeclarations
-      | TSESTree.NamedExportDeclarations,
-  >(
-    node:
-      | ts.ClassDeclaration
-      | ts.ClassExpression
-      | ts.EnumDeclaration
-      | ts.FunctionDeclaration
-      | ts.ImportEqualsDeclaration
-      | ts.InterfaceDeclaration
-      | ts.ModuleDeclaration
-      | ts.TypeAliasDeclaration
-      | ts.VariableStatement,
-    result: T,
-  ): T | TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration {
-    const isNamespaceNode =
-      ts.isModuleDeclaration(node) &&
-      Boolean(node.flags & ts.NodeFlags.Namespace);
-
-    const modifiers = isNamespaceNode
-      ? getNamespaceModifiers(node)
-      : getModifiers(node);
-
-    if (modifiers?.[0].kind === SyntaxKind.ExportKeyword) {
-      /**
-       * Make sure that original node is registered instead of export
-       */
-      this.registerTSNodeInNodeMap(node, result);
-
-      const exportKeyword = modifiers[0];
-      const nextModifier = modifiers[1];
-      const declarationIsDefault =
-        nextModifier?.kind === SyntaxKind.DefaultKeyword;
-
-      const varToken = declarationIsDefault
-        ? findNextToken(nextModifier, this.ast, this.ast)
-        : findNextToken(exportKeyword, this.ast, this.ast);
-
-      result.range[0] = varToken!.getStart(this.ast);
-      result.loc = getLocFor(result.range, this.ast);
-
-      if (declarationIsDefault) {
-        return this.createNode<TSESTree.ExportDefaultDeclaration>(
-          node as Exclude<typeof node, ts.ImportEqualsDeclaration>,
-          {
-            type: AST_NODE_TYPES.ExportDefaultDeclaration,
-            declaration: result as TSESTree.DefaultExportDeclarations,
-            range: [exportKeyword.getStart(this.ast), result.range[1]],
-            exportKind: 'value',
-          },
+  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
+    if (ts.isVariableDeclarationList(initializer)) {
+      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
+        this.#throwError(
+          initializer,
+          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
         );
       }
-      const isType =
-        result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
-        result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
-      const isDeclare = 'declare' in result && result.declare;
-      return this.createNode<TSESTree.ExportNamedDeclaration>(
-        node,
-        // @ts-expect-error - TODO, narrow the types here
-        this.#withDeprecatedAliasGetter(
-          {
-            type: AST_NODE_TYPES.ExportNamedDeclaration,
-            declaration: result,
-            specifiers: [],
-            source: null,
-            exportKind: isType || isDeclare ? 'type' : 'value',
-            range: [exportKeyword.getStart(this.ast), result.range[1]],
-            attributes: [],
-          },
-          'assertions',
-          'attributes',
-          true,
-        ),
+    }
+  }
+
+  #checkModifiers(node: ts.Node): void {
+    if (this.options.allowInvalidAST) {
+      return;
+    }
+
+    // typescript<5.0.0
+    if (nodeHasIllegalDecorators(node)) {
+      this.#throwError(
+        node.illegalDecorators[0],
+        'Decorators are not valid here.',
       );
     }
 
-    return result;
-  }
+    for (const decorator of getDecorators(
+      node,
+      /* includeIllegalDecorators */ true,
+    ) ?? []) {
+      // `checkGrammarModifiers` function in typescript
+      if (!nodeCanBeDecorated(node as TSNode)) {
+        if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
+          this.#throwError(
+            decorator,
+            'A decorator can only decorate a method implementation, not an overload.',
+          );
+        } else {
+          this.#throwError(decorator, 'Decorators are not valid here.');
+        }
+      }
+    }
 
-  /**
-   * Register specific TypeScript node into map with first ESTree node provided
-   */
-  private registerTSNodeInNodeMap(
-    node: ts.Node,
-    result: TSESTree.Node | null,
-  ): void {
-    if (result && this.options.shouldPreserveNodeMaps) {
-      if (!this.tsNodeToESTreeNodeMap.has(node)) {
-        this.tsNodeToESTreeNodeMap.set(node, result);
+    for (const modifier of getModifiers(
+      node,
+      /* includeIllegalModifiers */ true,
+    ) ?? []) {
+      if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
+        if (
+          node.kind === SyntaxKind.PropertySignature ||
+          node.kind === SyntaxKind.MethodSignature
+        ) {
+          this.#throwError(
+            modifier,
+            `'${ts.tokenToString(
+              modifier.kind,
+            )}' modifier cannot appear on a type member`,
+          );
+        }
+
+        if (
+          node.kind === SyntaxKind.IndexSignature &&
+          (modifier.kind !== SyntaxKind.StaticKeyword ||
+            !ts.isClassLike(node.parent))
+        ) {
+          this.#throwError(
+            modifier,
+            `'${ts.tokenToString(
+              modifier.kind,
+            )}' modifier cannot appear on an index signature`,
+          );
+        }
+      }
+
+      if (
+        modifier.kind !== SyntaxKind.InKeyword &&
+        modifier.kind !== SyntaxKind.OutKeyword &&
+        modifier.kind !== SyntaxKind.ConstKeyword &&
+        node.kind === SyntaxKind.TypeParameter
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on a type parameter`,
+        );
+      }
+
+      if (
+        (modifier.kind === SyntaxKind.InKeyword ||
+          modifier.kind === SyntaxKind.OutKeyword) &&
+        (node.kind !== SyntaxKind.TypeParameter ||
+          !(
+            ts.isInterfaceDeclaration(node.parent) ||
+            ts.isClassLike(node.parent) ||
+            ts.isTypeAliasDeclaration(node.parent)
+          ))
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier can only appear on a type parameter of a class, interface or type alias`,
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.ReadonlyKeyword &&
+        node.kind !== SyntaxKind.PropertyDeclaration &&
+        node.kind !== SyntaxKind.PropertySignature &&
+        node.kind !== SyntaxKind.IndexSignature &&
+        node.kind !== SyntaxKind.Parameter
+      ) {
+        this.#throwError(
+          modifier,
+          "'readonly' modifier can only appear on a property declaration or index signature.",
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.DeclareKeyword &&
+        ts.isClassLike(node.parent) &&
+        !ts.isPropertyDeclaration(node)
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on class elements of this kind.`,
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.DeclareKeyword &&
+        ts.isVariableStatement(node)
+      ) {
+        const declarationKind = getDeclarationKind(node.declarationList);
+        if (declarationKind === 'using' || declarationKind === 'await using') {
+          this.#throwError(
+            modifier,
+            `'declare' modifier cannot appear on a '${declarationKind}' declaration.`,
+          );
+        }
+      }
+
+      if (
+        modifier.kind === SyntaxKind.AbstractKeyword &&
+        node.kind !== SyntaxKind.ClassDeclaration &&
+        node.kind !== SyntaxKind.ConstructorType &&
+        node.kind !== SyntaxKind.MethodDeclaration &&
+        node.kind !== SyntaxKind.PropertyDeclaration &&
+        node.kind !== SyntaxKind.GetAccessor &&
+        node.kind !== SyntaxKind.SetAccessor
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier can only appear on a class, method, or property declaration.`,
+        );
+      }
+
+      if (
+        (modifier.kind === SyntaxKind.StaticKeyword ||
+          modifier.kind === SyntaxKind.PublicKeyword ||
+          modifier.kind === SyntaxKind.ProtectedKeyword ||
+          modifier.kind === SyntaxKind.PrivateKeyword) &&
+        (node.parent.kind === SyntaxKind.ModuleBlock ||
+          node.parent.kind === SyntaxKind.SourceFile)
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on a module or namespace element.`,
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.AccessorKeyword &&
+        node.kind !== SyntaxKind.PropertyDeclaration
+      ) {
+        this.#throwError(
+          modifier,
+          "'accessor' modifier can only appear on a property declaration.",
+        );
+      }
+
+      // `checkGrammarAsyncModifier` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.AsyncKeyword &&
+        node.kind !== SyntaxKind.MethodDeclaration &&
+        node.kind !== SyntaxKind.FunctionDeclaration &&
+        node.kind !== SyntaxKind.FunctionExpression &&
+        node.kind !== SyntaxKind.ArrowFunction
+      ) {
+        this.#throwError(modifier, "'async' modifier cannot be used here.");
+      }
+
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        node.kind === SyntaxKind.Parameter &&
+        (modifier.kind === SyntaxKind.StaticKeyword ||
+          modifier.kind === SyntaxKind.ExportKeyword ||
+          modifier.kind === SyntaxKind.DeclareKeyword ||
+          modifier.kind === SyntaxKind.AsyncKeyword)
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on a parameter.`,
+        );
+      }
+
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.PublicKeyword ||
+        modifier.kind === SyntaxKind.ProtectedKeyword ||
+        modifier.kind === SyntaxKind.PrivateKeyword
+      ) {
+        for (const anotherModifier of getModifiers(node) ?? []) {
+          if (
+            anotherModifier !== modifier &&
+            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
+              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
+              anotherModifier.kind === SyntaxKind.PrivateKeyword)
+          ) {
+            this.#throwError(
+              anotherModifier,
+              `Accessibility modifier already seen.`,
+            );
+          }
+        }
+      }
+
+      // `checkParameter` function in `typescript`
+      if (
+        node.kind === SyntaxKind.Parameter &&
+        // In `typescript` package, it's `ts.hasSyntacticModifier(node, ts.ModifierFlags.ParameterPropertyModifier)`
+        // https://github.com/typescript-eslint/typescript-eslint/pull/6615#discussion_r1136489935
+        (modifier.kind === SyntaxKind.PublicKeyword ||
+          modifier.kind === SyntaxKind.PrivateKeyword ||
+          modifier.kind === SyntaxKind.ProtectedKeyword ||
+          modifier.kind === SyntaxKind.ReadonlyKeyword ||
+          modifier.kind === SyntaxKind.OverrideKeyword)
+      ) {
+        const func = getContainingFunction(node)!;
+
+        if (
+          !(func.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
+        ) {
+          this.#throwError(
+            modifier,
+            'A parameter property is only allowed in a constructor implementation.',
+          );
+        }
       }
     }
   }
 
-  /**
-   * Converts a TypeScript node into an ESTree node.
-   * @param child the child ts.Node
-   * @param parent parentNode
-   * @returns the converted ESTree node
-   */
-  private convertPattern(child?: ts.Node, parent?: ts.Node): any {
-    return this.converter(child, parent, true);
-  }
-
-  /**
-   * Converts a TypeScript node into an ESTree node.
-   * @param child the child ts.Node
-   * @param parent parentNode
-   * @returns the converted ESTree node
-   */
-  private convertChild(child?: ts.Node, parent?: ts.Node): any {
-    return this.converter(child, parent, false);
-  }
-
-  private createNode<T extends TSESTree.Node = TSESTree.Node>(
-    // The 'parent' property will be added later if specified
-    node: Omit<TSESTreeToTSNode<T>, 'parent'>,
-    data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
-  ): T {
-    const result = data;
-    result.range ??= getRange(node, this.ast);
-    result.loc ??= getLocFor(result.range, this.ast);
-
-    if (result && this.options.shouldPreserveNodeMaps) {
-      this.esTreeNodeToTSNodeMap.set(result, node);
+  #throwError(node: ts.Node | number, message: string): asserts node is never {
+    let start;
+    let end;
+    if (typeof node === 'number') {
+      start = end = node;
+    } else {
+      start = node.getStart(this.ast);
+      end = node.getEnd();
     }
-    return result as T;
+
+    throw createError(message, this.ast, start, end);
+  }
+
+  #throwUnlessAllowInvalidAST(
+    node: ts.Node | number,
+    message: string,
+  ): asserts node is never {
+    if (!this.options.allowInvalidAST) {
+      this.#throwError(node, message);
+    }
+  }
+
+  /**
+   * Creates a getter for a property under aliasKey that returns the value under
+   * valueKey. If suppressDeprecatedPropertyWarnings is not enabled, the
+   * getter also console warns about the deprecation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6469
+   */
+  #withDeprecatedAliasGetter<
+    Properties extends { type: string },
+    AliasKey extends string,
+    ValueKey extends string & keyof Properties,
+  >(
+    node: Properties,
+    aliasKey: AliasKey,
+    valueKey: ValueKey,
+    suppressWarnings = false,
+  ): Properties & Record<AliasKey, Properties[ValueKey]> {
+    let warned = suppressWarnings;
+
+    Object.defineProperty(node, aliasKey, {
+      configurable: true,
+      get: this.options.suppressDeprecatedPropertyWarnings
+        ? (): Properties[typeof valueKey] => node[valueKey]
+        : (): Properties[typeof valueKey] => {
+            if (!warned) {
+              process.emitWarning(
+                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                'DeprecationWarning',
+              );
+              warned = true;
+            }
+
+            return node[valueKey];
+          },
+      set(value): void {
+        Object.defineProperty(node, aliasKey, {
+          enumerable: true,
+          writable: true,
+          value,
+        });
+      },
+    });
+
+    return node as Properties & Record<AliasKey, Properties[ValueKey]>;
+  }
+
+  private assertModuleSpecifier(
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
+    allowNull: boolean,
+  ): void {
+    if (!allowNull && node.moduleSpecifier == null) {
+      this.#throwUnlessAllowInvalidAST(
+        node,
+        'Module specifier must be a string literal.',
+      );
+    }
+
+    if (
+      node.moduleSpecifier &&
+      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
+    ) {
+      this.#throwUnlessAllowInvalidAST(
+        node.moduleSpecifier,
+        'Module specifier must be a string literal.',
+      );
+    }
   }
 
   private convertBindingNameWithTypeAnnotation(
@@ -283,35 +450,6 @@ export class Converter {
     }
 
     return id;
-  }
-
-  /**
-   * Converts a child into a type annotation. This creates an intermediary
-   * TypeAnnotation node to match what Flow does.
-   * @param child The TypeScript AST node to convert.
-   * @param parent parentNode
-   * @returns The type annotation node.
-   */
-  private convertTypeAnnotation(
-    child: ts.TypeNode,
-    parent: ts.Node | undefined,
-  ): TSESTree.TSTypeAnnotation {
-    // in FunctionType and ConstructorType typeAnnotation has 2 characters `=>` and in other places is just colon
-    const offset =
-      parent?.kind === SyntaxKind.FunctionType ||
-      parent?.kind === SyntaxKind.ConstructorType
-        ? 2
-        : 1;
-    const annotationStartCol = child.getFullStart() - offset;
-    const range: TSESTree.Range = [annotationStartCol, child.end];
-    const loc = getLocFor(range, this.ast);
-
-    return {
-      type: AST_NODE_TYPES.TSTypeAnnotation,
-      loc,
-      range,
-      typeAnnotation: this.convertChild(child),
-    } as TSESTree.TSTypeAnnotation;
   }
 
   /**
@@ -351,72 +489,6 @@ export class Converter {
         // filter out unknown nodes for now
         .filter(statement => statement)
     );
-  }
-
-  /**
-   * Converts a ts.Node's typeArguments to TSTypeParameterInstantiation node
-   * @param typeArguments ts.NodeArray typeArguments
-   * @param node parent used to create this node
-   * @returns TypeParameterInstantiation node
-   */
-  private convertTypeArgumentsToTypeParameterInstantiation(
-    typeArguments: ts.NodeArray<ts.TypeNode>,
-    node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
-  ): TSESTree.TSTypeParameterInstantiation {
-    const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
-
-    return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
-      type: AST_NODE_TYPES.TSTypeParameterInstantiation,
-      range: [typeArguments.pos - 1, greaterThanToken.end],
-      params: typeArguments.map(typeArgument =>
-        this.convertChild(typeArgument),
-      ),
-    });
-  }
-
-  /**
-   * Converts a ts.Node's typeParameters to TSTypeParameterDeclaration node
-   * @param typeParameters ts.Node typeParameters
-   * @returns TypeParameterDeclaration node
-   */
-  private convertTSTypeParametersToTypeParametersDeclaration(
-    typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>,
-  ): TSESTree.TSTypeParameterDeclaration {
-    const greaterThanToken = findNextToken(typeParameters, this.ast, this.ast)!;
-    const range: TSESTree.Range = [
-      typeParameters.pos - 1,
-      greaterThanToken.end,
-    ];
-
-    return {
-      type: AST_NODE_TYPES.TSTypeParameterDeclaration,
-      range,
-      loc: getLocFor(range, this.ast),
-      params: typeParameters.map(typeParameter =>
-        this.convertChild(typeParameter),
-      ),
-    } as TSESTree.TSTypeParameterDeclaration;
-  }
-
-  /**
-   * Converts an array of ts.Node parameters into an array of ESTreeNode params
-   * @param parameters An array of ts.Node params to be converted
-   * @returns an array of converted ESTreeNode params
-   */
-  private convertParameters(
-    parameters: ts.NodeArray<ts.ParameterDeclaration>,
-  ): TSESTree.Parameter[] {
-    if (!parameters?.length) {
-      return [];
-    }
-    return parameters.map(param => {
-      const convertedParam = this.convertChild(param) as TSESTree.Parameter;
-
-      convertedParam.decorators =
-        getDecorators(param)?.map(el => this.convertChild(el)) ?? [];
-
-      return convertedParam;
-    });
   }
 
   private convertChainExpression(
@@ -464,103 +536,21 @@ export class Converter {
   }
 
   /**
-   * For nodes that are copied directly from the TypeScript AST into
-   * ESTree mostly as-is. The only difference is the addition of a type
-   * property instead of a kind property. Recursively copies all children.
+   * Converts a TypeScript node into an ESTree node.
+   * @param child the child ts.Node
+   * @param parent parentNode
+   * @returns the converted ESTree node
    */
-  private deeplyCopy(node: TSNode): any {
-    if (node.kind === ts.SyntaxKind.JSDocFunctionType) {
-      this.#throwError(
-        node,
-        'JSDoc types can only be used inside documentation comments.',
-      );
-    }
+  private convertChild(child?: ts.Node, parent?: ts.Node): any {
+    return this.converter(child, parent, false);
+  }
 
-    const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
-
-    /**
-     * If the "errorOnUnknownASTType" option is set to true, throw an error,
-     * otherwise fallback to just including the unknown type as-is.
-     */
-    if (this.options.errorOnUnknownASTType && !AST_NODE_TYPES[customType]) {
-      throw new Error(`Unknown AST_NODE_TYPE: "${customType}"`);
-    }
-
-    const result = this.createNode<any>(node, {
-      type: customType,
-    });
-
-    if ('type' in node) {
-      result.typeAnnotation =
-        node.type && 'kind' in node.type && ts.isTypeNode(node.type)
-          ? this.convertTypeAnnotation(node.type, node)
-          : null;
-    }
-    if ('typeArguments' in node) {
-      result.typeArguments =
-        node.typeArguments && 'pos' in node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            )
-          : null;
-      this.#withDeprecatedAliasGetter(
-        result,
-        'typeParameters',
-        'typeArguments',
-      );
-    }
-    if ('typeParameters' in node) {
-      result.typeParameters =
-        node.typeParameters && 'pos' in node.typeParameters
-          ? this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            )
-          : null;
-    }
-    const decorators = getDecorators(node);
-    if (decorators?.length) {
-      result.decorators = decorators.map(el => this.convertChild(el));
-    }
-
-    // keys we never want to clone from the base typescript node as they
-    // introduce garbage into our AST
-    const KEYS_TO_NOT_COPY = new Set([
-      '_children',
-      'decorators',
-      'end',
-      'flags',
-      'illegalDecorators',
-      'heritageClauses',
-      'locals',
-      'localSymbol',
-      'jsDoc',
-      'kind',
-      'modifierFlagsCache',
-      'modifiers',
-      'nextContainer',
-      'parent',
-      'pos',
-      'symbol',
-      'transformFlags',
-      'type',
-      'typeArguments',
-      'typeParameters',
-    ]);
-
-    Object.entries<any>(node)
-      .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
-      .forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          result[key] = value.map(el => this.convertChild(el as TSNode));
-        } else if (value && typeof value === 'object' && value.kind) {
-          // need to check node[key].kind to ensure we don't try to convert a symbol
-          result[key] = this.convertChild(value as TSNode);
-        } else {
-          result[key] = value;
-        }
-      });
-    return result;
+  private convertImportAttributes(
+    node: ts.ImportAttributes | undefined,
+  ): TSESTree.ImportAttribute[] {
+    return node === undefined
+      ? []
+      : node.elements.map(element => this.convertChild(element));
   }
 
   private convertJSXIdentifier(
@@ -692,55 +682,6 @@ export class Converter {
           node.typeParameters,
         ),
     });
-  }
-
-  private convertImportAttributes(
-    node: ts.ImportAttributes | undefined,
-  ): TSESTree.ImportAttribute[] {
-    return node === undefined
-      ? []
-      : node.elements.map(element => this.convertChild(element));
-  }
-
-  /**
-   * Uses the provided range location to adjust the location data of the given Node
-   * @param result The node that will have its location data mutated
-   * @param childRange The child node range used to expand location
-   */
-  private fixParentLocation(
-    result: TSESTree.BaseNode,
-    childRange: [number, number],
-  ): void {
-    if (childRange[0] < result.range[0]) {
-      result.range[0] = childRange[0];
-      result.loc.start = getLineAndCharacterFor(result.range[0], this.ast);
-    }
-    if (childRange[1] > result.range[1]) {
-      result.range[1] = childRange[1];
-      result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
-    }
-  }
-
-  private assertModuleSpecifier(
-    node: ts.ExportDeclaration | ts.ImportDeclaration,
-    allowNull: boolean,
-  ): void {
-    if (!allowNull && node.moduleSpecifier == null) {
-      this.#throwUnlessAllowInvalidAST(
-        node,
-        'Module specifier must be a string literal.',
-      );
-    }
-
-    if (
-      node.moduleSpecifier &&
-      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
-    ) {
-      this.#throwUnlessAllowInvalidAST(
-        node.moduleSpecifier,
-        'Module specifier must be a string literal.',
-      );
-    }
   }
 
   /**
@@ -3215,329 +3156,388 @@ export class Converter {
     }
   }
 
-  #checkModifiers(node: ts.Node): void {
-    if (this.options.allowInvalidAST) {
-      return;
+  /**
+   * Converts an array of ts.Node parameters into an array of ESTreeNode params
+   * @param parameters An array of ts.Node params to be converted
+   * @returns an array of converted ESTreeNode params
+   */
+  private convertParameters(
+    parameters: ts.NodeArray<ts.ParameterDeclaration>,
+  ): TSESTree.Parameter[] {
+    if (!parameters?.length) {
+      return [];
+    }
+    return parameters.map(param => {
+      const convertedParam = this.convertChild(param) as TSESTree.Parameter;
+
+      convertedParam.decorators =
+        getDecorators(param)?.map(el => this.convertChild(el)) ?? [];
+
+      return convertedParam;
+    });
+  }
+
+  /**
+   * Converts a TypeScript node into an ESTree node.
+   * @param child the child ts.Node
+   * @param parent parentNode
+   * @returns the converted ESTree node
+   */
+  private convertPattern(child?: ts.Node, parent?: ts.Node): any {
+    return this.converter(child, parent, true);
+  }
+
+  /**
+   * Converts a ts.Node's typeParameters to TSTypeParameterDeclaration node
+   * @param typeParameters ts.Node typeParameters
+   * @returns TypeParameterDeclaration node
+   */
+  private convertTSTypeParametersToTypeParametersDeclaration(
+    typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>,
+  ): TSESTree.TSTypeParameterDeclaration {
+    const greaterThanToken = findNextToken(typeParameters, this.ast, this.ast)!;
+    const range: TSESTree.Range = [
+      typeParameters.pos - 1,
+      greaterThanToken.end,
+    ];
+
+    return {
+      type: AST_NODE_TYPES.TSTypeParameterDeclaration,
+      range,
+      loc: getLocFor(range, this.ast),
+      params: typeParameters.map(typeParameter =>
+        this.convertChild(typeParameter),
+      ),
+    } as TSESTree.TSTypeParameterDeclaration;
+  }
+
+  /**
+   * Converts a child into a type annotation. This creates an intermediary
+   * TypeAnnotation node to match what Flow does.
+   * @param child The TypeScript AST node to convert.
+   * @param parent parentNode
+   * @returns The type annotation node.
+   */
+  private convertTypeAnnotation(
+    child: ts.TypeNode,
+    parent: ts.Node | undefined,
+  ): TSESTree.TSTypeAnnotation {
+    // in FunctionType and ConstructorType typeAnnotation has 2 characters `=>` and in other places is just colon
+    const offset =
+      parent?.kind === SyntaxKind.FunctionType ||
+      parent?.kind === SyntaxKind.ConstructorType
+        ? 2
+        : 1;
+    const annotationStartCol = child.getFullStart() - offset;
+    const range: TSESTree.Range = [annotationStartCol, child.end];
+    const loc = getLocFor(range, this.ast);
+
+    return {
+      type: AST_NODE_TYPES.TSTypeAnnotation,
+      loc,
+      range,
+      typeAnnotation: this.convertChild(child),
+    } as TSESTree.TSTypeAnnotation;
+  }
+
+  /**
+   * Converts a ts.Node's typeArguments to TSTypeParameterInstantiation node
+   * @param typeArguments ts.NodeArray typeArguments
+   * @param node parent used to create this node
+   * @returns TypeParameterInstantiation node
+   */
+  private convertTypeArgumentsToTypeParameterInstantiation(
+    typeArguments: ts.NodeArray<ts.TypeNode>,
+    node: TSESTreeToTSNode<TSESTree.TSTypeParameterInstantiation>,
+  ): TSESTree.TSTypeParameterInstantiation {
+    const greaterThanToken = findNextToken(typeArguments, this.ast, this.ast)!;
+
+    return this.createNode<TSESTree.TSTypeParameterInstantiation>(node, {
+      type: AST_NODE_TYPES.TSTypeParameterInstantiation,
+      range: [typeArguments.pos - 1, greaterThanToken.end],
+      params: typeArguments.map(typeArgument =>
+        this.convertChild(typeArgument),
+      ),
+    });
+  }
+
+  /**
+   * Converts a TypeScript node into an ESTree node.
+   * @param node the child ts.Node
+   * @param parent parentNode
+   * @param allowPattern flag to determine if patterns are allowed
+   * @returns the converted ESTree node
+   */
+  private converter(
+    node?: ts.Node,
+    parent?: ts.Node,
+    allowPattern?: boolean,
+  ): any {
+    /**
+     * Exit early for null and undefined
+     */
+    if (!node) {
+      return null;
     }
 
-    // typescript<5.0.0
-    if (nodeHasIllegalDecorators(node)) {
+    this.#checkModifiers(node);
+
+    const pattern = this.allowPattern;
+    if (allowPattern !== undefined) {
+      this.allowPattern = allowPattern;
+    }
+
+    const result = this.convertNode(
+      node as TSNode,
+      (parent ?? node.parent) as TSNode,
+    );
+
+    this.registerTSNodeInNodeMap(node, result);
+
+    this.allowPattern = pattern;
+    return result;
+  }
+
+  private createNode<T extends TSESTree.Node = TSESTree.Node>(
+    // The 'parent' property will be added later if specified
+    node: Omit<TSESTreeToTSNode<T>, 'parent'>,
+    data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
+  ): T {
+    const result = data;
+    result.range ??= getRange(node, this.ast);
+    result.loc ??= getLocFor(result.range, this.ast);
+
+    if (result && this.options.shouldPreserveNodeMaps) {
+      this.esTreeNodeToTSNodeMap.set(result, node);
+    }
+    return result as T;
+  }
+
+  /**
+   * For nodes that are copied directly from the TypeScript AST into
+   * ESTree mostly as-is. The only difference is the addition of a type
+   * property instead of a kind property. Recursively copies all children.
+   */
+  private deeplyCopy(node: TSNode): any {
+    if (node.kind === ts.SyntaxKind.JSDocFunctionType) {
       this.#throwError(
-        node.illegalDecorators[0],
-        'Decorators are not valid here.',
+        node,
+        'JSDoc types can only be used inside documentation comments.',
       );
     }
 
-    for (const decorator of getDecorators(
-      node,
-      /* includeIllegalDecorators */ true,
-    ) ?? []) {
-      // `checkGrammarModifiers` function in typescript
-      if (!nodeCanBeDecorated(node as TSNode)) {
-        if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
-          this.#throwError(
-            decorator,
-            'A decorator can only decorate a method implementation, not an overload.',
-          );
+    const customType = `TS${SyntaxKind[node.kind]}` as AST_NODE_TYPES;
+
+    /**
+     * If the "errorOnUnknownASTType" option is set to true, throw an error,
+     * otherwise fallback to just including the unknown type as-is.
+     */
+    if (this.options.errorOnUnknownASTType && !AST_NODE_TYPES[customType]) {
+      throw new Error(`Unknown AST_NODE_TYPE: "${customType}"`);
+    }
+
+    const result = this.createNode<any>(node, {
+      type: customType,
+    });
+
+    if ('type' in node) {
+      result.typeAnnotation =
+        node.type && 'kind' in node.type && ts.isTypeNode(node.type)
+          ? this.convertTypeAnnotation(node.type, node)
+          : null;
+    }
+    if ('typeArguments' in node) {
+      result.typeArguments =
+        node.typeArguments && 'pos' in node.typeArguments
+          ? this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            )
+          : null;
+      this.#withDeprecatedAliasGetter(
+        result,
+        'typeParameters',
+        'typeArguments',
+      );
+    }
+    if ('typeParameters' in node) {
+      result.typeParameters =
+        node.typeParameters && 'pos' in node.typeParameters
+          ? this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            )
+          : null;
+    }
+    const decorators = getDecorators(node);
+    if (decorators?.length) {
+      result.decorators = decorators.map(el => this.convertChild(el));
+    }
+
+    // keys we never want to clone from the base typescript node as they
+    // introduce garbage into our AST
+    const KEYS_TO_NOT_COPY = new Set([
+      '_children',
+      'decorators',
+      'end',
+      'flags',
+      'illegalDecorators',
+      'heritageClauses',
+      'locals',
+      'localSymbol',
+      'jsDoc',
+      'kind',
+      'modifierFlagsCache',
+      'modifiers',
+      'nextContainer',
+      'parent',
+      'pos',
+      'symbol',
+      'transformFlags',
+      'type',
+      'typeArguments',
+      'typeParameters',
+    ]);
+
+    Object.entries<any>(node)
+      .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
+      .forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          result[key] = value.map(el => this.convertChild(el as TSNode));
+        } else if (value && typeof value === 'object' && value.kind) {
+          // need to check node[key].kind to ensure we don't try to convert a symbol
+          result[key] = this.convertChild(value as TSNode);
         } else {
-          this.#throwError(decorator, 'Decorators are not valid here.');
+          result[key] = value;
         }
-      }
-    }
-
-    for (const modifier of getModifiers(
-      node,
-      /* includeIllegalModifiers */ true,
-    ) ?? []) {
-      if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
-        if (
-          node.kind === SyntaxKind.PropertySignature ||
-          node.kind === SyntaxKind.MethodSignature
-        ) {
-          this.#throwError(
-            modifier,
-            `'${ts.tokenToString(
-              modifier.kind,
-            )}' modifier cannot appear on a type member`,
-          );
-        }
-
-        if (
-          node.kind === SyntaxKind.IndexSignature &&
-          (modifier.kind !== SyntaxKind.StaticKeyword ||
-            !ts.isClassLike(node.parent))
-        ) {
-          this.#throwError(
-            modifier,
-            `'${ts.tokenToString(
-              modifier.kind,
-            )}' modifier cannot appear on an index signature`,
-          );
-        }
-      }
-
-      if (
-        modifier.kind !== SyntaxKind.InKeyword &&
-        modifier.kind !== SyntaxKind.OutKeyword &&
-        modifier.kind !== SyntaxKind.ConstKeyword &&
-        node.kind === SyntaxKind.TypeParameter
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on a type parameter`,
-        );
-      }
-
-      if (
-        (modifier.kind === SyntaxKind.InKeyword ||
-          modifier.kind === SyntaxKind.OutKeyword) &&
-        (node.kind !== SyntaxKind.TypeParameter ||
-          !(
-            ts.isInterfaceDeclaration(node.parent) ||
-            ts.isClassLike(node.parent) ||
-            ts.isTypeAliasDeclaration(node.parent)
-          ))
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier can only appear on a type parameter of a class, interface or type alias`,
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.ReadonlyKeyword &&
-        node.kind !== SyntaxKind.PropertyDeclaration &&
-        node.kind !== SyntaxKind.PropertySignature &&
-        node.kind !== SyntaxKind.IndexSignature &&
-        node.kind !== SyntaxKind.Parameter
-      ) {
-        this.#throwError(
-          modifier,
-          "'readonly' modifier can only appear on a property declaration or index signature.",
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.DeclareKeyword &&
-        ts.isClassLike(node.parent) &&
-        !ts.isPropertyDeclaration(node)
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on class elements of this kind.`,
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.DeclareKeyword &&
-        ts.isVariableStatement(node)
-      ) {
-        const declarationKind = getDeclarationKind(node.declarationList);
-        if (declarationKind === 'using' || declarationKind === 'await using') {
-          this.#throwError(
-            modifier,
-            `'declare' modifier cannot appear on a '${declarationKind}' declaration.`,
-          );
-        }
-      }
-
-      if (
-        modifier.kind === SyntaxKind.AbstractKeyword &&
-        node.kind !== SyntaxKind.ClassDeclaration &&
-        node.kind !== SyntaxKind.ConstructorType &&
-        node.kind !== SyntaxKind.MethodDeclaration &&
-        node.kind !== SyntaxKind.PropertyDeclaration &&
-        node.kind !== SyntaxKind.GetAccessor &&
-        node.kind !== SyntaxKind.SetAccessor
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier can only appear on a class, method, or property declaration.`,
-        );
-      }
-
-      if (
-        (modifier.kind === SyntaxKind.StaticKeyword ||
-          modifier.kind === SyntaxKind.PublicKeyword ||
-          modifier.kind === SyntaxKind.ProtectedKeyword ||
-          modifier.kind === SyntaxKind.PrivateKeyword) &&
-        (node.parent.kind === SyntaxKind.ModuleBlock ||
-          node.parent.kind === SyntaxKind.SourceFile)
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on a module or namespace element.`,
-        );
-      }
-
-      if (
-        modifier.kind === SyntaxKind.AccessorKeyword &&
-        node.kind !== SyntaxKind.PropertyDeclaration
-      ) {
-        this.#throwError(
-          modifier,
-          "'accessor' modifier can only appear on a property declaration.",
-        );
-      }
-
-      // `checkGrammarAsyncModifier` function in `typescript`
-      if (
-        modifier.kind === SyntaxKind.AsyncKeyword &&
-        node.kind !== SyntaxKind.MethodDeclaration &&
-        node.kind !== SyntaxKind.FunctionDeclaration &&
-        node.kind !== SyntaxKind.FunctionExpression &&
-        node.kind !== SyntaxKind.ArrowFunction
-      ) {
-        this.#throwError(modifier, "'async' modifier cannot be used here.");
-      }
-
-      // `checkGrammarModifiers` function in `typescript`
-      if (
-        node.kind === SyntaxKind.Parameter &&
-        (modifier.kind === SyntaxKind.StaticKeyword ||
-          modifier.kind === SyntaxKind.ExportKeyword ||
-          modifier.kind === SyntaxKind.DeclareKeyword ||
-          modifier.kind === SyntaxKind.AsyncKeyword)
-      ) {
-        this.#throwError(
-          modifier,
-          `'${ts.tokenToString(
-            modifier.kind,
-          )}' modifier cannot appear on a parameter.`,
-        );
-      }
-
-      // `checkGrammarModifiers` function in `typescript`
-      if (
-        modifier.kind === SyntaxKind.PublicKeyword ||
-        modifier.kind === SyntaxKind.ProtectedKeyword ||
-        modifier.kind === SyntaxKind.PrivateKeyword
-      ) {
-        for (const anotherModifier of getModifiers(node) ?? []) {
-          if (
-            anotherModifier !== modifier &&
-            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
-              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
-              anotherModifier.kind === SyntaxKind.PrivateKeyword)
-          ) {
-            this.#throwError(
-              anotherModifier,
-              `Accessibility modifier already seen.`,
-            );
-          }
-        }
-      }
-
-      // `checkParameter` function in `typescript`
-      if (
-        node.kind === SyntaxKind.Parameter &&
-        // In `typescript` package, it's `ts.hasSyntacticModifier(node, ts.ModifierFlags.ParameterPropertyModifier)`
-        // https://github.com/typescript-eslint/typescript-eslint/pull/6615#discussion_r1136489935
-        (modifier.kind === SyntaxKind.PublicKeyword ||
-          modifier.kind === SyntaxKind.PrivateKeyword ||
-          modifier.kind === SyntaxKind.ProtectedKeyword ||
-          modifier.kind === SyntaxKind.ReadonlyKeyword ||
-          modifier.kind === SyntaxKind.OverrideKeyword)
-      ) {
-        const func = getContainingFunction(node)!;
-
-        if (
-          !(func.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
-        ) {
-          this.#throwError(
-            modifier,
-            'A parameter property is only allowed in a constructor implementation.',
-          );
-        }
-      }
-    }
+      });
+    return result;
   }
 
-  #throwUnlessAllowInvalidAST(
-    node: ts.Node | number,
-    message: string,
-  ): asserts node is never {
-    if (!this.options.allowInvalidAST) {
-      this.#throwError(node, message);
+  /**
+   * Fixes the exports of the given ts.Node
+   * @returns the ESTreeNode with fixed exports
+   */
+  private fixExports<
+    T extends
+      | TSESTree.DefaultExportDeclarations
+      | TSESTree.NamedExportDeclarations,
+  >(
+    node:
+      | ts.ClassDeclaration
+      | ts.ClassExpression
+      | ts.EnumDeclaration
+      | ts.FunctionDeclaration
+      | ts.ImportEqualsDeclaration
+      | ts.InterfaceDeclaration
+      | ts.ModuleDeclaration
+      | ts.TypeAliasDeclaration
+      | ts.VariableStatement,
+    result: T,
+  ): T | TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration {
+    const isNamespaceNode =
+      ts.isModuleDeclaration(node) &&
+      Boolean(node.flags & ts.NodeFlags.Namespace);
+
+    const modifiers = isNamespaceNode
+      ? getNamespaceModifiers(node)
+      : getModifiers(node);
+
+    if (modifiers?.[0].kind === SyntaxKind.ExportKeyword) {
+      /**
+       * Make sure that original node is registered instead of export
+       */
+      this.registerTSNodeInNodeMap(node, result);
+
+      const exportKeyword = modifiers[0];
+      const nextModifier = modifiers[1];
+      const declarationIsDefault =
+        nextModifier?.kind === SyntaxKind.DefaultKeyword;
+
+      const varToken = declarationIsDefault
+        ? findNextToken(nextModifier, this.ast, this.ast)
+        : findNextToken(exportKeyword, this.ast, this.ast);
+
+      result.range[0] = varToken!.getStart(this.ast);
+      result.loc = getLocFor(result.range, this.ast);
+
+      if (declarationIsDefault) {
+        return this.createNode<TSESTree.ExportDefaultDeclaration>(
+          node as Exclude<typeof node, ts.ImportEqualsDeclaration>,
+          {
+            type: AST_NODE_TYPES.ExportDefaultDeclaration,
+            declaration: result as TSESTree.DefaultExportDeclarations,
+            range: [exportKeyword.getStart(this.ast), result.range[1]],
+            exportKind: 'value',
+          },
+        );
+      }
+      const isType =
+        result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+        result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
+      const isDeclare = 'declare' in result && result.declare;
+      return this.createNode<TSESTree.ExportNamedDeclaration>(
+        node,
+        // @ts-expect-error - TODO, narrow the types here
+        this.#withDeprecatedAliasGetter(
+          {
+            type: AST_NODE_TYPES.ExportNamedDeclaration,
+            declaration: result,
+            specifiers: [],
+            source: null,
+            exportKind: isType || isDeclare ? 'type' : 'value',
+            range: [exportKeyword.getStart(this.ast), result.range[1]],
+            attributes: [],
+          },
+          'assertions',
+          'attributes',
+          true,
+        ),
+      );
+    }
+
+    return result;
+  }
+
+  /**
+   * Uses the provided range location to adjust the location data of the given Node
+   * @param result The node that will have its location data mutated
+   * @param childRange The child node range used to expand location
+   */
+  private fixParentLocation(
+    result: TSESTree.BaseNode,
+    childRange: [number, number],
+  ): void {
+    if (childRange[0] < result.range[0]) {
+      result.range[0] = childRange[0];
+      result.loc.start = getLineAndCharacterFor(result.range[0], this.ast);
+    }
+    if (childRange[1] > result.range[1]) {
+      result.range[1] = childRange[1];
+      result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
     }
   }
 
   /**
-   * Creates a getter for a property under aliasKey that returns the value under
-   * valueKey. If suppressDeprecatedPropertyWarnings is not enabled, the
-   * getter also console warns about the deprecation.
-   *
-   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6469
+   * Register specific TypeScript node into map with first ESTree node provided
    */
-  #withDeprecatedAliasGetter<
-    Properties extends { type: string },
-    AliasKey extends string,
-    ValueKey extends string & keyof Properties,
-  >(
-    node: Properties,
-    aliasKey: AliasKey,
-    valueKey: ValueKey,
-    suppressWarnings = false,
-  ): Properties & Record<AliasKey, Properties[ValueKey]> {
-    let warned = suppressWarnings;
-
-    Object.defineProperty(node, aliasKey, {
-      configurable: true,
-      get: this.options.suppressDeprecatedPropertyWarnings
-        ? (): Properties[typeof valueKey] => node[valueKey]
-        : (): Properties[typeof valueKey] => {
-            if (!warned) {
-              process.emitWarning(
-                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-                'DeprecationWarning',
-              );
-              warned = true;
-            }
-
-            return node[valueKey];
-          },
-      set(value): void {
-        Object.defineProperty(node, aliasKey, {
-          enumerable: true,
-          writable: true,
-          value,
-        });
-      },
-    });
-
-    return node as Properties & Record<AliasKey, Properties[ValueKey]>;
-  }
-
-  #throwError(node: ts.Node | number, message: string): asserts node is never {
-    let start;
-    let end;
-    if (typeof node === 'number') {
-      start = end = node;
-    } else {
-      start = node.getStart(this.ast);
-      end = node.getEnd();
-    }
-
-    throw createError(message, this.ast, start, end);
-  }
-  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
-    if (ts.isVariableDeclarationList(initializer)) {
-      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
-        this.#throwError(
-          initializer,
-          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
-        );
+  private registerTSNodeInNodeMap(
+    node: ts.Node,
+    result: TSESTree.Node | null,
+  ): void {
+    if (result && this.options.shouldPreserveNodeMaps) {
+      if (!this.tsNodeToESTreeNodeMap.has(node)) {
+        this.tsNodeToESTreeNodeMap.set(node, result);
       }
     }
+  }
+
+  convertProgram(): TSESTree.Program {
+    return this.converter(this.ast) as TSESTree.Program;
+  }
+  getASTMaps(): ASTMaps {
+    return {
+      esTreeNodeToTSNodeMap: this.esTreeNodeToTSNodeMap,
+      tsNodeToESTreeNodeMap: this.tsNodeToESTreeNodeMap,
+    };
   }
 }

@@ -265,20 +265,20 @@ enum TypeToClassRelation {
 }
 
 class ClassScope {
+  private readonly classType: ts.Type;
+  private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
+  private readonly memberVariableModifications = new Set<string>();
   private readonly privateModifiableMembers = new Map<
     string,
     ParameterOrPropertyDeclaration
   >();
+
   private readonly privateModifiableStatics = new Map<
     string,
     ParameterOrPropertyDeclaration
   >();
-  private readonly memberVariableModifications = new Set<string>();
+
   private readonly staticVariableModifications = new Set<string>();
-
-  private readonly classType: ts.Type;
-
-  private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
 
   public constructor(
     private readonly checker: ts.TypeChecker,
@@ -328,50 +328,6 @@ class ClassScope {
     ).set(node.name.getText(), node);
   }
 
-  public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
-    if (type.isIntersection()) {
-      let result: TypeToClassRelation = TypeToClassRelation.None;
-      for (const subType of type.types) {
-        const subTypeResult = this.getTypeToClassRelation(subType);
-        switch (subTypeResult) {
-          case TypeToClassRelation.Class:
-            if (result === TypeToClassRelation.Instance) {
-              return TypeToClassRelation.ClassAndInstance;
-            }
-            result = TypeToClassRelation.Class;
-            break;
-          case TypeToClassRelation.Instance:
-            if (result === TypeToClassRelation.Class) {
-              return TypeToClassRelation.ClassAndInstance;
-            }
-            result = TypeToClassRelation.Instance;
-            break;
-        }
-      }
-      return result;
-    }
-    if (type.isUnion()) {
-      // any union of class/instance and something else will prevent access to
-      // private members, so we assume that union consists only of classes
-      // or class instances, because otherwise tsc will report an error
-      return this.getTypeToClassRelation(type.types[0]);
-    }
-
-    if (!type.getSymbol() || !typeIsOrHasBaseType(type, this.classType)) {
-      return TypeToClassRelation.None;
-    }
-
-    const typeIsClass =
-      tsutils.isObjectType(type) &&
-      tsutils.isObjectFlagSet(type, ts.ObjectFlags.Anonymous);
-
-    if (typeIsClass) {
-      return TypeToClassRelation.Class;
-    }
-
-    return TypeToClassRelation.Instance;
-  }
-
   public addVariableModification(node: ts.PropertyAccessExpression): void {
     const modifierType = this.checker.getTypeAtLocation(node.expression);
 
@@ -415,14 +371,14 @@ class ClassScope {
     }
   }
 
-  public exitConstructor(): void {
-    this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
-  }
-
   public enterNonConstructor(): void {
     if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
       this.constructorScopeDepth += 1;
     }
+  }
+
+  public exitConstructor(): void {
+    this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
   }
 
   public exitNonConstructor(): void {
@@ -444,5 +400,49 @@ class ClassScope {
       ...Array.from(this.privateModifiableMembers.values()),
       ...Array.from(this.privateModifiableStatics.values()),
     ];
+  }
+
+  public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
+    if (type.isIntersection()) {
+      let result: TypeToClassRelation = TypeToClassRelation.None;
+      for (const subType of type.types) {
+        const subTypeResult = this.getTypeToClassRelation(subType);
+        switch (subTypeResult) {
+          case TypeToClassRelation.Class:
+            if (result === TypeToClassRelation.Instance) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Class;
+            break;
+          case TypeToClassRelation.Instance:
+            if (result === TypeToClassRelation.Class) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Instance;
+            break;
+        }
+      }
+      return result;
+    }
+    if (type.isUnion()) {
+      // any union of class/instance and something else will prevent access to
+      // private members, so we assume that union consists only of classes
+      // or class instances, because otherwise tsc will report an error
+      return this.getTypeToClassRelation(type.types[0]);
+    }
+
+    if (!type.getSymbol() || !typeIsOrHasBaseType(type, this.classType)) {
+      return TypeToClassRelation.None;
+    }
+
+    const typeIsClass =
+      tsutils.isObjectType(type) &&
+      tsutils.isObjectFlagSet(type, ts.ObjectFlags.Anonymous);
+
+    if (typeIsClass) {
+      return TypeToClassRelation.Class;
+    }
+
+    return TypeToClassRelation.Instance;
   }
 }

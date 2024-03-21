@@ -27,6 +27,25 @@ abstract class VisitorBase {
   }
 
   /**
+   * Dispatching node.
+   */
+  visit(node: TSESTree.Node | null | undefined): void {
+    if (node?.type == null) {
+      return;
+    }
+
+    const visitor = (this as NodeVisitor)[node.type];
+    if (visitor) {
+      visitor.call(this, node);
+      if (!this.#visitChildrenEvenIfSelectorExists) {
+        return;
+      }
+    }
+
+    this.visitChildren(node);
+  }
+
+  /**
    * Default method for visiting children.
    * @param node the node whose children should be visited
    * @param excludeArr a list of keys to not visit
@@ -39,7 +58,7 @@ abstract class VisitorBase {
       return;
     }
 
-    const exclude = new Set([...excludeArr, 'parent'] as string[]);
+    const exclude = new Set([...excludeArr, 'parent']);
     const children = this.#childVisitorKeys[node.type] ?? Object.keys(node);
     for (const key of children) {
       if (exclude.has(key)) {
@@ -61,25 +80,6 @@ abstract class VisitorBase {
         this.visit(child);
       }
     }
-  }
-
-  /**
-   * Dispatching node.
-   */
-  visit(node: TSESTree.Node | null | undefined): void {
-    if (node?.type == null) {
-      return;
-    }
-
-    const visitor = (this as NodeVisitor)[node.type];
-    if (visitor) {
-      visitor.call(this, node);
-      if (!this.#visitChildrenEvenIfSelectorExists) {
-        return;
-      }
-    }
-
-    this.visitChildren(node);
   }
 }
 

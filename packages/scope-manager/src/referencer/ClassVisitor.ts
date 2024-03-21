@@ -8,8 +8,8 @@ import { Visitor } from './Visitor';
 
 class ClassVisitor extends Visitor {
   readonly #classNode: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
-  readonly #referencer: Referencer;
   readonly #emitDecoratorMetadata: boolean;
+  readonly #referencer: Referencer;
 
   constructor(
     referencer: Referencer,
@@ -35,6 +35,66 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
+  protected AccessorProperty(node: TSESTree.AccessorProperty): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  ///////////////////
+  // Visit helpers //
+  ///////////////////
+
+  protected ClassBody(node: TSESTree.ClassBody): void {
+    // this is here on purpose so that this visitor explicitly declares visitors
+    // for all nodes it cares about (see the instance visit method above)
+    this.visitChildren(node);
+  }
+
+  protected Identifier(node: TSESTree.Identifier): void {
+    this.#referencer.visit(node);
+  }
+
+  protected MethodDefinition(node: TSESTree.MethodDefinition): void {
+    this.visitMethod(node);
+  }
+
+  protected PrivateIdentifier(): void {
+    // intentionally skip
+  }
+
+  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+
+    node.body.forEach(b => this.visit(b));
+
+    this.#referencer.close(node);
+  }
+
+  protected TSAbstractAccessorProperty(
+    node: TSESTree.TSAbstractAccessorProperty,
+  ): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  protected TSAbstractMethodDefinition(
+    node: TSESTree.TSAbstractMethodDefinition,
+  ): void {
+    this.visitPropertyBase(node);
+  }
+
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
+
+  protected TSAbstractPropertyDefinition(
+    node: TSESTree.TSAbstractPropertyDefinition,
+  ): void {
+    this.visitPropertyDefinition(node);
+  }
+
   visit(node: TSESTree.Node | null | undefined): void {
     // make sure we only handle the nodes we are designed to handle
     if (node && node.type in this) {
@@ -43,10 +103,6 @@ class ClassVisitor extends Visitor {
       this.#referencer.visit(node);
     }
   }
-
-  ///////////////////
-  // Visit helpers //
-  ///////////////////
 
   protected visitClass(
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
@@ -82,23 +138,6 @@ class ClassVisitor extends Visitor {
     this.#referencer.close(node);
   }
 
-  protected visitPropertyDefinition(
-    node:
-      | TSESTree.AccessorProperty
-      | TSESTree.PropertyDefinition
-      | TSESTree.TSAbstractAccessorProperty
-      | TSESTree.TSAbstractPropertyDefinition,
-  ): void {
-    this.visitPropertyBase(node);
-    /**
-     * class A {
-     *   @meta     // <--- check this
-     *   foo: Type;
-     * }
-     */
-    this.visitMetadataType(node.typeAnnotation, !!node.decorators.length);
-  }
-
   protected visitFunctionParameterTypeAnnotation(
     node: TSESTree.Parameter,
     withDecorators: boolean,
@@ -116,6 +155,63 @@ class ClassVisitor extends Visitor {
       default:
         this.visitMetadataType(node.typeAnnotation, withDecorators);
     }
+  }
+
+  protected visitMetadataType(
+    node: TSESTree.TSTypeAnnotation | null | undefined,
+    withDecorators: boolean,
+  ): void {
+    if (!node) {
+      return;
+    }
+    // emit decorators metadata only work for TSTypeReference in ClassDeclaration
+    if (
+      this.#classNode.type === AST_NODE_TYPES.ClassDeclaration &&
+      !this.#classNode.declare &&
+      node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+      this.#emitDecoratorMetadata
+    ) {
+      let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
+      if (
+        node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
+      ) {
+        let iter = node.typeAnnotation.typeName;
+        while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
+          iter = iter.left;
+        }
+        entityName = iter.left;
+      } else {
+        entityName = node.typeAnnotation.typeName;
+      }
+
+      if (withDecorators) {
+        if (entityName.type === AST_NODE_TYPES.Identifier) {
+          this.#referencer.currentScope().referenceDualValueType(entityName);
+        }
+
+        if (node.typeAnnotation.typeArguments) {
+          this.visitType(node.typeAnnotation.typeArguments);
+        }
+
+        // everything is handled now
+        return;
+      }
+    }
+    this.visitType(node);
+  }
+
+  protected visitMethod(node: TSESTree.MethodDefinition): void {
+    if (node.computed) {
+      this.#referencer.visit(node.key);
+    }
+
+    if (node.value.type === AST_NODE_TYPES.FunctionExpression) {
+      this.visitMethodFunction(node.value, node);
+    } else {
+      this.#referencer.visit(node.value);
+    }
+
+    node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
   protected visitMethodFunction(
@@ -263,18 +359,21 @@ class ClassVisitor extends Visitor {
     node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
-  protected visitMethod(node: TSESTree.MethodDefinition): void {
-    if (node.computed) {
-      this.#referencer.visit(node.key);
-    }
-
-    if (node.value.type === AST_NODE_TYPES.FunctionExpression) {
-      this.visitMethodFunction(node.value, node);
-    } else {
-      this.#referencer.visit(node.value);
-    }
-
-    node.decorators.forEach(d => this.#referencer.visit(d));
+  protected visitPropertyDefinition(
+    node:
+      | TSESTree.AccessorProperty
+      | TSESTree.PropertyDefinition
+      | TSESTree.TSAbstractAccessorProperty
+      | TSESTree.TSAbstractPropertyDefinition,
+  ): void {
+    this.visitPropertyBase(node);
+    /**
+     * class A {
+     *   @meta     // <--- check this
+     *   foo: Type;
+     * }
+     */
+    this.visitMetadataType(node.typeAnnotation, !!node.decorators.length);
   }
 
   protected visitType(node: TSESTree.Node | null | undefined): void {
@@ -282,105 +381,6 @@ class ClassVisitor extends Visitor {
       return;
     }
     TypeVisitor.visit(this.#referencer, node);
-  }
-
-  protected visitMetadataType(
-    node: TSESTree.TSTypeAnnotation | null | undefined,
-    withDecorators: boolean,
-  ): void {
-    if (!node) {
-      return;
-    }
-    // emit decorators metadata only work for TSTypeReference in ClassDeclaration
-    if (
-      this.#classNode.type === AST_NODE_TYPES.ClassDeclaration &&
-      !this.#classNode.declare &&
-      node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
-      this.#emitDecoratorMetadata
-    ) {
-      let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
-      if (
-        node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
-      ) {
-        let iter = node.typeAnnotation.typeName;
-        while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
-          iter = iter.left;
-        }
-        entityName = iter.left;
-      } else {
-        entityName = node.typeAnnotation.typeName;
-      }
-
-      if (withDecorators) {
-        if (entityName.type === AST_NODE_TYPES.Identifier) {
-          this.#referencer.currentScope().referenceDualValueType(entityName);
-        }
-
-        if (node.typeAnnotation.typeArguments) {
-          this.visitType(node.typeAnnotation.typeArguments);
-        }
-
-        // everything is handled now
-        return;
-      }
-    }
-    this.visitType(node);
-  }
-
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
-
-  protected AccessorProperty(node: TSESTree.AccessorProperty): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  protected ClassBody(node: TSESTree.ClassBody): void {
-    // this is here on purpose so that this visitor explicitly declares visitors
-    // for all nodes it cares about (see the instance visit method above)
-    this.visitChildren(node);
-  }
-
-  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  protected MethodDefinition(node: TSESTree.MethodDefinition): void {
-    this.visitMethod(node);
-  }
-
-  protected TSAbstractAccessorProperty(
-    node: TSESTree.TSAbstractAccessorProperty,
-  ): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  protected TSAbstractPropertyDefinition(
-    node: TSESTree.TSAbstractPropertyDefinition,
-  ): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  protected TSAbstractMethodDefinition(
-    node: TSESTree.TSAbstractMethodDefinition,
-  ): void {
-    this.visitPropertyBase(node);
-  }
-
-  protected Identifier(node: TSESTree.Identifier): void {
-    this.#referencer.visit(node);
-  }
-
-  protected PrivateIdentifier(): void {
-    // intentionally skip
-  }
-
-  protected StaticBlock(node: TSESTree.StaticBlock): void {
-    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
-
-    node.body.forEach(b => this.visit(b));
-
-    this.#referencer.close(node);
   }
 }
 

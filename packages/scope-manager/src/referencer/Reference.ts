@@ -28,13 +28,17 @@ enum ReferenceTypeFlag {
  */
 class Reference {
   /**
-   * A unique ID for this instance - primarily used to help debugging and testing
-   */
-  public readonly $id: number = generator();
-  /**
    * The read-write mode of the reference.
    */
   readonly #flag: ReferenceFlag;
+  /**
+   * In some cases, a reference may be a type, value or both a type and value reference.
+   */
+  readonly #referenceType: ReferenceTypeFlag;
+  /**
+   * A unique ID for this instance - primarily used to help debugging and testing
+   */
+  public readonly $id: number = generator();
   /**
    * Reference to the enclosing Scope.
    * @public
@@ -50,37 +54,19 @@ class Reference {
    * @public
    */
   public readonly init?: boolean;
+  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
+
   /**
    * The {@link Variable} object that this reference refers to. If such variable was not defined, this is `null`.
    * @public
    */
   public resolved: Variable | null;
+
   /**
    * If reference is writeable, this is the node being written to it.
    * @public
    */
   public readonly writeExpr?: TSESTree.Node | null;
-
-  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
-
-  /**
-   * In some cases, a reference may be a type, value or both a type and value reference.
-   */
-  readonly #referenceType: ReferenceTypeFlag;
-
-  /**
-   * True if this reference can reference types
-   */
-  public get isTypeReference(): boolean {
-    return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
-  }
-
-  /**
-   * True if this reference can reference values
-   */
-  public get isValueReference(): boolean {
-    return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
-  }
 
   constructor(
     identifier: TSESTree.Identifier | TSESTree.JSXIdentifier,
@@ -106,14 +92,6 @@ class Reference {
   }
 
   /**
-   * Whether the reference is writeable.
-   * @public
-   */
-  public isWrite(): boolean {
-    return !!(this.#flag & ReferenceFlag.Write);
-  }
-
-  /**
    * Whether the reference is readable.
    * @public
    */
@@ -130,6 +108,22 @@ class Reference {
   }
 
   /**
+   * Whether the reference is read-write.
+   * @public
+   */
+  public isReadWrite(): boolean {
+    return this.#flag === ReferenceFlag.ReadWrite;
+  }
+
+  /**
+   * Whether the reference is writeable.
+   * @public
+   */
+  public isWrite(): boolean {
+    return !!(this.#flag & ReferenceFlag.Write);
+  }
+
+  /**
    * Whether the reference is write-only.
    * @public
    */
@@ -138,11 +132,17 @@ class Reference {
   }
 
   /**
-   * Whether the reference is read-write.
-   * @public
+   * True if this reference can reference types
    */
-  public isReadWrite(): boolean {
-    return this.#flag === ReferenceFlag.ReadWrite;
+  public get isTypeReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
+  }
+
+  /**
+   * True if this reference can reference values
+   */
+  public get isValueReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
   }
 }
 

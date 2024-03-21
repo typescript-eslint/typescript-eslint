@@ -708,6 +708,11 @@ export class TSError extends Error {
     });
   }
 
+  // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L854
+  get column(): number {
+    return this.location.start.column;
+  }
+
   // For old version of ESLint https://github.com/typescript-eslint/typescript-eslint/pull/6556#discussion_r1123237311
   get index(): number {
     return this.location.start.offset;
@@ -716,11 +721,6 @@ export class TSError extends Error {
   // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L853
   get lineNumber(): number {
     return this.location.start.line;
-  }
-
-  // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L854
-  get column(): number {
-    return this.location.start.column;
   }
 }
 

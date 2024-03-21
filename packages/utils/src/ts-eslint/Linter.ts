@@ -22,6 +22,16 @@ export type MinimalRuleModule<
 
 declare class LinterBase {
   /**
+   * The version from package.json.
+   */
+  static readonly version: string;
+
+  /**
+   * The version from package.json.
+   */
+  readonly version: string;
+
+  /**
    * Initialize the Linter.
    * @param config the config object
    */
@@ -83,6 +93,10 @@ declare class LinterBase {
     filenameOrOptions?: Linter.VerifyOptions | string,
   ): Linter.LintMessage[];
 
+  ////////////////////
+  // static members //
+  ////////////////////
+
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
    * @param code The source text to apply fixes to.
@@ -95,20 +109,6 @@ declare class LinterBase {
     config: Linter.ConfigType,
     options: Linter.FixOptions,
   ): Linter.FixReport;
-
-  /**
-   * The version from package.json.
-   */
-  readonly version: string;
-
-  ////////////////////
-  // static members //
-  ////////////////////
-
-  /**
-   * The version from package.json.
-   */
-  static readonly version: string;
 }
 
 namespace Linter {

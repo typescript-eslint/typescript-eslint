@@ -138,10 +138,74 @@ abstract class ScopeBase<
   Upper extends Scope | null,
 > {
   /**
+   * A map of the variables for each node in this scope.
+   * This is map is a pointer to the one in the parent ScopeManager instance
+   */
+  readonly #declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
+
+  /**
+   * Generally, through the lexical scoping of JS you can always know which variable an identifier in the source code
+   * refers to. There are a few exceptions to this rule. With `global` and `with` scopes you can only decide at runtime
+   * which variable a reference refers to.
+   * All those scopes are considered "dynamic".
+   */
+  #dynamic: boolean;
+  #dynamicCloseRef = (ref: Reference): void => {
+    // notify all names are through to global
+    let current = this as Scope | null;
+
+    do {
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      current!.through.push(ref);
+      current = current!.upper;
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
+    } while (current);
+  };
+  #globalCloseRef = (ref: Reference, scopeManager: ScopeManager): void => {
+    // let/const/class declarations should be resolved statically.
+    // others should be resolved dynamically.
+    if (this.shouldStaticallyCloseForGlobal(ref, scopeManager)) {
+      this.#staticCloseRef(ref);
+    } else {
+      this.#dynamicCloseRef(ref);
+    }
+  };
+  #staticCloseRef = (ref: Reference): void => {
+    const resolve = (): boolean => {
+      const name = ref.identifier.name;
+      const variable = this.set.get(name);
+
+      if (!variable) {
+        return false;
+      }
+
+      if (!this.isValidResolution(ref, variable)) {
+        return false;
+      }
+
+      // make sure we don't match a type reference to a value variable
+      const isValidTypeReference =
+        ref.isTypeReference && variable.isTypeVariable;
+      const isValidValueReference =
+        ref.isValueReference && variable.isValueVariable;
+      if (!isValidTypeReference && !isValidValueReference) {
+        return false;
+      }
+
+      variable.references.push(ref);
+      ref.resolved = variable;
+
+      return true;
+    };
+
+    if (!resolve()) {
+      this.delegateToUpperScope(ref);
+    }
+  };
+  /**
    * A unique ID for this instance - primarily used to help debugging and testing
    */
   public readonly $id: number = generator();
-
   /**
    * The AST node which created this scope.
    * @public
@@ -152,18 +216,6 @@ abstract class ScopeBase<
    * @public
    */
   public readonly childScopes: Scope[] = [];
-  /**
-   * A map of the variables for each node in this scope.
-   * This is map is a pointer to the one in the parent ScopeManager instance
-   */
-  readonly #declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
-  /**
-   * Generally, through the lexical scoping of JS you can always know which variable an identifier in the source code
-   * refers to. There are a few exceptions to this rule. With `global` and `with` scopes you can only decide at runtime
-   * which variable a reference refers to.
-   * All those scopes are considered "dynamic".
-   */
-  #dynamic: boolean;
   /**
    * Whether this scope is created by a FunctionExpression.
    * @public
@@ -198,11 +250,20 @@ abstract class ScopeBase<
    */
   public readonly through: Reference[] = [];
   public readonly type: Type;
+
   /**
    * Reference to the parent {@link Scope}.
    * @public
    */
   public readonly upper: Upper;
+
+  /**
+   * For scopes that can contain variable declarations, this is a self-reference.
+   * For other scope types this is the *variableScope* value of the parent scope.
+   * @public
+   */
+  public readonly variableScope: VariableScope;
+
   /**
    * The scoped {@link Variable}s of this scope.
    * In the case of a 'function' scope this includes the automatic argument `arguments` as its first element, as well
@@ -211,12 +272,6 @@ abstract class ScopeBase<
    * @public
    */
   public readonly variables: Variable[] = [];
-  /**
-   * For scopes that can contain variable declarations, this is a self-reference.
-   * For other scope types this is the *variableScope* value of the parent scope.
-   * @public
-   */
-  public readonly variableScope: VariableScope;
 
   constructor(
     scopeManager: ScopeManager,
@@ -251,12 +306,27 @@ abstract class ScopeBase<
     registerScope(scopeManager, this as Scope);
   }
 
-  private isVariableScope(): this is VariableScope {
-    return VARIABLE_SCOPE_TYPES.has(this.type);
+  private addDeclaredVariablesOfNode(
+    variable: Variable,
+    node: TSESTree.Node | null | undefined,
+  ): void {
+    if (node == null) {
+      return;
+    }
+
+    let variables = this.#declaredVariables.get(node);
+
+    if (variables == null) {
+      variables = [];
+      this.#declaredVariables.set(node, variables);
+    }
+    if (!variables.includes(variable)) {
+      variables.push(variable);
+    }
   }
 
-  public shouldStaticallyClose(): boolean {
-    return !this.#dynamic;
+  private isVariableScope(): this is VariableScope {
+    return VARIABLE_SCOPE_TYPES.has(this.type);
   }
 
   private shouldStaticallyCloseForGlobal(
@@ -293,61 +363,6 @@ abstract class ScopeBase<
     );
   }
 
-  #staticCloseRef = (ref: Reference): void => {
-    const resolve = (): boolean => {
-      const name = ref.identifier.name;
-      const variable = this.set.get(name);
-
-      if (!variable) {
-        return false;
-      }
-
-      if (!this.isValidResolution(ref, variable)) {
-        return false;
-      }
-
-      // make sure we don't match a type reference to a value variable
-      const isValidTypeReference =
-        ref.isTypeReference && variable.isTypeVariable;
-      const isValidValueReference =
-        ref.isValueReference && variable.isValueVariable;
-      if (!isValidTypeReference && !isValidValueReference) {
-        return false;
-      }
-
-      variable.references.push(ref);
-      ref.resolved = variable;
-
-      return true;
-    };
-
-    if (!resolve()) {
-      this.delegateToUpperScope(ref);
-    }
-  };
-
-  #dynamicCloseRef = (ref: Reference): void => {
-    // notify all names are through to global
-    let current = this as Scope | null;
-
-    do {
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      current!.through.push(ref);
-      current = current!.upper;
-      /* eslint-enable @typescript-eslint/no-non-null-assertion */
-    } while (current);
-  };
-
-  #globalCloseRef = (ref: Reference, scopeManager: ScopeManager): void => {
-    // let/const/class declarations should be resolved statically.
-    // others should be resolved dynamically.
-    if (this.shouldStaticallyCloseForGlobal(ref, scopeManager)) {
-      this.#staticCloseRef(ref);
-    } else {
-      this.#dynamicCloseRef(ref);
-    }
-  };
-
   public close(scopeManager: ScopeManager): Scope | null {
     let closeRef: (ref: Reference, scopeManager: ScopeManager) => void;
 
@@ -367,36 +382,15 @@ abstract class ScopeBase<
     return this.upper;
   }
 
-  /**
-   * To override by function scopes.
-   * References in default parameters isn't resolved to variables which are in their function body.
-   */
-  protected isValidResolution(_ref: Reference, _variable: Variable): boolean {
-    return true;
+  public defineIdentifier(node: TSESTree.Identifier, def: Definition): void {
+    this.defineVariable(node.name, this.set, this.variables, node, def);
   }
 
-  protected delegateToUpperScope(ref: Reference): void {
-    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
-    this.through.push(ref);
-  }
-
-  private addDeclaredVariablesOfNode(
-    variable: Variable,
-    node: TSESTree.Node | null | undefined,
+  public defineLiteralIdentifier(
+    node: TSESTree.StringLiteral,
+    def: Definition,
   ): void {
-    if (node == null) {
-      return;
-    }
-
-    let variables = this.#declaredVariables.get(node);
-
-    if (variables == null) {
-      variables = [];
-      this.#declaredVariables.set(node, variables);
-    }
-    if (!variables.includes(variable)) {
-      variables.push(variable);
-    }
+    this.defineVariable(node.value, this.set, this.variables, null, def);
   }
 
   protected defineVariable(
@@ -428,15 +422,47 @@ abstract class ScopeBase<
     }
   }
 
-  public defineIdentifier(node: TSESTree.Identifier, def: Definition): void {
-    this.defineVariable(node.name, this.set, this.variables, node, def);
+  protected delegateToUpperScope(ref: Reference): void {
+    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
+    this.through.push(ref);
   }
 
-  public defineLiteralIdentifier(
-    node: TSESTree.StringLiteral,
-    def: Definition,
-  ): void {
-    this.defineVariable(node.value, this.set, this.variables, null, def);
+  /**
+   * To override by function scopes.
+   * References in default parameters isn't resolved to variables which are in their function body.
+   */
+  protected isValidResolution(_ref: Reference, _variable: Variable): boolean {
+    return true;
+  }
+
+  public referenceDualValueType(node: TSESTree.Identifier): void {
+    const ref = new Reference(
+      node,
+      this as Scope,
+      ReferenceFlag.Read,
+      null,
+      null,
+      false,
+      ReferenceTypeFlag.Type | ReferenceTypeFlag.Value,
+    );
+
+    this.references.push(ref);
+    this.leftToResolve?.push(ref);
+  }
+
+  public referenceType(node: TSESTree.Identifier): void {
+    const ref = new Reference(
+      node,
+      this as Scope,
+      ReferenceFlag.Read,
+      null,
+      null,
+      false,
+      ReferenceTypeFlag.Type,
+    );
+
+    this.references.push(ref);
+    this.leftToResolve?.push(ref);
   }
 
   public referenceValue(
@@ -460,34 +486,8 @@ abstract class ScopeBase<
     this.leftToResolve?.push(ref);
   }
 
-  public referenceType(node: TSESTree.Identifier): void {
-    const ref = new Reference(
-      node,
-      this as Scope,
-      ReferenceFlag.Read,
-      null,
-      null,
-      false,
-      ReferenceTypeFlag.Type,
-    );
-
-    this.references.push(ref);
-    this.leftToResolve?.push(ref);
-  }
-
-  public referenceDualValueType(node: TSESTree.Identifier): void {
-    const ref = new Reference(
-      node,
-      this as Scope,
-      ReferenceFlag.Read,
-      null,
-      null,
-      false,
-      ReferenceTypeFlag.Type | ReferenceTypeFlag.Value,
-    );
-
-    this.references.push(ref);
-    this.leftToResolve?.push(ref);
+  public shouldStaticallyClose(): boolean {
+    return !this.#dynamic;
   }
 }
 

@@ -74,9 +74,9 @@ let defaultConfig = deepMerge(
 ) as TesterConfigWithDefaults;
 
 export class RuleTester extends TestFramework {
-  readonly #testerConfig: TesterConfigWithDefaults;
-  readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
   readonly #linter: Linter = new Linter();
+  readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
+  readonly #testerConfig: TesterConfigWithDefaults;
 
   /**
    * Creates a new instance of RuleTester.
@@ -112,6 +112,46 @@ export class RuleTester extends TestFramework {
   }
 
   /**
+   * Get the current configuration used for all tests
+   */
+  static getDefaultConfig(): Readonly<RuleTesterConfig> {
+    return defaultConfig;
+  }
+
+  /**
+   * Adds the `only` property to a test to run it in isolation.
+   */
+  static only<Options extends Readonly<unknown[]>>(
+    item: ValidTestCase<Options> | string,
+  ): ValidTestCase<Options>;
+
+  /**
+   * Adds the `only` property to a test to run it in isolation.
+   */
+  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+    item: InvalidTestCase<MessageIds, Options>,
+  ): InvalidTestCase<MessageIds, Options>;
+
+  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+    item:
+      | InvalidTestCase<MessageIds, Options>
+      | ValidTestCase<Options>
+      | string,
+  ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
+    if (typeof item === 'string') {
+      return { code: item, only: true };
+    }
+
+    return { ...item, only: true };
+  }
+  /**
+   * Reset the configuration to the initial configuration of the tester removing
+   * any changes made until now.
+   */
+  static resetDefaultConfig(): void {
+    defaultConfig = merge({}, testerDefaultConfig);
+  }
+  /**
    * Set the configuration to use for all future tests
    */
   static setDefaultConfig(config: RuleTesterConfig): void {
@@ -126,53 +166,6 @@ export class RuleTester extends TestFramework {
       // @ts-expect-error -- no index signature
       config,
     ) as TesterConfigWithDefaults;
-  }
-
-  /**
-   * Get the current configuration used for all tests
-   */
-  static getDefaultConfig(): Readonly<RuleTesterConfig> {
-    return defaultConfig;
-  }
-
-  /**
-   * Reset the configuration to the initial configuration of the tester removing
-   * any changes made until now.
-   */
-  static resetDefaultConfig(): void {
-    defaultConfig = merge({}, testerDefaultConfig);
-  }
-
-  /**
-   * Adds the `only` property to a test to run it in isolation.
-   */
-  static only<Options extends Readonly<unknown[]>>(
-    item: ValidTestCase<Options> | string,
-  ): ValidTestCase<Options>;
-  /**
-   * Adds the `only` property to a test to run it in isolation.
-   */
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
-    item: InvalidTestCase<MessageIds, Options>,
-  ): InvalidTestCase<MessageIds, Options>;
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
-    item:
-      | InvalidTestCase<MessageIds, Options>
-      | ValidTestCase<Options>
-      | string,
-  ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
-    if (typeof item === 'string') {
-      return { code: item, only: true };
-    }
-
-    return { ...item, only: true };
-  }
-
-  /**
-   * Define a rule for one particular run of tests.
-   */
-  defineRule(name: string, rule: AnyRuleCreateFunction | AnyRuleModule): void {
-    this.#rules[name] = rule;
   }
 
   #normalizeTests<
@@ -296,370 +289,6 @@ export class RuleTester extends TestFramework {
     normalizedTests.invalid = normalizedTests.invalid.map(maybeMarkAsOnly);
 
     return normalizedTests;
-  }
-
-  /**
-   * Adds a new rule test to execute.
-   */
-  run<MessageIds extends string, Options extends readonly unknown[]>(
-    ruleName: string,
-    rule: RuleModule<MessageIds, Options>,
-    test: RunTests<MessageIds, Options>,
-  ): void {
-    const constructor = this.constructor as typeof RuleTester;
-
-    if (
-      this.#testerConfig.dependencyConstraints &&
-      !satisfiesAllDependencyConstraints(
-        this.#testerConfig.dependencyConstraints,
-      )
-    ) {
-      // for frameworks like mocha or jest that have a "skip" version of their function
-      // we can provide a nice skipped test!
-      constructor.describeSkip(ruleName, () => {
-        constructor.it(
-          'All tests skipped due to unsatisfied constructor dependency constraints',
-          () => {
-            // some frameworks error if there are no assertions
-            assert.equal(true, true);
-          },
-        );
-      });
-
-      // don't run any tests because we don't match the base constraint
-      return;
-    }
-
-    if (!test || typeof test !== 'object') {
-      throw new TypeError(
-        `Test Scenarios for rule ${ruleName} : Could not find test scenario object`,
-      );
-    }
-
-    const scenarioErrors: string[] = [];
-    REQUIRED_SCENARIOS.forEach(scenarioType => {
-      if (!test[scenarioType]) {
-        scenarioErrors.push(
-          `Could not find any ${scenarioType} test scenarios`,
-        );
-      }
-    });
-
-    if (scenarioErrors.length > 0) {
-      throw new Error(
-        [
-          `Test Scenarios for rule ${ruleName} is invalid:`,
-          ...scenarioErrors,
-        ].join('\n'),
-      );
-    }
-
-    if (typeof rule === 'function') {
-      emitLegacyRuleAPIWarning(ruleName);
-    }
-
-    this.#linter.defineRule(
-      ruleName,
-      Object.assign({}, rule, {
-        // Create a wrapper rule that freezes the `context` properties.
-        create(context: RuleContext<MessageIds, Options>) {
-          freezeDeeply(context.options);
-          freezeDeeply(context.settings);
-          freezeDeeply(context.parserOptions);
-
-          return (typeof rule === 'function' ? rule : rule.create)(context);
-        },
-      }),
-    );
-
-    this.#linter.defineRules(this.#rules);
-
-    const normalizedTests = this.#normalizeTests(test);
-
-    function getTestMethod(
-      test: ValidTestCase<Options>,
-    ): 'it' | 'itOnly' | 'itSkip' {
-      if (test.skip) {
-        return 'itSkip';
-      }
-      if (test.only) {
-        return 'itOnly';
-      }
-      return 'it';
-    }
-
-    /*
-     * This creates a test suite and pipes all supplied info through
-     * one of the templates above.
-     */
-    constructor.describe(ruleName, () => {
-      if (normalizedTests.valid.length) {
-        constructor.describe('valid', () => {
-          normalizedTests.valid.forEach(valid => {
-            const testName = ((): string => {
-              if (valid.name == null || valid.name.length === 0) {
-                return valid.code;
-              }
-              return valid.name;
-            })();
-            constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(ruleName, rule, valid);
-            });
-          });
-        });
-      }
-
-      if (normalizedTests.invalid.length) {
-        constructor.describe('invalid', () => {
-          normalizedTests.invalid.forEach(invalid => {
-            const name = ((): string => {
-              if (invalid.name == null || invalid.name.length === 0) {
-                return invalid.code;
-              }
-              return invalid.name;
-            })();
-            constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(ruleName, rule, invalid);
-            });
-          });
-        });
-      }
-    });
-  }
-
-  /**
-   * Run the rule for the given item
-   * @throws {Error} If an invalid schema.
-   * Use @private instead of #private to expose it for testing purposes
-   */
-  private runRuleForItem<
-    MessageIds extends string,
-    Options extends readonly unknown[],
-  >(
-    ruleName: string,
-    rule: RuleModule<MessageIds, Options>,
-    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
-  ): {
-    messages: Linter.LintMessage[];
-    output: string;
-    beforeAST: TSESTree.Program;
-    afterAST: TSESTree.Program;
-  } {
-    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
-    let code;
-    let filename;
-    let output;
-    let beforeAST: TSESTree.Program;
-    let afterAST: TSESTree.Program;
-
-    if (typeof item === 'string') {
-      code = item;
-    } else {
-      code = item.code;
-
-      /*
-       * Assumes everything on the item is a config except for the
-       * parameters used by this tester
-       */
-      const itemConfig: Record<string, unknown> = { ...item };
-
-      for (const parameter of RULE_TESTER_PARAMETERS) {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete itemConfig[parameter];
-      }
-
-      /*
-       * Create the config object from the tester config and this item
-       * specific configurations.
-       */
-      config = merge(config, itemConfig);
-    }
-
-    if (item.filename) {
-      filename = item.filename;
-    }
-
-    if (hasOwnProperty(item, 'options')) {
-      assert(Array.isArray(item.options), 'options must be an array');
-      if (
-        item.options.length > 0 &&
-        typeof rule === 'object' &&
-        (!rule.meta || (rule.meta && rule.meta.schema == null))
-      ) {
-        emitMissingSchemaWarning(ruleName);
-      }
-      config.rules[ruleName] = ['error', ...item.options];
-    } else {
-      config.rules[ruleName] = 'error';
-    }
-
-    const schema = getRuleOptionsSchema(rule);
-
-    /*
-     * Setup AST getters.
-     * The goal is to check whether or not AST was modified when
-     * running the rule under test.
-     */
-    this.#linter.defineRule('rule-tester/validate-ast', {
-      create() {
-        return {
-          Program(node): void {
-            beforeAST = cloneDeeplyExcludesParent(node);
-          },
-          'Program:exit'(node): void {
-            afterAST = node;
-          },
-        };
-      },
-    });
-
-    if (typeof config.parser === 'string') {
-      assert(
-        path.isAbsolute(config.parser),
-        'Parsers provided as strings to RuleTester must be absolute paths',
-      );
-    } else {
-      config.parser = require.resolve(TYPESCRIPT_ESLINT_PARSER);
-    }
-
-    this.#linter.defineParser(
-      config.parser,
-      wrapParser(require(config.parser) as Parser.ParserModule),
-    );
-
-    if (schema) {
-      ajv.validateSchema(schema);
-
-      if (ajv.errors) {
-        const errors = ajv.errors
-          .map(error => {
-            const field =
-              error.dataPath[0] === '.'
-                ? error.dataPath.slice(1)
-                : error.dataPath;
-
-            return `\t${field}: ${error.message}`;
-          })
-          .join('\n');
-
-        throw new Error(
-          [`Schema for rule ${ruleName} is invalid:`, errors].join(
-            // no space after comma to match eslint core
-            ',',
-          ),
-        );
-      }
-
-      /*
-       * `ajv.validateSchema` checks for errors in the structure of the schema (by comparing the schema against a "meta-schema"),
-       * and it reports those errors individually. However, there are other types of schema errors that only occur when compiling
-       * the schema (e.g. using invalid defaults in a schema), and only one of these errors can be reported at a time. As a result,
-       * the schema is compiled here separately from checking for `validateSchema` errors.
-       */
-      try {
-        ajv.compile(schema);
-      } catch (err) {
-        throw new Error(
-          `Schema for rule ${ruleName} is invalid: ${(err as Error).message}`,
-        );
-      }
-    }
-
-    validate(config, 'rule-tester', id => (id === ruleName ? rule : null));
-
-    // Verify the code.
-    // @ts-expect-error -- we don't define deprecated members on our types
-    const { getComments } = SourceCode.prototype as { getComments: unknown };
-    let messages;
-
-    try {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getCommentsDeprecation;
-      messages = this.#linter.verify(code, config, filename);
-    } finally {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getComments;
-    }
-
-    const fatalErrorMessage = messages.find(m => m.fatal);
-
-    assert(
-      !fatalErrorMessage,
-      `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
-    );
-
-    // Verify if autofix makes a syntax error or not.
-    if (messages.some(m => m.fix)) {
-      output = SourceCodeFixer.applyFixes(code, messages).output;
-      const errorMessageInFix = this.#linter
-        .verify(output, config, filename)
-        .find(m => m.fatal);
-
-      assert(
-        !errorMessageInFix,
-        [
-          'A fatal parsing error occurred in autofix.',
-          `Error: ${errorMessageInFix?.message}`,
-          'Autofix output:',
-          output,
-        ].join('\n'),
-      );
-    } else {
-      output = code;
-    }
-
-    return {
-      messages,
-      output,
-      // is definitely assigned within the `rule-tester/validate-ast` rule
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      beforeAST: beforeAST!,
-      // is definitely assigned within the `rule-tester/validate-ast` rule
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      afterAST: cloneDeeplyExcludesParent(afterAST!),
-    };
-  }
-
-  /**
-   * Check if the template is valid or not
-   * all valid cases go through this
-   */
-  #testValidTemplate<
-    MessageIds extends string,
-    Options extends readonly unknown[],
-  >(
-    ruleName: string,
-    rule: RuleModule<MessageIds, Options>,
-    itemIn: ValidTestCase<Options> | string,
-  ): void {
-    const item: ValidTestCase<Options> =
-      typeof itemIn === 'object' ? itemIn : { code: itemIn };
-
-    assert.ok(
-      typeof item.code === 'string',
-      "Test case must specify a string value for 'code'",
-    );
-    if (item.name) {
-      assert.ok(
-        typeof item.name === 'string',
-        "Optional test case property 'name' must be a string",
-      );
-    }
-
-    const result = this.runRuleForItem(ruleName, rule, item);
-    const messages = result.messages;
-
-    assert.strictEqual(
-      messages.length,
-      0,
-      util.format(
-        'Should have no errors but had %d: %s',
-        messages.length,
-        util.inspect(messages),
-      ),
-    );
-
-    assertASTDidntChange(result.beforeAST, result.afterAST);
   }
 
   /**
@@ -1003,6 +632,377 @@ export class RuleTester extends TestFramework {
     }
 
     assertASTDidntChange(result.beforeAST, result.afterAST);
+  }
+
+  /**
+   * Check if the template is valid or not
+   * all valid cases go through this
+   */
+  #testValidTemplate<
+    MessageIds extends string,
+    Options extends readonly unknown[],
+  >(
+    ruleName: string,
+    rule: RuleModule<MessageIds, Options>,
+    itemIn: ValidTestCase<Options> | string,
+  ): void {
+    const item: ValidTestCase<Options> =
+      typeof itemIn === 'object' ? itemIn : { code: itemIn };
+
+    assert.ok(
+      typeof item.code === 'string',
+      "Test case must specify a string value for 'code'",
+    );
+    if (item.name) {
+      assert.ok(
+        typeof item.name === 'string',
+        "Optional test case property 'name' must be a string",
+      );
+    }
+
+    const result = this.runRuleForItem(ruleName, rule, item);
+    const messages = result.messages;
+
+    assert.strictEqual(
+      messages.length,
+      0,
+      util.format(
+        'Should have no errors but had %d: %s',
+        messages.length,
+        util.inspect(messages),
+      ),
+    );
+
+    assertASTDidntChange(result.beforeAST, result.afterAST);
+  }
+
+  /**
+   * Run the rule for the given item
+   * @throws {Error} If an invalid schema.
+   * Use @private instead of #private to expose it for testing purposes
+   */
+  private runRuleForItem<
+    MessageIds extends string,
+    Options extends readonly unknown[],
+  >(
+    ruleName: string,
+    rule: RuleModule<MessageIds, Options>,
+    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
+  ): {
+    messages: Linter.LintMessage[];
+    output: string;
+    beforeAST: TSESTree.Program;
+    afterAST: TSESTree.Program;
+  } {
+    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
+    let code;
+    let filename;
+    let output;
+    let beforeAST: TSESTree.Program;
+    let afterAST: TSESTree.Program;
+
+    if (typeof item === 'string') {
+      code = item;
+    } else {
+      code = item.code;
+
+      /*
+       * Assumes everything on the item is a config except for the
+       * parameters used by this tester
+       */
+      const itemConfig: Record<string, unknown> = { ...item };
+
+      for (const parameter of RULE_TESTER_PARAMETERS) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete itemConfig[parameter];
+      }
+
+      /*
+       * Create the config object from the tester config and this item
+       * specific configurations.
+       */
+      config = merge(config, itemConfig);
+    }
+
+    if (item.filename) {
+      filename = item.filename;
+    }
+
+    if (hasOwnProperty(item, 'options')) {
+      assert(Array.isArray(item.options), 'options must be an array');
+      if (
+        item.options.length > 0 &&
+        typeof rule === 'object' &&
+        (!rule.meta || (rule.meta && rule.meta.schema == null))
+      ) {
+        emitMissingSchemaWarning(ruleName);
+      }
+      config.rules[ruleName] = ['error', ...item.options];
+    } else {
+      config.rules[ruleName] = 'error';
+    }
+
+    const schema = getRuleOptionsSchema(rule);
+
+    /*
+     * Setup AST getters.
+     * The goal is to check whether or not AST was modified when
+     * running the rule under test.
+     */
+    this.#linter.defineRule('rule-tester/validate-ast', {
+      create() {
+        return {
+          Program(node): void {
+            beforeAST = cloneDeeplyExcludesParent(node);
+          },
+          'Program:exit'(node): void {
+            afterAST = node;
+          },
+        };
+      },
+    });
+
+    if (typeof config.parser === 'string') {
+      assert(
+        path.isAbsolute(config.parser),
+        'Parsers provided as strings to RuleTester must be absolute paths',
+      );
+    } else {
+      config.parser = require.resolve(TYPESCRIPT_ESLINT_PARSER);
+    }
+
+    this.#linter.defineParser(
+      config.parser,
+      wrapParser(require(config.parser) as Parser.ParserModule),
+    );
+
+    if (schema) {
+      ajv.validateSchema(schema);
+
+      if (ajv.errors) {
+        const errors = ajv.errors
+          .map(error => {
+            const field =
+              error.dataPath[0] === '.'
+                ? error.dataPath.slice(1)
+                : error.dataPath;
+
+            return `\t${field}: ${error.message}`;
+          })
+          .join('\n');
+
+        throw new Error(
+          [`Schema for rule ${ruleName} is invalid:`, errors].join(
+            // no space after comma to match eslint core
+            ',',
+          ),
+        );
+      }
+
+      /*
+       * `ajv.validateSchema` checks for errors in the structure of the schema (by comparing the schema against a "meta-schema"),
+       * and it reports those errors individually. However, there are other types of schema errors that only occur when compiling
+       * the schema (e.g. using invalid defaults in a schema), and only one of these errors can be reported at a time. As a result,
+       * the schema is compiled here separately from checking for `validateSchema` errors.
+       */
+      try {
+        ajv.compile(schema);
+      } catch (err) {
+        throw new Error(
+          `Schema for rule ${ruleName} is invalid: ${(err as Error).message}`,
+        );
+      }
+    }
+
+    validate(config, 'rule-tester', id => (id === ruleName ? rule : null));
+
+    // Verify the code.
+    // @ts-expect-error -- we don't define deprecated members on our types
+    const { getComments } = SourceCode.prototype as { getComments: unknown };
+    let messages;
+
+    try {
+      // @ts-expect-error -- we don't define deprecated members on our types
+      SourceCode.prototype.getComments = getCommentsDeprecation;
+      messages = this.#linter.verify(code, config, filename);
+    } finally {
+      // @ts-expect-error -- we don't define deprecated members on our types
+      SourceCode.prototype.getComments = getComments;
+    }
+
+    const fatalErrorMessage = messages.find(m => m.fatal);
+
+    assert(
+      !fatalErrorMessage,
+      `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
+    );
+
+    // Verify if autofix makes a syntax error or not.
+    if (messages.some(m => m.fix)) {
+      output = SourceCodeFixer.applyFixes(code, messages).output;
+      const errorMessageInFix = this.#linter
+        .verify(output, config, filename)
+        .find(m => m.fatal);
+
+      assert(
+        !errorMessageInFix,
+        [
+          'A fatal parsing error occurred in autofix.',
+          `Error: ${errorMessageInFix?.message}`,
+          'Autofix output:',
+          output,
+        ].join('\n'),
+      );
+    } else {
+      output = code;
+    }
+
+    return {
+      messages,
+      output,
+      // is definitely assigned within the `rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      beforeAST: beforeAST!,
+      // is definitely assigned within the `rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      afterAST: cloneDeeplyExcludesParent(afterAST!),
+    };
+  }
+
+  /**
+   * Define a rule for one particular run of tests.
+   */
+  defineRule(name: string, rule: AnyRuleCreateFunction | AnyRuleModule): void {
+    this.#rules[name] = rule;
+  }
+
+  /**
+   * Adds a new rule test to execute.
+   */
+  run<MessageIds extends string, Options extends readonly unknown[]>(
+    ruleName: string,
+    rule: RuleModule<MessageIds, Options>,
+    test: RunTests<MessageIds, Options>,
+  ): void {
+    const constructor = this.constructor as typeof RuleTester;
+
+    if (
+      this.#testerConfig.dependencyConstraints &&
+      !satisfiesAllDependencyConstraints(
+        this.#testerConfig.dependencyConstraints,
+      )
+    ) {
+      // for frameworks like mocha or jest that have a "skip" version of their function
+      // we can provide a nice skipped test!
+      constructor.describeSkip(ruleName, () => {
+        constructor.it(
+          'All tests skipped due to unsatisfied constructor dependency constraints',
+          () => {
+            // some frameworks error if there are no assertions
+            assert.equal(true, true);
+          },
+        );
+      });
+
+      // don't run any tests because we don't match the base constraint
+      return;
+    }
+
+    if (!test || typeof test !== 'object') {
+      throw new TypeError(
+        `Test Scenarios for rule ${ruleName} : Could not find test scenario object`,
+      );
+    }
+
+    const scenarioErrors: string[] = [];
+    REQUIRED_SCENARIOS.forEach(scenarioType => {
+      if (!test[scenarioType]) {
+        scenarioErrors.push(
+          `Could not find any ${scenarioType} test scenarios`,
+        );
+      }
+    });
+
+    if (scenarioErrors.length > 0) {
+      throw new Error(
+        [
+          `Test Scenarios for rule ${ruleName} is invalid:`,
+          ...scenarioErrors,
+        ].join('\n'),
+      );
+    }
+
+    if (typeof rule === 'function') {
+      emitLegacyRuleAPIWarning(ruleName);
+    }
+
+    this.#linter.defineRule(
+      ruleName,
+      Object.assign({}, rule, {
+        // Create a wrapper rule that freezes the `context` properties.
+        create(context: RuleContext<MessageIds, Options>) {
+          freezeDeeply(context.options);
+          freezeDeeply(context.settings);
+          freezeDeeply(context.parserOptions);
+
+          return (typeof rule === 'function' ? rule : rule.create)(context);
+        },
+      }),
+    );
+
+    this.#linter.defineRules(this.#rules);
+
+    const normalizedTests = this.#normalizeTests(test);
+
+    function getTestMethod(
+      test: ValidTestCase<Options>,
+    ): 'it' | 'itOnly' | 'itSkip' {
+      if (test.skip) {
+        return 'itSkip';
+      }
+      if (test.only) {
+        return 'itOnly';
+      }
+      return 'it';
+    }
+
+    /*
+     * This creates a test suite and pipes all supplied info through
+     * one of the templates above.
+     */
+    constructor.describe(ruleName, () => {
+      if (normalizedTests.valid.length) {
+        constructor.describe('valid', () => {
+          normalizedTests.valid.forEach(valid => {
+            const testName = ((): string => {
+              if (valid.name == null || valid.name.length === 0) {
+                return valid.code;
+              }
+              return valid.name;
+            })();
+            constructor[getTestMethod(valid)](sanitize(testName), () => {
+              this.#testValidTemplate(ruleName, rule, valid);
+            });
+          });
+        });
+      }
+
+      if (normalizedTests.invalid.length) {
+        constructor.describe('invalid', () => {
+          normalizedTests.invalid.forEach(invalid => {
+            const name = ((): string => {
+              if (invalid.name == null || invalid.name.length === 0) {
+                return invalid.code;
+              }
+              return invalid.name;
+            })();
+            constructor[getTestMethod(invalid)](sanitize(name), () => {
+              this.#testInvalidTemplate(ruleName, rule, invalid);
+            });
+          });
+        });
+      }
+    });
   }
 }
 

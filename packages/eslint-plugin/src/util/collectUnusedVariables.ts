@@ -15,13 +15,44 @@ class UnusedVarsVisitor<
   MessageIds extends string,
   Options extends readonly unknown[],
 > extends Visitor {
+  readonly #scopeManager: TSESLint.Scope.ScopeManager;
+
   private static readonly RESULTS_CACHE = new WeakMap<
     TSESTree.Program,
     ReadonlySet<TSESLint.Scope.Variable>
   >();
-
-  readonly #scopeManager: TSESLint.Scope.ScopeManager;
   // readonly #unusedVariables = new Set<TSESLint.Scope.Variable>();
+
+  protected ClassDeclaration = this.visitClass;
+
+  protected ClassExpression = this.visitClass;
+
+  protected FunctionDeclaration = this.visitFunction;
+
+  //#region HELPERS
+
+  protected FunctionExpression = this.visitFunction;
+
+  protected MethodDefinition = this.visitSetter;
+  protected Property = this.visitSetter;
+  protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
+
+  protected TSConstructSignatureDeclaration = this.visitFunctionTypeSignature;
+
+  protected TSConstructorType = this.visitFunctionTypeSignature;
+
+  protected TSDeclareFunction = this.visitFunctionTypeSignature;
+
+  protected TSEmptyBodyFunctionExpression = this.visitFunctionTypeSignature;
+
+  //#endregion HELPERS
+
+  //#region VISITORS
+  // NOTE - This is a simple visitor - meaning it does not support selectors
+
+  protected TSFunctionType = this.visitFunctionTypeSignature;
+
+  protected TSMethodSignature = this.visitFunctionTypeSignature;
 
   private constructor(context: TSESLint.RuleContext<MessageIds, Options>) {
     super({
@@ -88,8 +119,6 @@ class UnusedVarsVisitor<
     return unusedVariables;
   }
 
-  //#region HELPERS
-
   private getScope<T extends TSESLint.Scope.Scope = TSESLint.Scope.Scope>(
     currentNode: TSESTree.Node,
   ): T {
@@ -116,7 +145,9 @@ class UnusedVarsVisitor<
   private markVariableAsUsed(
     variableOrIdentifier: TSESLint.Scope.Variable | TSESTree.Identifier,
   ): void;
+
   private markVariableAsUsed(name: string, parent: TSESTree.Node): void;
+
   private markVariableAsUsed(
     variableOrIdentifierOrName:
       | TSESLint.Scope.Variable
@@ -214,19 +245,6 @@ class UnusedVarsVisitor<
     }
   }
 
-  //#endregion HELPERS
-
-  //#region VISITORS
-  // NOTE - This is a simple visitor - meaning it does not support selectors
-
-  protected ClassDeclaration = this.visitClass;
-
-  protected ClassExpression = this.visitClass;
-
-  protected FunctionDeclaration = this.visitFunction;
-
-  protected FunctionExpression = this.visitFunction;
-
   protected ForInStatement(node: TSESTree.ForInStatement): void {
     /**
      * (Brad Zacher): I hate that this has to exist.
@@ -289,20 +307,6 @@ class UnusedVarsVisitor<
     }
   }
 
-  protected MethodDefinition = this.visitSetter;
-
-  protected Property = this.visitSetter;
-
-  protected TSCallSignatureDeclaration = this.visitFunctionTypeSignature;
-
-  protected TSConstructorType = this.visitFunctionTypeSignature;
-
-  protected TSConstructSignatureDeclaration = this.visitFunctionTypeSignature;
-
-  protected TSDeclareFunction = this.visitFunctionTypeSignature;
-
-  protected TSEmptyBodyFunctionExpression = this.visitFunctionTypeSignature;
-
   protected TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
     // enum members create variables because they can be referenced within the enum,
     // but they obviously aren't unused variables for the purposes of this rule.
@@ -312,15 +316,11 @@ class UnusedVarsVisitor<
     }
   }
 
-  protected TSFunctionType = this.visitFunctionTypeSignature;
-
   protected TSMappedType(node: TSESTree.TSMappedType): void {
     // mapped types create a variable for their type name, but it's not necessary to reference it,
     // so we shouldn't consider it as unused for the purpose of this rule.
     this.markVariableAsUsed(node.typeParameter.name);
   }
-
-  protected TSMethodSignature = this.visitFunctionTypeSignature;
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     // -- global augmentation can be in any file, and they do not need exports

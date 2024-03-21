@@ -7,11 +7,28 @@ import type { Linter } from './Linter';
 
 declare class ESLintBase {
   /**
+   * The version text.
+   */
+  static readonly version: string;
+
+  /**
    * Creates a new instance of the main ESLint API.
    * @param options The options for this instance.
    */
   constructor(options?: ESLint.ESLintOptions);
-
+  /**
+   * This method copies the given results and removes warnings. The returned value contains only errors.
+   * @param results The LintResult objects to filter.
+   * @returns The filtered LintResult objects.
+   */
+  static getErrorResults(results: ESLint.LintResult): ESLint.LintResult;
+  /**
+   * This method writes code modified by ESLint's autofix feature into its respective file. If any of the modified
+   * files don't exist, this method does nothing.
+   * @param results The LintResult objects to write.
+   * @returns The promise that will be fulfilled after all files are written.
+   */
+  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
   /**
    * This method calculates the configuration for a given file, which can be useful for debugging purposes.
    * - It resolves and merges extends and overrides settings into the top level configuration.
@@ -32,6 +49,11 @@ declare class ESLintBase {
    *          it will return true.
    */
   isPathIgnored(filePath: string): Promise<boolean>;
+
+  ////////////////////
+  // static members //
+  ////////////////////
+
   /**
    * This method lints the files that match the glob patterns and then returns the results.
    * @param patterns The lint target files. This can contain any of file paths, directory paths, and glob patterns.
@@ -71,28 +93,6 @@ declare class ESLintBase {
    * @returns The promise that will be fulfilled with a Formatter object.
    */
   loadFormatter(name?: string): Promise<ESLint.Formatter>;
-
-  ////////////////////
-  // static members //
-  ////////////////////
-
-  /**
-   * This method copies the given results and removes warnings. The returned value contains only errors.
-   * @param results The LintResult objects to filter.
-   * @returns The filtered LintResult objects.
-   */
-  static getErrorResults(results: ESLint.LintResult): ESLint.LintResult;
-  /**
-   * This method writes code modified by ESLint's autofix feature into its respective file. If any of the modified
-   * files don't exist, this method does nothing.
-   * @param results The LintResult objects to write.
-   * @returns The promise that will be fulfilled after all files are written.
-   */
-  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
-  /**
-   * The version text.
-   */
-  static readonly version: string;
 }
 
 namespace ESLint {

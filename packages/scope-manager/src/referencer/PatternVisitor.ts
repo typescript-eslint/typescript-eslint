@@ -15,6 +15,25 @@ type PatternVisitorCallback = (
 
 type PatternVisitorOptions = VisitorOptions;
 class PatternVisitor extends VisitorBase {
+  readonly #assignments: (
+    | TSESTree.AssignmentExpression
+    | TSESTree.AssignmentPattern
+  )[] = [];
+
+  readonly #callback: PatternVisitorCallback;
+  readonly #restElements: TSESTree.RestElement[] = [];
+  readonly #rootPattern: TSESTree.Node;
+  public readonly rightHandNodes: TSESTree.Node[] = [];
+  constructor(
+    options: PatternVisitorOptions,
+    rootPattern: TSESTree.Node,
+    callback: PatternVisitorCallback,
+  ) {
+    super(options);
+    this.#rootPattern = rootPattern;
+    this.#callback = callback;
+  }
+
   public static isPattern(
     node: TSESTree.Node,
   ): node is
@@ -34,25 +53,6 @@ class PatternVisitor extends VisitorBase {
       nodeType === AST_NODE_TYPES.RestElement ||
       nodeType === AST_NODE_TYPES.AssignmentPattern
     );
-  }
-
-  readonly #rootPattern: TSESTree.Node;
-  readonly #callback: PatternVisitorCallback;
-  readonly #assignments: (
-    | TSESTree.AssignmentExpression
-    | TSESTree.AssignmentPattern
-  )[] = [];
-  public readonly rightHandNodes: TSESTree.Node[] = [];
-  readonly #restElements: TSESTree.RestElement[] = [];
-
-  constructor(
-    options: PatternVisitorOptions,
-    rootPattern: TSESTree.Node,
-    callback: PatternVisitorCallback,
-  ) {
-    super(options);
-    this.#rootPattern = rootPattern;
-    this.#callback = callback;
   }
 
   protected ArrayExpression(node: TSESTree.ArrayExpression): void {

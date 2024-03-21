@@ -39,19 +39,6 @@ class GlobalScope extends ScopeBase<
     };
   }
 
-  public defineImplicitVariable(
-    name: string,
-    options: ImplicitLibVariableOptions,
-  ): void {
-    this.defineVariable(
-      new ImplicitLibVariable(this, name, options),
-      this.set,
-      this.variables,
-      null,
-      null,
-    );
-  }
-
   public close(scopeManager: ScopeManager): Scope | null {
     assert(this.leftToResolve);
 
@@ -74,6 +61,19 @@ class GlobalScope extends ScopeBase<
 
     this.implicit.leftToBeResolved = this.leftToResolve;
     return super.close(scopeManager);
+  }
+
+  public defineImplicitVariable(
+    name: string,
+    options: ImplicitLibVariableOptions,
+  ): void {
+    this.defineVariable(
+      new ImplicitLibVariable(this, name, options),
+      this.set,
+      this.variables,
+      null,
+      null,
+    );
   }
 }
 

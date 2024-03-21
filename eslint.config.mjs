@@ -71,8 +71,8 @@ export default tseslint.config(
     rules: Object.fromEntries(
       Object.keys(perfectionistPlugin.configs['recommended-natural'].rules)
         .filter(rule =>
-          ['array-includes'].every(
-            postfix => rule != `perfectionist/sort-${postfix}`,
+          ['array-includes', 'astro-attributes', 'classes'].every(
+            postfix => rule !== `perfectionist/sort-${postfix}`,
           ),
         )
         .map(rule => [rule, 'off']),

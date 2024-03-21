@@ -211,6 +211,46 @@ declare class TokenStore {
 
 declare class SourceCodeBase extends TokenStore {
   /**
+   * The parsed AST for the source code.
+   */
+  ast: SourceCode.Program;
+  /**
+   * The flag to indicate that the source code has Unicode BOM.
+   */
+  hasBOM: boolean;
+
+  /**
+   * The indexes in `text` that each line starts
+   */
+  lineStartIndices: number[];
+  /**
+   * The source code split into lines according to ECMA-262 specification.
+   * This is done to avoid each rule needing to do so separately.
+   */
+  lines: string[];
+  /**
+   * The parser services of this source code.
+   */
+  parserServices?: Partial<ParserServices>;
+  /**
+   * The scope of this source code.
+   */
+  scopeManager: Scope.ScopeManager | null;
+  /**
+   * The original text source code. BOM was stripped from this text.
+   */
+  text: string;
+  /**
+   * All of the tokens and comments in the AST.
+   *
+   * TODO: rename to 'tokens'
+   */
+  tokensAndComments: TSESTree.Token[];
+  /**
+   * The visitor keys to traverse AST.
+   */
+  visitorKeys: SourceCode.VisitorKeys;
+  /**
    * Represents parsed source code.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
    */
@@ -220,16 +260,28 @@ declare class SourceCodeBase extends TokenStore {
    * @param config The config object.
    */
   constructor(config: SourceCode.SourceCodeConfig);
-
   /**
-   * The parsed AST for the source code.
+   * Split the source code into multiple lines based on the line delimiters.
+   * @param text Source code as a string.
+   * @returns Array of source code lines.
    */
-  ast: SourceCode.Program;
+  static splitLines(text: string): string[];
   /**
    * Retrieves an array containing all comments in the source code.
    * @returns An array of comment nodes.
    */
   getAllComments(): TSESTree.Comment[];
+  /**
+   * Returns an array of the ancestors of the given node, starting at
+   * the root of the AST and continuing through the direct parent of the current node.
+   * This array does not include the currently-traversed node itself.
+   */
+  getAncestors(node: TSESTree.Node): TSESTree.Node[];
+  /**
+   * Returns a list of variables declared by the given node.
+   * This information can be used to track references to variables.
+   */
+  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
   /**
    * Converts a (line, column) pair into a range index.
    * @param loc A line/column location
@@ -254,6 +306,11 @@ declare class SourceCodeBase extends TokenStore {
    */
   getNodeByRangeIndex(index: number): TSESTree.Node | null;
   /**
+   * Returns the scope of the given node.
+   * This information can be used track references to variables.
+   */
+  getScope(node: TSESTree.Node): Scope.Scope;
+  /**
    * Gets the source code for the given node.
    * @param node The AST node to get the text for.
    * @param beforeCount The number of characters before the node to retrieve.
@@ -265,10 +322,6 @@ declare class SourceCodeBase extends TokenStore {
     beforeCount?: number,
     afterCount?: number,
   ): string;
-  /**
-   * The flag to indicate that the source code has Unicode BOM.
-   */
-  hasBOM: boolean;
   /**
    * Determines if two nodes or tokens have at least one whitespace character
    * between them. Order does not matter. Returns false if the given nodes or
@@ -294,69 +347,16 @@ declare class SourceCodeBase extends TokenStore {
    * @deprecated in favor of isSpaceBetween
    */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
-  /**
-   * Returns the scope of the given node.
-   * This information can be used track references to variables.
-   */
-  getScope(node: TSESTree.Node): Scope.Scope;
-  /**
-   * Returns an array of the ancestors of the given node, starting at
-   * the root of the AST and continuing through the direct parent of the current node.
-   * This array does not include the currently-traversed node itself.
-   */
-  getAncestors(node: TSESTree.Node): TSESTree.Node[];
-  /**
-   * Returns a list of variables declared by the given node.
-   * This information can be used to track references to variables.
-   */
-  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
-  /**
-   * Marks a variable with the given name in the current scope as used.
-   * This affects the no-unused-vars rule.
-   */
-  markVariableAsUsed(name: string, node: TSESTree.Node): boolean;
-  /**
-   * The source code split into lines according to ECMA-262 specification.
-   * This is done to avoid each rule needing to do so separately.
-   */
-  lines: string[];
-  /**
-   * The indexes in `text` that each line starts
-   */
-  lineStartIndices: number[];
-  /**
-   * The parser services of this source code.
-   */
-  parserServices?: Partial<ParserServices>;
-  /**
-   * The scope of this source code.
-   */
-  scopeManager: Scope.ScopeManager | null;
-  /**
-   * The original text source code. BOM was stripped from this text.
-   */
-  text: string;
-  /**
-   * All of the tokens and comments in the AST.
-   *
-   * TODO: rename to 'tokens'
-   */
-  tokensAndComments: TSESTree.Token[];
-  /**
-   * The visitor keys to traverse AST.
-   */
-  visitorKeys: SourceCode.VisitorKeys;
 
   ////////////////////
   // static members //
   ////////////////////
 
   /**
-   * Split the source code into multiple lines based on the line delimiters.
-   * @param text Source code as a string.
-   * @returns Array of source code lines.
+   * Marks a variable with the given name in the current scope as used.
+   * This affects the no-unused-vars rule.
    */
-  static splitLines(text: string): string[];
+  markVariableAsUsed(name: string, node: TSESTree.Node): boolean;
 }
 
 namespace SourceCode {

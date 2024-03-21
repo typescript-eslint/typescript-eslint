@@ -26,6 +26,34 @@ export class RuleDocsPage {
   #headingIndices: RequiredHeadingIndices;
   #rule: Readonly<RuleModuleWithMetaDocs>;
 
+  constructor(
+    children: unist.Node[],
+    file: Readonly<VFileWithStem>,
+    rule: Readonly<RuleModuleWithMetaDocs>,
+  ) {
+    this.#children = children;
+    this.#file = file;
+    this.#headingIndices = this.#recreateHeadingIndices();
+    this.#rule = rule;
+  }
+
+  #recreateHeadingIndices(): RequiredHeadingIndices {
+    return {
+      howToUse: findH2Index(this.#children, requiredHeadingNames[0]),
+      options: findH2Index(this.#children, requiredHeadingNames[1]),
+      whenNotToUseIt: findH2Index(this.#children, requiredHeadingNames[2]),
+    };
+  }
+
+  spliceChildren(
+    start: number,
+    deleteCount: number,
+    ...items: unist.Node[]
+  ): void {
+    this.#children.splice(start, deleteCount, ...items);
+    this.#headingIndices = this.#recreateHeadingIndices();
+  }
+
   get children(): Readonly<unist.Node[]> {
     return this.#children;
   }
@@ -40,33 +68,5 @@ export class RuleDocsPage {
 
   get rule(): Readonly<RuleModuleWithMetaDocs> {
     return this.#rule;
-  }
-
-  constructor(
-    children: unist.Node[],
-    file: Readonly<VFileWithStem>,
-    rule: Readonly<RuleModuleWithMetaDocs>,
-  ) {
-    this.#children = children;
-    this.#file = file;
-    this.#headingIndices = this.#recreateHeadingIndices();
-    this.#rule = rule;
-  }
-
-  spliceChildren(
-    start: number,
-    deleteCount: number,
-    ...items: unist.Node[]
-  ): void {
-    this.#children.splice(start, deleteCount, ...items);
-    this.#headingIndices = this.#recreateHeadingIndices();
-  }
-
-  #recreateHeadingIndices(): RequiredHeadingIndices {
-    return {
-      howToUse: findH2Index(this.#children, requiredHeadingNames[0]),
-      options: findH2Index(this.#children, requiredHeadingNames[1]),
-      whenNotToUseIt: findH2Index(this.#children, requiredHeadingNames[2]),
-    };
   }
 }

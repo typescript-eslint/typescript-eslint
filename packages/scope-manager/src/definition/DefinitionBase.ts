@@ -16,8 +16,6 @@ abstract class DefinitionBase<
    */
   public readonly $id: number = generator();
 
-  public readonly type: Type;
-
   /**
    * The `Identifier` node of this definition
    * @public
@@ -35,6 +33,8 @@ abstract class DefinitionBase<
    * @public
    */
   public readonly parent: Parent;
+
+  public readonly type: Type;
 
   constructor(type: Type, name: Name, node: Node, parent: Parent) {
     this.type = type;

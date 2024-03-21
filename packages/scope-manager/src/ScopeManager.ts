@@ -35,6 +35,7 @@ interface ScopeManagerOptions {
  * @see https://eslint.org/docs/latest/developer-guide/scope-manager-interface#scopemanager-interface
  */
 class ScopeManager {
+  readonly #options: ScopeManagerOptions;
   public currentScope: Scope | null;
   public readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
   /**
@@ -42,22 +43,11 @@ class ScopeManager {
    */
   public globalScope: GlobalScope | null;
   public readonly nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
-  readonly #options: ScopeManagerOptions;
   /**
    * All scopes
    * @public
    */
   public readonly scopes: Scope[];
-
-  public get variables(): Variable[] {
-    const variables = new Set<Variable>();
-    function recurse(scope: Scope): void {
-      scope.variables.forEach(v => variables.add(v));
-      scope.childScopes.forEach(recurse);
-    }
-    this.scopes.forEach(recurse);
-    return Array.from(variables).sort((a, b) => a.$id - b.$id);
-  }
 
   constructor(options: ScopeManagerOptions) {
     this.scopes = [];
@@ -66,35 +56,6 @@ class ScopeManager {
     this.currentScope = null;
     this.#options = options;
     this.declaredVariables = new WeakMap();
-  }
-
-  public isGlobalReturn(): boolean {
-    return this.#options.globalReturn === true;
-  }
-
-  public isModule(): boolean {
-    return this.#options.sourceType === 'module';
-  }
-
-  public isImpliedStrict(): boolean {
-    return this.#options.impliedStrict === true;
-  }
-
-  public isStrictModeSupported(): boolean {
-    return true;
-  }
-
-  public isES6(): boolean {
-    return true;
-  }
-
-  /**
-   * Get the variables that a given AST node defines. The gotten variables' `def[].node`/`def[].parent` property is the node.
-   * If the node does not define any variable, this returns an empty array.
-   * @param node An AST node to get their variables.
-   */
-  public getDeclaredVariables(node: TSESTree.Node): Variable[] {
-    return this.declaredVariables.get(node) ?? [];
   }
 
   /**
@@ -141,14 +102,33 @@ class ScopeManager {
     return scopes.find(predicate) ?? null;
   }
 
-  protected nestScope<T extends Scope>(scope: T): T;
-  protected nestScope(scope: Scope): Scope {
-    if (scope instanceof GlobalScope) {
-      assert(this.currentScope == null);
-      this.globalScope = scope;
-    }
-    this.currentScope = scope;
-    return scope;
+  /**
+   * Get the variables that a given AST node defines. The gotten variables' `def[].node`/`def[].parent` property is the node.
+   * If the node does not define any variable, this returns an empty array.
+   * @param node An AST node to get their variables.
+   */
+  public getDeclaredVariables(node: TSESTree.Node): Variable[] {
+    return this.declaredVariables.get(node) ?? [];
+  }
+
+  public isES6(): boolean {
+    return true;
+  }
+
+  public isGlobalReturn(): boolean {
+    return this.#options.globalReturn === true;
+  }
+
+  public isImpliedStrict(): boolean {
+    return this.#options.impliedStrict === true;
+  }
+
+  public isModule(): boolean {
+    return this.#options.sourceType === 'module';
+  }
+
+  public isStrictModeSupported(): boolean {
+    return true;
   }
 
   public nestBlockScope(node: BlockScope['block']): BlockScope {
@@ -160,12 +140,6 @@ class ScopeManager {
     assert(this.currentScope);
     return this.nestScope(new CatchScope(this, this.currentScope, node));
   }
-
-  public nestClassScope(node: ClassScope['block']): ClassScope {
-    assert(this.currentScope);
-    return this.nestScope(new ClassScope(this, this.currentScope, node));
-  }
-
   public nestClassFieldInitializerScope(
     node: ClassFieldInitializerScope['block'],
   ): ClassFieldInitializerScope {
@@ -173,6 +147,11 @@ class ScopeManager {
     return this.nestScope(
       new ClassFieldInitializerScope(this, this.currentScope, node),
     );
+  }
+
+  public nestClassScope(node: ClassScope['block']): ClassScope {
+    assert(this.currentScope);
+    return this.nestScope(new ClassScope(this, this.currentScope, node));
   }
 
   public nestClassStaticBlockScope(
@@ -238,6 +217,17 @@ class ScopeManager {
     return this.nestScope(new ModuleScope(this, this.currentScope, node));
   }
 
+  protected nestScope<T extends Scope>(scope: T): T;
+
+  protected nestScope(scope: Scope): Scope {
+    if (scope instanceof GlobalScope) {
+      assert(this.currentScope == null);
+      this.globalScope = scope;
+    }
+    this.currentScope = scope;
+    return scope;
+  }
+
   public nestSwitchScope(node: SwitchScope['block']): SwitchScope {
     assert(this.currentScope);
     return this.nestScope(new SwitchScope(this, this.currentScope, node));
@@ -261,6 +251,16 @@ class ScopeManager {
   public nestWithScope(node: WithScope['block']): WithScope {
     assert(this.currentScope);
     return this.nestScope(new WithScope(this, this.currentScope, node));
+  }
+
+  public get variables(): Variable[] {
+    const variables = new Set<Variable>();
+    function recurse(scope: Scope): void {
+      scope.variables.forEach(v => variables.add(v));
+      scope.childScopes.forEach(recurse);
+    }
+    this.scopes.forEach(recurse);
+    return Array.from(variables).sort((a, b) => a.$id - b.$id);
   }
 }
 
