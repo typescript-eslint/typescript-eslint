@@ -22,6 +22,7 @@ interface ChecksVoidReturnOptions {
   attributes?: boolean;
   properties?: boolean;
   returns?: boolean;
+  subtypes?: boolean;
   variables?: boolean;
 }
 
@@ -32,6 +33,7 @@ type MessageId =
   | 'voidReturnAttribute'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
+  | 'voidReturnSubtype'
   | 'voidReturnVariable';
 
 function parseChecksVoidReturn(
@@ -48,6 +50,7 @@ function parseChecksVoidReturn(
         attributes: true,
         properties: true,
         returns: true,
+        subtypes: true,
         variables: true,
       };
 
@@ -57,6 +60,7 @@ function parseChecksVoidReturn(
         attributes: checksVoidReturn.attributes ?? true,
         properties: checksVoidReturn.properties ?? true,
         returns: checksVoidReturn.returns ?? true,
+        subtypes: checksVoidReturn.subtypes ?? true,
         variables: checksVoidReturn.variables ?? true,
       };
   }
@@ -73,14 +77,16 @@ export default createRule<Options, MessageId>({
     messages: {
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
-      voidReturnVariable:
-        'Promise-returning function provided to variable where a void return was expected.',
+      voidReturnAttribute:
+        'Promise-returning function provided to attribute where a void return was expected.',
       voidReturnProperty:
         'Promise-returning function provided to property where a void return was expected.',
       voidReturnReturnValue:
         'Promise-returning function provided to return value where a void return was expected.',
-      voidReturnAttribute:
-        'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnSubtype:
+        "Promise-returning method provided where a void return was expected by base type '{{ baseTypeName }}'.",
+      voidReturnVariable:
+        'Promise-returning function provided to variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
       spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
@@ -102,6 +108,7 @@ export default createRule<Options, MessageId>({
                   attributes: { type: 'boolean' },
                   properties: { type: 'boolean' },
                   returns: { type: 'boolean' },
+                  methods: { type: 'boolean' },
                   variables: { type: 'boolean' },
                 },
                 type: 'object',
@@ -158,6 +165,11 @@ export default createRule<Options, MessageId>({
           }),
           ...(checksVoidReturn.returns && {
             ReturnStatement: checkReturnStatement,
+          }),
+          ...(checksVoidReturn.subtypes && {
+            ClassDeclaration: checkClassLikeOrInterfaceNode,
+            ClassExpression: checkClassLikeOrInterfaceNode,
+            TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
           }),
           ...(checksVoidReturn.variables && {
             AssignmentExpression: checkAssignment,
@@ -367,6 +379,73 @@ export default createRule<Options, MessageId>({
           node: node.argument,
         });
       }
+    }
+
+    function checkClassLikeOrInterfaceNode(
+      node:
+        | TSESTree.ClassDeclaration
+        | TSESTree.ClassExpression
+        | TSESTree.TSInterfaceDeclaration,
+    ): void {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      if (
+        tsNode.heritageClauses === undefined ||
+        tsNode.heritageClauses.length === 0
+      ) {
+        return;
+      }
+
+      const heritageTypes = tsNode.heritageClauses
+        .map(heritageClause => heritageClause.types)
+        .flat()
+        .map(
+          expressionWithTypeArguments => expressionWithTypeArguments.expression,
+        )
+        .map(expression => checker.getTypeAtLocation(expression));
+
+      tsNode.members.forEach(member => {
+        const memberName = member.name?.getText();
+        if (!memberName) {
+          return;
+        }
+        const doesReturnPromise = returnsThenable(checker, member);
+        if (!doesReturnPromise) {
+          return;
+        }
+        heritageTypes.forEach(heritageType => {
+          const heritageTypeName = heritageType.getSymbol()?.name;
+          if (!heritageTypeName) {
+            return;
+          }
+          for (const subType of tsutils.unionTypeParts(
+            checker.getApparentType(heritageType),
+          )) {
+            const subtypeMember = checker.getPropertyOfType(
+              subType,
+              memberName,
+            );
+            if (!subtypeMember) {
+              return;
+            }
+          }
+          const heritageMember = checker.getPropertyOfType(
+            heritageType,
+            memberName,
+          );
+          if (!heritageMember) {
+            return;
+          }
+          const baseMemberType = checker.getTypeOfSymbol(heritageMember);
+
+          if (isVoidReturningFunctionType(checker, member, baseMemberType)) {
+            context.report({
+              node: services.tsNodeToESTreeNodeMap.get(member),
+              messageId: 'voidReturnSubtype', // Ensure you have a corresponding message for this ID
+              data: { baseTypeName: heritageTypeName },
+            });
+          }
+        });
+      });
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
