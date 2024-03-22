@@ -272,6 +272,10 @@ export default createRule({
           PrimitiveTypeFlag,
           TSESTree.TypeNode[]
         >();
+        const seenUnionTypes = new Map<
+          TSESTree.TypeNode,
+          TypeFlagsWithName[]
+        >();
 
         function checkIntersectionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
@@ -323,8 +327,58 @@ export default createRule({
               }
             }
           }
+          // if any typeNode is TSTypeReference and typePartFlags have more than 1 element, than the referenced type is definitely a union.
+          if (typePartFlags.length >= 2) {
+            seenUnionTypes.set(typeNode, typePartFlags);
+          }
         }
-
+        /**
+         * @example
+         * ```ts
+         * type F = "a"|2|"b";
+         * type I = F & string;
+         * ```
+         * This function checks if all the union members of `F` are assignable to the other member of `I`. If every member is assignable, then its reported else not.
+         */
+        const checkIfUnionsAreAssignable = (): undefined => {
+          for (const [typeRef, typeValues] of seenUnionTypes) {
+            let primitive: number | undefined = undefined;
+            for (const { typeFlags } of typeValues) {
+              if (
+                seenPrimitiveTypes.has(
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ],
+                )
+              ) {
+                primitive =
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ];
+              } else {
+                primitive = undefined;
+                break;
+              }
+            }
+            if (Number.isInteger(primitive)) {
+              context.report({
+                data: {
+                  literal: typeValues.map(name => name.typeName).join(' | '),
+                  primitive:
+                    primitiveTypeFlagNames[
+                      primitive as keyof typeof primitiveTypeFlagNames
+                    ],
+                },
+                messageId: 'primitiveOverridden',
+                node: typeRef,
+              });
+            }
+          }
+        };
+        if (seenUnionTypes.size > 0) {
+          checkIfUnionsAreAssignable();
+          return;
+        }
         // For each primitive type of all the seen primitive types,
         // if there was a literal type seen that overrides it,
         // report each of the primitive type's type nodes

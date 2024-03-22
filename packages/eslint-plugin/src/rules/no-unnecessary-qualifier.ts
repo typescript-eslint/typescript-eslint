@@ -93,9 +93,8 @@ export default createRule({
         accessedSymbol.flags,
         context.sourceCode.getText(name),
       );
-      return (
-        fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
-      );
+
+      return !!fromScope && symbolsAreEqual(accessedSymbol, fromScope);
     }
 
     function visitNamespaceAccess(

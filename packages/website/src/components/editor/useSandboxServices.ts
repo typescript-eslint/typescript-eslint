@@ -3,6 +3,7 @@ import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 import semverSatisfies from 'semver/functions/satisfies';
 
+// eslint-disable-next-line @typescript-eslint/internal/no-relative-paths-to-internal-packages
 import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
@@ -114,8 +115,13 @@ export const useSandboxServices = (
           sandboxInstance,
         });
       })
-      .catch(setServices);
-
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          setServices(err);
+        } else {
+          setServices(new Error(String(err)));
+        }
+      });
     return (): void => {
       if (!sandboxInstance) {
         return;

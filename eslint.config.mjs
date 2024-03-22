@@ -83,7 +83,6 @@ export default tseslint.config(
           // in the rare case that we do - just need to manually restart their IDE.
           glob: 'Infinity',
         },
-        sourceType: 'module',
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -176,6 +175,8 @@ export default tseslint.config(
       //
 
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+      '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
+        'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 

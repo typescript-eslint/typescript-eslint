@@ -123,6 +123,7 @@ function writeTable(contributors: User[], perLine = 5): void {
     lines.push('  </tr>');
   }
 
+  lines.push('  </tr>');
   lines.push('</table>');
   lines.push('');
   lines.push('<!-- markdownlint-restore -->');
@@ -168,7 +169,7 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

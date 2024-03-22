@@ -616,6 +616,59 @@ function getRank(
 }
 
 /**
+ * Groups members into arrays of consecutive members with the same rank.
+ * If, for example, the memberSet parameter looks like the following...
+ * @example
+ * ```
+ * interface Foo {
+ *   [a: string]: number;
+ *
+ *   a: x;
+ *   B: x;
+ *   c: x;
+ *
+ *   c(): void;
+ *   B(): void;
+ *   a(): void;
+ *
+ *   (): Baz;
+ *
+ *   new (): Bar;
+ * }
+ * ```
+ * ...the resulting array will look like: [[a, B, c], [c, B, a]].
+ * @param memberSet The members to be grouped.
+ * @param memberType The configured order of member types.
+ * @param supportsModifiers It'll get passed to getRank().
+ * @returns The array of groups of members.
+ */
+function groupMembersByType(
+  members: Member[],
+  memberTypes: MemberType[],
+  supportsModifiers: boolean,
+): Member[][] {
+  const groupedMembers: Member[][] = [];
+  const memberRanks = members.map(member =>
+    getRank(member, memberTypes, supportsModifiers),
+  );
+  let previousRank: number | undefined = undefined;
+  members.forEach((member, index) => {
+    if (index === members.length - 1) {
+      return;
+    }
+    const rankOfCurrentMember = memberRanks[index];
+    const rankOfNextMember = memberRanks[index + 1];
+    if (rankOfCurrentMember === previousRank) {
+      groupedMembers.at(-1)?.push(member);
+    } else if (rankOfCurrentMember === rankOfNextMember) {
+      groupedMembers.push([member]);
+      previousRank = rankOfCurrentMember;
+    }
+  });
+  return groupedMembers;
+}
+
+/**
  * Gets the lowest possible rank(s) higher than target.
  * e.g. given the following order:
  *   ...
@@ -936,6 +989,21 @@ export default createRule<Options, MessageIds>({
       let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
+      /**
+       * It runs an alphabetic sort on the groups of the members of the class in the source code.
+       * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
+       */
+      const checkAlphaSortForAllMembers = (memberSet: Member[]): undefined => {
+        const hasAlphaSort = !!(order && order !== 'as-written');
+        if (hasAlphaSort && Array.isArray(memberTypes)) {
+          groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
+            members => {
+              checkAlphaSort(members, order as AlphabeticalOrder);
+            },
+          );
+        }
+      };
+
       // returns true if everything is good and false if an error was reported
       const checkOrder = (memberSet: Member[]): boolean => {
         const hasAlphaSort = !!(order && order !== 'as-written');
@@ -949,20 +1017,20 @@ export default createRule<Options, MessageIds>({
           );
 
           if (grouped == null) {
+            checkAlphaSortForAllMembers(members);
             return false;
           }
 
           if (hasAlphaSort) {
-            return !grouped.some(
-              groupMember =>
-                !checkAlphaSort(groupMember, order as AlphabeticalOrder),
+            grouped.map(groupMember =>
+              checkAlphaSort(groupMember, order as AlphabeticalOrder),
             );
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
         }
 
-        return true;
+        return false;
       };
 
       if (Array.isArray(orderConfig)) {

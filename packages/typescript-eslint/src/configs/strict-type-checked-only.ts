@@ -51,9 +51,29 @@ export default (
       '@typescript-eslint/prefer-return-this-type': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',
-      '@typescript-eslint/restrict-plus-operands': 'error',
-      '@typescript-eslint/restrict-template-expressions': 'error',
+      '@typescript-eslint/restrict-plus-operands': [
+        'error',
+        {
+          allowAny: false,
+          allowBoolean: false,
+          allowNullish: false,
+          allowNumberAndString: false,
+          allowRegExp: false,
+        },
+      ],
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowAny: false,
+          allowBoolean: false,
+          allowNullish: false,
+          allowNumber: false,
+          allowRegExp: false,
+          allowNever: false,
+        },
+      ],
       '@typescript-eslint/unbound-method': 'error',
+      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
     },
   },
 ];
