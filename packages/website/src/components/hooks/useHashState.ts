@@ -208,6 +208,7 @@ function useHashState(
         }
 
         writeStateToLocalStorage(newState);
+
         history.replace({
           ...history.location,
           hash: writeStateToUrl(newState),
