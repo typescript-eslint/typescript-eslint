@@ -179,14 +179,13 @@ export default createRule<
         const isUndefinedIdentifier =
           leftNode.type === AST_NODE_TYPES.Identifier;
 
-        const isNotNullCheck =
+        const strictlyNullCheck =
           rightNode.type === AST_NODE_TYPES.BinaryExpression &&
           rightNode.operator === '!==' &&
           rightNode.right.type === AST_NODE_TYPES.Literal &&
           rightNode.right.value == null;
 
-        if (isUndefinedIdentifier && isNotNullCheck) {
-          // Skip && with strict null equality checks on the right side: data && data.value !== null
+        if (isUndefinedIdentifier && strictlyNullCheck) {
           return;
         }
 
