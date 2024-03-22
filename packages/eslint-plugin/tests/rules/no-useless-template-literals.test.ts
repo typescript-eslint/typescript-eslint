@@ -216,6 +216,18 @@ ruleTester.run('no-useless-template-literals', rule, {
         },
       ],
     },
+    {
+      code: '`${/a/gmi}`;',
+      output: '`/a/gim`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 10,
+        },
+      ],
+    },
 
     {
       code: noFormat`\`\${    1    }\`;`,
@@ -673,6 +685,43 @@ declare const nested: string, interpolation: string;
     {
       code: "`some ${'\\\\`'} string`;",
       output: '`some \\\\\\` string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+
+    {
+      code: '`some ${/`/} string`;',
+      output: '`some /\\`/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/${}/} string`;',
+      output: '`some /\\${}/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/\\\\/} string`;',
+      output: '`some /\\\\\\\\/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/\\\\/} string`;',
+      output: '`some /\\\\\\\\/ string`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',

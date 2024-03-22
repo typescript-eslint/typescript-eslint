@@ -149,7 +149,7 @@ export default createRule<[], MessageId>({
                 const escapedValue =
                   typeof expression.value === 'string'
                     ? expression.raw.slice(1, -1).replace(/([`$])/g, '\\$1')
-                    : String(expression.value);
+                    : String(expression.value).replace(/([`$\\])/g, '\\$1');
 
                 fixes.push(fixer.replaceText(expression, escapedValue));
               } else if (isTemplateLiteral(expression)) {
