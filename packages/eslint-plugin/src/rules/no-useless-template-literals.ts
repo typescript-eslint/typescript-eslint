@@ -148,8 +148,16 @@ export default createRule<[], MessageId>({
               if (isLiteral(expression)) {
                 const escapedValue =
                   typeof expression.value === 'string'
-                    ? expression.raw.slice(1, -1).replace(/([`$])/g, '\\$1')
-                    : String(expression.value).replace(/([`$\\])/g, '\\$1');
+                    ? // '1'   -> '1'
+                      // '`'   -> \`
+                      // '${}' -> \${}
+                      // '\\'  -> \\
+                      expression.raw.slice(1, -1).replace(/([`$])/g, '\\$1')
+                    : // 1     -> 1
+                      // /`/   -> /\`/
+                      // /${}/ -> /\${}/
+                      // /\\/  -> /\\\\/
+                      String(expression.value).replace(/([`$\\])/g, '\\$1');
 
                 fixes.push(fixer.replaceText(expression, escapedValue));
               } else if (isTemplateLiteral(expression)) {
