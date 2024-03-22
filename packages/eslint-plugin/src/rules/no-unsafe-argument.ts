@@ -181,6 +181,7 @@ export default createRule<[], MessageIds>({
 
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const signature = FunctionSignature.create(checker, tsNode);
+      // istanbul ignore next
       if (!signature) {
         return;
       }
