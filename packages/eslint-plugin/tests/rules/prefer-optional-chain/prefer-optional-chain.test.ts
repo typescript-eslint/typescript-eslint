@@ -28,6 +28,7 @@ describe('|| {}', () => {
       'foo ?? {};',
       '(foo ?? {})?.bar;',
       'foo ||= bar ?? {};',
+      'data && data.value !== null',
       // https://github.com/typescript-eslint/typescript-eslint/issues/8380
       `
         const a = null;
