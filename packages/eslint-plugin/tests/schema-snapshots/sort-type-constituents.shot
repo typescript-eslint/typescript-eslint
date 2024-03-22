@@ -16,6 +16,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to check union types.",
         "type": "boolean"
       },
+      "caseSensitiveSorting": {
+        "description": "Whether to sort using case sensitive.",
+        "type": "boolean"
+      },
       "groupOrder": {
         "description": "Ordering of the groups.",
         "items": {
@@ -51,6 +55,8 @@ type Options = [
     checkIntersections?: boolean;
     /** Whether to check union types. */
     checkUnions?: boolean;
+    /** Whether to sort using case sensitive. */
+    caseSensitiveSorting?: boolean;
     /** Ordering of the groups. */
     groupOrder?: (
       | 'conditional'
