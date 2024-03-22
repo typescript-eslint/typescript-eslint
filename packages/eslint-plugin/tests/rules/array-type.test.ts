@@ -1918,6 +1918,21 @@ interface FooInterface {
         },
       ],
     },
+    {
+      code: "const x: Readonly<string[]> = ['a', 'b'];",
+      output: "const x: readonly string[] = ['a', 'b'];",
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArrayReadonly',
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+        },
+      ],
+    },
   ],
 });
 
