@@ -28,6 +28,7 @@ describe('|| {}', () => {
       'foo ?? {};',
       '(foo ?? {})?.bar;',
       'foo ||= bar ?? {};',
+      'data && data.value !== null',
     ],
     invalid: [
       {
