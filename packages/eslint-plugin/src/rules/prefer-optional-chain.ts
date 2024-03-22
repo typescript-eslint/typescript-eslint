@@ -183,7 +183,7 @@ export default createRule<
           rightNode.type === AST_NODE_TYPES.BinaryExpression &&
           rightNode.operator === '!==' &&
           rightNode.right.type === AST_NODE_TYPES.Literal &&
-          rightNode.right.value === null;
+          rightNode.right.value == null;
 
         if (isUndefinedIdentifier && isNotNullCheck) {
           // Skip && with strict null equality checks on the right side: data && data.value !== null
@@ -201,20 +201,35 @@ export default createRule<
           options,
         );
 
-        // Analyze the chain for potential fixes
-        analyzeChain(
-          context,
-          parserServices,
-          options,
-          node.operator,
-          operands.filter(
-            (operand): operand is ValidOperand =>
-              operand.type === OperandValidity.Valid,
-          ),
-        );
-
         for (const logical of newlySeenLogicals) {
           seenLogicals.add(logical);
+        }
+
+        let currentChain: ValidOperand[] = [];
+        for (const operand of operands) {
+          if (operand.type === OperandValidity.Invalid) {
+            analyzeChain(
+              context,
+              parserServices,
+              options,
+              node.operator,
+              currentChain,
+            );
+            currentChain = [];
+          } else {
+            currentChain.push(operand);
+          }
+        }
+
+        // make sure to check whatever's left
+        if (currentChain.length > 0) {
+          analyzeChain(
+            context,
+            parserServices,
+            options,
+            node.operator,
+            currentChain,
+          );
         }
       },
     };
