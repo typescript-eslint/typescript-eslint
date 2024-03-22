@@ -148,7 +148,7 @@ export default createRule<[], MessageId>({
               if (isLiteral(expression)) {
                 const escapedValue =
                   typeof expression.value === 'string'
-                    ? // '1'   -> '1'
+                    ? // '1'   -> 1
                       // '`'   -> \`
                       // '${}' -> \${}
                       // '\\'  -> \\
