@@ -3,6 +3,16 @@ import * as path from 'path';
 import { inferSingleRun } from '../../src/parseSettings/inferSingleRun';
 
 describe('inferSingleRun', () => {
+  const originalEnvCI = process.env.CI;
+  const originalProcessArgv = process.argv;
+  const originalTSESTreeSingleRun = process.env.TSESTREE_SINGLE_RUN;
+
+  afterEach(() => {
+    process.env.CI = originalEnvCI;
+    process.argv = originalProcessArgv;
+    process.env.TSESTREE_SINGLE_RUN = originalTSESTreeSingleRun;
+  });
+
   it.each(['project', 'programs'])(
     'returns false when given %j is null',
     key => {
@@ -16,7 +26,6 @@ describe('inferSingleRun', () => {
     ['true', true],
     ['false', false],
   ])('return %s when given TSESTREE_SINGLE_RUN is "%s"', (run, expected) => {
-    const originalTSESTreeSingleRun = process.env.TSESTREE_SINGLE_RUN;
     process.env.TSESTREE_SINGLE_RUN = run;
 
     const actual = inferSingleRun({
@@ -25,15 +34,11 @@ describe('inferSingleRun', () => {
     });
 
     expect(actual).toBe(expected);
-
-    // Restore process data
-    process.env.TSESTREE_SINGLE_RUN = originalTSESTreeSingleRun;
   });
 
   it.each(['node_modules/.bin/eslint', 'node_modules/eslint/bin/eslint.js'])(
     'returns true when singleRun is inferred from process.argv',
     pathName => {
-      const originalProcessArgv = process.argv;
       process.argv = ['', path.normalize(pathName), ''];
 
       const actual = inferSingleRun({
@@ -43,14 +48,10 @@ describe('inferSingleRun', () => {
       });
 
       expect(actual).toBe(true);
-
-      // Restore process data
-      process.argv = originalProcessArgv;
     },
   );
 
   it('returns true when singleRun is inferred from CI=true', () => {
-    const originalEnvCI = process.env.CI;
     process.env.CI = 'true';
 
     const actual = inferSingleRun({
@@ -60,9 +61,6 @@ describe('inferSingleRun', () => {
     });
 
     expect(actual).toBe(true);
-
-    // Restore process data
-    process.env.CI = originalEnvCI;
   });
 
   it('returns false when there is no way to infer singleRun', () => {
