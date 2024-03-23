@@ -71,4 +71,29 @@ describe('inferSingleRun', () => {
 
     expect(actual).toBe(false);
   });
+
+  it('returns false even if CI=true when allowAutomaticSingleRunInference is not true', () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({
+      programs: null,
+      project: './tsconfig.json',
+    });
+
+    expect(actual).toBe(false);
+  });
+
+  it.each(['node_modules/.bin/eslint', 'node_modules/eslint/bin/eslint.js'])(
+    'returns false even if singleRun is inferred from process.argv when allowAutomaticSingleRunInference is not true',
+    pathName => {
+      process.argv = ['', path.normalize(pathName), ''];
+
+      const actual = inferSingleRun({
+        programs: null,
+        project: './tsconfig.json',
+      });
+
+      expect(actual).toBe(false);
+    },
+  );
 });
