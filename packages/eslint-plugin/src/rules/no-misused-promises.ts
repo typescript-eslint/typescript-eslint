@@ -108,7 +108,7 @@ export default createRule<Options, MessageId>({
                   attributes: { type: 'boolean' },
                   properties: { type: 'boolean' },
                   returns: { type: 'boolean' },
-                  methods: { type: 'boolean' },
+                  subtypes: { type: 'boolean' },
                   variables: { type: 'boolean' },
                 },
                 type: 'object',
@@ -387,21 +387,20 @@ export default createRule<Options, MessageId>({
         | TSESTree.ClassExpression
         | TSESTree.TSInterfaceDeclaration,
     ): void {
+      const nodeName = node.id?.name;
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (
-        tsNode.heritageClauses === undefined ||
-        tsNode.heritageClauses.length === 0
-      ) {
+
+      const heritageBaseTypes = tsNode.heritageClauses
+        ?.map(clause => clause.types)
+        .flat()
+        .map(type => checker.getTypeAtLocation(type.expression))
+        .map(type => checker.getApparentType(type))
+        .map(type => tsutils.unionTypeParts(type))
+        .flat();
+
+      if (heritageBaseTypes === undefined || heritageBaseTypes.length === 0) {
         return;
       }
-
-      const heritageTypes = tsNode.heritageClauses
-        .map(heritageClause => heritageClause.types)
-        .flat()
-        .map(
-          expressionWithTypeArguments => expressionWithTypeArguments.expression,
-        )
-        .map(expression => checker.getTypeAtLocation(expression));
 
       tsNode.members.forEach(member => {
         const memberName = member.name?.getText();
@@ -412,37 +411,55 @@ export default createRule<Options, MessageId>({
         if (!doesReturnPromise) {
           return;
         }
-        heritageTypes.forEach(heritageType => {
-          const heritageTypeName = heritageType.getSymbol()?.name;
-          if (!heritageTypeName) {
+        heritageBaseTypes.forEach(heritageBaseType => {
+          const heritageTypeSymbol = heritageBaseType.getSymbol();
+          if (heritageTypeSymbol === undefined) {
             return;
           }
-          for (const subType of tsutils.unionTypeParts(
-            checker.getApparentType(heritageType),
-          )) {
-            const subtypeMember = checker.getPropertyOfType(
-              subType,
-              memberName,
+
+          const heritageTypeName = heritageTypeSymbol.name;
+          const { valueDeclaration } = heritageTypeSymbol;
+          if (
+            valueDeclaration !== undefined &&
+            ts.isClassLike(valueDeclaration)
+          ) {
+            const heritageMemberMatch = valueDeclaration.members.find(
+              member => member.name?.getText() === memberName,
             );
-            if (!subtypeMember) {
+            if (heritageMemberMatch === undefined) {
               return;
             }
-          }
-          const heritageMember = checker.getPropertyOfType(
-            heritageType,
-            memberName,
-          );
-          if (!heritageMember) {
-            return;
-          }
-          const baseMemberType = checker.getTypeOfSymbol(heritageMember);
-
-          if (isVoidReturningFunctionType(checker, member, baseMemberType)) {
-            context.report({
-              node: services.tsNodeToESTreeNodeMap.get(member),
-              messageId: 'voidReturnSubtype', // Ensure you have a corresponding message for this ID
-              data: { baseTypeName: heritageTypeName },
-            });
+            const heritageMemberType =
+              checker.getTypeAtLocation(heritageMemberMatch);
+            if (
+              isVoidReturningFunctionType(checker, member, heritageMemberType)
+            ) {
+              nodeName && memberName;
+              context.report({
+                node: services.tsNodeToESTreeNodeMap.get(member),
+                messageId: 'voidReturnSubtype',
+                data: { baseTypeName: heritageTypeName },
+              });
+            }
+          } else {
+            const heritageMemberMatch = checker.getPropertyOfType(
+              heritageBaseType,
+              memberName,
+            );
+            if (heritageMemberMatch === undefined) {
+              return;
+            }
+            const heritageMemberType =
+              checker.getTypeOfSymbol(heritageMemberMatch);
+            if (
+              isVoidReturningFunctionType(checker, member, heritageMemberType)
+            ) {
+              context.report({
+                node: services.tsNodeToESTreeNodeMap.get(member),
+                messageId: 'voidReturnSubtype',
+                data: { baseTypeName: heritageTypeName },
+              });
+            }
           }
         });
       });

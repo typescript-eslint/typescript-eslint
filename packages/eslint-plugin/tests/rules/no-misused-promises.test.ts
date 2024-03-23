@@ -500,6 +500,272 @@ foo(bar);
       },
       options: [{ checksVoidReturn: { attributes: true } }],
     },
+    // #region checksVoidReturn.subtypes
+    // #region checksVoidReturn.subtypes: Extending a class
+    {
+      // Valid class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid abstract class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid abstract class with rule off
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid interface
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an abstract class
+    {
+      // Valid class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void> {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid abstract class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid abstract class with rule off
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid interface extending abstract class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an interface
+    {
+      // Valid interface
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterfaceExtendsMyInterface extends MyInterface {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterfaceExtendsMyInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid class
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyClassImplementsMyInterface implements MyInterface {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyClassImplementsMyInterface implements MyInterface {
+  setThing(): Promise<void> {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid abstract class
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid abstract class with rule off
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    // #endregion
+    // #endregion
   ],
 
   invalid: [
@@ -1275,5 +1541,142 @@ consume(...cbs);
       `,
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
+    // #region checksVoidReturn.subtypes
+    // #region checksVoidReturn.subtypes: Extending a class
+    {
+      // Invalid class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      // Invalid abstract class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      // Invalid interface
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an abstract class
+    {
+      // Invalid class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      // Invalid abstract class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      // Invalid interface
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an interface
+    {
+      // Invalid class
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyInterfaceSubclass implements MyInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      // Invalid abstract class
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      // Invalid interface
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    // #endregion
+    // #endregion
   ],
 });
