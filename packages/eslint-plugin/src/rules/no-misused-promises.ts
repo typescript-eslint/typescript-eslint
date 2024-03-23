@@ -387,7 +387,6 @@ export default createRule<Options, MessageId>({
         | TSESTree.ClassExpression
         | TSESTree.TSInterfaceDeclaration,
     ): void {
-      const nodeName = node.id?.name;
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
 
       const heritageBaseTypes = tsNode.heritageClauses
@@ -402,23 +401,22 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      tsNode.members.forEach(member => {
-        const memberName = member.name?.getText();
+      tsNode.members.forEach(nodeMember => {
+        const memberName = nodeMember.name?.getText();
         if (!memberName) {
           return;
         }
-        const doesReturnPromise = returnsThenable(checker, member);
-        if (!doesReturnPromise) {
+        const nodeMemberReturnsPromise = returnsThenable(checker, nodeMember);
+        if (!nodeMemberReturnsPromise) {
           return;
         }
         heritageBaseTypes.forEach(heritageBaseType => {
-          const heritageTypeSymbol = heritageBaseType.getSymbol();
-          if (heritageTypeSymbol === undefined) {
+          const heritageBaseTypeSymbol = heritageBaseType.getSymbol();
+          if (heritageBaseTypeSymbol === undefined) {
             return;
           }
-
-          const heritageTypeName = heritageTypeSymbol.name;
-          const { valueDeclaration } = heritageTypeSymbol;
+          const heritageBaseTypeName = heritageBaseTypeSymbol.name;
+          const { valueDeclaration } = heritageBaseTypeSymbol;
           if (
             valueDeclaration !== undefined &&
             ts.isClassLike(valueDeclaration)
@@ -429,16 +427,19 @@ export default createRule<Options, MessageId>({
             if (heritageMemberMatch === undefined) {
               return;
             }
-            const heritageMemberType =
+            const heritageMemberMatchType =
               checker.getTypeAtLocation(heritageMemberMatch);
             if (
-              isVoidReturningFunctionType(checker, member, heritageMemberType)
+              isVoidReturningFunctionType(
+                checker,
+                nodeMember,
+                heritageMemberMatchType,
+              )
             ) {
-              nodeName && memberName;
               context.report({
-                node: services.tsNodeToESTreeNodeMap.get(member),
+                node: services.tsNodeToESTreeNodeMap.get(nodeMember),
                 messageId: 'voidReturnSubtype',
-                data: { baseTypeName: heritageTypeName },
+                data: { baseTypeName: heritageBaseTypeName },
               });
             }
           } else {
@@ -449,15 +450,19 @@ export default createRule<Options, MessageId>({
             if (heritageMemberMatch === undefined) {
               return;
             }
-            const heritageMemberType =
+            const heritageMemberMatchType =
               checker.getTypeOfSymbol(heritageMemberMatch);
             if (
-              isVoidReturningFunctionType(checker, member, heritageMemberType)
+              isVoidReturningFunctionType(
+                checker,
+                nodeMember,
+                heritageMemberMatchType,
+              )
             ) {
               context.report({
-                node: services.tsNodeToESTreeNodeMap.get(member),
+                node: services.tsNodeToESTreeNodeMap.get(nodeMember),
                 messageId: 'voidReturnSubtype',
-                data: { baseTypeName: heritageTypeName },
+                data: { baseTypeName: heritageBaseTypeName },
               });
             }
           }
