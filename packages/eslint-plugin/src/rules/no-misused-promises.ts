@@ -403,7 +403,7 @@ export default createRule<Options, MessageId>({
 
       tsNode.members.forEach(nodeMember => {
         const memberName = nodeMember.name?.getText();
-        if (!memberName) {
+        if (memberName === undefined) {
           return;
         }
         const nodeMemberReturnsPromise = returnsThenable(checker, nodeMember);
@@ -415,56 +415,22 @@ export default createRule<Options, MessageId>({
           if (heritageBaseTypeSymbol === undefined) {
             return;
           }
-          const heritageBaseTypeName = heritageBaseTypeSymbol.name;
-          const { valueDeclaration } = heritageBaseTypeSymbol;
+          const heritageMemberType = getTypeOfMatchingHeritageMemberIfExists(
+            checker,
+            heritageBaseTypeSymbol,
+            memberName,
+          );
+          if (heritageMemberType === undefined) {
+            return;
+          }
           if (
-            valueDeclaration !== undefined &&
-            ts.isClassLike(valueDeclaration)
+            isVoidReturningFunctionType(checker, nodeMember, heritageMemberType)
           ) {
-            const heritageMemberMatch = valueDeclaration.members.find(
-              member => member.name?.getText() === memberName,
-            );
-            if (heritageMemberMatch === undefined) {
-              return;
-            }
-            const heritageMemberMatchType =
-              checker.getTypeAtLocation(heritageMemberMatch);
-            if (
-              isVoidReturningFunctionType(
-                checker,
-                nodeMember,
-                heritageMemberMatchType,
-              )
-            ) {
-              context.report({
-                node: services.tsNodeToESTreeNodeMap.get(nodeMember),
-                messageId: 'voidReturnSubtype',
-                data: { baseTypeName: heritageBaseTypeName },
-              });
-            }
-          } else {
-            const heritageMemberMatch = checker.getPropertyOfType(
-              heritageBaseType,
-              memberName,
-            );
-            if (heritageMemberMatch === undefined) {
-              return;
-            }
-            const heritageMemberMatchType =
-              checker.getTypeOfSymbol(heritageMemberMatch);
-            if (
-              isVoidReturningFunctionType(
-                checker,
-                nodeMember,
-                heritageMemberMatchType,
-              )
-            ) {
-              context.report({
-                node: services.tsNodeToESTreeNodeMap.get(nodeMember),
-                messageId: 'voidReturnSubtype',
-                data: { baseTypeName: heritageBaseTypeName },
-              });
-            }
+            context.report({
+              node: services.tsNodeToESTreeNodeMap.get(nodeMember),
+              messageId: 'voidReturnSubtype',
+              data: { baseTypeName: heritageBaseTypeSymbol.name },
+            });
           }
         });
       });
@@ -780,4 +746,18 @@ function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   return tsutils
     .unionTypeParts(type)
     .some(t => anySignatureIsThenableType(checker, node, t));
+}
+
+function getTypeOfMatchingHeritageMemberIfExists(
+  checker: ts.TypeChecker,
+  heritageBaseTypeSymbol: ts.Symbol,
+  memberName: string,
+): ts.Type | undefined {
+  const memberSymbol = heritageBaseTypeSymbol.members?.get(
+    ts.escapeLeadingUnderscores(memberName),
+  );
+  if (memberSymbol === undefined) {
+    return undefined;
+  }
+  return checker.getTypeOfSymbol(memberSymbol);
 }

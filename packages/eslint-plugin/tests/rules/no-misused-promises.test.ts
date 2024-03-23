@@ -503,7 +503,7 @@ foo(bar);
     // #region checksVoidReturn.subtypes
     // #region checksVoidReturn.subtypes: Extending a class
     {
-      // Valid class
+      // Valid void-returning class
       code: `
 class MyClass {
   setThing(): void {
@@ -514,6 +514,23 @@ class MyClass {
 class MySubclassExtendsMyClass extends MyClass {
   setThing(): void {
     return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Valid promise-returning class
+      code: `
+class MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
   }
 }
       `,
@@ -621,8 +638,8 @@ abstract class MyAbstractClass {
 }
 
 class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
-  setThing(): Promise<void> {
-    return;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
   }
 }
       `,
@@ -731,8 +748,8 @@ interface MyInterface {
 }
 
 class MyClassImplementsMyInterface implements MyInterface {
-  setThing(): Promise<void> {
-    return;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
   }
 }
       `,
@@ -763,6 +780,71 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
 }
       `,
       options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Multiple heritage types
+    {
+      // Valid interface extending two interfaces
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+interface MyThirdInterface extends MyInterface, MyOtherInterface {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Valid interface extending two classes
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MyOtherClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterface extends MyClass, MyOtherClass {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Valid class extending a class and implementing two interfaces
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
     },
     // #endregion
     // #endregion
@@ -1544,7 +1626,6 @@ consume(...cbs);
     // #region checksVoidReturn.subtypes
     // #region checksVoidReturn.subtypes: Extending a class
     {
-      // Invalid class
       code: `
 class MyClass {
   setThing(): void {
@@ -1553,7 +1634,7 @@ class MyClass {
 }
 
 class MySubclassExtendsMyClass extends MyClass {
-  setThing(): Promise<void> {
+  async setThing(): Promise<void> {
     await Promise.resolve();
   }
 }
@@ -1561,7 +1642,6 @@ class MySubclassExtendsMyClass extends MyClass {
       errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
     },
     {
-      // Invalid abstract class
       code: `
 class MyClass {
   setThing(): void {
@@ -1576,7 +1656,6 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
     },
     {
-      // Invalid interface
       code: `
 class MyClass {
   setThing(): void {
@@ -1593,14 +1672,13 @@ interface MyInterfaceExtendsMyClass extends MyClass {
     // #endregion
     // #region checksVoidReturn.subtypes: Extending an abstract class
     {
-      // Invalid class
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
 }
 
 class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
-  setThing(): Promise<void> {
+  async setThing(): Promise<void> {
     await Promise.resolve();
   }
 }
@@ -1608,7 +1686,6 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
     },
     {
-      // Invalid abstract class
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -1621,7 +1698,6 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
     },
     {
-      // Invalid interface
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -1636,7 +1712,6 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
     // #endregion
     // #region checksVoidReturn.subtypes: Extending an interface
     {
-      // Invalid class
       code: `
 interface MyInterface {
   setThing(): void;
@@ -1651,7 +1726,6 @@ class MyInterfaceSubclass implements MyInterface {
       errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
     },
     {
-      // Invalid abstract class
       code: `
 interface MyInterface {
   setThing(): void;
@@ -1664,7 +1738,6 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
     },
     {
-      // Invalid interface
       code: `
 interface MyInterface {
   setThing(): void;
@@ -1675,6 +1748,101 @@ interface MySubInterface extends MyInterface {
 }
       `,
       errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Multiple heritage types
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+interface MyThirdInterface extends MyInterface, MyOtherInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyInterface' },
+        },
+        {
+          line: 11,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyOtherInterface' },
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MyOtherClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterface extends MyClass, MyOtherClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 15,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyClass' },
+        },
+        {
+          line: 15,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyOtherClass' },
+        },
+      ],
+    },
+    {
+      code: `
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+
+interface MySyncInterface {
+  setThing(): void;
+}
+
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 17,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyClass' },
+        },
+        {
+          line: 17,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MySyncInterface' },
+        },
+      ],
     },
     // #endregion
     // #endregion
