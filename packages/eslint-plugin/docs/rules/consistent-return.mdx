@@ -12,6 +12,10 @@ import TabItem from '@theme/TabItem';
 This rule extends the base [`eslint/consistent-return`](https://eslint.org/docs/rules/consistent-return) rule.
 This version adds support for functions that return `void` or `Promise<void>`.
 
+:::danger warning
+If possible, it is recommended to use tsconfig's noImplicitReturns option rather than this rule. This is because the rule has missing cases, but the noImplicitReturns option does not.:::
+:::
+
 <Tabs>
 <TabItem value="❌ Incorrect">
 
