@@ -28,9 +28,9 @@ function Playground(): React.JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<UpdateModel>();
   const [markers, setMarkers] = useState<{
-    code?: ErrorGroup[];
-    tsconfig?: ErrorGroup[];
-    eslintrc?: ErrorGroup[];
+    code: ErrorGroup[];
+    tsconfig: ErrorGroup[];
+    eslintrc: ErrorGroup[];
   }>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
