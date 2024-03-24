@@ -594,6 +594,30 @@ doSomething();
       ],
     },
     {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
+
+myTag\`abc\`;
+myTag\`abc\`.then(() => {});
+myTag\`abc\`.catch(() => {});
+myTag\`abc\`.finally(() => {});
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 5,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 7,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
       options: [{ ignoreVoid: true }],
       code: `
 async function test() {
