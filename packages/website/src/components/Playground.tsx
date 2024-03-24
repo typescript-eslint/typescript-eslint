@@ -27,11 +27,7 @@ function Playground(): React.JSX.Element {
   const windowSize = useWindowSize();
   const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<UpdateModel>();
-  const [markers, setMarkers] = useState<{
-    code: ErrorGroup[];
-    tsconfig: ErrorGroup[];
-    eslintrc: ErrorGroup[];
-  }>();
+  const [markers, setMarkers] = useState<ErrorGroup[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -73,10 +69,6 @@ function Playground(): React.JSX.Element {
       setVisualEslintRc(val => !val);
     }
   }, []);
-
-  const getErrorCount = (marker?: ErrorGroup[]) => {
-    return marker?.reduce((prev, cur) => prev + cur.items.length, 0) || 0;
-  };
 
   useEffect(() => {
     if (windowSize === 'mobile') {
@@ -122,11 +114,6 @@ function Playground(): React.JSX.Element {
             tabs={['code', 'tsconfig', 'eslintrc']}
             active={activeTab}
             change={setTab}
-            showError={{
-              code: !!markers?.code?.length,
-              tsconfig: !!markers?.tsconfig?.length,
-              eslintrc: !!markers?.eslintrc?.length,
-            }}
             showVisualEditor={activeTab !== 'code'}
             showModal={onVisualEditor}
           />
@@ -183,7 +170,9 @@ function Playground(): React.JSX.Element {
               active={state.showAST ?? false}
               change={(v): void => setState({ showAST: v })}
               additionalTabsInfo={{
-                Errors: markers ? getErrorCount(markers[activeTab]) : 0,
+                Errors:
+                  markers?.reduce((prev, cur) => prev + cur.items.length, 0) ||
+                  0,
               }}
             />
             {state.showAST === 'es' && (
@@ -234,7 +223,7 @@ function Playground(): React.JSX.Element {
                   cursorPosition={position}
                   onHoverNode={setSelectedRange}
                 />
-              )) || <ErrorsViewer value={markers?.[activeTab]} />}
+              )) || <ErrorsViewer value={markers} />}
           </div>
         </Panel>
       </PanelGroup>

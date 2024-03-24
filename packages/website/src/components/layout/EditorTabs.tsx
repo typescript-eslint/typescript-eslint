@@ -11,7 +11,6 @@ export interface EditorTabsProps<T extends boolean | string> {
   readonly change: (name: T) => void;
   readonly showModal?: (name: T) => void;
   readonly additionalTabsInfo?: Record<string, number>;
-  readonly showError?: Record<string, boolean>;
 }
 
 function EditorTabs<T extends boolean | string>({
@@ -21,7 +20,6 @@ function EditorTabs<T extends boolean | string>({
   change,
   showModal,
   additionalTabsInfo,
-  showError,
 }: EditorTabsProps<T>): React.JSX.Element {
   const tabsWithLabels = tabs.map(tab =>
     typeof tab !== 'object' ? { value: tab, label: String(tab) } : tab,
@@ -47,9 +45,6 @@ function EditorTabs<T extends boolean | string>({
                   : additionalTabsInfo[item.label]}
               </div>
             ) : null}
-            {showError?.[item.label] && (
-              <img alt="alert" src="./img/alert.svg" />
-            )}
           </button>
         ))}
       </div>

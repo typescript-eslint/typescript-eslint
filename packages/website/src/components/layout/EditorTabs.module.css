@@ -31,12 +31,6 @@
   padding: 0 5px;
 }
 
-.tabStyle img {
-  width: 15px;
-  height: 15px;
-  margin-left: 0.3rem;
-}
-
 .tabStyle:hover {
   --ifm-button-background-color: var(--playground-secondary-color);
 }
