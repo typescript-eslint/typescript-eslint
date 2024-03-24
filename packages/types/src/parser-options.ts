@@ -51,6 +51,8 @@ interface ParserOptions {
 
   // use emitDecoratorMetadata without specifying parserOptions.project
   emitDecoratorMetadata?: boolean;
+  // use experimentalDecorators without specifying parserOptions.project
+  experimentalDecorators?: boolean;
 
   // typescript-estree specific
   comment?: boolean;

@@ -130,7 +130,6 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
-  let emitDecoratorMetadata = options.emitDecoratorMetadata === true;
   if (services.program) {
     // automatically apply the options configured for the program
     const compilerOptions = services.program.getCompilerOptions();
@@ -161,14 +160,11 @@ function parseForESLint(
         analyzeOptions.jsxFragmentName,
       );
     }
-    if (compilerOptions.emitDecoratorMetadata === true) {
-      emitDecoratorMetadata = true;
-    }
   }
 
-  if (emitDecoratorMetadata) {
-    analyzeOptions.emitDecoratorMetadata = true;
-  }
+  // if not defined - override from the parserOptions
+  services.emitDecoratorMetadata ??= options.emitDecoratorMetadata === true;
+  services.experimentalDecorators ??= options.experimentalDecorators === true;
 
   const scopeManager = analyze(ast, analyzeOptions);
 
