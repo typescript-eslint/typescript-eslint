@@ -21,6 +21,21 @@ replies:
       If you need it sooner, please try the `canary` tag on NPM.
     name: Fix Has Been Merged
   - body: |
+      👋 thanks for sending this over @{{ author }}!
+      \
+      > ```md\
+      > - [] Steps in Contributing were taken\
+      > ```\
+      \
+      We ask that people file issues for non-trivial changes like this one for a few reasons:\
+      \
+      * The templates ask reporters to provide info we'd need to triage requests, including a full reproduction - which is also useful if we later have to spelunk through the repository's history\
+      * We want to raise visibility for the changes to let folks have a chance to discuss nuances before work is done\
+      * Even if you're at the 'expert' level where specifically you know to check for duplicates and understand the codebase well enough to make these changes, most users aren't - so it sets a negative precedent\
+      \
+      Could you please [file an issue](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose) explaining why you'd like this?\
+    name: Needs Issue
+  - body: |
       Thanks for the report @<reporter>!\
       This might be a valid issue, but we can't tell because you haven't filled in enough information.\
       Please fill in the rest of the issue template so we can take a look.\
