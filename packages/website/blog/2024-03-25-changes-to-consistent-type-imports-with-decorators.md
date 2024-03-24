@@ -77,7 +77,7 @@ The important piece is that last dot point above - the handling of imported name
 The [`consistent-type-imports` rule](/rules/consistent-type-imports) was introduced to allow users to enforce that any imported names are annotated as `import type` if they are not used in a value location. How the rule makes this decision is based solely on the single file it's looking at. But another way the rule does not use any type information from TS and instead it scans the code using a technique called "scope analysis" so that it can find all references to the imported names and determine if each reference is a value reference.
 
 :::tip
-See [ASTs and typescript-eslint](../asts-and-typescript-eslint) to understand how rules look at the syntax of files.
+See [ASTs and typescript-eslint](/blog/asts-and-typescript-eslint) to understand how rules look at the syntax of files.
 :::
 
 The issue arises with legacy decorators and decorator metadata - syntactically the only reference to `Foo` is a type reference. However the emitted code contains a hidden reference to `Foo`. When the rule relies upon the code it sees then it will report an error and attempt to mark `Foo` as `import type`. If the user applies this fix then that will cause their runtime code to change (`arg`'s metadata goes from `Foo` to `Function`) which can have downstream runtime impacts and cause broken code!
