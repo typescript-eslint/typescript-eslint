@@ -48,7 +48,7 @@ function EditorTabs<T extends boolean | string>({
               </div>
             ) : null}
             {showError?.[item.label] && (
-              <img alt="alert" src="/img/alert.svg" />
+              <img alt="alert" src="./img/alert.svg" />
             )}
           </button>
         ))}
