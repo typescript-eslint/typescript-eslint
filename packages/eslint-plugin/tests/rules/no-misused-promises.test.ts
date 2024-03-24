@@ -1695,7 +1695,13 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyClass' },
+        },
+      ],
     },
     {
       code: `
@@ -1709,7 +1715,13 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyClass' },
+        },
+      ],
     },
     {
       code: `
@@ -1723,7 +1735,13 @@ interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 9, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyClass' },
+        },
+      ],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Extending an abstract class
@@ -1739,7 +1757,13 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   }
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyAbstractClass' },
+        },
+      ],
     },
     {
       code: `
@@ -1751,7 +1775,13 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
   abstract setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyAbstractClass' },
+        },
+      ],
     },
     {
       code: `
@@ -1763,7 +1793,13 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
   setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyAbstractClass' },
+        },
+      ],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Extending an interface
@@ -1779,7 +1815,13 @@ class MyInterfaceSubclass implements MyInterface {
   }
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyInterface' },
+        },
+      ],
     },
     {
       code: `
@@ -1791,7 +1833,13 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
   abstract setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyInterface' },
+        },
+      ],
     },
     {
       code: `
@@ -1803,7 +1851,13 @@ interface MySubInterface extends MyInterface {
   setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyInterface' },
+        },
+      ],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Extending type aliases
@@ -1818,7 +1872,13 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
   }
 }
       `,
-      errors: [{ line: 6, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyTypeIntersection' },
+        },
+      ],
     },
     {
       code: `
@@ -1830,7 +1890,13 @@ interface MyAsyncInterface extends MyGenericType<false> {
   setThing(): Promise<void>;
 }
       `,
-      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: '{ setThing(): void; }' },
+        },
+      ],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Multiple heritage types
