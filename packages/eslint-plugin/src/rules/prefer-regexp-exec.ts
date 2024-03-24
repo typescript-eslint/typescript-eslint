@@ -72,7 +72,12 @@ export default createRule({
       return result;
     }
 
-    function provablyDoesNotContainGlobalFlag(
+    /**
+     * Returns true if and only if we have syntactic proof that the /g flag is
+     * absent. Returns false in all other cases (i.e. it still might or might
+     * not contain the global flag).
+     */
+    function definitelyDoesNotContainGlobalFlag(
       node: TSESTree.CallExpressionArgument,
     ): boolean {
       if (
@@ -107,7 +112,8 @@ export default createRule({
 
         // Don't report regular expressions with global flag.
         if (
-          (!argumentValue && !provablyDoesNotContainGlobalFlag(argumentNode)) ||
+          (!argumentValue &&
+            !definitelyDoesNotContainGlobalFlag(argumentNode)) ||
           (argumentValue &&
             argumentValue.value instanceof RegExp &&
             argumentValue.value.flags.includes('g'))
