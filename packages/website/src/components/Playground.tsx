@@ -53,6 +53,7 @@ function Playground(): React.JSX.Element {
     (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
       setRuleNames(ruleNames);
       setTSVersion(tsVersions);
+      setIsLoading(false);
     },
     [],
   );
@@ -73,7 +74,7 @@ function Playground(): React.JSX.Element {
     }
   }, []);
 
-  const getErrorCount = (marker?: ErrorGroup[]): number => {
+  const getErrorCount = (marker?: ErrorGroup[]) => {
     return marker?.reduce((prev, cur) => prev + cur.items.length, 0) || 0;
   };
 
@@ -148,7 +149,7 @@ function Playground(): React.JSX.Element {
             key="monacoEditor"
             className={clsx(
               styles.tabCode,
-              (!!activeVisualEditor || isLoading) && styles.hidden,
+              !!activeVisualEditor && styles.hidden,
             )}
           >
             <EditorEmbed />
@@ -168,7 +169,6 @@ function Playground(): React.JSX.Element {
             onChange={setState}
             onLoaded={onLoaded}
             onSelect={setPosition}
-            setIsLoading={setIsLoading}
           />
         </Panel>
         <PanelResizeHandle className={styles.PanelResizeHandle} />

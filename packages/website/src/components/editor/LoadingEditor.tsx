@@ -1,28 +1,11 @@
 import React from 'react';
 
-import type { ErrorGroup } from '../types';
 import { LoadedEditor } from './LoadedEditor';
 import type { CommonEditorProps } from './types';
 import type { SandboxServicesProps } from './useSandboxServices';
 import { useSandboxServices } from './useSandboxServices';
 
-interface ExtendsCommonEditorProps
-  extends Omit<CommonEditorProps, 'onMarkersChange'> {
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  onMarkersChange: React.Dispatch<
-    React.SetStateAction<
-      | {
-          code: ErrorGroup[];
-          tsconfig: ErrorGroup[];
-          eslintrc: ErrorGroup[];
-        }
-      | undefined
-    >
-  >;
-}
-
-export type LoadingEditorProps = ExtendsCommonEditorProps &
-  SandboxServicesProps;
+export type LoadingEditorProps = CommonEditorProps & SandboxServicesProps;
 
 export const LoadingEditor: React.FC<LoadingEditorProps> = props => {
   const services = useSandboxServices(props);
