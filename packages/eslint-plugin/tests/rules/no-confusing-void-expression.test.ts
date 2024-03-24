@@ -243,6 +243,148 @@ type Foo = void;
 const test = (): Foo => console.log('err');
       `,
     },
+    {
+      code: `
+    type Foo = () => void;
+    const arrowFn: Foo = () => console.log('foo');
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = () => void;
+    const funcExpr: Foo = function () {
+      return console.log();
+    };
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = () => void;
+    const funcExpr: Foo = () => {
+      return console.log();
+    };
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = () => void;
+    const x = (() => console.log()) as Foo;
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = {
+      foo: () => void;
+    };
+    const q = {
+      foo: () => console.log(),
+    } as Foo;
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = {
+      foo: () => void;
+    };
+    const x: Foo = {
+      foo: () => console.log(),
+    };
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    const q = {
+      foo: () => console.log(),
+    } as {
+      foo: () => void;
+    };
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    const x: {
+      foo: () => void;
+    } = {
+      foo: () => console.log(),
+    };
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = {
+      foo: { bar: () => void };
+    };
+    const q = {
+      foo: { bar: () => console.log() },
+    } as Foo;
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type Foo = {
+      foo: { bar: () => void };
+    };
+    const x: Foo = {
+      foo: { bar: () => console.log() },
+    };
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    type MethodType = () => void;
+
+    class App {
+      private method: MethodType = () => console.log();
+    }
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+    interface Foo {
+      foo: () => void;
+    }
+    function bar(): Foo {
+      return {
+        foo: () => console.log(),
+      };
+    }
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+  type HigherOrderType = () => () => () => void;
+  const x: HigherOrderType = () => () => () => console.log();
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+  declare function foo(arg: () => void): void;
+  foo(() => console.log());
+  `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: 'const foo = <button onClick={() => console.log()} />;',
+      options: [{ ignoreVoidInVoid: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
   ],
 
   invalid: [

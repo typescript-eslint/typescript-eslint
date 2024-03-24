@@ -14,6 +14,10 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import {
+  ancestorHasReturnType,
+  isValidFunctionExpressionReturnType,
+} from '../util/explicitReturnTypeUtils';
 
 export type Options = [
   {
@@ -32,6 +36,21 @@ export type MessageId =
   | 'invalidVoidExprReturnWrapVoid'
   | 'invalidVoidExprWrapVoid'
   | 'voidExprWrapVoid';
+
+function findFunction(
+  node: TSESTree.Node | undefined,
+): TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression | null {
+  if (!node) {
+    return null;
+  }
+  if (
+    node.type === AST_NODE_TYPES.FunctionExpression ||
+    node.type === AST_NODE_TYPES.ArrowFunctionExpression
+  ) {
+    return node;
+  }
+  return findFunction(node.parent);
+}
 
 export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
@@ -89,7 +108,6 @@ export default createRule<Options, MessageId>({
       ignoreVoidInVoid: false,
     },
   ],
-
   create(context, [options]) {
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -123,8 +141,13 @@ export default createRule<Options, MessageId>({
 
           if (options.ignoreVoidInVoid) {
             if (
-              invalidAncestor.returnType &&
-              isVoidLikeType(invalidAncestor.returnType)
+              (invalidAncestor.returnType &&
+                isVoidLikeType(invalidAncestor.returnType)) ||
+              isValidFunctionExpressionReturnType(invalidAncestor, {
+                allowDirectConstAssertionInArrowFunctions: true,
+                allowTypedFunctionExpressions: true,
+              }) ||
+              ancestorHasReturnType(invalidAncestor)
             ) {
               return;
             }
@@ -185,11 +208,25 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
 
-          if (
-            options.ignoreVoidInVoid &&
-            targetNodeFunctionAncestorNodeHasVoidReturnType(invalidAncestor)
-          ) {
-            return;
+          if (options.ignoreVoidInVoid) {
+            const functionNode = findFunction(invalidAncestor);
+
+            if (
+              targetNodeFunctionAncestorNodeHasVoidReturnType(invalidAncestor)
+            ) {
+              return;
+            }
+
+            if (
+              functionNode != null &&
+              (isValidFunctionExpressionReturnType(functionNode, {
+                allowDirectConstAssertionInArrowFunctions: true,
+                allowTypedFunctionExpressions: true,
+              }) ||
+                ancestorHasReturnType(functionNode))
+            ) {
+              return;
+            }
           }
 
           if (options.ignoreVoidOperator) {
