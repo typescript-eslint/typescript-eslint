@@ -93,7 +93,7 @@ There have been a few attempts to fix this issue but the resolution we came to w
 
 Adding type-information to the rule to handle this edge case would not be a positive change for users or the ecosystem:
 
-1. Many users are unable to configure typed linting and/or unwilling to take its performance hit. Requiring type-aware linting for this rule to serve a very small subset of impacted users would reduce the linting ability of many more un-impacted users.
+1. Many users are unable to configure typed linting and/or unwilling to take its performance hit. Requiring [type-aware linting](/getting-started/typed-linting) linting for this rule to serve a very small subset of impacted users would reduce the linting ability of many more un-impacted users.
 1. It requires a specific combinations of compiler options to trigger it means that not everyone is impacted by the problem - so we'd be preventing a lot of un-impacted users from using the rule.
 1. With the release of [TypeScript v5.0 and its stable decorators](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators) `experimentalDecorators` are now the legacy syntax. Whilst [TypeScript v5.2 added support for the latest stable decorator metadata proposal](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#decorator-metadata) this proposal does not include type metadata - so it doesn't suffer the same drawbacks as its legacy counterpart.
 
@@ -107,7 +107,7 @@ All files without decorators will continue to report as expected. Similarly all 
 
 ### Configuring the linter to expect `experimentalDecorators: true` and `emitDecoratorMetadata: true`
 
-If you are using [type-aware linting](/linting/typed-linting) then we will automatically infer your setup from your tsconfig and you should not need to configure anything manually.
+If you are using [type-aware linting](/getting-started/typed-linting) then we will automatically infer your setup from your tsconfig and you should not need to configure anything manually.
 
 Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on by setting both [`parserOptions.emitDecoratorMetadata = true`](/packages/parser/#emitdecoratormetadata) and [`parserOptions.experimentalDecorators = true`](/packages/parser/#experimentaldecorators). For example:
 
