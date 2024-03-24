@@ -44,7 +44,6 @@ TypeScript will transpile this code to the following:
 
 <!-- prettier-ignore -->
 ```ts
-var _a;
 import { __decorate, __metadata } from "tslib";
 import Foo from 'foo';
 import decorator from 'decorator';
