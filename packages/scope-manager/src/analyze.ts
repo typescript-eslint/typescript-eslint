@@ -59,7 +59,7 @@ interface AnalyzeOptions {
 
   // TODO - remove this in v8
   /**
-   * @deprecated This option no longer does anything and will be removed in a future major release.
+   * @deprecated This option never did what it was intended for and will be removed in a future major release.
    */
   emitDecoratorMetadata?: boolean;
 }
