@@ -327,6 +327,14 @@ ruleTester.run('sort-type-constituents', rule, {
         },
       ],
     },
+    {
+      code: "type T = 'DeleteForever' | 'DeletedAt';",
+      options: [
+        {
+          caseSensitiveSorting: true,
+        },
+      ],
+    },
 
     ...valid('&'),
     {
