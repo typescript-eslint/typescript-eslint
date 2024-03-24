@@ -388,14 +388,10 @@ export default createRule<Options, MessageId>({
         | TSESTree.TSInterfaceDeclaration,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-
       const heritageBaseTypes = tsNode.heritageClauses
         ?.map(clause => clause.types)
         .flat()
-        .map(type => checker.getTypeAtLocation(type.expression))
-        .map(type => checker.getApparentType(type))
-        .map(type => tsutils.unionTypeParts(type))
-        .flat();
+        .map(type => checker.getTypeFromTypeNode(type));
 
       if (heritageBaseTypes === undefined || heritageBaseTypes.length === 0) {
         return;
@@ -411,13 +407,9 @@ export default createRule<Options, MessageId>({
           return;
         }
         heritageBaseTypes.forEach(heritageBaseType => {
-          const heritageBaseTypeSymbol = heritageBaseType.getSymbol();
-          if (heritageBaseTypeSymbol === undefined) {
-            return;
-          }
           const heritageMemberType = getTypeOfMatchingHeritageMemberIfExists(
             checker,
-            heritageBaseTypeSymbol,
+            heritageBaseType,
             memberName,
           );
           if (heritageMemberType === undefined) {
@@ -429,7 +421,7 @@ export default createRule<Options, MessageId>({
             context.report({
               node: services.tsNodeToESTreeNodeMap.get(nodeMember),
               messageId: 'voidReturnSubtype',
-              data: { baseTypeName: heritageBaseTypeSymbol.name },
+              data: { baseTypeName: checker.typeToString(heritageBaseType) },
             });
           }
         });
@@ -748,14 +740,24 @@ function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
     .some(t => anySignatureIsThenableType(checker, node, t));
 }
 
+/**
+ * @returns The type of the member or property with the given name in the heritage base type, if it exists.
+ */
 function getTypeOfMatchingHeritageMemberIfExists(
   checker: ts.TypeChecker,
-  heritageBaseTypeSymbol: ts.Symbol,
+  heritageBaseType: ts.Type,
   memberName: string,
 ): ts.Type | undefined {
-  const memberSymbol = heritageBaseTypeSymbol.members?.get(
-    ts.escapeLeadingUnderscores(memberName),
-  );
+  const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
+  const heritageBaseTypeSymbol = heritageBaseType.getSymbol();
+  if (heritageBaseTypeSymbol === undefined) {
+    const matchingProperty = tsutils.getPropertyOfType(
+      heritageBaseType,
+      escapedMemberName,
+    );
+    return matchingProperty && checker.getTypeOfSymbol(matchingProperty);
+  }
+  const memberSymbol = heritageBaseTypeSymbol.members?.get(escapedMemberName);
   if (memberSymbol === undefined) {
     return undefined;
   }

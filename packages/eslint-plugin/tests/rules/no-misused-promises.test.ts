@@ -782,6 +782,62 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       options: [{ checksVoidReturn: { subtypes: false } }],
     },
     // #endregion
+    // #region checksVoidReturn.subtypes: Extending type aliases
+    {
+      // Valid class extending type literals intersection
+      code: `
+type MyTypeLiteralsIntersection = { setThing(): void } & { thing: number };
+
+class MyClass implements MyTypeLiteralsIntersection {
+  thing = 1;
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+type MyTypeLiteralsIntersection = { setThing(): void } & { thing: number };
+
+class MyClass implements MyTypeLiteralsIntersection {
+  thing = 1;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    {
+      // Valid interface extending generic type
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType<false> {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: false } }],
+    },
+    // #endregion
     // #region checksVoidReturn.subtypes: Multiple heritage types
     {
       // Valid interface extending two interfaces
@@ -1744,6 +1800,33 @@ interface MyInterface {
 }
 
 interface MySubInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnSubtype' }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending type aliases
+    {
+      code: `
+type MyTypeIntersection = { setThing(): void } & { thing: number };
+
+class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
+  thing = 1;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [{ line: 6, messageId: 'voidReturnSubtype' }],
+    },
+    {
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType<false> {
   setThing(): Promise<void>;
 }
       `,
