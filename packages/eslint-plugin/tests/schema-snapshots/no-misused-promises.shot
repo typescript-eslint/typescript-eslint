@@ -34,6 +34,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
               "returns": {
                 "type": "boolean"
               },
+              "subtypes": {
+                "type": "boolean"
+              },
               "variables": {
                 "type": "boolean"
               }
@@ -60,6 +63,7 @@ type Options = [
           attributes?: boolean;
           properties?: boolean;
           returns?: boolean;
+          subtypes?: boolean;
           variables?: boolean;
         }
       | boolean;
