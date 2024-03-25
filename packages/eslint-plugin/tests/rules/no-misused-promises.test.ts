@@ -1751,7 +1751,7 @@ class MySubclassExtendsMyClass extends MyClass {
         {
           line: 9,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyClass' },
+          data: { heritageTypeName: 'MyClass' },
         },
       ],
     },
@@ -1771,7 +1771,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
         {
           line: 9,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyClass' },
+          data: { heritageTypeName: 'MyClass' },
         },
       ],
     },
@@ -1791,7 +1791,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
         {
           line: 9,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyClass' },
+          data: { heritageTypeName: 'MyClass' },
         },
       ],
     },
@@ -1813,7 +1813,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyAbstractClass' },
+          data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
     },
@@ -1831,7 +1831,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyAbstractClass' },
+          data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
     },
@@ -1849,7 +1849,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyAbstractClass' },
+          data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
     },
@@ -1871,7 +1871,7 @@ class MyInterfaceSubclass implements MyInterface {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyInterface' },
+          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -1889,7 +1889,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyInterface' },
+          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -1907,7 +1907,7 @@ interface MySubInterface extends MyInterface {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyInterface' },
+          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -1928,7 +1928,7 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
         {
           line: 6,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyTypeIntersection' },
+          data: { heritageTypeName: 'MyTypeIntersection' },
         },
       ],
     },
@@ -1946,7 +1946,7 @@ interface MyAsyncInterface extends MyGenericType<false> {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: '{ setThing(): void; }' },
+          data: { heritageTypeName: '{ setThing(): void; }' },
         },
       ],
     },
@@ -1970,12 +1970,12 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
         {
           line: 11,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyInterface' },
+          data: { heritageTypeName: 'MyInterface' },
         },
         {
           line: 11,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyOtherInterface' },
+          data: { heritageTypeName: 'MyOtherInterface' },
         },
       ],
     },
@@ -2001,12 +2001,12 @@ interface MyInterface extends MyClass, MyOtherClass {
         {
           line: 15,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyClass' },
+          data: { heritageTypeName: 'MyClass' },
         },
         {
           line: 15,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyOtherClass' },
+          data: { heritageTypeName: 'MyOtherClass' },
         },
       ],
     },
@@ -2036,12 +2036,12 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
         {
           line: 17,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyClass' },
+          data: { heritageTypeName: 'MyClass' },
         },
         {
           line: 17,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MySyncInterface' },
+          data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
     },
@@ -2064,7 +2064,7 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
         {
           line: 7,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyInterface' },
+          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -2087,7 +2087,7 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
         {
           line: 9,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'MyClassExpression' },
+          data: { heritageTypeName: 'MyClassExpression' },
         },
       ],
     },
@@ -2109,7 +2109,7 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
         {
           line: 10,
           messageId: 'voidReturnSubtype',
-          data: { baseTypeName: 'typeof MyClassExpression' },
+          data: { heritageTypeName: 'typeof MyClassExpression' },
         },
       ],
     },
