@@ -128,7 +128,7 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isTypeChanged(uncast: ts.Type, cast: ts.Type): boolean {
+    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
       if (uncast === cast) {
         return true;
       } else if (
@@ -262,7 +262,7 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeChanged(uncastType, castType);
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
           ? isLiteralVariableDeclarationChangingTypeWithConst(node)
