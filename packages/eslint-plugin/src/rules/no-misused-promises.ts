@@ -84,7 +84,7 @@ export default createRule<Options, MessageId>({
       voidReturnReturnValue:
         'Promise-returning function provided to return value where a void return was expected.',
       voidReturnSubtype:
-        "Promise-returning method provided where a void return was expected by base type '{{ baseTypeName }}'.",
+        "Promise-returning method provided where a void return was expected by heritage type '{{ heritageTypeName }}'.",
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
@@ -418,7 +418,7 @@ export default createRule<Options, MessageId>({
             context.report({
               node: services.tsNodeToESTreeNodeMap.get(nodeMember),
               messageId: 'voidReturnSubtype',
-              data: { baseTypeName: checker.typeToString(heritageType) },
+              data: { heritageTypeName: checker.typeToString(heritageType) },
             });
           }
         });
