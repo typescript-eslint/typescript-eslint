@@ -34,7 +34,7 @@ If your project has many intentionally redundant `default` cases, you may want t
 
 ### `requireDefaultForNonUnion`
 
-Defaults to false. It set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
+Defaults to false. If set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
 
 This is generally desirable so that `number` and `string` switches will be subject to the same exhaustive checks that your other switches are.
 
