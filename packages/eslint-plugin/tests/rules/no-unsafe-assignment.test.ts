@@ -185,11 +185,30 @@ class Foo {
     },
     {
       code: `
-class Foo {
-  private a = 1 as any;
-}
+      class Foo {
+        private a = 1 as any;
+      }
       `,
       errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
+       const [x] = spooky;
+      `,
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
+       const [[[x]]] = [spooky];
+      `,
+      errors: [{ messageId: 'unsafeArrayPatternFromTuple' }],
+    },
+    {
+      code: `
+       const {x: {y}} = {x: {spooky}};
+      `,
+      only: true,
+      errors: [{ messageId: 'unsafeArrayPatternFromTuple' }],
     },
     {
       code: `
@@ -225,8 +244,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<any>',
-            receiver: 'Set<string>',
+            sender: '`Set<any>`',
+            receiver: '`Set<string>`',
           },
         },
       ],
@@ -237,8 +256,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Map<string, any>',
-            receiver: 'Map<string, string>',
+            sender: '`Map<string, any>`',
+            receiver: '`Map<string, string>`',
           },
         },
       ],
@@ -249,8 +268,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<any[]>',
-            receiver: 'Set<string[]>',
+            sender: '`Set<any[]>`',
+            receiver: '`Set<string[]>`',
           },
         },
       ],
@@ -261,8 +280,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<Set<Set<any>>>',
-            receiver: 'Set<Set<Set<string>>>',
+            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`Set<Set<Set<string>>>`',
           },
         },
       ],
@@ -337,8 +356,8 @@ const x = [...([] as any[])];
           column: 43,
           endColumn: 70,
           data: {
-            sender: 'Set<Set<Set<any>>>',
-            receiver: 'Set<Set<Set<string>>>',
+            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`Set<Set<Set<string>>>`',
           },
         },
       ],

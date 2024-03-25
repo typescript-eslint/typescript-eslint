@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -90,9 +90,7 @@ export default createRule({
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
-          data: {
-            sender: isTypeErrorType(senderType) ? 'error' : 'any',
-          },
+          data: createDataFromSenderType(senderType),
         });
         return false;
       }
@@ -131,9 +129,7 @@ export default createRule({
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
-            data: {
-              sender: isTypeErrorType(senderType) ? 'error' : 'any',
-            },
+            data: createDataFromSenderType(senderType),
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -220,9 +216,7 @@ export default createRule({
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
-            data: {
-              sender: isTypeErrorType(senderType) ? 'error' : 'any',
-            },
+            data: createDataFromSenderType(senderType),
           });
           didReport = true;
         } else if (
@@ -286,9 +280,7 @@ export default createRule({
         context.report({
           node: reportingNode,
           messageId,
-          data: {
-            sender: isTypeErrorType(senderType) ? 'error' : 'any',
-          },
+          data: createDataFromSenderType(senderType),
         });
 
         return true;
@@ -313,8 +305,8 @@ export default createRule({
         node: reportingNode,
         messageId: 'unsafeAssignment',
         data: {
-          sender: checker.typeToString(sender),
-          receiver: checker.typeToString(receiver),
+          sender: '`' + checker.typeToString(sender) + '`',
+          receiver:'`' + checker.typeToString(receiver) + '`',
         },
       });
       return true;
@@ -328,6 +320,12 @@ export default createRule({
           ComparisonType.Basic
         : // no type annotation means the variable's type will just be inferred, thus equal
           ComparisonType.None;
+    }
+
+    function createDataFromSenderType(senderType: ts.Type) {
+      return {
+        sender: tsutils.isIntrinsicErrorType(senderType) ? 'error' : '`any`',
+      };
     }
 
     return {
@@ -398,9 +396,7 @@ export default createRule({
           context.report({
             node: node,
             messageId: 'unsafeArraySpread',
-            data: {
-              sender: isTypeErrorType(restType) ? 'error' : 'any',
-            },
+            data: createDataFromSenderType(restType),
           });
         }
       },
