@@ -128,6 +128,36 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isTypeChanged(uncast: ts.Type, cast: ts.Type): boolean {
+      if (uncast === cast) {
+        return true;
+      } else if (
+        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
+        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
+        tsutils.isCompilerOptionEnabled(
+          compilerOptions,
+          'exactOptionalPropertyTypes',
+        )
+      ) {
+        const uncastParts = tsutils
+          .unionTypeParts(uncast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        const castParts = tsutils
+          .unionTypeParts(cast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        if (uncastParts.length !== castParts.length) {
+          return false;
+        }
+
+        const castPartsSet = new Set(castParts);
+        uncastParts.forEach(part => castPartsSet.delete(part));
+        return castPartsSet.size === 0;
+      }
+      return false;
+    }
+
     return {
       TSNonNullExpression(node): void {
         if (
@@ -232,7 +262,7 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = uncastType === castType;
+        const typeIsUnchanged = isTypeChanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
           ? isLiteralVariableDeclarationChangingTypeWithConst(node)
