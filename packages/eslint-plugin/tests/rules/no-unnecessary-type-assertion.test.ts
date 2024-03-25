@@ -322,7 +322,7 @@ const bar = foo.a as string | undefined;
     {
       code: `
 declare const foo: {
-  a: string | null | number;
+  a?: string | null | number;
 };
 const bar = foo.a as string | undefined;
       `,
