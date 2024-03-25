@@ -247,7 +247,7 @@ const test = (): Foo => console.log('err');
       code: `
     type Foo = () => void;
     const arrowFn: Foo = () => console.log('foo');
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -256,7 +256,7 @@ const test = (): Foo => console.log('err');
     const funcExpr: Foo = function () {
       return console.log();
     };
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -265,14 +265,14 @@ const test = (): Foo => console.log('err');
     const funcExpr: Foo = () => {
       return console.log();
     };
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
     type Foo = () => void;
     const x = (() => console.log()) as Foo;
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -283,7 +283,7 @@ const test = (): Foo => console.log('err');
     const q = {
       foo: () => console.log(),
     } as Foo;
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -294,7 +294,7 @@ const test = (): Foo => console.log('err');
     const x: Foo = {
       foo: () => console.log(),
     };
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -304,7 +304,7 @@ const test = (): Foo => console.log('err');
     } as {
       foo: () => void;
     };
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -314,7 +314,7 @@ const test = (): Foo => console.log('err');
     } = {
       foo: () => console.log(),
     };
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -325,7 +325,7 @@ const test = (): Foo => console.log('err');
     const q = {
       foo: { bar: () => console.log() },
     } as Foo;
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -336,7 +336,7 @@ const test = (): Foo => console.log('err');
     const x: Foo = {
       foo: { bar: () => console.log() },
     };
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -346,7 +346,7 @@ const test = (): Foo => console.log('err');
     class App {
       private method: MethodType = () => console.log();
     }
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -359,21 +359,21 @@ const test = (): Foo => console.log('err');
         foo: () => console.log(),
       };
     }
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
   type HigherOrderType = () => () => () => void;
   const x: HigherOrderType = () => () => () => console.log();
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
   declare function foo(arg: () => void): void;
   foo(() => console.log());
-  `,
+      `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
@@ -829,6 +829,58 @@ return console.log('foo');
       ],
       output: `
 { console.log('foo'); return; }
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+      type Foo = () => void;
+      const test1: Foo = function () {
+        function testtt() {
+          return console.log(); // not reported - bug
+        }
+      };
+      `,
+      errors: [
+        {
+          line: 5,
+          column: 18,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+      type Foo = () => void;
+      const test1: Foo = function () {
+        function testtt() {
+          console.log(); // not reported - bug
+        }
+      };
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+      type Foo = () => void;
+      const test2 = function () {
+        function testtt() {
+          return console.log(); // reported - nice
+        }
+      };
+      `,
+      errors: [
+        {
+          line: 5,
+          column: 18,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+      type Foo = () => void;
+      const test2 = function () {
+        function testtt() {
+          console.log(); // reported - nice
+        }
+      };
       `,
     },
   ],

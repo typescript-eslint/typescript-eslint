@@ -39,13 +39,18 @@ export type MessageId =
 
 function findFunction(
   node: TSESTree.Node | undefined,
-): TSESTree.FunctionExpression | TSESTree.ArrowFunctionExpression | null {
+):
+  | TSESTree.FunctionExpression
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionDeclaration
+  | null {
   if (!node) {
     return null;
   }
   if (
     node.type === AST_NODE_TYPES.FunctionExpression ||
-    node.type === AST_NODE_TYPES.ArrowFunctionExpression
+    node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+    node.type === AST_NODE_TYPES.FunctionDeclaration
   ) {
     return node;
   }
@@ -141,10 +146,8 @@ export default createRule<Options, MessageId>({
 
           if (options.ignoreVoidInVoid) {
             if (
-              (invalidAncestor.returnType &&
-                isVoidLikeType(invalidAncestor.returnType)) ||
+              invalidAncestor.returnType ||
               isValidFunctionExpressionReturnType(invalidAncestor, {
-                allowDirectConstAssertionInArrowFunctions: true,
                 allowTypedFunctionExpressions: true,
               }) ||
               ancestorHasReturnType(invalidAncestor)
@@ -217,15 +220,21 @@ export default createRule<Options, MessageId>({
               return;
             }
 
-            if (
-              functionNode != null &&
-              (isValidFunctionExpressionReturnType(functionNode, {
-                allowDirectConstAssertionInArrowFunctions: true,
-                allowTypedFunctionExpressions: true,
-              }) ||
-                ancestorHasReturnType(functionNode))
-            ) {
-              return;
+            if (functionNode != null) {
+              if (functionNode.type === AST_NODE_TYPES.FunctionDeclaration) {
+                if (functionNode.returnType) {
+                  return;
+                }
+              } else {
+                if (
+                  isValidFunctionExpressionReturnType(functionNode, {
+                    allowTypedFunctionExpressions: true,
+                  }) ||
+                  ancestorHasReturnType(functionNode)
+                ) {
+                  return;
+                }
+              }
             }
           }
 
