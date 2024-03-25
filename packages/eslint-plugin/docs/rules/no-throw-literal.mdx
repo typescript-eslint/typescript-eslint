@@ -14,7 +14,7 @@ The fundamental benefit of `Error` objects is that they automatically keep track
 
 This rule restricts what can be thrown as an exception.
 
-:::warn
+:::warning
 This rule is being renamed to [`only-throw-error`](./only-throw-error.mdx).
 When it was first created, it only prevented literals from being thrown (hence the name), but it has now been expanded to only allow expressions which have a possibility of being an `Error` object.
 With the `allowThrowingAny` and `allowThrowingUnknown` options, it can be configured to only allow throwing values which are guaranteed to be an instance of `Error`.
