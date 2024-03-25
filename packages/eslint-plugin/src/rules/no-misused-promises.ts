@@ -388,11 +388,8 @@ export default createRule<Options, MessageId>({
         | TSESTree.TSInterfaceDeclaration,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const heritageTypes = tsNode.heritageClauses
-        ?.map(clause => clause.types)
-        .flat()
-        .map(typeExpression => checker.getTypeAtLocation(typeExpression));
 
+      const heritageTypes = getHeritageTypes(checker, tsNode);
       if (heritageTypes === undefined || heritageTypes.length === 0) {
         return;
       }
@@ -754,6 +751,16 @@ function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   return tsutils
     .unionTypeParts(type)
     .some(t => anySignatureIsThenableType(checker, node, t));
+}
+
+function getHeritageTypes(
+  checker: ts.TypeChecker,
+  tsNode: ts.ClassDeclaration | ts.ClassExpression | ts.InterfaceDeclaration,
+): ts.Type[] | undefined {
+  return tsNode.heritageClauses
+    ?.map(clause => clause.types)
+    .flat()
+    .map(typeExpression => checker.getTypeAtLocation(typeExpression));
 }
 
 /**
