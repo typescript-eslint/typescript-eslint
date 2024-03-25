@@ -277,9 +277,25 @@ function bar(items: string[]) {
       `,
       parserOptions: optionsWithOnUncheckedIndexedAccess,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      output: 'const a = `a`;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
     {
       code: "const a = 'a' as const;",
       output: "const a = 'a';",

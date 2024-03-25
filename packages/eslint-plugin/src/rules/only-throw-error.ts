@@ -20,14 +20,13 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  name: 'no-throw-literal',
+  name: 'only-throw-error',
   meta: {
     type: 'problem',
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/only-throw-error'],
     docs: {
-      description: 'Disallow throwing literals as exceptions',
-      extendsBaseRule: true,
+      description: 'Disallow throwing non-`Error` values as exceptions',
+      recommended: 'strict',
+      extendsBaseRule: 'no-throw-literal',
       requiresTypeChecking: true,
     },
     schema: [

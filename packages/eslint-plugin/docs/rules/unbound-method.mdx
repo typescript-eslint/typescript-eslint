@@ -68,8 +68,8 @@ const { logBound } = instance;
 logBound();
 
 // .bind and lambdas will also add a correct scope
-const dotBindLog = instance.logBound.bind(instance);
-const innerLog = () => instance.logBound();
+const dotBindLog = instance.logUnbound.bind(instance);
+const innerLog = () => instance.logUnbound();
 
 // arith.double explicitly declares that it does not refer to `this` internally
 const arith = {
