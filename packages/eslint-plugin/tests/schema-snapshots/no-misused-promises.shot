@@ -28,13 +28,13 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
               "attributes": {
                 "type": "boolean"
               },
+              "heritageTypes": {
+                "type": "boolean"
+              },
               "properties": {
                 "type": "boolean"
               },
               "returns": {
-                "type": "boolean"
-              },
-              "subtypes": {
                 "type": "boolean"
               },
               "variables": {
@@ -61,9 +61,9 @@ type Options = [
       | {
           arguments?: boolean;
           attributes?: boolean;
+          heritageTypes?: boolean;
           properties?: boolean;
           returns?: boolean;
-          subtypes?: boolean;
           variables?: boolean;
         }
       | boolean;

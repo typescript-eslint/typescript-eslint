@@ -517,7 +517,7 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Valid promise-returning class
@@ -534,7 +534,7 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid class with rule off
@@ -551,7 +551,7 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid abstract class
@@ -566,7 +566,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid abstract class with rule off
@@ -581,7 +581,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid interface
@@ -596,7 +596,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid interface with rule off
@@ -611,7 +611,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Extending an abstract class
@@ -628,7 +628,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid class with rule off
@@ -643,7 +643,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid abstract class
@@ -656,7 +656,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
   abstract setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid abstract class with rule off
@@ -669,7 +669,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
   abstract setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid interface extending abstract class
@@ -682,7 +682,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid interface with rule off
@@ -695,7 +695,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Extending an interface
@@ -710,7 +710,7 @@ interface MySubInterfaceExtendsMyInterface extends MyInterface {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid interface with rule off
@@ -723,7 +723,7 @@ interface MySubInterfaceExtendsMyInterface extends MyInterface {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid class
@@ -738,7 +738,7 @@ class MyClassImplementsMyInterface implements MyInterface {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid class with rule off
@@ -753,7 +753,7 @@ class MyClassImplementsMyInterface implements MyInterface {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid abstract class
@@ -766,7 +766,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
   abstract setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid abstract class with rule off
@@ -779,7 +779,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
   abstract setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Extending type aliases
@@ -795,7 +795,7 @@ class MyClass implements MyTypeLiteralsIntersection {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid class with rule off
@@ -809,7 +809,7 @@ class MyClass implements MyTypeLiteralsIntersection {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
       // Valid interface extending generic type
@@ -822,7 +822,7 @@ interface MyAsyncInterface extends MyGenericType {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Invalid interface with rule off
@@ -835,7 +835,7 @@ interface MyAsyncInterface extends MyGenericType<false> {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: false } }],
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Multiple heritage types
@@ -854,7 +854,7 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Valid interface extending two classes
@@ -875,7 +875,7 @@ interface MyInterface extends MyClass, MyOtherClass {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Valid class extending a class and implementing two interfaces
@@ -900,7 +900,7 @@ class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     // #endregion
     // #region checksVoidReturn.subtypes: Class expressions
@@ -919,7 +919,7 @@ const MyClassExpressionExtendsMyClass = class extends MyClass {
   }
 };
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Valid class extending a class expression
@@ -936,7 +936,7 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
   }
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
       // Valid interface implementing a class expression
@@ -952,7 +952,7 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { subtypes: true } }],
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     // #endregion
     // #endregion
@@ -1750,7 +1750,7 @@ class MySubclassExtendsMyClass extends MyClass {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyClass' },
         },
       ],
@@ -1770,7 +1770,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyClass' },
         },
       ],
@@ -1790,7 +1790,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyClass' },
         },
       ],
@@ -1812,7 +1812,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
@@ -1830,7 +1830,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
@@ -1848,7 +1848,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
@@ -1870,7 +1870,7 @@ class MyInterfaceSubclass implements MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -1888,7 +1888,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -1906,7 +1906,7 @@ interface MySubInterface extends MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -1927,7 +1927,7 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
       errors: [
         {
           line: 6,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyTypeIntersection' },
         },
       ],
@@ -1945,7 +1945,7 @@ interface MyAsyncInterface extends MyGenericType<false> {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: '{ setThing(): void; }' },
         },
       ],
@@ -1969,12 +1969,12 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
       errors: [
         {
           line: 11,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyInterface' },
         },
         {
           line: 11,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyOtherInterface' },
         },
       ],
@@ -2000,12 +2000,12 @@ interface MyInterface extends MyClass, MyOtherClass {
       errors: [
         {
           line: 15,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyClass' },
         },
         {
           line: 15,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyOtherClass' },
         },
       ],
@@ -2035,12 +2035,12 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       errors: [
         {
           line: 17,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyClass' },
         },
         {
           line: 17,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
@@ -2063,7 +2063,7 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -2086,7 +2086,7 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MyClassExpression' },
         },
       ],
@@ -2108,7 +2108,7 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       errors: [
         {
           line: 10,
-          messageId: 'voidReturnSubtype',
+          messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'typeof MyClassExpression' },
         },
       ],

@@ -20,9 +20,9 @@ type Options = [
 interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
+  heritageTypes?: boolean;
   properties?: boolean;
   returns?: boolean;
-  subtypes?: boolean;
   variables?: boolean;
 }
 
@@ -31,9 +31,9 @@ type MessageId =
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
+  | 'voidReturnHeritageType'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
-  | 'voidReturnSubtype'
   | 'voidReturnVariable';
 
 function parseChecksVoidReturn(
@@ -48,9 +48,9 @@ function parseChecksVoidReturn(
       return {
         arguments: true,
         attributes: true,
+        heritageTypes: true,
         properties: true,
         returns: true,
-        subtypes: true,
         variables: true,
       };
 
@@ -58,9 +58,9 @@ function parseChecksVoidReturn(
       return {
         arguments: checksVoidReturn.arguments ?? true,
         attributes: checksVoidReturn.attributes ?? true,
+        heritageTypes: checksVoidReturn.heritageTypes ?? true,
         properties: checksVoidReturn.properties ?? true,
         returns: checksVoidReturn.returns ?? true,
-        subtypes: checksVoidReturn.subtypes ?? true,
         variables: checksVoidReturn.variables ?? true,
       };
   }
@@ -79,12 +79,12 @@ export default createRule<Options, MessageId>({
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
         'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnHeritageType:
+        "Promise-returning method provided where a void return was expected by heritage type '{{ heritageTypeName }}'.",
       voidReturnProperty:
         'Promise-returning function provided to property where a void return was expected.',
       voidReturnReturnValue:
         'Promise-returning function provided to return value where a void return was expected.',
-      voidReturnSubtype:
-        "Promise-returning method provided where a void return was expected by heritage type '{{ heritageTypeName }}'.",
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
@@ -106,9 +106,9 @@ export default createRule<Options, MessageId>({
                 properties: {
                   arguments: { type: 'boolean' },
                   attributes: { type: 'boolean' },
+                  heritageTypes: { type: 'boolean' },
                   properties: { type: 'boolean' },
                   returns: { type: 'boolean' },
-                  subtypes: { type: 'boolean' },
                   variables: { type: 'boolean' },
                 },
                 type: 'object',
@@ -160,16 +160,16 @@ export default createRule<Options, MessageId>({
           ...(checksVoidReturn.attributes && {
             JSXAttribute: checkJSXAttribute,
           }),
+          ...(checksVoidReturn.heritageTypes && {
+            ClassDeclaration: checkClassLikeOrInterfaceNode,
+            ClassExpression: checkClassLikeOrInterfaceNode,
+            TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
+          }),
           ...(checksVoidReturn.properties && {
             Property: checkProperty,
           }),
           ...(checksVoidReturn.returns && {
             ReturnStatement: checkReturnStatement,
-          }),
-          ...(checksVoidReturn.subtypes && {
-            ClassDeclaration: checkClassLikeOrInterfaceNode,
-            ClassExpression: checkClassLikeOrInterfaceNode,
-            TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
           }),
           ...(checksVoidReturn.variables && {
             AssignmentExpression: checkAssignment,
@@ -417,8 +417,8 @@ export default createRule<Options, MessageId>({
 
     /**
      * Checks `heritageType` for a member named `memberName` that returns void; reports the
-     * 'voidReturnSubtype' message if found.
-     * @param nodeMember Subtype member that returns a Promise
+     * 'voidReturnHeritageType' message if found.
+     * @param nodeMember Node member that returns a Promise
      * @param heritageType Heritage type to check against
      */
     function checkHeritageTypeForMemberReturningVoid(
@@ -439,7 +439,7 @@ export default createRule<Options, MessageId>({
       }
       context.report({
         node: services.tsNodeToESTreeNodeMap.get(nodeMember),
-        messageId: 'voidReturnSubtype',
+        messageId: 'voidReturnHeritageType',
         data: { heritageTypeName: checker.typeToString(heritageType) },
       });
     }
