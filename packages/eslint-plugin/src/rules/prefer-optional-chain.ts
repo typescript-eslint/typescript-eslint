@@ -141,6 +141,7 @@ export default createRule<
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
+
         context.report({
           node: parentNode,
           messageId: 'preferOptionalChain',
@@ -172,6 +173,22 @@ export default createRule<
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
+        const leftNode = node.left;
+        const rightNode = node.right;
+
+        const isUndefinedIdentifier =
+          leftNode.type === AST_NODE_TYPES.Identifier;
+
+        const strictlyNullCheck =
+          rightNode.type === AST_NODE_TYPES.BinaryExpression &&
+          rightNode.operator === '!==' &&
+          rightNode.right.type === AST_NODE_TYPES.Literal &&
+          rightNode.right.value == null;
+
+        if (isUndefinedIdentifier && strictlyNullCheck) {
+          return;
+        }
+
         if (seenLogicals.has(node)) {
           return;
         }
