@@ -142,6 +142,15 @@ eventEmitter.on('some-event', async () => {
   await doSomething();
   otherSynchronousCall();
 });
+
+interface MyInterface {
+  setThing(): void;
+}
+class MyClass implements MyInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
 ```
 
 </TabItem>
@@ -185,6 +194,15 @@ eventEmitter.on('some-event', () => {
 
   handler().catch(handleError);
 });
+
+interface MyInterface {
+  setThing(): Promise<void>;
+}
+class MyClass implements MyInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
 ```
 
 </TabItem>
@@ -220,15 +238,6 @@ const getData2 = async () => {
 };
 
 return { foo: 42, ...getData2() };
-
-interface MyInterface {
-  setThing(): void;
-}
-class MyClass implements MyInterface {
-  async setThing(): Promise<void> {
-    this.thing = await fetchThing();
-  }
-}
 ```
 
 </TabItem>
@@ -244,15 +253,6 @@ const getData2 = async () => {
 };
 
 return { foo: 42, ...(await getData2()) };
-
-interface MyInterface {
-  setThing(): Promise<void>;
-}
-class MyClass implements MyInterface {
-  async setThing(): Promise<void> {
-    this.thing = await fetchThing();
-  }
-}
 ```
 
 </TabItem>
