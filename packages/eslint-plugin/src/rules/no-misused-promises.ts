@@ -388,12 +388,12 @@ export default createRule<Options, MessageId>({
         | TSESTree.TSInterfaceDeclaration,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const heritageBaseTypes = tsNode.heritageClauses
+      const heritageTypes = tsNode.heritageClauses
         ?.map(clause => clause.types)
         .flat()
-        .map(type => checker.getTypeFromTypeNode(type));
+        .map(typeExpression => checker.getTypeAtLocation(typeExpression));
 
-      if (heritageBaseTypes === undefined || heritageBaseTypes.length === 0) {
+      if (heritageTypes === undefined || heritageTypes.length === 0) {
         return;
       }
 
@@ -402,26 +402,23 @@ export default createRule<Options, MessageId>({
         if (memberName === undefined) {
           return;
         }
-        const nodeMemberReturnsPromise = returnsThenable(checker, nodeMember);
-        if (!nodeMemberReturnsPromise) {
+        if (!returnsThenable(checker, nodeMember)) {
           return;
         }
-        heritageBaseTypes.forEach(heritageBaseType => {
-          const heritageMemberType = getTypeOfMatchingHeritageMemberIfExists(
+        heritageTypes.forEach(heritageType => {
+          const heritageMemberType = getTypeOfMemberOrPropertyIfExists(
             checker,
-            heritageBaseType,
+            heritageType,
             memberName,
           );
-          if (heritageMemberType === undefined) {
-            return;
-          }
           if (
+            heritageMemberType !== undefined &&
             isVoidReturningFunctionType(checker, nodeMember, heritageMemberType)
           ) {
             context.report({
               node: services.tsNodeToESTreeNodeMap.get(nodeMember),
               messageId: 'voidReturnSubtype',
-              data: { baseTypeName: checker.typeToString(heritageBaseType) },
+              data: { baseTypeName: checker.typeToString(heritageType) },
             });
           }
         });
@@ -741,25 +738,16 @@ function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 }
 
 /**
- * @returns The type of the member or property with the given name in the heritage base type, if it exists.
+ * @returns The type of the member or property with the given name in the given type, if it exists.
  */
-function getTypeOfMatchingHeritageMemberIfExists(
+function getTypeOfMemberOrPropertyIfExists(
   checker: ts.TypeChecker,
-  heritageBaseType: ts.Type,
+  type: ts.Type,
   memberName: string,
 ): ts.Type | undefined {
   const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
-  const heritageBaseTypeSymbol = heritageBaseType.getSymbol();
-  if (heritageBaseTypeSymbol === undefined) {
-    const matchingProperty = tsutils.getPropertyOfType(
-      heritageBaseType,
-      escapedMemberName,
-    );
-    return matchingProperty && checker.getTypeOfSymbol(matchingProperty);
-  }
-  const memberSymbol = heritageBaseTypeSymbol.members?.get(escapedMemberName);
-  if (memberSymbol === undefined) {
-    return undefined;
-  }
-  return checker.getTypeOfSymbol(memberSymbol);
+  const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
+  const memberMatch =
+    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName);
+  return memberMatch && checker.getTypeOfSymbol(memberMatch);
 }

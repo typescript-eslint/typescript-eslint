@@ -903,6 +903,58 @@ class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
       options: [{ checksVoidReturn: { subtypes: true } }],
     },
     // #endregion
+    // #region checksVoidReturn.subtypes: Class expressions
+    {
+      // Valid class expression extending a class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+const MyClassExpressionExtendsMyClass = class extends MyClass {
+  setThing(): void {
+    return;
+  }
+};
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Valid class extending a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+
+class MyClassExtendsMyClassExpression extends MyClassExpression {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    {
+      // Valid interface implementing a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+type MyClassExpressionType = typeof MyClassExpression;
+
+interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { subtypes: true } }],
+    },
+    // #endregion
     // #endregion
   ],
 
@@ -1990,6 +2042,74 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
           line: 17,
           messageId: 'voidReturnSubtype',
           data: { baseTypeName: 'MySyncInterface' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Class expressions
+    {
+      // Invalid class expression implementing an interface
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+const MyClassExpressionExtendsMyClass = class implements MyInterface {
+  setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+};
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyInterface' },
+        },
+      ],
+    },
+    {
+      // Invalid class extending a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+
+class MyClassExtendsMyClassExpression extends MyClassExpression {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'MyClassExpression' },
+        },
+      ],
+    },
+    {
+      // Invalid interface implementing a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+type MyClassExpressionType = typeof MyClassExpression;
+
+interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'voidReturnSubtype',
+          data: { baseTypeName: 'typeof MyClassExpression' },
         },
       ],
     },
