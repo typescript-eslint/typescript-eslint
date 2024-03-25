@@ -397,31 +397,50 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      tsNode.members.forEach(nodeMember => {
+      for (const nodeMember of tsNode.members) {
         const memberName = nodeMember.name?.getText();
         if (memberName === undefined) {
-          return;
+          continue;
         }
         if (!returnsThenable(checker, nodeMember)) {
-          return;
+          continue;
         }
-        heritageTypes.forEach(heritageType => {
-          const heritageMemberType = getTypeOfMemberOrPropertyIfExists(
-            checker,
+        for (const heritageType of heritageTypes) {
+          checkHeritageTypeForMemberReturningVoid(
+            nodeMember,
             heritageType,
             memberName,
           );
-          if (
-            heritageMemberType !== undefined &&
-            isVoidReturningFunctionType(checker, nodeMember, heritageMemberType)
-          ) {
-            context.report({
-              node: services.tsNodeToESTreeNodeMap.get(nodeMember),
-              messageId: 'voidReturnSubtype',
-              data: { heritageTypeName: checker.typeToString(heritageType) },
-            });
-          }
-        });
+        }
+      }
+    }
+
+    /**
+     * Checks `heritageType` for a member named `memberName` that returns void; reports the
+     * 'voidReturnSubtype' message if found.
+     * @param nodeMember Subtype member that returns a Promise
+     * @param heritageType Heritage type to check against
+     */
+    function checkHeritageTypeForMemberReturningVoid(
+      nodeMember: ts.Node,
+      heritageType: ts.Type,
+      memberName: string,
+    ): void {
+      const heritageMember = getMemberIfExists(heritageType, memberName);
+      if (heritageMember === undefined) {
+        return;
+      }
+      const memberType = checker.getTypeOfSymbolAtLocation(
+        heritageMember,
+        nodeMember,
+      );
+      if (!isVoidReturningFunctionType(checker, nodeMember, memberType)) {
+        return;
+      }
+      context.report({
+        node: services.tsNodeToESTreeNodeMap.get(nodeMember),
+        messageId: 'voidReturnSubtype',
+        data: { heritageTypeName: checker.typeToString(heritageType) },
       });
     }
 
@@ -738,16 +757,15 @@ function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 }
 
 /**
- * @returns The type of the member or property with the given name in the given type, if it exists.
+ * @returns The member with the given name in `type`, if it exists.
  */
-function getTypeOfMemberOrPropertyIfExists(
-  checker: ts.TypeChecker,
+function getMemberIfExists(
   type: ts.Type,
   memberName: string,
-): ts.Type | undefined {
+): ts.Symbol | undefined {
   const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
   const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
-  const memberMatch =
-    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName);
-  return memberMatch && checker.getTypeOfSymbol(memberMatch);
+  return (
+    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
+  );
 }
