@@ -419,10 +419,24 @@ export default createRule<Options, MessageIds>({
                 ref.from.variableScope === unusedVar.scope.variableScope,
             );
 
+            const node = writeReferences.length
+              ? writeReferences[writeReferences.length - 1].identifier
+              : unusedVar.identifiers[0];
+
+            const { start } = node.loc;
+            const nodeVariableLength = node.name.length;
+
+            const loc = {
+              start,
+              end: {
+                line: start.line,
+                column: start.column + nodeVariableLength,
+              },
+            };
+
             context.report({
-              node: writeReferences.length
-                ? writeReferences[writeReferences.length - 1].identifier
-                : unusedVar.identifiers[0],
+              node,
+              loc,
               messageId: 'unusedVar',
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
