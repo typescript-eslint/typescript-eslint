@@ -887,7 +887,7 @@ a3[1]?.[0];
 a4[0]?.[0];
     `,
     `
-declare const obj: {[k: symbol]: string};
+declare const obj: { [k: symbol]: string };
 declare const key: symbol;
 obj[key]?.length;
     `,
