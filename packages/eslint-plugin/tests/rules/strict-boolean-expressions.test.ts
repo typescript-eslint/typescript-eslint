@@ -1643,6 +1643,7 @@ if (x) {
         !obj
         obj || 0
         obj && 1 || 0
+        obj ?? 1
       `,
       errors: [
         {
@@ -1658,6 +1659,7 @@ if (x) {
         !obj
         obj || 0
         obj && 1 || 0
+        obj ?? 1
       `,
             },
           ],
@@ -1675,43 +1677,20 @@ if (x) {
         obj == null
         obj || 0
         obj && 1 || 0
+        obj ?? 1
       `,
             },
           ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
+          messageId: 'conditionErrorNullableObjectConvertToNullishCoalescing',
           line: 5,
           column: 9,
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        ;(obj != null) || 0
-        obj && 1 || 0
-      `,
-            },
-          ],
         },
         {
-          messageId: 'conditionErrorNullableObject',
+          messageId: 'conditionErrorNullableObjectConvertToNullishCoalescing',
           line: 6,
           column: 9,
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: `
-        declare const obj: { x: number } | null;
-        !obj ? 1 : 0
-        !obj
-        obj || 0
-        ;(obj != null) && 1 || 0
-      `,
-            },
-          ],
         },
       ],
     },

@@ -34,6 +34,7 @@ export type MessageId =
   | 'conditionErrorNullableEnum'
   | 'conditionErrorNullableNumber'
   | 'conditionErrorNullableObject'
+  | 'conditionErrorNullableObjectConvertToNullishCoalescing'
   | 'conditionErrorNullableString'
   | 'conditionErrorNullish'
   | 'conditionErrorNumber'
@@ -113,6 +114,9 @@ export default createRule<Options, MessageId>({
       conditionErrorNullableObject:
         'Unexpected nullable object value in conditional. ' +
         'An explicit null check is required.',
+      conditionErrorNullableObjectConvertToNullishCoalescing:
+        'Unexpected nullable object value in conditional with `||` or `&&`. ' +
+        'You should probably be using nullish coalescing instead.',
       conditionErrorNullableEnum:
         'Unexpected nullable enum value in conditional. ' +
         'Please handle the nullish/zero/NaN cases explicitly.',
@@ -724,6 +728,12 @@ export default createRule<Options, MessageId>({
                 },
               ],
             });
+          } else if (isLogicalExpression(node.parent!)) {
+            context.report({
+              node,
+              messageId:
+                'conditionErrorNullableObjectConvertToNullishCoalescing',
+            });
           } else {
             // if (nullableObject)
             context.report({
@@ -938,6 +948,12 @@ function isLogicalNegationExpression(
   node: TSESTree.Node,
 ): node is TSESTree.UnaryExpression {
   return node.type === AST_NODE_TYPES.UnaryExpression && node.operator === '!';
+}
+
+function isLogicalExpression(
+  node: TSESTree.Node,
+): node is TSESTree.LogicalExpression {
+  return node.type === AST_NODE_TYPES.LogicalExpression;
 }
 
 function isArrayLengthExpression(
