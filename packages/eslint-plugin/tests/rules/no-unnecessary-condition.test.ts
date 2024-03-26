@@ -384,7 +384,7 @@ if (returnsArr?.()[42]) {
 }
 returnsArr?.()[42]?.toUpperCase();
     `,
-    // nullish + array index
+    // nullish + index signature
     `
 declare const arr: string[][];
 arr[x] ?? [];
@@ -393,6 +393,30 @@ arr[x] ?? [];
     `
 declare const arr: { foo: number }[];
 const bar = arr[42]?.foo ?? 0;
+    `,
+    `
+declare const foo: Record<string, number>;
+declare const bar: string;
+foo[bar] ??= 0;
+    `,
+    `
+declare const foo: Record<string, number>;
+declare const bar: string;
+foo[bar] ?? 0;
+    `,
+    `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+    `,
+    `
+declare const dict: Record<string, object>;
+if (dict['mightNotExist']) {
+}
     `,
     // Doesn't check the right-hand side of a logical expression
     //  in a non-conditional context
@@ -852,6 +876,21 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare const a1: [string, ...number[]];
+declare const a2: [...string[], number];
+declare const a3: [string, ...number[], boolean];
+declare const a4: [...string[]];
+a1[1]?.[0];
+a2[1]?.[0];
+a3[1]?.[0];
+a4[0]?.[0];
+    `,
+    `
+declare const obj: {[k: symbol]: string};
+declare const key: symbol;
+obj[key]?.length;
+    `,
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1180,38 +1219,6 @@ function nothing3(x: [string, string]) {
       ],
     },
     // Indexing cases
-    {
-      // This is an error because 'dict' doesn't represent
-      //  the potential for undefined in its types
-      code: `
-declare const dict: Record<string, object>;
-if (dict['mightNotExist']) {
-}
-      `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
-    },
-    {
-      // Should still check tuples when accessed with literal numbers, since they don't have
-      //   unsound index signatures
-      code: `
-const x = [{}] as [{ foo: string }];
-if (x[0]) {
-}
-if (x[0]?.foo) {
-}
-      `,
-      output: `
-const x = [{}] as [{ foo: string }];
-if (x[0]) {
-}
-if (x[0].foo) {
-}
-      `,
-      errors: [
-        ruleError(3, 5, 'alwaysTruthy'),
-        ruleError(5, 9, 'neverOptionalChain'),
-      ],
-    },
     {
       // Shouldn't mistake this for an array indexing case
       code: `
@@ -1950,26 +1957,6 @@ pick({ foo: 1, bar: 2 }, 'bar');
           endLine: 7,
           column: 7,
           endColumn: 15,
-        },
-      ],
-    },
-    {
-      code: `
-function getElem(dict: Record<string, { foo: string }>, key: string) {
-  if (dict[key]) {
-    return dict[key].foo;
-  } else {
-    return '';
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'alwaysTruthy',
-          line: 3,
-          endLine: 3,
-          column: 7,
-          endColumn: 16,
         },
       ],
     },
