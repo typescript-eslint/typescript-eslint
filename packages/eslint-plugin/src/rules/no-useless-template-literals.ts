@@ -6,7 +6,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  getStaticStringValue,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
@@ -53,7 +52,9 @@ export default createRule<[], MessageId>({
       return isString(type);
     }
 
-    function isLiteral(expression: TSESTree.Expression): boolean {
+    function isLiteral(
+      expression: TSESTree.Expression,
+    ): expression is TSESTree.Literal {
       return expression.type === AST_NODE_TYPES.Literal;
     }
 
@@ -144,10 +145,19 @@ export default createRule<[], MessageId>({
                 ]),
               ];
 
-              const stringValue = getStaticStringValue(expression);
-
-              if (stringValue != null) {
-                const escapedValue = stringValue.replace(/([`$\\])/g, '\\$1');
+              if (isLiteral(expression)) {
+                const escapedValue =
+                  typeof expression.value === 'string'
+                    ? // '1'   -> 1
+                      // '`'   -> \`
+                      // '${}' -> \${}
+                      // '\\'  -> \\
+                      expression.raw.slice(1, -1).replace(/([`$])/g, '\\$1')
+                    : // 1     -> 1
+                      // /`/   -> /\`/
+                      // /${}/ -> /\${}/
+                      // /\\/  -> /\\\\/
+                      String(expression.value).replace(/([`$\\])/g, '\\$1');
 
                 fixes.push(fixer.replaceText(expression, escapedValue));
               } else if (isTemplateLiteral(expression)) {

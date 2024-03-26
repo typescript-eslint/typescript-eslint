@@ -163,6 +163,48 @@ ruleTester.run('no-useless-template-literals', rule, {
       ],
     },
     {
+      code: '`${0o25}`;',
+      output: '`21`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 8,
+        },
+      ],
+    },
+    {
+      code: '`${0b1010} ${0b1111}`;',
+      output: '`10 15`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 10,
+        },
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 14,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: '`${0x25}`;',
+      output: '`37`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 8,
+        },
+      ],
+    },
+    {
       code: '`${/a/}`;',
       output: '`/a/`;',
       errors: [
@@ -171,6 +213,18 @@ ruleTester.run('no-useless-template-literals', rule, {
           line: 1,
           column: 4,
           endColumn: 7,
+        },
+      ],
+    },
+    {
+      code: '`${/a/gim}`;',
+      output: '`/a/gim`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 10,
         },
       ],
     },
@@ -636,6 +690,80 @@ declare const nested: string, interpolation: string;
           messageId: 'noUselessTemplateLiteral',
         },
       ],
+    },
+
+    {
+      code: '`some ${/`/} string`;',
+      output: '`some /\\`/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/${}/} string`;',
+      output: '`some /\\${}/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/\\\\/} string`;',
+      output: '`some /\\\\\\\\/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+
+    {
+      code: "`${'\\u00E5'}`;",
+      output: "'\\u00E5';",
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "`${'\\n'}`;",
+      output: "'\\n';",
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'\\u00E5'} `;",
+      output: '` \\u00E5 `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'\\n'} `;",
+      output: '` \\n `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: noFormat`\` \${"\\n"} \`;`,
+      output: '` \\n `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`\\n`} `;',
+      output: '` \\n `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: noFormat`\` \${ 'A\\u0307\\u0323' } \`;`,
+      output: '` A\\u0307\\u0323 `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'👨‍👩‍👧‍👦'} `;",
+      output: '` 👨‍👩‍👧‍👦 `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'\\ud83d\\udc68'} `;",
+      output: '` \\ud83d\\udc68 `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
     },
   ],
 });
