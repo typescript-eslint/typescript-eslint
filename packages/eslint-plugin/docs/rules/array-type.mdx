@@ -42,7 +42,8 @@ const y: readonly string[] = ['a', 'b'];
 
 ### `"generic"`
 
-Always use `Array<T>` or `ReadonlyArray<T>` for all array types.
+Always use `Array<T>` or `ReadonlyArray<T>` or `Readonly<T[]>` for all array types.
+However, `readonly T[]` is modified to `ReadonlyArray<T>`.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -58,6 +59,7 @@ const y: readonly string[] = ['a', 'b'];
 ```ts option='{ "default": "generic" }'
 const x: Array<string> = ['a', 'b'];
 const y: ReadonlyArray<string> = ['a', 'b'];
+const z: Readonly<string[]> = ['a', 'b'];
 ```
 
 </TabItem>
