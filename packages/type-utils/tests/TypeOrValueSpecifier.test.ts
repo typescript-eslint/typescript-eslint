@@ -203,6 +203,11 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
       ],
       [
+        'type Foo = Promise<number> & {hey?: string}; let Guzz: Foo = Promise.resolve(5); type Test = typeof Guzz;',
+        // type.getSymbol() doesn't work here, .aliasSymbol does
+        { from: 'file', name: 'Foo' },
+      ],
+      [
         'interface Foo {prop: string}; type Test = Foo;',
         {
           from: 'file',
@@ -335,6 +340,14 @@ describe('TypeOrValueSpecifier', () => {
           from: 'package',
           name: 'BabelCodeFrameOptions',
           package: '@babel/code-frame',
+        },
+      ],
+      [
+        'import test from "node:test"; type Test = typeof test;',
+        {
+          from: 'package',
+          name: 'test',
+          package: 'node:test',
         },
       ],
     ])('matches a matching package specifier: %s', runTestPositive);

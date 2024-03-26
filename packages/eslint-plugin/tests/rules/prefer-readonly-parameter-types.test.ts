@@ -479,6 +479,19 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    {
+      code: `
+import { EventEmitter } from 'node:events';
+const shawl = (foo: EventEmitter) => {};
+      `,
+      options: [
+        {
+          allow: [
+            { from: 'package', name: 'EventEmitter', package: 'node:events' },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays

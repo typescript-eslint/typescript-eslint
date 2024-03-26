@@ -36,6 +36,8 @@ declare module 'typescript' {
      * Maps from a SourceFile's `.path` to the name of the package it was imported with.
      */
     readonly sourceFileToPackageName: ReadonlyMap<Path, string>;
+
+    readonly resolvedModules: ReadonlyMap<Path, unknown>;
   }
 
   interface SourceFile extends Declaration, LocalsContainer {

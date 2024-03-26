@@ -1,19 +1,28 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
   OperatorPrecedence,
+  readonlynessOptionsDefaults,
+  readonlynessOptionsSchema,
+  typeMatchesSpecifier,
 } from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
+    allowForKnownSafePromises?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -79,6 +88,7 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -89,6 +99,7 @@ export default createRule<Options, MessageId>({
     {
       ignoreVoid: true,
       ignoreIIFE: false,
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
     },
   ],
 
@@ -262,6 +273,20 @@ export default createRule<Options, MessageId>({
       }
 
       if (node.type === AST_NODE_TYPES.CallExpression) {
+        const member =
+          node.callee.type === AST_NODE_TYPES.MemberExpression
+            ? node.callee.object
+            : node;
+        if (
+          doesTypeMatchesSpecifier(
+            services,
+            member,
+            options.allowForKnownSafePromises,
+          )
+        ) {
+          return { isUnhandled: false };
+        }
+
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 
@@ -303,6 +328,15 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.Identifier ||
         node.type === AST_NODE_TYPES.NewExpression
       ) {
+        if (
+          doesTypeMatchesSpecifier(
+            services,
+            node,
+            options.allowForKnownSafePromises,
+          )
+        ) {
+          return { isUnhandled: false };
+        }
         // If it is just a property access chain or a `new` call (e.g. `foo.bar` or
         // `new Promise()`), the promise is not handled because it doesn't have the
         // necessary then/catch call at the end of the chain.
@@ -313,6 +347,20 @@ export default createRule<Options, MessageId>({
           return leftResult;
         }
         return isUnhandledPromise(checker, node.right);
+      } else if (
+        node.type === AST_NODE_TYPES.TSAsExpression ||
+        node.type === AST_NODE_TYPES.TSTypeAssertion
+      ) {
+        if (
+          doesTypeMatchesSpecifier(
+            services,
+            node,
+            options.allowForKnownSafePromises,
+          )
+        ) {
+          return { isUnhandled: false };
+        }
+        return isUnhandledPromise(checker, node.expression);
       }
 
       // We conservatively return false for all other types of expressions because
@@ -322,6 +370,31 @@ export default createRule<Options, MessageId>({
     }
   },
 });
+
+/**
+ * It checks whether a node's type matches one of the types listed in the `allowForKnownSafePromises` config
+ * @param services services variable passed from context function to check the type of a node
+ * @param node the node whose type is to be calculated to know whether it is a safe promise or not
+ * @param options The config object of `allowForKnownSafePromises`
+ * @returns `true` if the type matches, `false` if it isn't
+ */
+function doesTypeMatchesSpecifier(
+  services: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
+  options: TypeOrValueSpecifier[] | undefined,
+): boolean {
+  if (Array.isArray(options) && options.length > 0) {
+    const result = options.some(specifier =>
+      typeMatchesSpecifier(
+        services.getTypeAtLocation(node),
+        specifier,
+        services.program,
+      ),
+    );
+    return result;
+  }
+  return false;
+}
 
 function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);

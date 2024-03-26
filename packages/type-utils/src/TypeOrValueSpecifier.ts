@@ -160,12 +160,19 @@ function typeDeclaredInPackage(
   // Handle scoped packages - if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
+  let matcher = new RegExp(`${packageName}|${typesPackageName}`);
+
+  if (packageName.includes(':')) {
+    matcher = new RegExp(packageName.substring(0, packageName.indexOf(':')));
+  }
   return declarationFiles.some(declaration => {
-    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+    const packageIdName =
+      program.resolvedModules.has(declaration.path) ||
+      program.sourceFileToPackageName.has(declaration.path);
+
     return (
-      packageIdName !== undefined &&
-      matcher.test(packageIdName) &&
+      packageIdName &&
+      matcher.test(declaration.path) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
@@ -200,9 +207,9 @@ export function typeMatchesSpecifier(
   if (!specifierNameMatches(type, specifier.name)) {
     return false;
   }
+  const symbol = type.getSymbol() ?? type.aliasSymbol;
   const declarationFiles =
-    type
-      .getSymbol()
+    symbol
       ?.getDeclarations()
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   switch (specifier.from) {

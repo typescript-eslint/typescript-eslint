@@ -504,6 +504,94 @@ void promiseArray;
 ['I', 'am', 'just', 'an', 'array'];
       `,
     },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz: Foo = Promise.resolve(5);
+guzz;
+guzz.then(() => {});
+guzz.catch();
+guzz.finally();
+0 ? guzz.catch() : 2;
+null ?? guzz.catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+guzz as Foo;
+(guzz as Foo).then(() => {});
+(guzz as Foo).catch();
+(guzz as Foo).finally();
+0 ? (guzz as Foo).catch() : 2;
+null ?? (guzz as Foo).catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
+guzz() as Foo;
+(guzz() as Foo).then(() => {});
+(guzz() as Foo).catch();
+(guzz() as Foo).finally();
+0 ? (guzz() as Foo).catch() : 2;
+null ?? (guzz() as Foo).catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz: () => Foo = () => Promise.resolve(5);
+guzz();
+guzz().then(() => {});
+guzz().catch();
+guzz().finally();
+0 ? guzz().catch() : 2;
+null ?? guzz().catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+let guzz = () => Promise.resolve(5);
+guzz() as PromiseLike<number>;
+(guzz() as PromiseLike<number>).then(() => {});
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
+      ],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
+(guzz() as Foo).then(
+  () => {},
+  () => {},
+);
+(guzz() as Foo).catch(() => {});
+0 ? (guzz() as Foo).catch(() => {}) : 2;
+null ?? (guzz() as Foo).catch(() => {});
+      `,
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+(guzz as Foo).then(
+  () => {},
+  () => {},
+);
+(guzz as Foo).catch(() => {});
+0 ? (guzz as Foo).catch(() => {}) : 2;
+null ?? (guzz as Foo).catch(() => {});
+      `,
+    },
   ],
 
   invalid: [
@@ -1805,6 +1893,46 @@ cursed();
         okArrayOrPromiseArray;
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+guzz as Foo;
+(guzz as Foo).then(x => {});
+(guzz as Foo).catch();
+(guzz as Foo).finally();
+0 ? (guzz as Foo).catch() : 2;
+null ?? (guzz as Foo).catch();
+      `,
+      errors: [
+        { line: 4, messageId: 'floatingVoid' },
+        { line: 5, messageId: 'floatingVoid' },
+        { line: 6, messageId: 'floatingVoid' },
+        { line: 7, messageId: 'floatingVoid' },
+        { line: 8, messageId: 'floatingVoid' },
+        { line: 9, messageId: 'floatingVoid' },
+      ],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
+guzz() as Foo;
+(guzz() as Foo).then(x => {});
+(guzz() as Foo).catch();
+(guzz() as Foo).finally();
+0 ? (guzz() as Foo).catch() : 2;
+null ?? (guzz() as Foo).catch();
+      `,
+      errors: [
+        { line: 4, messageId: 'floatingVoid' },
+        { line: 5, messageId: 'floatingVoid' },
+        { line: 6, messageId: 'floatingVoid' },
+        { line: 7, messageId: 'floatingVoid' },
+        { line: 8, messageId: 'floatingVoid' },
+        { line: 9, messageId: 'floatingVoid' },
+      ],
     },
   ],
 });
