@@ -328,6 +328,15 @@ const bar = foo.a as string | undefined;
       `,
       parserOptions: optionsWithExactOptionalPropertyTypes,
     },
+    {
+      code: `
+declare const foo: {
+  a?: string | number;
+};
+const bar = foo.a as string | undefined | bigint;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
   ],
 
   invalid: [

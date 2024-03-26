@@ -131,7 +131,9 @@ export default createRule<Options, MessageIds>({
     function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
       if (uncast === cast) {
         return true;
-      } else if (
+      }
+
+      if (
         isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
         isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
         tsutils.isCompilerOptionEnabled(
@@ -151,10 +153,10 @@ export default createRule<Options, MessageIds>({
           return false;
         }
 
-        const castPartsSet = new Set(castParts);
-        uncastParts.forEach(part => castPartsSet.delete(part));
-        return castPartsSet.size === 0;
+        const uncastPartsSet = new Set(uncastParts);
+        return castParts.every(part => uncastPartsSet.has(part));
       }
+
       return false;
     }
 
