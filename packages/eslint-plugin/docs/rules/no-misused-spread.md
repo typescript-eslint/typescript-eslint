@@ -1,0 +1,100 @@
+---
+description: 'Disallow using the spread operator when it might cause unexpected behavior.'
+---
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
+
+The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript, but it can only be used with types that support it. This rule disallows using the spread operator on types where spreading can lead to unexpected behavior.
+
+## Examples
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+declare const userName: string;
+const chars = [...userName];
+
+declare const arr: number[];
+const arrSpread = { ...arr };
+
+declare const set: Set<number>;
+const setSpread = { ...set };
+
+declare const map: Map<string, number>;
+const mapSpread = { ...map };
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj };
+```
+
+### ✅ Correct
+
+```ts
+declare const userName: string;
+const chars = userName.split('');
+
+declare const arr: number[];
+const arrSpread = [...arr];
+
+declare const set: Set<number>;
+const setSpread = [...set];
+
+declare const map: Map<string, number>;
+const mapSpread = [...map];
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj() };
+```
+
+<!--/tabs-->
+
+## Options
+
+### `allowClassInstances`
+
+By default, this rule disallows using the spread operator on instances of classes:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts option='{ "allowClassInstances": false }'
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const user = new User('John');
+
+const userSpread = { ...user };
+```
+
+<!--/tabs-->
+
+If you want to allow this behavior, you can configure the rule with `"allowClassInstances": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowClassInstances": true
+    }
+  ]
+}
+```
+
+## When Not To Use It
+
+If you intentionally want to use the spread operator in those cases, and expect
+the specific behavior that comes with it, you might not want this rule.
+For example, when you want to spread an array into an object and expect the
+result to be an object with the array elements as values and the array indices
+as keys.
