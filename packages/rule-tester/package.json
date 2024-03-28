@@ -27,6 +27,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/rule-tester",
   "license": "MIT",
   "keywords": [
     "eslint",

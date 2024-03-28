@@ -25,6 +25,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

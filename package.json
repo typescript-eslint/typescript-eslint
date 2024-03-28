@@ -22,6 +22,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "scripts": {
     "build": "npx nx run-many --target=build --parallel --exclude website --exclude website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",

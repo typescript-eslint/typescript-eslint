@@ -38,6 +38,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/eslint-plugin",
   "license": "MIT",
   "keywords": [
     "eslint",

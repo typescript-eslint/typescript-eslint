@@ -27,6 +27,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/parser",
   "license": "BSD-2-Clause",
   "keywords": [
     "ast",
