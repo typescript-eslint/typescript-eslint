@@ -58,6 +58,16 @@ function foo(): Set<any> {
   return new Set<any>();
 }
     `,
+    `
+async function foo(): any {
+  return {} as any;
+}
+    `,
+    `
+async function foo(): Promise<any> {
+  return Promise.resolve({} as any);
+}
+    `,
     // TODO - this should error, but it's hard to detect, as the type references are different
     `
 function foo(): ReadonlySet<number> {
@@ -100,6 +110,16 @@ function foo(): Set<number> {
     `
       function fn<T extends any>(x: T): Set<unknown> {
         return x as Set<any>;
+      }
+    `,
+    `
+      async function fn<T extends any>(x: T): Promise<unknown> {
+        return x as any;
+      }
+    `,
+    `
+      function fn<T extends any>(x: T): Promise<unknown> {
+        return Promise.resolve(x as any);
       }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
@@ -405,6 +425,84 @@ function bar() {
           line: 7,
           column: 16,
           endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: any;
+async function foo() {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 4,
+          column: 3,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: Promise<any>;
+function foo() {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 4,
+          column: 3,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: Promise<any>;
+async function foo(): Promise<number> {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 4,
+          column: 3,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo(arg: number) {
+  return arg as any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          endColumn: 21,
+        },
+      ],
+    },
+    {
+      code: `
+async function foo(arg: number) {
+  return arg as Promise<any>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          endColumn: 30,
         },
       ],
     },
