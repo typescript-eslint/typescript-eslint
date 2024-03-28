@@ -106,6 +106,11 @@ function parseForESLint(
   const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
     jsx: validateBoolean(options.ecmaFeatures.jsx),
+    /**
+     * Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
+     * https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
+     */
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
   });
   const analyzeOptions: AnalyzeOptions = {
     globalReturn: options.ecmaFeatures.globalReturn,
@@ -123,6 +128,7 @@ function parseForESLint(
     options.warnOnUnsupportedTypeScriptVersion,
     true,
   );
+
   if (!warnOnUnsupportedTypeScriptVersion) {
     parserOptions.loggerFn = false;
   }
