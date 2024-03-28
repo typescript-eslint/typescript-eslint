@@ -500,6 +500,462 @@ foo(bar);
       },
       options: [{ checksVoidReturn: { attributes: true } }],
     },
+    // #region checksVoidReturn.subtypes
+    // #region checksVoidReturn.subtypes: Extending a class
+    {
+      // Valid void-returning class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Valid promise-returning class
+      code: `
+class MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid abstract class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid abstract class with rule off
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid interface
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an abstract class
+    {
+      // Valid class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid abstract class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid abstract class with rule off
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid interface extending abstract class
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an interface
+    {
+      // Valid interface
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterfaceExtendsMyInterface extends MyInterface {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterfaceExtendsMyInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid class
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyClassImplementsMyInterface implements MyInterface {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyClassImplementsMyInterface implements MyInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid abstract class
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid abstract class with rule off
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending type aliases
+    {
+      // Valid class extending type literals intersection
+      code: `
+type MyTypeLiteralsIntersection = { setThing(): void } & { thing: number };
+
+class MyClass implements MyTypeLiteralsIntersection {
+  thing = 1;
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid class with rule off
+      code: `
+type MyTypeLiteralsIntersection = { setThing(): void } & { thing: number };
+
+class MyClass implements MyTypeLiteralsIntersection {
+  thing = 1;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    {
+      // Valid interface extending generic type
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Invalid interface with rule off
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType<false> {
+  setThing(): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: false } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Multiple heritage types
+    {
+      // Valid interface extending two interfaces
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+interface MyThirdInterface extends MyInterface, MyOtherInterface {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Valid interface extending two classes
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MyOtherClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterface extends MyClass, MyOtherClass {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Valid class extending a class and implementing two interfaces
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Class expressions
+    {
+      // Valid class expression extending a class
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+const MyClassExpressionExtendsMyClass = class extends MyClass {
+  setThing(): void {
+    return;
+  }
+};
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Valid class extending a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+
+class MyClassExtendsMyClassExpression extends MyClassExpression {
+  setThing(): void {
+    return;
+  }
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Valid interface implementing a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+type MyClassExpressionType = typeof MyClassExpression;
+
+interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
+  setThing(): void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    // #endregion
+    // #endregion
   ],
 
   invalid: [
@@ -1275,5 +1731,389 @@ consume(...cbs);
       `,
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
+    // #region checksVoidReturn.subtypes
+    // #region checksVoidReturn.subtypes: Extending a class
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyClass' },
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyClass' },
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyClass' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an abstract class
+    {
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyAbstractClass' },
+        },
+      ],
+    },
+    {
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyAbstractClass' },
+        },
+      ],
+    },
+    {
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyAbstractClass' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending an interface
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyInterfaceSubclass implements MyInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyInterface' },
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyInterface' },
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyInterface' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Extending type aliases
+    {
+      code: `
+type MyTypeIntersection = { setThing(): void } & { thing: number };
+
+class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
+  thing = 1;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyTypeIntersection' },
+        },
+      ],
+    },
+    {
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType<false> {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: '{ setThing(): void; }' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Multiple heritage types
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+interface MyThirdInterface extends MyInterface, MyOtherInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyInterface' },
+        },
+        {
+          line: 11,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyOtherInterface' },
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MyOtherClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterface extends MyClass, MyOtherClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 15,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyClass' },
+        },
+        {
+          line: 15,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyOtherClass' },
+        },
+      ],
+    },
+    {
+      code: `
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+
+interface MySyncInterface {
+  setThing(): void;
+}
+
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 17,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyClass' },
+        },
+        {
+          line: 17,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MySyncInterface' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Class expressions
+    {
+      // Invalid class expression implementing an interface
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+const MyClassExpressionExtendsMyClass = class implements MyInterface {
+  setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+};
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyInterface' },
+        },
+      ],
+    },
+    {
+      // Invalid class extending a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+
+class MyClassExtendsMyClassExpression extends MyClassExpression {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyClassExpression' },
+        },
+      ],
+    },
+    {
+      // Invalid interface implementing a class expression
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+type MyClassExpressionType = typeof MyClassExpression;
+
+interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'typeof MyClassExpression' },
+        },
+      ],
+    },
+    // #endregion
+    // #endregion
   ],
 });

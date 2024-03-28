@@ -20,6 +20,7 @@ type Options = [
 interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
+  heritageTypes?: boolean;
   properties?: boolean;
   returns?: boolean;
   variables?: boolean;
@@ -30,6 +31,7 @@ type MessageId =
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
+  | 'voidReturnHeritageType'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
   | 'voidReturnVariable';
@@ -46,6 +48,7 @@ function parseChecksVoidReturn(
       return {
         arguments: true,
         attributes: true,
+        heritageTypes: true,
         properties: true,
         returns: true,
         variables: true,
@@ -55,6 +58,7 @@ function parseChecksVoidReturn(
       return {
         arguments: checksVoidReturn.arguments ?? true,
         attributes: checksVoidReturn.attributes ?? true,
+        heritageTypes: checksVoidReturn.heritageTypes ?? true,
         properties: checksVoidReturn.properties ?? true,
         returns: checksVoidReturn.returns ?? true,
         variables: checksVoidReturn.variables ?? true,
@@ -73,14 +77,16 @@ export default createRule<Options, MessageId>({
     messages: {
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
-      voidReturnVariable:
-        'Promise-returning function provided to variable where a void return was expected.',
+      voidReturnAttribute:
+        'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnHeritageType:
+        "Promise-returning method provided where a void return was expected by heritage type '{{ heritageTypeName }}'.",
       voidReturnProperty:
         'Promise-returning function provided to property where a void return was expected.',
       voidReturnReturnValue:
         'Promise-returning function provided to return value where a void return was expected.',
-      voidReturnAttribute:
-        'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnVariable:
+        'Promise-returning function provided to variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
       spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
@@ -100,6 +106,7 @@ export default createRule<Options, MessageId>({
                 properties: {
                   arguments: { type: 'boolean' },
                   attributes: { type: 'boolean' },
+                  heritageTypes: { type: 'boolean' },
                   properties: { type: 'boolean' },
                   returns: { type: 'boolean' },
                   variables: { type: 'boolean' },
@@ -152,6 +159,11 @@ export default createRule<Options, MessageId>({
           }),
           ...(checksVoidReturn.attributes && {
             JSXAttribute: checkJSXAttribute,
+          }),
+          ...(checksVoidReturn.heritageTypes && {
+            ClassDeclaration: checkClassLikeOrInterfaceNode,
+            ClassExpression: checkClassLikeOrInterfaceNode,
+            TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
           }),
           ...(checksVoidReturn.properties && {
             Property: checkProperty,
@@ -367,6 +379,66 @@ export default createRule<Options, MessageId>({
           node: node.argument,
         });
       }
+    }
+
+    function checkClassLikeOrInterfaceNode(
+      node:
+        | TSESTree.ClassDeclaration
+        | TSESTree.ClassExpression
+        | TSESTree.TSInterfaceDeclaration,
+    ): void {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+
+      const heritageTypes = getHeritageTypes(checker, tsNode);
+      if (heritageTypes === undefined || heritageTypes.length === 0) {
+        return;
+      }
+
+      for (const nodeMember of tsNode.members) {
+        const memberName = nodeMember.name?.getText();
+        if (memberName === undefined) {
+          continue;
+        }
+        if (!returnsThenable(checker, nodeMember)) {
+          continue;
+        }
+        for (const heritageType of heritageTypes) {
+          checkHeritageTypeForMemberReturningVoid(
+            nodeMember,
+            heritageType,
+            memberName,
+          );
+        }
+      }
+    }
+
+    /**
+     * Checks `heritageType` for a member named `memberName` that returns void; reports the
+     * 'voidReturnHeritageType' message if found.
+     * @param nodeMember Node member that returns a Promise
+     * @param heritageType Heritage type to check against
+     */
+    function checkHeritageTypeForMemberReturningVoid(
+      nodeMember: ts.Node,
+      heritageType: ts.Type,
+      memberName: string,
+    ): void {
+      const heritageMember = getMemberIfExists(heritageType, memberName);
+      if (heritageMember === undefined) {
+        return;
+      }
+      const memberType = checker.getTypeOfSymbolAtLocation(
+        heritageMember,
+        nodeMember,
+      );
+      if (!isVoidReturningFunctionType(checker, nodeMember, memberType)) {
+        return;
+      }
+      context.report({
+        node: services.tsNodeToESTreeNodeMap.get(nodeMember),
+        messageId: 'voidReturnHeritageType',
+        data: { heritageTypeName: checker.typeToString(heritageType) },
+      });
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
@@ -679,4 +751,28 @@ function returnsThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   return tsutils
     .unionTypeParts(type)
     .some(t => anySignatureIsThenableType(checker, node, t));
+}
+
+function getHeritageTypes(
+  checker: ts.TypeChecker,
+  tsNode: ts.ClassDeclaration | ts.ClassExpression | ts.InterfaceDeclaration,
+): ts.Type[] | undefined {
+  return tsNode.heritageClauses
+    ?.map(clause => clause.types)
+    .flat()
+    .map(typeExpression => checker.getTypeAtLocation(typeExpression));
+}
+
+/**
+ * @returns The member with the given name in `type`, if it exists.
+ */
+function getMemberIfExists(
+  type: ts.Type,
+  memberName: string,
+): ts.Symbol | undefined {
+  const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
+  const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
+  return (
+    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
+  );
 }
