@@ -170,6 +170,41 @@ export default createRule<Options, MessageIds>({
       numeric: true,
     });
 
+    // Normalize source text for complex types to ignore formatting differences.
+    function getSortText(
+      type: TSESTree.TypeNode | TSESTree.TypeElement,
+    ): string {
+      if (type.type === AST_NODE_TYPES.TSTypeLiteral) {
+        const properties = type.members
+          .map(member => getSortText(member))
+          .join('; ');
+
+        return `{ ${properties} }`;
+      }
+
+      if (type.type === AST_NODE_TYPES.TSMappedType) {
+        return `{ [${context.sourceCode.getText(type.typeParameter)}]: ${context.sourceCode.getText(type.typeAnnotation)}`;
+      }
+
+      if (type.type === AST_NODE_TYPES.TSTupleType) {
+        const properties = type.elementTypes
+          .map(elementType => getSortText(elementType))
+          .join(', ');
+
+        return `[${properties}]`;
+      }
+
+      if (type.type === AST_NODE_TYPES.TSFunctionType) {
+        const params = type.params
+          .map(param => context.sourceCode.getText(param))
+          .join(', ');
+
+        return `(${params}) => ${type.returnType ? getSortText(type.returnType.typeAnnotation) : 'void'}`;
+      }
+
+      return context.sourceCode.getText(type);
+    }
+
     function checkSorting(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
@@ -178,6 +213,7 @@ export default createRule<Options, MessageIds>({
         return {
           group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           node: type,
+          sortText: getSortText(type),
           text: context.sourceCode.getText(type),
         };
       });
@@ -187,8 +223,8 @@ export default createRule<Options, MessageIds>({
         }
 
         return (
-          collator.compare(a.text, b.text) ||
-          (a.text < b.text ? -1 : a.text > b.text ? 1 : 0)
+          collator.compare(a.sortText, b.sortText) ||
+          (a.sortText < b.sortText ? -1 : a.sortText > b.sortText ? 1 : 0)
         );
       });
 

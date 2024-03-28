@@ -31,10 +31,31 @@ const valid = (operator: '&' | '|'): TSESLint.ValidTestCase<Options>[] => [
     code: `type T = { a: string } ${operator} { b: string };`,
   },
   {
+    code: noFormat`
+type T = { a: string } ${operator} {
+  b: string
+};`,
+  },
+  {
     code: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
   },
   {
+    code: noFormat`
+type T = [1, 2, 3] ${operator} [
+  1,
+  2,
+  4
+];`,
+  },
+  {
     code: `type T = (() => string) ${operator} (() => void);`,
+  },
+  {
+    code: noFormat`
+type T = ((a: string) => string) ${operator} (
+  (b: string) => string
+);
+`,
   },
   {
     code: `type T = () => string ${operator} void;`,
@@ -156,6 +177,25 @@ const invalid = (
       ],
     },
     {
+      code: noFormat`
+type T = {
+  b: string
+} ${operator} { a: string };`,
+      output: noFormat`
+type T = { a: string } ${operator} {
+  b: string
+};`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
       code: `type T = [1, 2, 4] ${operator} [1, 2, 3];`,
       output: `type T = [1, 2, 3] ${operator} [1, 2, 4];`,
       errors: [
@@ -169,8 +209,52 @@ const invalid = (
       ],
     },
     {
+      code: noFormat`
+type T = [
+  2,
+  3,
+  4
+] ${operator} [1, 2, 3];
+`,
+      output: noFormat`
+type T = [1, 2, 3] ${operator} [
+  2,
+  3,
+  4
+];
+`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
       code: `type T = (() => void) ${operator} (() => string);`,
       output: `type T = (() => string) ${operator} (() => void);`,
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type,
+            name: 'T',
+          },
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type T = ((b: string) => string) ${operator} (
+  (a: string) => string
+);
+`,
+      output: noFormat`
+type T = ((a: string) => string) ${operator} ((b: string) => string);
+`,
       errors: [
         {
           messageId: 'notSortedNamed',
