@@ -187,17 +187,33 @@ export default createRule<Options, MessageId>({
         .some(part => checker.isTupleType(part));
     }
 
-    function isArrayIndexExpression(node: TSESTree.Expression): boolean {
+    function isIndexAccessExpression(node: TSESTree.Expression): boolean {
+      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+      const objType = getConstrainedTypeAtLocation(services, node.object);
+      if (checker.isTupleType(objType)) {
+        // If indexing a tuple with a literal, the type will be sound
+        return true;
+      }
+      if (node.computed) {
+        const indexType = getConstrainedTypeAtLocation(services, node.property);
+        if (isTypeAnyType(indexType)) {
+          // No need to check anything about any
+          return true;
+        }
+        if (isTypeFlagSet(indexType, ts.TypeFlags.NumberLike)) {
+          return (
+            checker.getIndexTypeOfType(objType, ts.IndexKind.Number) !==
+            undefined
+          );
+        }
+        if (isTypeFlagSet(indexType, ts.TypeFlags.ESSymbol)) {
+          return true;
+        }
+      }
       return (
-        // Is an index signature
-        node.type === AST_NODE_TYPES.MemberExpression &&
-        node.computed &&
-        // ...into an array type
-        (nodeIsArrayType(node.object) ||
-          // ... or a tuple type
-          (nodeIsTupleType(node.object) &&
-            // Exception: literal index into a tuple - will have a sound type
-            node.property.type !== AST_NODE_TYPES.Literal))
+        checker.getIndexTypeOfType(objType, ts.IndexKind.String) !== undefined
       );
     }
 
@@ -242,7 +258,7 @@ export default createRule<Options, MessageId>({
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(node)) {
+      if (isIndexAccessExpression(node)) {
         return;
       }
 
@@ -320,7 +336,7 @@ export default createRule<Options, MessageId>({
         //  possibility of out-of-bounds access, if we're indexing into an array
         //  just skip the check, to avoid false positives
         if (
-          !isArrayIndexExpression(node) &&
+          !isIndexAccessExpression(node) &&
           !(
             node.type === AST_NODE_TYPES.ChainExpression &&
             node.expression.type !== AST_NODE_TYPES.TSNonNullExpression &&
@@ -538,7 +554,7 @@ export default createRule<Options, MessageId>({
     ): boolean {
       const lhsNode =
         node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
-      if (node.optional && isArrayIndexExpression(lhsNode)) {
+      if (node.optional && isIndexAccessExpression(lhsNode)) {
         return true;
       }
       if (
