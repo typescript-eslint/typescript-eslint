@@ -207,7 +207,7 @@ ruleTester.run('no-useless-template-literals', rule, {
 
     {
       code: noFormat`\`\${    'a' + 'b'    }\`;`,
-      output: `'a' + 'b';`,
+      output: `('a' + 'b');`,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
@@ -631,6 +631,15 @@ declare const nested: string, interpolation: string;
     {
       code: "`some ${'\\\\`'} string`;",
       output: '`some \\\\\\` string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: "true ? `${'test' || ''}`.trim() : undefined;",
+      output: "true ? ('test' || '').trim() : undefined;",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',

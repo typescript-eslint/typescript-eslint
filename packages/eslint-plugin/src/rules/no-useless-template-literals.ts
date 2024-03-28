@@ -7,11 +7,31 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticStringValue,
+  getWrappingFixer,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
 
 type MessageId = 'noUselessTemplateLiteral';
+
+function getReplaceNodeText(
+  context: Readonly<TSESLint.RuleContext<'noUselessTemplateLiteral', []>>,
+  node: TSESTree.TemplateLiteral,
+  fixer: TSESLint.RuleFixer,
+): string | null {
+  const replaceResult = getWrappingFixer({
+    sourceCode: context.sourceCode,
+    node: node.expressions[0],
+    wrap: (...code: string[]) => {
+      return code.join('');
+    },
+  })(fixer);
+
+  if (replaceResult != null && 'text' in replaceResult) {
+    return replaceResult.text;
+  }
+  return null;
+}
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',
@@ -92,21 +112,12 @@ export default createRule<[], MessageId>({
           context.report({
             node: node.expressions[0],
             messageId: 'noUselessTemplateLiteral',
-            fix(fixer): TSESLint.RuleFix[] {
-              const [prevQuasi, nextQuasi] = node.quasis;
-
-              // Remove the quasis and backticks.
-              return [
-                fixer.removeRange([
-                  prevQuasi.range[1] - 3,
-                  node.expressions[0].range[0],
-                ]),
-
-                fixer.removeRange([
-                  node.expressions[0].range[1],
-                  nextQuasi.range[0] + 2,
-                ]),
-              ];
+            fix(fixer): TSESLint.RuleFix | null {
+              const replaceText = getReplaceNodeText(context, node, fixer);
+              if (replaceText != null) {
+                return fixer.replaceText(node, replaceText);
+              }
+              return null;
             },
           });
 
