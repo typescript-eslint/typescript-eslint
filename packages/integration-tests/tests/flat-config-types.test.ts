@@ -9,6 +9,7 @@ for (const additionalFlags of [
   ['--strictNullChecks', '--exactOptionalPropertyTypes'],
 ]) {
   typescriptIntegrationTest(
+    `typescript${additionalFlags.length ? ` with ${additionalFlags.join(', ')}` : ''}`,
     __filename,
     ['--allowJs', '--esModuleInterop', ...additionalFlags, 'eslint.config.js'],
     out => {
