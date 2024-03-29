@@ -100,7 +100,7 @@ The following options are supported:
 
 - `arguments`: Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`
 - `attributes`: Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`
-- `heritageTypes`: Disables checking an asynchronous method in a type whose extended/implemented heritage type expects that method to return `void`
+- `heritageTypes`: Disables checking an asynchronous named method in a type whose extended/implemented heritage type expects that method to return `void`
 - `properties`: Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`
 - `returns`: Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`
 - `variables`: Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`
@@ -143,10 +143,10 @@ eventEmitter.on('some-event', async () => {
   otherSynchronousCall();
 });
 
-interface MyInterface {
+interface MySyncInterface {
   setThing(): void;
 }
-class MyClass implements MyInterface {
+class MyClass implements MySyncInterface {
   async setThing(): Promise<void> {
     this.thing = await fetchThing();
   }
@@ -195,10 +195,10 @@ eventEmitter.on('some-event', () => {
   handler().catch(handleError);
 });
 
-interface MyInterface {
+interface MyAsyncInterface {
   setThing(): Promise<void>;
 }
-class MyClass implements MyInterface {
+class MyClass implements MyAsyncInterface {
   async setThing(): Promise<void> {
     this.thing = await fetchThing();
   }
