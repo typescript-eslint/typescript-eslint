@@ -158,9 +158,9 @@ declare function Foo(props: { a: string }): never;
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     'const x: Map<string, string> = new Map();',
     `
-      type Foo = { bar: unknown; };
-      const bar: any = 1;
-      const foo: Foo = { bar };
+type Foo = { bar: unknown };
+const bar: any = 1;
+const foo: Foo = { bar };
     `,
   ],
   invalid: [
@@ -396,7 +396,7 @@ const test: T = ['string', []] as any;
     },
     {
       code: `
-type Foo = { bar: number; };
+type Foo = { bar: number };
 const bar: any = 1;
 const foo: Foo = { bar };
       `,
