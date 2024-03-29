@@ -955,6 +955,72 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     // #endregion
+    // #region checksVoidReturn.subtypes: Unnamed methods (call/construct/index signatures)
+    {
+      // Call signatures: TS allows overloads with different return types, so we ignore these
+      code: `
+interface MySyncCallSignatures {
+  (): void;
+  (arg: string): void;
+}
+interface MyAsyncInterface extends MySyncCallSignatures {
+  (): Promise<void>;
+  (arg: string): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Construct signatures: These can't be async in the first place
+      code: `
+interface MySyncConstructSignatures {
+  new (): void;
+  new (arg: string): void;
+}
+interface ThisIsADifferentIssue extends MySyncConstructSignatures {
+  new (): Promise<void>;
+  new (arg: string): Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Index signatures: For now not handling until we can use checker.isTypeAssignableTo (v8)
+      // https://github.com/typescript-eslint/typescript-eslint/pull/8765
+      // https://github.com/typescript-eslint/typescript-eslint/discussions/7936
+      code: `
+interface MySyncIndexSignatures {
+  [key: string]: void;
+  [key: number]: void;
+}
+interface ThisIsADifferentIssue extends MySyncIndexSignatures {
+  [key: string]: Promise<void>;
+  [key: number]: Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    {
+      // Mixed signatures: ignoring call/construct, not handling index (yet)
+      code: `
+interface MySyncInterfaceSignatures {
+  (): void;
+  (arg: string): void;
+  new (): void;
+  [key: string]: () => void;
+  [key: number]: () => void;
+}
+interface MyAsyncInterface extends MySyncInterfaceSignatures {
+  (): Promise<void>;
+  (arg: string): Promise<void>;
+  new (): Promise<void>;
+  [key: string]: () => Promise<void>;
+  [key: number]: () => Promise<void>;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    // #endregion
     // #endregion
   ],
 
@@ -2110,6 +2176,36 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
           line: 10,
           messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'typeof MyClassExpression' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Unnamed methods (call/construct/index signatures)
+    {
+      // Mixed signatures: not handling index signatures (yet); only the named method should error
+      code: `
+interface MySyncInterface {
+  (): void;
+  (arg: string): void;
+  new (): void;
+  [key: string]: () => void;
+  [key: number]: () => void;
+  myMethod(): void;
+}
+interface MyAsyncInterface extends MySyncInterface {
+  (): Promise<void>;
+  (arg: string): Promise<void>;
+  new (): Promise<void>;
+  [key: string]: () => Promise<void>;
+  [key: number]: () => Promise<void>;
+  myMethod(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 16,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
     },

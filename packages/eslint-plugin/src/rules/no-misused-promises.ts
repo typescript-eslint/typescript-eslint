@@ -397,6 +397,10 @@ export default createRule<Options, MessageId>({
       for (const nodeMember of tsNode.members) {
         const memberName = nodeMember.name?.getText();
         if (memberName === undefined) {
+          // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
+          // and construct signatures can't be async.
+          // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
+          // signature here against its compatible index signatures in `heritageTypes`
           continue;
         }
         if (!returnsThenable(checker, nodeMember)) {
@@ -417,6 +421,7 @@ export default createRule<Options, MessageId>({
      * 'voidReturnHeritageType' message if found.
      * @param nodeMember Node member that returns a Promise
      * @param heritageType Heritage type to check against
+     * @param memberName Name of the member to check for
      */
     function checkHeritageTypeForMemberReturningVoid(
       nodeMember: ts.Node,
