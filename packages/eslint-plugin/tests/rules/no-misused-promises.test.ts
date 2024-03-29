@@ -1021,6 +1021,45 @@ interface MyAsyncInterface extends MySyncInterfaceSignatures {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     // #endregion
+    // #region checksVoidReturn.subtypes: Combinations
+    {
+      // Valid combination
+      code: `
+interface MyCall {
+  (): void;
+  (arg: string): void;
+}
+
+interface MyIndex {
+  [key: string]: () => void;
+  [key: number]: () => void;
+}
+
+interface MyConstruct {
+  new (): void;
+  new (arg: string): void;
+}
+
+interface MyMethods {
+  doSyncThing(): void;
+  doOtherSyncThing(): void;
+  syncMethodProperty: () => void;
+}
+interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
+  (): void;
+  (arg: string): void;
+  new (): void;
+  new (arg: string): void;
+  [key: string]: () => void;
+  [key: number]: () => void;
+  doSyncThing(): void;
+  doAsyncThing(): Promise<void>;
+  syncMethodProperty: () => void;
+}
+      `,
+      options: [{ checksVoidReturn: { heritageTypes: true } }],
+    },
+    // #endregion
     // #endregion
   ],
 
@@ -2206,6 +2245,55 @@ interface MyAsyncInterface extends MySyncInterface {
           line: 16,
           messageId: 'voidReturnHeritageType',
           data: { heritageTypeName: 'MySyncInterface' },
+        },
+      ],
+    },
+    // #endregion
+    // #region checksVoidReturn.subtypes: Combinations
+    {
+      code: `
+interface MyCall {
+  (): void;
+  (arg: string): void;
+}
+
+interface MyIndex {
+  [key: string]: () => void;
+  [key: number]: () => void;
+}
+
+interface MyConstruct {
+  new (): void;
+  new (arg: string): void;
+}
+
+interface MyMethods {
+  doSyncThing(): void;
+  doOtherSyncThing(): void;
+  syncMethodProperty: () => void;
+}
+interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
+  (): void;
+  (arg: string): Promise<void>;
+  new (): void;
+  new (arg: string): void;
+  [key: string]: () => Promise<void>;
+  [key: number]: () => void;
+  doSyncThing(): Promise<void>;
+  doAsyncThing(): Promise<void>;
+  syncMethodProperty: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 29,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyMethods' },
+        },
+        {
+          line: 31,
+          messageId: 'voidReturnHeritageType',
+          data: { heritageTypeName: 'MyMethods' },
         },
       ],
     },
