@@ -107,11 +107,11 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/twitter.svg') no-repeat;
 }
 
-.header-github-link:hover {
+.header-image-link:hover {
   opacity: 0.6;
 }
 
-.header-github-link::before {
+.header-image-link::before {
   height: 24px;
   width: 24px;
 }

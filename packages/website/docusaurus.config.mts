@@ -100,8 +100,14 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       {
         href: githubUrl,
         position: 'right',
-        className: 'github-link image-link header-github-link',
+        className: 'github-link image-link header-image-link',
         'aria-label': 'GitHub repository',
+      },
+      {
+        href: 'https://discord.com/invite/FSxKq8Tdyg',
+        position: 'right',
+        className: 'discord-link image-link header-image-link',
+        'aria-label': 'Discord',
       },
     ],
   },
@@ -153,6 +159,11 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             label: 'Report issue',
             href: `${githubUrl}/issues/new/choose`,
             className: 'bug-report-link image-link social-link-icon',
+          },
+          {
+            label: 'Become a financial sponsor',
+            href: 'https://opencollective.com/typescript-eslint/contribute',
+            className: 'image-link social-link-icon',
           },
         ],
       },
