@@ -702,8 +702,44 @@ declare const nested: string, interpolation: string;
       ],
     },
     {
+      code: '`some ${/\\`/} string`;',
+      output: '`some /\\`/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/\\\\`/} string`;',
+      output: '`some /\\\\\\\\\\`/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/\\\\\\`/} string`;',
+      output: '`some /\\\\\\\\\\`/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
       code: '`some ${/${}/} string`;',
       output: '`some /\\${}/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: '`some ${/$ {}/} string`;',
+      output: '`some /$ {}/ string`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
@@ -718,6 +754,307 @@ declare const nested: string, interpolation: string;
           messageId: 'noUselessTemplateLiteral',
         },
       ],
+    },
+    {
+      code: '`some ${/\\\\\\\\/} string`;',
+      output: '`some /\\\\\\\\\\\\\\\\/ string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+    {
+      code: "` ${''} `;",
+      output: '`  `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: noFormat`\` \${""} \`;`,
+      output: '`  `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${``} `;',
+      output: '`  `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: noFormat`\` \${'\\\`'} \`;`,
+      output: '` \\` `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'\\\\`'} `;",
+      output: '` \\\\\\` `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'$'}{} `;",
+      output: '` \\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: noFormat`\` \${'\\$'}{} \`;`,
+      output: '` \\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'\\\\$'}{} `;",
+      output: '` \\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'\\\\$ '}{} `;",
+      output: '` \\\\$ {} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: noFormat`\` \${'\\\\\\$'}{} \`;`,
+      output: '` \\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` \\\\${'\\\\$'}{} `;",
+      output: '` \\\\\\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` $${'{$'}{} `;",
+      output: '` \\${\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` $${'${$'}{} `;",
+      output: '` $\\${\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'foo$'}{} `;",
+      output: '` foo\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`$`} `;',
+      output: '` $ `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`$`}{} `;',
+      output: '` \\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`$`} {} `;',
+      output: '` $ {} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`$`}${undefined}{} `;',
+      output: ['` $${undefined}{} `;', '` $undefined{} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: '` ${`foo$`}{} `;',
+      output: '` foo\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'$'}${''}{} `;",
+      output: ["` \\$${''}{} `;", '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` ${'$'}${``}{} `;",
+      output: ['` \\$${``}{} `;', '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` ${'foo$'}${''}${``}{} `;",
+      output: ["` foo\\$${''}{} `;", '` foo\\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${'{}'} `;",
+      output: '` \\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` $${undefined}${'{}'} `;",
+      output: ["` $undefined${'{}'} `;", '` $undefined{} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${''}${undefined}${'{}'} `;",
+      output: ['` $${undefined}{} `;', '` $undefined{} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` \\$${'{}'} `;",
+      output: '` \\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` $${'foo'}${'{'} `;",
+      output: ["` $foo${'{'} `;", '` $foo{ `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${'{ foo'}${'{'} `;",
+      output: ["` \\${ foo${'{'} `;", '` \\${ foo{ `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` \\\\$${'{}'} `;",
+      output: '` \\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` \\\\\\$${'{}'} `;",
+      output: '` \\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` foo$${'{}'} `;",
+      output: '` foo\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` $${''}${'{}'} `;",
+      output: ["` \\$${'{}'} `;", '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${''} `;",
+      output: '` $ `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` $${`{}`} `;',
+      output: '` \\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` $${``}${`{}`} `;',
+      output: ['` \\$${`{}`} `;', '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: '` $${``}${`foo{}`} `;',
+      output: ['` $${`foo{}`} `;', '` $foo{} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${`${''}${`${``}`}`}${`{a}`} `;",
+      output: [
+        "` \\$${''}${`${``}`}${`{a}`} `;",
+        '` \\$${``}{a} `;',
+        '` \\${a} `;',
+      ],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${''}${`{}`} `;",
+      output: ['` \\$${`{}`} `;', '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${``}${'{}'} `;",
+      output: ["` \\$${'{}'} `;", '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` $${''}${``}${'{}'} `;",
+      output: ['` \\$${``}{} `;', '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` ${'$'} `;",
+      output: '` $ `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: "` ${'$'}${'{}'} `;",
+      output: ["` \\$${'{}'} `;", '` \\${} `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: "` ${'$'}${''}${'{'} `;",
+      output: ["` \\$${''}{ `;", '` \\${ `;'],
+      errors: [
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+        { messageId: 'noUselessTemplateLiteral' },
+      ],
+    },
+    {
+      code: noFormat`\` \${'\\\\$'}{} \`;`,
+      output: '` \\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`\n\\$`}{} `;',
+      output: '` \n\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
+    },
+    {
+      code: '` ${`\n\\\\$`}{} `;',
+      output: '` \n\\\\\\${} `;',
+      errors: [{ messageId: 'noUselessTemplateLiteral' }],
     },
 
     {
