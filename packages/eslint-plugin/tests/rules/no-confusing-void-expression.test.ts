@@ -385,6 +385,22 @@ const test = (): Foo => console.log('err');
         },
       },
     },
+    {
+      code: `
+type HigherOrderType = () => () => () => void;
+const x: HigherOrderType = () => () => () => {
+  return console.log();
+};
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+      type HigherOrderType = () => () => () => void;
+      const x: HigherOrderType = () => () => function () { return console.log() };
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
   ],
 
   invalid: [
@@ -837,7 +853,7 @@ return console.log('foo');
       type Foo = () => void;
       const test1: Foo = function () {
         function testtt() {
-          return console.log(); // not reported - bug
+          return console.log();
         }
       };
       `,
@@ -852,7 +868,7 @@ return console.log('foo');
       type Foo = () => void;
       const test1: Foo = function () {
         function testtt() {
-          console.log(); // not reported - bug
+          console.log();
         }
       };
       `,
@@ -863,7 +879,7 @@ return console.log('foo');
       type Foo = () => void;
       const test2 = function () {
         function testtt() {
-          return console.log(); // reported - nice
+          return console.log();
         }
       };
       `,
@@ -878,9 +894,81 @@ return console.log('foo');
       type Foo = () => void;
       const test2 = function () {
         function testtt() {
-          console.log(); // reported - nice
+          console.log();
         }
       };
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+        (): any => console.log('foo');
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 20,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+        (): any => { console.log('foo'); };
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+        (): unknown => console.log('foo');
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 24,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+        (): unknown => { console.log('foo'); };
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+      function test(): any {
+        return console.log();
+      }
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 16,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+      function test(): any {
+        console.log();
+      }
+      `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+      function test(): unknown {
+        return console.log();
+      }
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 16,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+      function test(): unknown {
+        console.log();
+      }
       `,
     },
   ],
