@@ -145,17 +145,7 @@ export default createRule<Options, MessageId>({
           // handle arrow function shorthand
 
           if (options.ignoreVoidInVoid) {
-            if (
-              (invalidAncestor.returnType &&
-                invalidAncestor.returnType.typeAnnotation.type !==
-                  AST_NODE_TYPES.TSAnyKeyword &&
-                invalidAncestor.returnType.typeAnnotation.type !==
-                  AST_NODE_TYPES.TSUnknownKeyword) ||
-              isValidFunctionExpressionReturnType(invalidAncestor, {
-                allowTypedFunctionExpressions: true,
-              }) ||
-              ancestorHasReturnType(invalidAncestor)
-            ) {
+            if (hasVoidReturnType(invalidAncestor)) {
               return;
             }
           }
@@ -218,23 +208,8 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidInVoid) {
             const functionNode = findFunction(invalidAncestor);
 
-            if (functionNode != null) {
-              if (
-                (functionNode.returnType &&
-                  functionNode.returnType.typeAnnotation.type !==
-                    AST_NODE_TYPES.TSAnyKeyword &&
-                  functionNode.returnType.typeAnnotation.type !==
-                    AST_NODE_TYPES.TSUnknownKeyword) ||
-                ((functionNode.type === AST_NODE_TYPES.FunctionExpression ||
-                  functionNode.type ===
-                    AST_NODE_TYPES.ArrowFunctionExpression) &&
-                  isValidFunctionExpressionReturnType(functionNode, {
-                    allowTypedFunctionExpressions: true,
-                  })) ||
-                ancestorHasReturnType(functionNode)
-              ) {
-                return;
-              }
+            if (hasVoidReturnType(functionNode)) {
+              return;
             }
           }
 
@@ -446,6 +421,34 @@ export default createRule<Options, MessageId>({
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+    }
+
+    function hasVoidReturnType(
+      node:
+        | TSESTree.FunctionExpression
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | null,
+    ): boolean {
+      if (node != null) {
+        if (
+          (node.returnType &&
+            node.returnType.typeAnnotation.type !==
+              AST_NODE_TYPES.TSAnyKeyword &&
+            node.returnType.typeAnnotation.type !==
+              AST_NODE_TYPES.TSUnknownKeyword) ||
+          ((node.type === AST_NODE_TYPES.FunctionExpression ||
+            node.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+            isValidFunctionExpressionReturnType(node, {
+              allowTypedFunctionExpressions: true,
+            })) ||
+          ancestorHasReturnType(node)
+        ) {
+          return true;
+        }
+      }
+
+      return false;
     }
   },
 });
