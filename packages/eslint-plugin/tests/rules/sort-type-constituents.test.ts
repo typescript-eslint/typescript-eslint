@@ -346,7 +346,7 @@ ruleTester.run('sort-type-constituents', rule, {
       ],
     },
     {
-      code: "type T = 'DeleteForever' & 'DeletedForever';",
+      code: "type T = 'DeleteForever' & 'DeleteForever';",
       options: [
         {
           caseSensitiveSorting: true,
