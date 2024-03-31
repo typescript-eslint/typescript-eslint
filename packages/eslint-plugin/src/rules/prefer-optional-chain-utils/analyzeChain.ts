@@ -65,11 +65,11 @@ const analyzeAndChainOperand: OperandAnalyzer = (
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualNull &&
-        compareNodes(operand.comparedName, nextOperand.comparedName) ===
-          NodeComparisonResult.Equal
+        operand.comparedName.type === AST_NODE_TYPES.Identifier
       ) {
         return null;
       }
+
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 
