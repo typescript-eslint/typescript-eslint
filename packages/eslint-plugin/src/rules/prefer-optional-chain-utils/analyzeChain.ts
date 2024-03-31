@@ -61,6 +61,15 @@ const analyzeAndChainOperand: OperandAnalyzer = (
 ) => {
   switch (operand.comparisonType) {
     case NullishComparisonType.Boolean:
+      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      if (
+        nextOperand?.comparisonType ===
+          NullishComparisonType.NotStrictEqualNull &&
+        compareNodes(operand.comparedName, nextOperand.comparedName) ===
+          NodeComparisonResult.Equal
+      ) {
+        return null;
+      }
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 

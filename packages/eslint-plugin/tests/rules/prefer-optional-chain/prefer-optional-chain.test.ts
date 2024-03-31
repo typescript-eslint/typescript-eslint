@@ -12,6 +12,16 @@ const ruleTester = new RuleTester({
   },
 });
 
+describe('test strict null equality', () => {
+  ruleTester.run('prefer-optional-chain', rule, {
+    valid: [
+      // https://github.com/typescript-eslint/typescript-eslint/issues/7654
+      'data && data.value !== null;',
+    ],
+    invalid: [],
+  });
+});
+
 describe('|| {}', () => {
   ruleTester.run('prefer-optional-chain', rule, {
     valid: [
@@ -28,7 +38,6 @@ describe('|| {}', () => {
       'foo ?? {};',
       '(foo ?? {})?.bar;',
       'foo ||= bar ?? {};',
-      'data && data.value !== null',
       // https://github.com/typescript-eslint/typescript-eslint/issues/8380
       `
         const a = null;
