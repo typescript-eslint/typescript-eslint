@@ -34,11 +34,7 @@ body:
       description: Select the package against which you want to report the bug.
       options:
         - ast-spec
-        - eslint-plugin-internal
-        - integration-tests
         - parser
-        - repo-tools
-        - rule-schema-to-typescript-types
         - rule-tester
         - scope-manager
         - type-utils
@@ -48,7 +44,6 @@ body:
         - utils
         - visitor-keys
         - website
-        - website-eslint
     validations:
       required: true
   - type: input
