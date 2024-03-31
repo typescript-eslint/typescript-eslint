@@ -27,8 +27,8 @@ import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
-  sourceType?: SourceType;
   impliedStrict?: boolean;
+  sourceType?: SourceType;
 }
 
 /**

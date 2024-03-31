@@ -50,10 +50,7 @@ export default createRule<Options, MessageId>({
     docs: {
       description:
         'Require Promise-like statements to be handled appropriately',
-      recommended: {
-        recommended: true,
-        strict: [{ ignoreVoid: false }],
-      },
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -292,6 +289,8 @@ export default createRule<Options, MessageId>({
         }
 
         // All other cases are unhandled.
+        return { isUnhandled: true };
+      } else if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
         return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
