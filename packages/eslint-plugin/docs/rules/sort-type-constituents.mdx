@@ -92,6 +92,25 @@ type T4 =
 
 Whether to sort using case sensitive.
 
+Examples of code with `{ "caseSensitiveSorting": true }` (the default):
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "caseSensitiveSorting": true }'
+type T = 'DeletedAt' | 'DeleteForever';
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "caseSensitiveSorting": true }'
+type T = 'DeleteForever' | 'DeletedAt';
+```
+
+</TabItem>
+</Tabs>
+
 ### `checkIntersections`
 
 Whether to check intersection types (`&`).
