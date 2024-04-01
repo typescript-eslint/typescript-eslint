@@ -61,37 +61,39 @@ export function createProjectService(
   });
 
   if (typeof options === 'object' && options.defaultProject) {
+    let configRead;
+
     try {
-      const configRead = tsserver.readConfigFile(
+      configRead = tsserver.readConfigFile(
         options.defaultProject,
         system.readFile,
-      );
-
-      if (configRead.error) {
-        throw new Error(
-          `Could not read default project '${options.defaultProject}': ${tsserver.formatDiagnostic(
-            configRead.error,
-            {
-              getCurrentDirectory: system.getCurrentDirectory,
-              getCanonicalFileName: (fileName: string) => fileName,
-              getNewLine: () => os.EOL,
-            },
-          )}`,
-        );
-      }
-
-      type ProjectCompilerOptions =
-        ts.server.protocol.InferredProjectCompilerOptions;
-
-      service.setCompilerOptionsForInferredProjects(
-        (configRead.config as { compilerOptions: ProjectCompilerOptions })
-          .compilerOptions,
       );
     } catch (error) {
       throw new Error(
         `Could not parse default project '${options.defaultProject}': ${(error as Error).message}`,
       );
     }
+
+    if (configRead.error) {
+      throw new Error(
+        `Could not read default project '${options.defaultProject}': ${tsserver.formatDiagnostic(
+          configRead.error,
+          {
+            getCurrentDirectory: system.getCurrentDirectory,
+            getCanonicalFileName: fileName => fileName,
+            getNewLine: () => os.EOL,
+          },
+        )}`,
+      );
+    }
+
+    service.setCompilerOptionsForInferredProjects(
+      (
+        configRead.config as {
+          compilerOptions: ts.server.protocol.InferredProjectCompilerOptions;
+        }
+      ).compilerOptions,
+    );
   }
 
   return {
