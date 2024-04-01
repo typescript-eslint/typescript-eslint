@@ -161,7 +161,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             className: 'bug-report-link image-link social-link-icon',
           },
           {
-            label: 'Become a financial sponsor',
+            label: 'OpenCollective',
             href: 'https://opencollective.com/typescript-eslint/contribute',
             className: 'image-link social-link-icon',
           },
