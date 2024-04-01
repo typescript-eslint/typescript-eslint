@@ -128,6 +128,38 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
+      if (uncast === cast) {
+        return true;
+      }
+
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
+        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
+        tsutils.isCompilerOptionEnabled(
+          compilerOptions,
+          'exactOptionalPropertyTypes',
+        )
+      ) {
+        const uncastParts = tsutils
+          .unionTypeParts(uncast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        const castParts = tsutils
+          .unionTypeParts(cast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        if (uncastParts.length !== castParts.length) {
+          return false;
+        }
+
+        const uncastPartsSet = new Set(uncastParts);
+        return castParts.every(part => uncastPartsSet.has(part));
+      }
+
+      return false;
+    }
+
     return {
       TSNonNullExpression(node): void {
         if (
@@ -232,7 +264,7 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = uncastType === castType;
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
           ? isLiteralVariableDeclarationChangingTypeWithConst(node)
