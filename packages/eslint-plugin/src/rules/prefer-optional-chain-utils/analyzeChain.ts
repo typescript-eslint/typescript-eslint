@@ -60,7 +60,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
   chain,
 ) => {
   switch (operand.comparisonType) {
-    case NullishComparisonType.Boolean:
+    case NullishComparisonType.Boolean: {
       const nextOperand = chain[index + 1] as ValidOperand | undefined;
       if (
         nextOperand?.comparisonType ===
@@ -69,6 +69,8 @@ const analyzeAndChainOperand: OperandAnalyzer = (
       ) {
         return null;
       }
+      return [operand];
+    }
 
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
