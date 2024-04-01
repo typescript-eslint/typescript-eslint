@@ -109,6 +109,11 @@ export interface ProjectServiceOptions {
    * Globs of files to allow running with the default inferred project settings.
    */
   allowDefaultProjectForFiles?: string[];
+
+  /**
+   * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   */
+  defaultProject?: string;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {

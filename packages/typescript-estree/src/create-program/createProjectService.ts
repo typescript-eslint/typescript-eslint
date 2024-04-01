@@ -56,6 +56,7 @@ export function createProjectService(
     },
     session: undefined,
     jsDocParsingMode,
+    // TODO: Use options.defaultProject?
   });
 
   return {
