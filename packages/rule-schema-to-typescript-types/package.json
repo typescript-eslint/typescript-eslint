@@ -21,6 +21,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
