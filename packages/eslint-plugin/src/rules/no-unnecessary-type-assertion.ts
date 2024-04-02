@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isSafeConstVariableDeclaration({
+    function isImplicitlyNarrowedConstDeclaration({
       expression,
       parent,
     }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion): boolean {
@@ -267,7 +267,7 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isSafeConstVariableDeclaration(node)
+          ? isImplicitlyNarrowedConstDeclaration(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
