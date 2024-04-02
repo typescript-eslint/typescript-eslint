@@ -95,6 +95,10 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/mastodon.svg') no-repeat;
 }
 
+.open-collective-link::before {
+  background: url('/img/open-collective.svg') no-repeat;
+}
+
 .www-link::before {
   background: url('/img/www.svg') no-repeat;
 }

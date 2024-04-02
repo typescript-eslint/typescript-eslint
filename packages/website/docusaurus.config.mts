@@ -163,7 +163,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
           {
             label: 'OpenCollective',
             href: 'https://opencollective.com/typescript-eslint/contribute',
-            className: 'image-link social-link-icon',
+            className: 'open-collective-link image-link social-link-icon',
           },
         ],
       },
