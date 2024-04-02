@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isImplicitlyNarrowedConstDeclaration({
+    function isSafeConstVariableDeclaration({
       expression,
       parent,
     }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion): boolean {
@@ -121,7 +121,7 @@ export default createRule<Options, MessageIds>({
         maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
         maybeDeclarationNode.kind === 'const' &&
         /**
-         * Even on `const` variable declarations, type assertions on template literals with expressions are sometimes required.
+         * Even on `const` variable declarations, template literals with expressions can sometimes be widened without a type assertion.
          * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
          */
         !isTemplateLiteralWithExpressions
@@ -267,7 +267,7 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isImplicitlyNarrowedConstDeclaration(node)
+          ? isSafeConstVariableDeclaration(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
