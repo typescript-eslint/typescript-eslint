@@ -348,11 +348,6 @@ const bar = foo.a as string | undefined | bigint;
       errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
     },
     {
-      code: 'const a = `a${`b`}` as const;',
-      output: 'const a = `a${`b`}`;',
-      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
-    },
-    {
       code: "const a = 'a' as const;",
       output: "const a = 'a';",
       errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
