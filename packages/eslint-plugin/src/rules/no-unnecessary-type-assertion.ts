@@ -116,7 +116,7 @@ export default createRule<Options, MessageIds>({
       const maybeDeclarationNode = parent.parent!;
       const isTemplateLiteralWithExpressions =
         expression.type === AST_NODE_TYPES.TemplateLiteral &&
-        expression.expressions.length === 0;
+        expression.expressions.length !== 0;
       return (
         maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
         maybeDeclarationNode.kind === 'const' &&
