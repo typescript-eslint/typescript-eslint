@@ -215,6 +215,8 @@ describe('Validating rule metadata', () => {
   const rulesThatRequireTypeInformationInAWayThatsHardToDetect = new Set([
     // the core rule file doesn't use type information, instead it's used in `src/rules/naming-convention-utils/validator.ts`
     'naming-convention',
+    // rule moved to no-useless-template-expression.
+    'no-useless-template-literals',
   ]);
   function requiresFullTypeInformation(content: string): boolean {
     return /getParserServices(\(\s*[^,\s)]+)\s*(,\s*false\s*)?\)/.test(content);
@@ -224,7 +226,7 @@ describe('Validating rule metadata', () => {
     describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
-        // there is no way to access this field but its used only in generation of docs url
+        // there is no way to access this field but it's used only in generation of docs url
         expect(rule.meta.docs?.url).toBe(
           `https://typescript-eslint.io/rules/${ruleName}`,
         );

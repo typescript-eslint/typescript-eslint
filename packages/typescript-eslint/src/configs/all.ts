@@ -121,7 +121,7 @@ export default (
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
-      '@typescript-eslint/no-useless-template-literals': 'error',
+      '@typescript-eslint/no-useless-template-expression': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',
       'no-throw-literal': 'off',

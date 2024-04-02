@@ -33,7 +33,7 @@ export = {
     '@typescript-eslint/no-unsafe-enum-comparison': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
-    '@typescript-eslint/no-useless-template-literals': 'error',
+    '@typescript-eslint/no-useless-template-expression': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/only-throw-error': 'error',
     '@typescript-eslint/prefer-includes': 'error',
