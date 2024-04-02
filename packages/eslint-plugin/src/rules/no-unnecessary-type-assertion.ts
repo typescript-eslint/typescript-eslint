@@ -114,16 +114,17 @@ export default createRule<Options, MessageIds>({
     }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion): boolean {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const maybeDeclarationNode = parent.parent!;
+      const isTemplateLiteralWithExpressions =
+        expression.type === AST_NODE_TYPES.TemplateLiteral &&
+        expression.expressions.length === 0;
       return (
         maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
         maybeDeclarationNode.kind === 'const' &&
         /**
-         * If the type assertion is on a template literal WITH expressions we
-         * should keep the `const` casting
+         * Even on `const` variable declarations, type assertions on template literals with expressions are sometimes required.
          * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
          */
-        (expression.type !== AST_NODE_TYPES.TemplateLiteral ||
-          !expression.expressions.length)
+        !isTemplateLiteralWithExpressions
       );
     }
 
