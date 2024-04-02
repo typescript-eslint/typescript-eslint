@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "7.4.0",
+  "version": "7.5.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -32,6 +32,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/typescript-estree",
   "license": "BSD-2-Clause",
   "keywords": [
     "ast",
@@ -53,8 +54,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "7.4.0",
-    "@typescript-eslint/visitor-keys": "7.4.0",
+    "@typescript-eslint/types": "7.5.0",
+    "@typescript-eslint/visitor-keys": "7.5.0",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",

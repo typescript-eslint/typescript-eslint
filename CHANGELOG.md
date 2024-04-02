@@ -1,3 +1,27 @@
+## 7.5.0 (2024-04-01)
+
+
+### 🚀 Features
+
+- **website:** playground Visual Editor search makes case-insensitive ([#8767](https://github.com/typescript-eslint/typescript-eslint/pull/8767))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] handle TaggedTemplateExpression ([#8758](https://github.com/typescript-eslint/typescript-eslint/pull/8758))
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle exactOptionalPropertyTypes compiler option ([#8770](https://github.com/typescript-eslint/typescript-eslint/pull/8770))
+- **parser:** disallow `errorOnTypeScriptSyntacticAndSemanticIssues` ([#8784](https://github.com/typescript-eslint/typescript-eslint/pull/8784))
+- **typescript-eslint:** improve support for legacy configs ([#8812](https://github.com/typescript-eslint/typescript-eslint/pull/8812))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+- Kim Sang Du @developer-bandi
+- Mark de Dios @peanutenthusiast
+- Naru
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.4.0 (2024-03-25)
 
 

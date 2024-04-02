@@ -1,3 +1,21 @@
+## 7.5.0 (2024-04-01)
+
+
+### 🩹 Fixes
+
+- **parser:** disallow `errorOnTypeScriptSyntacticAndSemanticIssues`
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kim Sang Du
+- Mark de Dios
+- Naru
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.4.0 (2024-03-25)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "7.4.0",
+  "version": "7.5.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -21,6 +21,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
@@ -33,8 +34,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "7.4.0",
-    "@typescript-eslint/utils": "7.4.0",
+    "@typescript-eslint/type-utils": "7.5.0",
+    "@typescript-eslint/utils": "7.5.0",
     "natural-compare": "^1.4.0",
     "prettier": "^3.0.3"
   },
