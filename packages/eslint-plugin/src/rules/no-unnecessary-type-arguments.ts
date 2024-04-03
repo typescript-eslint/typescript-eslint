@@ -132,7 +132,11 @@ function getTypeParametersFromNode(
     return getTypeParametersFromType(node.typeName, checker);
   }
 
-  if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+  if (
+    ts.isCallExpression(node) ||
+    ts.isNewExpression(node) ||
+    ts.isTaggedTemplateExpression(node)
+  ) {
     return getTypeParametersFromCall(node, checker);
   }
 
@@ -165,7 +169,7 @@ function getTypeParametersFromType(
 }
 
 function getTypeParametersFromCall(
-  node: ts.CallExpression | ts.NewExpression,
+  node: ts.CallExpression | ts.NewExpression | ts.TaggedTemplateExpression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(node);

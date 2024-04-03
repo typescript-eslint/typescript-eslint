@@ -245,18 +245,24 @@ export interface ParserWeakMapESTreeToTSNode<
   has(key: unknown): boolean;
 }
 
+export interface ParserServicesBase {
+  emitDecoratorMetadata: boolean | undefined;
+  experimentalDecorators: boolean | undefined;
+}
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }
 export interface ParserServicesWithoutTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: null;
 }
 export type ParserServices =
