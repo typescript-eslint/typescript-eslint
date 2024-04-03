@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "7.4.0",
+  "version": "7.5.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
@@ -27,6 +27,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/parser",
   "license": "BSD-2-Clause",
   "keywords": [
     "ast",
@@ -51,10 +52,10 @@
     "eslint": "^8.56.0"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "7.4.0",
-    "@typescript-eslint/types": "7.4.0",
-    "@typescript-eslint/typescript-estree": "7.4.0",
-    "@typescript-eslint/visitor-keys": "7.4.0",
+    "@typescript-eslint/scope-manager": "7.5.0",
+    "@typescript-eslint/types": "7.5.0",
+    "@typescript-eslint/typescript-estree": "7.5.0",
+    "@typescript-eslint/visitor-keys": "7.5.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {

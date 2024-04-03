@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "7.4.0",
+  "version": "7.5.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -28,6 +28,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -45,13 +46,13 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "7.4.0",
-    "@typescript-eslint/utils": "7.4.0",
+    "@typescript-eslint/typescript-estree": "7.5.0",
+    "@typescript-eslint/utils": "7.5.0",
     "debug": "^4.3.4",
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "7.4.0",
+    "@typescript-eslint/parser": "7.5.0",
     "ajv": "^6.10.0",
     "downlevel-dts": "*",
     "jest": "29.7.0",
