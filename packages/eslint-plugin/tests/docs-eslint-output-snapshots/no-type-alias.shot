@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 1`] = `
 "Options: { "allowAliases": "always" }
 
 // primitives
@@ -28,7 +28,7 @@ type Foo = Bar & Baz;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 2`] = `
 "Options: { "allowAliases": "in-unions" }
 
 // primitives
@@ -58,7 +58,7 @@ type Foo = Bar & Baz;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 3`] = `
 "Options: { "allowAliases": "in-unions" }
 
 // primitives
@@ -76,7 +76,7 @@ type Foo = Bar | Baz;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 4`] = `
 "Options: { "allowAliases": "in-intersections" }
 
 // primitives
@@ -111,7 +111,7 @@ type Foo = Bar | Baz;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 5`] = `
 "Options: { "allowAliases": "in-intersections" }
 
 // primitives
@@ -127,7 +127,7 @@ type Foo = Bar & Baz;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 6`] = `
 "Options: { "allowAliases": "in-unions-and-intersections" }
 
 // primitives
@@ -149,7 +149,7 @@ type Foo = Bar;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 7`] = `
 "Options: { "allowAliases": "in-unions-and-intersections" }
 
 // primitives
@@ -173,7 +173,7 @@ type Foo = Bar & Baz;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 8`] = `
 "Options: { "allowCallbacks": "always" }
 
 type Foo = () => void;
@@ -188,21 +188,21 @@ type Foo = (name: string, age: number) => string & Person;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 9`] = `
 "Options: { "allowConditionalTypes": "always" }
 
 type Foo<T> = T extends number ? number : null;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 10`] = `
 "Options: { "allowConstructors": "always" }
 
 type Foo = new () => void;
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 11`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 11`] = `
 "Options: { "allowLiterals": "always" }
 
 type Foo = {};
@@ -224,7 +224,7 @@ type Foo = { name: string } & { age: number };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 12`] = `
 "Options: { "allowLiterals": "in-unions" }
 
 type Foo = {};
@@ -256,14 +256,14 @@ type Foo = { name: string } & { age: number };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 13`] = `
 "Options: { "allowLiterals": "in-unions" }
 
 type Foo = { name: string } | { age: number };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 14`] = `
 "Options: { "allowLiterals": "in-intersections" }
 
 type Foo = {};
@@ -295,14 +295,14 @@ type Foo = { name: string } | { age: number };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 15`] = `
 "Options: { "allowLiterals": "in-intersections" }
 
 type Foo = { name: string } & { age: number };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 16`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 16`] = `
 "Options: { "allowLiterals": "in-unions-and-intersections" }
 
 type Foo = {};
@@ -330,7 +330,7 @@ type Foo = {
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 17`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 17`] = `
 "Options: { "allowLiterals": "in-unions-and-intersections" }
 
 type Foo = { name: string } | { age: number };
@@ -339,7 +339,7 @@ type Foo = { name: string } & { age: number };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 18`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 18`] = `
 "Options: { "allowMappedTypes": "always" }
 
 type Foo<T> = { readonly [P in keyof T]: T[P] };
@@ -360,7 +360,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 19`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 19`] = `
 "Options: { "allowMappedTypes": "in-unions" }
 
 type Foo<T> = { readonly [P in keyof T]: T[P] };
@@ -383,7 +383,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 20`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 20`] = `
 "Options: { "allowMappedTypes": "in-unions" }
 
 type Foo<T, U> =
@@ -394,7 +394,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 21`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 21`] = `
 "Options: { "allowMappedTypes": "in-intersections" }
 
 type Foo<T> = { readonly [P in keyof T]: T[P] };
@@ -415,7 +415,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 22`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 22`] = `
 "Options: { "allowMappedTypes": "in-intersections" }
 
 type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
@@ -426,7 +426,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 23`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 23`] = `
 "Options: { "allowMappedTypes": "in-unions-and-intersections" }
 
 type Foo<T> = { readonly [P in keyof T]: T[P] };
@@ -437,7 +437,7 @@ type Foo<T> = { [P in keyof T]?: T[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 24`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 24`] = `
 "Options: { "allowMappedTypes": "in-unions-and-intersections" }
 
 type Foo<T, U> =
@@ -454,7 +454,7 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 25`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 25`] = `
 "Options: { "allowTupleTypes": "always" }
 
 type Foo = [number];
@@ -467,7 +467,7 @@ type Foo = [number] | ([number, number] & [string, string]);
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 26`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 26`] = `
 "Options: { "allowTupleTypes": "in-unions" }
 
 type Foo = [number];
@@ -483,7 +483,7 @@ type Foo = [string] & [number];
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 27`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 27`] = `
 "Options: { "allowTupleTypes": "in-unions" }
 
 type Foo = [number] | [number, number];
@@ -492,7 +492,7 @@ type Foo = [string] | [number];
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 28`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 28`] = `
 "Options: { "allowTupleTypes": "in-intersections" }
 
 type Foo = [number];
@@ -508,7 +508,7 @@ type Foo = [string] | [number];
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 29`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 29`] = `
 "Options: { "allowTupleTypes": "in-intersections" }
 
 type Foo = [number] & [number, number];
@@ -517,7 +517,7 @@ type Foo = [string] & [number];
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 30`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 30`] = `
 "Options: { "allowTupleTypes": "in-unions-and-intersections" }
 
 type Foo = [number];
@@ -528,7 +528,7 @@ type Foo = [string];
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 31`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 31`] = `
 "Options: { "allowTupleTypes": "in-unions-and-intersections" }
 
 type Foo = [number] & [number, number];
@@ -537,7 +537,7 @@ type Foo = [string] | [number];
 "
 `;
 
-exports[`Validating rule docs no-type-alias.md code examples ESLint output snapshot 32`] = `
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 32`] = `
 "Options: { "allowGenerics": "always" }
 
 type Foo = Bar<string>;

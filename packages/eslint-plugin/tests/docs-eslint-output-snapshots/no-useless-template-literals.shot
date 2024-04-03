@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-useless-template-literals.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-useless-template-literals.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 const ab1 = \`\${'a'}\${'b'}\`;
@@ -27,7 +27,7 @@ const wrappedIntersection = \`\${intersectionWithString}\`;
 "
 `;
 
-exports[`Validating rule docs no-useless-template-literals.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-useless-template-literals.mdx code examples ESLint output 2`] = `
 "Correct
 
 const ab1 = 'ab';

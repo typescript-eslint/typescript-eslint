@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs class-methods-use-this.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 1`] = `
 "Options: { "ignoreOverrideMethods": true }
 
 class X {
@@ -10,7 +10,7 @@ class X {
 "
 `;
 
-exports[`Validating rule docs class-methods-use-this.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 2`] = `
 "Options: { "ignoreClassesThatImplementAnInterface": true }
 
 class X implements Y {
@@ -20,7 +20,7 @@ class X implements Y {
 "
 `;
 
-exports[`Validating rule docs class-methods-use-this.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 
@@ -41,7 +41,7 @@ class X implements Y {
 "
 `;
 
-exports[`Validating rule docs class-methods-use-this.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
 

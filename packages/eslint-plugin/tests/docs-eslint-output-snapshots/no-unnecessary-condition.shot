@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unnecessary-condition.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 function head<T>(items: T[]) {
@@ -33,7 +33,7 @@ function bar<T>(arg: string) {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-condition.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 2`] = `
 "Correct
 
 function head<T>(items: T[]) {
@@ -58,7 +58,7 @@ function bar(arg?: string | null) {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-condition.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 3`] = `
 "Options: { "allowConstantLoopConditions": true }
 
 while (true) {}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-confusing-void-expression.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // somebody forgot that \`alert\` doesn't return anything
@@ -22,7 +22,7 @@ function doSomething() {
 "
 `;
 
-exports[`Validating rule docs no-confusing-void-expression.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 2`] = `
 "Correct
 
 // just a regular void function in a statement position
@@ -54,14 +54,14 @@ cond ? console.log('true') : console.error('false');
 "
 `;
 
-exports[`Validating rule docs no-confusing-void-expression.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 3`] = `
 "Options: { "ignoreArrowShorthand": true }
 
 promise.then(value => window.postMessage(value));
 "
 `;
 
-exports[`Validating rule docs no-confusing-void-expression.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 4`] = `
 "Options: { "ignoreVoidOperator": true }
 
 // now it's obvious that we don't expect any response

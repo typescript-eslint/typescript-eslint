@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-confusing-non-null-assertion.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-confusing-non-null-assertion.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 interface Foo {
@@ -16,7 +16,7 @@ const isEqualsNum = 1 + foo.num! == 2;
 "
 `;
 
-exports[`Validating rule docs no-confusing-non-null-assertion.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-confusing-non-null-assertion.mdx code examples ESLint output 2`] = `
 "Correct
 
 interface Foo {

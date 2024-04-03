@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs class-literal-property-style.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 1`] = `
 "Incorrect
 Options: "fields"
 
@@ -18,7 +18,7 @@ class Mx {
 "
 `;
 
-exports[`Validating rule docs class-literal-property-style.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 2`] = `
 "Correct
 Options: "fields"
 
@@ -37,7 +37,7 @@ class Mx {
 "
 `;
 
-exports[`Validating rule docs class-literal-property-style.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: "getters"
 
@@ -52,7 +52,7 @@ class Mx {
 "
 `;
 
-exports[`Validating rule docs class-literal-property-style.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 4`] = `
 "Correct
 Options: "getters"
 

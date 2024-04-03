@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-dynamic-delete.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // Can be replaced with the constant equivalents, such as container.aaa
@@ -18,7 +18,7 @@ delete container[name.toUpperCase()];
 "
 `;
 
-exports[`Validating rule docs no-dynamic-delete.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 2`] = `
 "Correct
 
 const container: { [i: string]: number } = {

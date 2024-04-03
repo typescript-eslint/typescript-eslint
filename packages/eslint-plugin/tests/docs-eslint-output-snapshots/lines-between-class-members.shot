@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs lines-between-class-members.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs lines-between-class-members.mdx code examples ESLint output 1`] = `
 "Options: "always", { "exceptAfterOverload": true }
 
 class foo {
@@ -15,7 +15,7 @@ class foo {
 "
 `;
 
-exports[`Validating rule docs lines-between-class-members.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs lines-between-class-members.mdx code examples ESLint output 2`] = `
 "Options: "always", { "exceptAfterOverload": false }
 
 class foo {

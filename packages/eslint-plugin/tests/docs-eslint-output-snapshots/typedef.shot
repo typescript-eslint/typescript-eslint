@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 1`] = `
 "Incorrect
 Options: { "arrayDestructuring": true }
 
@@ -11,7 +11,7 @@ const [b, c] = [1, 2];
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 2`] = `
 "Correct
 Options: { "arrayDestructuring": true }
 
@@ -24,7 +24,7 @@ for (const [key, val] of new Map([['key', 1]])) {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "arrowParameter": true }
 
@@ -41,7 +41,7 @@ const mapper = {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "arrowParameter": true }
 
@@ -55,7 +55,7 @@ const mapper = {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "memberVariableDeclaration": true }
 
@@ -68,7 +68,7 @@ class ContainsText {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "memberVariableDeclaration": true }
 
@@ -79,7 +79,7 @@ class ContainsText {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "objectDestructuring": true }
 
@@ -89,7 +89,7 @@ const [b, c] = Math.random() ? [1, 2] : [3, 4];
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "objectDestructuring": true }
 
@@ -101,7 +101,7 @@ for (const { key, val } of [{ key: 'key', val: 1 }]) {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 9`] = `
 "Incorrect
 Options: { "parameter": true }
 
@@ -136,7 +136,7 @@ class Logger {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 10`] = `
 "Correct
 Options: { "parameter": true }
 
@@ -166,7 +166,7 @@ class Logger {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 11`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 11`] = `
 "Incorrect
 Options: { "propertyDeclaration": true }
 
@@ -179,7 +179,7 @@ type Members = {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 12`] = `
 "Correct
 Options: { "propertyDeclaration": true }
 
@@ -190,7 +190,7 @@ type Members = {
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 13`] = `
 "Incorrect
 Options: { "variableDeclaration": true }
 
@@ -203,7 +203,7 @@ let delayedText;
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 14`] = `
 "Correct
 Options: { "variableDeclaration": true }
 
@@ -213,7 +213,7 @@ let delayedText: string;
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 15`] = `
 "Incorrect
 Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
 
@@ -222,7 +222,7 @@ const text = 'text';
 "
 `;
 
-exports[`Validating rule docs typedef.md code examples ESLint output snapshot 16`] = `
+exports[`Validating rule docs typedef.mdx code examples ESLint output 16`] = `
 "Correct
 Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
 

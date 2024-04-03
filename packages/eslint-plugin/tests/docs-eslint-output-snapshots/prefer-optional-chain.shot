@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 foo && foo.a && foo.a.b && foo.a.b.c;
@@ -40,7 +40,7 @@ foo &&
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 2`] = `
 "Correct
 
 foo?.a?.b?.c;
@@ -55,7 +55,7 @@ foo?.a?.b?.c?.d?.e;
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 3`] = `
 "Options: { "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": true }
 
 declare const foo: { bar: boolean } | null | undefined;
@@ -63,13 +63,14 @@ declare function acceptsBoolean(arg: boolean): void;
 
 // ✅ typechecks succesfully as the expression only returns \`boolean\`
 acceptsBoolean(foo != null && foo.bar);
+               ~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 
 // ❌ typechecks UNSUCCESSFULLY as the expression returns \`boolean | undefined\`
 acceptsBoolean(foo?.bar);
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 4`] = `
 "Incorrect
 Options: { "checkAny": true }
 
@@ -80,7 +81,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 5`] = `
 "Correct
 Options: { "checkAny": false }
 
@@ -90,7 +91,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 6`] = `
 "Incorrect
 Options: { "checkUnknown": true }
 
@@ -101,7 +102,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 7`] = `
 "Correct
 Options: { "checkUnknown": false }
 
@@ -111,7 +112,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 8`] = `
 "Incorrect
 Options: { "checkString": true }
 
@@ -122,7 +123,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 9`] = `
 "Correct
 Options: { "checkString": false }
 
@@ -132,7 +133,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 10`] = `
 "Incorrect
 Options: { "checkNumber": true }
 
@@ -143,7 +144,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 11`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 11`] = `
 "Correct
 Options: { "checkNumber": false }
 
@@ -153,7 +154,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 12`] = `
 "Incorrect
 Options: { "checkBoolean": true }
 
@@ -164,7 +165,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 13`] = `
 "Correct
 Options: { "checkBoolean": false }
 
@@ -174,7 +175,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 14`] = `
 "Incorrect
 Options: { "checkBigInt": true }
 
@@ -185,7 +186,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 15`] = `
 "Correct
 Options: { "checkBigInt": false }
 
@@ -195,7 +196,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 16`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 16`] = `
 "Incorrect
 Options: { "requireNullish": true }
 
@@ -204,7 +205,7 @@ thing1 && thing1.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.md code examples ESLint output snapshot 17`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 17`] = `
 "Correct
 Options: { "requireNullish": true }
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-array-constructor.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-array-constructor.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 Array(0, 1, 2);
@@ -10,7 +10,7 @@ new Array(0, 1, 2);
 "
 `;
 
-exports[`Validating rule docs no-array-constructor.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-array-constructor.mdx code examples ESLint output 2`] = `
 "Correct
 
 Array<number>(0, 1, 2);

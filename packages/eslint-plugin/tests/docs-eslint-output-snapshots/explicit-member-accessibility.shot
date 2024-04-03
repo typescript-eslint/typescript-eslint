@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 1`] = `
 "
 
 class Animal {
@@ -40,7 +40,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 2`] = `
 "Options: { "accessibility": "explicit" }
 
 class Animal {
@@ -75,7 +75,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 3`] = `
 "Options: { "accessibility": "no-public" }
 
 class Animal {
@@ -121,7 +121,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 4`] = `
 "Options: { "accessibility": "no-public" }
 
 class Animal {
@@ -148,7 +148,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 5`] = `
 "Options: { "overrides": { "constructors": "no-public" } }
 
 class Animal {
@@ -161,7 +161,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 6`] = `
 "Options: { "overrides": { "constructors": "no-public" } }
 
 class Animal {
@@ -173,7 +173,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 7`] = `
 "Options: { "accessibility": "no-public", "overrides": { "properties": "explicit" } }
 
 class Animal {
@@ -191,7 +191,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 8`] = `
 "Options: { "accessibility": "no-public", "overrides": { "properties": "explicit" } }
 
 class Animal {
@@ -208,7 +208,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 9`] = `
 "Options: { "accessibility": "off", "overrides": { "parameterProperties": "explicit" } }
 
 class Animal {
@@ -218,7 +218,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 10`] = `
 "Options: { "accessibility": "off", "overrides": { "parameterProperties": "explicit" } }
 
 class Animal {
@@ -235,7 +235,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 11`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 11`] = `
 "Options: { "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }
 
 class Animal {
@@ -245,7 +245,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 12`] = `
 "Options: { "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }
 
 class Animal {
@@ -254,7 +254,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 13`] = `
 "Options: { "overrides": { "accessors" : "off" } }
 
 class Animal {
@@ -270,7 +270,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 14`] = `
 "Options: { "overrides": { "accessors" : "off" } }
 
 class Animal {
@@ -285,7 +285,7 @@ class Animal {
 "
 `;
 
-exports[`Validating rule docs explicit-member-accessibility.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs explicit-member-accessibility.mdx code examples ESLint output 15`] = `
 "Options: { "ignoredMethodNames": ["specificMethod", "whateverMethod"] }
 
 class Animal {

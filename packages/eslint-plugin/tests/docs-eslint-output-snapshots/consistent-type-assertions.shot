@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs consistent-type-assertions.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 1`] = `
 "Incorrect
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
 
@@ -14,7 +14,7 @@ function bar() {
 "
 `;
 
-exports[`Validating rule docs consistent-type-assertions.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 2`] = `
 "Correct
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }
 
@@ -28,7 +28,7 @@ function bar(): T {
 "
 `;
 
-exports[`Validating rule docs consistent-type-assertions.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
 
@@ -42,7 +42,7 @@ function bar() {
 "
 `;
 
-exports[`Validating rule docs consistent-type-assertions.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs consistent-type-assertions.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
 

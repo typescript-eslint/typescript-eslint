@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unsafe-return.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 function foo1() {
@@ -55,7 +55,7 @@ const assignability2: TAssign = () => new Set<any>([true]);
 "
 `;
 
-exports[`Validating rule docs no-unsafe-return.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 2`] = `
 "Correct
 
 function foo1() {
@@ -76,7 +76,7 @@ const assignability2: TAssign = () => new Set(['foo']);
 "
 `;
 
-exports[`Validating rule docs no-unsafe-return.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 3`] = `
 "
 
 function foo1(): unknown {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // Should indicate that no value is returned (void)
@@ -29,7 +29,7 @@ export class Test {
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 2`] = `
 "Correct
 
 // A function with no return value (void)
@@ -58,7 +58,7 @@ function test() {
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "allowArgumentsExplicitlyTypedAsAny": false }
 
@@ -67,7 +67,7 @@ export const func = (value: any): number => value + 1;
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "allowArgumentsExplicitlyTypedAsAny": true }
 
@@ -75,7 +75,7 @@ export const func = (value: any): number => value + 1;
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "allowDirectConstAssertionInArrowFunctions": false }
 
@@ -90,7 +90,7 @@ export const bar = () => 1;
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "allowDirectConstAssertionInArrowFunctions": true }
 
@@ -103,7 +103,7 @@ export const bar = () => 1 as const;
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "allowHigherOrderFunctions": false }
 
@@ -125,7 +125,7 @@ export function foo(outer: string) {
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "allowHigherOrderFunctions": true }
 
@@ -141,7 +141,7 @@ export function foo(outer: string) {
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 9`] = `
 "Incorrect
 Options: { "allowTypedFunctionExpressions": false }
 
@@ -164,7 +164,7 @@ export const foo = bar => {};
 "
 `;
 
-exports[`Validating rule docs explicit-module-boundary-types.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs explicit-module-boundary-types.mdx code examples ESLint output 10`] = `
 "Correct
 Options: { "allowTypedFunctionExpressions": true }
 

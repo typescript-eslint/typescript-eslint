@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unnecessary-qualifier.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 enum A {
@@ -11,7 +11,7 @@ enum A {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-qualifier.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 namespace A {
@@ -22,7 +22,7 @@ namespace A {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-qualifier.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint output 3`] = `
 "Correct
 
 enum A {
@@ -32,7 +32,7 @@ enum A {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-qualifier.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint output 4`] = `
 "Correct
 
 namespace A {

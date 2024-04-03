@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-string-starts-ends-with.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-string-starts-ends-with.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 declare const foo: string;
@@ -39,7 +39,7 @@ foo.match(/bar$/) != null;
 "
 `;
 
-exports[`Validating rule docs prefer-string-starts-ends-with.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-string-starts-ends-with.mdx code examples ESLint output 2`] = `
 "Correct
 
 declare const foo: string;
@@ -52,7 +52,7 @@ foo.endsWith('bar');
 "
 `;
 
-exports[`Validating rule docs prefer-string-starts-ends-with.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs prefer-string-starts-ends-with.mdx code examples ESLint output 3`] = `
 "Options: { "allowSingleElementEquality": "always" }
 
 declare const text: string;

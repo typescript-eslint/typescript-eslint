@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-extra-non-null-assertion.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 const foo: { bar: number } | null = null;
@@ -10,7 +10,7 @@ const bar = foo!!!.bar;
 "
 `;
 
-exports[`Validating rule docs no-extra-non-null-assertion.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 function foo(bar: number | undefined) {
@@ -21,7 +21,7 @@ function foo(bar: number | undefined) {
 "
 `;
 
-exports[`Validating rule docs no-extra-non-null-assertion.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 3`] = `
 "Incorrect
 
 function foo(bar?: { n: number }) {
@@ -31,7 +31,7 @@ function foo(bar?: { n: number }) {
 "
 `;
 
-exports[`Validating rule docs no-extra-non-null-assertion.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 4`] = `
 "Correct
 
 const foo: { bar: number } | null = null;
@@ -39,7 +39,7 @@ const bar = foo!.bar;
 "
 `;
 
-exports[`Validating rule docs no-extra-non-null-assertion.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 5`] = `
 "Correct
 
 function foo(bar: number | undefined) {
@@ -48,7 +48,7 @@ function foo(bar: number | undefined) {
 "
 `;
 
-exports[`Validating rule docs no-extra-non-null-assertion.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 6`] = `
 "Correct
 
 function foo(bar?: { n: number }) {

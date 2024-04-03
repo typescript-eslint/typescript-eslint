@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 1`] = `
 "Incorrect
 Options: { "lib": "never" }
 
@@ -11,7 +11,7 @@ globalThis.value;
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 2`] = `
 "Correct
 Options: { "lib": "never" }
 
@@ -19,7 +19,7 @@ import { value } from 'code';
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "path": "never" }
 
@@ -30,7 +30,7 @@ globalThis.value;
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "path": "never" }
 
@@ -38,7 +38,7 @@ import { value } from 'code';
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "types": "never" }
 
@@ -49,7 +49,7 @@ globalThis.value;
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "types": "never" }
 
@@ -57,7 +57,7 @@ import { value } from 'code';
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "types": "prefer-import" }
 
@@ -70,7 +70,7 @@ globalThis.valueB;
 "
 `;
 
-exports[`Validating rule docs triple-slash-reference.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "types": "prefer-import" }
 

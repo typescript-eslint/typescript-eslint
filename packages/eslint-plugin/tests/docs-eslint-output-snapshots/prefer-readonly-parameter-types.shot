@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 function array1(arg: string[]) {} // array is not readonly
@@ -59,7 +59,7 @@ interface Foo {
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 2`] = `
 "Correct
 
 function array1(arg: readonly string[]) {}
@@ -125,7 +125,7 @@ interface Foo {
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -156,7 +156,7 @@ function fn3(arg: WrapperWithOther) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 4`] = `
 "Incorrect
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -179,7 +179,7 @@ function fn3(arg: Bar) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 5`] = `
 "Correct
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -200,7 +200,7 @@ function fn2(arg: Wrapper) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 6`] = `
 "Correct
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -221,7 +221,7 @@ function fn3(arg: Bar) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 7`] = `
 "Correct
 Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
@@ -232,7 +232,7 @@ function fn(arg: Foo) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 8`] = `
 "Incorrect
 Options: { "checkParameterProperties": true }
 
@@ -243,7 +243,7 @@ class Foo {
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 9`] = `
 "Correct
 Options: { "checkParameterProperties": true }
 
@@ -253,7 +253,7 @@ class Foo {
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 10`] = `
 "Options: { "checkParameterProperties": false }
 
 class Foo {
@@ -265,7 +265,7 @@ class Foo {
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 11`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 11`] = `
 "Incorrect
 Options: { "ignoreInferredTypes": true }
 
@@ -275,7 +275,7 @@ acceptsCallback((options: CallbackOptions) => {});
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 12`] = `
 "Incorrect
 Options: { "ignoreInferredTypes": true }
 
@@ -290,7 +290,7 @@ export const acceptsCallback: AcceptsCallback;
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 13`] = `
 "Correct
 Options: { "ignoreInferredTypes": true }
 
@@ -300,7 +300,7 @@ acceptsCallback(options => {});
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 14`] = `
 "Correct
 Options: { "ignoreInferredTypes": true }
 
@@ -315,7 +315,7 @@ export const acceptsCallback: AcceptsCallback;
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 15`] = `
 "Incorrect
 Options: { "treatMethodsAsReadonly": false }
 
@@ -328,7 +328,7 @@ function foo(arg: MyType) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 16`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 16`] = `
 "Correct
 Options: { "treatMethodsAsReadonly": false }
 
@@ -346,7 +346,7 @@ function bar(arg: MyOtherType) {}
 "
 `;
 
-exports[`Validating rule docs prefer-readonly-parameter-types.md code examples ESLint output snapshot 17`] = `
+exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 17`] = `
 "Options: { "treatMethodsAsReadonly": true }
 
 type MyType = {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 type T1 = B | A;
@@ -52,7 +52,7 @@ type T4 =
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 2`] = `
 "Correct
 
 type T1 = A | B;
@@ -83,7 +83,7 @@ type T4 =
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "checkIntersections": true }
 
@@ -92,7 +92,7 @@ type ExampleIntersection = B & A;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "checkIntersections": true }
 
@@ -100,7 +100,7 @@ type ExampleIntersection = A & B;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "checkUnions": true }
 
@@ -109,7 +109,7 @@ type ExampleUnion = B | A;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "checkUnions": true }
 
@@ -117,7 +117,7 @@ type ExampleUnion = A | B;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "groupOrder": ["literal", "nullish" ]}
 
@@ -126,7 +126,7 @@ type ExampleGroup = null | 123;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "groupOrder": ["literal", "nullish" ]}
 

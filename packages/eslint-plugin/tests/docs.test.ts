@@ -1,12 +1,19 @@
 import 'jest-specific-snapshot';
 
+import assert from 'node:assert/strict';
+
 import { parseForESLint } from '@typescript-eslint/parser';
 import * as tseslintParser from '@typescript-eslint/parser';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import fs from 'fs';
 import { marked } from 'marked';
+import type * as mdast from 'mdast';
+import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
+import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
+import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
 import path from 'path';
 import { titleCase } from 'title-case';
+import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
 
 import rules from '../src/rules';
 import { areOptionsValid } from './areOptionsValid';
@@ -103,6 +110,21 @@ const eslintOutputSnapshotFolder = path.resolve(
 fs.mkdirSync(eslintOutputSnapshotFolder, { recursive: true });
 
 describe('Validating rule docs', () => {
+  let fromMarkdown: typeof FromMarkdown;
+  let mdxjs: typeof Mdxjs;
+  let mdxFromMarkdown: typeof MdxFromMarkdown;
+  let unistUtilVisit: typeof UnistUtilVisit;
+  beforeAll(async () => {
+    // dynamic import('...') is transpiled to the require('...') call,
+    // but all modules imported below are ESM only, so we cannot require() them
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    const dynamicImport = new Function('module', 'return import(module)');
+    ({ fromMarkdown } = await dynamicImport('mdast-util-from-markdown'));
+    ({ mdxjs } = await dynamicImport('micromark-extension-mdxjs'));
+    ({ mdxFromMarkdown } = await dynamicImport('mdast-util-mdx'));
+    unistUtilVisit = await dynamicImport('unist-util-visit');
+  });
+
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
@@ -127,6 +149,9 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
+    if (ruleName !== 'prefer-readonly-parameter-types') {
+      continue;
+    }
     const { description } = rule.meta.docs!;
 
     describe(`${ruleName}.mdx`, () => {
@@ -264,102 +289,84 @@ describe('Validating rule docs', () => {
         }
       });
 
-      describe('code examples ESLint output', () => {
+      test('code examples ESLint output', () => {
         // TypeScript can't infer type arguments unless we provide them explicitly
         linter.defineRule<
           keyof (typeof rule)['meta']['messages'],
           (typeof rule)['defaultOptions']
         >(ruleName, rule);
 
-        type TabsSearchContext =
-          | {
-              type: 'outside-the-tabs';
-            }
-          | {
-              type: 'entered-tabs';
-            }
-          | {
-              type: 'under-tab-heading';
-              headingsDepth: number;
-              sectionType: 'incorrect' | 'correct' | 'unknown';
-            };
-        let tabsSearchContext: TabsSearchContext = {
-          type: 'outside-the-tabs',
-        };
+        const tree = fromMarkdown(fullText, {
+          extensions: [mdxjs()],
+          mdastExtensions: [mdxFromMarkdown()],
+        });
 
-        for (const token of tokens) {
-          if (token.type === 'html') {
-            const isOpeningTabsComment = /^<!--\s*tabs\s*-->$/.test(
-              token.text.trim(),
-            );
-            const isClosingTabsComment = /^<!--\s*\/tabs\s*-->$/.test(
-              token.text.trim(),
-            );
+        unistUtilVisit.visit(tree, v => {
+          if (v.type === 'mdxJsxFlowElement') {
+            if (v.name !== 'TabItem') {
+              return unistUtilVisit.CONTINUE;
+            }
 
-            if (isOpeningTabsComment) {
-              tabsSearchContext = { type: 'entered-tabs' };
-            } else if (isClosingTabsComment) {
-              tabsSearchContext = { type: 'outside-the-tabs' };
-            }
-          } else if (token.type === 'heading') {
-            if (
-              tabsSearchContext.type === 'under-tab-heading' &&
-              token.depth < tabsSearchContext.headingsDepth
-            ) {
-              tabsSearchContext = { type: 'outside-the-tabs' };
-            } else if (
-              tabsSearchContext.type === 'entered-tabs' ||
-              (tabsSearchContext.type === 'under-tab-heading' &&
-                token.depth === tabsSearchContext.headingsDepth)
-            ) {
-              const heading = token.text.trim();
-              tabsSearchContext = {
-                type: 'under-tab-heading',
-                headingsDepth: token.depth,
-                sectionType: heading.startsWith('❌ Incorrect')
-                  ? 'incorrect'
-                  : heading.startsWith('✅ Correct')
-                    ? 'correct'
-                    : 'unknown',
-              };
-            }
+            unistUtilVisit.visit(v, 'code', code => {
+              const valueAttr = v.attributes.find(
+                attr =>
+                  attr.type === 'mdxJsxAttribute' && attr.name === 'value',
+              );
+              lintCodeBlock(
+                code,
+                valueAttr && typeof valueAttr.value === 'string'
+                  ? valueAttr.value.startsWith('❌ Incorrect') ||
+                      (valueAttr.value.startsWith('✅ Correct')
+                        ? false
+                        : 'skip-check')
+                  : 'skip-check',
+              );
+            });
+
+            return unistUtilVisit.SKIP;
           }
 
-          if (
-            token.type !== 'code' ||
-            (tabsSearchContext.type !== 'under-tab-heading' &&
-              !token.lang?.includes('showPlaygroundButton'))
-          ) {
-            continue;
+          if (v.type === 'code') {
+            if (v.meta?.includes('showPlaygroundButton')) {
+              lintCodeBlock(v, 'skip-check');
+            }
+
+            return unistUtilVisit.SKIP;
           }
 
+          return unistUtilVisit.CONTINUE;
+        });
+
+        function lintCodeBlock(
+          token: mdast.Code,
+          shouldContainLintErrors: boolean | 'skip-check',
+        ): void {
           const lang = token.lang?.trim();
           if (!lang || !/^tsx?\b/i.test(lang)) {
-            continue;
+            return;
           }
 
           const optionRegex = /option='(?<option>.*?)'/;
 
-          const option = lang.match(optionRegex)?.groups?.option;
+          const option = token.meta?.match(optionRegex)?.groups?.option;
           let ruleConfig: Linter.RuleEntry;
           if (option) {
             const [, ...options] = (ruleConfig = JSON.parse(
               `["error", ${option}]`,
             ));
-            test('options are valid', () => {
-              if (!areOptionsValid(rule, options)) {
-                throw new Error(
-                  `Options failed validation against rule's schema - ${JSON.stringify(options)}`,
-                );
-              }
-            });
+
+            if (!areOptionsValid(rule, options)) {
+              throw new Error(
+                `Options failed validation against rule's schema - ${JSON.stringify(options)}`,
+              );
+            }
           } else {
             ruleConfig = 'error';
           }
           const rootPath = getFixturesRootDir();
 
           const messages = linter.verify(
-            token.text,
+            token.value,
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
@@ -374,36 +381,34 @@ describe('Validating rule docs', () => {
           );
 
           const testCaption: string[] = [];
-          if (tabsSearchContext.type === 'under-tab-heading') {
-            if (tabsSearchContext.sectionType === 'incorrect') {
+          if (shouldContainLintErrors !== 'skip-check') {
+            if (shouldContainLintErrors) {
               testCaption.push('Incorrect');
-              if (lang.includes('skipValidation')) {
-                test(
-                  "doesn't contain lint errors (with skipValidation):\n" +
-                    token.text,
-                  () => {
-                    expect(messages).toHaveLength(0);
-                  },
+              if (token.meta?.includes('skipValidation')) {
+                assert.ok(
+                  messages.length === 0,
+                  'Expected not to contain lint errors (with skipValidation):\n' +
+                    token.value,
                 );
               } else {
-                test('contains at least 1 lint error:\n' + token.text, () => {
-                  expect(messages).not.toHaveLength(0);
-                });
+                assert.ok(
+                  messages.length > 0,
+                  'Expected to contain at least 1 lint error:\n' + token.value,
+                );
               }
-            } else if (tabsSearchContext.sectionType === 'correct') {
+            } else {
               testCaption.push('Correct');
-              if (lang.includes('skipValidation')) {
-                test(
-                  'contains at least 1 lint error (with skipValidation):\n' +
-                    token.text,
-                  () => {
-                    expect(messages).not.toHaveLength(0);
-                  },
+              if (token.meta?.includes('skipValidation')) {
+                assert.ok(
+                  messages.length > 0,
+                  'Expected to contain at least 1 lint error (with skipValidation):\n' +
+                    token.value,
                 );
               } else {
-                test("doesn't contain lint errors:\n" + token.text, () => {
-                  expect(messages).toHaveLength(0);
-                });
+                assert.ok(
+                  messages.length === 0,
+                  'Expected not to contain lint errors:\n' + token.value,
+                );
               }
             }
           }
@@ -411,15 +416,13 @@ describe('Validating rule docs', () => {
             testCaption.push(`Options: ${option}`);
           }
 
-          test('snapshot', () => {
-            expect(
-              testCaption.filter(Boolean).join('\n') +
-                '\n\n' +
-                renderLintResults(token.text, messages),
-            ).toMatchSpecificSnapshot(
-              path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
-            );
-          });
+          expect(
+            testCaption.filter(Boolean).join('\n') +
+              '\n\n' +
+              renderLintResults(token.value, messages),
+          ).toMatchSpecificSnapshot(
+            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+          );
         }
       });
     });

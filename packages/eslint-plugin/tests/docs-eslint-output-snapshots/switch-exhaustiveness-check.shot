@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 1`] = `
 "Options: { "requireDefaultForNonUnion": true }
 
 const value: number = Math.floor(Math.random() * 3);
@@ -15,7 +15,7 @@ switch (value) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 type Day =
@@ -39,7 +39,7 @@ switch (day) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 3`] = `
 "Correct
 
 type Day =
@@ -80,7 +80,7 @@ switch (day) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 4`] = `
 "Correct
 
 type Day =
@@ -105,7 +105,7 @@ switch (day) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 5`] = `
 "Incorrect
 
 enum Fruit {
@@ -125,7 +125,7 @@ switch (fruit) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 6`] = `
 "Correct
 
 enum Fruit {
@@ -152,7 +152,7 @@ switch (fruit) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 7`] = `
 "Correct
 
 enum Fruit {

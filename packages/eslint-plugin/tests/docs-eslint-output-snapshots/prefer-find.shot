@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-find.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-find.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 [1, 2, 3].filter(x => x > 1)[0];
@@ -11,7 +11,7 @@ exports[`Validating rule docs prefer-find.md code examples ESLint output snapsho
 "
 `;
 
-exports[`Validating rule docs prefer-find.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-find.mdx code examples ESLint output 2`] = `
 "Correct
 
 [1, 2, 3].find(x => x > 1);

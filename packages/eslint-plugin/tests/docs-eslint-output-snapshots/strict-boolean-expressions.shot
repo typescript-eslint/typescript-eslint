@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs strict-boolean-expressions.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs strict-boolean-expressions.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // nullable numbers are considered unsafe by default
@@ -37,7 +37,7 @@ while (obj) {
 "
 `;
 
-exports[`Validating rule docs strict-boolean-expressions.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs strict-boolean-expressions.mdx code examples ESLint output 2`] = `
 "Correct
 
 // nullable values should be checked explicitly against null or undefined

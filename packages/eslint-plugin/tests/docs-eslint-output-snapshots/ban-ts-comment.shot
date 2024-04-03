@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 1`] = `
 "Incorrect
 Options: { "ts-ignore": true }
 
@@ -10,18 +10,14 @@ if (false) {
   console.log('hello');
 }
 if (false) {
-  /*
-  ~~ Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.
-  @ts-ignore: Unreachable code error
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  */
-~~~~
+  /* @ts-ignore: Unreachable code error */
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.
   console.log('hello');
 }
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 2`] = `
 "Correct
 Options: { "ts-ignore": true }
 
@@ -32,7 +28,7 @@ if (false) {
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "ts-expect-error": "allow-with-description" }
 
@@ -49,7 +45,7 @@ if (false) {
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "ts-expect-error": "allow-with-description" }
 
@@ -58,15 +54,13 @@ if (false) {
   console.log('hello');
 }
 if (false) {
-  /*
-  @ts-expect-error: Unreachable code error
-  */
+  /* @ts-expect-error: Unreachable code error */
   console.log('hello');
 }
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "ts-expect-error": { "descriptionFormat": "^: TS\\\\d+ because .+$" } }
 
@@ -76,7 +70,7 @@ const a = doSomething('hello');
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "ts-expect-error": { "descriptionFormat": "^: TS\\\\d+ because .+$" } }
 
@@ -85,7 +79,7 @@ const a = doSomething('hello');
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }
 
@@ -97,7 +91,7 @@ if (false) {
 "
 `;
 
-exports[`Validating rule docs ban-ts-comment.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs ban-ts-comment.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }
 

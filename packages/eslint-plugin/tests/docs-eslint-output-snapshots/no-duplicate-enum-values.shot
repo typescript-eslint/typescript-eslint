@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-duplicate-enum-values.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 enum E {
@@ -11,7 +11,7 @@ enum E {
 "
 `;
 
-exports[`Validating rule docs no-duplicate-enum-values.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 enum E {
@@ -22,7 +22,7 @@ enum E {
 "
 `;
 
-exports[`Validating rule docs no-duplicate-enum-values.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 3`] = `
 "Correct
 
 enum E {
@@ -32,7 +32,7 @@ enum E {
 "
 `;
 
-exports[`Validating rule docs no-duplicate-enum-values.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-duplicate-enum-values.mdx code examples ESLint output 4`] = `
 "Correct
 
 enum E {

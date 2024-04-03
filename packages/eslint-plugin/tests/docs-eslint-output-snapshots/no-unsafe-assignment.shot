@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unsafe-assignment.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unsafe-assignment.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 const x = 1 as any,
@@ -39,7 +39,7 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
 "
 `;
 
-exports[`Validating rule docs no-unsafe-assignment.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unsafe-assignment.mdx code examples ESLint output 2`] = `
 "Correct
 
 const x = 1,
@@ -63,7 +63,7 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<string>>>();
 "
 `;
 
-exports[`Validating rule docs no-unsafe-assignment.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-unsafe-assignment.mdx code examples ESLint output 3`] = `
 "
 
 const x: unknown = y as any;

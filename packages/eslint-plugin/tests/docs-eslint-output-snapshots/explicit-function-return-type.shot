@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // Should indicate that no value is returned (void)
@@ -29,7 +29,7 @@ class Test {
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 2`] = `
 "Correct
 
 // No return value should be expected (void)
@@ -54,7 +54,7 @@ class Test {
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "allowExpressions": true }
 
@@ -69,7 +69,7 @@ export default () => {};
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "allowExpressions": true }
 
@@ -81,7 +81,7 @@ const foo = arr.map(i => i * i);
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "allowTypedFunctionExpressions": true }
 
@@ -100,7 +100,7 @@ let objectProp = {
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "allowTypedFunctionExpressions": true }
 
@@ -140,7 +140,7 @@ functionWithObjectArg({
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "allowHigherOrderFunctions": true }
 
@@ -154,7 +154,7 @@ function fn() {
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "allowHigherOrderFunctions": true }
 
@@ -166,7 +166,7 @@ function fn() {
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 9`] = `
 "Incorrect
 Options: { "allowDirectConstAssertionInArrowFunctions": true }
 
@@ -177,7 +177,7 @@ const func = (value: number) => ({ type: 'X', value }) as Action;
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 10`] = `
 "Correct
 Options: { "allowDirectConstAssertionInArrowFunctions": true }
 
@@ -186,7 +186,7 @@ const func = () => x as const;
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 11`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 11`] = `
 "Incorrect
 Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
 
@@ -200,7 +200,7 @@ const log = (message: string) => {
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 12`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 12`] = `
 "Correct
 Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
 
@@ -208,7 +208,7 @@ var log = (message: string) => void console.log(message);
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 13`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 13`] = `
 "Incorrect
 Options: { "allowFunctionsWithoutTypeParameters": true }
 
@@ -222,7 +222,7 @@ const bar = <T>(t: T) => t;
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 14`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 14`] = `
 "Correct
 Options: { "allowFunctionsWithoutTypeParameters": true }
 
@@ -240,7 +240,7 @@ const allowedArrow = (x: string) => x;
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 15`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 15`] = `
 "Incorrect
 Options: { "allowIIFEs": true }
 
@@ -249,7 +249,7 @@ var func = () => 'foo';
 "
 `;
 
-exports[`Validating rule docs explicit-function-return-type.md code examples ESLint output snapshot 16`] = `
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 16`] = `
 "Correct
 Options: { "allowIIFEs": true }
 

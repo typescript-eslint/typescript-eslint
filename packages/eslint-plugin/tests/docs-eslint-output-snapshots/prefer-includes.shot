@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-includes.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-includes.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 const str: string;
@@ -30,7 +30,7 @@ userDefined.indexOf(value) >= 0;
 "
 `;
 
-exports[`Validating rule docs prefer-includes.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-includes.mdx code examples ESLint output 2`] = `
 "Correct
 
 const str: string;

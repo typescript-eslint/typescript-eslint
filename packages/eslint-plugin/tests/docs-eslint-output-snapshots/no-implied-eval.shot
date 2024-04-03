@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-implied-eval.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-implied-eval.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 setTimeout('alert(\`Hi!\`);', 100);
@@ -36,7 +36,7 @@ const fn = new Function('a', 'b', 'return a + b');
 "
 `;
 
-exports[`Validating rule docs no-implied-eval.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-implied-eval.mdx code examples ESLint output 2`] = `
 "Correct
 
 setTimeout(function () {

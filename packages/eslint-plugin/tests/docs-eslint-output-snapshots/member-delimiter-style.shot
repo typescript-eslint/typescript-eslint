@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs member-delimiter-style.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs member-delimiter-style.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // missing semicolon delimiter
@@ -36,7 +36,7 @@ type FooBar = { name: string; greet(): string; }
 "
 `;
 
-exports[`Validating rule docs member-delimiter-style.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs member-delimiter-style.mdx code examples ESLint output 2`] = `
 "Correct
 
 interface Foo {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-destructuring.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-destructuring.mdx code examples ESLint output 1`] = `
 "
 
 const x: string = obj.x; // This is incorrect and the auto fixer provides following untyped fix.
@@ -8,14 +8,14 @@ const x: string = obj.x; // This is incorrect and the auto fixer provides follow
 "
 `;
 
-exports[`Validating rule docs prefer-destructuring.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-destructuring.mdx code examples ESLint output 2`] = `
 "
 
 const x: string = obj.x; // This is correct by default. You can also forbid this by an option.
 "
 `;
 
-exports[`Validating rule docs prefer-destructuring.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs prefer-destructuring.mdx code examples ESLint output 3`] = `
 "Incorrect
 
 const x = ['a'];
@@ -24,7 +24,7 @@ const y = x[0];
 "
 `;
 
-exports[`Validating rule docs prefer-destructuring.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs prefer-destructuring.mdx code examples ESLint output 4`] = `
 "Correct
 
 const x = { 0: 'a' };
@@ -32,7 +32,7 @@ const y = x[0];
 "
 `;
 
-exports[`Validating rule docs prefer-destructuring.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs prefer-destructuring.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }
 
@@ -41,7 +41,7 @@ const x: string = obj.x;
 "
 `;
 
-exports[`Validating rule docs prefer-destructuring.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs prefer-destructuring.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 const foo = 3;
@@ -9,7 +9,7 @@ const bar = foo!;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 const foo = <number>(3 + 5);
@@ -17,7 +17,7 @@ const foo = <number>(3 + 5);
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 3`] = `
 "Incorrect
 
 type Foo = number;
@@ -26,7 +26,7 @@ const foo = <Foo>(3 + 5);
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 4`] = `
 "Incorrect
 
 type Foo = number;
@@ -35,7 +35,15 @@ const foo = (3 + 5) as Foo;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 5`] = `
+"Incorrect
+
+const foo = 'foo' as const;
+            ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 6`] = `
 "Incorrect
 
 function foo(x: number): number {
@@ -45,28 +53,28 @@ function foo(x: number): number {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 7`] = `
 "Correct
 
 const foo = <number>3;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 8`] = `
 "Correct
 
 const foo = 3 as number;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 9`] = `
 "Correct
 
-const foo = 'foo' as const;
+let foo = 'foo' as const;
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 9`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 10`] = `
 "Correct
 
 function foo(x: number | undefined): number {
@@ -75,7 +83,7 @@ function foo(x: number | undefined): number {
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-assertion.md code examples ESLint output snapshot 10`] = `
+exports[`Validating rule docs no-unnecessary-type-assertion.mdx code examples ESLint output 11`] = `
 "Options: { "typesToIgnore": ["Foo"] }
 
 type Foo = 3;

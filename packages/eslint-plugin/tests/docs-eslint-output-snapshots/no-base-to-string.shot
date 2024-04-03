@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-base-to-string.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // Passing an object or class instance to string concatenation:
@@ -20,7 +20,7 @@ value + '';
 "
 `;
 
-exports[`Validating rule docs no-base-to-string.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 2`] = `
 "Correct
 
 // These types all have useful .toString()s
@@ -45,7 +45,7 @@ const literalWithToString = {
 "
 `;
 
-exports[`Validating rule docs no-base-to-string.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 3`] = `
 "Options: { "ignoredTypeNames": ["RegExp"] }
 
 \`\${/regex/}\`;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 function x(x: number): void;
@@ -9,7 +9,7 @@ function x(x: string): void;
 "
 `;
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 function y(): void;
@@ -18,21 +18,21 @@ function y(...x: number[]): void;
 "
 `;
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 3`] = `
 "Correct
 
 function x(x: number | string): void;
 "
 `;
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 4`] = `
 "Correct
 
 function y(...x: number[]): void;
 "
 `;
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 5`] = `
 "Correct
 
 // This rule won't check overload signatures with different rest parameter types.
@@ -42,7 +42,7 @@ function f(...a: string[]): void;
 "
 `;
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 6`] = `
 "Incorrect
 Options: { "ignoreDifferentlyNamedParameters": true }
 
@@ -52,7 +52,7 @@ function f(a: string): void;
 "
 `;
 
-exports[`Validating rule docs unified-signatures.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 7`] = `
 "Correct
 Options: { "ignoreDifferentlyNamedParameters": true }
 

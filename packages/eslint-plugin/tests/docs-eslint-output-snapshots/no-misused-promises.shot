@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-misused-promises.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 1`] = `
 "Incorrect
 Options: { "checksConditionals": true }
 
@@ -21,7 +21,7 @@ while (promise) {
 "
 `;
 
-exports[`Validating rule docs no-misused-promises.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 2`] = `
 "Correct
 Options: { "checksConditionals": true }
 
@@ -40,7 +40,7 @@ while (await promise) {
 "
 `;
 
-exports[`Validating rule docs no-misused-promises.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 3`] = `
 "Incorrect
 Options: { "checksVoidReturn": true }
 
@@ -69,7 +69,7 @@ eventEmitter.on('some-event', async () => {
 "
 `;
 
-exports[`Validating rule docs no-misused-promises.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 4`] = `
 "Correct
 Options: { "checksVoidReturn": true }
 
@@ -113,7 +113,7 @@ eventEmitter.on('some-event', () => {
 "
 `;
 
-exports[`Validating rule docs no-misused-promises.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 5`] = `
 "Incorrect
 Options: { "checksSpreads": true }
 
@@ -130,7 +130,7 @@ return { foo: 42, ...getData2() };
 "
 `;
 
-exports[`Validating rule docs no-misused-promises.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs no-misused-promises.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "checksSpreads": true }
 

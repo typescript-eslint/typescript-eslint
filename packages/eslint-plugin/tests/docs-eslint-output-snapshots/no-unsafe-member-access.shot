@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unsafe-member-access.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unsafe-member-access.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 declare const anyVar: any;
@@ -33,7 +33,7 @@ nestedAny[anyVar];
 "
 `;
 
-exports[`Validating rule docs no-unsafe-member-access.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unsafe-member-access.mdx code examples ESLint output 2`] = `
 "Correct
 
 declare const properlyTyped: { prop: { a: string } };

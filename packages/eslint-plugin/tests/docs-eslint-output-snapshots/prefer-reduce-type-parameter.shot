@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs prefer-reduce-type-parameter.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 [1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
@@ -17,7 +17,7 @@ exports[`Validating rule docs prefer-reduce-type-parameter.md code examples ESLi
 "
 `;
 
-exports[`Validating rule docs prefer-reduce-type-parameter.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESLint output 2`] = `
 "Correct
 
 [1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);

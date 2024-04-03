@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 function f<T = number>() {}
@@ -9,7 +9,7 @@ f<number>();
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 2`] = `
 "Incorrect
 
 function g<T = number, U = string>() {}
@@ -18,7 +18,7 @@ g<string, string>();
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 3`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 3`] = `
 "Incorrect
 
 class C<T = number> {}
@@ -30,7 +30,7 @@ class D extends C<number> {}
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 4`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 4`] = `
 "Incorrect
 
 interface I<T = number> {}
@@ -39,7 +39,7 @@ class Impl implements I<number> {}
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 5`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 5`] = `
 "Correct
 
 function f<T = number>() {}
@@ -48,7 +48,7 @@ f<string>();
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 6`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 6`] = `
 "Correct
 
 function g<T = number, U = string>() {}
@@ -57,7 +57,7 @@ g<number, number>();
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 7`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 7`] = `
 "Correct
 
 class C<T = number> {}
@@ -69,7 +69,7 @@ class D extends C<string> {}
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-type-arguments.md code examples ESLint output snapshot 8`] = `
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 8`] = `
 "Correct
 
 interface I<T = number> {}

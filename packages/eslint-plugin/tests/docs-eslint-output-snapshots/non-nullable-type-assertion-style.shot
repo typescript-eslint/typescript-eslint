@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs non-nullable-type-assertion-style.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs non-nullable-type-assertion-style.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
@@ -12,7 +12,7 @@ const alsoDefinitely = <string>maybe;
 "
 `;
 
-exports[`Validating rule docs non-nullable-type-assertion-style.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs non-nullable-type-assertion-style.mdx code examples ESLint output 2`] = `
 "Correct
 
 const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;

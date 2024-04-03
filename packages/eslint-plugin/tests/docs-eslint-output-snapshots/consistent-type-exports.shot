@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs consistent-type-exports.md code examples ESLint output snapshot 1`] = `
+exports[`Validating rule docs consistent-type-exports.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 interface ButtonProps {
@@ -16,7 +16,7 @@ export { Button, ButtonProps };
 "
 `;
 
-exports[`Validating rule docs consistent-type-exports.md code examples ESLint output snapshot 2`] = `
+exports[`Validating rule docs consistent-type-exports.mdx code examples ESLint output 2`] = `
 "Correct
 
 interface ButtonProps {
