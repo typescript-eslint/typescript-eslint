@@ -149,9 +149,6 @@ describe('Validating rule docs', () => {
   });
 
   for (const [ruleName, rule] of rulesData) {
-    if (ruleName !== 'prefer-readonly-parameter-types') {
-      continue;
-    }
     const { description } = rule.meta.docs!;
 
     describe(`${ruleName}.mdx`, () => {
@@ -301,14 +298,14 @@ describe('Validating rule docs', () => {
           mdastExtensions: [mdxFromMarkdown()],
         });
 
-        unistUtilVisit.visit(tree, v => {
-          if (v.type === 'mdxJsxFlowElement') {
-            if (v.name !== 'TabItem') {
+        unistUtilVisit.visit(tree, node => {
+          if (node.type === 'mdxJsxFlowElement') {
+            if (node.name !== 'TabItem') {
               return unistUtilVisit.CONTINUE;
             }
 
-            unistUtilVisit.visit(v, 'code', code => {
-              const valueAttr = v.attributes.find(
+            unistUtilVisit.visit(node, 'code', code => {
+              const valueAttr = node.attributes.find(
                 attr =>
                   attr.type === 'mdxJsxAttribute' && attr.name === 'value',
               );
@@ -326,9 +323,9 @@ describe('Validating rule docs', () => {
             return unistUtilVisit.SKIP;
           }
 
-          if (v.type === 'code') {
-            if (v.meta?.includes('showPlaygroundButton')) {
-              lintCodeBlock(v, 'skip-check');
+          if (node.type === 'code') {
+            if (node.meta?.includes('showPlaygroundButton')) {
+              lintCodeBlock(node, 'skip-check');
             }
 
             return unistUtilVisit.SKIP;
