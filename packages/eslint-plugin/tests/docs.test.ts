@@ -61,7 +61,7 @@ function tokenIsH2(
 
 function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
   const output: string[] = [];
-  const lines = code.split('\n');
+  const lines = code.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
