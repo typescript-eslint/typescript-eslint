@@ -264,7 +264,14 @@ export default createRule<Options, MessageId>({
       // Check the type. At this point it can't be unhandled if it isn't a promise
       // or array thereof.
 
-      if (isPromiseArray(checker, tsNode)) {
+      if (
+        isPromiseArray(
+          services,
+          options.allowForKnownSafePromises,
+          checker,
+          tsNode,
+        )
+      ) {
         return { isUnhandled: true, promiseArray: true };
       }
 
@@ -278,7 +285,7 @@ export default createRule<Options, MessageId>({
             ? node.callee.object
             : node;
         if (
-          doesTypeMatchesSpecifier(
+          doesTypeMatcheSpecifier(
             services,
             member,
             options.allowForKnownSafePromises,
@@ -331,7 +338,7 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.NewExpression
       ) {
         if (
-          doesTypeMatchesSpecifier(
+          doesTypeMatcheSpecifier(
             services,
             node,
             options.allowForKnownSafePromises,
@@ -354,7 +361,7 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.TSTypeAssertion
       ) {
         if (
-          doesTypeMatchesSpecifier(
+          doesTypeMatcheSpecifier(
             services,
             node,
             options.allowForKnownSafePromises,
@@ -380,15 +387,16 @@ export default createRule<Options, MessageId>({
  * @param options The config object of `allowForKnownSafePromises`
  * @returns `true` if the type matches, `false` if it isn't
  */
-function doesTypeMatchesSpecifier(
+function doesTypeMatcheSpecifier(
   services: ParserServicesWithTypeInformation,
-  node: TSESTree.Node,
+  node: TSESTree.Node | undefined,
   options: TypeOrValueSpecifier[] | undefined,
+  type?: ts.Type,
 ): boolean {
   if (Array.isArray(options) && options.length > 0) {
     const result = options.some(specifier =>
       typeMatchesSpecifier(
-        services.getTypeAtLocation(node),
+        type ?? services.getTypeAtLocation(node!),
         specifier,
         services.program,
       ),
@@ -398,13 +406,25 @@ function doesTypeMatchesSpecifier(
   return false;
 }
 
-function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
+function isPromiseArray(
+  services: ParserServicesWithTypeInformation,
+  options: TypeOrValueSpecifier[] | undefined,
+  checker: ts.TypeChecker,
+  node: ts.Node,
+): boolean {
   const type = checker.getTypeAtLocation(node);
   for (const ty of tsutils
     .unionTypeParts(type)
     .map(t => checker.getApparentType(t))) {
     if (checker.isArrayType(ty)) {
       const arrayType = checker.getTypeArguments(ty)[0];
+      if (Array.isArray(options) && options.length > 0) {
+        return !tsutils
+          .unionTypeParts(arrayType)
+          .some(type =>
+            doesTypeMatcheSpecifier(services, undefined, options, type),
+          );
+      }
       if (isPromiseLike(checker, node, arrayType)) {
         return true;
       }
@@ -412,6 +432,16 @@ function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
 
     if (checker.isTupleType(ty)) {
       for (const tupleElementType of checker.getTypeArguments(ty)) {
+        if (
+          doesTypeMatcheSpecifier(
+            services,
+            undefined,
+            options,
+            tupleElementType,
+          )
+        ) {
+          return false;
+        }
         if (isPromiseLike(checker, node, tupleElementType)) {
           return true;
         }

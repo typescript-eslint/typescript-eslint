@@ -342,14 +342,6 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
-      [
-        'import test from "node:test"; type Test = typeof test;',
-        {
-          from: 'package',
-          name: 'test',
-          package: 'node:test',
-        },
-      ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([
