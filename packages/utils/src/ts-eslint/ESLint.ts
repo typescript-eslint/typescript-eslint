@@ -145,7 +145,7 @@ namespace ESLint {
     /**
      * The types of the rules that the eslint.lintFiles() and eslint.lintText() methods use for autofix.
      */
-    fixTypes?: ('directive' | 'layout' | 'problem' | 'suggestion')[] | null;
+    fixTypes?: ('directive' | 'problem' | 'suggestion')[] | null;
     /**
      * If false is present, the eslint.lintFiles() method doesn't interpret glob patterns.
      */

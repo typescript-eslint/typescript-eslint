@@ -157,8 +157,7 @@ describe('Validating rule docs', () => {
       if (
         !rulesWithComplexOptions.has(ruleName) &&
         Array.isArray(schema) &&
-        !rule.meta.docs?.extendsBaseRule &&
-        rule.meta.type !== 'layout'
+        !rule.meta.docs?.extendsBaseRule
       ) {
         test('each rule option should be mentioned in a heading', () => {
           const headingTextAfterOptions = headings
