@@ -5172,7 +5172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdast@npm:^4.0.0, @types/mdast@npm:^4.0.2":
+"@types/mdast@npm:^4.0.0, @types/mdast@npm:^4.0.2, @types/mdast@npm:^4.0.3":
   version: 4.0.3
   resolution: "@types/mdast@npm:4.0.3"
   dependencies:
@@ -5507,6 +5507,7 @@ __metadata:
     "@eslint-community/regexpp": ^4.5.1
     "@types/debug": "*"
     "@types/marked": "*"
+    "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
     "@typescript-eslint/rule-schema-to-typescript-types": 7.5.0
     "@typescript-eslint/rule-tester": 7.5.0
@@ -5528,6 +5529,9 @@ __metadata:
     json-schema: "*"
     markdown-table: ^3.0.3
     marked: ^5.1.1
+    mdast-util-from-markdown: ^2.0.0
+    mdast-util-mdx: ^3.0.0
+    micromark-extension-mdxjs: ^3.0.0
     natural-compare: ^1.4.0
     prettier: ^3.0.3
     rimraf: "*"
@@ -5536,6 +5540,7 @@ __metadata:
     ts-api-utils: ^1.0.1
     tsx: "*"
     typescript: "*"
+    unist-util-visit: ^5.0.0
   peerDependencies:
     "@typescript-eslint/parser": ^7.0.0
     eslint: ^8.56.0
