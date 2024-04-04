@@ -2,10 +2,7 @@ import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
-import type {
-  RuleMetaDataDocs,
-  RuleRecommendation,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
