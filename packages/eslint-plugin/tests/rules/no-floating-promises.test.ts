@@ -519,7 +519,7 @@ null ?? guzz.catch();
     },
     {
       code: `
-class SafePromise<T> extends Promise<T> {};
+class SafePromise<T> extends Promise<T> {}
 let guzz: SafePromise<number> = Promise.resolve(5);
 guzz;
 guzz.then(() => {});
@@ -2016,7 +2016,7 @@ null ?? (guzz() as Foo).catch();
     },
     {
       code: `
-class UnsafePromise<T> extends Promise<T> {};
+class UnsafePromise<T> extends Promise<T> {}
 let guzz: UnsafePromise<number> = Promise.resolve(5);
 guzz;
 guzz.then(() => {});

@@ -289,6 +289,7 @@ export default createRule<Options, MessageId>({
             services,
             member,
             options.allowForKnownSafePromises,
+            undefined,
           )
         ) {
           return { isUnhandled: false };
@@ -342,6 +343,7 @@ export default createRule<Options, MessageId>({
             services,
             node,
             options.allowForKnownSafePromises,
+            undefined,
           )
         ) {
           return { isUnhandled: false };
@@ -365,6 +367,7 @@ export default createRule<Options, MessageId>({
             services,
             node,
             options.allowForKnownSafePromises,
+            undefined,
           )
         ) {
           return { isUnhandled: false };
@@ -385,21 +388,29 @@ export default createRule<Options, MessageId>({
  * @param services services variable passed from context function to check the type of a node
  * @param node the node whose type is to be calculated to know whether it is a safe promise or not
  * @param options The config object of `allowForKnownSafePromises`
+ * @param type The type of the node, either provide this or node, if both are given this param is going to get used, if both are `undefined`, `false` is returned
  * @returns `true` if the type matches, `false` if it isn't
  */
 function doesTypeMatcheSpecifier(
   services: ParserServicesWithTypeInformation,
   node: TSESTree.Node | undefined,
   options: TypeOrValueSpecifier[] | undefined,
-  type?: ts.Type,
+  type: ts.Type | undefined,
 ): boolean {
+  let typeOfNode: ts.Type;
+  if (!type && !node) {
+    return false;
+  } else if (!type && node) {
+    typeOfNode = services.getTypeAtLocation(node);
+  } else if (!node && type) {
+    typeOfNode = type;
+  } else if (node && type) {
+    typeOfNode = type;
+  }
+
   if (Array.isArray(options) && options.length > 0) {
     const result = options.some(specifier =>
-      typeMatchesSpecifier(
-        type ?? services.getTypeAtLocation(node!),
-        specifier,
-        services.program,
-      ),
+      typeMatchesSpecifier(typeOfNode, specifier, services.program),
     );
     return result;
   }
