@@ -3860,15 +3860,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:18.1.1":
-  version: 18.1.1
-  resolution: "@nrwl/devkit@npm:18.1.1"
-  dependencies:
-    "@nx/devkit": 18.1.1
-  checksum: 66af0a04a4d5e8031b6b3f7c4f0096646125dbdba9da783c548c2058f5d002d1a928487bb58287f512c7d32903e20287c5686b82fabb02f1c182dadb1ecab71b
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:18.2.1":
   version: 18.2.1
   resolution: "@nrwl/devkit@npm:18.2.1"
@@ -3917,25 +3908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:18.1.1":
-  version: 18.1.1
-  resolution: "@nx/devkit@npm:18.1.1"
-  dependencies:
-    "@nrwl/devkit": 18.1.1
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: ^7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-    yargs-parser: 21.1.1
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: 12d0e85d9b06112577fd8c1a9b76ccbeb1c7e8714012fbdef7bc0053e5017ff2679cc2ef4a03b2e718dcb934112e4c2067dead3253dd9d172618c005e13bd756
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:18.2.1":
+"@nx/devkit@npm:*, @nx/devkit@npm:18.2.1":
   version: 18.2.1
   resolution: "@nx/devkit@npm:18.2.1"
   dependencies:
@@ -5781,7 +5754,7 @@ __metadata:
     eslint-plugin-unicorn: ^50.0.1
     execa: 7.1.1
     glob: ^10.3.3
-    globals: ^13.23.0
+    globals: ^15.0.0
     husky: ^8.0.3
     jest: 29.7.0
     jest-diff: ^29.6.2
@@ -10953,12 +10926,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^13.19.0, globals@npm:^13.23.0":
+"globals@npm:^13.19.0":
   version: 13.24.0
   resolution: "globals@npm:13.24.0"
   dependencies:
     type-fest: ^0.20.2
   checksum: 56066ef058f6867c04ff203b8a44c15b038346a62efbc3060052a1016be9f56f4cf0b2cd45b74b22b81e521a889fc7786c73691b0549c2f3a6e825b3d394f43c
+  languageName: node
+  linkType: hard
+
+"globals@npm:^15.0.0":
+  version: 15.0.0
+  resolution: "globals@npm:15.0.0"
+  checksum: c2f409354415a6d24125e6d80089bd9d72b0c7a7cfba83fd555d217560743a1022a9d6e937dc2ab866f3c4e665c81ad4efde91c5a8e3f31d05b60a4831271068
   languageName: node
   linkType: hard
 
