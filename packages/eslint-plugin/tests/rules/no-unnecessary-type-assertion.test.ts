@@ -19,6 +19,11 @@ const optionsWithOnUncheckedIndexedAccess = {
   project: './tsconfig.noUncheckedIndexedAccess.json',
 };
 
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
+
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
     `
@@ -277,9 +282,70 @@ function bar(items: string[]) {
       `,
       parserOptions: optionsWithOnUncheckedIndexedAccess,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | null | number;
+};
+const bar = foo.a as string | undefined;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | number;
+};
+const bar = foo.a as string | undefined | bigint;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      output: 'const a = `a`;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
     {
       code: "const a = 'a' as const;",
       output: "const a = 'a';",
@@ -917,6 +983,51 @@ function bar(items: string[]) {
           column: 9,
         },
       ],
+    },
+    // exactOptionalPropertyTypes = true
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      output: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 13,
+        },
+      ],
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string | undefined;
+      `,
+      output: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 13,
+        },
+      ],
+      parserOptions: optionsWithExactOptionalPropertyTypes,
     },
   ],
 });
