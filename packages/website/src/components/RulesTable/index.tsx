@@ -2,6 +2,10 @@ import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type {
+  RuleMetaDataDocs,
+  RuleRecommendation,
+} from '@typescript-eslint/utils/ts-eslint';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
@@ -31,6 +35,13 @@ function interpolateCode(
   return fragments.map((v, i) => (i % 2 === 0 ? v : <code key={i}>{v}</code>));
 }
 
+function getActualRecommended({
+  docs,
+}: RulesMeta[number]): RuleRecommendation | undefined {
+  const recommended = docs?.recommended;
+  return typeof recommended === 'object' ? 'recommended' : recommended;
+}
+
 function RuleRow({
   rule,
 }: {
@@ -40,9 +51,8 @@ function RuleRow({
     return null;
   }
   const { fixable, hasSuggestions, type, deprecated } = rule;
-  const { recommended, requiresTypeChecking, extendsBaseRule } = rule.docs;
-  const actualRecommended =
-    typeof recommended === 'object' ? 'recommended' : recommended;
+  const { requiresTypeChecking, extendsBaseRule } = rule.docs;
+  const actualRecommended = getActualRecommended(rule);
   const formatting = type === 'layout';
   return (
     <tr>
@@ -171,14 +181,15 @@ export default function RulesTable(): React.JSX.Element {
   const relevantRules = useMemo(
     () =>
       rules.filter(r => {
+        const actualRecommended = getActualRecommended(r);
         const opinions = [
-          match(filters.recommended, r.docs?.recommended === 'recommended'),
+          match(filters.recommended, actualRecommended === 'recommended'),
           match(
             filters.strict,
-            r.docs?.recommended === 'recommended' ||
-              r.docs?.recommended === 'strict',
+            actualRecommended === 'recommended' ||
+              actualRecommended === 'strict',
           ),
-          match(filters.stylistic, r.docs?.recommended === 'stylistic'),
+          match(filters.stylistic, actualRecommended === 'stylistic'),
           match(filters.fixable, !!r.fixable),
           match(filters.suggestions, !!r.hasSuggestions),
           match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
