@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -89,7 +90,17 @@ export default createRule<Options, MessageIds>({
           node.computed
         ) {
           // for perf reasons - only fetch symbols if we have to
-          const propertySymbol = services.getSymbolAtLocation(node.property);
+          const propertySymbol =
+            services.getSymbolAtLocation(node.property) ??
+            services
+              .getTypeAtLocation(node.object)
+              .getNonNullableType()
+              .getProperties()
+              .find(
+                propertySymbol =>
+                  node.property.type === AST_NODE_TYPES.Literal &&
+                  propertySymbol.escapedName === node.property.value,
+              );
           const modifierKind = getModifiers(
             propertySymbol?.getDeclarations()?.[0],
           )?.[0].kind;
@@ -101,6 +112,7 @@ export default createRule<Options, MessageIds>({
           ) {
             return;
           }
+
           if (
             propertySymbol === undefined &&
             allowIndexSignaturePropertyAccess

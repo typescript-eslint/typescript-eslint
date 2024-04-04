@@ -24,8 +24,7 @@ function q(str: string): string {
 
 ruleTester.run('dot-notation', rule, {
   valid: [
-    //  baseRule
-
+    //     //  baseRule
     'a.b;',
     'a.b.c;',
     "a['12'];",
@@ -119,6 +118,28 @@ dingus?.nested['hello'];
       `,
       options: [{ allowIndexSignaturePropertyAccess: true }],
       parserOptions: { ecmaVersion: 2020 },
+    },
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['priv_prop']);
+    `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  protected priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['priv_prop']);
+`,
+      options: [{ allowProtectedClassPropertyAccess: true }],
     },
   ],
   invalid: [
