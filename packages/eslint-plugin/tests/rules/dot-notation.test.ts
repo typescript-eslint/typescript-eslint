@@ -24,7 +24,7 @@ function q(str: string): string {
 
 ruleTester.run('dot-notation', rule, {
   valid: [
-    //     //  baseRule
+    //  baseRule
     'a.b;',
     'a.b.c;',
     "a['12'];",
@@ -127,7 +127,7 @@ class X {
 
 let x: X | undefined;
 console.log(x?.['priv_prop']);
-    `,
+      `,
       options: [{ allowPrivateClassPropertyAccess: true }],
     },
     {
@@ -138,7 +138,7 @@ class X {
 
 let x: X | undefined;
 console.log(x?.['priv_prop']);
-`,
+      `,
       options: [{ allowProtectedClassPropertyAccess: true }],
     },
   ],

@@ -112,7 +112,6 @@ export default createRule<Options, MessageIds>({
           ) {
             return;
           }
-
           if (
             propertySymbol === undefined &&
             allowIndexSignaturePropertyAccess
