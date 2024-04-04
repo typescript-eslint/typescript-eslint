@@ -59,7 +59,7 @@
     "monaco-editor": "~0.47.0",
     "raw-loader": "^4.0.2",
     "rimraf": "*",
-    "stylelint": "^15.10.1",
+    "stylelint": "^16.0.0",
     "stylelint-config-recommended": "^13.0.0",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-order": "^6.0.3",
