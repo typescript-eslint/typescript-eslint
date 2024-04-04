@@ -193,12 +193,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   programs?: ts.Program[] | null;
 
   /**
-   * @deprecated - this flag will be removed in the next major.
-   * Do not rely on the behavior provided by this flag.
-   */
-  DEPRECATED__createDefaultProgram?: boolean;
-
-  /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
    * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
    * on a file in an IDE).
