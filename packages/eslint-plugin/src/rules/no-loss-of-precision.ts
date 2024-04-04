@@ -16,9 +16,9 @@ export default createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
   meta: {
     type: 'problem',
+    deprecated: true,
     docs: {
       description: 'Disallow literal numbers that lose precision',
-      recommended: 'recommended',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
