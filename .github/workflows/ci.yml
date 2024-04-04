@@ -213,7 +213,7 @@ jobs:
 
       - name: Store coverage for uploading
         if: env.PRIMARY_NODE_VERSION == matrix.node-version
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.package }}-coverage
           path: packages/${{ matrix.package }}/coverage/lcov.info
