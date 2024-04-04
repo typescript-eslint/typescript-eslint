@@ -151,19 +151,19 @@ export namespace FlatConfig {
     /**
      * Metadata about your plugin for easier debugging and more effective caching of plugins.
      */
-    meta?: Partial<PluginMeta>;
+    meta?: { [K in keyof PluginMeta]?: PluginMeta[K] | undefined };
     /**
      * The definition of plugin processors.
      * Users can stringly reference the processor using the key in their config (i.e., `"pluginName/processorName"`).
      */
-    processors?: Record<string, Processor>;
+    processors?: Partial<Record<string, Processor>> | undefined;
     /**
      * The definition of plugin rules.
      * The key must be the name of the rule that users will use
      * Users can stringly reference the rule using the key they registered the plugin under combined with the rule name.
      * i.e. for the user config `plugins: { foo: pluginReference }` - the reference would be `"foo/ruleName"`.
      */
-    rules?: Record<string, LooseRuleDefinition>;
+    rules?: Record<string, LooseRuleDefinition> | undefined;
   }
   export interface Plugins {
     /**
@@ -203,7 +203,7 @@ export namespace FlatConfig {
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
-    globals?: GlobalsConfig;
+    globals?: GlobalsConfig | undefined;
     /**
      * An object containing a `parse()` method or a `parseForESLint()` method.
      * @default
@@ -217,7 +217,7 @@ export namespace FlatConfig {
      * An object specifying additional options that are passed directly to the parser.
      * The available options are parser-dependent.
      */
-    parserOptions?: ParserOptions;
+    parserOptions?: ParserOptions | undefined;
     /**
      * The type of JavaScript source code.
      * Possible values are `"script"` for traditional script files, `"module"` for ECMAScript modules (ESM), and `"commonjs"` for CommonJS files.
