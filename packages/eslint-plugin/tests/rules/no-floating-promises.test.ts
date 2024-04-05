@@ -514,7 +514,7 @@ null ?? guzz.catch();
     },
     {
       code: `
-class SafePromise<T> extends Promise<T> {}
+class SafePromise<T> extends Promise<T> {};
 let guzz: SafePromise<number> = Promise.resolve(5);
 guzz;
 guzz.then(() => {});
@@ -525,6 +525,23 @@ null ?? guzz.catch();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+interface SecureThenable<T> { then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | SecureThenable<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | SecureThenable<TResult2>) | undefined | null): SecureThenable<TResult1 | TResult2>; };
+let guzz: SecureThenable<number> = Promise.resolve(5);
+guzz;
+guzz.then(() => {});
+guzz.catch();
+guzz.finally();
+0 ? guzz.catch() : 2;
+null ?? guzz.catch();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
       ],
     },
     {
