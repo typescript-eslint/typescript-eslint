@@ -101,6 +101,7 @@ import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
+import onlyThrowError from './only-throw-error';
 import paddingLineBetweenStatements from './padding-line-between-statements';
 import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
@@ -245,6 +246,7 @@ export default {
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
+  'only-throw-error': onlyThrowError,
   'padding-line-between-statements': paddingLineBetweenStatements,
   'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,

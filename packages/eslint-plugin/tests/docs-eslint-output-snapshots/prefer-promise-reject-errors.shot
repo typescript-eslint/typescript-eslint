@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-promise-reject-errors.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+Promise.reject('error');
+~~~~~~~~~~~~~~~~~~~~~~~ Expected the Promise rejection reason to be an Error.
+
+const err = new Error();
+Promise.reject('an ' + err);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected the Promise rejection reason to be an Error.
+
+new Promise((resolve, reject) => reject('error'));
+                                 ~~~~~~~~~~~~~~~ Expected the Promise rejection reason to be an Error.
+
+new Promise((resolve, reject) => {
+  const err = new Error();
+  reject('an ' + err);
+  ~~~~~~~~~~~~~~~~~~~ Expected the Promise rejection reason to be an Error.
+});
+"
+`;
+
+exports[`Validating rule docs prefer-promise-reject-errors.mdx code examples ESLint output 2`] = `
+"Correct
+
+Promise.reject(new Error());
+
+class CustomError extends Error {
+  // ...
+}
+Promise.reject(new CustomError());
+
+new Promise((resolve, reject) => reject(new Error()));
+
+new Promise((resolve, reject) => {
+  class CustomError extends Error {
+    // ...
+  }
+  return reject(new CustomError());
+});
+"
+`;

@@ -22,6 +22,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "scripts": {
     "build": "npx nx run-many --target=build --parallel --exclude website --exclude website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
@@ -62,9 +63,9 @@
     "@babel/types": "^7.24.0",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.56.0",
-    "@nx/eslint": "18.1.1",
-    "@nx/jest": "18.1.1",
-    "@nx/workspace": "18.1.1",
+    "@nx/eslint": "18.2.1",
+    "@nx/jest": "18.2.1",
+    "@nx/workspace": "18.2.1",
     "@swc/core": "^1.4.0",
     "@swc/jest": "^0.2.26",
     "@types/babel__code-frame": "^7.0.3",
@@ -83,7 +84,7 @@
     "@typescript-eslint/eslint-plugin-internal": "workspace:^",
     "console-fail-test": "^0.2.3",
     "cross-fetch": "^4.0.0",
-    "cspell": "^7.0.0",
+    "cspell": "^8.0.0",
     "downlevel-dts": ">=0.11.0",
     "eslint": "8.57.0",
     "eslint-plugin-deprecation": "^2.0.0",
@@ -99,7 +100,7 @@
     "eslint-plugin-unicorn": "^50.0.1",
     "execa": "7.1.1",
     "glob": "^10.3.3",
-    "globals": "^13.23.0",
+    "globals": "^15.0.0",
     "husky": "^8.0.3",
     "jest": "29.7.0",
     "jest-diff": "^29.6.2",
@@ -110,7 +111,7 @@
     "markdownlint-cli": "^0.39.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.9",
-    "nx": "18.1.1",
+    "nx": "18.2.1",
     "prettier": "3.2.5",
     "pretty-format": "^29.6.2",
     "raw-loader": "^4.0.2",
@@ -140,7 +141,7 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^4.6.2",
-    "typescript": "5.4.2",
+    "typescript": "5.4.3",
     "@nx/eslint@17.3.1": "patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch"
   },
   "packageManager": "yarn@3.8.1"

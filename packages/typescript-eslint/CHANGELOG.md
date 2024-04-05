@@ -1,3 +1,46 @@
+## 7.5.0 (2024-04-01)
+
+
+### 🩹 Fixes
+
+- **typescript-eslint:** improve support for legacy configs
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kim Sang Du
+- Mark de Dios
+- Naru
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.4.0 (2024-03-25)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** deprecate no-throw-literal and add a renamed only-throw-error
+
+
+### 🩹 Fixes
+
+- **typescript-eslint:** declare peer dependency on `utils` to ensure npm correctly installs dependencies
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Brad Zacher
+- Josh Goldberg ✨
+- Kim Sang Du
+- Kirk Waiblinger
+- Marco Pasqualetti
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.3.1 (2024-03-18)
 
 
