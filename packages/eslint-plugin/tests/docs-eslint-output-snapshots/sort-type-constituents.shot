@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+type T1 = B | A;
+          ~~~~~ Union type T1 constituents must be sorted.
+
+type T2 = { b: string } & { a: string };
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Intersection type T2 constituents must be sorted.
+
+type T3 = [1, 2, 4] & [1, 2, 3];
+          ~~~~~~~~~~~~~~~~~~~~~ Intersection type T3 constituents must be sorted.
+
+type T4 =
+  | [1, 2, 4]
+  ~~~~~~~~~~~ Union type T4 constituents must be sorted.
+  | [1, 2, 3]
+~~~~~~~~~~~~~
+  | { b: string }
+~~~~~~~~~~~~~~~~~
+  | { a: string }
+~~~~~~~~~~~~~~~~~
+  | (() => void)
+~~~~~~~~~~~~~~~~
+  | (() => string)
+~~~~~~~~~~~~~~~~~~
+  | 'b'
+~~~~~~~
+  | 'a'
+~~~~~~~
+  | 'b'
+~~~~~~~
+  | 'a'
+~~~~~~~
+  | readonly string[]
+~~~~~~~~~~~~~~~~~~~~~
+  | readonly number[]
+~~~~~~~~~~~~~~~~~~~~~
+  | string[]
+~~~~~~~~~~~~
+  | number[]
+~~~~~~~~~~~~
+  | B
+~~~~~
+  | A
+~~~~~
+  | string
+~~~~~~~~~~
+  | any;
+~~~~~~~
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 2`] = `
+"Correct
+
+type T1 = A | B;
+
+type T2 = { a: string } & { b: string };
+
+type T3 = [1, 2, 3] & [1, 2, 4];
+
+type T4 =
+  | A
+  | B
+  | number[]
+  | string[]
+  | any
+  | string
+  | readonly number[]
+  | readonly string[]
+  | 'a'
+  | 'a'
+  | 'b'
+  | 'b'
+  | (() => string)
+  | (() => void)
+  | { a: string }
+  | { b: string }
+  | [1, 2, 3]
+  | [1, 2, 4];
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = B & A;
+                           ~~~~~ Intersection type ExampleIntersection constituents must be sorted.
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = A & B;
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "checkUnions": true }
+
+type ExampleUnion = B | A;
+                    ~~~~~ Union type ExampleUnion constituents must be sorted.
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "checkUnions": true }
+
+type ExampleUnion = A | B;
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 7`] = `
+"Incorrect
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = null | 123;
+                    ~~~~~~~~~~ Union type ExampleGroup constituents must be sorted.
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 8`] = `
+"Correct
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = 123 | null;
+"
+`;

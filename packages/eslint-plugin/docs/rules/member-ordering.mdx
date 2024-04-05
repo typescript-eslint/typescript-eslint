@@ -1011,9 +1011,9 @@ interface Foo {
   b(): void;
   a: boolean;
 
-  [a: string]: number; // Order doesn't matter (no sortable identifier)
-  new (): Bar; // Order doesn't matter (no sortable identifier)
-  (): Baz; // Order doesn't matter (no sortable identifier)
+  [a: string]: number;
+  new (): Bar;
+  (): Baz;
 }
 ```
 
@@ -1022,12 +1022,12 @@ interface Foo {
 
 ```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
+  [a: string]: number;
   a: boolean;
   b(): void;
 
-  [a: string]: number; // Order doesn't matter (no sortable identifier)
-  new (): Bar; // Order doesn't matter (no sortable identifier)
-  (): Baz; // Order doesn't matter (no sortable identifier)
+  (): Baz;
+  new (): Bar;
 }
 ```
 
