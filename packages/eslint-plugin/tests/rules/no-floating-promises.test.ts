@@ -514,7 +514,7 @@ null ?? guzz.catch();
     },
     {
       code: `
-class SafePromise<T> extends Promise<T> {};
+class SafePromise<T> extends Promise<T> {}
 let guzz: SafePromise<number> = Promise.resolve(5);
 guzz;
 guzz.then(() => {});
@@ -529,7 +529,18 @@ null ?? guzz.catch();
     },
     {
       code: `
-interface SecureThenable<T> { then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | SecureThenable<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | SecureThenable<TResult2>) | undefined | null): SecureThenable<TResult1 | TResult2>; };
+interface SecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): SecureThenable<TResult1 | TResult2>;
+}
 let guzz: SecureThenable<number> = Promise.resolve(5);
 guzz;
 guzz.then(() => {});
