@@ -487,11 +487,6 @@ void promiseArray;
       `,
     },
     {
-      code: `
-[Promise.reject(), Promise.reject()].then(() => {});
-      `,
-    },
-    {
       // Expressions aren't checked by this rule, so this just becomes an array
       // of number | undefined, which is fine regardless of the ignoreVoid setting.
       code: `
