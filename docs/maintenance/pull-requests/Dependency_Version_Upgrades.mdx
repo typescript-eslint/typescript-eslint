@@ -3,7 +3,54 @@ id: dependency-version-upgrades
 title: Dependency Version Upgrades
 ---
 
-## Babel
+## Renovate
+
+We rely on [renovate bot](https://github.com/renovatebot/renovate/) to automatically raise PRs to update our dependencies using [this configuration].
+
+### Dependency Dashboard
+
+Renovate is configured to manage a [dependency dashboard issue](https://github.com/typescript-eslint/typescript-eslint/issues/6687) which can be used to understand the tool's state:
+
+- What dependency bumps require approval for renovate to action (eg because they are major bumps)
+- What dependency bumps it is working on (i.e. pending)
+- What dependency bumps are currently open and awaiting review + merge
+  - Note that renovate is an asynchronous tools so this list will lag behind a bit after you merge PRs
+- What dependency bumps have been ignored
+
+Ticking a checkbox in this issue will cause renovate to action the dependency:
+
+- If you tick one in the "Pending Approval" list it will approve it and renovate will raise a PR.
+- If you tick one in the "Pending Status Checks" list it will cause renovate to create the PR before its internal status checks are complete.
+- If you tick one in the "Open" list it will cause renovate to rebase the PR (if there are no manual changes) or recreate the PR (if there are manual changes).
+- If you tick one in the "Ignored or Blocked" list it will cause renovate to recreate the PR.
+
+### Merging Renovate PRs
+
+Renovate will not automatically merge its dependency PRs because we have branch protection turned on. Renovate PRs must go through the same workflow as human PRs: i.e. all PRs must be approved with passing status checks before they can be merged.
+
+Renovate will automatically update a PR if there is a conflict with `main`. You can also force it to rebase a PR by ticking the box in the PR's description, or ticking the relevant box on the dependency dashboard.
+
+You should generally avoid clicking the "Update branch" button in the Github UI as this will create a human commit - which cause renovate to treat the branch as "dirty" and it will no longer automatically. Only click it if you are planning on merging the PR manually ASAP.
+
+## Manual Dependency Updates
+
+Occasionally it will be desirable to manually bump the dependencies in one commit rather than relying on renovate's many PRs. Doing so is just a matter of:
+
+1. `git checkout main && git pull`
+1. `yarn install`
+1. `yarn update-interactive` - this will start yarn's prompt to update the deps.
+   1. Ignore the lines with `*` deps as these are intentionally set as such.
+   1. Avoid changing the dep ranges like the complex range we have for TypeScript (eg `>=4.7.4 <5.5.0`).
+   1. Once you're ready, hit `enter` and yarn will make the changes and rerun the install.
+1. Run all of the relevant checks locally so you can action any failures before raising a PR:
+   1. `yarn build`
+   1. `yarn typecheck`
+   1. `yarn lint`
+   1. `yarn test`
+   1. `yarn integration-test`
+1. Create a new branch (a name like `update-deps-20231201` is good just to keep it unique), create, and land a PR.
+
+### Babel
 
 Our published packages only depend on `@babel/*` packages as devDependencies.
 You can generally upgrade those dependencies with:
@@ -13,7 +60,7 @@ You can generally upgrade those dependencies with:
 
 The fixtures under `packages/ast-spec/` describe how the files are parsed under both Babel and our (TSESTree) parser.
 
-## ESLint
+### ESLint
 
 The typescript-eslint repository contains four kinds of version ranges for the `eslint` package:
 
@@ -26,14 +73,14 @@ The typescript-eslint repository contains four kinds of version ranges for the `
 Whenever you discover any new areas of work that are blocked by dropping an old ESLint version, such as new ESLint API deprecations, add a _TODO_ comment that will be caught by the regular expressions under [Removing Support for an Old ESLint Version](#removing-support-for-an-old-eslint-version).
 :::
 
-### Adding Support for a New ESLint Version
+#### Adding Support for a New ESLint Version
 
 1. Upgrade the root `package.json` `devDependency` to the latest ESLint
 1. Add the new major version to the explicit `peerDependency` versions
 1. Check [`eslint-visitor-keys`](https://www.npmjs.com/package/eslint-visitor-keys) for a new version to be upgraded to as well.
 1. Update [Users > Dependency Versions > ESLint](../../users/Dependency_Versions.mdx#eslint)
 
-### Removing Support for an Old ESLint Version
+#### Removing Support for an Old ESLint Version
 
 1. Increase the integration tests to the next lowest supported major version (`*.0.0`)
 1. Remove the old major versions from packages with explicit `peerDependency` versions
@@ -46,7 +93,7 @@ Whenever you discover any new areas of work that are blocked by dropping an old 
 
 See [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972) for reference.
 
-## Node
+### Node
 
 The typescript-eslint repository contains three kinds of version ranges for Node:
 
@@ -58,9 +105,9 @@ Change those numbers accordingly when adding support for a new Node version or r
 
 See [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918) + [chore: test node v14 on ci.yml](https://github.com/typescript-eslint/typescript-eslint/pull/5512) for reference.
 
-## TypeScript
+### TypeScript
 
-### Adding Support for a New TypeScript Version
+#### Adding Support for a New TypeScript Version
 
 We generally start the process of supporting a new TypeScript version just after the first beta release for that version is made available.
 

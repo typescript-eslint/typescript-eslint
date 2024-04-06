@@ -11,6 +11,7 @@
   "devDependencies": {
     "jest": "29.7.0",
     "ncp": "*",
-    "tmp": "*"
+    "tmp": "*",
+    "tsx": "*"
   }
 }

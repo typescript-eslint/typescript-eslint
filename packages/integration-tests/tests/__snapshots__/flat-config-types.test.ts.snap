@@ -112,16 +112,7 @@ function _otherCases() {
 }
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [
-      {
-        "replacedBy": [],
-        "ruleId": "no-extra-semi",
-      },
-      {
-        "replacedBy": [],
-        "ruleId": "no-mixed-spaces-and-tabs",
-      },
-    ],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
 ]

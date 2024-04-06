@@ -19,7 +19,7 @@
     "@nx/devkit": "*",
     "cross-fetch": "*",
     "execa": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "semver": "7.6.0",
     "tmp": "*",
