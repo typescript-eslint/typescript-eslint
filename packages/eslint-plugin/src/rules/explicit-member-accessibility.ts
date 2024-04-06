@@ -152,18 +152,19 @@ export default createRule<Options, MessageIds>({
         check === 'no-public' &&
         methodDefinition.accessibility === 'public'
       ) {
+        const publicKeyword = findPublicKeyword(methodDefinition);
         context.report({
-          node: methodDefinition,
+          loc: rangeToLoc(context.sourceCode, publicKeyword.range),
           messageId: 'unwantedPublicAccessibility',
           data: {
             type: nodeType,
             name: methodName,
           },
-          fix: getUnwantedPublicAccessibilityFixer(methodDefinition),
+          fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
         });
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
         context.report({
-          node: methodDefinition,
+          loc: getMissingAccessibilityReportLoc(methodDefinition),
           messageId: 'missingAccessibility',
           data: {
             type: nodeType,
@@ -175,49 +176,117 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * Creates a fixer that removes a "public" keyword with following spaces
+     * Returns an object containing a range that corresponds to the "public"
+     * keyword for a node, and the range that would need to be removed to
+     * remove the "public" keyword (including associated whitespace).
      */
-    function getUnwantedPublicAccessibilityFixer(
+    function findPublicKeyword(
       node:
         | TSESTree.MethodDefinition
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
-    ): TSESLint.ReportFixFunction {
-      return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-        const tokens = context.sourceCode.getTokens(node);
-        let rangeToRemove!: TSESLint.AST.Range;
-        for (let i = 0; i < tokens.length; i++) {
-          const token = tokens[i];
-          if (
-            token.type === AST_TOKEN_TYPES.Keyword &&
-            token.value === 'public'
-          ) {
-            const commensAfterPublicKeyword =
-              context.sourceCode.getCommentsAfter(token);
-            if (commensAfterPublicKeyword.length) {
-              // public /* Hi there! */ static foo()
-              // ^^^^^^^
-              rangeToRemove = [
-                token.range[0],
-                commensAfterPublicKeyword[0].range[0],
-              ];
-              break;
-            } else {
-              // public static foo()
-              // ^^^^^^^
-              rangeToRemove = [token.range[0], tokens[i + 1].range[0]];
-              break;
-            }
+    ): { range: TSESLint.AST.Range; rangeToRemove: TSESLint.AST.Range } {
+      const tokens = context.sourceCode.getTokens(node);
+      let rangeToRemove!: TSESLint.AST.Range;
+      let keywordRange!: TSESLint.AST.Range;
+      for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+        if (
+          token.type === AST_TOKEN_TYPES.Keyword &&
+          token.value === 'public'
+        ) {
+          keywordRange = structuredClone(token.range);
+          const commensAfterPublicKeyword =
+            context.sourceCode.getCommentsAfter(token);
+          if (commensAfterPublicKeyword.length) {
+            // public /* Hi there! */ static foo()
+            // ^^^^^^^
+            rangeToRemove = [
+              token.range[0],
+              commensAfterPublicKeyword[0].range[0],
+            ];
+            break;
+          } else {
+            // public static foo()
+            // ^^^^^^^
+            rangeToRemove = [token.range[0], tokens[i + 1].range[0]];
+            break;
           }
         }
-        return fixer.removeRange(rangeToRemove);
+      }
+      return { range: keywordRange, rangeToRemove };
+    }
+
+    /**
+     * For missing accessibility modifiers, we want to report any keywords
+     * out in front of the key, and the key itself, but not anything afterwards,
+     * i.e. parens, type annotations, method bodies, or `?`.
+     */
+    function getMissingAccessibilityReportLoc(
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
+    ): TSESTree.SourceLocation {
+      let start: TSESTree.Position;
+
+      if (node.decorators.length === 0) {
+        start = structuredClone(node.loc.start);
+      } else {
+        const lastDecorator = node.decorators[node.decorators.length - 1];
+        const nextToken = nullThrows(
+          context.sourceCode.getTokenAfter(lastDecorator),
+          NullThrowsReasons.MissingToken('token', 'last decorator'),
+        );
+        start = structuredClone(nextToken.loc.start);
+      }
+
+      return {
+        start,
+        end: structuredClone(node.key.loc.end),
       };
     }
 
     /**
-     * Creates a fixer that adds a "public" keyword with following spaces
+     * For missing accessibility modifiers, we want to report any keywords
+     * out in front of the key, and the key itself, but not anything afterwards,
+     * i.e. parens, type annotations, method bodies, or `?`.
+     */
+    function getMissingAccessibilityReportLocForParameterProperty(
+      node: TSESTree.TSParameterProperty,
+      nodeName: string,
+    ): TSESTree.SourceLocation {
+      // Parameter properties have a weirdly different AST structure
+      // than other class members.
+
+      let start: TSESTree.Position;
+
+      if (node.decorators.length === 0) {
+        start = structuredClone(node.loc.start);
+      } else {
+        const lastDecorator = node.decorators[node.decorators.length - 1];
+        const nextToken = nullThrows(
+          context.sourceCode.getTokenAfter(lastDecorator),
+          NullThrowsReasons.MissingToken('token', 'last decorator'),
+        );
+        start = structuredClone(nextToken.loc.start);
+      }
+
+      const end = rangeToLoc(context.sourceCode, [
+        node.parameter.range[0],
+        node.parameter.range[0] + nodeName.length,
+      ]).end;
+
+      return {
+        start,
+        end,
+      };
+    }
+
+    /**
+     * Creates a fixer that adds an accessibility modifier keyword
      */
     function getMissingAccessibilitySuggestions(
       node:
@@ -284,21 +353,22 @@ export default createRule<Options, MessageIds>({
         propCheck === 'no-public' &&
         propertyDefinition.accessibility === 'public'
       ) {
+        const publicKeywordRange = findPublicKeyword(propertyDefinition);
         context.report({
-          node: propertyDefinition,
+          loc: rangeToLoc(context.sourceCode, publicKeywordRange.range),
           messageId: 'unwantedPublicAccessibility',
           data: {
             type: nodeType,
             name: propertyName,
           },
-          fix: getUnwantedPublicAccessibilityFixer(propertyDefinition),
+          fix: fixer => fixer.removeRange(publicKeywordRange.rangeToRemove),
         });
       } else if (
         propCheck === 'explicit' &&
         !propertyDefinition.accessibility
       ) {
         context.report({
-          node: propertyDefinition,
+          loc: getMissingAccessibilityReportLoc(propertyDefinition),
           messageId: 'missingAccessibility',
           data: {
             type: nodeType,
@@ -335,7 +405,10 @@ export default createRule<Options, MessageIds>({
         case 'explicit': {
           if (!node.accessibility) {
             context.report({
-              node,
+              loc: getMissingAccessibilityReportLocForParameterProperty(
+                node,
+                nodeName,
+              ),
               messageId: 'missingAccessibility',
               data: {
                 type: nodeType,
@@ -348,14 +421,15 @@ export default createRule<Options, MessageIds>({
         }
         case 'no-public': {
           if (node.accessibility === 'public' && node.readonly) {
+            const publicKeyword = findPublicKeyword(node);
             context.report({
-              node,
+              loc: rangeToLoc(context.sourceCode, publicKeyword.range),
               messageId: 'unwantedPublicAccessibility',
               data: {
                 type: nodeType,
                 name: nodeName,
               },
-              fix: getUnwantedPublicAccessibilityFixer(node),
+              fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
             });
           }
           break;
@@ -372,3 +446,13 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function rangeToLoc(
+  sourceCode: TSESLint.SourceCode,
+  range: TSESLint.AST.Range,
+): TSESTree.SourceLocation {
+  return {
+    start: sourceCode.getLocFromIndex(range[0]),
+    end: sourceCode.getLocFromIndex(range[1]),
+  };
+}

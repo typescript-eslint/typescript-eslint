@@ -339,8 +339,10 @@ export class XXXX {
       errors: [
         {
           messageId: 'missingAccessibility',
-          column: 22,
           line: 3,
+          column: 22,
+          endLine: 3,
+          endColumn: 36,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -383,6 +385,10 @@ export class WithParameterProperty {
       errors: [
         {
           messageId: 'missingAccessibility',
+          line: 3,
+          column: 22,
+          endLine: 3,
+          endColumn: 36,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -433,6 +439,10 @@ export class XXXX {
       errors: [
         {
           messageId: 'missingAccessibility',
+          line: 3,
+          column: 22,
+          endLine: 3,
+          endColumn: 37,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -480,6 +490,10 @@ class Test {
       errors: [
         {
           messageId: 'missingAccessibility',
+          line: 3,
+          column: 22,
+          endLine: 3,
+          endColumn: 34,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -530,6 +544,8 @@ class Test {
           },
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 4,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -592,6 +608,8 @@ class Test {
           },
           line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 7,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -651,6 +669,8 @@ class Test {
           },
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 4,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -698,6 +718,8 @@ class Test {
           },
           line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 7,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -759,6 +781,8 @@ class Test {
           },
           line: 5,
           column: 3,
+          endLine: 5,
+          endColumn: 9,
         },
       ],
       output: `
@@ -791,6 +815,8 @@ class Test {
           },
           line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 9,
         },
       ],
       output: `
@@ -817,11 +843,15 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
         {
           messageId: 'unwantedPublicAccessibility',
           line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 9,
         },
       ],
       options: [{ accessibility: 'no-public' }],
@@ -854,6 +884,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 7,
           column: 3,
+          endLine: 7,
+          endColumn: 20,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -915,6 +947,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 10,
           column: 3,
+          endLine: 10,
+          endColumn: 20,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -995,6 +1029,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 14,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1056,6 +1092,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 7,
           column: 3,
+          endLine: 7,
+          endColumn: 20,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1117,6 +1155,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 10,
           column: 3,
+          endLine: 10,
+          endColumn: 20,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1190,6 +1230,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 14,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1247,6 +1289,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 14,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1296,6 +1340,8 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 15,
+          endLine: 3,
+          endColumn: 21,
         },
       ],
       output: `
@@ -1321,6 +1367,8 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 4,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1371,6 +1419,8 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1383,7 +1433,7 @@ class Test {
     {
       code: `
 class Test {
-  constructor(public ...x: any[]) {}
+  constructor(public x: any[]) {}
 }
       `,
       options: [{ accessibility: 'explicit' }],
@@ -1392,13 +1442,15 @@ class Test {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 14,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
               data: { type: 'public' },
               output: `
 class Test {
-  public constructor(public ...x: any[]) {}
+  public constructor(public x: any[]) {}
 }
       `,
             },
@@ -1407,7 +1459,7 @@ class Test {
               data: { type: 'private' },
               output: `
 class Test {
-  private constructor(public ...x: any[]) {}
+  private constructor(public x: any[]) {}
 }
       `,
             },
@@ -1416,7 +1468,7 @@ class Test {
               data: { type: 'protected' },
               output: `
 class Test {
-  protected constructor(public ...x: any[]) {}
+  protected constructor(public x: any[]) {}
 }
       `,
             },
@@ -1440,6 +1492,8 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1463,8 +1517,10 @@ class Test {
       errors: [
         {
           messageId: 'unwantedPublicAccessibility',
-          line: 3,
+          line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1474,7 +1530,6 @@ class Test {
 }
       `,
     },
-
     {
       code: `
 class Test {
@@ -1490,8 +1545,10 @@ class Test {
       errors: [
         {
           messageId: 'unwantedPublicAccessibility',
-          line: 3,
+          line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1517,6 +1574,8 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1525,7 +1584,6 @@ class Test {
 }
       `,
     },
-
     {
       code: noFormat`
 class Test {
@@ -1543,6 +1601,8 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 15,
+          endLine: 3,
+          endColumn: 21,
         },
       ],
       output: `
@@ -1567,6 +1627,8 @@ class Test {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 15,
+          endLine: 3,
+          endColumn: 21,
         },
       ],
       output: `
@@ -1592,6 +1654,8 @@ class EnsureWhiteSPaceSpan {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1617,6 +1681,8 @@ class EnsureWhiteSPaceSpan {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1645,6 +1711,8 @@ class Test {
           },
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
         {
           messageId: 'unwantedPublicAccessibility',
@@ -1654,6 +1722,8 @@ class Test {
           },
           line: 4,
           column: 3,
+          endLine: 4,
+          endColumn: 9,
         },
         {
           messageId: 'unwantedPublicAccessibility',
@@ -1663,6 +1733,8 @@ class Test {
           },
           line: 5,
           column: 3,
+          endLine: 5,
+          endColumn: 9,
         },
         {
           messageId: 'unwantedPublicAccessibility',
@@ -1672,6 +1744,8 @@ class Test {
           },
           line: 6,
           column: 3,
+          endLine: 6,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1695,6 +1769,8 @@ abstract class SomeClass {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 18,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1744,6 +1820,8 @@ abstract class SomeClass {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1765,6 +1843,8 @@ abstract class SomeClass {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 13,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1814,6 +1894,8 @@ abstract class SomeClass {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 9,
         },
       ],
       output: `
@@ -1845,6 +1927,8 @@ class DecoratedClass {
           messageId: 'missingAccessibility',
           line: 3,
           column: 3,
+          endLine: 3,
+          endColumn: 14,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1914,7 +1998,9 @@ class DecoratedClass {
         {
           messageId: 'missingAccessibility',
           line: 3,
-          column: 15,
+          column: 27,
+          endLine: 3,
+          endColumn: 39,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -1984,7 +2070,9 @@ class DecoratedClass {
         {
           messageId: 'missingAccessibility',
           line: 4,
-          column: 3,
+          column: 15,
+          endLine: 4,
+          endColumn: 16,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -2054,7 +2142,9 @@ class DecoratedClass {
         {
           messageId: 'missingAccessibility',
           line: 5,
-          column: 3,
+          column: 15,
+          endLine: 5,
+          endColumn: 19,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -2123,8 +2213,10 @@ class DecoratedClass {
         },
         {
           messageId: 'missingAccessibility',
-          line: 8,
+          line: 10,
           column: 3,
+          endLine: 10,
+          endColumn: 8,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
@@ -2194,7 +2286,9 @@ class DecoratedClass {
         {
           messageId: 'missingAccessibility',
           line: 13,
-          column: 3,
+          column: 15,
+          endLine: 13,
+          endColumn: 20,
           suggestions: [
             {
               messageId: 'addExplicitAccessibility',
