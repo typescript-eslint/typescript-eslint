@@ -11,6 +11,7 @@ export default (
   _plugin: FlatConfig.Plugin,
   _parser: FlatConfig.Parser,
 ): FlatConfig.Config => ({
+  name: 'typescript-eslint/disable-type-checked',
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',

@@ -246,6 +246,10 @@ export namespace FlatConfig {
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
     /**
+     * An string to identify the configuration object. Used in error messages and inspection tools.
+     */
+    name?: string;
+    /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
