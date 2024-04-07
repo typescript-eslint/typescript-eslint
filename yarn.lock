@@ -18659,6 +18659,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stylelint-config-recommended@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "stylelint-config-recommended@npm:14.0.0"
+  peerDependencies:
+    stylelint: ^16.0.0
+  checksum: 36511115b06d9f51aa0edc05f6064a7aae98cc990da14dd03629951f63a029d9e66a4d5b1ca678cce699e24413a62c2cd608cc07413ca5026f9680ddb8993858
+  languageName: node
+  linkType: hard
+
 "stylelint-config-standard@npm:^34.0.0":
   version: 34.0.0
   resolution: "stylelint-config-standard@npm:34.0.0"
@@ -20082,7 +20091,7 @@ __metadata:
     rimraf: "*"
     semver: ^7.5.4
     stylelint: ^15.10.1
-    stylelint-config-recommended: ^13.0.0
+    stylelint-config-recommended: ^14.0.0
     stylelint-config-standard: ^34.0.0
     stylelint-order: ^6.0.3
     tsx: "*"
