@@ -14,7 +14,7 @@ export namespace SharedConfig {
   export type RuleLevelAndOptions = [RuleLevel, ...unknown[]];
 
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
-  export type RulesRecord = Partial<Record<string, RuleEntry>>;
+  export type RulesRecord = Record<string, RuleEntry>;
 
   export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
   export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
