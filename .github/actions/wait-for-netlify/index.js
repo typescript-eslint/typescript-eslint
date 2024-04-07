@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const core = require('@actions/core');
 const github = require('@actions/github');
 
@@ -70,23 +71,17 @@ async function run() {
       }, MAX_TIMEOUT);
     });
 
-    const isReady = new Promise(async (resolve, reject) => {
-      const checkReady = async () => {
-        try {
-          const readyDeployment = await getReadyDeploymentForCommitRef();
-          if (readyDeployment) {
-            return resolve({ readyDeployment });
-          }
-          console.log(
-            `Deployment is not ready yet. Retrying in ${RETRY_INTERVAL}ms based on the configured RETRY_INTERVAL...`,
-          );
-          setTimeout(checkReady, RETRY_INTERVAL);
-        } catch (err) {
-          return reject(err);
-        }
-      };
-      checkReady();
-    });
+    const checkReady = async () => {
+      const readyDeployment = await getReadyDeploymentForCommitRef();
+      if (readyDeployment) {
+        return { readyDeployment };
+      }
+      console.log(
+        `Deployment is not ready yet. Retrying in ${RETRY_INTERVAL}ms based on the configured RETRY_INTERVAL...`,
+      );
+      setTimeout(checkReady, RETRY_INTERVAL);
+    };
+    const isReady = checkReady();
 
     return Promise.race([isReady, maxTimeout]);
   }
@@ -98,6 +93,7 @@ async function run() {
       );
       core.setOutput('deploy_id', readyDeployment.id);
       core.setOutput('url', readyDeployment.deploy_ssl_url);
+      // eslint-disable-next-line no-process-exit
       process.exit(0);
     })
     .catch(error => {
