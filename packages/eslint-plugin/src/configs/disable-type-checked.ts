@@ -41,6 +41,7 @@ export = {
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+    '@typescript-eslint/only-throw-error': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
     '@typescript-eslint/prefer-find': 'off',
     '@typescript-eslint/prefer-includes': 'off',
@@ -62,5 +63,6 @@ export = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
 } satisfies ClassicConfig.Config;

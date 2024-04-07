@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "7.2.0",
+  "version": "7.5.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -38,6 +38,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/eslint-plugin",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -61,10 +62,10 @@
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.5.1",
-    "@typescript-eslint/scope-manager": "7.2.0",
-    "@typescript-eslint/type-utils": "7.2.0",
-    "@typescript-eslint/utils": "7.2.0",
-    "@typescript-eslint/visitor-keys": "7.2.0",
+    "@typescript-eslint/scope-manager": "7.5.0",
+    "@typescript-eslint/type-utils": "7.5.0",
+    "@typescript-eslint/utils": "7.5.0",
+    "@typescript-eslint/visitor-keys": "7.5.0",
     "debug": "^4.3.4",
     "graphemer": "^1.4.0",
     "ignore": "^5.2.4",
@@ -75,9 +76,10 @@
   "devDependencies": {
     "@types/debug": "*",
     "@types/marked": "*",
+    "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "7.2.0",
-    "@typescript-eslint/rule-tester": "7.2.0",
+    "@typescript-eslint/rule-schema-to-typescript-types": "7.5.0",
+    "@typescript-eslint/rule-tester": "7.5.0",
     "ajv": "^6.12.6",
     "chalk": "^5.3.0",
     "cross-env": "^7.0.3",
@@ -89,11 +91,15 @@
     "json-schema": "*",
     "markdown-table": "^3.0.3",
     "marked": "^5.1.1",
+    "mdast-util-from-markdown": "^2.0.0",
+    "mdast-util-mdx": "^3.0.0",
+    "micromark-extension-mdxjs": "^3.0.0",
     "prettier": "^3.0.3",
     "rimraf": "*",
     "title-case": "^3.0.3",
     "tsx": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^7.0.0",

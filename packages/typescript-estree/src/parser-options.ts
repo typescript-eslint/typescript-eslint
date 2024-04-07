@@ -209,6 +209,9 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
    * whether or not ESLint is being used as part of a single run.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
    */
   allowAutomaticSingleRunInference?: boolean;
 
@@ -245,18 +248,24 @@ export interface ParserWeakMapESTreeToTSNode<
   has(key: unknown): boolean;
 }
 
+export interface ParserServicesBase {
+  emitDecoratorMetadata: boolean | undefined;
+  experimentalDecorators: boolean | undefined;
+}
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }
 export interface ParserServicesWithoutTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: null;
 }
 export type ParserServices =

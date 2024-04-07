@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
+    "projects": ["*"],
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",

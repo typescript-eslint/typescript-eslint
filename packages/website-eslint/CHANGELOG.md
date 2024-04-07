@@ -1,3 +1,40 @@
+## 7.5.0 (2024-04-01)
+
+This was a version bump only for website-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.1 (2024-03-18)
+
+This was a version bump only for website-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.0 (2024-03-18)
+
+
+### 🩹 Fixes
+
+- correct `engines.node` constraints in `package.json`
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alexu
+- Arka Pratim Chaudhuri
+- auvred
+- Derrick Isaacson
+- fnx
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Marta Cardoso
+- Michaël De Boey
+- Tristan Rasmussen
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.2.0 (2024-03-11)
 
 
