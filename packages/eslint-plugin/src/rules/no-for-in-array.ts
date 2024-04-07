@@ -1,3 +1,4 @@
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import {
@@ -5,6 +6,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   isTypeArrayTypeOrUnionOfArrayTypes,
+  nullThrows,
 } from '../util';
 
 export default createRule({
@@ -24,6 +26,22 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    function getReportLoc(
+      forInNode: TSESTree.ForInStatement,
+    ): TSESTree.SourceLocation {
+      const closingParens = nullThrows(
+        context.sourceCode.getTokenBefore(
+          forInNode.body,
+          token => token.value === ')',
+        ),
+        'for-in must have a closing parenthesis.',
+      );
+      return {
+        start: structuredClone(forInNode.loc.start),
+        end: structuredClone(closingParens.loc.end),
+      };
+    }
+
     return {
       ForInStatement(node): void {
         const services = getParserServices(context);
@@ -36,7 +54,7 @@ export default createRule({
           (type.flags & ts.TypeFlags.StringLike) !== 0
         ) {
           context.report({
-            node,
+            loc: getReportLoc(node),
             messageId: 'forInViolation',
           });
         }
