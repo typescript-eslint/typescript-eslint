@@ -4437,6 +4437,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sindresorhus/merge-streams@npm:^2.1.0":
+  version: 2.3.0
+  resolution: "@sindresorhus/merge-streams@npm:2.3.0"
+  checksum: e989d53dee68d7e49b4ac02ae49178d561c461144cea83f66fa91ff012d981ad0ad2340cbd13f2fdb57989197f5c987ca22a74eb56478626f04e79df84291159
+  languageName: node
+  linkType: hard
+
 "@sinonjs/commons@npm:^2.0.0":
   version: 2.0.0
   resolution: "@sinonjs/commons@npm:2.0.0"
@@ -6283,7 +6290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv-keywords@npm:^5.0.0":
+"ajv-keywords@npm:^5.1.0":
   version: 5.1.0
   resolution: "ajv-keywords@npm:5.1.0"
   dependencies:
@@ -6306,7 +6313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.0.0, ajv@npm:^8.0.1, ajv@npm:^8.6.0, ajv@npm:^8.8.0":
+"ajv@npm:^8.0.0, ajv@npm:^8.0.1, ajv@npm:^8.6.0, ajv@npm:^8.9.0":
   version: 8.12.0
   resolution: "ajv@npm:8.12.0"
   dependencies:
@@ -7993,6 +8000,22 @@ __metadata:
   peerDependencies:
     webpack: ^5.1.0
   checksum: df4f8743f003a29ee7dd3d9b1789998a3a99051c92afb2ba2203d3dacfa696f4e757b275560fafb8f206e520a0aa78af34b990324a0e36c2326cefdeef3ca82e
+  languageName: node
+  linkType: hard
+
+"copy-webpack-plugin@npm:^12.0.0":
+  version: 12.0.2
+  resolution: "copy-webpack-plugin@npm:12.0.2"
+  dependencies:
+    fast-glob: ^3.3.2
+    glob-parent: ^6.0.1
+    globby: ^14.0.0
+    normalize-path: ^3.0.0
+    schema-utils: ^4.2.0
+    serialize-javascript: ^6.0.2
+  peerDependencies:
+    webpack: ^5.1.0
+  checksum: 98127735336c6db5924688486d3a1854a41835963d0c0b81695b2e3d58c6675164be7d23dee7090b84a56d3c9923175d3d0863ac1942bcc3317d2efc1962b927
   languageName: node
   linkType: hard
 
@@ -11020,6 +11043,20 @@ __metadata:
     merge2: ^1.4.1
     slash: ^4.0.0
   checksum: e6c43409c6c31b374fbd1c01a8c1811de52336928be9c697e472d2a89a156c9cbf1fb33863755c0447b4db16485858aa57f16628d66a6b7c7131669c9fbe76cd
+  languageName: node
+  linkType: hard
+
+"globby@npm:^14.0.0":
+  version: 14.0.1
+  resolution: "globby@npm:14.0.1"
+  dependencies:
+    "@sindresorhus/merge-streams": ^2.1.0
+    fast-glob: ^3.3.2
+    ignore: ^5.2.4
+    path-type: ^5.0.0
+    slash: ^5.1.0
+    unicorn-magic: ^0.1.0
+  checksum: 33568444289afb1135ad62d52d5e8412900cec620e3b6ece533afa46d004066f14b97052b643833d7cf4ee03e7fac571430130cde44c333df91a45d313105170
   languageName: node
   linkType: hard
 
@@ -15917,6 +15954,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-type@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "path-type@npm:5.0.0"
+  checksum: 15ec24050e8932c2c98d085b72cfa0d6b4eeb4cbde151a0a05726d8afae85784fc5544f733d8dfc68536587d5143d29c0bd793623fad03d7e61cc00067291cd5
+  languageName: node
+  linkType: hard
+
 "pathval@npm:^1.1.1":
   version: 1.1.1
   resolution: "pathval@npm:1.1.1"
@@ -17716,15 +17760,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "schema-utils@npm:4.0.0"
+"schema-utils@npm:^4.0.0, schema-utils@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "schema-utils@npm:4.2.0"
   dependencies:
     "@types/json-schema": ^7.0.9
-    ajv: ^8.8.0
+    ajv: ^8.9.0
     ajv-formats: ^2.1.1
-    ajv-keywords: ^5.0.0
-  checksum: c843e92fdd1a5c145dbb6ffdae33e501867f9703afac67bdf35a685e49f85b1dcc10ea250033175a64bd9d31f0555bc6785b8359da0c90bcea30cf6dfbb55a8f
+    ajv-keywords: ^5.1.0
+  checksum: 26a0463d47683258106e6652e9aeb0823bf0b85843039e068b57da1892f7ae6b6b1094d48e9ed5ba5cbe9f7166469d880858b9d91abe8bd249421eb813850cde
   languageName: node
   linkType: hard
 
@@ -17843,12 +17887,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-javascript@npm:^6.0.0, serialize-javascript@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "serialize-javascript@npm:6.0.1"
+"serialize-javascript@npm:^6.0.0, serialize-javascript@npm:^6.0.1, serialize-javascript@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "serialize-javascript@npm:6.0.2"
   dependencies:
     randombytes: ^2.1.0
-  checksum: 3c4f4cb61d0893b988415bdb67243637333f3f574e9e9cc9a006a2ced0b390b0b3b44aef8d51c951272a9002ec50885eefdc0298891bc27eb2fe7510ea87dc4f
+  checksum: c4839c6206c1d143c0f80763997a361310305751171dd95e4b57efee69b8f6edd8960a0b7fbfc45042aadff98b206d55428aee0dc276efe54f100899c7fa8ab7
   languageName: node
   linkType: hard
 
@@ -18084,6 +18128,13 @@ __metadata:
   version: 4.0.0
   resolution: "slash@npm:4.0.0"
   checksum: da8e4af73712253acd21b7853b7e0dbba776b786e82b010a5bfc8b5051a1db38ed8aba8e1e8f400dd2c9f373be91eb1c42b66e91abb407ff42b10feece5e1d2d
+  languageName: node
+  linkType: hard
+
+"slash@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "slash@npm:5.1.0"
+  checksum: 70434b34c50eb21b741d37d455110258c42d2cf18c01e6518aeb7299f3c6e626330c889c0c552b5ca2ef54a8f5a74213ab48895f0640717cacefeef6830a1ba4
   languageName: node
   linkType: hard
 
@@ -19466,6 +19517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unicorn-magic@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "unicorn-magic@npm:0.1.0"
+  checksum: 48c5882ca3378f380318c0b4eb1d73b7e3c5b728859b060276e0a490051d4180966beeb48962d850fd0c6816543bcdfc28629dcd030bb62a286a2ae2acb5acb6
+  languageName: node
+  linkType: hard
+
 "unified@npm:^11.0.0, unified@npm:^11.0.3, unified@npm:^11.0.4":
   version: 11.0.4
   resolution: "unified@npm:11.0.4"
@@ -20063,7 +20121,7 @@ __metadata:
     "@typescript-eslint/types": 7.5.0
     "@typescript-eslint/website-eslint": 7.5.0
     clsx: ^2.0.0
-    copy-webpack-plugin: ^11.0.0
+    copy-webpack-plugin: ^12.0.0
     cross-fetch: "*"
     eslint: "*"
     globby: ^11.1.0

@@ -52,7 +52,7 @@
     "@typescript-eslint/eslint-plugin": "7.5.0",
     "@typescript-eslint/rule-schema-to-typescript-types": "7.5.0",
     "@typescript-eslint/types": "7.5.0",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "^12.0.0",
     "cross-fetch": "*",
     "globby": "^11.1.0",
     "make-dir": "*",
