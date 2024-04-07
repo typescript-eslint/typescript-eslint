@@ -145,7 +145,7 @@ export default createRule<Options, MessageId>({
           // handle arrow function shorthand
 
           if (options.ignoreVoidInVoid) {
-            if (hasVoidReturnType(invalidAncestor)) {
+            if (hasValidReturnType(invalidAncestor)) {
               return;
             }
           }
@@ -208,7 +208,7 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidInVoid) {
             const functionNode = findFunction(invalidAncestor);
 
-            if (hasVoidReturnType(functionNode)) {
+            if (hasValidReturnType(functionNode)) {
               return;
             }
           }
@@ -423,7 +423,7 @@ export default createRule<Options, MessageId>({
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
 
-    function hasVoidReturnType(
+    function hasValidReturnType(
       node:
         | TSESTree.FunctionExpression
         | TSESTree.ArrowFunctionExpression
