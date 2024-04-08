@@ -34,6 +34,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "ignoreRestSiblings": {
             "type": "boolean"
           },
+          "reportUsedIgnorePattern": {
+            "type": "boolean"
+          },
           "vars": {
             "enum": ["all", "local"],
             "type": "string"
@@ -61,6 +64,7 @@ type Options = [
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
       ignoreRestSiblings?: boolean;
+      reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
     },

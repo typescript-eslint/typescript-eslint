@@ -4,7 +4,7 @@ import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import type { ScriptTarget } from 'typescript';
 
 import {
-  collectUnusedVariables,
+  collectVariables,
   createRule,
   getParserServices,
   requiresQuoting as _requiresQuoting,
@@ -159,7 +159,7 @@ export default createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = collectUnusedVariables(context);
+    const { unusedVariables } = collectVariables(context);
     function isUnused(
       name: string,
       initialScope: TSESLint.Scope.Scope | null,
