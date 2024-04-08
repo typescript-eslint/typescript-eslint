@@ -1021,9 +1021,14 @@ ruleTester.run('space-infix-ops', rule, {
       code: `
         type Test=|string|(((() => void)))|string;
       `,
-      output: `
+      output: [
+        `
         type Test = |string | (((() => void))) | string;
       `,
+        `
+        type Test = | string | (((() => void))) | string;
+      `,
+      ],
       errors: [
         {
           messageId: 'missingSpace',

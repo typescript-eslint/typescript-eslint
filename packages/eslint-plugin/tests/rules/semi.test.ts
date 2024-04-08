@@ -1069,7 +1069,7 @@ class PanCamera extends FreeCamera {
       },
       {
         code: 'a;\n++b;',
-        output: 'a\n++b;',
+        output: ['a\n++b;', 'a\n++b'],
         errors: [
           {
             line: 1,

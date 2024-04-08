@@ -76,11 +76,6 @@ const mockedDescribeSkip = jest.mocked(RuleTester.describeSkip);
 const mockedIt = jest.mocked(RuleTester.it);
 const _mockedItOnly = jest.mocked(RuleTester.itOnly);
 const _mockedItSkip = jest.mocked(RuleTester.itSkip);
-const runRuleForItemSpy = jest.spyOn(
-  RuleTester.prototype,
-  // @ts-expect-error -- method is private
-  'runRuleForItem',
-) as jest.SpiedFunction<RuleTester['runRuleForItem']>;
 const mockedParserClearCaches = jest.mocked(parser.clearCaches);
 
 const EMPTY_PROGRAM: TSESTree.Program = {
@@ -92,32 +87,6 @@ const EMPTY_PROGRAM: TSESTree.Program = {
   tokens: [],
   range: [0, 0],
 };
-runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
-  return {
-    messages:
-      'errors' in testCase
-        ? [
-            {
-              column: 0,
-              line: 0,
-              message: 'error',
-              messageId: 'error',
-              nodeType: AST_NODE_TYPES.Program,
-              ruleId: 'my-rule',
-              severity: 2,
-              source: null,
-            },
-          ]
-        : [],
-    output: testCase.code,
-    afterAST: EMPTY_PROGRAM,
-    beforeAST: EMPTY_PROGRAM,
-  };
-});
-
-beforeEach(() => {
-  jest.clearAllMocks();
-});
 
 const NOOP_RULE: RuleModule<'error'> = {
   meta: {
@@ -133,13 +102,44 @@ const NOOP_RULE: RuleModule<'error'> = {
   },
 };
 
-function getTestConfigFromCall(): unknown[] {
-  return runRuleForItemSpy.mock.calls.map(c => {
-    return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
-  });
-}
-
 describe('RuleTester', () => {
+  const runRuleForItemSpy = jest.spyOn(
+    RuleTester.prototype,
+    // @ts-expect-error -- method is private
+    'runRuleForItem',
+  ) as jest.SpiedFunction<RuleTester['runRuleForItem']>;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
+    return {
+      messages:
+        'errors' in testCase
+          ? [
+              {
+                column: 0,
+                line: 0,
+                message: 'error',
+                messageId: 'error',
+                nodeType: AST_NODE_TYPES.Program,
+                ruleId: 'my-rule',
+                severity: 2,
+                source: null,
+              },
+            ]
+          : [],
+      outputs: [testCase.code],
+      afterAST: EMPTY_PROGRAM,
+      beforeAST: EMPTY_PROGRAM,
+    };
+  });
+
+  function getTestConfigFromCall(): unknown[] {
+    return runRuleForItemSpy.mock.calls.map(c => {
+      return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
+    });
+  }
+
   describe('filenames', () => {
     it('automatically sets the filename for tests', () => {
       const ruleTester = new RuleTester({
@@ -874,6 +874,304 @@ describe('RuleTester', () => {
           ]
         `);
       });
+    });
+  });
+});
+
+describe('RuleTester - multipass fixer', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('without fixes', () => {
+    const ruleTester = new RuleTester();
+    const rule: RuleModule<'error'> = {
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        type: 'problem',
+        schema: [],
+      },
+      defaultOptions: [],
+      create(context) {
+        return {
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+            });
+          },
+        };
+      },
+    };
+
+    it('passes with no output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('passes with null output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('throws with string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'bar',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Expected autofix to be suggested.');
+    });
+
+    it('throws with array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar', 'baz'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Expected autofix to be suggested.');
+    });
+  });
+
+  describe('with single fix', () => {
+    const ruleTester = new RuleTester();
+    const rule: RuleModule<'error'> = {
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        type: 'problem',
+        fixable: 'code',
+        schema: [],
+      },
+      defaultOptions: [],
+      create(context) {
+        return {
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+              fix: fixer => fixer.replaceText(node, 'bar'),
+            });
+          },
+        };
+      },
+    };
+
+    it('passes with correct string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'bar',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('passes with correct array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('throws with no output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow("The rule fixed the code. Please add 'output' property.");
+    });
+
+    it('throws with null output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: null,
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Expected no autofixes to be suggested.');
+    });
+
+    it('throws with incorrect array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar', 'baz'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Outputs do not match.');
+    });
+
+    it('throws with incorrect string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'baz',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Output is incorrect.');
+    });
+  });
+
+  describe('with multiple fixes', () => {
+    const ruleTester = new RuleTester();
+    const rule: RuleModule<'error'> = {
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        type: 'problem',
+        fixable: 'code',
+        schema: [],
+      },
+      defaultOptions: [],
+      create(context) {
+        return {
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+              fix: fixer => fixer.replaceText(node, 'bar'),
+            });
+          },
+          'Identifier[name=bar]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+              fix: fixer => fixer.replaceText(node, 'baz'),
+            });
+          },
+        };
+      },
+    };
+
+    it('passes with correct array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar', 'baz'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('throws with string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'bar',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow(
+        'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
+      );
+    });
+
+    it('throws with incorrect array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Outputs do not match.');
+    });
+
+    it('throws with incorrectly ordered array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['baz', 'bar'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Outputs do not match.');
     });
   });
 });
