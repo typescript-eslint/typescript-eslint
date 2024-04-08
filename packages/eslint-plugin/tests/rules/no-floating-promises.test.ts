@@ -2295,63 +2295,162 @@ cursed();
 type Foo = Promise<number> & { hey?: string };
 let guzz = Promise.resolve(5);
 guzz as Foo;
-(guzz as Foo).then(x => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
+(guzz as Foo).then(() => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
 (guzz as Foo).catch();
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
 (guzz as Foo).finally();
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
 0 ? (guzz as Foo).catch() : 2;
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = Promise.resolve(5);
 null ?? (guzz as Foo).catch();
       `,
-      errors: [
-        { line: 4, messageId: 'floatingVoid' },
-        { line: 5, messageId: 'floatingVoid' },
-        { line: 6, messageId: 'floatingVoid' },
-        { line: 7, messageId: 'floatingVoid' },
-        { line: 8, messageId: 'floatingVoid' },
-        { line: 9, messageId: 'floatingVoid' },
-      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
     {
       code: `
 type Foo = Promise<number> & { hey?: string };
 let guzz = () => Promise.resolve(5);
 guzz() as Foo;
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
 (guzz() as Foo).then(x => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
 (guzz() as Foo).catch();
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
 (guzz() as Foo).finally();
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
 0 ? (guzz() as Foo).catch() : 2;
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let guzz = () => Promise.resolve(5);
 null ?? (guzz() as Foo).catch();
       `,
-      errors: [
-        { line: 4, messageId: 'floatingVoid' },
-        { line: 5, messageId: 'floatingVoid' },
-        { line: 6, messageId: 'floatingVoid' },
-        { line: 7, messageId: 'floatingVoid' },
-        { line: 8, messageId: 'floatingVoid' },
-        { line: 9, messageId: 'floatingVoid' },
-      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
     {
       code: `
 class UnsafePromise<T> extends Promise<T> {}
 let guzz: UnsafePromise<number> = Promise.resolve(5);
 guzz;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class UnsafePromise<T> extends Promise<T> {}
+let guzz: UnsafePromise<number> = Promise.resolve(5);
 guzz.then(() => {});
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class UnsafePromise<T> extends Promise<T> {}
+let guzz: UnsafePromise<number> = Promise.resolve(5);
 guzz.catch();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class UnsafePromise<T> extends Promise<T> {}
+let guzz: UnsafePromise<number> = Promise.resolve(5);
 guzz.finally();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class UnsafePromise<T> extends Promise<T> {}
+let guzz: UnsafePromise<number> = Promise.resolve(5);
 0 ? guzz.catch() : 2;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class UnsafePromise<T> extends Promise<T> {}
+let guzz: UnsafePromise<number> = Promise.resolve(5);
 null ?? guzz.catch();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [
-        { line: 4, messageId: 'floatingVoid' },
-        { line: 5, messageId: 'floatingVoid' },
-        { line: 6, messageId: 'floatingVoid' },
-        { line: 7, messageId: 'floatingVoid' },
-        { line: 8, messageId: 'floatingVoid' },
-        { line: 9, messageId: 'floatingVoid' },
-      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
   ],
 });
