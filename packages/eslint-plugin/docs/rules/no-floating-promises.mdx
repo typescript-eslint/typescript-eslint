@@ -132,7 +132,6 @@ Examples of code for this rule with:
 ```json
 {
   "allowForKnownSafePromises": [
-    "$",
     { "from": "file", "name": "Foo" },
     { "from": "file", "name": "Shaw" },
     { "from": "lib", "name": "PromiseLike" },
@@ -144,7 +143,7 @@ Examples of code for this rule with:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allowForKnownSafePromises":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 type Foo = Promise<number> & { __linterBrands?: string }; // an example of a branded type
 let Bazz = Promise.resolve(2);
 Bazz;
@@ -156,7 +155,7 @@ Bazz.finally();
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allowForKnownSafePromises":["$",{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 type Foo = Promise<number> & { __linterBrands?: string }; // an example of a branded type
 let Bazz = Promise.resolve(2);
 Bazz as Foo; // then apply the branded type as a type assertion

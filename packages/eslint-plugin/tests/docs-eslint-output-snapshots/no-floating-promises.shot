@@ -73,7 +73,7 @@ await (async function () {
 
 exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 5`] = `
 "Incorrect
-Options: {"allowForKnownSafePromises":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 type Foo = Promise<number> & { __linterBrands?: string }; // an example of a branded type
 let Bazz = Promise.resolve(2);
@@ -90,7 +90,7 @@ Bazz.finally();
 
 exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 6`] = `
 "Correct
-Options: {"allowForKnownSafePromises":["$",{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 type Foo = Promise<number> & { __linterBrands?: string }; // an example of a branded type
 let Bazz = Promise.resolve(2);

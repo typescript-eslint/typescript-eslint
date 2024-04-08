@@ -13,16 +13,15 @@ import {
   getOperatorPrecedence,
   getParserServices,
   OperatorPrecedence,
-  readonlynessOptionsDefaults,
-  readonlynessOptionsSchema,
   typeMatchesSpecifier,
+  typeOrValueSpecifierSchema_v2,
 } from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
-    allowForKnownSafePromises?: TypeOrValueSpecifier[];
+    allowForKnownSafePromises?: Exclude<TypeOrValueSpecifier, string>[];
   },
 ];
 
@@ -88,7 +87,10 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafePromises: {
+            type: 'array',
+            items: typeOrValueSpecifierSchema_v2,
+          },
         },
         additionalProperties: false,
       },
@@ -99,7 +101,7 @@ export default createRule<Options, MessageId>({
     {
       ignoreVoid: true,
       ignoreIIFE: false,
-      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      allowForKnownSafePromises: [],
     },
   ],
 

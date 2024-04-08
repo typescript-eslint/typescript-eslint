@@ -119,6 +119,95 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
   ],
 };
 
+export const typeOrValueSpecifierSchema_v2: JSONSchema4 = {
+  oneOf: [
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        from: {
+          type: 'string',
+          enum: ['file'],
+        },
+        name: {
+          oneOf: [
+            {
+              type: 'string',
+            },
+            {
+              type: 'array',
+              minItems: 1,
+              uniqueItems: true,
+              items: {
+                type: 'string',
+              },
+            },
+          ],
+        },
+        path: {
+          type: 'string',
+        },
+      },
+      required: ['from', 'name'],
+    },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        from: {
+          type: 'string',
+          enum: ['lib'],
+        },
+        name: {
+          oneOf: [
+            {
+              type: 'string',
+            },
+            {
+              type: 'array',
+              minItems: 1,
+              uniqueItems: true,
+              items: {
+                type: 'string',
+              },
+            },
+          ],
+        },
+      },
+      required: ['from', 'name'],
+    },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        from: {
+          type: 'string',
+          enum: ['package'],
+        },
+        name: {
+          oneOf: [
+            {
+              type: 'string',
+            },
+            {
+              type: 'array',
+              minItems: 1,
+              uniqueItems: true,
+              items: {
+                type: 'string',
+              },
+            },
+          ],
+        },
+        package: {
+          type: 'string',
+        },
+      },
+      required: ['from', 'name', 'package'],
+    },
+  ],
+};
+
 function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
   if (typeof name === 'string') {
     name = [name];

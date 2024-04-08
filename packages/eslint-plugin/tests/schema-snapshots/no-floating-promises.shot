@@ -12,9 +12,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "items": {
           "oneOf": [
             {
-              "type": "string"
-            },
-            {
               "additionalProperties": false,
               "properties": {
                 "from": {
@@ -135,7 +132,6 @@ type Options = [
           name: [string, ...string[]] | string;
           package: string;
         }
-      | string
     )[];
     /** Whether to ignore async IIFEs (Immediately Invoked Function Expressions). */
     ignoreIIFE?: boolean;
