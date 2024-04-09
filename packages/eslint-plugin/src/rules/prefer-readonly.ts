@@ -7,6 +7,7 @@ import {
   createRule,
   getParserServices,
   nullThrows,
+  NullThrowsReasons,
   typeIsOrHasBaseType,
 } from '../util';
 
@@ -160,18 +161,90 @@ export default createRule<Options, MessageIds>({
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
-      if (
-        ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
-      ) {
-        return {
-          esNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
-          nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
-        };
-      }
-
       return {
         esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
         nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
+      };
+    }
+
+    /**
+     * For missing readonly modifiers, we want to report any keywords
+     * out in front of the key, and the key itself, but not anything afterwards,
+     * i.e. parens, type annotations, method bodies, or `?`.
+     */
+    function getReportLoc(
+      node:
+        | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.PropertyDefinition
+        | TSESTree.TSAbstractPropertyDefinition,
+    ): TSESTree.SourceLocation {
+      let start: TSESTree.Position;
+
+      if (node.decorators.length === 0) {
+        start = node.loc.start;
+      } else {
+        const lastDecorator = node.decorators[node.decorators.length - 1];
+        const nextToken = nullThrows(
+          context.sourceCode.getTokenAfter(lastDecorator),
+          NullThrowsReasons.MissingToken('token', 'last decorator'),
+        );
+        start = nextToken.loc.start;
+      }
+
+      let end: TSESTree.Position;
+
+      if (!node.computed) {
+        end = node.key.loc.end;
+      } else {
+        const closingBracket = nullThrows(
+          context.sourceCode.getTokenAfter(
+            node.key,
+            token => token.value === ']',
+          ),
+          NullThrowsReasons.MissingToken(']', node.type),
+        );
+        end = closingBracket.loc.end;
+      }
+
+      return {
+        start: structuredClone(start),
+        end: structuredClone(end),
+      };
+    }
+
+    /**
+     * For missing readonly modifiers, we want to report any keywords
+     * out in front of the key, and the key itself, but not anything afterwards,
+     * i.e. parens, type annotations, method bodies, or `?`.
+     */
+    function getReportLocForParameterProperty(
+      node: TSESTree.TSParameterProperty,
+      nodeName: string,
+    ): TSESTree.SourceLocation {
+      // Parameter properties have a weirdly different AST structure
+      // than other class members.
+
+      let start: TSESTree.Position;
+
+      if (node.decorators.length === 0) {
+        start = structuredClone(node.loc.start);
+      } else {
+        const lastDecorator = node.decorators[node.decorators.length - 1];
+        const nextToken = nullThrows(
+          context.sourceCode.getTokenAfter(lastDecorator),
+          NullThrowsReasons.MissingToken('token', 'last decorator'),
+        );
+        start = structuredClone(nextToken.loc.start);
+      }
+
+      const end = context.sourceCode.getLocFromIndex(
+        node.parameter.range[0] + nodeName.length,
+      );
+
+      return {
+        start,
+        end,
       };
     }
 
@@ -196,13 +269,34 @@ export default createRule<Options, MessageIds>({
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
             getEsNodesFromViolatingNode(violatingNode);
+
+          const reportNodeOrLoc:
+            | { node: TSESTree.Node }
+            | { loc: TSESTree.SourceLocation } = (() => {
+            switch (esNode.type) {
+              case AST_NODE_TYPES.MethodDefinition:
+              case AST_NODE_TYPES.PropertyDefinition:
+              case AST_NODE_TYPES.TSAbstractMethodDefinition:
+                return { loc: getReportLoc(esNode) };
+              case AST_NODE_TYPES.TSParameterProperty:
+                return {
+                  loc: getReportLocForParameterProperty(
+                    esNode,
+                    (nameNode as TSESTree.Identifier).name,
+                  ),
+                };
+              default:
+                return { node: esNode };
+            }
+          })();
+
           context.report({
+            ...reportNodeOrLoc,
             data: {
               name: context.sourceCode.getText(nameNode),
             },
             fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
             messageId: 'preferReadonly',
-            node: esNode,
           });
         }
       },
