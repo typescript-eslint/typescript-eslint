@@ -117,7 +117,7 @@ await (async function () {
 
 ### `allowForKnownSafePromises`
 
-This allows you to skip checking of those promises which are marked with some kind of branded type. The branding of a type can be done either by using a type alias or an interface.
+This option allows marking specific types as "safe" to be floating. For example, you may need to do this in the case of libraries whose APIs return Promises whose rejections are safely handled by the library.
 
 Each item must be one of :
 
