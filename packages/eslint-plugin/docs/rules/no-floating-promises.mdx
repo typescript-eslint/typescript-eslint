@@ -142,7 +142,7 @@ Examples of code for this rule with:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-type Foo = Promise<number> & { __linterBrands?: string }; // an example of a branded type
+type Foo = Promise<number> & { __linterBrands?: string };
 let Bazz = Promise.resolve(2);
 Bazz;
 Bazz.then(() => {});
@@ -154,15 +154,15 @@ Bazz.finally();
 <TabItem value="✅ Correct">
 
 ```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-type Foo = Promise<number> & { __linterBrands?: string }; // an example of a branded type
+type Foo = Promise<number> & { __linterBrands?: string };
 let Bazz = Promise.resolve(2);
-Bazz as Foo; // then apply the branded type as a type assertion
+Bazz as Foo; // apply the safe type as a type assertion
 (Bazz as Foo).then(() => {});
 (Bazz as Foo).catch();
 (Bazz as Foo).finally();
 
 // it also works in the form of type annotations
-type Shaw = Promise<number> & { __linterBrands?: string }; // an example of a branded type
+type Shaw = Promise<number> & { __linterBrands?: string };
 let Guzz: Shaw = Promise.resolve(2); // can be used as type annotation too
 Guzz.then(() => {});
 Guzz.catch();
