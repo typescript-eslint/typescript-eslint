@@ -117,7 +117,9 @@ export default createRule<Options, MessageIds>({
      * @param methodDefinition The node representing a MethodDefinition.
      */
     function checkMethodAccessibilityModifier(
-      methodDefinition: TSESTree.MethodDefinition,
+      methodDefinition:
+        | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition,
     ): void {
       if (methodDefinition.key.type === AST_NODE_TYPES.PrivateIdentifier) {
         return;
@@ -227,6 +229,7 @@ export default createRule<Options, MessageIds>({
     function getMissingAccessibilityReportLoc(
       node:
         | TSESTree.MethodDefinition
+        | TSESTree.TSAbstractMethodDefinition
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractPropertyDefinition,
     ): TSESTree.SourceLocation {
