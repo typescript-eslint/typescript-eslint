@@ -7,31 +7,12 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticStringValue,
-  getWrappingFixer,
+  getWrappingCode,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
 
 type MessageId = 'noUselessTemplateLiteral';
-
-function getReplaceNodeText(
-  context: Readonly<TSESLint.RuleContext<'noUselessTemplateLiteral', []>>,
-  node: TSESTree.TemplateLiteral,
-  fixer: TSESLint.RuleFixer,
-): string | null {
-  const replaceResult = getWrappingFixer({
-    sourceCode: context.sourceCode,
-    node: node.expressions[0],
-    wrap: (...code: string[]) => {
-      return code.join('');
-    },
-  })(fixer);
-
-  if (replaceResult != null && 'text' in replaceResult) {
-    return replaceResult.text;
-  }
-  return null;
-}
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',
@@ -113,11 +94,14 @@ export default createRule<[], MessageId>({
             node: node.expressions[0],
             messageId: 'noUselessTemplateLiteral',
             fix(fixer): TSESLint.RuleFix | null {
-              const replaceText = getReplaceNodeText(context, node, fixer);
-              if (replaceText != null) {
-                return fixer.replaceText(node, replaceText);
-              }
-              return null;
+              const wrappingCode = getWrappingCode({
+                sourceCode: context.sourceCode,
+                node: node.expressions[0],
+                wrap: (...code: string[]) => {
+                  return code.join('');
+                },
+              });
+              return fixer.replaceText(node, wrappingCode);
             },
           });
 
