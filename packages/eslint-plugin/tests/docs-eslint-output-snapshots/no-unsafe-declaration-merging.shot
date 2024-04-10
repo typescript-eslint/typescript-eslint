@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unsafe-declaration-merging.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+interface Foo {}
+          ~~~ Unsafe declaration merging between classes and interfaces.
+
+class Foo {}
+      ~~~ Unsafe declaration merging between classes and interfaces.
+"
+`;
+
+exports[`Validating rule docs no-unsafe-declaration-merging.mdx code examples ESLint output 2`] = `
+"Correct
+
+interface Foo {}
+class Bar implements Foo {}
+
+namespace Baz {}
+namespace Baz {}
+enum Baz {}
+
+namespace Qux {}
+function Qux() {}
+"
+`;

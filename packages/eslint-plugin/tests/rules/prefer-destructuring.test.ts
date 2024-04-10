@@ -559,6 +559,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: [1, 2, 3];
         let y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -572,6 +573,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: [1, 2, 3];
         y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -587,6 +589,7 @@ ruleTester.run('prefer-destructuring', rule, {
         }
         let y = it()[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -602,6 +605,7 @@ ruleTester.run('prefer-destructuring', rule, {
         }
         y = it()[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -615,6 +619,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: any;
         let y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -628,6 +633,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: any;
         y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -641,6 +647,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: string[] | { [Symbol.iterator]: unknown };
         let y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -654,6 +661,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: string[] | { [Symbol.iterator]: unknown };
         y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -667,6 +675,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: object & unknown[];
         let y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -680,6 +689,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let x: object & unknown[];
         y = x[0];
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -694,6 +704,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let y = x[0];
       `,
       options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -708,6 +719,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[0];
       `,
       options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -728,6 +740,7 @@ ruleTester.run('prefer-destructuring', rule, {
         },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -748,6 +761,7 @@ ruleTester.run('prefer-destructuring', rule, {
         },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -766,6 +780,7 @@ ruleTester.run('prefer-destructuring', rule, {
         { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -784,6 +799,7 @@ ruleTester.run('prefer-destructuring', rule, {
         { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -802,6 +818,7 @@ ruleTester.run('prefer-destructuring', rule, {
         { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -820,6 +837,7 @@ ruleTester.run('prefer-destructuring', rule, {
         { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -838,6 +856,7 @@ ruleTester.run('prefer-destructuring', rule, {
         { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -856,6 +875,7 @@ ruleTester.run('prefer-destructuring', rule, {
         { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -870,6 +890,7 @@ ruleTester.run('prefer-destructuring', rule, {
         let y = x[0];
       `,
       options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
@@ -884,6 +905,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[0];
       `,
       options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
