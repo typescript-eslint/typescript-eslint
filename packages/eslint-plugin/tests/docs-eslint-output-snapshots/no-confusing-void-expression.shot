@@ -80,3 +80,18 @@ function doSomething() {
 console.log(void alert('Hello, world!'));
 "
 `;
+
+exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 5`] = `
+"Options: { "ignoreVoidInVoid": true }
+
+function test1(value: string): void {
+  return window.postMessage(value);
+}
+
+const test2 = (value: string): void => window.postMessage(value);
+
+const test3 = (value: string): void => {
+  return window.postMessage(value);
+};
+"
+`;
