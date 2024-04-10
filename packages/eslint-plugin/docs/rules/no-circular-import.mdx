@@ -1,0 +1,47 @@
+---
+description: 'Disallow the use of import module that result in circular imports.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-circular-import** for documentation.
+
+This rule disallows the use of import module that result in circular imports except for the type-only imports.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts skipValidation
+// foo.ts
+import { bar } from './bar';
+export const foo = 1;
+
+// bar.ts
+import { foo } from './foo';
+export const bar = 1;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+// foo.ts
+import type { bar } from './bar';
+export type baz = number;
+
+// bar.ts
+import { type baz } from './baz';
+export type bar = number;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+## Related To

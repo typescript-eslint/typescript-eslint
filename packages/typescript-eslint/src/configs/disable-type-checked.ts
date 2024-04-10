@@ -20,6 +20,7 @@ export default (
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
+    '@typescript-eslint/no-circular-import': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
     '@typescript-eslint/no-floating-promises': 'off',

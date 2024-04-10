@@ -12,6 +12,7 @@
     "file.ts",
     "consistent-type-exports.ts",
     "mixed-enums-decl.ts",
-    "react.tsx"
+    "react.tsx",
+    "no-circular-import"
   ]
 }

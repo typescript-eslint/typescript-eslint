@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-circular-import.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+// foo.ts
+import './bar';
+
+// bar.ts
+import './foo';
+"
+`;
+
+exports[`Validating rule docs no-circular-import.mdx code examples ESLint output 2`] = `
+"Correct
+
+// foo.ts
+import './bar';
+
+// bar.ts
+import './baz';
+"
+`;

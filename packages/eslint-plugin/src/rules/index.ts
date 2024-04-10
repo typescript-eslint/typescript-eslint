@@ -39,6 +39,7 @@ import namingConvention from './naming-convention';
 import noArrayConstructor from './no-array-constructor';
 import noArrayDelete from './no-array-delete';
 import noBaseToString from './no-base-to-string';
+import noCircularImport from './no-circular-import';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
 import noDupeClassMembers from './no-dupe-class-members';
@@ -184,6 +185,7 @@ export default {
   'no-array-constructor': noArrayConstructor,
   'no-array-delete': noArrayDelete,
   'no-base-to-string': noBaseToString,
+  'no-circular-import': noCircularImport,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
   'no-dupe-class-members': noDupeClassMembers,
