@@ -63,6 +63,10 @@ const x: string[] = [];
 foo(...x);
     `,
     `
+function foo(arg1: number, arg2: number) {}
+foo(...([1, 1, 1] as [number, number, number]));
+    `,
+    `
 declare function foo(arg1: Set<string>, arg2: Map<string, string>): void;
 
 const x = [new Map<string, string>()] as const;
@@ -244,6 +248,20 @@ foo(...x);
             sender: 'any',
             receiver: 'number',
           },
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+foo(...(['foo', 1, 2] as [string, any, number]));
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTupleSpread',
+          line: 3,
+          column: 5,
+          endColumn: 46,
         },
       ],
     },
