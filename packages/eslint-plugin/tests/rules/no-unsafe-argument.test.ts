@@ -261,7 +261,7 @@ foo(...(['foo', 1, 2] as [string, any, number]));
           messageId: 'unsafeTupleSpread',
           line: 3,
           column: 5,
-          endColumn: 46,
+          endColumn: 48,
         },
       ],
     },
