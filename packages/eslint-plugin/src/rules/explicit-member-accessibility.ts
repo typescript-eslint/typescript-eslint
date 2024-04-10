@@ -236,19 +236,34 @@ export default createRule<Options, MessageIds>({
       let start: TSESTree.Position;
 
       if (node.decorators.length === 0) {
-        start = structuredClone(node.loc.start);
+        start = node.loc.start;
       } else {
         const lastDecorator = node.decorators[node.decorators.length - 1];
         const nextToken = nullThrows(
           context.sourceCode.getTokenAfter(lastDecorator),
           NullThrowsReasons.MissingToken('token', 'last decorator'),
         );
-        start = structuredClone(nextToken.loc.start);
+        start = nextToken.loc.start;
+      }
+
+      let end: TSESTree.Position;
+
+      if (!node.computed) {
+        end = node.key.loc.end;
+      } else {
+        const closingBracket = nullThrows(
+          context.sourceCode.getTokenAfter(
+            node.key,
+            token => token.value === ']',
+          ),
+          NullThrowsReasons.MissingToken(']', node.type),
+        );
+        end = closingBracket.loc.end;
       }
 
       return {
-        start,
-        end: structuredClone(node.key.loc.end),
+        start: structuredClone(start),
+        end: structuredClone(end),
       };
     }
 

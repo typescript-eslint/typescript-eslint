@@ -2357,5 +2357,51 @@ class DecoratedClass {
         },
       ],
     },
+    {
+      code: `
+abstract class SomeClass {
+  abstract ['computed-method-name'](): string;
+}
+      `,
+      options: [{ accessibility: 'explicit' }],
+      errors: [
+        {
+          messageId: 'missingAccessibility',
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 36,
+          suggestions: [
+            {
+              messageId: 'addExplicitAccessibility',
+              data: { type: 'public' },
+              output: `
+abstract class SomeClass {
+  public abstract ['computed-method-name'](): string;
+}
+      `,
+            },
+            {
+              messageId: 'addExplicitAccessibility',
+              data: { type: 'private' },
+              output: `
+abstract class SomeClass {
+  private abstract ['computed-method-name'](): string;
+}
+      `,
+            },
+            {
+              messageId: 'addExplicitAccessibility',
+              data: { type: 'protected' },
+              output: `
+abstract class SomeClass {
+  protected abstract ['computed-method-name'](): string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
