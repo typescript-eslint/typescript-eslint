@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/all',
     rules: {
       '@typescript-eslint/adjacent-overload-signatures': 'error',
       '@typescript-eslint/array-type': 'error',
@@ -98,8 +99,6 @@ export default (
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-this-alias': 'error',
-      'no-throw-literal': 'off',
-      '@typescript-eslint/no-throw-literal': 'error',
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
       '@typescript-eslint/no-unnecessary-condition': 'error',
       '@typescript-eslint/no-unnecessary-qualifier': 'error',
@@ -126,6 +125,8 @@ export default (
       '@typescript-eslint/no-useless-template-literals': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',
+      'no-throw-literal': 'off',
+      '@typescript-eslint/only-throw-error': 'error',
       '@typescript-eslint/parameter-properties': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       'prefer-destructuring': 'off',
@@ -163,6 +164,7 @@ export default (
       '@typescript-eslint/typedef': 'error',
       '@typescript-eslint/unbound-method': 'error',
       '@typescript-eslint/unified-signatures': 'error',
+      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
     },
   },
 ];

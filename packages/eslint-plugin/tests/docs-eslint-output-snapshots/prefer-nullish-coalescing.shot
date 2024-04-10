@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 1`] = `
+"Options: { "ignoreTernaryTests": false }
+
+const foo: any = 'bar';
+foo !== undefined && foo !== null ? foo : 'a string';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
+foo === undefined || foo === null ? 'a string' : foo;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
+foo == undefined ? 'a string' : foo;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
+foo == null ? 'a string' : foo;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
+
+const foo: string | undefined = 'bar';
+foo !== undefined ? foo : 'a string';
+foo === undefined ? 'a string' : foo;
+
+const foo: string | null = 'bar';
+foo !== null ? foo : 'a string';
+foo === null ? 'a string' : foo;
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 2`] = `
+"Options: { "ignoreTernaryTests": false }
+
+const foo: any = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+foo ?? 'a string';
+foo ?? 'a string';
+
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+
+const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 3`] = `
+"Options: { "ignoreConditionalTests": false }
+
+declare const a: string | null;
+declare const b: string | null;
+
+if (a || b) {
+      ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+}
+if ((a ||= b)) {
+}
+while (a || b) {}
+         ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+while ((a ||= b)) {}
+do {} while (a || b);
+               ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+for (let i = 0; a || b; i += 1) {}
+                  ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+a || b ? true : false;
+  ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 4`] = `
+"Options: { "ignoreConditionalTests": false }
+
+declare const a: string | null;
+declare const b: string | null;
+
+if (a ?? b) {
+}
+if ((a ??= b)) {
+}
+while (a ?? b) {}
+while ((a ??= b)) {}
+do {} while (a ?? b);
+for (let i = 0; a ?? b; i += 1) {}
+a ?? b ? true : false;
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 5`] = `
+"Options: { "ignoreMixedLogicalExpressions": false }
+
+declare const a: string | null;
+declare const b: string | null;
+declare const c: string | null;
+declare const d: string | null;
+
+a || (b && c);
+  ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+a ||= b && c;
+(a && b) || c || d;
+         ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+              ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+a || (b && c) || d;
+  ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+              ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+a || (b && c && d);
+  ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 6`] = `
+"Options: { "ignoreMixedLogicalExpressions": false }
+
+declare const a: string | null;
+declare const b: string | null;
+declare const c: string | null;
+declare const d: string | null;
+
+a ?? (b && c);
+a ??= b && c;
+(a && b) ?? c ?? d;
+a ?? (b && c) ?? d;
+a ?? (b && c && d);
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 7`] = `
+"Options: { "ignorePrimitives": { "string": true } }
+
+const foo: string | undefined = 'bar';
+foo || 'a string';
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 8`] = `
+"Options: { "ignorePrimitives": { "string": true } }
+
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+"
+`;

@@ -40,6 +40,7 @@ interface ParserOptions {
   };
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
+  experimentalDecorators?: boolean;
   extraFileExtensions?: string[];
   jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
@@ -56,13 +57,16 @@ interface ParserOptions {
 
 ### `allowAutomaticSingleRunInference`
 
-> Default `false`.
+> Default `process.env.TSESTREE_SINGLE_RUN` or `false`.
 
 Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
 
 When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../getting-started/Typed_Linting.mdx), this distinction is important for performance.
 There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
 Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
+
+This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN` environment variable to `"false"` or `"true"`.
+For example, `TSESTREE_SINGLE_RUN=true npx eslint .` will enable it.
 
 :::tip
 We've seen `allowAutomaticSingleRunInference` improve linting speed in CI by up to 10-20%.
@@ -90,7 +94,7 @@ More details can be found in the [TypeScript handbook's JSX docs](https://www.ty
 
 **NOTE:** this setting does not affect known file types (`.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.mts`, `.cts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions.
 
-<!-- https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285 -->
+{/* https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285 */}
 
 The exact behavior is as follows:
 
@@ -127,6 +131,12 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 > Default `undefined`.
 
 This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+
+### `experimentalDecorators`
+
+> Default `undefined`.
+
+This option allow you to tell parser to act as if `experimentalDecorators: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ### `extraFileExtensions`
 

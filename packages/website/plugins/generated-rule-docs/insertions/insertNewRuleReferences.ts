@@ -1,9 +1,9 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 import { EOL } from 'os';
 import * as path from 'path';
 import prettier from 'prettier';
-import type * as unist from 'unist';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 import { convertToPlaygroundHash, nodeIsHeading } from '../utils';
@@ -75,11 +75,27 @@ export async function insertNewRuleReferences(
       value: `module.exports = ${eslintrc};`,
     } as mdast.Code,
     {
-      value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
-        eslintrc,
-      )}">Try this rule in the playground ↗</try-in-playground>`,
-      type: 'jsx',
-    } as unist.Node,
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'eslintrcHash',
+          value: convertToPlaygroundHash(eslintrc),
+        },
+      ],
+      children: [
+        {
+          children: [
+            {
+              value: 'Try this rule in the playground ↗',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      name: 'TryInPlayground',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
   );
 
   const hasNoConfig = Array.isArray(page.rule.meta.schema)
@@ -97,20 +113,34 @@ export async function insertNewRuleReferences(
       type: 'paragraph',
     } as mdast.Paragraph);
   } else if (!COMPLICATED_RULE_OPTIONS.has(page.file.stem)) {
-    const defaults =
-      SPECIAL_CASE_DEFAULTS.get(page.file.stem) ??
-      JSON.stringify(page.rule.defaultOptions);
-
     page.spliceChildren(
       page.headingIndices.options + 1,
       0,
       {
-        children: [
-          {
-            type: 'text',
-            value: 'This rule accepts the following options:',
-          } as mdast.Text,
-        ],
+        children:
+          typeof page.rule.meta.docs.recommended === 'object'
+            ? [
+                {
+                  type: 'text',
+                  value:
+                    'This rule accepts the following options, and has more strict settings in the ',
+                } as mdast.Text,
+                ...linkToConfigs(
+                  page.rule.meta.docs.requiresTypeChecking
+                    ? ['strict', 'strict-type-checked']
+                    : ['strict'],
+                ),
+                {
+                  type: 'text',
+                  value: ` config${page.rule.meta.docs.requiresTypeChecking ? 's' : ''}.`,
+                } as mdast.Text,
+              ]
+            : [
+                {
+                  type: 'text',
+                  value: 'This rule accepts the following options:',
+                } as mdast.Text,
+              ],
         type: 'paragraph',
       } as mdast.Paragraph,
       {
@@ -119,7 +149,7 @@ export async function insertNewRuleReferences(
         value: [
           await compile(page.rule.meta.schema, prettierConfig),
           await prettier.format(
-            `const defaultOptions: Options = ${defaults};`,
+            getRuleDefaultOptions(page),
             await prettierConfig,
           ),
         ]
@@ -130,4 +160,47 @@ export async function insertNewRuleReferences(
   }
 
   return eslintrc;
+}
+
+function linkToConfigs(configs: string[]): mdast.Node[] {
+  const links = configs.map(
+    (config): mdast.Link => ({
+      children: [
+        {
+          type: 'inlineCode',
+          value: config,
+        } as mdast.InlineCode,
+      ],
+      type: 'link',
+      url: `/users/configs#${config})`,
+    }),
+  );
+
+  return links.length === 1
+    ? links
+    : [
+        links[0],
+        {
+          type: 'text',
+          value: ' and ',
+        } as mdast.Text,
+        links[1],
+      ];
+}
+
+function getRuleDefaultOptions(page: RuleDocsPage): string {
+  const defaults =
+    SPECIAL_CASE_DEFAULTS.get(page.file.stem) ??
+    JSON.stringify(page.rule.defaultOptions);
+
+  const recommended = page.rule.meta.docs.recommended;
+
+  return typeof recommended === 'object'
+    ? [
+        `const defaultOptionsRecommended: Options = ${defaults};`,
+        '',
+        '// These options are merged on top of the recommended defaults',
+        `const defaultOptionsStrict: Options = ${JSON.stringify(recommended.strict)};`,
+      ].join('\n')
+    : `const defaultOptions: Options = ${defaults};`;
 }

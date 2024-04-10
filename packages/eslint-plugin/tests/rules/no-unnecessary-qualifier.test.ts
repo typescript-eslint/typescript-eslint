@@ -59,6 +59,30 @@ namespace X {
   const z = X.y;
 }
     `,
+    `
+enum Foo {
+  One,
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
+}
+    `,
+    `
+namespace Foo {
+  export enum Foo {
+    One,
+  }
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
+}
+    `,
   ],
 
   invalid: [
