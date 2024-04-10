@@ -12,16 +12,6 @@ const ruleTester = new RuleTester({
   },
 });
 
-describe('test strict null equality', () => {
-  ruleTester.run('prefer-optional-chain', rule, {
-    valid: [
-      // https://github.com/typescript-eslint/typescript-eslint/issues/7654
-      'data && data.value !== null;',
-    ],
-    invalid: [],
-  });
-});
-
 describe('|| {}', () => {
   ruleTester.run('prefer-optional-chain', rule, {
     valid: [
@@ -803,6 +793,8 @@ describe('hand-crafted cases', () => {
       '(function () {}) && function () {}.name;',
       '(class Foo {}) && class Foo {}.constructor;',
       "new Map().get('a') && new Map().get('a').what;",
+      // https://github.com/typescript-eslint/typescript-eslint/issues/7654
+      'data && data.value !== null;',
       {
         code: '<div /> && (<div />).wtf;',
         parserOptions: { ecmaFeatures: { jsx: true } },
