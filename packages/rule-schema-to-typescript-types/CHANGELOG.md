@@ -1,3 +1,19 @@
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- bump npm dependency ranges
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.5.0 (2024-04-01)
 
 This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.
