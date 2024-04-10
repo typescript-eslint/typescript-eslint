@@ -245,134 +245,134 @@ const test = (): Foo => console.log('err');
     },
     {
       code: `
-    type Foo = () => void;
-    const arrowFn: Foo = () => console.log('foo');
+type Foo = () => void;
+const arrowFn: Foo = () => console.log('foo');
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = () => void;
-    const funcExpr: Foo = function () {
-      return console.log();
-    };
+type Foo = () => void;
+const funcExpr: Foo = function () {
+  return console.log();
+};
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = () => void;
-    const funcExpr: Foo = () => {
-      return console.log();
-    };
+type Foo = () => void;
+const funcExpr: Foo = () => {
+  return console.log();
+};
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = () => void;
-    const x = (() => console.log()) as Foo;
+type Foo = () => void;
+const x = (() => console.log()) as Foo;
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = {
-      foo: () => void;
-    };
-    const q = {
-      foo: () => console.log(),
-    } as Foo;
+type Foo = {
+  foo: () => void;
+};
+const q = {
+  foo: () => console.log(),
+} as Foo;
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = {
-      foo: () => void;
-    };
-    const x: Foo = {
-      foo: () => console.log(),
-    };
+type Foo = {
+  foo: () => void;
+};
+const x: Foo = {
+  foo: () => console.log(),
+};
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    const q = {
-      foo: () => console.log(),
-    } as {
-      foo: () => void;
-    };
+const q = {
+  foo: () => console.log(),
+} as {
+  foo: () => void;
+};
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    const x: {
-      foo: () => void;
-    } = {
-      foo: () => console.log(),
-    };
+const x: {
+  foo: () => void;
+} = {
+  foo: () => console.log(),
+};
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = {
-      foo: { bar: () => void };
-    };
-    const q = {
-      foo: { bar: () => console.log() },
-    } as Foo;
+type Foo = {
+  foo: { bar: () => void };
+};
+const q = {
+  foo: { bar: () => console.log() },
+} as Foo;
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type Foo = {
-      foo: { bar: () => void };
-    };
-    const x: Foo = {
-      foo: { bar: () => console.log() },
-    };
+type Foo = {
+  foo: { bar: () => void };
+};
+const x: Foo = {
+  foo: { bar: () => console.log() },
+};
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    type MethodType = () => void;
+type MethodType = () => void;
 
-    class App {
-      private method: MethodType = () => console.log();
-    }
+class App {
+  private method: MethodType = () => console.log();
+}
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-    interface Foo {
-      foo: () => void;
-    }
-    function bar(): Foo {
-      return {
-        foo: () => console.log(),
-      };
-    }
+interface Foo {
+  foo: () => void;
+}
+function bar(): Foo {
+  return {
+    foo: () => console.log(),
+  };
+}
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-  type HigherOrderType = () => () => () => void;
-  const x: HigherOrderType = () => () => () => console.log();
+type HigherOrderType = () => () => () => void;
+const x: HigherOrderType = () => () => () => console.log();
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-  declare function foo(arg: () => void): void;
-  foo(() => console.log());
+declare function foo(arg: () => void): void;
+foo(() => console.log());
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
@@ -396,8 +396,11 @@ const x: HigherOrderType = () => () => () => {
     },
     {
       code: `
-      type HigherOrderType = () => () => () => void;
-      const x: HigherOrderType = () => () => function () { return console.log() };
+type HigherOrderType = () => () => () => void;
+const x: HigherOrderType = () => () =>
+  function () {
+    return console.log();
+  };
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
@@ -870,53 +873,53 @@ return console.log('foo');
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-      type Foo = () => void;
-      const test1: Foo = function () {
-        function testtt() {
-          return console.log();
-        }
-      };
+type Foo = () => void;
+const test1: Foo = function () {
+  function testtt() {
+    return console.log();
+  }
+};
       `,
       errors: [
         {
           line: 5,
-          column: 18,
+          column: 12,
           messageId: 'invalidVoidExprReturnLast',
         },
       ],
       output: `
-      type Foo = () => void;
-      const test1: Foo = function () {
-        function testtt() {
-          console.log();
-        }
-      };
+type Foo = () => void;
+const test1: Foo = function () {
+  function testtt() {
+    console.log();
+  }
+};
       `,
     },
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-      type Foo = () => void;
-      const test2 = function () {
-        function testtt() {
-          return console.log();
-        }
-      };
+type Foo = () => void;
+const test2 = function () {
+  function testtt() {
+    return console.log();
+  }
+};
       `,
       errors: [
         {
           line: 5,
-          column: 18,
+          column: 12,
           messageId: 'invalidVoidExprReturnLast',
         },
       ],
       output: `
-      type Foo = () => void;
-      const test2 = function () {
-        function testtt() {
-          console.log();
-        }
-      };
+type Foo = () => void;
+const test2 = function () {
+  function testtt() {
+    console.log();
+  }
+};
       `,
     },
     {
@@ -954,41 +957,41 @@ return console.log('foo');
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-      function test(): any {
-        return console.log();
-      }
+function test(): any {
+  return console.log();
+}
       `,
       errors: [
         {
           line: 3,
-          column: 16,
+          column: 10,
           messageId: 'invalidVoidExprReturnLast',
         },
       ],
       output: `
-      function test(): any {
-        console.log();
-      }
+function test(): any {
+  console.log();
+}
       `,
     },
     {
       options: [{ ignoreVoidInVoid: true }],
       code: `
-      function test(): unknown {
-        return console.log();
-      }
+function test(): unknown {
+  return console.log();
+}
       `,
       errors: [
         {
           line: 3,
-          column: 16,
+          column: 10,
           messageId: 'invalidVoidExprReturnLast',
         },
       ],
       output: `
-      function test(): unknown {
-        console.log();
-      }
+function test(): unknown {
+  console.log();
+}
       `,
     },
   ],
