@@ -292,10 +292,9 @@ export default createRule<Options, MessageIds>({
         start = structuredClone(nextToken.loc.start);
       }
 
-      const end = rangeToLoc(context.sourceCode, [
-        node.parameter.range[0],
+      const end = context.sourceCode.getLocFromIndex(
         node.parameter.range[0] + nodeName.length,
-      ]).end;
+      );
 
       return {
         start,
