@@ -1696,6 +1696,7 @@ describe('hand-crafted cases', () => {
             null !== foo.bar.baz &&
             'undefined' !== typeof foo.bar.baz;
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1719,6 +1720,7 @@ describe('hand-crafted cases', () => {
             foo.bar.baz !== null &&
             typeof foo.bar.baz !== 'undefined';
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1742,6 +1744,7 @@ describe('hand-crafted cases', () => {
             null !== foo.bar.baz &&
             undefined !== foo.bar.baz;
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
