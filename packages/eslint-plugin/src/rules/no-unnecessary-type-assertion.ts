@@ -88,7 +88,14 @@ export default createRule<Options, MessageIds>({
         // check if the defined variable type has changed since assignment
         const declarationType = checker.getTypeFromTypeNode(declaration.type);
         const type = getConstrainedTypeAtLocation(services, node);
-        if (declarationType === type) {
+        if (
+          declarationType === type &&
+          // `declare`s are never narrowed, so never skip them
+          !(
+            services.tsNodeToESTreeNodeMap.get(declaration)
+              .parent as TSESTree.VariableDeclaration
+          ).declare
+        ) {
           // possibly used before assigned, so just skip it
           // better to false negative and skip it, than false positive and fix to compile erroring code
           //

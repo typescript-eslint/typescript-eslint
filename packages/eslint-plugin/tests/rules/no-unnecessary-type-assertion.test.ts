@@ -149,6 +149,10 @@ class Foo {
   prop: number = x!;
 }
     `,
+    `
+      declare const y: number | null;
+      console.log(y!);
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/529
     `
 declare function foo(str?: string): void;
@@ -520,6 +524,17 @@ bar + 1;
           line: 4,
         },
       ],
+    },
+    {
+      code: `
+        declare const y: number;
+        console.log(y!);
+      `,
+      output: `
+        declare const y: number;
+        console.log(y);
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
     },
     {
       code: `
