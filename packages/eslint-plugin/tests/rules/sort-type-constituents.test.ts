@@ -335,6 +335,14 @@ ruleTester.run('sort-type-constituents', rule, {
         },
       ],
     },
+    {
+      code: 'type T = { A: string } | { B: string } | { a: string };',
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+    },
 
     ...valid('&'),
     {
@@ -409,6 +417,24 @@ type T = 1 | string | {} | A;
     {
       code: "type T = 'DeletedAt' | 'DeleteForever';",
       output: "type T = 'DeleteForever' | 'DeletedAt';",
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Union',
+            name: 'T',
+          },
+        },
+      ],
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: string } | { A: string } | { B: string };',
+      output: 'type T = { A: string } | { B: string } | { a: string };',
       errors: [
         {
           messageId: 'notSortedNamed',
