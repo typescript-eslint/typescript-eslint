@@ -1,10 +1,7 @@
 'use strict';
 
 // pack the packages ahead of time and create a mapping for use in the tests
-require('ts-node').register({
-  transpileOnly: true,
-  files: ['./pack-packages.ts'],
-});
+require('tsx/cjs');
 const { tseslintPackages } = require('./tools/pack-packages');
 
 // @ts-check
