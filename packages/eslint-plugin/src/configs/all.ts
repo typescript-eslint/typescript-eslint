@@ -92,6 +92,7 @@ export = {
     '@typescript-eslint/no-this-alias': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
+    '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'error',
     '@typescript-eslint/no-unnecessary-qualifier': 'error',
     '@typescript-eslint/no-unnecessary-type-arguments': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
