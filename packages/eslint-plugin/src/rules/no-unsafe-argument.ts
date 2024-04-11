@@ -9,6 +9,7 @@ import {
   isTypeAnyArrayType,
   isTypeAnyType,
   isUnsafeAssignment,
+  nullThrows,
 } from '../util';
 
 type MessageIds =
@@ -180,11 +181,10 @@ export default createRule<[], MessageIds>({
       }
 
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const signature = FunctionSignature.create(checker, tsNode);
-      // istanbul ignore next
-      if (!signature) {
-        return;
-      }
+      const signature = nullThrows(
+        FunctionSignature.create(checker, tsNode),
+        'Expected to a signature resolved',
+      );
 
       if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
         // Consumes the first parameter (TemplateStringsArray) of the function called with TaggedTemplateExpression.
