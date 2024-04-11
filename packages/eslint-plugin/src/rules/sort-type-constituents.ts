@@ -108,7 +108,7 @@ export type Options = [
   {
     checkIntersections?: boolean;
     checkUnions?: boolean;
-    caseSensitiveSorting?: boolean;
+    caseSensitive?: boolean;
     groupOrder?: string[];
   },
 ];
@@ -142,7 +142,7 @@ export default createRule<Options, MessageIds>({
             description: 'Whether to check union types.',
             type: 'boolean',
           },
-          caseSensitiveSorting: {
+          caseSensitive: {
             description: 'Whether to sort using case sensitive sorting.',
             type: 'boolean',
           },
@@ -162,7 +162,7 @@ export default createRule<Options, MessageIds>({
     {
       checkIntersections: true,
       checkUnions: true,
-      caseSensitiveSorting: false,
+      caseSensitive: false,
       groupOrder: [
         Group.named,
         Group.keyword,
@@ -181,7 +181,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(
     context,
-    [{ checkIntersections, checkUnions, caseSensitiveSorting, groupOrder }],
+    [{ checkIntersections, checkUnions, caseSensitive, groupOrder }],
   ) {
     const collator = new Intl.Collator('en', {
       sensitivity: 'base',
@@ -204,7 +204,7 @@ export default createRule<Options, MessageIds>({
           return a.group - b.group;
         }
 
-        if (caseSensitiveSorting) {
+        if (caseSensitive) {
           return caseSensitiveSort(a.text, b.text);
         }
 

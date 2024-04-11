@@ -331,7 +331,7 @@ ruleTester.run('sort-type-constituents', rule, {
       code: "type T = 'DeleteForever' | 'DeletedAt';",
       options: [
         {
-          caseSensitiveSorting: true,
+          caseSensitive: true,
         },
       ],
     },
@@ -349,7 +349,7 @@ ruleTester.run('sort-type-constituents', rule, {
       code: "type T = 'DeleteForever' & 'DeleteForever';",
       options: [
         {
-          caseSensitiveSorting: true,
+          caseSensitive: true,
         },
       ],
     },
@@ -420,7 +420,7 @@ type T = 1 | string | {} | A;
       ],
       options: [
         {
-          caseSensitiveSorting: true,
+          caseSensitive: true,
         },
       ],
     },
