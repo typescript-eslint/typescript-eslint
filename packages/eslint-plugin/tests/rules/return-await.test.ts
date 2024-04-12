@@ -235,6 +235,7 @@ ruleTester.run('return-await', rule, {
         }
       `,
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8663
     {
       code: `
         async function test() {
@@ -245,9 +246,51 @@ ruleTester.run('return-await', rule, {
             }
             return await nested();
           } catch (error) {
-            return await Promise.resolve('error');
+            return Promise.resolve('error');
           }
         }
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } catch {
+    try {
+    } catch {
+      return Promise.reject();
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } finally {
+    try {
+    } catch {
+      return Promise.reject();
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } finally {
+    try {
+    } finally {
+      try {
+      } catch {
+        return Promise.reject();
+      }
+    }
+  }
+}
       `,
     },
   ],
@@ -404,10 +447,38 @@ async function test() {
           }
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             return await Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
           } catch (e) {
             return await Promise.resolve(2);
           } finally {
@@ -415,14 +486,8 @@ async function test() {
           }
         }
       `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -498,10 +563,38 @@ async function test() {
           }
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             return await Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
           } catch (e) {
             return await Promise.resolve(2);
           } finally {
@@ -509,14 +602,8 @@ async function test() {
           }
         }
       `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -571,10 +658,38 @@ async function test() {
           }
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 4,
+          messageId: 'disallowedPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'disallowedPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             return Promise.resolve(1);
+          } catch (e) {
+            return await Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'disallowedPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'disallowedPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return await Promise.resolve(1);
           } catch (e) {
             return Promise.resolve(2);
           } finally {
@@ -582,14 +697,8 @@ async function test() {
           }
         }
       `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'disallowedPromiseAwait',
-        },
-        {
-          line: 6,
-          messageId: 'disallowedPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -644,10 +753,38 @@ async function test() {
           }
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 4,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             return await Promise.resolve(1);
+          } catch (e) {
+            return Promise.resolve(2);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+        async function test() {
+          try {
+            return Promise.resolve(1);
           } catch (e) {
             return await Promise.resolve(2);
           } finally {
@@ -655,14 +792,8 @@ async function test() {
           }
         }
       `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -859,7 +990,15 @@ async function test<T>(): Promise<T> {
   }
 }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
 async function test<T>(): Promise<T> {
   const res = await fetch('...');
   try {
@@ -869,10 +1008,8 @@ async function test<T>(): Promise<T> {
   }
 }
       `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -892,7 +1029,15 @@ async function test<T>(): Promise<T> {
           }
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 10,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function test() {
           try {
             const callback1 = function () {};
@@ -907,10 +1052,8 @@ async function test<T>(): Promise<T> {
           }
         }
       `,
-      errors: [
-        {
-          line: 10,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -923,7 +1066,15 @@ async function test<T>(): Promise<T> {
           } catch {}
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function bar() {}
         async function foo() {
           try {
@@ -931,10 +1082,8 @@ async function test<T>(): Promise<T> {
           } catch {}
         }
       `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
@@ -947,7 +1096,15 @@ async function test<T>(): Promise<T> {
           } catch {}
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 5,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         async function bar() {}
         async function foo() {
           try {
@@ -955,68 +1112,102 @@ async function test<T>(): Promise<T> {
           } catch {}
         }
       `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'requiredPromiseAwait',
+            },
+          ],
         },
       ],
     },
     {
       code: `
-        async function bar() {}
-        async function func1() {
-          try {
-            return null ?? bar();
-          } catch {}
-        }
-        async function func2() {
-          try {
-            return 1 && bar();
-          } catch {}
-        }
-        const foo = {
-          bar: async function () {},
-        };
-        async function func3() {
-          try {
-            return foo.bar();
-          } catch {}
-        }
+async function bar() {}
+async function func1() {
+  try {
+    return null ?? bar();
+  } catch {}
+}
       `,
-      output: `
-        async function bar() {}
-        async function func1() {
-          try {
-            return await (null ?? bar());
-          } catch {}
-        }
-        async function func2() {
-          try {
-            return await (1 && bar());
-          } catch {}
-        }
-        const foo = {
-          bar: async function () {},
-        };
-        async function func3() {
-          try {
-            return await foo.bar();
-          } catch {}
-        }
-      `,
+      output: null,
       errors: [
         {
           line: 5,
           messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+async function bar() {}
+async function func1() {
+  try {
+    return await (null ?? bar());
+  } catch {}
+}
+      `,
+            },
+          ],
         },
+      ],
+    },
+    {
+      code: `
+async function bar() {}
+async function func2() {
+  try {
+    return 1 && bar();
+  } catch {}
+}
+      `,
+      output: null,
+      errors: [
         {
-          line: 10,
+          line: 5,
           messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+async function bar() {}
+async function func2() {
+  try {
+    return await (1 && bar());
+  } catch {}
+}
+      `,
+            },
+          ],
         },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: async function () {},
+};
+async function func3() {
+  try {
+    return foo.bar();
+  } catch {}
+}
+      `,
+      output: null,
+      errors: [
         {
-          line: 18,
+          line: 7,
           messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+const foo = {
+  bar: async function () {},
+};
+async function func3() {
+  try {
+    return await foo.bar();
+  } catch {}
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1033,7 +1224,15 @@ async function test<T>(): Promise<T> {
           }
         }
       `,
-      output: `
+      output: null,
+      errors: [
+        {
+          line: 8,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
         class X {
           async bar() {
             return;
@@ -1045,10 +1244,158 @@ async function test<T>(): Promise<T> {
           }
         }
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        async function test() {
+          const res = await Promise.resolve('{}');
+          try {
+            async function nested() {
+              return Promise.resolve('ok');
+            }
+            return await nested();
+          } catch (error) {
+            return await Promise.resolve('error');
+          }
+        }
+      `,
       errors: [
         {
-          line: 8,
+          line: 10,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+      output: `
+        async function test() {
+          const res = await Promise.resolve('{}');
+          try {
+            async function nested() {
+              return Promise.resolve('ok');
+            }
+            return await nested();
+          } catch (error) {
+            return Promise.resolve('error');
+          }
+        }
+      `,
+    },
+    {
+      code: `
+async function f() {
+  try {
+    try {
+    } finally {
+      // affects error handling of outer catch
+      return Promise.reject();
+    }
+  } catch {}
+}
+      `,
+      output: null,
+      errors: [
+        {
+          line: 7,
           messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+async function f() {
+  try {
+    try {
+    } finally {
+      // affects error handling of outer catch
+      return await Promise.reject();
+    }
+  } catch {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function f() {
+  try {
+    try {
+    } catch {
+      // affects error handling of outer catch
+      return Promise.reject();
+    }
+  } catch {}
+}
+      `,
+      output: null,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+async function f() {
+  try {
+    try {
+    } catch {
+      // affects error handling of outer catch
+      return await Promise.reject();
+    }
+  } catch {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function f() {
+  try {
+  } catch {
+    try {
+    } finally {
+      try {
+      } catch {
+        return Promise.reject();
+      }
+    }
+  } finally {
+  }
+}
+      `,
+      output: null,
+      errors: [
+        {
+          line: 9,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+async function f() {
+  try {
+  } catch {
+    try {
+    } finally {
+      try {
+      } catch {
+        return await Promise.reject();
+      }
+    }
+  } finally {
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
