@@ -189,14 +189,13 @@ export default createRule<Options, MessageIds>({
 
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
-        if (!isNullableType(type)) {
+        if (!isNullableType(type) && !isTypeFlagSet(type, ts.TypeFlags.Void)) {
           if (
             node.expression.type === AST_NODE_TYPES.Identifier &&
             isPossiblyUsedBeforeAssigned(node.expression)
           ) {
             return;
           }
-
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
@@ -217,6 +216,7 @@ export default createRule<Options, MessageIds>({
               ts.TypeFlags.Undefined,
             );
             const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
+            const typeIncludesVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
 
             const contextualTypeIncludesUndefined = isTypeFlagSet(
               contextualType,
@@ -225,6 +225,10 @@ export default createRule<Options, MessageIds>({
             const contextualTypeIncludesNull = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Null,
+            );
+            const contextualTypeIncludesVoid = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Void,
             );
 
             // make sure that the parent accepts the same types
@@ -235,8 +239,11 @@ export default createRule<Options, MessageIds>({
             const isValidNull = typeIncludesNull
               ? contextualTypeIncludesNull
               : true;
+            const isValidVoid = typeIncludesVoid
+              ? contextualTypeIncludesVoid
+              : true;
 
-            if (isValidUndefined && isValidNull) {
+            if (isValidUndefined && isValidNull && isValidVoid) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
