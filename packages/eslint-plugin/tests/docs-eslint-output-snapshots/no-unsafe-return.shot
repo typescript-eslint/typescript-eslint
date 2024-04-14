@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function foo1() {
+  return 1 as any;
+  ~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+}
+function foo2() {
+  return Object.create(null);
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+}
+const foo3 = () => {
+  return 1 as any;
+  ~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+};
+const foo4 = () => Object.create(null);
+                   ~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+
+function foo5() {
+  return [] as any[];
+  ~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+}
+function foo6() {
+  return [] as Array<any>;
+  ~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+}
+function foo7() {
+  return [] as readonly any[];
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+}
+function foo8() {
+  return [] as Readonly<any[]>;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+}
+const foo9 = () => {
+  return [] as any[];
+  ~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+};
+const foo10 = () => [] as any[];
+                    ~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+
+const foo11 = (): string[] => [1, 2, 3] as any[];
+                              ~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+
+// generic position examples
+function assignability1(): Set<string> {
+  return new Set<any>([1]);
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of type \`Set<any>\` from function with return type \`Set<string>\`.
+}
+type TAssign = () => Set<string>;
+const assignability2: TAssign = () => new Set<any>([true]);
+                                      ~~~~~~~~~~~~~~~~~~~~ Unsafe return of type \`Set<any>\` from function with return type \`Set<string>\`.
+"
+`;
+
+exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 2`] = `
+"Correct
+
+function foo1() {
+  return 1;
+}
+function foo2() {
+  return Object.create(null) as Record<string, unknown>;
+}
+
+const foo3 = () => [];
+const foo4 = () => ['a'];
+
+function assignability1(): Set<string> {
+  return new Set<string>(['foo']);
+}
+type TAssign = () => Set<string>;
+const assignability2: TAssign = () => new Set(['foo']);
+"
+`;
+
+exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 3`] = `
+"
+
+function foo1(): unknown {
+  return JSON.parse(singleObjString); // Return type for JSON.parse is any.
+}
+
+function foo2(): unknown[] {
+  return [] as any[];
+}
+"
+`;

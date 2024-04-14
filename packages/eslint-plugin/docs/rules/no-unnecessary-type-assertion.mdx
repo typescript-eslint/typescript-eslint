@@ -24,17 +24,17 @@ const bar = foo!;
 ```
 
 ```ts
-const foo = <3>3;
+const foo = <number>(3 + 5);
 ```
 
 ```ts
-type Foo = 3;
-const foo = <Foo>3;
+type Foo = number;
+const foo = <Foo>(3 + 5);
 ```
 
 ```ts
-type Foo = 3;
-const foo = 3 as Foo;
+type Foo = number;
+const foo = (3 + 5) as Foo;
 ```
 
 ```ts
