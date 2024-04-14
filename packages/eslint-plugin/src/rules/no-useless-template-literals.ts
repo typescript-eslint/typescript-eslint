@@ -8,7 +8,7 @@ import { makeNoUselessTemplateExpressionRuleObject } from './no-useless-template
 // See https://github.com/typescript-eslint/typescript-eslint/issues/8544
 
 const ruleObject = makeNoUselessTemplateExpressionRuleObject();
-// @ts-expect-error: easier than figuring out how to make this mutable.
+// @ts-expect-error: easier than asserting this as mutable or deep object spreads.
 ruleObject.name = 'no-useless-template-literals';
 ruleObject.meta.replacedBy = [
   '@typescript-eslint/no-useless-template-expression',
