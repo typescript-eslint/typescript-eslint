@@ -19,9 +19,7 @@ export type NoUselessTemplateExpressionRuleObject = Parameters<
 >[0];
 
 export function makeNoUselessTemplateExpressionRuleObject(): NoUselessTemplateExpressionRuleObject {
-  // For some reason, TS isn't totally happy if you return the object directly,
-  // but it doesn't mind if you assign it to a variable first.
-  const ruleObject: NoUselessTemplateExpressionRuleObject = {
+  return {
     name: 'no-useless-template-expression',
     meta: {
       fixable: 'code',
@@ -38,6 +36,8 @@ export function makeNoUselessTemplateExpressionRuleObject(): NoUselessTemplateEx
       schema: [],
     },
     defaultOptions: [],
+    // linter bug; see https://github.com/typescript-eslint/typescript-eslint/issues/8918
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     create(context) {
       const services = getParserServices(context);
 
@@ -181,8 +181,6 @@ export function makeNoUselessTemplateExpressionRuleObject(): NoUselessTemplateEx
       };
     },
   };
-
-  return ruleObject;
 }
 
 // The rule object factory is to support code sharing between the current rule,
