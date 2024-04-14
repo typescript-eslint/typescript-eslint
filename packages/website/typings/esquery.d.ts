@@ -14,14 +14,33 @@ declare module 'esquery' {
   declare function query(ast: Node, selector: string): Node[];
 
   declare namespace query {
+    interface ESQueryOptions {
+      nodeTypeKey?: string;
+      visitorKeys?: Record<string, readonly string[]>;
+      fallback?: (node: Node) => string[];
+      matchClass?: (className: string, node: Node, ancestry: Node[]) => boolean;
+    }
     /** Parse a selector and return its AST. */
     function parse(selector: string): Selector;
     /** From a JS AST and a selector AST, collect all JS AST nodes that match the selector. */
-    function match(ast: Node, selector: Selector): Node[];
+    function match(
+      ast: Node,
+      selector: Selector,
+      options?: ESQueryOptions,
+    ): Node[];
     /** Given a `node` and its ancestors, determine if `node` is matched by `selector`. */
-    function matches(node: Node, selector: Selector, ancestry: Node[]): boolean;
+    function matches(
+      node: Node,
+      selector: Selector,
+      ancestry: Node[],
+      options?: ESQueryOptions,
+    ): boolean;
     /** Query the code AST using the selector string. */
-    function query(ast: Node, selector: string): Node[];
+    function query(
+      ast: Node,
+      selector: string,
+      options?: ESQueryOptions,
+    ): Node[];
 
     //
     // Unions
