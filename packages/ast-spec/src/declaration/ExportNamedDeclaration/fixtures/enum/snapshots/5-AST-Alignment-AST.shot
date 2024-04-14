@@ -14,6 +14,16 @@ exports[`AST Fixtures declaration ExportNamedDeclaration enum AST Alignment - AS
 +       assertions: Array [],
         declaration: TSEnumDeclaration {
           type: 'TSEnumDeclaration',
+-         body: TSEnumBody {
+-           type: 'TSEnumBody',
+-           members: Array [],
+-
+-           range: [0, 18],
+-           loc: {
+-             start: { column: 0, line: 1 },
+-             end: { column: 18, line: 1 },
+-           },
+-         },
 -         const: false,
 -         declare: false,
           id: Identifier {
@@ -28,7 +38,7 @@ exports[`AST Fixtures declaration ExportNamedDeclaration enum AST Alignment - AS
               end: { column: 15, line: 1 },
             },
           },
-          members: Array [],
++         members: Array [],
 
           range: [7, 18],
           loc: {

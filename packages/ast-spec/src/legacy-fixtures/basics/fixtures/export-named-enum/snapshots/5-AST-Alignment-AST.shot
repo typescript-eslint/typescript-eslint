@@ -14,62 +14,94 @@ exports[`AST Fixtures legacy-fixtures basics export-named-enum AST Alignment - A
 +       assertions: Array [],
         declaration: TSEnumDeclaration {
           type: 'TSEnumDeclaration',
--         const: false,
--         declare: false,
-          id: Identifier {
-            type: 'Identifier',
--           decorators: Array [],
-            name: 'Foo',
--           optional: false,
+-         body: TSEnumBody {
+-           type: 'TSEnumBody',
+-           members: Array [
+-             TSEnumMember {
+-               type: 'TSEnumMember',
+-               computed: false,
+-               id: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'foo',
+-                 optional: false,
++         id: Identifier {
++           type: 'Identifier',
++           name: 'Foo',
 
-            range: [85, 88],
-            loc: {
-              start: { column: 12, line: 3 },
-              end: { column: 15, line: 3 },
-            },
-          },
-          members: Array [
-            TSEnumMember {
-              type: 'TSEnumMember',
--             computed: false,
-              id: Identifier {
-                type: 'Identifier',
--               decorators: Array [],
-                name: 'foo',
--               optional: false,
+-                 range: [93, 96],
+-                 loc: {
+-                   start: { column: 2, line: 4 },
+-                   end: { column: 5, line: 4 },
+-                 },
+-               },
+-               initializer: Literal {
+-                 type: 'Literal',
+-                 raw: '1',
+-                 value: 1,
++           range: [85, 88],
++           loc: {
++             start: { column: 12, line: 3 },
++             end: { column: 15, line: 3 },
++           },
++         },
++         members: Array [
++           TSEnumMember {
++             type: 'TSEnumMember',
++             id: Identifier {
++               type: 'Identifier',
++               name: 'foo',
 
-                range: [93, 96],
-                loc: {
-                  start: { column: 2, line: 4 },
-                  end: { column: 5, line: 4 },
+-                 range: [99, 100],
+-                 loc: {
+-                   start: { column: 8, line: 4 },
+-                   end: { column: 9, line: 4 },
+-                 },
++               range: [93, 96],
++               loc: {
++                 start: { column: 2, line: 4 },
++                 end: { column: 5, line: 4 },
                 },
-              },
-              initializer: Literal {
-                type: 'Literal',
-                raw: '1',
-                value: 1,
++             },
++             initializer: Literal {
++               type: 'Literal',
++               raw: '1',
++               value: 1,
 
-                range: [99, 100],
+-               range: [93, 100],
++               range: [99, 100],
                 loc: {
-                  start: { column: 8, line: 4 },
+-                 start: { column: 2, line: 4 },
++                 start: { column: 8, line: 4 },
                   end: { column: 9, line: 4 },
                 },
               },
+-             TSEnumMember {
+-               type: 'TSEnumMember',
+-               computed: false,
+-               id: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'bar',
+-                 optional: false,
 
-              range: [93, 100],
-              loc: {
-                start: { column: 2, line: 4 },
-                end: { column: 9, line: 4 },
-              },
-            },
-            TSEnumMember {
-              type: 'TSEnumMember',
--             computed: false,
-              id: Identifier {
-                type: 'Identifier',
--               decorators: Array [],
-                name: 'bar',
--               optional: false,
+-                 range: [104, 107],
+-                 loc: {
+-                   start: { column: 2, line: 5 },
+-                   end: { column: 5, line: 5 },
+-                 },
+-               },
++             range: [93, 100],
++             loc: {
++               start: { column: 2, line: 4 },
++               end: { column: 9, line: 4 },
++             },
++           },
++           TSEnumMember {
++             type: 'TSEnumMember',
++             id: Identifier {
++               type: 'Identifier',
++               name: 'bar',
 
                 range: [104, 107],
                 loc: {
@@ -77,14 +109,34 @@ exports[`AST Fixtures legacy-fixtures basics export-named-enum AST Alignment - A
                   end: { column: 5, line: 5 },
                 },
               },
+-           ],
 
-              range: [104, 107],
-              loc: {
-                start: { column: 2, line: 5 },
-                end: { column: 5, line: 5 },
-              },
+-           range: [73, 110],
+-           loc: {
+-             start: { column: 0, line: 3 },
+-             end: { column: 1, line: 6 },
++             range: [104, 107],
++             loc: {
++               start: { column: 2, line: 5 },
++               end: { column: 5, line: 5 },
++             },
             },
-          ],
+-         },
+-         const: false,
+-         declare: false,
+-         id: Identifier {
+-           type: 'Identifier',
+-           decorators: Array [],
+-           name: 'Foo',
+-           optional: false,
+-
+-           range: [85, 88],
+-           loc: {
+-             start: { column: 12, line: 3 },
+-             end: { column: 15, line: 3 },
+-           },
+-         },
++         ],
 
           range: [80, 110],
           loc: {

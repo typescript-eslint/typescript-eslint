@@ -6,6 +6,72 @@ Program {
   body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
+      body: TSEnumBody {
+        type: "TSEnumBody",
+        members: [
+          TSEnumMember {
+            type: "TSEnumMember",
+            computed: false,
+            id: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "foo",
+              optional: false,
+
+              range: [92, 95],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            initializer: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [98, 99],
+              loc: {
+                start: { column: 8, line: 4 },
+                end: { column: 9, line: 4 },
+              },
+            },
+
+            range: [92, 99],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 9, line: 4 },
+            },
+          },
+          TSEnumMember {
+            type: "TSEnumMember",
+            computed: false,
+            id: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "bar",
+              optional: false,
+
+              range: [103, 106],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 5, line: 5 },
+              },
+            },
+
+            range: [103, 106],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 5, line: 5 },
+            },
+          },
+        ],
+
+        range: [73, 109],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
       const: true,
       declare: false,
       id: Identifier {
@@ -20,63 +86,6 @@ Program {
           end: { column: 14, line: 3 },
         },
       },
-      members: [
-        TSEnumMember {
-          type: "TSEnumMember",
-          computed: false,
-          id: Identifier {
-            type: "Identifier",
-            decorators: [],
-            name: "foo",
-            optional: false,
-
-            range: [92, 95],
-            loc: {
-              start: { column: 2, line: 4 },
-              end: { column: 5, line: 4 },
-            },
-          },
-          initializer: Literal {
-            type: "Literal",
-            raw: "1",
-            value: 1,
-
-            range: [98, 99],
-            loc: {
-              start: { column: 8, line: 4 },
-              end: { column: 9, line: 4 },
-            },
-          },
-
-          range: [92, 99],
-          loc: {
-            start: { column: 2, line: 4 },
-            end: { column: 9, line: 4 },
-          },
-        },
-        TSEnumMember {
-          type: "TSEnumMember",
-          computed: false,
-          id: Identifier {
-            type: "Identifier",
-            decorators: [],
-            name: "bar",
-            optional: false,
-
-            range: [103, 106],
-            loc: {
-              start: { column: 2, line: 5 },
-              end: { column: 5, line: 5 },
-            },
-          },
-
-          range: [103, 106],
-          loc: {
-            start: { column: 2, line: 5 },
-            end: { column: 5, line: 5 },
-          },
-        },
-      ],
 
       range: [73, 109],
       loc: {

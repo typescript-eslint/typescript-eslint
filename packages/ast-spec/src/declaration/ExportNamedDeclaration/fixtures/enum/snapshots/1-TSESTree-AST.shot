@@ -9,6 +9,16 @@ Program {
       attributes: [],
       declaration: TSEnumDeclaration {
         type: "TSEnumDeclaration",
+        body: TSEnumBody {
+          type: "TSEnumBody",
+          members: [],
+
+          range: [0, 18],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 18, line: 1 },
+          },
+        },
         const: false,
         declare: false,
         id: Identifier {
@@ -23,7 +33,6 @@ Program {
             end: { column: 15, line: 1 },
           },
         },
-        members: [],
 
         range: [7, 18],
         loc: {
