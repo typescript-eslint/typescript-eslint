@@ -80,6 +80,9 @@ async function buildPackage(name: string, file: string): Promise<void> {
       assert: requireResolved('./src/mock/assert.js'),
       path: requireResolved('./src/mock/path.js'),
       typescript: requireResolved('./src/mock/typescript.js'),
+      'typescript/lib/tsserverlibrary': requireResolved(
+        './src/mock/typescript.js',
+      ),
       'lru-cache': requireResolved('./src/mock/lru-cache.js'),
     },
     plugins: [

@@ -1,5 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  ASTUtils,
+  ESLintUtils,
+} from '@typescript-eslint/utils';
 
 interface WrappingFixerParams {
   /** Source code. */
@@ -35,10 +39,15 @@ export function getWrappingFixer(
     const innerCodes = innerNodes.map(innerNode => {
       let code = sourceCode.getText(innerNode);
 
-      // check the inner expression's precedence
-      if (!isStrongPrecedenceNode(innerNode)) {
-        // the code we are adding might have stronger precedence than our wrapped node
-        // let's wrap our node in parens in case it has a weaker precedence than the code we are wrapping it in
+      /**
+       * Wrap our node in parens to prevent the following cases:
+       * - It has a weaker precedence than the code we are wrapping it in
+       * - It's gotten mistaken as block statement instead of object expression
+       */
+      if (
+        !isStrongPrecedenceNode(innerNode) ||
+        isObjectExpressionInOneLineReturn(node, innerNode)
+      ) {
         code = `(${code})`;
       }
 
@@ -73,12 +82,15 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
   return (
     innerNode.type === AST_NODE_TYPES.Literal ||
     innerNode.type === AST_NODE_TYPES.Identifier ||
+    innerNode.type === AST_NODE_TYPES.TSTypeReference ||
+    innerNode.type === AST_NODE_TYPES.TSTypeOperator ||
     innerNode.type === AST_NODE_TYPES.ArrayExpression ||
     innerNode.type === AST_NODE_TYPES.ObjectExpression ||
     innerNode.type === AST_NODE_TYPES.MemberExpression ||
     innerNode.type === AST_NODE_TYPES.CallExpression ||
     innerNode.type === AST_NODE_TYPES.NewExpression ||
-    innerNode.type === AST_NODE_TYPES.TaggedTemplateExpression
+    innerNode.type === AST_NODE_TYPES.TaggedTemplateExpression ||
+    innerNode.type === AST_NODE_TYPES.TSInstantiationExpression
   );
 }
 
@@ -86,6 +98,7 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
  * Check if a node's parent could have different precedence if the node changes.
  */
 function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parent = node.parent!;
 
   if (
@@ -133,6 +146,8 @@ function isMissingSemicolonBefore(
   sourceCode: TSESLint.SourceCode,
 ): boolean {
   for (;;) {
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const parent = node.parent!;
 
     if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
@@ -146,7 +161,10 @@ function isMissingSemicolonBefore(
         const previousStatement = block.body[statementIndex - 1];
         if (
           statementIndex > 0 &&
-          sourceCode.getLastToken(previousStatement)!.value !== ';'
+          ESLintUtils.nullThrows(
+            sourceCode.getLastToken(previousStatement),
+            'Mismatched semicolon and block',
+          ).value !== ';'
         ) {
           return true;
         }
@@ -165,6 +183,8 @@ function isMissingSemicolonBefore(
  * Checks if a node is LHS of an operator.
  */
 function isLeftHandSide(node: TSESTree.Node): boolean {
+  // https://github.com/typescript-eslint/typescript-eslint/issues/6225
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parent = node.parent!;
 
   // a++
@@ -204,4 +224,18 @@ function isLeftHandSide(node: TSESTree.Node): boolean {
   }
 
   return false;
+}
+
+/**
+ * Checks if a node's parent is arrow function expression and a inner node is object expression
+ */
+function isObjectExpressionInOneLineReturn(
+  node: TSESTree.Node,
+  innerNode: TSESTree.Node,
+): boolean {
+  return (
+    node.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    node.parent.body === node &&
+    innerNode.type === AST_NODE_TYPES.ObjectExpression
+  );
 }

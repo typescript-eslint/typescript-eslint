@@ -1,24 +1,34 @@
+---
+description: '<Description from rule metadata here>'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/your-rule-name** for documentation.
+> See **https://typescript-eslint.io/rules/RULE_NAME_REPLACEME** for documentation.
 
 ## Examples
 
 To fill out: tell us more about this rule.
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 // To fill out: incorrect code
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 // To fill out: correct code
 ```
+
+</TabItem>
+</Tabs>
 
 ## When Not To Use It
 

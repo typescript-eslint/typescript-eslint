@@ -20,23 +20,19 @@ const rule = createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
-
     return {
       LogicalExpression: (node: TSESTree.LogicalExpression): void => {
-        if (
-          (node.operator === '??' ||
-            node.operator === '||' ||
-            node.operator === '&&') &&
-          isNodeEqual(node.left, node.right)
-        ) {
+        if (isNodeEqual(node.left, node.right)) {
           context.report({
             node,
             messageId: 'removeExpression',
             fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
               return fixer.replaceText(
                 node,
-                sourceCode.text.slice(node.left.range[0], node.left.range[1]),
+                context.sourceCode.text.slice(
+                  node.left.range[0],
+                  node.left.range[1],
+                ),
               );
             },
           });

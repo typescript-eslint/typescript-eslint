@@ -3,7 +3,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -11,10 +11,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<
-  Options,
-  'meaninglessVoidOperator' | 'removeVoid'
->({
+export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',
@@ -49,14 +46,13 @@ export default util.createRule<
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {
         const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
           return fixer.removeRange([
-            sourceCode.getTokens(node)[0].range[0],
-            sourceCode.getTokens(node)[1].range[0],
+            context.sourceCode.getTokens(node)[0].range[0],
+            context.sourceCode.getTokens(node)[1].range[0],
           ]);
         };
 

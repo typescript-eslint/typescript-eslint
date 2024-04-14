@@ -5,12 +5,8 @@
   "implicitDependencies": ["ast-spec"],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/types/**/*.{mts,cts,ts,tsx}"],
-        "ignorePath": ".eslintignore"
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

@@ -7,7 +7,7 @@ export interface InputLabelProps {
   readonly children: React.ReactNode;
 }
 
-function InputLabel(props: InputLabelProps): JSX.Element {
+function InputLabel(props: InputLabelProps): React.JSX.Element {
   return (
     <label className={styles.optionLabel}>
       <span>{props.name}</span>

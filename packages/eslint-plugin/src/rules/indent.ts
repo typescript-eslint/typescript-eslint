@@ -8,13 +8,17 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('indent');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const KNOWN_NODES = new Set([
   // Class properties aren't yet supported by eslint...
@@ -84,9 +88,11 @@ const KNOWN_NODES = new Set([
   AST_NODE_TYPES.Decorator,
 ]);
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'indent',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/indent'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',
@@ -159,21 +165,20 @@ export default util.createRule<Options, MessageIds>({
           type,
           ...base,
         } as TSESTree.Property;
-      } else {
-        return {
-          type,
-          accessibility: undefined,
-          declare: false,
-          decorators: [],
-          definite: false,
-          optional: false,
-          override: false,
-          readonly: false,
-          static: false,
-          typeAnnotation: undefined,
-          ...base,
-        } as TSESTree.PropertyDefinition;
       }
+      return {
+        type,
+        accessibility: undefined,
+        declare: false,
+        decorators: [],
+        definite: false,
+        optional: false,
+        override: false,
+        readonly: false,
+        static: false,
+        typeAnnotation: undefined,
+        ...base,
+      } as TSESTree.PropertyDefinition;
     }
 
     return Object.assign({}, rules, {
@@ -375,8 +380,10 @@ export default util.createRule<Options, MessageIds>({
       },
 
       TSMappedType(node: TSESTree.TSMappedType) {
-        const sourceCode = context.getSourceCode();
-        const squareBracketStart = sourceCode.getTokenBefore(node.key)!;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const squareBracketStart = context.sourceCode.getTokenBefore(
+          node.typeParameter,
+        )!;
 
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
@@ -385,7 +392,7 @@ export default util.createRule<Options, MessageIds>({
             {
               parent: node,
               type: AST_NODE_TYPES.Property,
-              key: node.key as any,
+              key: node.typeParameter as any,
               value: node.typeAnnotation as any,
 
               // location data

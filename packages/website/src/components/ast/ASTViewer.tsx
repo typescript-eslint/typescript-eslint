@@ -21,6 +21,7 @@ export interface ASTViewerProps {
 
 function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.esquery && filter) {
       // @ts-expect-error - esquery requires js ast types
       return window.esquery.match(value, filter);
@@ -39,7 +40,7 @@ function ASTViewer({
   enableScrolling,
   hideCopyButton,
   showTokens,
-}: ASTViewerProps): JSX.Element {
+}: ASTViewerProps): React.JSX.Element {
   const model = useMemo(() => {
     if (filter) {
       return tryToApplyFilter(value, filter);

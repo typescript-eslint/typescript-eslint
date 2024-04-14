@@ -1,20 +1,20 @@
 import * as fs from 'fs';
-import glob from 'glob';
+import glob = require('glob');
 import * as path from 'path';
 import * as ts from 'typescript';
 
-import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
+import { clearCaches } from '../../src';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
 import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import type { TSESTree } from '../../src/ts-estree';
+import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices,
-} from '../../tools/test-utils';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
+} from '../test-utils/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`**/*.src.ts`, {
@@ -37,7 +37,7 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
 }
 
 // ensure tsconfig-parser watch caches are clean for each test
-beforeEach(() => clearWatchCaches());
+beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
   // test all AST snapshots
@@ -228,11 +228,11 @@ describe('semanticInfo', () => {
     expect(boundName.name).toBe('x');
 
     const tsBoundName =
-      parseResult.services.esTreeNodeToTSNodeMap?.get(boundName);
+      parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
     expectToBeDefined(tsBoundName);
     expect(tsBoundName).toBeDefined();
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap?.get(tsBoundName)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
       boundName,
     );
   });
@@ -246,55 +246,61 @@ describe('semanticInfo', () => {
     expect(parseResult.services.program).toBeDefined();
   });
 
-  it(`non-existent file should throw error when project provided`, () => {
-    expect(() =>
-      parseCodeAndGenerateServices(
-        `function M() { return Base }`,
-        createOptions('<input>'),
-      ),
-    ).toThrow(
-      /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
-    );
-  });
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    it(`non-existent file should throw error when project provided`, () => {
+      expect(() =>
+        parseCodeAndGenerateServices(
+          `function M() { return Base }`,
+          createOptions('<input>'),
+        ),
+      ).toThrow(
+        /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
+      );
+    });
+  }
 
-  it('non-existent project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-    const badConfig = createOptions(fileName);
-    badConfig.project = './tsconfigs.json';
-    expect(() =>
-      parseCodeAndGenerateServices(
-        fs.readFileSync(fileName, 'utf8'),
-        badConfig,
-      ),
-    ).toThrow(/Cannot read file .+tsconfigs\.json'/);
-  });
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    it('non-existent project file', () => {
+      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+      const badConfig = createOptions(fileName);
+      badConfig.project = './tsconfigs.json';
+      expect(() =>
+        parseCodeAndGenerateServices(
+          fs.readFileSync(fileName, 'utf8'),
+          badConfig,
+        ),
+      ).toThrow(/Cannot read file .+tsconfigs\.json'/);
+    });
 
-  it('fail to read project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-    const badConfig = createOptions(fileName);
-    badConfig.project = '.';
-    expect(() =>
-      parseCodeAndGenerateServices(
-        fs.readFileSync(fileName, 'utf8'),
-        badConfig,
-      ),
-    ).toThrow(
-      // case insensitive because unix based systems are case insensitive
-      /Cannot read file .+semanticInfo'./i,
-    );
-  });
+    it('fail to read project file', () => {
+      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+      const badConfig = createOptions(fileName);
+      badConfig.project = '.';
+      expect(() =>
+        parseCodeAndGenerateServices(
+          fs.readFileSync(fileName, 'utf8'),
+          badConfig,
+        ),
+      ).toThrow(
+        // case insensitive because unix based systems are case insensitive
+        /Cannot read file .+semanticInfo'/i,
+      );
+    });
 
-  it('malformed project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-    const badConfig = createOptions(fileName);
-    badConfig.project = './badTSConfig/tsconfig.json';
-    expect(() =>
-      parseCodeAndGenerateServices(
-        fs.readFileSync(fileName, 'utf8'),
-        badConfig,
-      ),
-    ).toThrowErrorMatchingSnapshot();
-  });
+    it('malformed project file', () => {
+      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+      const badConfig = createOptions(fileName);
+      badConfig.project = './badTSConfig/tsconfig.json';
+      expect(() =>
+        parseCodeAndGenerateServices(
+          fs.readFileSync(fileName, 'utf8'),
+          badConfig,
+        ),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `"Compiler option 'compileOnSave' requires a value of type boolean."`,
+      );
+    });
+  }
 
   it('default program produced with option', () => {
     const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
@@ -314,22 +320,41 @@ describe('semanticInfo', () => {
     );
   });
 
-  it(`first matching provided program instance is returned in result`, () => {
-    const filename = testFiles[0];
-    const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
-    const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
-    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    it(`first matching provided program instance is returned in result`, () => {
+      const filename = testFiles[0];
+      const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+      const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+      const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
+      const options = createOptions(filename);
+      const optionsProjectString = {
+        ...options,
+        programs: [program1, program2],
+        project: './tsconfig.json',
+      };
+      const parseResult = parseAndGenerateServices(code, optionsProjectString);
+      expect(parseResult.services.program).toBe(program1);
+    });
+  }
+
+  it('file not in single provided program instance should throw', () => {
+    const filename = 'non-existent-file.ts';
+    const program = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const options = createOptions(filename);
-    const optionsProjectString = {
+    const optionsWithSingleProgram = {
       ...options,
-      programs: [program1, program2],
-      project: './tsconfig.json',
+      programs: [program],
     };
-    const parseResult = parseAndGenerateServices(code, optionsProjectString);
-    expect(parseResult.services.program).toBe(program1);
+    expect(() =>
+      parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
+    ).toThrow(
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+        : `The file was not found in any of the provided program instance(s): ${filename}`,
+    );
   });
 
-  it('file not in provided program instance(s)', () => {
+  it('file not in multiple provided program instances should throw a program instance error', () => {
     const filename = 'non-existent-file.ts';
     const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
     const options = createOptions(filename);
@@ -340,7 +365,9 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      `The file was not found in any of the provided program instance(s): ${filename}`,
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+        : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
 
     const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
@@ -351,7 +378,9 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithMultiplePrograms),
     ).toThrow(
-      `The file was not found in any of the provided program instance(s): ${filename}`,
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+        : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
 
@@ -369,6 +398,10 @@ describe('semanticInfo', () => {
 function testIsolatedFile(
   parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
 ): void {
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+    return;
+  }
+
   // get type checker
   expectToHaveParserServices(parseResult.services);
   const checker = parseResult.services.program.getTypeChecker();
@@ -412,8 +445,6 @@ function testIsolatedFile(
 
 /**
  * Verifies that the type of a TS node is number[] as expected
- * @param {ts.TypeChecker} checker
- * @param {ts.Node} tsNode
  */
 function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const nodeType = checker.getTypeAtLocation(tsNode);

@@ -1,8 +1,5 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
-import { version } from 'eslint/package.json';
-import * as semver from 'semver';
-
-const isESLintV8 = semver.major(version) >= 8;
+import { builtinRules } from 'eslint/use-at-your-own-risk';
 
 interface RuleMap {
   /* eslint-disable @typescript-eslint/consistent-type-imports -- more concise to use inline imports */
@@ -10,6 +7,7 @@ interface RuleMap {
   'block-spacing': typeof import('eslint/lib/rules/block-spacing');
   'brace-style': typeof import('eslint/lib/rules/brace-style');
   'comma-dangle': typeof import('eslint/lib/rules/comma-dangle');
+  'consistent-return': typeof import('eslint/lib/rules/consistent-return');
   'dot-notation': typeof import('eslint/lib/rules/dot-notation');
   indent: typeof import('eslint/lib/rules/indent');
   'init-declarations': typeof import('eslint/lib/rules/init-declarations');
@@ -17,6 +15,7 @@ interface RuleMap {
   'keyword-spacing': typeof import('eslint/lib/rules/keyword-spacing');
   'lines-around-comment': typeof import('eslint/lib/rules/lines-around-comment');
   'lines-between-class-members': typeof import('eslint/lib/rules/lines-between-class-members');
+  'max-params': typeof import('eslint/lib/rules/max-params');
   'no-dupe-args': typeof import('eslint/lib/rules/no-dupe-args');
   'no-dupe-class-members': typeof import('eslint/lib/rules/no-dupe-class-members');
   'no-empty-function': typeof import('eslint/lib/rules/no-empty-function');
@@ -34,6 +33,7 @@ interface RuleMap {
   'no-restricted-globals': typeof import('eslint/lib/rules/no-restricted-globals');
   'object-curly-spacing': typeof import('eslint/lib/rules/object-curly-spacing');
   'prefer-const': typeof import('eslint/lib/rules/prefer-const');
+  'prefer-destructuring': typeof import('eslint/lib/rules/prefer-destructuring');
   quotes: typeof import('eslint/lib/rules/quotes');
   semi: typeof import('eslint/lib/rules/semi');
   'space-before-blocks': typeof import('eslint/lib/rules/space-before-blocks');
@@ -44,18 +44,11 @@ interface RuleMap {
 
 type RuleId = keyof RuleMap;
 
-export const getESLintCoreRule: <R extends RuleId>(ruleId: R) => RuleMap[R] =
-  isESLintV8
-    ? <R extends RuleId>(ruleId: R): RuleMap[R] =>
-        ESLintUtils.nullThrows(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          require('eslint/use-at-your-own-risk').builtinRules.get(
-            ruleId,
-          ) as RuleMap[R],
-          `ESLint's core rule '${ruleId}' not found.`,
-        )
-    : <R extends RuleId>(ruleId: R): RuleMap[R] =>
-        require(`eslint/lib/rules/${ruleId}`) as RuleMap[R];
+export const getESLintCoreRule = <R extends RuleId>(ruleId: R): RuleMap[R] =>
+  ESLintUtils.nullThrows(
+    builtinRules.get(ruleId),
+    `ESLint's core rule '${ruleId}' not found.`,
+  );
 
 export function maybeGetESLintCoreRule<R extends RuleId>(
   ruleId: R,

@@ -14,6 +14,7 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
+  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
@@ -146,12 +147,12 @@ bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = <T>(): T => {};
+const bar = <T,>(): T => {};
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-<Foo>(<T>(): T => {})();
+<Foo>(<T,>(): T => {})();
     `,
     `
 import { Nullable } from 'nullable';
@@ -404,8 +405,7 @@ export const map: { [name in Foo]: Bar } = {
 };
     `,
     // 4.1 remapped mapped type
-    {
-      code: noFormat`
+    `
 type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
@@ -414,11 +414,7 @@ export const map: { [name in Foo as string]: Bar } = {
   b: 2,
   c: 3,
 };
-      `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
-    },
+    `,
     `
 import { Nullable } from 'nullable';
 class A<T> {
@@ -468,7 +464,10 @@ export class App {
     `,
     `
 export class App {
-  constructor(baz: string, private logger: Logger) {
+  constructor(
+    baz: string,
+    private logger: Logger,
+  ) {
     console.log(baz);
     console.log(this.logger);
   }
@@ -476,7 +475,11 @@ export class App {
     `,
     `
 export class App {
-  constructor(baz: string, private logger: Logger, private bar: () => void) {
+  constructor(
+    baz: string,
+    private logger: Logger,
+    private bar: () => void,
+  ) {
     console.log(this.logger);
     this.bar();
   }
@@ -698,7 +701,7 @@ export namespace Foo {
 }
     `,
     `
-export namespace foo.bar {
+namespace foo.bar {
   export interface User {
     name: string;
   }
@@ -750,17 +753,12 @@ export function foo() {
 }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
-    {
-      code: noFormat`
+    `
 function foo<T>(value: T): T {
   return { value };
 }
 export type Foo<T> = typeof foo<T>;
-      `,
-      dependencyConstraints: {
-        typescript: '4.7',
-      },
-    },
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2331
     {
       code: `
@@ -937,20 +935,15 @@ export declare namespace Foo {
   }
 }
     `,
-    {
-      code: noFormat`
+    `
 class Foo<T> {
-    value: T;
+  value: T;
 }
 class Bar<T> {
-    foo = Foo<T>;
+  foo = Foo<T>;
 }
 new Bar();
-      `,
-      dependencyConstraints: {
-        typescript: '4.7',
-      },
-    },
+    `,
     {
       code: `
 declare namespace A {
@@ -972,9 +965,6 @@ type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 export type SeussFish = \`\${Quantity | Color} fish\`;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: noFormat`
@@ -983,18 +973,12 @@ type HorizontalAlignment = "left" | "center" | "right";
 
 export declare function setAlignment(value: \`\${VerticalAlignment}-\${HorizontalAlignment}\`): void;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: noFormat`
 type EnthusiasticGreeting<T extends string> = \`\${Uppercase<T>} - \${Lowercase<T>} - \${Capitalize<T>} - \${Uncapitalize<T>}\`;
 export type HELLO = EnthusiasticGreeting<"heLLo">;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2714
     {
@@ -1075,10 +1059,70 @@ export class Foo {
   }
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
     },
+    `
+interface Foo {
+  bar: string;
+}
+export const Foo = 'bar';
+    `,
+    `
+export const Foo = 'bar';
+interface Foo {
+  bar: string;
+}
+    `,
+    `
+let foo = 1;
+foo ??= 2;
+    `,
+    `
+let foo = 1;
+foo &&= 2;
+    `,
+    `
+let foo = 1;
+foo ||= 2;
+    `,
+    `
+const foo = 1;
+export = foo;
+    `,
+    `
+const Foo = 1;
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = {} as Foo;
+    `,
+    `
+declare module 'foo' {
+  type Foo = 1;
+  export = Foo;
+}
+    `,
+    `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  export import TheFoo = Foo;
+}
+    `,
   ],
 
   invalid: [
@@ -1799,6 +1843,108 @@ x = foo(x);
           data: {
             varName: 'x',
             action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+const Foo = 'bar';
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 5,
+          column: 7,
+          data: {
+            varName: 'Foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let foo = 1;
+foo += 1;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          column: 1,
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Bar;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          column: 11,
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Foo;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 5,
+          column: 6,
+          data: {
+            varName: 'Bar',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  import TheFoo = Foo;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 6,
+          column: 10,
+          data: {
+            varName: 'TheFoo',
+            action: 'defined',
             additional: '',
           },
         },

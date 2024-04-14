@@ -1,7 +1,18 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  isClosingParenToken,
+  isOpeningParenToken,
+  isParenthesized,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
+import { getWrappedCode } from '../util/getWrappedCode';
 
 // intentionally mirroring the options
 export type MessageIds =
@@ -21,7 +32,7 @@ type OptUnion =
     };
 export type Options = readonly [OptUnion];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
@@ -81,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const parserServices = getParserServices(context, true);
 
     function isConst(node: TSESTree.TypeNode): boolean {
       if (node.type !== AST_NODE_TYPES.TSTypeReference) {
@@ -99,21 +110,21 @@ export default util.createRule<Options, MessageIds>({
       let beforeCount = 0;
       let afterCount = 0;
 
-      if (util.isParenthesized(node, sourceCode)) {
-        const bodyOpeningParen = sourceCode.getTokenBefore(
-          node,
-          util.isOpeningParenToken,
-        )!;
-        const bodyClosingParen = sourceCode.getTokenAfter(
-          node,
-          util.isClosingParenToken,
-        )!;
+      if (isParenthesized(node, context.sourceCode)) {
+        const bodyOpeningParen = nullThrows(
+          context.sourceCode.getTokenBefore(node, isOpeningParenToken),
+          NullThrowsReasons.MissingToken('(', 'node'),
+        );
+        const bodyClosingParen = nullThrows(
+          context.sourceCode.getTokenAfter(node, isClosingParenToken),
+          NullThrowsReasons.MissingToken(')', 'node'),
+        );
 
         beforeCount = node.range[0] - bodyOpeningParen.range[0];
         afterCount = bodyClosingParen.range[1] - node.range[1];
       }
 
-      return sourceCode.getText(node, beforeCount, afterCount);
+      return context.sourceCode.getText(node, beforeCount, afterCount);
     }
 
     function reportIncorrectAssertionType(
@@ -125,26 +136,54 @@ export default util.createRule<Options, MessageIds>({
       if (isConst(node.typeAnnotation) && messageId === 'never') {
         return;
       }
-
       context.report({
         node,
         messageId,
         data:
           messageId !== 'never'
-            ? { cast: sourceCode.getText(node.typeAnnotation) }
+            ? { cast: context.sourceCode.getText(node.typeAnnotation) }
             : {},
         fix:
           messageId === 'as'
-            ? (fixer): TSESLint.RuleFix[] => [
-                fixer.replaceText(
+            ? (fixer): TSESLint.RuleFix => {
+                const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                  node as TSESTree.TSTypeAssertion,
+                );
+
+                /**
+                 * AsExpression has lower precedence than TypeAssertionExpression,
+                 * so we don't need to wrap expression and typeAnnotation in parens.
+                 */
+                const expressionCode = context.sourceCode.getText(
+                  node.expression,
+                );
+                const typeAnnotationCode = context.sourceCode.getText(
+                  node.typeAnnotation,
+                );
+
+                const asPrecedence = getOperatorPrecedence(
+                  ts.SyntaxKind.AsExpression,
+                  ts.SyntaxKind.Unknown,
+                );
+                const parentPrecedence = getOperatorPrecedence(
+                  tsNode.parent.kind,
+                  ts.isBinaryExpression(tsNode.parent)
+                    ? tsNode.parent.operatorToken.kind
+                    : ts.SyntaxKind.Unknown,
+                  ts.isNewExpression(tsNode.parent)
+                    ? tsNode.parent.arguments != null &&
+                        tsNode.parent.arguments.length > 0
+                    : undefined,
+                );
+
+                const text = `${expressionCode} as ${typeAnnotationCode}`;
+                return fixer.replaceText(
                   node,
-                  getTextWithParentheses(node.expression),
-                ),
-                fixer.insertTextAfter(
-                  node,
-                  ` as ${getTextWithParentheses(node.typeAnnotation)}`,
-                ),
-              ]
+                  isParenthesized(node, context.sourceCode)
+                    ? text
+                    : getWrappedCode(text, asPrecedence, parentPrecedence),
+                );
+              }
             : undefined,
       });
     }
@@ -189,23 +228,20 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (
-        checkType(node.typeAnnotation) &&
-        node.expression.type === AST_NODE_TYPES.ObjectExpression
-      ) {
+      if (checkType(node.typeAnnotation)) {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         if (
-          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+          node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
           !node.parent.id.typeAnnotation
         ) {
           const { parent } = node;
           suggest.push({
             messageId: 'replaceObjectTypeAssertionWithAnnotation',
-            data: { cast: sourceCode.getText(node.typeAnnotation) },
+            data: { cast: context.sourceCode.getText(node.typeAnnotation) },
             fix: fixer => [
               fixer.insertTextAfter(
                 parent.id,
-                `: ${sourceCode.getText(node.typeAnnotation)}`,
+                `: ${context.sourceCode.getText(node.typeAnnotation)}`,
               ),
               fixer.replaceText(node, getTextWithParentheses(node.expression)),
             ],
@@ -213,14 +249,12 @@ export default util.createRule<Options, MessageIds>({
         }
         suggest.push({
           messageId: 'replaceObjectTypeAssertionWithSatisfies',
-          data: { cast: sourceCode.getText(node.typeAnnotation) },
+          data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
             fixer.replaceText(node, getTextWithParentheses(node.expression)),
             fixer.insertTextAfter(
               node,
-              ` satisfies ${context
-                .getSourceCode()
-                .getText(node.typeAnnotation)}`,
+              ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
             ),
           ],
         });

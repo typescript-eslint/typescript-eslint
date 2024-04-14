@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
           abstract: true,
@@ -84,21 +85,21 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
                         loc: {
                           start: { column: 34, line: 4 },
                           end: { column: 42, line: 4 },
--                       },
--                     },
+                        },
+                      },
 -                     typeName: Identifier {
 -                       type: 'Identifier',
 -                       decorators: Array [],
 -                       name: 'Promise',
 -                       optional: false,
--
+
 -                       range: [139, 146],
 -                       loc: {
 -                         start: { column: 27, line: 4 },
 -                         end: { column: 34, line: 4 },
-                        },
-                      },
-
+-                       },
+-                     },
+-
                       range: [139, 154],
                       loc: {
                         start: { column: 27, line: 4 },

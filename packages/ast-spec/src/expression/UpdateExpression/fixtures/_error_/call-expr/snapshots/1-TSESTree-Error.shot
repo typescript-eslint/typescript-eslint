@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression UpdateExpression _error_ call-expr TSESTree - Error 1`] = `
+"TSError
+> 1 | a()++;
+    | ^^^ Invalid left-hand side expression in unary operation
+  2 |"
+`;

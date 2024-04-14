@@ -2,9 +2,10 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isFunction } from '../util';
 import type {
   FunctionExpression,
+  FunctionInfo,
   FunctionNode,
 } from '../util/explicitReturnTypeUtils';
 import {
@@ -31,7 +32,7 @@ type MessageIds =
   | 'missingArgTypeUnnamed'
   | 'missingReturnType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-module-boundary-types',
   meta: {
     type: 'problem',
@@ -80,7 +81,7 @@ export default util.createRule<Options, MessageIds>({
           },
           allowTypedFunctionExpressions: {
             description:
-              'Whether to ignore type annotations on the variable of a function expresion.',
+              'Whether to ignore type annotations on the variable of a function expression.',
             type: 'boolean',
           },
         },
@@ -98,17 +99,33 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
-
     // tracks all of the functions we've already checked
     const checkedFunctions = new Set<FunctionNode>();
 
-    // tracks functions that were found whilst traversing
-    const foundFunctions: FunctionNode[] = [];
+    const functionStack: FunctionNode[] = [];
+    const functionReturnsMap = new Map<
+      FunctionNode,
+      TSESTree.ReturnStatement[]
+    >();
 
     // all nodes visited, avoids infinite recursion for cyclic references
     // (such as class member referring to itself)
     const alreadyVisited = new Set<TSESTree.Node>();
+
+    function getReturnsInFunction(
+      node: FunctionNode,
+    ): TSESTree.ReturnStatement[] {
+      return functionReturnsMap.get(node) ?? [];
+    }
+
+    function enterFunction(node: FunctionNode): void {
+      functionStack.push(node);
+      functionReturnsMap.set(node, []);
+    }
+
+    function exitFunction(): void {
+      functionStack.pop();
+    }
 
     /*
     # How the rule works:
@@ -122,10 +139,10 @@ export default util.createRule<Options, MessageIds>({
     */
 
     return {
-      ExportDefaultDeclaration(node): void {
+      'ExportDefaultDeclaration:exit'(node): void {
         checkNode(node.declaration);
       },
-      'ExportNamedDeclaration:not([source])'(
+      'ExportNamedDeclaration:not([source]):exit'(
         node: TSESTree.ExportNamedDeclaration,
       ): void {
         if (node.declaration) {
@@ -136,20 +153,24 @@ export default util.createRule<Options, MessageIds>({
           }
         }
       },
-      TSExportAssignment(node): void {
+      'TSExportAssignment:exit'(node): void {
         checkNode(node.expression);
       },
-      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression'(
-        node: FunctionNode,
-      ): void {
-        foundFunctions.push(node);
-      },
+      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression':
+        enterFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
+      'FunctionDeclaration:exit': exitFunction,
+      'FunctionExpression:exit': exitFunction,
       'Program:exit'(): void {
-        for (const func of foundFunctions) {
-          if (isExportedHigherOrderFunction(func)) {
-            checkNode(func);
+        for (const [node, returns] of functionReturnsMap) {
+          if (isExportedHigherOrderFunction({ node, returns })) {
+            checkNode(node);
           }
         }
+      },
+      ReturnStatement(node): void {
+        const current = functionStack[functionStack.length - 1];
+        functionReturnsMap.get(current)?.push(node);
       },
     };
 
@@ -267,18 +288,23 @@ export default util.createRule<Options, MessageIds>({
       return false;
     }
 
-    function isExportedHigherOrderFunction(node: FunctionNode): boolean {
+    function isExportedHigherOrderFunction({
+      node,
+    }: FunctionInfo<FunctionNode>): boolean {
       let current: TSESTree.Node | undefined = node.parent;
       while (current) {
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           // the parent of a return will always be a block statement, so we can skip over it
-          current = current.parent?.parent;
+          current = current.parent.parent;
           continue;
         }
 
+        if (!isFunction(current)) {
+          return false;
+        }
+        const returns = getReturnsInFunction(current);
         if (
-          !util.isFunction(current) ||
-          !doesImmediatelyReturnFunctionExpression(current)
+          !doesImmediatelyReturnFunctionExpression({ node: current, returns })
         ) {
           return false;
         }
@@ -294,7 +320,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function followReference(node: TSESTree.Identifier): void {
-      const scope = context.getScope();
+      const scope = context.sourceCode.getScope(node);
       const variable = scope.set.get(node.name);
       /* istanbul ignore if */ if (!variable) {
         return;
@@ -337,8 +363,10 @@ export default util.createRule<Options, MessageIds>({
 
       switch (node.type) {
         case AST_NODE_TYPES.ArrowFunctionExpression:
-        case AST_NODE_TYPES.FunctionExpression:
-          return checkFunctionExpression(node);
+        case AST_NODE_TYPES.FunctionExpression: {
+          const returns = getReturnsInFunction(node);
+          return checkFunctionExpression({ node, returns });
+        }
 
         case AST_NODE_TYPES.ArrayExpression:
           for (const element of node.elements) {
@@ -362,8 +390,10 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.FunctionDeclaration:
-          return checkFunction(node);
+        case AST_NODE_TYPES.FunctionDeclaration: {
+          const returns = getReturnsInFunction(node);
+          return checkFunction({ node, returns });
+        }
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
@@ -405,11 +435,11 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
       const isConstructor =
-        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.kind === 'constructor';
       const isSetAccessor =
-        (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-          node.parent?.type === AST_NODE_TYPES.MethodDefinition) &&
+        (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+          node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         node.parent.kind === 'set';
       if (!isConstructor && !isSetAccessor && !node.returnType) {
         context.report({
@@ -421,7 +451,10 @@ export default util.createRule<Options, MessageIds>({
       checkParameters(node);
     }
 
-    function checkFunctionExpression(node: FunctionExpression): void {
+    function checkFunctionExpression({
+      node,
+      returns,
+    }: FunctionInfo<FunctionExpression>): void {
       if (checkedFunctions.has(node)) {
         return;
       }
@@ -435,18 +468,26 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      checkFunctionExpressionReturnType(node, options, sourceCode, loc => {
-        context.report({
-          node,
-          loc,
-          messageId: 'missingReturnType',
-        });
-      });
+      checkFunctionExpressionReturnType(
+        { node, returns },
+        options,
+        context.sourceCode,
+        loc => {
+          context.report({
+            node,
+            loc,
+            messageId: 'missingReturnType',
+          });
+        },
+      );
 
       checkParameters(node);
     }
 
-    function checkFunction(node: TSESTree.FunctionDeclaration): void {
+    function checkFunction({
+      node,
+      returns,
+    }: FunctionInfo<TSESTree.FunctionDeclaration>): void {
       if (checkedFunctions.has(node)) {
         return;
       }
@@ -456,13 +497,18 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      checkFunctionReturnType(node, options, sourceCode, loc => {
-        context.report({
-          node,
-          loc,
-          messageId: 'missingReturnType',
-        });
-      });
+      checkFunctionReturnType(
+        { node, returns },
+        options,
+        context.sourceCode,
+        loc => {
+          context.report({
+            node,
+            loc,
+            messageId: 'missingReturnType',
+          });
+        },
+      );
 
       checkParameters(node);
     }

@@ -8,6 +8,10 @@
   border-radius: inherit;
 }
 
+.codeBlockContent:has(.playgroundButton) {
+  min-height: 5.5rem;
+}
+
 .codeBlockTitle {
   border-bottom: 1px solid var(--ifm-color-emphasis-300);
   font-size: var(--ifm-code-font-size);
@@ -81,4 +85,22 @@
 
 :global(.theme-code-block:hover) .buttonGroup button {
   opacity: 0.4;
+}
+
+.playgroundButton {
+  position: absolute;
+  bottom: calc(var(--ifm-pre-padding) / 2);
+  right: calc(var(--ifm-pre-padding) / 2);
+}
+
+@media screen and (width <= 768px), screen and (996px <= width <= 1200px) {
+  .codeBlockContent {
+    min-height: auto;
+    overflow: auto;
+  }
+
+  .playgroundButton {
+    position: static;
+    margin: calc(var(--ifm-pre-padding) / 2);
+  }
 }

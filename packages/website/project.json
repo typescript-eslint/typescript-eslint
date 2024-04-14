@@ -4,16 +4,17 @@
   "type": "library",
   "implicitDependencies": [],
   "targets": {
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+    "start": {
+      "dependsOn": ["website-eslint:build"],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "packages/website/**/*.{mts,cts,ts,tsx}",
-          "packages/website/**/*.{mjs,cjs,js,jsx}"
-        ],
-        "ignorePath": ".eslintignore"
+        "cwd": "packages/website",
+        "command": "docusaurus start"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

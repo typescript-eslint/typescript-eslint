@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isOpeningParenToken } from '../util';
 
 type Option = 'always' | 'never';
 type FuncOption = Option | 'ignore';
@@ -16,9 +17,11 @@ export type Options = [
 ];
 export type MessageIds = 'missing' | 'unexpected';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'space-before-function-paren',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/space-before-function-paren'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before function parenthesis',
@@ -61,14 +64,11 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: ['always'],
 
   create(context, [firstOption]) {
-    const sourceCode = context.getSourceCode();
     const baseConfig = typeof firstOption === 'string' ? firstOption : 'always';
     const overrideConfig = typeof firstOption === 'object' ? firstOption : {};
 
     /**
      * Determines whether a function has a name.
-     * @param {ASTNode} node The function node.
-     * @returns {boolean} Whether the function has a name.
      */
     function isNamedFunction(
       node:
@@ -94,8 +94,6 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Gets the config for a given function
-     * @param {ASTNode} node The function node
-     * @returns {string} "always", "never", or "ignore"
      */
     function getConfigForFunction(
       node:
@@ -109,7 +107,9 @@ export default util.createRule<Options, MessageIds>({
         // Always ignore non-async functions and arrow functions without parens, e.g. async foo => bar
         if (
           node.async &&
-          util.isOpeningParenToken(sourceCode.getFirstToken(node, { skip: 1 })!)
+          isOpeningParenToken(
+            context.sourceCode.getFirstToken(node, { skip: 1 })!,
+          )
         ) {
           return overrideConfig.asyncArrow ?? baseConfig;
         }
@@ -126,8 +126,7 @@ export default util.createRule<Options, MessageIds>({
 
     /**
      * Checks the parens of a function node
-     * @param {ASTNode} node A function node
-     * @returns {void}
+     * @param node A function node
      */
     function checkFunction(
       node:
@@ -146,14 +145,20 @@ export default util.createRule<Options, MessageIds>({
       let leftToken: TSESTree.Token;
       let rightToken: TSESTree.Token;
       if (node.typeParameters) {
-        leftToken = sourceCode.getLastToken(node.typeParameters)!;
-        rightToken = sourceCode.getTokenAfter(leftToken)!;
+        leftToken = context.sourceCode.getLastToken(node.typeParameters)!;
+        rightToken = context.sourceCode.getTokenAfter(leftToken)!;
       } else {
-        rightToken = sourceCode.getFirstToken(node, util.isOpeningParenToken)!;
-        leftToken = sourceCode.getTokenBefore(rightToken)!;
+        rightToken = context.sourceCode.getFirstToken(
+          node,
+          isOpeningParenToken,
+        )!;
+        leftToken = context.sourceCode.getTokenBefore(rightToken)!;
       }
-      // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
-      const hasSpacing = sourceCode.isSpaceBetweenTokens(leftToken, rightToken);
+
+      const hasSpacing = context.sourceCode.isSpaceBetween(
+        leftToken,
+        rightToken,
+      );
 
       if (hasSpacing && functionConfig === 'never') {
         context.report({

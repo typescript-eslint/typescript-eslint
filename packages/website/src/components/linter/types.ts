@@ -1,6 +1,11 @@
 import type { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
 import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import type {
+  ClassicConfig,
+  Linter,
+  SourceCode,
+} from '@typescript-eslint/utils/ts-eslint';
 import type esquery from 'esquery';
 import type * as ts from 'typescript';
 
@@ -8,18 +13,18 @@ export type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-
 
 export interface UpdateModel {
   storedAST?: TSESTree.Program;
-  storedTsAST?: ts.SourceFile;
+  storedTsAST?: ts.Node;
   storedScope?: ScopeManager;
   typeChecker?: ts.TypeChecker;
 }
 
 export interface WebLinterModule {
-  createLinter: () => TSESLint.Linter;
+  createLinter: () => Linter;
   analyze: typeof analyze;
-  visitorKeys: TSESLint.SourceCode.VisitorKeys;
+  visitorKeys: SourceCode.VisitorKeys;
   astConverter: typeof astConverter;
   esquery: typeof esquery;
-  configs: Record<string, TSESLint.Linter.Config>;
+  configs: Record<string, ClassicConfig.Config>;
 }
 
 export type PlaygroundSystem = Required<
@@ -27,11 +32,12 @@ export type PlaygroundSystem = Required<
 > &
   ts.System & {
     removeFile: (fileName: string) => void;
+    searchFiles: (path: string) => string[];
   };
 
 export type LinterOnLint = (
   fileName: string,
-  messages: TSESLint.Linter.LintMessage[],
+  messages: Linter.LintMessage[],
 ) => void;
 
 export type LinterOnParse = (fileName: string, model: UpdateModel) => void;

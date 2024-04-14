@@ -2,7 +2,7 @@ import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isDefinitionFile } from '../util';
 
 type Options = [
   {
@@ -11,7 +11,7 @@ type Options = [
 ];
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
@@ -46,16 +46,13 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
-        const sourceCode = context.getSourceCode();
-        const filename = context.getFilename();
-
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;
         }
 
         const extend = node.extends;
-        if (!extend || extend.length === 0) {
+        if (extend.length === 0) {
           context.report({
             node: node.id,
             messageId: 'noEmpty',
@@ -66,25 +63,25 @@ export default util.createRule<Options, MessageIds>({
             const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
               let typeParam = '';
               if (node.typeParameters) {
-                typeParam = sourceCode.getText(node.typeParameters);
+                typeParam = context.sourceCode.getText(node.typeParameters);
               }
               return fixer.replaceText(
                 node,
-                `type ${sourceCode.getText(
+                `type ${context.sourceCode.getText(
                   node.id,
-                )}${typeParam} = ${sourceCode.getText(extend[0])}`,
+                )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
               );
             };
-            const scope = context.getScope();
+            const scope = context.sourceCode.getScope(node);
 
             const mergedWithClassDeclaration = scope.set
               .get(node.id.name)
-              ?.defs?.some(
+              ?.defs.some(
                 def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
               );
 
             const isInAmbientDeclaration = !!(
-              util.isDefinitionFile(filename) &&
+              isDefinitionFile(context.filename) &&
               scope.type === ScopeType.tsModule &&
               scope.block.declare
             );
@@ -99,15 +96,15 @@ export default util.createRule<Options, MessageIds>({
               ...(useAutoFix
                 ? { fix }
                 : !mergedWithClassDeclaration
-                ? {
-                    suggest: [
-                      {
-                        messageId: 'noEmptyWithSuper',
-                        fix,
-                      },
-                    ],
-                  }
-                : null),
+                  ? {
+                      suggest: [
+                        {
+                          messageId: 'noEmptyWithSuper',
+                          fix,
+                        },
+                      ],
+                    }
+                  : null),
             });
           }
         }

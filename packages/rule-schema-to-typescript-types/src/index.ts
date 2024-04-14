@@ -1,23 +1,18 @@
+import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import path from 'path';
-import { format as prettierFormat, resolveConfig } from 'prettier';
+import prettier from 'prettier';
 
 import { generateType } from './generateType';
-import { isArray } from './isArray';
 import { optimizeAST } from './optimizeAST';
 import { printTypeAlias } from './printAST';
 import type { AST } from './types';
 
-const prettierConfig = {
-  ...(resolveConfig.sync(__filename) ?? {}),
-  filepath: path.join(__dirname, 'schema.ts'),
-};
-
-export function compile(
+export async function compile(
   schemaIn: JSONSchema4 | readonly JSONSchema4[],
-): string {
+  prettierConfig: Promise<prettier.Options>,
+): Promise<string> {
   const { schema, isArraySchema } = (() => {
-    if (isArray(schemaIn)) {
+    if (TSUtils.isArray(schemaIn)) {
       return {
         schema: schemaIn,
         isArraySchema: true,
@@ -52,7 +47,7 @@ export function compile(
 
   const unformattedCode = [...refTypes, optionsType].join('\n\n');
   try {
-    return prettierFormat(unformattedCode, prettierConfig);
+    return await prettier.format(unformattedCode, await prettierConfig);
   } catch (e) {
     if (e instanceof Error) {
       e.message = e.message + `\n\nUnformatted Code:\n${unformattedCode}`;
@@ -69,9 +64,7 @@ function compileSchema(
 
   const refMap = new Map<string, string>();
   // we only support defs at the top level for simplicity
-  const defs = (schema.$defs ?? schema.definitions) as
-    | Record<string, JSONSchema4>
-    | undefined;
+  const defs = schema.$defs ?? schema.definitions;
   if (defs) {
     for (const [defKey, defSchema] of Object.entries(defs)) {
       const typeName = toPascalCase(defKey);

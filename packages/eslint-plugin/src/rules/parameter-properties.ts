@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, nullThrows } from '../util';
 
 type Modifier =
   | 'private readonly'
@@ -23,7 +23,7 @@ type Options = [
 
 type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'parameter-properties',
   meta: {
     type: 'problem',
@@ -60,7 +60,6 @@ export default util.createRule<Options, MessageIds>({
             items: {
               $ref: '#/items/0/$defs/modifier',
             },
-            minItems: 1,
           },
           prefer: {
             type: 'string',
@@ -150,8 +149,6 @@ export default util.createRule<Options, MessageIds>({
       return created;
     }
 
-    const sourceCode = context.getSourceCode();
-
     function typeAnnotationsMatch(
       classProperty: TSESTree.PropertyDefinition,
       constructorParameter: TSESTree.Identifier,
@@ -166,8 +163,8 @@ export default util.createRule<Options, MessageIds>({
       }
 
       return (
-        sourceCode.getText(classProperty.typeAnnotation) ===
-        sourceCode.getText(constructorParameter.typeAnnotation)
+        context.sourceCode.getText(classProperty.typeAnnotation) ===
+        context.sourceCode.getText(constructorParameter.typeAnnotation)
       );
     }
 
@@ -177,7 +174,10 @@ export default util.createRule<Options, MessageIds>({
       },
 
       ':matches(ClassDeclaration, ClassExpression):exit'(): void {
-        const propertyNodesByName = propertyNodesByNameStack.pop()!;
+        const propertyNodesByName = nullThrows(
+          propertyNodesByNameStack.pop(),
+          'Stack should exist on class exit',
+        );
 
         for (const [name, nodes] of propertyNodesByName) {
           if (

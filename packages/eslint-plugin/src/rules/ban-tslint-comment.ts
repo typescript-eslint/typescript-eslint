@@ -1,6 +1,6 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 // tslint regex
 // https://github.com/palantir/tslint/blob/95d9d958833fd9dc0002d18cbe34db20d0fbf437/src/enableDisableRules.ts#L32
@@ -15,7 +15,7 @@ const toText = (
     ? ['//', text.trim()].join(' ')
     : ['/*', text.trim(), '*/'].join(' ');
 
-export default util.createRule({
+export default createRule({
   name: 'ban-tslint-comment',
   meta: {
     type: 'suggestion',
@@ -31,10 +31,9 @@ export default util.createRule({
   },
   defaultOptions: [],
   create: context => {
-    const sourceCode = context.getSourceCode();
     return {
       Program(): void {
-        const comments = sourceCode.getAllComments();
+        const comments = context.sourceCode.getAllComments();
         comments.forEach(c => {
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
@@ -42,11 +41,11 @@ export default util.createRule({
               node: c,
               messageId: 'commentDetected',
               fix(fixer) {
-                const rangeStart = sourceCode.getIndexFromLoc({
+                const rangeStart = context.sourceCode.getIndexFromLoc({
                   column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,
                   line: c.loc.start.line,
                 });
-                const rangeEnd = sourceCode.getIndexFromLoc({
+                const rangeEnd = context.sourceCode.getIndexFromLoc({
                   column: c.loc.end.column,
                   line: c.loc.end.line,
                 });

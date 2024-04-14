@@ -9,29 +9,21 @@ import { Visitor } from './Visitor';
 class ClassVisitor extends Visitor {
   readonly #classNode: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   readonly #referencer: Referencer;
-  readonly #emitDecoratorMetadata: boolean;
 
   constructor(
     referencer: Referencer,
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-    emitDecoratorMetadata: boolean,
   ) {
     super(referencer);
     this.#referencer = referencer;
     this.#classNode = node;
-    this.#emitDecoratorMetadata = emitDecoratorMetadata;
   }
 
   static visit(
     referencer: Referencer,
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-    emitDecoratorMetadata: boolean,
   ): void {
-    const classVisitor = new ClassVisitor(
-      referencer,
-      node,
-      emitDecoratorMetadata,
-    );
+    const classVisitor = new ClassVisitor(referencer, node);
     classVisitor.visitClass(node);
   }
 
@@ -75,7 +67,7 @@ class ClassVisitor extends Visitor {
     this.visitType(node.typeParameters);
     // then the usages
     this.visitType(node.superTypeArguments);
-    node.implements?.forEach(imp => this.visitType(imp));
+    node.implements.forEach(imp => this.visitType(imp));
 
     this.visit(node.body);
 
@@ -96,25 +88,21 @@ class ClassVisitor extends Visitor {
      *   foo: Type;
      * }
      */
-    this.visitMetadataType(node.typeAnnotation, !!node.decorators.length);
+    this.visitType(node.typeAnnotation);
   }
 
   protected visitFunctionParameterTypeAnnotation(
     node: TSESTree.Parameter,
-    withDecorators: boolean,
   ): void {
     switch (node.type) {
       case AST_NODE_TYPES.AssignmentPattern:
-        this.visitMetadataType(node.left.typeAnnotation, withDecorators);
+        this.visitType(node.left.typeAnnotation);
         break;
       case AST_NODE_TYPES.TSParameterProperty:
-        this.visitFunctionParameterTypeAnnotation(
-          node.parameter,
-          withDecorators,
-        );
+        this.visitFunctionParameterTypeAnnotation(node.parameter);
         break;
       default:
-        this.visitMetadataType(node.typeAnnotation, withDecorators);
+        this.visitType(node.typeAnnotation);
     }
   }
 
@@ -154,10 +142,9 @@ class ClassVisitor extends Visitor {
      *   ) {}
      * }
      */
-    withMethodDecorators =
-      withMethodDecorators ||
-      (methodNode.kind !== 'set' &&
-        node.params.some(param => param.decorators.length));
+    withMethodDecorators ||=
+      methodNode.kind !== 'set' &&
+      node.params.some(param => param.decorators.length);
     if (!withMethodDecorators && methodNode.kind === 'set') {
       const keyName = getLiteralMethodKeyName(methodNode);
 
@@ -192,7 +179,7 @@ class ClassVisitor extends Visitor {
     if (
       !withMethodDecorators &&
       methodNode.kind === 'constructor' &&
-      this.#classNode.decorators
+      this.#classNode.decorators.length
     ) {
       withMethodDecorators = true;
     }
@@ -218,24 +205,14 @@ class ClassVisitor extends Visitor {
         },
         { processRightHandNodes: true },
       );
-      this.visitFunctionParameterTypeAnnotation(param, withMethodDecorators);
+      this.visitFunctionParameterTypeAnnotation(param);
       param.decorators.forEach(d => this.visit(d));
     }
 
-    this.visitMetadataType(node.returnType, withMethodDecorators);
+    this.visitType(node.returnType);
     this.visitType(node.typeParameters);
 
-    // In TypeScript there are a number of function-like constructs which have no body,
-    // so check it exists before traversing
-    if (node.body) {
-      // Skip BlockStatement to prevent creating BlockStatement scope.
-      if (node.body.type === AST_NODE_TYPES.BlockStatement) {
-        this.#referencer.visitChildren(node.body);
-      } else {
-        this.#referencer.visit(node.body);
-      }
-    }
-
+    this.#referencer.visitChildren(node.body);
     this.#referencer.close(node);
   }
 
@@ -293,49 +270,6 @@ class ClassVisitor extends Visitor {
       return;
     }
     TypeVisitor.visit(this.#referencer, node);
-  }
-
-  protected visitMetadataType(
-    node: TSESTree.TSTypeAnnotation | null | undefined,
-    withDecorators: boolean,
-  ): void {
-    if (!node) {
-      return;
-    }
-    // emit decorators metadata only work for TSTypeReference in ClassDeclaration
-    if (
-      this.#classNode.type === AST_NODE_TYPES.ClassDeclaration &&
-      !this.#classNode.declare &&
-      node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
-      this.#emitDecoratorMetadata
-    ) {
-      let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
-      if (
-        node.typeAnnotation.typeName.type === AST_NODE_TYPES.TSQualifiedName
-      ) {
-        let iter = node.typeAnnotation.typeName;
-        while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
-          iter = iter.left;
-        }
-        entityName = iter.left;
-      } else {
-        entityName = node.typeAnnotation.typeName;
-      }
-
-      if (withDecorators) {
-        if (entityName.type === AST_NODE_TYPES.Identifier) {
-          this.#referencer.currentScope().referenceDualValueType(entityName);
-        }
-
-        if (node.typeAnnotation.typeArguments) {
-          this.visitType(node.typeAnnotation.typeArguments);
-        }
-
-        // everything is handled now
-        return;
-      }
-    }
-    this.visitType(node);
   }
 
   /////////////////////

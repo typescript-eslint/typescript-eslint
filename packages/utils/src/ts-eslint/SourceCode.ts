@@ -3,6 +3,7 @@
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
 import type { ParserServices, TSESTree } from '../ts-estree';
+import type { Parser } from './Parser';
 import type { Scope } from './Scope';
 
 declare class TokenStore {
@@ -64,7 +65,6 @@ declare class TokenStore {
    * Gets the first `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getFirstTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -108,7 +108,6 @@ declare class TokenStore {
    * Gets the last `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getLastTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -182,52 +181,37 @@ declare class TokenStore {
    * Gets the `count` tokens that follows a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param options The option object. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
    * @returns Tokens between left and right.
    */
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    padding?: T,
-  ): SourceCode.ReturnTypeFromOptions<T>[];
-  /**
-   * Gets all of the tokens between two non-overlapping nodes.
-   * @param left Node before the desired token range.
-   * @param right Node after the desired token range.
-   * @param padding Number of extra tokens on either side of center.
-   * @returns Tokens between left and right.
-   */
-  getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token,
-    right: TSESTree.Node | TSESTree.Token,
-    padding?: number,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
 declare class SourceCodeBase extends TokenStore {
   /**
    * Represents parsed source code.
-   * @param text The source code text.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
    */
   constructor(text: string, ast: SourceCode.Program);
@@ -289,12 +273,11 @@ declare class SourceCodeBase extends TokenStore {
    * Determines if two nodes or tokens have at least one whitespace character
    * between them. Order does not matter. Returns false if the given nodes or
    * tokens overlap.
-   * @since 6.7.0
    * @param first The first node or token to check between.
    * @param second The second node or token to check between.
    * @returns True if there is a whitespace character between any of the tokens found between the two given nodes or tokens.
    */
-  isSpaceBetween?(
+  isSpaceBetween(
     first: TSESTree.Node | TSESTree.Token,
     second: TSESTree.Node | TSESTree.Token,
   ): boolean;
@@ -312,6 +295,27 @@ declare class SourceCodeBase extends TokenStore {
    */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
   /**
+   * Returns the scope of the given node.
+   * This information can be used track references to variables.
+   */
+  getScope(node: TSESTree.Node): Scope.Scope;
+  /**
+   * Returns an array of the ancestors of the given node, starting at
+   * the root of the AST and continuing through the direct parent of the current node.
+   * This array does not include the currently-traversed node itself.
+   */
+  getAncestors(node: TSESTree.Node): TSESTree.Node[];
+  /**
+   * Returns a list of variables declared by the given node.
+   * This information can be used to track references to variables.
+   */
+  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
+  /**
+   * Marks a variable with the given name in the current scope as used.
+   * This affects the no-unused-vars rule.
+   */
+  markVariableAsUsed(name: string, node: TSESTree.Node): boolean;
+  /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.
    */
@@ -323,7 +327,7 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * The parser services of this source code.
    */
-  parserServices: ParserServices;
+  parserServices?: Partial<ParserServices>;
   /**
    * The scope of this source code.
    */
@@ -384,24 +388,21 @@ namespace SourceCode {
     visitorKeys: VisitorKeys | null;
   }
 
-  export interface VisitorKeys {
-    [nodeType: string]: string[];
-  }
+  export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
-  export type GetFilterPredicate<TFilter, TDefault> =
+  export type GetFilterPredicate<Filter, Default> =
     // https://github.com/prettier/prettier/issues/14275
     // prettier-ignore
-    TFilter extends ((
+    Filter extends ((
       token: TSESTree.Token,
     ) => token is infer U extends TSESTree.Token)
       ? U
-      : TDefault;
-  export type GetFilterPredicateFromOptions<TOptions, TDefault> =
-    TOptions extends { filter?: FilterPredicate }
-      ? GetFilterPredicate<TOptions['filter'], TDefault>
-      : GetFilterPredicate<TOptions, TDefault>;
-
+      : Default;
+  export type GetFilterPredicateFromOptions<Options, Default> =
+    Options extends { filter?: FilterPredicate }
+      ? GetFilterPredicate<Options['filter'], Default>
+      : GetFilterPredicate<Options, Default>;
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? GetFilterPredicateFromOptions<T, TSESTree.Token>
     : GetFilterPredicateFromOptions<

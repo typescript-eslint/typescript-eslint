@@ -1,11 +1,16 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  isNonNullAssertionPunctuator,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'no-non-null-assertion',
   meta: {
     type: 'problem',
@@ -24,41 +29,29 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
     return {
       TSNonNullExpression(node): void {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-        function convertTokenToOptional(
-          replacement: '?.' | '?',
-        ): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              util.isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.replaceText(operator, replacement);
-            }
 
-            return null;
-          };
+        // it always exists in non-null assertion
+        const nonNullOperator = nullThrows(
+          context.sourceCode.getTokenAfter(
+            node.expression,
+            isNonNullAssertionPunctuator,
+          ),
+          NullThrowsReasons.MissingToken('!', 'expression'),
+        );
+
+        function replaceTokenWithOptional(): TSESLint.ReportFixFunction {
+          return fixer => fixer.replaceText(nonNullOperator, '?.');
         }
-        function removeToken(): TSESLint.ReportFixFunction {
-          return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
-            const operator = sourceCode.getTokenAfter(
-              node.expression,
-              util.isNonNullAssertionPunctuator,
-            );
-            if (operator) {
-              return fixer.remove(operator);
-            }
 
-            return null;
-          };
+        function removeToken(): TSESLint.ReportFixFunction {
+          return fixer => fixer.remove(nonNullOperator);
         }
 
         if (
-          node.parent?.type === AST_NODE_TYPES.MemberExpression &&
+          node.parent.type === AST_NODE_TYPES.MemberExpression &&
           node.parent.object === node
         ) {
           if (!node.parent.optional) {
@@ -66,13 +59,24 @@ export default util.createRule<[], MessageIds>({
               // it is x![y]?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?.'),
+                fix: replaceTokenWithOptional(),
               });
             } else {
               // it is x!.y?.z
               suggest.push({
                 messageId: 'suggestOptionalChain',
-                fix: convertTokenToOptional('?'),
+                fix(fixer) {
+                  // x!.y?.z
+                  //   ^ punctuator
+                  const punctuator = nullThrows(
+                    context.sourceCode.getTokenAfter(nonNullOperator),
+                    NullThrowsReasons.MissingToken('.', '!'),
+                  );
+                  return [
+                    fixer.remove(nonNullOperator),
+                    fixer.insertTextBefore(punctuator, '?'),
+                  ];
+                },
               });
             }
           } else {
@@ -91,14 +95,14 @@ export default util.createRule<[], MessageIds>({
             }
           }
         } else if (
-          node.parent?.type === AST_NODE_TYPES.CallExpression &&
+          node.parent.type === AST_NODE_TYPES.CallExpression &&
           node.parent.callee === node
         ) {
           if (!node.parent.optional) {
             // it is x.y?.z!()
             suggest.push({
               messageId: 'suggestOptionalChain',
-              fix: convertTokenToOptional('?.'),
+              fix: replaceTokenWithOptional(),
             });
           } else {
             // it is x.y.z!?.()

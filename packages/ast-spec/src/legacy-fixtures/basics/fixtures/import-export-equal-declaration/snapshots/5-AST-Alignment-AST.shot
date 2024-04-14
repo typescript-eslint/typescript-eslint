@@ -10,7 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics import-export-equal-declaration AST
     body: Array [
 -     ExportNamedDeclaration {
 -       type: 'ExportNamedDeclaration',
--       assertions: Array [],
+-       attributes: Array [],
 -       declaration: TSImportEqualsDeclaration {
 -         type: 'TSImportEqualsDeclaration',
 -         id: Identifier {
@@ -41,13 +41,6 @@ exports[`AST Fixtures legacy-fixtures basics import-export-equal-declaration AST
 -             type: 'Literal',
 -             raw: '\\'bar\\'',
 -             value: 'bar',
--
--             range: [101, 106],
--             loc: {
--               start: { column: 28, line: 3 },
--               end: { column: 33, line: 3 },
--             },
--           },
 +       },
 +       importKind: 'value',
 +       isExport: true,
@@ -58,6 +51,13 @@ exports[`AST Fixtures legacy-fixtures basics import-export-equal-declaration AST
 +           raw: '\\'bar\\'',
 +           value: 'bar',
 
+-             range: [101, 106],
+-             loc: {
+-               start: { column: 28, line: 3 },
+-               end: { column: 33, line: 3 },
+-             },
+-           },
+-
 -           range: [93, 107],
 +           range: [101, 106],
             loc: {
@@ -88,8 +88,7 @@ exports[`AST Fixtures legacy-fixtures basics import-export-equal-declaration AST
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 109],
     loc: {

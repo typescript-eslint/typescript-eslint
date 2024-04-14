@@ -107,9 +107,6 @@ function isStrictScope(
   return false;
 }
 
-/**
- * Register scope
- */
 function registerScope(scopeManager: ScopeManager, scope: Scope): void {
   scopeManager.scopes.push(scope);
 
@@ -136,9 +133,9 @@ const VARIABLE_SCOPE_TYPES = new Set([
 
 type AnyScope = ScopeBase<ScopeType, TSESTree.Node, Scope | null>;
 abstract class ScopeBase<
-  TType extends ScopeType,
-  TBlock extends TSESTree.Node,
-  TUpper extends Scope | null,
+  Type extends ScopeType,
+  Block extends TSESTree.Node,
+  Upper extends Scope | null,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
@@ -149,7 +146,7 @@ abstract class ScopeBase<
    * The AST node which created this scope.
    * @public
    */
-  public readonly block: TBlock;
+  public readonly block: Block;
   /**
    * The array of child scopes. This does not include grandchild scopes.
    * @public
@@ -200,16 +197,12 @@ abstract class ScopeBase<
    * @public
    */
   public readonly through: Reference[] = [];
-  /**
-   * The type of scope
-   * @public
-   */
-  public readonly type: TType;
+  public readonly type: Type;
   /**
    * Reference to the parent {@link Scope}.
    * @public
    */
-  public readonly upper: TUpper;
+  public readonly upper: Upper;
   /**
    * The scoped {@link Variable}s of this scope.
    * In the case of a 'function' scope this includes the automatic argument `arguments` as its first element, as well
@@ -227,12 +220,12 @@ abstract class ScopeBase<
 
   constructor(
     scopeManager: ScopeManager,
-    type: TType,
-    upperScope: TUpper,
-    block: TBlock,
+    type: Type,
+    upperScope: Upper,
+    block: Block,
     isMethodDefinition: boolean,
   ) {
-    const upperScopeAsScopeBase = upperScope!;
+    const upperScopeAsScopeBase = upperScope;
 
     this.type = type;
     this.#dynamic =
@@ -240,7 +233,8 @@ abstract class ScopeBase<
     this.block = block;
     this.variableScope = this.isVariableScope()
       ? this
-      : upperScopeAsScopeBase.variableScope;
+      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        upperScopeAsScopeBase!.variableScope;
     this.upper = upperScope;
 
     /**
@@ -249,10 +243,8 @@ abstract class ScopeBase<
      */
     this.isStrict = isStrictScope(this as Scope, block, isMethodDefinition);
 
-    if (upperScopeAsScopeBase) {
-      // this is guaranteed to be correct at runtime
-      upperScopeAsScopeBase.childScopes.push(this as Scope);
-    }
+    // this is guaranteed to be correct at runtime
+    upperScopeAsScopeBase?.childScopes.push(this as Scope);
 
     this.#declaredVariables = scopeManager.declaredVariables;
 
@@ -293,11 +285,7 @@ abstract class ScopeBase<
     return (
       defs.length > 0 &&
       defs.every(def => {
-        if (
-          def.type === DefinitionType.Variable &&
-          def.parent?.type === AST_NODE_TYPES.VariableDeclaration &&
-          def.parent.kind === 'var'
-        ) {
+        if (def.type === DefinitionType.Variable && def.parent.kind === 'var') {
           return false;
         }
         return true;
@@ -343,8 +331,10 @@ abstract class ScopeBase<
     let current = this as Scope | null;
 
     do {
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       current!.through.push(ref);
       current = current!.upper;
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
     } while (current);
   };
 
@@ -386,10 +376,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = this.upper! as AnyScope;
-    if (upper?.leftToResolve) {
-      upper.leftToResolve.push(ref);
-    }
+    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
     this.through.push(ref);
   }
 

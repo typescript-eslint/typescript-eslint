@@ -8,6 +8,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
+    'return;',
     {
       code: `
 function test(): void {
@@ -180,6 +181,53 @@ class App {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7552
+    {
+      code: 'const foo = <button onClick={() => {}} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <button on={{ click: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/525
     {
       code: `
@@ -220,6 +268,17 @@ const myObj = {
     },
     {
       code: `
+() => {
+  const foo = 'foo';
+  return function (): string {
+    return foo;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
 function fn() {
   return (): void => {};
 }
@@ -229,6 +288,31 @@ function fn() {
     {
       code: `
 function fn() {
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn() {
+  const bar = () => (): number => 1;
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn(arg: boolean) {
+  if (arg) {
+    return () => (): number => 1;
+  } else {
+    return function (): string {
+      return 'foo';
+    };
+  }
+
   return function (): void {};
 }
       `,
@@ -338,8 +422,8 @@ foo({
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as const);
-const func = (value: number) => ({ type: 'X', value } as const);
+const func = (value: number) => ({ type: 'X', value }) as const;
+const func = (value: number) => ({ type: 'X', value }) as const;
 const func = (value: number) => x as const;
 const func = (value: number) => x as const;
       `,
@@ -369,7 +453,7 @@ new Foo(1, () => {});
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
-      code: 'const log = <A>(a: A): A => a;',
+      code: 'const log = <A,>(a: A): A => a;',
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
@@ -666,6 +750,26 @@ let foo = (() => (() => {})())();
         },
       ],
     },
+    {
+      code: `
+class Bar {
+  bar: Foo = {
+    foo: x => x + 1,
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Bar {
+  bar: Foo[] = [
+    {
+      foo: x => x + 1,
+    },
+  ];
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -680,7 +784,7 @@ function test(a: number, b: number) {
           line: 2,
           endLine: 2,
           column: 1,
-          endColumn: 36,
+          endColumn: 14,
         },
       ],
     },
@@ -696,7 +800,7 @@ function test() {
           line: 2,
           endLine: 2,
           column: 1,
-          endColumn: 16,
+          endColumn: 14,
         },
       ],
     },
@@ -712,7 +816,7 @@ var fn = function () {
           line: 2,
           endLine: 2,
           column: 10,
-          endColumn: 21,
+          endColumn: 19,
         },
       ],
     },
@@ -725,7 +829,7 @@ var arrowFn = () => 'test';
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 15,
+          column: 18,
           endColumn: 20,
         },
       ],
@@ -751,30 +855,30 @@ class Test {
         {
           messageId: 'missingReturnType',
           line: 4,
+          column: 3,
           endLine: 4,
-          column: 3,
-          endColumn: 13,
-        },
-        {
-          messageId: 'missingReturnType',
-          line: 8,
-          endLine: 8,
-          column: 3,
           endColumn: 11,
         },
         {
           messageId: 'missingReturnType',
+          line: 8,
+          column: 3,
+          endLine: 8,
+          endColumn: 9,
+        },
+        {
+          messageId: 'missingReturnType',
           line: 11,
+          column: 3,
           endLine: 11,
-          column: 11,
-          endColumn: 16,
+          endColumn: 11,
         },
         {
           messageId: 'missingReturnType',
           line: 12,
-          endLine: 12,
           column: 3,
-          endColumn: 19,
+          endLine: 12,
+          endColumn: 17,
         },
       ],
     },
@@ -791,7 +895,7 @@ function test() {
           line: 2,
           endLine: 2,
           column: 1,
-          endColumn: 16,
+          endColumn: 14,
         },
       ],
     },
@@ -803,7 +907,7 @@ function test() {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 13,
+          column: 16,
           endColumn: 18,
         },
       ],
@@ -817,7 +921,7 @@ function test() {
           line: 1,
           endLine: 1,
           column: 13,
-          endColumn: 24,
+          endColumn: 22,
         },
       ],
     },
@@ -829,7 +933,7 @@ function test() {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 16,
+          column: 19,
           endColumn: 21,
         },
       ],
@@ -843,7 +947,7 @@ function test() {
           line: 1,
           endLine: 1,
           column: 16,
-          endColumn: 27,
+          endColumn: 25,
         },
       ],
     },
@@ -863,37 +967,37 @@ class Foo {
         {
           messageId: 'missingReturnType',
           line: 3,
+          column: 3,
           endLine: 3,
-          column: 14,
-          endColumn: 19,
+          endColumn: 14,
         },
         {
           messageId: 'missingReturnType',
           line: 4,
+          column: 3,
           endLine: 4,
-          column: 14,
-          endColumn: 25,
+          endColumn: 23,
         },
         {
           messageId: 'missingReturnType',
           line: 5,
+          column: 3,
           endLine: 5,
-          column: 14,
-          endColumn: 29,
+          endColumn: 27,
         },
         {
           messageId: 'missingReturnType',
           line: 7,
+          column: 3,
           endLine: 7,
-          column: 14,
-          endColumn: 19,
+          endColumn: 14,
         },
         {
           messageId: 'missingReturnType',
           line: 8,
+          column: 3,
           endLine: 8,
-          column: 14,
-          endColumn: 25,
+          endColumn: 23,
         },
       ],
     },
@@ -905,7 +1009,7 @@ class Foo {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 15,
+          column: 18,
           endColumn: 20,
         },
       ],
@@ -923,7 +1027,7 @@ var funcExpr = function () {
           line: 2,
           endLine: 2,
           column: 16,
-          endColumn: 27,
+          endColumn: 25,
         },
       ],
     },
@@ -936,7 +1040,7 @@ var funcExpr = function () {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 12,
+          column: 15,
           endColumn: 17,
         },
       ],
@@ -954,8 +1058,8 @@ const x = {
           messageId: 'missingReturnType',
           line: 4,
           endLine: 4,
-          column: 8,
-          endColumn: 13,
+          column: 3,
+          endColumn: 8,
         },
       ],
     },
@@ -972,8 +1076,98 @@ const x: Foo = {
           messageId: 'missingReturnType',
           line: 4,
           endLine: 4,
-          column: 8,
-          endColumn: 13,
+          column: 3,
+          endColumn: 8,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button onClick={() => {}} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 33,
+          endColumn: 35,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button on={{ click: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 27,
+          endColumn: 34,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 27,
+          endColumn: 36,
         },
       ],
     },
@@ -985,7 +1179,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 7,
+          column: 10,
           endColumn: 12,
         },
       ],
@@ -999,7 +1193,7 @@ const x: Foo = {
           line: 1,
           endLine: 1,
           column: 7,
-          endColumn: 18,
+          endColumn: 16,
         },
       ],
     },
@@ -1015,7 +1209,7 @@ const x: Foo = {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1033,7 +1227,7 @@ const x: Foo = {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 21,
+          endColumn: 19,
         },
       ],
     },
@@ -1049,7 +1243,7 @@ function fn() {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1067,7 +1261,44 @@ function fn() {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 21,
+          endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+function fn() {
+  const bar = () => (): number => 1;
+  const baz = () => () => 'baz';
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 24,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      code: `
+function fn(arg: boolean) {
+  if (arg) return 'string';
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 12,
         },
       ],
     },
@@ -1093,7 +1324,7 @@ function FunctionDeclaration() {
           messageId: 'missingReturnType',
           line: 9,
           endLine: 9,
-          column: 11,
+          column: 14,
           endColumn: 16,
         },
       ],
@@ -1112,7 +1343,7 @@ function FunctionDeclaration() {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1136,36 +1367,36 @@ foo(() => '');
         {
           messageId: 'missingReturnType',
           line: 3,
+          column: 8,
           endLine: 3,
-          column: 5,
           endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 4,
+          column: 8,
           endLine: 4,
-          column: 5,
           endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 5,
+          column: 8,
           endLine: 5,
-          column: 5,
           endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 6,
+          column: 8,
           endLine: 6,
-          column: 5,
           endColumn: 10,
         },
         {
           messageId: 'missingReturnType',
           line: 7,
+          column: 8,
           endLine: 7,
-          column: 5,
           endColumn: 10,
         },
       ],
@@ -1192,7 +1423,7 @@ new Accumulator().accumulate(() => 1);
           messageId: 'missingReturnType',
           line: 10,
           endLine: 10,
-          column: 30,
+          column: 33,
           endColumn: 35,
         },
       ],
@@ -1209,7 +1440,7 @@ new Accumulator().accumulate(() => 1);
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 2,
+          column: 5,
           endColumn: 7,
         },
       ],
@@ -1242,23 +1473,23 @@ foo({
         {
           messageId: 'missingReturnType',
           line: 4,
-          endLine: 4,
           column: 3,
-          endColumn: 9,
+          endLine: 4,
+          endColumn: 7,
         },
         {
           messageId: 'missingReturnType',
           line: 9,
+          column: 3,
           endLine: 9,
-          column: 9,
-          endColumn: 20,
+          endColumn: 18,
         },
         {
           messageId: 'missingReturnType',
           line: 14,
+          column: 3,
           endLine: 14,
-          column: 9,
-          endColumn: 14,
+          endColumn: 9,
         },
       ],
     },
@@ -1278,7 +1509,7 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 42,
+          column: 47,
           endColumn: 49,
         },
       ],
@@ -1299,29 +1530,29 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 28,
+          column: 31,
           endColumn: 33,
         },
         {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 34,
+          column: 39,
           endColumn: 41,
         },
         {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 42,
+          column: 47,
           endColumn: 49,
         },
       ],
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as any);
-const func = (value: number) => ({ type: 'X', value } as Action);
+const func = (value: number) => ({ type: 'X', value }) as any;
+const func = (value: number) => ({ type: 'X', value }) as Action;
       `,
       options: [
         {
@@ -1333,21 +1564,21 @@ const func = (value: number) => ({ type: 'X', value } as Action);
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 14,
+          column: 30,
           endColumn: 32,
         },
         {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 14,
+          column: 30,
           endColumn: 32,
         },
       ],
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as const);
+const func = (value: number) => ({ type: 'X', value }) as const;
       `,
       options: [
         {
@@ -1359,7 +1590,7 @@ const func = (value: number) => ({ type: 'X', value } as const);
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 14,
+          column: 30,
           endColumn: 32,
         },
       ],
@@ -1374,7 +1605,7 @@ const func = (value: number) => ({ type: 'X', value } as const);
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 13,
+          column: 31,
           endColumn: 33,
         },
       ],
@@ -1391,13 +1622,13 @@ const func = (value: number) => ({ type: 'X', value } as const);
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 21,
+          column: 39,
           endColumn: 41,
         },
       ],
     },
     {
-      code: 'const log = <A>(a: A) => a;',
+      code: 'const log = <A,>(a: A) => a;',
       errors: [{ messageId: 'missingReturnType' }],
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
@@ -1451,46 +1682,46 @@ const x = {
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
           line: 2,
-          endLine: 2,
           column: 1,
-          endColumn: 16,
+          messageId: 'missingReturnType',
+          endLine: 2,
+          endColumn: 14,
         },
         {
-          messageId: 'missingReturnType',
           line: 5,
+          column: 16,
+          messageId: 'missingReturnType',
           endLine: 5,
-          column: 13,
           endColumn: 18,
         },
         {
-          messageId: 'missingReturnType',
           line: 8,
-          endLine: 8,
           column: 13,
-          endColumn: 24,
+          messageId: 'missingReturnType',
+          endLine: 8,
+          endColumn: 22,
         },
         {
-          messageId: 'missingReturnType',
           line: 11,
-          endLine: 11,
           column: 20,
-          endColumn: 31,
+          messageId: 'missingReturnType',
+          endLine: 11,
+          endColumn: 29,
         },
         {
           line: 15,
-          column: 12,
+          column: 3,
           messageId: 'missingReturnType',
           endLine: 15,
-          endColumn: 23,
+          endColumn: 21,
         },
         {
-          messageId: 'missingReturnType',
           line: 20,
+          column: 3,
+          messageId: 'missingReturnType',
           endLine: 20,
-          column: 6,
-          endColumn: 17,
+          endColumn: 15,
         },
       ],
     },
@@ -1508,7 +1739,27 @@ class Foo {
           line: 4,
           endLine: 4,
           column: 3,
-          endColumn: 18,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+class Bar {
+  bar = [
+    {
+      foo: x => x + 1,
+    },
+  ];
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 7,
+          endColumn: 12,
         },
       ],
     },
@@ -1529,7 +1780,7 @@ const foo = (function () {
           line: 2,
           endLine: 2,
           column: 14,
-          endColumn: 25,
+          endColumn: 23,
         },
       ],
     },
@@ -1551,7 +1802,7 @@ const foo = (function () {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1573,7 +1824,7 @@ let foo = function () {
           line: 2,
           endLine: 2,
           column: 11,
-          endColumn: 22,
+          endColumn: 20,
         },
       ],
     },
@@ -1591,7 +1842,7 @@ let foo = (() => () => {})()();
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 18,
+          column: 21,
           endColumn: 23,
         },
       ],

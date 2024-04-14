@@ -12,8 +12,8 @@ import {
 } from '@typescript-eslint/utils';
 
 class UnusedVarsVisitor<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 > extends Visitor {
   private static readonly RESULTS_CACHE = new WeakMap<
     TSESTree.Program,
@@ -23,24 +23,24 @@ class UnusedVarsVisitor<
   readonly #scopeManager: TSESLint.Scope.ScopeManager;
   // readonly #unusedVariables = new Set<TSESLint.Scope.Variable>();
 
-  private constructor(context: TSESLint.RuleContext<TMessageIds, TOptions>) {
+  private constructor(context: TSESLint.RuleContext<MessageIds, Options>) {
     super({
       visitChildrenEvenIfSelectorExists: true,
     });
 
     this.#scopeManager = ESLintUtils.nullThrows(
-      context.getSourceCode().scopeManager,
+      context.sourceCode.scopeManager,
       'Missing required scope manager',
     );
   }
 
   public static collectUnusedVariables<
-    TMessageIds extends string,
-    TOptions extends readonly unknown[],
+    MessageIds extends string,
+    Options extends readonly unknown[],
   >(
-    context: TSESLint.RuleContext<TMessageIds, TOptions>,
+    context: TSESLint.RuleContext<MessageIds, Options>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
-    const program = context.getSourceCode().ast;
+    const program = context.sourceCode.ast;
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
@@ -136,6 +136,7 @@ class UnusedVarsVisitor<
     let node: TSESTree.Node;
     if (typeof variableOrIdentifierOrName === 'string') {
       name = variableOrIdentifierOrName;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       node = parent!;
     } else {
       name = variableOrIdentifierOrName.name;
@@ -246,7 +247,7 @@ class UnusedVarsVisitor<
 
     let idOrVariable;
     if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
-      const variable = this.#scopeManager.getDeclaredVariables(node.left)[0];
+      const variable = this.#scopeManager.getDeclaredVariables(node.left).at(0);
       if (!variable) {
         return;
       }
@@ -323,7 +324,7 @@ class UnusedVarsVisitor<
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     // -- global augmentation can be in any file, and they do not need exports
-    if (node.global === true) {
+    if (node.global) {
       this.markVariableAsUsed('global', node.parent);
     }
   }
@@ -396,7 +397,6 @@ const MERGABLE_TYPES = new Set([
 /**
  * Determine if the variable is directly exported
  * @param variable the variable to check
- * @param target the type of node that is expected to be exported
  */
 function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
   // If all of the merged things are of the same type, TS will error if not all of them are exported - so we only need to find one
@@ -426,21 +426,22 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: TSESLint.Scope.Variable): boolean {
-  const definition = variable.defs[0];
-
-  if (definition) {
+  return variable.defs.some(definition => {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       node = node.parent!;
     } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
       return false;
     }
 
-    return node.parent!.type.indexOf('Export') === 0;
-  }
-  return false;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return node.parent!.type.startsWith('Export');
+  });
 }
+
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
 
 /**
  * Determines if the variable is used.
@@ -565,8 +566,10 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const grandparent = parent.parent!;
     const refScope = ref.from.variableScope;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const varScope = ref.resolved!.scope.variableScope;
     const canBeUsedLater = refScope !== varScope || isInLoop(id);
 
@@ -698,12 +701,15 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const grandparent = parent.parent!;
 
     return (
       ref.isRead() && // in RHS of an assignment for itself. e.g. `a = a + 1`
       // self update. e.g. `a += 1`, `a++`
       ((parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        !LOGICAL_ASSIGNMENT_OPERATORS.has(parent.operator) &&
         grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
         parent.left === id) ||
         (parent.type === AST_NODE_TYPES.UpdateExpression &&
@@ -750,10 +756,10 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
  * - variables within ambient module declarations
  */
 function collectUnusedVariables<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): ReadonlySet<TSESLint.Scope.Variable> {
   return UnusedVarsVisitor.collectUnusedVariables(context);
 }

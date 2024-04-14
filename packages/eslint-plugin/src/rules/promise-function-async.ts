@@ -2,7 +2,15 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  containsAllTypesByName,
+  createRule,
+  getFunctionHeadLoc,
+  getParserServices,
+  isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type Options = [
   {
@@ -16,7 +24,7 @@ type Options = [
 ];
 type MessageIds = 'missingAsync';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'promise-function-async',
   meta: {
     type: 'suggestion',
@@ -88,11 +96,12 @@ export default util.createRule<Options, MessageIds>({
   ) {
     const allAllowedPromiseNames = new Set([
       'Promise',
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ...allowedPromiseNames!,
     ]);
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
 
     function validateNode(
       node:
@@ -107,8 +116,9 @@ export default util.createRule<Options, MessageIds>({
       const returnType = checker.getReturnTypeOfSignature(signatures[0]);
 
       if (
-        !util.containsAllTypesByName(
+        !containsAllTypesByName(
           returnType,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           allowAny!,
           allAllowedPromiseNames,
           // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
@@ -133,21 +143,19 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (
-        util.isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
-      ) {
+      if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         // Report without auto fixer because the return type is unknown
         return context.report({
           messageId: 'missingAsync',
           node,
-          loc: util.getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
         });
       }
 
       context.report({
         messageId: 'missingAsync',
         node,
-        loc: util.getFunctionHeadLoc(node, sourceCode),
+        loc: getFunctionHeadLoc(node, context.sourceCode),
         fix: fixer => {
           if (
             node.parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -157,7 +165,10 @@ export default util.createRule<Options, MessageIds>({
             const method = node.parent;
 
             // the token to put `async` before
-            let keyToken = sourceCode.getFirstToken(method)!;
+            let keyToken = nullThrows(
+              context.sourceCode.getFirstToken(method),
+              NullThrowsReasons.MissingToken('key token', 'method'),
+            );
 
             // if there are decorators then skip past them
             if (
@@ -166,7 +177,10 @@ export default util.createRule<Options, MessageIds>({
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
-              keyToken = sourceCode.getTokenAfter(lastDecorator)!;
+              keyToken = nullThrows(
+                context.sourceCode.getTokenAfter(lastDecorator),
+                NullThrowsReasons.MissingToken('key token', 'last decorator'),
+              );
             }
 
             // if current token is a keyword like `static` or `public` then skip it
@@ -174,12 +188,18 @@ export default util.createRule<Options, MessageIds>({
               keyToken.type === AST_TOKEN_TYPES.Keyword &&
               keyToken.range[0] < method.key.range[0]
             ) {
-              keyToken = sourceCode.getTokenAfter(keyToken)!;
+              keyToken = nullThrows(
+                context.sourceCode.getTokenAfter(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              );
             }
 
             // check if there is a space between key and previous token
-            const insertSpace = !sourceCode.isSpaceBetween!(
-              sourceCode.getTokenBefore(keyToken)!,
+            const insertSpace = !context.sourceCode.isSpaceBetween(
+              nullThrows(
+                context.sourceCode.getTokenBefore(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              ),
               keyToken,
             );
 

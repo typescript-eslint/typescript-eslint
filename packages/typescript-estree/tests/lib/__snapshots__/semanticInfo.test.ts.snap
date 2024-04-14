@@ -304,7 +304,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
 {
   "body": [
     {
-      "assertions": [],
+      "attributes": [],
       "importKind": "value",
       "loc": {
         "end": {
@@ -1734,5 +1734,3 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
   "type": "Program",
 }
 `;
-
-exports[`semanticInfo malformed project file 1`] = `"Compiler option 'compileOnSave' requires a value of type boolean."`;

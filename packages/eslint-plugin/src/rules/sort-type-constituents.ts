@@ -1,8 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
-import { getEnumNames, typeNodeRequiresParentheses } from '../util';
+import { createRule, getEnumNames, typeNodeRequiresParentheses } from '../util';
 
 enum Group {
   conditional = 'conditional',
@@ -105,7 +104,7 @@ export type Options = [
 ];
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'sort-type-constituents',
   meta: {
     type: 'suggestion',
@@ -166,8 +165,6 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ checkIntersections, checkUnions, groupOrder }]) {
-    const sourceCode = context.getSourceCode();
-
     const collator = new Intl.Collator('en', {
       sensitivity: 'base',
       numeric: true,
@@ -181,7 +178,7 @@ export default util.createRule<Options, MessageIds>({
         return {
           group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           node: type,
-          text: sourceCode.getText(type),
+          text: context.sourceCode.getText(type),
         };
       });
       const expectedOrder = [...sourceOrder].sort((a, b) => {
@@ -197,8 +194,8 @@ export default util.createRule<Options, MessageIds>({
 
       const hasComments = node.types.some(type => {
         const count =
-          sourceCode.getCommentsBefore(type).length +
-          sourceCode.getCommentsAfter(type).length;
+          context.sourceCode.getCommentsBefore(type).length +
+          context.sourceCode.getCommentsAfter(type).length;
         return count > 0;
       });
 
@@ -212,7 +209,7 @@ export default util.createRule<Options, MessageIds>({
                 ? 'Intersection'
                 : 'Union',
           };
-          if (node.parent?.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
+          if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
             messageId = 'notSortedNamed';
             data.name = node.parent.id.name;
           }

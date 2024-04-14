@@ -1,14 +1,20 @@
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-extra-semi');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-extra-semi',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/no-extra-semi'],
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary semicolons',
@@ -28,16 +34,7 @@ export default util.createRule<Options, MessageIds>({
       'TSAbstractMethodDefinition, TSAbstractPropertyDefinition'(
         node: never,
       ): void {
-        if (rules.MethodDefinition) {
-          // for ESLint <= v7
-          rules.MethodDefinition(node);
-        } else if (rules['MethodDefinition, PropertyDefinition']) {
-          // for ESLint >= v8 < v8.3.0
-          rules['MethodDefinition, PropertyDefinition'](node);
-        } else {
-          // for ESLint >= v8.3.0
-          rules['MethodDefinition, PropertyDefinition, StaticBlock']?.(node);
-        }
+        rules['MethodDefinition, PropertyDefinition, StaticBlock'](node);
       },
     };
   },

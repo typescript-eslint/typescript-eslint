@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "5.61.0",
+  "version": "7.6.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -9,7 +9,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "files": [
     "dist",
@@ -25,6 +25,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +35,7 @@
     "postclean": "rimraf dist && rimraf coverage",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -47,13 +48,16 @@
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
     "@babel/parser": "*",
-    "@microsoft/api-extractor": "^7.34.4",
+    "@microsoft/api-extractor": "^7.43.0",
     "glob": "*",
-    "jest-diff": "*",
-    "jest-snapshot": "*",
-    "jest-specific-snapshot": "*",
+    "jest": "29.7.0",
+    "jest-diff": "^29.7.0",
+    "jest-snapshot": "^29.7.0",
+    "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
+    "prettier": "^3.2.5",
     "pretty-format": "*",
+    "rimraf": "*",
     "typescript": "*"
   }
 }

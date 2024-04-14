@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -11,7 +11,7 @@ type Options = [
 ];
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-this-alias',
   meta: {
     type: 'suggestion',
@@ -65,7 +65,9 @@ export default util.createRule<Options, MessageIds>({
 
         const hasAllowedName =
           id.type === AST_NODE_TYPES.Identifier
-            ? allowedNames!.includes(id.name)
+            ? // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              allowedNames!.includes(id.name)
             : false;
         if (!hasAllowedName) {
           context.report({

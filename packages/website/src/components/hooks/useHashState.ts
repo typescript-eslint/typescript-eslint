@@ -21,6 +21,7 @@ function readShowAST(value: string | null): ConfigShowAst {
     case 'es':
     case 'ts':
     case 'scope':
+    case 'types':
       return value;
   }
   return value ? 'es' : false;
@@ -70,6 +71,13 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       );
     }
 
+    let esQuery: ConfigModel['esQuery'] | undefined;
+    if (searchParams.has('esQuery')) {
+      esQuery = JSON.parse(
+        readQueryParam(searchParams.get('esQuery'), ''),
+      ) as ConfigModel['esQuery'];
+    }
+
     const fileType =
       searchParams.get('jsx') === 'true'
         ? '.tsx'
@@ -80,7 +88,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       : '';
 
     return {
-      ts: searchParams.get('ts') ?? process.env.TS_VERSION!,
+      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
       showAST: readShowAST(searchParams.get('showAST')),
       sourceType:
         searchParams.get('sourceType') === 'script' ? 'script' : 'module',
@@ -89,6 +97,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       eslintrc: eslintrc ?? '',
       tsconfig: tsconfig ?? '',
       showTokens: searchParams.get('tokens') === 'true',
+      esQuery,
     };
   } catch (e) {
     console.warn(e);
@@ -108,6 +117,12 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
     }
     if (newState.fileType) {
       searchParams.set('fileType', newState.fileType);
+    }
+    if (newState.esQuery) {
+      searchParams.set(
+        'esQuery',
+        writeQueryParam(JSON.stringify(newState.esQuery)),
+      );
     }
     searchParams.set('code', writeQueryParam(newState.code));
     searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));

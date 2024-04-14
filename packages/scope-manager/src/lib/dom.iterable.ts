@@ -1,7 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/scope-manager
+// npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
@@ -11,8 +11,11 @@ export const dom_iterable = {
   AudioParamMap: TYPE,
   BaseAudioContext: TYPE,
   CSSKeyframesRule: TYPE,
+  CSSNumericArray: TYPE,
   CSSRuleList: TYPE,
   CSSStyleDeclaration: TYPE,
+  CSSTransformValue: TYPE,
+  CSSUnparsedValue: TYPE,
   Cache: TYPE,
   CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
@@ -30,6 +33,8 @@ export const dom_iterable = {
   HTMLFormElement: TYPE,
   HTMLSelectElement: TYPE,
   Headers: TYPE,
+  Highlight: TYPE,
+  HighlightRegistry: TYPE,
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
   MIDIInputMap: TYPE,
@@ -55,6 +60,7 @@ export const dom_iterable = {
   SourceBufferList: TYPE,
   SpeechRecognitionResult: TYPE,
   SpeechRecognitionResultList: TYPE,
+  StylePropertyMapReadOnly: TYPE,
   StyleSheetList: TYPE,
   SubtleCrypto: TYPE,
   TextTrackCueList: TYPE,

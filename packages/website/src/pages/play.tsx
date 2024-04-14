@@ -3,16 +3,17 @@ import Loader from '@site/src/components/layout/Loader';
 import Layout from '@theme/Layout';
 import React, { lazy, Suspense } from 'react';
 
-function Play(): JSX.Element {
+const Playground = lazy(
+  () =>
+    // @ts-expect-error: This does not follow Node resolution
+    import('../components/Playground') as Promise<() => React.JSX.Element>,
+);
+
+function Play(): React.JSX.Element {
   return (
     <Layout title="Playground" description="Playground" noFooter={true}>
       <BrowserOnly fallback={<Loader />}>
-        {(): JSX.Element => {
-          const Playground = lazy(
-            () =>
-              // @ts-expect-error: This does not follow Node resolution
-              import('../components/Playground') as Promise<() => JSX.Element>,
-          );
+        {(): React.JSX.Element => {
           return (
             <Suspense fallback={<Loader />}>
               <Playground />

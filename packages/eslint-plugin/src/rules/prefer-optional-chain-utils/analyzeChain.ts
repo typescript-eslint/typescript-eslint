@@ -12,7 +12,14 @@ import type {
 import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../../util';
+import {
+  getOperatorPrecedenceForNode,
+  isOpeningParenToken,
+  isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
+  OperatorPrecedence,
+} from '../../util';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
 import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
@@ -29,7 +36,7 @@ function includesType(
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const types = unionTypeParts(parserServices.getTypeAtLocation(node));
   for (const type of types) {
-    if (util.isTypeFlagSet(type, typeFlag)) {
+    if (isTypeFlagSet(type, typeFlag)) {
       return true;
     }
   }
@@ -306,8 +313,8 @@ function getFixer(
         }
       }
       if (
-        part.precedence !== util.OperatorPrecedence.Invalid &&
-        part.precedence < util.OperatorPrecedence.Member
+        part.precedence !== OperatorPrecedence.Invalid &&
+        part.precedence < OperatorPrecedence.Member
       ) {
         str += `(${part.text})`;
       } else {
@@ -333,16 +340,15 @@ function getFixer(
           left: sourceCode.getText(lastOperand.node.left),
           right: unaryOperator + newCode,
         };
-      } else {
-        const unaryOperator =
-          lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
-            ? lastOperand.node.left.operator + ' '
-            : '';
-        return {
-          left: unaryOperator + newCode,
-          right: sourceCode.getText(lastOperand.node.right),
-        };
       }
+      const unaryOperator =
+        lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
+          ? lastOperand.node.left.operator + ' '
+          : '';
+      return {
+        left: unaryOperator + newCode,
+        right: sourceCode.getText(lastOperand.node.right),
+      };
     })();
 
     newCode = `${left} ${operator} ${right}`;
@@ -363,7 +369,7 @@ function getFixer(
   interface FlattenedChain {
     nonNull: boolean;
     optional: boolean;
-    precedence: util.OperatorPrecedence;
+    precedence: OperatorPrecedence;
     requiresDot: boolean;
     text: string;
   }
@@ -377,23 +383,17 @@ function getFixer(
 
       case AST_NODE_TYPES.CallExpression: {
         const argumentsText = (() => {
-          const closingParenToken = util.nullThrows(
+          const closingParenToken = nullThrows(
             sourceCode.getLastToken(node),
-            util.NullThrowsReasons.MissingToken(
-              'closing parenthesis',
-              node.type,
-            ),
+            NullThrowsReasons.MissingToken('closing parenthesis', node.type),
           );
-          const openingParenToken = util.nullThrows(
+          const openingParenToken = nullThrows(
             sourceCode.getFirstTokenBetween(
               node.typeArguments ?? node.callee,
               closingParenToken,
-              util.isOpeningParenToken,
+              isOpeningParenToken,
             ),
-            util.NullThrowsReasons.MissingToken(
-              'opening parenthesis',
-              node.type,
-            ),
+            NullThrowsReasons.MissingToken('opening parenthesis', node.type),
           );
           return sourceCode.text.substring(
             openingParenToken.range[0],
@@ -415,7 +415,7 @@ function getFixer(
             nonNull: false,
             optional: node.optional,
             // no precedence for this
-            precedence: util.OperatorPrecedence.Invalid,
+            precedence: OperatorPrecedence.Invalid,
             requiresDot: false,
             text: typeArgumentsText + argumentsText,
           },
@@ -431,8 +431,8 @@ function getFixer(
             optional: node.optional,
             precedence: node.computed
               ? // computed is already wrapped in [] so no need to wrap in () as well
-                util.OperatorPrecedence.Invalid
-              : util.getOperatorPrecedenceForNode(node.property),
+                OperatorPrecedence.Invalid
+              : getOperatorPrecedenceForNode(node.property),
             requiresDot: !node.computed,
             text: node.computed ? `[${propertyText}]` : propertyText,
           },
@@ -447,7 +447,7 @@ function getFixer(
           {
             nonNull: false,
             optional: false,
-            precedence: util.getOperatorPrecedenceForNode(node),
+            precedence: getOperatorPrecedenceForNode(node),
             requiresDot: false,
             text: sourceCode.getText(node),
           },
@@ -461,7 +461,6 @@ export function analyzeChain(
     PreferOptionalChainMessageIds,
     [PreferOptionalChainOptions]
   >,
-  sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
   operator: TSESTree.LogicalExpression['operator'],
@@ -486,18 +485,27 @@ export function analyzeChain(
     }
   })();
 
-  let subChain: ValidOperand[] = [];
+  // Things like x !== null && x !== undefined have two nodes, but they are
+  // one logical unit here, so we'll allow them to be grouped.
+  let subChain: (ValidOperand | readonly ValidOperand[])[] = [];
   const maybeReportThenReset = (
-    newChainSeed?: readonly ValidOperand[],
+    newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
     if (subChain.length > 1) {
+      const subChainFlat = subChain.flat();
       context.report({
         messageId: 'preferOptionalChain',
         loc: {
-          start: subChain[0].node.loc.start,
-          end: subChain[subChain.length - 1].node.loc.end,
+          start: subChainFlat[0].node.loc.start,
+          end: subChainFlat[subChainFlat.length - 1].node.loc.end,
         },
-        ...getFixer(sourceCode, parserServices, operator, options, subChain),
+        ...getFixer(
+          context.sourceCode,
+          parserServices,
+          operator,
+          options,
+          subChainFlat,
+        ),
       });
     }
 
@@ -513,13 +521,11 @@ export function analyzeChain(
     //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ first "chain"
     //                          ^^^^^^^^^^^ newChainSeed
     //                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ second chain
-    subChain = newChainSeed ? [...newChainSeed] : [];
+    subChain = newChainSeed ? [newChainSeed] : [];
   };
 
   for (let i = 0; i < chain.length; i += 1) {
-    const lastOperand = subChain[subChain.length - 1] as
-      | ValidOperand
-      | undefined;
+    const lastOperand = subChain.flat().at(-1);
     const operand = chain[i];
 
     const validatedOperands = analyzeOperand(parserServices, operand, i, chain);
@@ -553,7 +559,7 @@ export function analyzeChain(
         subChain.push(currentOperand);
       } else if (comparisonResult === NodeComparisonResult.Invalid) {
         maybeReportThenReset(validatedOperands);
-      } else if (comparisonResult === NodeComparisonResult.Equal) {
+      } else {
         // purposely don't push this case because the node is a no-op and if
         // we consider it then we might report on things like
         // foo && foo

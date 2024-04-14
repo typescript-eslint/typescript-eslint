@@ -10,6 +10,7 @@ import {
   createNoProgram,
   createSourceFile,
 } from './create-program/createSourceFile';
+import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
@@ -25,6 +26,7 @@ import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree } from './ts-estree';
+import { useProgramFromProjectService } from './useProgramFromProjectService';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -47,6 +49,17 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
+  if (parseSettings.EXPERIMENTAL_projectService) {
+    const fromProjectService = useProgramFromProjectService(
+      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings,
+      hasFullTypeInformation,
+    );
+    if (fromProjectService) {
+      return fromProjectService;
+    }
+  }
+
   if (parseSettings.programs) {
     const fromProvidedPrograms = useProvidedPrograms(
       parseSettings.programs,
@@ -57,27 +70,30 @@ function getProgramAndAST(
     }
   }
 
-  if (hasFullTypeInformation) {
-    const fromProjectProgram = createProjectProgram(parseSettings);
-    if (fromProjectProgram) {
-      return fromProjectProgram;
-    }
-
-    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-    if (parseSettings.DEPRECATED__createDefaultProgram) {
-      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      const fromDefaultProgram = createDefaultProgram(parseSettings);
-      if (fromDefaultProgram) {
-        return fromDefaultProgram;
-      }
-    }
-
-    return createIsolatedProgram(parseSettings);
-  }
-
   // no need to waste time creating a program as the caller didn't want parser services
   // so we can save time and just create a lonesome source file
-  return createNoProgram(parseSettings);
+  if (!hasFullTypeInformation) {
+    return createNoProgram(parseSettings);
+  }
+
+  const fromProjectProgram = createProjectProgram(
+    parseSettings,
+    getWatchProgramsForProjects(parseSettings),
+  );
+  if (fromProjectProgram) {
+    return fromProjectProgram;
+  }
+
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+  if (parseSettings.DEPRECATED__createDefaultProgram) {
+    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+    const fromDefaultProgram = createDefaultProgram(parseSettings);
+    if (fromDefaultProgram) {
+      return fromDefaultProgram;
+    }
+  }
+
+  return createIsolatedProgram(parseSettings);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -143,7 +159,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+let parseAndGenerateServicesCalls: Record<string, number> = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};
@@ -166,7 +182,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   if (
     parseSettings.singleRun &&
     !parseSettings.programs &&
-    parseSettings.projects?.length > 0
+    parseSettings.projects.length > 0
   ) {
     parseSettings.programs = {
       *[Symbol.iterator](): Iterator<ts.Program> {
@@ -192,25 +208,22 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
    */
   const hasFullTypeInformation =
-    parseSettings.programs != null || parseSettings.projects?.length > 0;
+    parseSettings.programs != null || parseSettings.projects.length > 0;
 
-  if (options !== undefined) {
-    if (
-      typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
-        'boolean' &&
-      options.errorOnTypeScriptSyntacticAndSemanticIssues
-    ) {
-      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-    }
+  if (
+    typeof options.errorOnTypeScriptSyntacticAndSemanticIssues === 'boolean' &&
+    options.errorOnTypeScriptSyntacticAndSemanticIssues
+  ) {
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
+  }
 
-    if (
-      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
-      !hasFullTypeInformation
-    ) {
-      throw new Error(
-        'Cannot calculate TypeScript semantic issues without a valid project.',
-      );
-    }
+  if (
+    parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
+    !hasFullTypeInformation
+  ) {
+    throw new Error(
+      'Cannot calculate TypeScript semantic issues without a valid project.',
+    );
   }
 
   /**
@@ -231,7 +244,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     options.filePath &&
     parseAndGenerateServicesCalls[options.filePath] > 1
       ? createIsolatedProgram(parseSettings)
-      : getProgramAndAST(parseSettings, hasFullTypeInformation)!;
+      : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve

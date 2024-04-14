@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 type Options = ['constructor' | 'type-annotation'];
@@ -31,7 +31,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['constructor'],
   create(context, [mode]) {
-    const sourceCode = context.getSourceCode();
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
@@ -78,7 +77,8 @@ export default createRule<Options, MessageIds>({
           if (!lhs && rhs.typeArguments) {
             const { typeArguments, callee } = rhs;
             const typeAnnotation =
-              sourceCode.getText(callee) + sourceCode.getText(typeArguments);
+              context.sourceCode.getText(callee) +
+              context.sourceCode.getText(typeArguments);
             context.report({
               node,
               messageId: 'preferTypeAnnotation',
@@ -94,7 +94,10 @@ export default createRule<Options, MessageIds>({
                   }
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
-                  return sourceCode.getTokenAfter(node.key)!;
+                  return nullThrows(
+                    context.sourceCode.getTokenAfter(node.key),
+                    NullThrowsReasons.MissingToken(']', 'key'),
+                  );
                 }
                 return [
                   fixer.remove(typeArguments),
@@ -108,37 +111,36 @@ export default createRule<Options, MessageIds>({
           }
           return;
         }
-        if (mode === 'constructor') {
-          if (lhs?.typeArguments && !rhs.typeArguments) {
-            const hasParens =
-              sourceCode.getTokenAfter(rhs.callee)?.value === '(';
-            const extraComments = new Set(
-              sourceCode.getCommentsInside(lhs.parent),
-            );
-            sourceCode
-              .getCommentsInside(lhs.typeArguments)
-              .forEach(c => extraComments.delete(c));
-            context.report({
-              node,
-              messageId: 'preferConstructor',
-              *fix(fixer) {
-                yield fixer.remove(lhs.parent);
-                for (const comment of extraComments) {
-                  yield fixer.insertTextAfter(
-                    rhs.callee,
-                    sourceCode.getText(comment),
-                  );
-                }
+
+        if (lhs?.typeArguments && !rhs.typeArguments) {
+          const hasParens =
+            context.sourceCode.getTokenAfter(rhs.callee)?.value === '(';
+          const extraComments = new Set(
+            context.sourceCode.getCommentsInside(lhs.parent),
+          );
+          context.sourceCode
+            .getCommentsInside(lhs.typeArguments)
+            .forEach(c => extraComments.delete(c));
+          context.report({
+            node,
+            messageId: 'preferConstructor',
+            *fix(fixer) {
+              yield fixer.remove(lhs.parent);
+              for (const comment of extraComments) {
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  sourceCode.getText(lhs.typeArguments),
+                  context.sourceCode.getText(comment),
                 );
-                if (!hasParens) {
-                  yield fixer.insertTextAfter(rhs.callee, '()');
-                }
-              },
-            });
-          }
+              }
+              yield fixer.insertTextAfter(
+                rhs.callee,
+                context.sourceCode.getText(lhs.typeArguments),
+              );
+              if (!hasParens) {
+                yield fixer.insertTextAfter(rhs.callee, '()');
+              }
+            },
+          });
         }
       },
     };

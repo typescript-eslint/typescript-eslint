@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, nullThrows } from '../util';
+import type { FunctionInfo } from '../util/explicitReturnTypeUtils';
 import {
   ancestorHasReturnType,
   checkFunctionReturnType,
@@ -22,7 +23,12 @@ type Options = [
 ];
 type MessageIds = 'missingReturnType';
 
-export default util.createRule<Options, MessageIds>({
+type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression;
+
+export default createRule<Options, MessageIds>({
   name: 'explicit-function-return-type',
   meta: {
     type: 'problem',
@@ -98,7 +104,22 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const functionInfoStack: FunctionInfo<FunctionNode>[] = [];
+
+    function enterFunction(node: FunctionNode): void {
+      functionInfoStack.push({
+        node,
+        returns: [],
+      });
+    }
+
+    function popFunctionInfo(exitNodeType: string): FunctionInfo<FunctionNode> {
+      return nullThrows(
+        functionInfoStack.pop(),
+        `Stack should exist on ${exitNodeType} exit`,
+      );
+    }
+
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -125,7 +146,7 @@ export default util.createRule<Options, MessageIds>({
         let funcName;
         if (node.id?.name) {
           funcName = node.id.name;
-        } else if (parent) {
+        } else {
           switch (parent.type) {
             case AST_NODE_TYPES.VariableDeclarator: {
               if (parent.id.type === AST_NODE_TYPES.Identifier) {
@@ -138,7 +159,7 @@ export default util.createRule<Options, MessageIds>({
             case AST_NODE_TYPES.Property: {
               if (
                 parent.key.type === AST_NODE_TYPES.Identifier &&
-                parent.computed === false
+                !parent.computed
               ) {
                 funcName = parent.key.name;
               }
@@ -153,7 +174,6 @@ export default util.createRule<Options, MessageIds>({
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
-        node.id.type === AST_NODE_TYPES.Identifier &&
         !!options.allowedNames.includes(node.id.name)
       ) {
         return true;
@@ -170,41 +190,49 @@ export default util.createRule<Options, MessageIds>({
       return node.parent.type === AST_NODE_TYPES.CallExpression;
     }
 
+    function exitFunctionExpression(
+      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+    ): void {
+      const info = popFunctionInfo('function expression');
+
+      if (
+        options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        node.expression &&
+        node.body.type === AST_NODE_TYPES.UnaryExpression &&
+        node.body.operator === 'void'
+      ) {
+        return;
+      }
+
+      if (isAllowedFunction(node)) {
+        return;
+      }
+
+      if (
+        options.allowTypedFunctionExpressions &&
+        (isValidFunctionExpressionReturnType(node, options) ||
+          ancestorHasReturnType(node))
+      ) {
+        return;
+      }
+
+      checkFunctionReturnType(info, options, context.sourceCode, loc =>
+        context.report({
+          node,
+          loc,
+          messageId: 'missingReturnType',
+        }),
+      );
+    }
+
     return {
-      'ArrowFunctionExpression, FunctionExpression'(
-        node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-      ): void {
-        if (
-          options.allowConciseArrowFunctionExpressionsStartingWithVoid &&
-          node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-          node.expression &&
-          node.body.type === AST_NODE_TYPES.UnaryExpression &&
-          node.body.operator === 'void'
-        ) {
-          return;
-        }
-
-        if (isAllowedFunction(node)) {
-          return;
-        }
-
-        if (
-          options.allowTypedFunctionExpressions &&
-          (isValidFunctionExpressionReturnType(node, options) ||
-            ancestorHasReturnType(node))
-        ) {
-          return;
-        }
-
-        checkFunctionReturnType(node, options, sourceCode, loc =>
-          context.report({
-            node,
-            loc,
-            messageId: 'missingReturnType',
-          }),
-        );
-      },
-      FunctionDeclaration(node): void {
+      'ArrowFunctionExpression, FunctionExpression, FunctionDeclaration':
+        enterFunction,
+      'ArrowFunctionExpression:exit': exitFunctionExpression,
+      'FunctionExpression:exit': exitFunctionExpression,
+      'FunctionDeclaration:exit'(node): void {
+        const info = popFunctionInfo('function declaration');
         if (isAllowedFunction(node)) {
           return;
         }
@@ -212,13 +240,16 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc =>
+        checkFunctionReturnType(info, options, context.sourceCode, loc =>
           context.report({
             node,
             loc,
             messageId: 'missingReturnType',
           }),
         );
+      },
+      ReturnStatement(node): void {
+        functionInfoStack.at(-1)?.returns.push(node);
       },
     };
   },

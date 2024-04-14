@@ -126,60 +126,70 @@ function cool(input: string) {
       code: `
         const x = console.log('foo');
       `,
+      output: null,
       errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         const x = console?.log('foo');
       `,
+      output: null,
       errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         console.error(console.log('foo'));
       `,
+      output: null,
       errors: [{ column: 23, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         [console.log('foo')];
       `,
+      output: null,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         ({ x: console.log('foo') });
       `,
+      output: null,
       errors: [{ column: 15, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         void console.log('foo');
       `,
+      output: null,
       errors: [{ column: 14, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         console.log('foo') ? true : false;
       `,
+      output: null,
       errors: [{ column: 9, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         (console.log('foo') && true) || false;
       `,
+      output: null,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         (cond && console.log('ok')) || console.log('error');
       `,
+      output: null,
       errors: [{ column: 18, messageId: 'invalidVoidExpr' }],
     },
     {
       code: `
         !console.log('foo');
       `,
+      output: null,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
     },
 
@@ -189,6 +199,7 @@ function notcool(input: string) {
   return input, console.log(input);
 }
       `,
+      output: null,
       errors: [{ line: 3, column: 17, messageId: 'invalidVoidExpr' }],
     },
     {
@@ -198,13 +209,28 @@ function notcool(input: string) {
     },
     {
       code: 'foo => foo && console.log(foo);',
+      output: null,
       errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
-      output: `foo => { foo && console.log(foo); };`,
+    },
+    {
+      code: '(foo: undefined) => foo && console.log(foo);',
+      errors: [{ line: 1, column: 28, messageId: 'invalidVoidExprArrow' }],
+      output: `(foo: undefined) => { foo && console.log(foo); };`,
     },
     {
       code: 'foo => foo || console.log(foo);',
+      output: null,
       errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
-      output: `foo => { foo || console.log(foo); };`,
+    },
+    {
+      code: '(foo: undefined) => foo || console.log(foo);',
+      errors: [{ line: 1, column: 28, messageId: 'invalidVoidExprArrow' }],
+      output: `(foo: undefined) => { foo || console.log(foo); };`,
+    },
+    {
+      code: '(foo: void) => foo || console.log(foo);',
+      errors: [{ line: 1, column: 23, messageId: 'invalidVoidExprArrow' }],
+      output: `(foo: void) => { foo || console.log(foo); };`,
     },
     {
       code: 'foo => (foo ? console.log(true) : console.log(false));',
@@ -310,7 +336,75 @@ function notcool(input: string) {
         };
       `,
     },
-
+    {
+      code: `
+        const f = function () {
+          let num = 1;
+          return num ? console.log('foo') : num;
+        };
+      `,
+      output: null,
+      errors: [{ line: 4, column: 24, messageId: 'invalidVoidExprReturnLast' }],
+    },
+    {
+      code: `
+        const f = function () {
+          let undef = undefined;
+          return undef ? console.log('foo') : undef;
+        };
+      `,
+      errors: [{ line: 4, column: 26, messageId: 'invalidVoidExprReturnLast' }],
+      output: `
+        const f = function () {
+          let undef = undefined;
+          undef ? console.log('foo') : undef;
+        };
+      `,
+    },
+    {
+      code: `
+        const f = function () {
+          let num = 1;
+          return num || console.log('foo');
+        };
+      `,
+      output: null,
+      errors: [{ line: 4, column: 25, messageId: 'invalidVoidExprReturnLast' }],
+    },
+    {
+      code: `
+        const f = function () {
+          let bar = void 0;
+          return bar || console.log('foo');
+        };
+      `,
+      errors: [{ line: 4, column: 25, messageId: 'invalidVoidExprReturnLast' }],
+      output: `
+        const f = function () {
+          let bar = void 0;
+          bar || console.log('foo');
+        };
+      `,
+    },
+    {
+      code: `
+        let num = 1;
+        const foo = () => (num ? console.log('foo') : num);
+      `,
+      output: null,
+      errors: [{ line: 3, column: 34, messageId: 'invalidVoidExprArrow' }],
+    },
+    {
+      code: `
+        let bar = void 0;
+        const foo = () => (bar ? console.log('foo') : bar);
+      `,
+      errors: [{ line: 3, column: 34, messageId: 'invalidVoidExprArrow' }],
+      output: `
+        let bar = void 0;
+        const foo = () => { bar ? console.log('foo') : bar; };
+      `,
+    },
     {
       options: [{ ignoreVoidOperator: true }],
       code: "return console.log('foo');",
@@ -322,6 +416,7 @@ function notcool(input: string) {
     {
       options: [{ ignoreVoidOperator: true }],
       code: "console.error(console.log('foo'));",
+      output: null,
       errors: [
         {
           line: 1,
@@ -339,6 +434,7 @@ function notcool(input: string) {
     {
       options: [{ ignoreVoidOperator: true }],
       code: "console.log('foo') ? true : false;",
+      output: null,
       errors: [
         {
           line: 1,
@@ -356,6 +452,7 @@ function notcool(input: string) {
     {
       options: [{ ignoreVoidOperator: true }],
       code: "const x = foo ?? console.log('foo');",
+      output: null,
       errors: [
         {
           line: 1,
@@ -381,6 +478,7 @@ function notcool(input: string) {
     {
       options: [{ ignoreVoidOperator: true }],
       code: "!!console.log('foo');",
+      output: null,
       errors: [
         {
           line: 1,

@@ -2,7 +2,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 type Options = [
   {
@@ -12,7 +12,7 @@ type Options = [
 ];
 type MessageIds = 'noInferrableType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',
   meta: {
     type: 'suggestion',
@@ -48,8 +48,6 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
-    const sourceCode = context.getSourceCode();
-
     function isFunctionCall(
       init: TSESTree.Expression,
       callName: string,
@@ -199,7 +197,7 @@ export default util.createRule<Options, MessageIds>({
       typeNode: TSESTree.TSTypeAnnotation | undefined,
       initNode: TSESTree.Expression | null | undefined,
     ): void {
-      if (!typeNode || !initNode || !typeNode.typeAnnotation) {
+      if (!typeNode || !initNode) {
         return;
       }
 
@@ -225,7 +223,12 @@ export default util.createRule<Options, MessageIds>({
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
-            yield fixer.remove(sourceCode.getTokenBefore(typeNode)!);
+            yield fixer.remove(
+              nullThrows(
+                context.sourceCode.getTokenBefore(typeNode),
+                NullThrowsReasons.MissingToken('token before', 'type node'),
+              ),
+            );
           }
           yield fixer.remove(typeNode);
         },
@@ -235,9 +238,6 @@ export default util.createRule<Options, MessageIds>({
     function inferrableVariableVisitor(
       node: TSESTree.VariableDeclarator,
     ): void {
-      if (!node.id) {
-        return;
-      }
       reportInferrableType(node, node.id.typeAnnotation, node.init);
     }
 
@@ -247,18 +247,18 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      if (ignoreParameters || !node.params) {
+      if (ignoreParameters) {
         return;
       }
-      (
-        node.params.filter(
-          param =>
-            param.type === AST_NODE_TYPES.AssignmentPattern &&
-            param.left &&
-            param.right,
-        ) as TSESTree.AssignmentPattern[]
-      ).forEach(param => {
-        reportInferrableType(param, param.left.typeAnnotation, param.right);
+
+      node.params.forEach(param => {
+        if (param.type === AST_NODE_TYPES.TSParameterProperty) {
+          param = param.parameter;
+        }
+
+        if (param.type === AST_NODE_TYPES.AssignmentPattern) {
+          reportInferrableType(param, param.left.typeAnnotation, param.right);
+        }
       });
     }
 

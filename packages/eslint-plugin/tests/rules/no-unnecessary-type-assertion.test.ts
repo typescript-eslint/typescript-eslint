@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
@@ -6,12 +6,23 @@ import rule from '../../src/rules/no-unnecessary-type-assertion';
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     sourceType: 'module',
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
 });
+
+const optionsWithOnUncheckedIndexedAccess = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+};
+
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
@@ -25,10 +36,34 @@ if (
   const name = member.id as TSESTree.StringLiteral;
 }
     `,
+    `
+      const c = 1;
+      let z = c as number;
+    `,
+    `
+      const c = 1;
+      let z = c as const;
+    `,
+    `
+      const c = 1;
+      let z = c as 1;
+    `,
+    `
+      type Bar = 'bar';
+      const data = {
+        x: 'foo' as 'foo',
+        y: 'bar' as Bar,
+      };
+    `,
+    "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
+    `
+      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+        x => [x, 'A' + x] as [number, string],
+      );
+    `,
+    'let y = 1 as 1;',
     'const foo = 3 as number;',
     'const foo = <number>3;',
-    'const foo = <3>3;',
-    'const foo = 3 as 3;',
     `
 type Tuple = [3, 'hi', 'bye'];
 const foo = [3, 'hi', 'bye'] as Tuple;
@@ -48,6 +83,11 @@ const foo = { 0: 'hello', 5: 'hello' } as PossibleTuple;
     `
 let bar: number | undefined = x;
 let foo: number = bar!;
+    `,
+    `
+declare const a: { data?: unknown };
+
+const x = a.data!;
     `,
     {
       code: `
@@ -170,9 +210,6 @@ const c = [...a, ...b] as const;
       code: 'const a = [1, 2] as const;',
     },
     {
-      code: "const a = 'a' as const;",
-    },
-    {
       code: "const a = { foo: 'foo' } as const;",
     },
     {
@@ -184,9 +221,6 @@ const c = <const>[...a, ...b];
     },
     {
       code: 'const a = <const>[1, 2];',
-    },
-    {
-      code: "const a = <const>'a';",
     },
     {
       code: "const a = <const>{ foo: 'foo' };",
@@ -213,9 +247,147 @@ let values: number[] = [];
 
 value = values.pop()!;
     `,
+    `
+declare function foo(): number | undefined;
+const a = foo()!;
+    `,
+    `
+declare function foo(): number | undefined;
+const a = foo() as number;
+    `,
+    `
+declare function foo(): number | undefined;
+const a = <number>foo();
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = arr[0]!;
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = arr[0] as object;
+    `,
+    `
+declare const arr: (object | undefined)[];
+const item = <object>arr[0];
+    `,
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      parserOptions: optionsWithOnUncheckedIndexedAccess,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | null | number;
+};
+const bar = foo.a as string | undefined;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | number;
+};
+const bar = foo.a as string | undefined | bigint;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      output: 'const a = `a`;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = 'a' as const;",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = <const>'a';",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: 'const foo = <3>3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: 'const foo = 3 as 3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = <Foo>3;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = 3 as Foo;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
     {
       code: `
 const foo = 3;
@@ -517,6 +689,345 @@ y = 0;
           line: 5,
         },
       ],
+    },
+    {
+      code: `
+declare function foo(): number;
+const a = foo()!;
+      `,
+      output: `
+declare function foo(): number;
+const a = foo();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 17,
+        },
+      ],
+    },
+    {
+      code: `
+const b = new Date()!;
+      `,
+      output: `
+const b = new Date();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+const b = (1 + 1)!;
+      `,
+      output: `
+const b = (1 + 1);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 11,
+          endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(): number;
+const a = foo() as number;
+      `,
+      output: `
+declare function foo(): number;
+const a = foo();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+          column: 11,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(): number;
+const a = <number>foo();
+      `,
+      output: `
+declare function foo(): number;
+const a = foo();
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+type RT = { log: () => void };
+declare function foo(): RT;
+(foo() as RT).log;
+      `,
+      output: `
+type RT = { log: () => void };
+declare function foo(): RT;
+(foo()).log;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: object[];
+const item = arr[0]!;
+      `,
+      output: `
+declare const arr: object[];
+const item = arr[0];
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (  3 + 5  ) as number;
+      `,
+      output: `
+const foo = (  3 + 5  );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (  3 + 5  ) /*as*/ as number;
+      `,
+      output: `
+const foo = (  3 + 5  ) /*as*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (  3 + 5
+  ) /*as*/ as //as
+  (
+    number
+  );
+      `,
+      output: `
+const foo = (  3 + 5
+  ) /*as*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = (3 + (5 as number) ) as number;
+      `,
+      output: `
+const foo = (3 + (5 as number) );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = 3 + 5/*as*/ as number;
+      `,
+      output: `
+const foo = 3 + 5/*as*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = 3 + 5/*a*/ /*b*/ as number;
+      `,
+      output: `
+const foo = 3 + 5/*a*/ /*b*/;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <(number)>(3 + 5);
+      `,
+      output: `
+const foo = (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = < ( number ) >( 3 + 5 );
+      `,
+      output: `
+const foo = ( 3 + 5 );
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <number> /* a */ (3 + 5);
+      `,
+      output: `
+const foo =  /* a */ (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const foo = <number /* a */>(3 + 5);
+      `,
+      output: `
+const foo = (3 + 5);
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+          column: 13,
+        },
+      ],
+    },
+    // onUncheckedIndexedAccess = false
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      output: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]);
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 9,
+        },
+      ],
+    },
+    // exactOptionalPropertyTypes = true
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      output: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 13,
+        },
+      ],
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string | undefined;
+      `,
+      output: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 13,
+        },
+      ],
+      parserOptions: optionsWithExactOptionalPropertyTypes,
     },
   ],
 });

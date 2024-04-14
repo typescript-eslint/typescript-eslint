@@ -1,3 +1,4 @@
+import { TSUtils } from '@typescript-eslint/utils';
 import type {
   JSONSchema4,
   JSONSchema4ArraySchema,
@@ -6,7 +7,6 @@ import type {
 import { NotSupportedError, UnexpectedError } from './errors';
 import { generateType } from './generateType';
 import { getCommentLines } from './getCommentLines';
-import { isArray } from './isArray';
 import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
 
 /**
@@ -24,7 +24,7 @@ export function generateArrayType(
     // but that's obviously dumb and loose so let's not even bother with it
     throw new UnexpectedError('Unexpected missing items', schema);
   }
-  if (schema.items && !isArray(schema.items) && schema.additionalItems) {
+  if (!TSUtils.isArray(schema.items) && schema.additionalItems) {
     throw new NotSupportedError(
       'singlely-typed array with additionalItems',
       schema,
@@ -44,7 +44,7 @@ export function generateArrayType(
   let items: JSONSchema4[];
   let spreadItemSchema: JSONSchema4 | null = null;
 
-  if (!isArray(schema.items)) {
+  if (!TSUtils.isArray(schema.items)) {
     if (hasMinItems || hasMaxItems) {
       // treat as a tuple
       items = Array<JSONSchema4>(

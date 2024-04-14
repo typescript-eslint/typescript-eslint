@@ -1,5 +1,5 @@
 import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export const PARSER_NAME = '@typescript-eslint/parser';
 
@@ -13,9 +13,13 @@ export const defaultParseSettings: ParseSettings = {
   DEPRECATED__createDefaultProgram: false,
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   errorOnUnknownASTType: false,
+  EXPERIMENTAL_projectService: undefined,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',
+  // JSDocParsingMode was added in TS 5.3.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  jsDocParsingMode: window.ts?.JSDocParsingMode?.ParseAll,
   jsx: true,
   loc: true,
   log: console.log,
@@ -30,7 +34,7 @@ export const defaultParseSettings: ParseSettings = {
   tsconfigRootDir: '/',
 };
 
-export const defaultEslintConfig: TSESLint.Linter.Config = {
+export const defaultEslintConfig: ClassicConfig.Config = {
   parser: PARSER_NAME,
   parserOptions: {
     ecmaFeatures: {

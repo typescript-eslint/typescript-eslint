@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/prefer-literal-enum-member -- the enums come from TS so to make merging upstream easier we purposely avoid adding literal values. */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SyntaxKind } from 'typescript';
+
+import type { ValueOf } from './types';
 
 export enum OperatorPrecedence {
   // Expression:
@@ -292,10 +295,10 @@ export function getOperatorPrecedenceForNode(
   }
 }
 
-type ValueOf<T> = T[keyof T];
 type TSESTreeOperatorKind =
   | ValueOf<TSESTree.BinaryOperatorToText>
   | ValueOf<TSESTree.PunctuatorTokenToText>;
+
 export function getOperatorPrecedence(
   nodeKind: SyntaxKind,
   operatorKind: SyntaxKind,
@@ -370,6 +373,7 @@ export function getOperatorPrecedence(
       return OperatorPrecedence.Member;
 
     case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
       return OperatorPrecedence.Relational;
 
     case SyntaxKind.ThisKeyword:

@@ -119,7 +119,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-const NOOP_RULE: RuleModule<'error', []> = {
+const NOOP_RULE: RuleModule<'error'> = {
   meta: {
     messages: {
       error: 'error',
@@ -134,7 +134,9 @@ const NOOP_RULE: RuleModule<'error', []> = {
 };
 
 function getTestConfigFromCall(): unknown[] {
-  return runRuleForItemSpy.mock.calls.map(c => c[2]);
+  return runRuleForItemSpy.mock.calls.map(c => {
+    return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
+  });
 }
 
 describe('RuleTester', () => {
@@ -169,6 +171,7 @@ describe('RuleTester', () => {
           {
             code: 'type-aware parser options should override the constructor config',
             parserOptions: {
+              EXPERIMENTAL_useProjectService: false,
               project: 'tsconfig.test-specific.json',
               tsconfigRootDir: '/set/in/the/test/',
             },
@@ -209,6 +212,7 @@ describe('RuleTester', () => {
             "code": "type-aware parser options should override the constructor config",
             "filename": "/set/in/the/test/file.ts",
             "parserOptions": {
+              "EXPERIMENTAL_useProjectService": false,
               "project": "tsconfig.test-specific.json",
               "tsconfigRootDir": "/set/in/the/test/",
             },
@@ -816,6 +820,59 @@ describe('RuleTester', () => {
         expect(mockedDescribe.mock.calls).toHaveLength(3);
         expect(mockedDescribeSkip.mock.calls).toHaveLength(0);
         // expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`undefined`);
+      });
+
+      it('does not call describe with valid if no valid tests are provided', () => {
+        const ruleTester = new RuleTester();
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          valid: [],
+          invalid: [
+            {
+              code: 'invalid',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "invalid",
+              [Function],
+            ],
+          ]
+        `);
+      });
+
+      it('does not call describe with invalid if no invalid tests are provided', () => {
+        const ruleTester = new RuleTester();
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          valid: [
+            {
+              code: 'valid',
+            },
+          ],
+          invalid: [],
+        });
+
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "valid",
+              [Function],
+            ],
+          ]
+        `);
       });
     });
   });

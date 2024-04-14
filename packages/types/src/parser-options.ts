@@ -16,6 +16,8 @@ type EcmaVersion =
   | 11
   | 12
   | 13
+  | 14
+  | 15
   | 2015
   | 2016
   | 2017
@@ -23,16 +25,27 @@ type EcmaVersion =
   | 2019
   | 2020
   | 2021
-  | 2022;
+  | 2022
+  | 2023
+  | 2024
+  | 'latest'
+  | undefined;
 
-type SourceType = 'module' | 'script';
+type SourceTypeClassic = 'module' | 'script';
+type SourceType = SourceTypeClassic | 'commonjs';
 
+type JSDocParsingMode = 'all' | 'none' | 'type-info';
+
+// If you add publicly visible options here, make sure they're also documented in `docs/packages/Parser.mdx`
 interface ParserOptions {
-  ecmaFeatures?: {
-    globalReturn?: boolean;
-    jsx?: boolean;
-  };
-  ecmaVersion?: EcmaVersion | 'latest';
+  ecmaFeatures?:
+    | {
+        globalReturn?: boolean | undefined;
+        jsx?: boolean | undefined;
+        [key: string]: unknown;
+      }
+    | undefined;
+  ecmaVersion?: EcmaVersion;
 
   // scope-manager specific
   jsxPragma?: string | null;
@@ -41,21 +54,25 @@ interface ParserOptions {
 
   // use emitDecoratorMetadata without specifying parserOptions.project
   emitDecoratorMetadata?: boolean;
+  // use experimentalDecorators without specifying parserOptions.project
+  experimentalDecorators?: boolean;
 
   // typescript-estree specific
   comment?: boolean;
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean; // purposely undocumented for now
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
+  jsDocParsingMode?: JSDocParsingMode;
   loc?: boolean;
-  program?: Program | null;
-  project?: string[] | string | true | null;
+  programs?: Program[] | null;
+  project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: (RegExp | string)[];
   range?: boolean;
-  sourceType?: SourceType;
+  sourceType?: SourceType | undefined;
   tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -70,6 +87,7 @@ export {
   CacheDurationSeconds,
   DebugLevel,
   EcmaVersion,
+  JSDocParsingMode,
   ParserOptions,
   SourceType,
 };

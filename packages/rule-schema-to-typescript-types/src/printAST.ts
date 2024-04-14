@@ -162,7 +162,7 @@ function printAndMaybeParenthesise(ast: AST): CodeWithComments {
     };
   }
   return {
-    code: `${printed.code}`,
+    code: printed.code,
     commentLines: printed.commentLines,
   };
 }

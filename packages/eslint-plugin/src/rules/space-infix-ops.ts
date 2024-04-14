@@ -1,18 +1,25 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isNotOpeningParenToken } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('space-infix-ops');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const UNIONS = ['|', '&'];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'space-infix-ops',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/space-infix-ops'],
     type: 'layout',
     docs: {
       description: 'Require spacing around infix operators',
@@ -34,7 +41,6 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const sourceCode = context.getSourceCode();
 
     function report(operator: TSESTree.Token): void {
       context.report({
@@ -44,8 +50,8 @@ export default util.createRule<Options, MessageIds>({
           operator: operator.value,
         },
         fix(fixer) {
-          const previousToken = sourceCode.getTokenBefore(operator);
-          const afterToken = sourceCode.getTokenAfter(operator);
+          const previousToken = context.sourceCode.getTokenBefore(operator);
+          const afterToken = context.sourceCode.getTokenAfter(operator);
           let fixString = '';
 
           if (operator.range[0] - previousToken!.range[1] === 0) {
@@ -77,18 +83,18 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      const operator = sourceCode.getFirstTokenBetween(
+      const operator = context.sourceCode.getFirstTokenBetween(
         leftNode,
         rightNode,
         isSpaceChar,
       )!;
 
-      const prev = sourceCode.getTokenBefore(operator)!;
-      const next = sourceCode.getTokenAfter(operator)!;
+      const prev = context.sourceCode.getTokenBefore(operator)!;
+      const next = context.sourceCode.getTokenAfter(operator)!;
 
       if (
-        !sourceCode.isSpaceBetween!(prev, operator) ||
-        !sourceCode.isSpaceBetween!(operator, next)
+        !context.sourceCode.isSpaceBetween(prev, operator) ||
+        !context.sourceCode.isSpaceBetween(operator, next)
       ) {
         report(operator);
       }
@@ -111,7 +117,7 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const leftNode =
         node.optional && !node.typeAnnotation
-          ? sourceCode.getTokenAfter(node.key)
+          ? context.sourceCode.getTokenAfter(node.key)
           : node.typeAnnotation ?? node.key;
 
       checkAndReportAssignmentSpace(leftNode, node.value);
@@ -129,20 +135,20 @@ export default util.createRule<Options, MessageIds>({
       types.forEach(type => {
         const skipFunctionParenthesis =
           type.type === TSESTree.AST_NODE_TYPES.TSFunctionType
-            ? util.isNotOpeningParenToken
+            ? isNotOpeningParenToken
             : 0;
-        const operator = sourceCode.getTokenBefore(
+        const operator = context.sourceCode.getTokenBefore(
           type,
           skipFunctionParenthesis,
         );
 
         if (operator != null && UNIONS.includes(operator.value)) {
-          const prev = sourceCode.getTokenBefore(operator);
-          const next = sourceCode.getTokenAfter(operator);
+          const prev = context.sourceCode.getTokenBefore(operator);
+          const next = context.sourceCode.getTokenAfter(operator);
 
           if (
-            !sourceCode.isSpaceBetween!(prev!, operator) ||
-            !sourceCode.isSpaceBetween!(operator, next!)
+            !context.sourceCode.isSpaceBetween(prev!, operator) ||
+            !context.sourceCode.isSpaceBetween(operator, next!)
           ) {
             report(operator);
           }

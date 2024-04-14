@@ -6,6 +6,7 @@ export const detailTabs: { value: ConfigShowAst; label: string }[] = [
   { value: 'es', label: 'ESTree' },
   { value: 'ts', label: 'TypeScript' },
   { value: 'scope', label: 'Scope' },
+  { value: 'types', label: 'Types' },
 ];
 
 /**
@@ -32,7 +33,7 @@ export const defaultConfig: ConfigModel = {
   showAST: false,
   sourceType: 'module',
   code: '',
-  ts: process.env.TS_VERSION!,
+  ts: process.env.TS_VERSION,
   tsconfig: toJson({
     compilerOptions: {
       strictNullChecks: true,

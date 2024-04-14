@@ -2,7 +2,18 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  arrayGroupByToMap,
+  createRule,
+  getParserServices,
+  isFunction,
+  isFunctionType,
+  isTypeAnyType,
+  isTypeBigIntLiteralType,
+  isTypeNeverType,
+  isTypeTemplateLiteralType,
+  isTypeUnknownType,
+} from '../util';
 
 const literalToPrimitiveTypeFlags = {
   [ts.TypeFlags.BigIntLiteral]: ts.TypeFlags.BigInt,
@@ -82,7 +93,7 @@ function describeLiteralType(type: ts.Type): string {
     return JSON.stringify(type.value);
   }
 
-  if (util.isTypeBigIntLiteralType(type)) {
+  if (isTypeBigIntLiteralType(type)) {
     return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
   }
 
@@ -91,23 +102,23 @@ function describeLiteralType(type: ts.Type): string {
     return type.value.toString();
   }
 
-  if (util.isTypeAnyType(type)) {
+  if (isTypeAnyType(type)) {
     return 'any';
   }
 
-  if (util.isTypeNeverType(type)) {
+  if (isTypeNeverType(type)) {
     return 'never';
   }
 
-  if (util.isTypeUnknownType(type)) {
+  if (isTypeUnknownType(type)) {
     return 'unknown';
   }
 
-  if (util.isTypeTemplateLiteralType(type)) {
+  if (isTypeTemplateLiteralType(type)) {
     return 'template literal type';
   }
 
-  if (util.isTypeBigIntLiteralType(type)) {
+  if (isTypeBigIntLiteralType(type)) {
     return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
   }
 
@@ -159,9 +170,8 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   return !!(
-    node.parent?.type === AST_NODE_TYPES.TSTypeAnnotation &&
-    (util.isFunctionType(node.parent.parent) ||
-      util.isFunction(node.parent.parent))
+    node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
+    (isFunctionType(node.parent.parent) || isFunction(node.parent.parent))
   );
 }
 
@@ -177,7 +187,7 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     : tsutils.unionTypeParts(type);
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
     docs: {
@@ -197,7 +207,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
 
     function getTypeNodeTypePartFlags(
@@ -262,6 +272,10 @@ export default util.createRule({
           PrimitiveTypeFlag,
           TSESTree.TypeNode[]
         >();
+        const seenUnionTypes = new Map<
+          TSESTree.TypeNode,
+          TypeFlagsWithName[]
+        >();
 
         function checkIntersectionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
@@ -313,8 +327,58 @@ export default util.createRule({
               }
             }
           }
+          // if any typeNode is TSTypeReference and typePartFlags have more than 1 element, than the referenced type is definitely a union.
+          if (typePartFlags.length >= 2) {
+            seenUnionTypes.set(typeNode, typePartFlags);
+          }
         }
-
+        /**
+         * @example
+         * ```ts
+         * type F = "a"|2|"b";
+         * type I = F & string;
+         * ```
+         * This function checks if all the union members of `F` are assignable to the other member of `I`. If every member is assignable, then its reported else not.
+         */
+        const checkIfUnionsAreAssignable = (): undefined => {
+          for (const [typeRef, typeValues] of seenUnionTypes) {
+            let primitive: number | undefined = undefined;
+            for (const { typeFlags } of typeValues) {
+              if (
+                seenPrimitiveTypes.has(
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ],
+                )
+              ) {
+                primitive =
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ];
+              } else {
+                primitive = undefined;
+                break;
+              }
+            }
+            if (Number.isInteger(primitive)) {
+              context.report({
+                data: {
+                  literal: typeValues.map(name => name.typeName).join(' | '),
+                  primitive:
+                    primitiveTypeFlagNames[
+                      primitive as keyof typeof primitiveTypeFlagNames
+                    ],
+                },
+                messageId: 'primitiveOverridden',
+                node: typeRef,
+              });
+            }
+          }
+        };
+        if (seenUnionTypes.size > 0) {
+          checkIfUnionsAreAssignable();
+          return;
+        }
         // For each primitive type of all the seen primitive types,
         // if there was a literal type seen that overrides it,
         // report each of the primitive type's type nodes
@@ -438,7 +502,7 @@ export default util.createRule({
         // group those literals by their primitive type,
         // then report each primitive type with all its literals
         for (const [typeNode, typeFlagsWithText] of overriddenTypeNodes) {
-          const grouped = util.arrayGroupByToMap(
+          const grouped = arrayGroupByToMap(
             typeFlagsWithText,
             pair => pair.primitiveTypeFlag,
           );

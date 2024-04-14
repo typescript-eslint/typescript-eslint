@@ -1,8 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type {
+  JSONSchema4AnyOfSchema,
+  JSONSchema4ArraySchema,
+  JSONSchema4ObjectSchema,
+} from '@typescript-eslint/utils/json-schema';
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
+  RuleListener,
 } from 'eslint/lib/rules/no-restricted-imports';
 import type { Ignore } from 'ignore';
 import ignore from 'ignore';
@@ -19,38 +25,96 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const arrayOfStringsOrObjects: JSONSchema4 = {
+// In some versions of eslint, the base rule has a completely incompatible schema
+// This helper function is to safely try to get parts of the schema. If it's not
+// possible, we'll fallback to less strict checks.
+const tryAccess = <T>(getter: () => T, fallback: T): T => {
+  try {
+    return getter();
+  } catch {
+    return fallback;
+  }
+};
+
+const baseSchema = baseRule.meta.schema as {
+  anyOf: [
+    unknown,
+    {
+      type: 'array';
+      items: [
+        {
+          type: 'object';
+          properties: {
+            paths: {
+              type: 'array';
+              items: {
+                anyOf: [
+                  { type: 'string' },
+                  {
+                    type: 'object';
+                    properties: JSONSchema4ObjectSchema['properties'];
+                    required: string[];
+                  },
+                ];
+              };
+            };
+            patterns: {
+              anyOf: [
+                { type: 'array'; items: { type: 'string' } },
+                {
+                  type: 'array';
+                  items: {
+                    type: 'object';
+                    properties: JSONSchema4ObjectSchema['properties'];
+                    required: string[];
+                  };
+                },
+              ];
+            };
+          };
+        },
+      ];
+    },
+  ];
+};
+
+const allowTypeImportsOptionSchema: JSONSchema4ObjectSchema['properties'] = {
+  allowTypeImports: {
+    type: 'boolean',
+    description: 'Disallow value imports, but allow type-only imports.',
+  },
+};
+
+const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
   type: 'array',
   items: {
     anyOf: [
       { type: 'string' },
       {
         type: 'object',
-        properties: {
-          name: { type: 'string' },
-          message: {
-            type: 'string',
-            minLength: 1,
-          },
-          importNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-          allowTypeImports: {
-            type: 'boolean',
-            description: 'Disallow value imports, but allow type-only imports.',
-          },
-        },
         additionalProperties: false,
-        required: ['name'],
+        properties: {
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+                .properties,
+            undefined,
+          ),
+          ...allowTypeImportsOptionSchema,
+        },
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+              .required,
+          undefined,
+        ),
       },
     ],
   },
   uniqueItems: true,
 };
-const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
+
+const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
   anyOf: [
     {
       type: 'array',
@@ -63,39 +127,44 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
       type: 'array',
       items: {
         type: 'object',
-        properties: {
-          importNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-            minItems: 1,
-            uniqueItems: true,
-          },
-          group: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-            minItems: 1,
-            uniqueItems: true,
-          },
-          message: {
-            type: 'string',
-            minLength: 1,
-          },
-          caseSensitive: {
-            type: 'boolean',
-          },
-          allowTypeImports: {
-            type: 'boolean',
-            description: 'Disallow value imports, but allow type-only imports.',
-          },
-        },
         additionalProperties: false,
-        required: ['group'],
+        properties: {
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+                .properties,
+            undefined,
+          ),
+          ...allowTypeImportsOptionSchema,
+        },
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+              .required,
+          [],
+        ),
       },
       uniqueItems: true,
+    },
+  ],
+};
+
+const schema: JSONSchema4AnyOfSchema = {
+  anyOf: [
+    arrayOfStringsOrObjects,
+    {
+      type: 'array',
+      items: [
+        {
+          type: 'object',
+          properties: {
+            paths: arrayOfStringsOrObjects,
+            patterns: arrayOfStringsOrObjectPatterns,
+          },
+          additionalProperties: false,
+        },
+      ],
+      additionalItems: false,
     },
   ],
 };
@@ -143,6 +212,21 @@ function getRestrictedPatterns(
   return [];
 }
 
+function shouldCreateRule(
+  baseRules: RuleListener,
+  options: Options,
+): baseRules is Exclude<RuleListener, Record<string, never>> {
+  if (Object.keys(baseRules).length === 0 || options.length === 0) {
+    return false;
+  }
+
+  if (!isOptionsArrayOfStringOrObject(options)) {
+    return !!(options[0].paths?.length || options[0].patterns?.length);
+  }
+
+  return true;
+}
+
 export default createRule<Options, MessageIds>({
   name: 'no-restricted-imports',
   meta: {
@@ -153,32 +237,14 @@ export default createRule<Options, MessageIds>({
     },
     messages: baseRule.meta.messages,
     fixable: baseRule.meta.fixable,
-    schema: {
-      anyOf: [
-        arrayOfStringsOrObjects,
-        {
-          type: 'array',
-          items: [
-            {
-              type: 'object',
-              properties: {
-                paths: arrayOfStringsOrObjects,
-                patterns: arrayOfStringsOrObjectPatterns,
-              },
-              additionalProperties: false,
-            },
-          ],
-          additionalItems: false,
-        },
-      ],
-    },
+    schema,
   },
   defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
     const { options } = context;
 
-    if (options.length === 0) {
+    if (!shouldCreateRule(rules, options)) {
       return {};
     }
 
@@ -219,26 +285,66 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    return {
-      ImportDeclaration(node): void {
-        if (node.importKind === 'type') {
-          const importSource = node.source.value.trim();
-          if (
-            !isAllowedTypeImportPath(importSource) &&
-            !isAllowedTypeImportPattern(importSource)
-          ) {
-            return rules.ImportDeclaration(node);
-          }
-        } else {
+    function checkImportNode(node: TSESTree.ImportDeclaration): void {
+      if (
+        node.importKind === 'type' ||
+        (node.specifiers.length > 0 &&
+          node.specifiers.every(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+              specifier.importKind === 'type',
+          ))
+      ) {
+        const importSource = node.source.value.trim();
+        if (
+          !isAllowedTypeImportPath(importSource) &&
+          !isAllowedTypeImportPattern(importSource)
+        ) {
           return rules.ImportDeclaration(node);
         }
+      } else {
+        return rules.ImportDeclaration(node);
+      }
+    }
+
+    return {
+      TSImportEqualsDeclaration(
+        node: TSESTree.TSImportEqualsDeclaration,
+      ): void {
+        if (
+          node.moduleReference.type ===
+            AST_NODE_TYPES.TSExternalModuleReference &&
+          node.moduleReference.expression.type === AST_NODE_TYPES.Literal &&
+          typeof node.moduleReference.expression.value === 'string'
+        ) {
+          const synthesizedImport = {
+            ...node,
+            type: AST_NODE_TYPES.ImportDeclaration,
+            source: node.moduleReference.expression,
+            assertions: [],
+            attributes: [],
+            specifiers: [
+              {
+                ...node.id,
+                type: AST_NODE_TYPES.ImportDefaultSpecifier,
+                local: node.id,
+              },
+            ],
+          } satisfies TSESTree.ImportDeclaration;
+          return checkImportNode(synthesizedImport);
+        }
       },
+      ImportDeclaration: checkImportNode,
       'ExportNamedDeclaration[source]'(
         node: TSESTree.ExportNamedDeclaration & {
           source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
         },
       ): void {
-        if (node.exportKind === 'type') {
+        if (
+          node.exportKind === 'type' ||
+          (node.specifiers.length > 0 &&
+            node.specifiers.every(specifier => specifier.exportKind === 'type'))
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&

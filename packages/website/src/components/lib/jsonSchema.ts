@@ -37,11 +37,12 @@ export function getRuleJsonSchemaWithErrorLevel(
       additionalItems: false,
     };
   }
-  if (ruleSchema.type === 'array') {
+  if ('items' in ruleSchema) {
     // example: explicit-member-accessibility
     if (isArray(ruleSchema.items)) {
       return {
         ...ruleSchema,
+        type: 'array',
         items: [defaultRuleSchema, ...ruleSchema.items],
         maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
         minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
@@ -49,10 +50,13 @@ export function getRuleJsonSchemaWithErrorLevel(
       };
     }
     // example: naming-convention rule
-    if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
+    if (typeof ruleSchema.items === 'object') {
       return {
         ...ruleSchema,
+        type: 'array',
         items: [defaultRuleSchema],
+        maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
+        minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
         additionalItems: ruleSchema.items,
       };
     }
@@ -114,7 +118,7 @@ export function getEslintJsonSchema(
           { type: 'string' },
           {
             type: 'array',
-            items: { type: 'string', enum: Object.keys(linter.configs) },
+            items: { type: 'string', enum: linter.configs },
             uniqueItems: true,
           },
         ],
@@ -128,11 +132,16 @@ export function getEslintJsonSchema(
   };
 }
 
+export interface DescribedOptionDeclaration extends ts.OptionDeclarations {
+  description: NonNullable<ts.OptionDeclarations['description']>;
+  category: NonNullable<ts.OptionDeclarations['category']>;
+}
+
 /**
  * Get all typescript options, except for the ones that are not supported by the playground
  * this function uses private API from typescript, and this might break in the future
  */
-export function getTypescriptOptions(): ts.OptionDeclarations[] {
+export function getTypescriptOptions(): DescribedOptionDeclaration[] {
   const allowedCategories = [
     'Command-line Options',
     'Projects',
@@ -152,12 +161,12 @@ export function getTypescriptOptions(): ts.OptionDeclarations[] {
   ];
 
   return window.ts.optionDeclarations.filter(
-    item =>
+    (item): item is DescribedOptionDeclaration =>
       (item.type === 'boolean' ||
         item.type === 'list' ||
         item.type instanceof Map) &&
-      item.description &&
-      item.category &&
+      !!item.description &&
+      !!item.category &&
       !allowedCategories.includes(item.category.message) &&
       !filteredNames.includes(item.name),
   );
@@ -171,7 +180,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
     if (item.type === 'boolean') {
       options[item.name] = {
         type: 'boolean',
-        description: item.description!.message,
+        description: item.description.message,
       };
     } else if (item.type === 'list' && item.element?.type instanceof Map) {
       options[item.name] = {
@@ -180,12 +189,12 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
           type: 'string',
           enum: Array.from(item.element.type.keys()),
         },
-        description: item.description!.message,
+        description: item.description.message,
       };
     } else if (item.type instanceof Map) {
       options[item.name] = {
         type: 'string',
-        description: item.description!.message,
+        description: item.description.message,
         enum: Array.from(item.type.keys()),
       };
     }

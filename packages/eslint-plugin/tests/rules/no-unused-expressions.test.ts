@@ -72,6 +72,10 @@ ruleTester.run('no-unused-expressions', rule, {
     `
       import('./foo').then(() => {});
     `,
+    `
+      class Foo<T> {}
+      new Foo<string>();
+    `,
     {
       code: 'foo && foo?.();',
       options: [{ allowShortCircuit: true }],
@@ -293,6 +297,87 @@ function foo() {
           endLine: 1,
           column: 1,
           endColumn: 26,
+        },
+      ]),
+    },
+    {
+      code: noFormat`
+class Foo<T> {}
+Foo<string>;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 13,
+        },
+      ]),
+    },
+    {
+      code: 'Map<string, string>;',
+      errors: error([
+        {
+          line: 1,
+          endLine: 1,
+          column: 1,
+          endColumn: 21,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 5,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo as any;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 12,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+<any>foo;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 10,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo!;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 6,
         },
       ]),
     },

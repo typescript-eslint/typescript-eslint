@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-export TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      attributes: [],
+      declaration: TSModuleDeclaration {
+        type: "TSModuleDeclaration",
+        body: TSModuleBlock {
+          type: "TSModuleBlock",
+          body: [],
+
+          range: [25, 27],
+          loc: {
+            start: { column: 25, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+        declare: false,
+        global: false,
+        id: TSQualifiedName {
+          type: "TSQualifiedName",
+          left: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "abd",
+            optional: false,
+
+            range: [17, 20],
+            loc: {
+              start: { column: 17, line: 1 },
+              end: { column: 20, line: 1 },
+            },
+          },
+          right: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "def",
+            optional: false,
+
+            range: [21, 24],
+            loc: {
+              start: { column: 21, line: 1 },
+              end: { column: 24, line: 1 },
+            },
+          },
+
+          range: [17, 24],
+          loc: {
+            start: { column: 17, line: 1 },
+            end: { column: 24, line: 1 },
+          },
+        },
+        kind: "namespace",
+
+        range: [7, 27],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 27, line: 1 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: [],
+
+      range: [0, 27],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 27, line: 1 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [0, 28],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

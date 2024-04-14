@@ -3,7 +3,17 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import type { MakeRequired } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  isClosingParenToken,
+  isOpeningParenToken,
+  isParenthesized,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type Options = [
   {
@@ -22,7 +32,7 @@ export type MessageId =
   | 'invalidVoidExprWrapVoid'
   | 'voidExprWrapVoid';
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
   meta: {
     docs: {
@@ -70,7 +80,7 @@ export default util.createRule<Options, MessageId>({
     fixable: 'code',
     hasSuggestions: true,
   },
-  defaultOptions: [{}],
+  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
 
   create(context, [options]) {
     return {
@@ -80,8 +90,8 @@ export default util.createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const services = util.getParserServices(context);
-        const type = util.getConstrainedTypeAtLocation(services, node);
+        const services = getParserServices(context);
+        const type = getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
@@ -93,9 +103,8 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
-        const sourceCode = context.getSourceCode();
         const wrapVoidFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
-          const nodeText = sourceCode.getText(node);
+          const nodeText = context.sourceCode.getText(node);
           const newNodeText = `void ${nodeText}`;
           return fixer.replaceText(node, newNodeText);
         };
@@ -118,18 +127,33 @@ export default util.createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprArrow',
             fix(fixer) {
+              if (!canFix(arrowFunction)) {
+                return null;
+              }
               const arrowBody = arrowFunction.body;
-              const arrowBodyText = sourceCode.getText(arrowBody);
+              const arrowBodyText = context.sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
-              if (util.isParenthesized(arrowBody, sourceCode)) {
-                const bodyOpeningParen = sourceCode.getTokenBefore(
-                  arrowBody,
-                  util.isOpeningParenToken,
-                )!;
-                const bodyClosingParen = sourceCode.getTokenAfter(
-                  arrowBody,
-                  util.isClosingParenToken,
-                )!;
+              if (isParenthesized(arrowBody, context.sourceCode)) {
+                const bodyOpeningParen = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    arrowBody,
+                    isOpeningParenToken,
+                  ),
+                  NullThrowsReasons.MissingToken(
+                    'opening parenthesis',
+                    'arrow body',
+                  ),
+                );
+                const bodyClosingParen = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    arrowBody,
+                    isClosingParenToken,
+                  ),
+                  NullThrowsReasons.MissingToken(
+                    'closing parenthesis',
+                    'arrow body',
+                  ),
+                );
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
                   newArrowBodyText,
@@ -152,22 +176,23 @@ export default util.createRule<Options, MessageId>({
             });
           }
 
-          const returnStmt = invalidAncestor;
-
-          if (isFinalReturn(returnStmt)) {
+          if (isFinalReturn(invalidAncestor)) {
             // remove the `return` keyword
             return context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
-                const returnValue = returnStmt.argument!;
-                const returnValueText = sourceCode.getText(returnValue);
+                if (!canFix(invalidAncestor)) {
+                  return null;
+                }
+                const returnValue = invalidAncestor.argument;
+                const returnValueText = context.sourceCode.getText(returnValue);
                 let newReturnStmtText = `${returnValueText};`;
-                if (isPreventingASI(returnValue, sourceCode)) {
+                if (isPreventingASI(returnValue)) {
                   // put a semicolon at the beginning of the line
                   newReturnStmtText = `;${newReturnStmtText}`;
                 }
-                return fixer.replaceText(returnStmt, newReturnStmtText);
+                return fixer.replaceText(invalidAncestor, newReturnStmtText);
               },
             });
           }
@@ -177,19 +202,21 @@ export default util.createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
-              const returnValue = returnStmt.argument!;
-              const returnValueText = sourceCode.getText(returnValue);
+              const returnValue = invalidAncestor.argument;
+              const returnValueText = context.sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
-              if (isPreventingASI(returnValue, sourceCode)) {
+              if (isPreventingASI(returnValue)) {
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
-              if (returnStmt.parent.type !== AST_NODE_TYPES.BlockStatement) {
+              if (
+                invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
+              ) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;
               }
-              return fixer.replaceText(returnStmt, newReturnStmtText);
+              return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
           });
         }
@@ -211,6 +238,15 @@ export default util.createRule<Options, MessageId>({
       },
     };
 
+    type ReturnStatementWithArgument = MakeRequired<
+      TSESTree.ReturnStatement,
+      'argument'
+    >;
+
+    type InvalidAncestor =
+      | Exclude<TSESTree.Node, TSESTree.ReturnStatement>
+      | ReturnStatementWithArgument;
+
     /**
      * Inspects the void expression's ancestors and finds closest invalid one.
      * By default anything other than an ExpressionStatement is invalid.
@@ -219,11 +255,8 @@ export default util.createRule<Options, MessageId>({
      * @param node The void expression node to check.
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
-    function findInvalidAncestor(node: TSESTree.Node): TSESTree.Node | null {
-      const parent = util.nullThrows(
-        node.parent,
-        util.NullThrowsReasons.MissingParent,
-      );
+    function findInvalidAncestor(node: TSESTree.Node): InvalidAncestor | null {
+      const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
       if (parent.type === AST_NODE_TYPES.SequenceExpression) {
         if (node !== parent.expressions[parent.expressions.length - 1]) {
           return null;
@@ -275,26 +308,24 @@ export default util.createRule<Options, MessageId>({
         return findInvalidAncestor(parent);
       }
 
-      // any other parent is invalid
-      return parent;
+      // Any other parent is invalid.
+      // We can assume a return statement will have an argument.
+      return parent as InvalidAncestor;
     }
 
     /** Checks whether the return statement is the last statement in a function body. */
     function isFinalReturn(node: TSESTree.ReturnStatement): boolean {
       // the parent must be a block
-      const block = util.nullThrows(
-        node.parent,
-        util.NullThrowsReasons.MissingParent,
-      );
+      const block = nullThrows(node.parent, NullThrowsReasons.MissingParent);
       if (block.type !== AST_NODE_TYPES.BlockStatement) {
         // e.g. `if (cond) return;` (not in a block)
         return false;
       }
 
       // the block's parent must be a function
-      const blockParent = util.nullThrows(
+      const blockParent = nullThrows(
         block.parent,
-        util.NullThrowsReasons.MissingParent,
+        NullThrowsReasons.MissingParent,
       );
       if (
         ![
@@ -323,16 +354,27 @@ export default util.createRule<Options, MessageId>({
      *
      * This happens if the line begins with `(`, `[` or `` ` ``
      */
-    function isPreventingASI(
-      node: TSESTree.Expression,
-      sourceCode: Readonly<TSESLint.SourceCode>,
-    ): boolean {
-      const startToken = util.nullThrows(
-        sourceCode.getFirstToken(node),
-        util.NullThrowsReasons.MissingToken('first token', node.type),
+    function isPreventingASI(node: TSESTree.Expression): boolean {
+      const startToken = nullThrows(
+        context.sourceCode.getFirstToken(node),
+        NullThrowsReasons.MissingToken('first token', node.type),
       );
 
       return ['(', '[', '`'].includes(startToken.value);
+    }
+
+    function canFix(
+      node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
+    ): boolean {
+      const services = getParserServices(context);
+
+      const targetNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? node.argument
+          : node.body;
+
+      const type = getConstrainedTypeAtLocation(services, targetNode);
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
   },
 });

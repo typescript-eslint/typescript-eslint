@@ -65,6 +65,7 @@ function assignmentTest(
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
@@ -113,6 +114,10 @@ class Foo {
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
     'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
+    `
+type T = [string, T[]];
+const test: T = ['string', []] as T;
+    `,
     {
       code: `
 type Props = { a: string };
@@ -367,6 +372,20 @@ function foo() {
           line: 3,
           column: 9,
           endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+type T = [string, T[]];
+const test: T = ['string', []] as any;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 3,
+          column: 7,
+          endColumn: 38,
         },
       ],
     },

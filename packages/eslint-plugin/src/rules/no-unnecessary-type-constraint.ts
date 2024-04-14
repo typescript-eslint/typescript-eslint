@@ -1,17 +1,17 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { extname } from 'path';
+import * as ts from 'typescript';
 
-import * as util from '../util';
+import type { MakeRequired } from '../util';
+import { createRule } from '../util';
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
   'constraint'
 >;
 
-export default util.createRule({
+export default createRule({
   name: 'no-unnecessary-type-constraint',
   meta: {
     docs: {
@@ -38,8 +38,23 @@ export default util.createRule({
       [AST_NODE_TYPES.TSUnknownKeyword, 'unknown'],
     ]);
 
-    const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
-    const source = context.getSourceCode();
+    function checkRequiresGenericDeclarationDisambiguation(
+      filename: string,
+    ): boolean {
+      const pathExt = extname(filename).toLocaleLowerCase() as ts.Extension;
+      switch (pathExt) {
+        case ts.Extension.Cts:
+        case ts.Extension.Mts:
+        case ts.Extension.Tsx:
+          return true;
+
+        default:
+          return false;
+      }
+    }
+
+    const requiresGenericDeclarationDisambiguation =
+      checkRequiresGenericDeclarationDisambiguation(context.filename);
 
     const checkNode = (
       node: TypeParameterWithConstraint,
@@ -47,14 +62,14 @@ export default util.createRule({
     ): void => {
       const constraint = unnecessaryConstraints.get(node.constraint.type);
       function shouldAddTrailingComma(): boolean {
-        if (!inArrowFunction || !inJsx) {
+        if (!inArrowFunction || !requiresGenericDeclarationDisambiguation) {
           return false;
         }
         // Only <T>() => {} would need trailing comma
         return (
           (node.parent as TSESTree.TSTypeParameterDeclaration).params.length ===
             1 &&
-          source.getTokensAfter(node)[0].value !== ',' &&
+          context.sourceCode.getTokensAfter(node)[0].value !== ',' &&
           !node.default
         );
       }

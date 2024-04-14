@@ -30,9 +30,6 @@ interface Foo {
 }
     `,
     {
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       code: `
 // no accessibility === public
 interface Foo {
@@ -1313,9 +1310,6 @@ class Foo {
   f = 1;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
     },
     {
@@ -1326,9 +1320,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
     },
     {
@@ -1339,9 +1330,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
     },
     `
@@ -1644,6 +1632,31 @@ class Foo {
         {
           default: {
             memberTypes: ['#private-method', 'private-method'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      name: 'default member types with alphabetically-case-insensitive order',
+      code: `
+// no accessibility === public
+class Foo {
+  [A: string]: any;
+  [a: string]: any;
+  static C: boolean;
+  static d: boolean;
+  b: any;
+  B: any;
+  get e(): string {}
+  get E(): string {}
+  private imPrivate() {}
+  private ImPrivate() {}
+}
+      `,
+      options: [
+        {
+          default: {
             order: 'alphabetically-case-insensitive',
           },
         },
@@ -2005,6 +2018,107 @@ interface Foo {
       options: [
         {
           default: ['readonly-field', 'field', 'signature'],
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6812
+    {
+      code: `
+class Foo {
+  #bar: string;
+
+  get bar(): string {
+    return this.#bar;
+  }
+
+  set bar(value: string) {
+    this.#bar = value;
+  }
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [['get', 'set']],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      name: 'default member types with alphabetically order',
+      code: `
+// no accessibility === public
+class Foo {
+  [A: string]: any;
+  [B: string]: any;
+  [a: string]: any;
+  [b: string]: any;
+  static C: boolean;
+  static d: boolean;
+  get E(): string {}
+  get e(): string {}
+  private ImPrivate() {}
+  private imPrivate() {}
+}
+      `,
+      options: [
+        {
+          default: {
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      name: 'alphabetically order without member types',
+      code: `
+// no accessibility === public
+interface Foo {
+  A: string;
+  B: string;
+  [Z: string]: any;
+  c();
+  new ();
+  r();
+}
+      `,
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+class Foo {
+  #bar: string;
+
+  get bar(): string {
+    return this.#bar;
+  }
+
+  set bar(value: string) {
+    this.#bar = value;
+  }
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [['get', 'set']],
+            order: 'natural',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bar;
+
+  baz() {}
+}
+      `,
+      options: [
+        {
+          default: ['accessor', 'method'],
         },
       ],
     },
@@ -4549,9 +4663,6 @@ class Foo {
   f = 1;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
       errors: [
         {
@@ -4582,9 +4693,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
       errors: [
         {
@@ -4606,9 +4714,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'field', 'method'] }],
       errors: [
         {
@@ -4630,9 +4735,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
       errors: [
         {
@@ -4656,9 +4758,6 @@ class Foo {
   md() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [
         { default: ['decorated-method', 'static-initialization', 'method'] },
       ],
@@ -4740,6 +4839,57 @@ class Foo {
           column: 3,
         },
       ],
+    },
+    {
+      name: 'default member types with alphabetically order',
+      code: `
+// no accessibility === public
+class Foo {
+  static C: boolean;
+  [B: string]: any;
+  private A() {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'B',
+            rank: 'public static field',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+      options: [
+        {
+          default: {
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      name: 'alphabetically order without member types',
+      code: `
+// no accessibility === public
+class Foo {
+  static C: boolean;
+  [B: string]: any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'C',
+          },
+          line: 5,
+          column: 3,
+        },
+      ],
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
     {
       name: '#private and private member order',
@@ -5014,6 +5164,31 @@ interface Foo {
             rank: 'field',
           },
           line: 7,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bar;
+
+  baz() {}
+}
+      `,
+      options: [
+        {
+          default: ['method', 'accessor'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'baz',
+            rank: 'accessor',
+          },
+          line: 5,
           column: 3,
         },
       ],

@@ -95,6 +95,10 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/mastodon.svg') no-repeat;
 }
 
+.www-link::before {
+  background: url('/img/www.svg') no-repeat;
+}
+
 .stack-overflow-link::before {
   background: url('/img/stack-overflow.svg') no-repeat;
 }
@@ -132,6 +136,13 @@ html[data-theme='dark'] .image-link::before {
 .theme-doc-sidebar-item-link-level-3 > a,
 .theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > a {
   font-size: 0.8em;
+}
+
+.menu__list-item > .menu__version-item {
+  color: var(--ifm-menu-color);
+  line-height: 1.25;
+  padding: var(--ifm-menu-link-padding-vertical)
+    var(--ifm-menu-link-padding-horizontal);
 }
 
 h1,
@@ -183,4 +194,12 @@ h6 {
 
 [data-theme='dark'] .code-block-added-line {
   background-color: #00ff9510;
+}
+
+.markdown a {
+  text-decoration: underline;
+}
+
+.markdown a * {
+  vertical-align: baseline;
 }

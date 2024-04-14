@@ -32,7 +32,7 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = context.getScope();
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -124,6 +124,27 @@ export default createRule({
       );
     }
 
+    function escapeString(str: string): string {
+      const EscapeMap = {
+        '\0': '\\0',
+        "'": "\\'",
+        '\\': '\\\\',
+        '\n': '\\n',
+        '\r': '\\r',
+        '\v': '\\v',
+        '\t': '\\t',
+        '\f': '\\f',
+        // "\b" cause unexpected replacements
+        // '\b': '\\b',
+      };
+      const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
+
+      return str.replace(
+        replaceRegex,
+        char => EscapeMap[char as keyof typeof EscapeMap],
+      );
+    }
+
     function checkArrayIndexOf(
       node: TSESTree.MemberExpression,
       allowFixing: boolean,
@@ -131,7 +152,7 @@ export default createRule({
       // Check if the comparison is equivalent to `includes()`.
       const callNode = node.parent as TSESTree.CallExpression;
       const compareNode = (
-        callNode.parent?.type === AST_NODE_TYPES.ChainExpression
+        callNode.parent.type === AST_NODE_TYPES.ChainExpression
           ? callNode.parent.parent
           : callNode.parent
       ) as TSESTree.BinaryExpression;
@@ -200,12 +221,11 @@ export default createRule({
       },
 
       // /bar/.test(foo)
-      'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      'CallExpression[arguments.length=1] > MemberExpression.callee[property.name="test"][computed=false]'(
+        node: TSESTree.MemberExpression & { parent: TSESTree.CallExpression },
       ): void {
-        const callNode = node.parent as TSESTree.CallExpression;
-        const text =
-          callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
+        const callNode = node.parent;
+        const text = parseRegExp(node.object);
         if (text == null) {
           return;
         }
@@ -234,13 +254,14 @@ export default createRule({
               argNode.type !== AST_NODE_TYPES.CallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
+            yield fixer.removeRange([argNode.range[1], callNode.range[1]]);
             if (needsParen) {
               yield fixer.insertTextBefore(argNode, '(');
               yield fixer.insertTextAfter(argNode, ')');
             }
             yield fixer.insertTextAfter(
               argNode,
-              `${node.optional ? '?.' : '.'}includes('${text}'`,
+              `${node.optional ? '?.' : '.'}includes('${escapeString(text)}')`,
             );
           },
         });

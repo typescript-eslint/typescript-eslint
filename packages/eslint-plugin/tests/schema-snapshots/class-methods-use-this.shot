@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes class-methods-use-this 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "enforceForClassFields": {
+        "default": true,
+        "description": "Enforces that functions used as instance field initializers utilize \`this\`",
+        "type": "boolean"
+      },
+      "exceptMethods": {
+        "description": "Allows specified method names to be ignored with this rule",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "ignoreClassesThatImplementAnInterface": {
+        "description": "Ignore classes that specifically implement some interface",
+        "oneOf": [
+          {
+            "description": "Ignore all classes that implement an interface",
+            "type": "boolean"
+          },
+          {
+            "description": "Ignore only the public fields of classes that implement an interface",
+            "enum": ["public-fields"],
+            "type": "string"
+          }
+        ]
+      },
+      "ignoreOverrideMethods": {
+        "description": "Ignore members marked with the \`override\` modifier",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Enforces that functions used as instance field initializers utilize \`this\` */
+    enforceForClassFields?: boolean;
+    /** Allows specified method names to be ignored with this rule */
+    exceptMethods?: string[];
+    /** Ignore classes that specifically implement some interface */
+    ignoreClassesThatImplementAnInterface?: /**
+     * Ignore classes that specifically implement some interface
+     * Ignore all classes that implement an interface
+     */
+    | boolean
+      /** Ignore only the public fields of classes that implement an interface */
+      | 'public-fields';
+    /** Ignore members marked with the \`override\` modifier */
+    ignoreOverrideMethods?: boolean;
+  },
+];
+"
+`;

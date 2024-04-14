@@ -55,6 +55,7 @@ type CanonicalPath = string & { __brand: unknown };
 
 // typescript doesn't provide a ts.sys implementation for browser environments
 const useCaseSensitiveFileNames =
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
 const correctPathCasing = useCaseSensitiveFileNames
   ? (filePath: string): string => filePath
@@ -97,12 +98,12 @@ function getExtension(fileName: string | undefined): string | null {
 
 function getAstFromProgram(
   currentProgram: Program,
-  parseSettings: ParseSettings,
+  filePath: string,
 ): ASTAndDefiniteProgram | undefined {
-  const ast = currentProgram.getSourceFile(parseSettings.filePath);
+  const ast = currentProgram.getSourceFile(filePath);
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
-  const expectedExt = getExtension(parseSettings.filePath);
+  const expectedExt = getExtension(filePath);
   const returnedExt = getExtension(ast?.fileName);
   if (expectedExt !== returnedExt) {
     return undefined;
@@ -118,6 +119,7 @@ function getAstFromProgram(
  */
 function createHash(content: string): string {
   // No ts.sys in browser environments.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (ts.sys?.createHash) {
     return ts.sys.createHash(content);
   }

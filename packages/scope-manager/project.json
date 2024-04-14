@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -50,29 +51,22 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/scope-manager/**/*.{mts,cts,ts,tsx}"],
-        "ignorePath": ".eslintignore"
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{projectRoot}/coverage"],
       "options": {
-        "jestConfig": "packages/scope-manager/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/scope-manager/jest.config.js"
       }
     },
     "generate-lib": {
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "cwd": "packages/scope-manager",
-        "commands": ["yarn tsx tools/generate-lib.ts"]
+        "cwd": "packages/repo-tools",
+        "commands": ["yarn generate-lib"]
       }
     }
-  },
-  "tags": []
+  }
 }

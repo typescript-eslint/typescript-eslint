@@ -6,34 +6,41 @@ module.exports = {
       collapsible: false,
       items: [
         {
-          collapsible: false,
-          items: ['linting/typed-linting/monorepos'],
-          label: 'Linting with Type Information',
-          link: {
-            id: 'linting/typed-linting',
-            type: 'doc',
-          },
-          type: 'category',
+          label: 'Quickstart',
+          id: 'getting-started/quickstart',
+          type: 'doc',
         },
-        'linting/configs',
         {
           collapsible: false,
-          items: [
-            'linting/troubleshooting/performance-troubleshooting',
-            'linting/troubleshooting/formatting',
-            'linting/troubleshooting/tslint',
-          ],
-          label: 'Troubleshooting & FAQs',
+          items: ['getting-started/typed-linting/monorepos'],
+          label: 'Linting with Type Information',
           link: {
-            id: 'linting/troubleshooting',
+            id: 'getting-started/typed-linting',
             type: 'doc',
           },
           type: 'category',
         },
+        'getting-started/legacy-eslint-setup',
       ],
       label: 'Getting Started',
       link: {
-        id: 'getting-started',
+        id: 'getting-started/quickstart',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+
+    {
+      collapsible: false,
+      items: [
+        'troubleshooting/faqs',
+        'troubleshooting/performance-troubleshooting',
+        'troubleshooting/formatting',
+        'troubleshooting/tslint',
+      ],
+      label: 'Troubleshooting & FAQs',
+      link: {
+        id: 'troubleshooting/faqs',
         type: 'doc',
       },
       type: 'category',
@@ -41,6 +48,12 @@ module.exports = {
     {
       collapsible: false,
       items: [
+        {
+          label: 'Rules',
+          href: '/rules/',
+          type: 'link',
+        },
+        'users/configs',
         'users/dependency-versions',
         'users/releases',
         'users/versioning',
@@ -63,7 +76,8 @@ module.exports = {
       type: 'category',
     },
     {
-      collapsible: false,
+      collapsed: false,
+      collapsible: true,
       items: [
         'packages/eslint-plugin',
         'packages/eslint-plugin-tslint',
@@ -71,6 +85,7 @@ module.exports = {
         'packages/rule-tester',
         'packages/scope-manager',
         'packages/typescript-estree',
+        'packages/typescript-eslint',
         'packages/utils',
       ],
       label: 'Packages',
@@ -84,7 +99,16 @@ module.exports = {
       items: [
         'contributing/discussions',
         'contributing/issues',
-        'contributing/local-development',
+        {
+          collapsible: false,
+          items: ['contributing/local-development/local-linking'],
+          label: 'Local Development',
+          link: {
+            id: 'contributing/local-development',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         'contributing/pull-requests',
       ],
       label: 'Contributing',
@@ -95,11 +119,12 @@ module.exports = {
       type: 'category',
     },
     {
+      collapsible: true,
       items: [
         'maintenance/branding',
-        'maintenance/dependency-version-upgrades',
+        'maintenance/contributor-tiers',
         {
-          collapsible: false,
+          collapsible: true,
           items: ['maintenance/issues/rule-deprecations'],
           label: 'Issues',
           link: {
@@ -108,8 +133,18 @@ module.exports = {
           },
           type: 'category',
         },
-        'maintenance/major-release-steps',
-        'maintenance/pull-requests',
+        'maintenance/releases',
+        {
+          collapsible: true,
+          items: ['maintenance/pull-requests/dependency-version-upgrades'],
+          label: 'Pull Requests',
+          link: {
+            id: 'maintenance/pull-requests',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+        'maintenance/team',
       ],
       label: 'Maintenance',
       link: {

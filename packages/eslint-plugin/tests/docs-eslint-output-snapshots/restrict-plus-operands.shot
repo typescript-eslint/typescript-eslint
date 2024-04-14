@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+let foo = 1n + 1;
+          ~~~~~~ Numeric '+' operations must either be both bigints or both numbers. Got \`bigint\` + \`number\`.
+let fn = (a: string, b: never) => a + b;
+                                      ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 2`] = `
+"Correct
+
+let foo = 1n + 1n;
+let fn = (a: string, b: string) => a + b;
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allowAny": true }
+
+let fn = (a: number, b: []) => a + b;
+                                   ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`[]\`.
+let fn = (a: string, b: []) => a + b;
+                                   ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`[]\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allowAny": true }
+
+let fn = (a: number, b: any) => a + b;
+let fn = (a: string, b: any) => a + b;
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "allowBoolean": true }
+
+let fn = (a: number, b: unknown) => a + b;
+                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
+let fn = (a: string, b: unknown) => a + b;
+                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "allowBoolean": true }
+
+let fn = (a: number, b: boolean) => a + b;
+let fn = (a: string, b: boolean) => a + b;
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 7`] = `
+"Incorrect
+Options: { "allowNullish": true }
+
+let fn = (a: number, b: unknown) => a + b;
+                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
+let fn = (a: number, b: never) => a + b;
+                                      ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
+let fn = (a: string, b: unknown) => a + b;
+                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
+let fn = (a: string, b: never) => a + b;
+                                      ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 8`] = `
+"Correct
+Options: { "allowNullish": true }
+
+let fn = (a: number, b: undefined) => a + b;
+let fn = (a: number, b: null) => a + b;
+let fn = (a: string, b: undefined) => a + b;
+let fn = (a: string, b: null) => a + b;
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 9`] = `
+"Incorrect
+Options: { "allowNumberAndString": true }
+
+let fn = (a: number, b: unknown) => a + b;
+                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`unknown\`.
+let fn = (a: number, b: never) => a + b;
+                                      ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`never\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 10`] = `
+"Correct
+Options: { "allowNumberAndString": true }
+
+let fn = (a: number, b: string) => a + b;
+let fn = (a: number, b: number | string) => a + b;
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 11`] = `
+"Incorrect
+Options: { "allowRegExp": true }
+
+let fn = (a: number, b: RegExp) => a + b;
+                                       ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`RegExp\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 12`] = `
+"Correct
+Options: { "allowRegExp": true }
+
+let fn = (a: string, b: RegExp) => a + b;
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 13`] = `
+"Incorrect
+Options: { "skipCompoundAssignments": false }
+
+let foo: bigint = 0n;
+foo += 1;
+~~~~~~~~ Numeric '+' operations must either be both bigints or both numbers. Got \`bigint\` + \`number\`.
+
+let bar: number[] = [1];
+bar += 1;
+~~~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: \`any\`, \`boolean\`, \`null\`, \`RegExp\`, \`undefined\`. Got \`number[]\`.
+"
+`;
+
+exports[`Validating rule docs restrict-plus-operands.mdx code examples ESLint output 14`] = `
+"Correct
+Options: { "skipCompoundAssignments": false }
+
+let foo: bigint = 0n;
+foo += 1n;
+
+let bar: number = 1;
+bar += 1;
+"
+`;

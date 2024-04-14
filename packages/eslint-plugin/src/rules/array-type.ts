@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isParenthesized } from '../util';
 
 /**
  * Check whatever node can be considered as simple
@@ -28,7 +28,6 @@ function isSimpleType(node: TSESTree.Node): boolean {
       return true;
     case AST_NODE_TYPES.TSTypeReference:
       if (
-        node.typeName &&
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'Array'
       ) {
@@ -85,7 +84,7 @@ type MessageIds =
   | 'errorStringGeneric'
   | 'errorStringGenericSimple';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'array-type',
   meta: {
     type: 'suggestion',
@@ -135,8 +134,6 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
-
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
 
@@ -144,8 +141,8 @@ export default util.createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function getMessageType(node: TSESTree.Node): string {
-      if (node && isSimpleType(node)) {
-        return sourceCode.getText(node);
+      if (isSimpleType(node)) {
+        return context.sourceCode.getText(node);
       }
       return 'T';
     }
@@ -253,8 +250,8 @@ export default util.createRule<Options, MessageIds>({
         const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
-          node.parent?.type === AST_NODE_TYPES.TSArrayType &&
-          !util.isParenthesized(node.parent.elementType, sourceCode);
+          node.parent.type === AST_NODE_TYPES.TSArrayType &&
+          !isParenthesized(node.parent.elementType, context.sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''

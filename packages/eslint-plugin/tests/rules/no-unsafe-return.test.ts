@@ -6,6 +6,7 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },
@@ -105,6 +106,17 @@ function foo(): Set<number> {
     `
       function test(): Map<string, string> {
         return new Map();
+      }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3549
+    `
+      function foo(): any {
+        return [] as any[];
+      }
+    `,
+    `
+      function foo(): unknown {
+        return [] as any[];
       }
     `,
   ],

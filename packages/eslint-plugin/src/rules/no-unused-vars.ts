@@ -2,7 +2,15 @@ import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  collectUnusedVariables as _collectUnusedVariables,
+  createRule,
+  getNameLocationInGlobalDirectiveComment,
+  isDefinitionFile,
+  isFunction,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type MessageIds = 'unusedVar';
 export type Options = [
@@ -31,7 +39,7 @@ interface TranslatedOptions {
   destructuredArrayIgnorePattern?: RegExp;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
   meta: {
     type: 'problem',
@@ -89,8 +97,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [firstOption]) {
-    const filename = context.getFilename();
-    const sourceCode = context.getSourceCode();
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
     const options = ((): TranslatedOptions => {
@@ -101,59 +107,57 @@ export default util.createRule<Options, MessageIds>({
         caughtErrors: 'none',
       };
 
-      if (firstOption) {
-        if (typeof firstOption === 'string') {
-          options.vars = firstOption;
-        } else {
-          options.vars = firstOption.vars ?? options.vars;
-          options.args = firstOption.args ?? options.args;
-          options.ignoreRestSiblings =
-            firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
-          options.caughtErrors =
-            firstOption.caughtErrors ?? options.caughtErrors;
+      if (typeof firstOption === 'string') {
+        options.vars = firstOption;
+      } else {
+        options.vars = firstOption.vars ?? options.vars;
+        options.args = firstOption.args ?? options.args;
+        options.ignoreRestSiblings =
+          firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
+        options.caughtErrors = firstOption.caughtErrors ?? options.caughtErrors;
 
-          if (firstOption.varsIgnorePattern) {
-            options.varsIgnorePattern = new RegExp(
-              firstOption.varsIgnorePattern,
-              'u',
-            );
-          }
+        if (firstOption.varsIgnorePattern) {
+          options.varsIgnorePattern = new RegExp(
+            firstOption.varsIgnorePattern,
+            'u',
+          );
+        }
 
-          if (firstOption.argsIgnorePattern) {
-            options.argsIgnorePattern = new RegExp(
-              firstOption.argsIgnorePattern,
-              'u',
-            );
-          }
+        if (firstOption.argsIgnorePattern) {
+          options.argsIgnorePattern = new RegExp(
+            firstOption.argsIgnorePattern,
+            'u',
+          );
+        }
 
-          if (firstOption.caughtErrorsIgnorePattern) {
-            options.caughtErrorsIgnorePattern = new RegExp(
-              firstOption.caughtErrorsIgnorePattern,
-              'u',
-            );
-          }
+        if (firstOption.caughtErrorsIgnorePattern) {
+          options.caughtErrorsIgnorePattern = new RegExp(
+            firstOption.caughtErrorsIgnorePattern,
+            'u',
+          );
+        }
 
-          if (firstOption.destructuredArrayIgnorePattern) {
-            options.destructuredArrayIgnorePattern = new RegExp(
-              firstOption.destructuredArrayIgnorePattern,
-              'u',
-            );
-          }
+        if (firstOption.destructuredArrayIgnorePattern) {
+          options.destructuredArrayIgnorePattern = new RegExp(
+            firstOption.destructuredArrayIgnorePattern,
+            'u',
+          );
         }
       }
+
       return options;
     })();
 
     function collectUnusedVariables(): TSESLint.Scope.Variable[] {
       /**
        * Checks whether a node is a sibling of the rest property or not.
-       * @param {ASTNode} node a node to check
-       * @returns {boolean} True if the node is a sibling of the rest property, otherwise false.
+       * @param node a node to check
+       * @returns True if the node is a sibling of the rest property, otherwise false.
        */
       function hasRestSibling(node: TSESTree.Node): boolean {
         return (
           node.type === AST_NODE_TYPES.Property &&
-          node.parent?.type === AST_NODE_TYPES.ObjectPattern &&
+          node.parent.type === AST_NODE_TYPES.ObjectPattern &&
           node.parent.properties[node.parent.properties.length - 1].type ===
             AST_NODE_TYPES.RestElement
         );
@@ -188,7 +192,7 @@ export default util.createRule<Options, MessageIds>({
        */
       function isAfterLastUsedArg(variable: TSESLint.Scope.Variable): boolean {
         const def = variable.defs[0];
-        const params = context.getDeclaredVariables(def.node);
+        const params = context.sourceCode.getDeclaredVariables(def.node);
         const posteriorParams = params.slice(params.indexOf(variable) + 1);
 
         // If any used parameters occur after this parameter, do not report.
@@ -197,7 +201,7 @@ export default util.createRule<Options, MessageIds>({
         );
       }
 
-      const unusedVariablesOriginal = util.collectUnusedVariables(context);
+      const unusedVariablesOriginal = _collectUnusedVariables(context);
       const unusedVariablesReturn: TSESLint.Scope.Variable[] = [];
       for (const variable of unusedVariablesOriginal) {
         // explicit global variables don't have definitions.
@@ -216,12 +220,12 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const refUsedInArrayPatterns = variable.references.some(
-          ref => ref.identifier.parent?.type === AST_NODE_TYPES.ArrayPattern,
+          ref => ref.identifier.parent.type === AST_NODE_TYPES.ArrayPattern,
         );
 
         // skip elements of array destructuring patterns
         if (
-          (def.name.parent?.type === AST_NODE_TYPES.ArrayPattern ||
+          (def.name.parent.type === AST_NODE_TYPES.ArrayPattern ||
             refUsedInArrayPatterns) &&
           'name' in def.name &&
           options.destructuredArrayIgnorePattern?.test(def.name.name)
@@ -258,7 +262,7 @@ export default util.createRule<Options, MessageIds>({
           // if "args" option is "after-used", skip used variables
           if (
             options.args === 'after-used' &&
-            util.isFunction(def.name.parent) &&
+            isFunction(def.name.parent) &&
             !isAfterLastUsedArg(variable)
           ) {
             continue;
@@ -294,27 +298,10 @@ export default util.createRule<Options, MessageIds>({
       [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
         node: DeclarationSelectorNode,
       ): void {
-        if (!util.isDefinitionFile(filename)) {
+        if (!isDefinitionFile(context.filename)) {
           return;
         }
         markDeclarationChildAsUsed(node);
-      },
-
-      // module declaration in module declaration should not report unused vars error
-      // this is workaround as this change should be done in better way
-      'TSModuleDeclaration > TSModuleDeclaration'(
-        node: TSESTree.TSModuleDeclaration,
-      ): void {
-        if (node.id.type === AST_NODE_TYPES.Identifier) {
-          let scope = context.getScope();
-          if (scope.upper) {
-            scope = scope.upper;
-          }
-          const superVar = scope.set.get(node.id.name);
-          if (superVar) {
-            superVar.eslintUsed = true;
-          }
-        }
       },
 
       // children of a namespace that is a child of a declared namespace are auto-exported
@@ -330,9 +317,9 @@ export default util.createRule<Options, MessageIds>({
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
         false,
       )](node: DeclarationSelectorNode): void {
-        const moduleDecl = util.nullThrows(
-          node.parent?.parent,
-          util.NullThrowsReasons.MissingParent,
+        const moduleDecl = nullThrows(
+          node.parent.parent,
+          NullThrowsReasons.MissingParent,
         ) as TSESTree.TSModuleDeclaration;
 
         // declared ambient modules with an `export =` statement will only export that one thing
@@ -358,7 +345,7 @@ export default util.createRule<Options, MessageIds>({
         function getDefinedMessageData(
           unusedVar: TSESLint.Scope.Variable,
         ): Record<string, unknown> {
-          const defType = unusedVar?.defs[0]?.type;
+          const defType = unusedVar.defs[0]?.type;
           let type;
           let pattern;
 
@@ -402,12 +389,12 @@ export default util.createRule<Options, MessageIds>({
         function getAssignedMessageData(
           unusedVar: TSESLint.Scope.Variable,
         ): Record<string, unknown> {
-          const def = unusedVar.defs[0];
+          const def = unusedVar.defs.at(0);
           let additional = '';
 
           if (
             options.destructuredArrayIgnorePattern &&
-            def?.name.parent?.type === AST_NODE_TYPES.ArrayPattern
+            def?.name.parent.type === AST_NODE_TYPES.ArrayPattern
           ) {
             additional = `. Allowed unused elements of array destructuring patterns must match ${options.destructuredArrayIgnorePattern.toString()}`;
           } else if (options.varsIgnorePattern) {
@@ -451,8 +438,8 @@ export default util.createRule<Options, MessageIds>({
 
             context.report({
               node: programNode,
-              loc: util.getNameLocationInGlobalDirectiveComment(
-                sourceCode,
+              loc: getNameLocationInGlobalDirectiveComment(
+                context.sourceCode,
                 directiveComment,
                 unusedVar.name,
               ),
@@ -472,7 +459,7 @@ export default util.createRule<Options, MessageIds>({
         return cached;
       }
 
-      if (node.body && node.body.type === AST_NODE_TYPES.TSModuleBlock) {
+      if (node.body) {
         for (const statement of node.body.body) {
           if (statement.type === AST_NODE_TYPES.TSExportAssignment) {
             MODULE_DECL_CACHE.set(node, true);
@@ -538,7 +525,7 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      let scope = context.getScope();
+      let scope = context.sourceCode.getScope(node);
       const shouldUseUpperScope = [
         AST_NODE_TYPES.TSModuleDeclaration,
         AST_NODE_TYPES.TSDeclareFunction,

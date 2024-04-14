@@ -1,6 +1,7 @@
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, getStringLength, nullThrows } from '../util';
 
 type DirectiveConfig =
   | boolean
@@ -15,30 +16,45 @@ interface Options {
   minimumDescriptionLength?: number;
 }
 
-export const defaultMinimumDescriptionLength = 3;
+const defaultMinimumDescriptionLength = 3;
 
 type MessageIds =
   | 'tsDirectiveComment'
+  | 'tsIgnoreInsteadOfExpectError'
   | 'tsDirectiveCommentDescriptionNotMatchPattern'
-  | 'tsDirectiveCommentRequiresDescription';
+  | 'tsDirectiveCommentRequiresDescription'
+  | 'replaceTsIgnoreWithTsExpectError';
 
-export default util.createRule<[Options], MessageIds>({
+interface MatchedTSDirective {
+  directive: string;
+  description: string;
+}
+
+export default createRule<[Options], MessageIds>({
   name: 'ban-ts-comment',
   meta: {
     type: 'problem',
     docs: {
       description:
         'Disallow `@ts-<directive>` comments or require descriptions after directives',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [{ minimumDescriptionLength: 10 }],
+      },
     },
     messages: {
       tsDirectiveComment:
         'Do not use "@ts-{{directive}}" because it alters compilation errors.',
+      tsIgnoreInsteadOfExpectError:
+        'Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.',
       tsDirectiveCommentRequiresDescription:
         'Include a description after the "@ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary. The description must be {{minimumDescriptionLength}} characters or longer.',
       tsDirectiveCommentDescriptionNotMatchPattern:
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
+      replaceTsIgnoreWithTsExpectError:
+        'Replace "@ts-ignore" with "@ts-expect-error".',
     },
+    hasSuggestions: true,
     schema: [
       {
         $defs: {
@@ -87,15 +103,18 @@ export default util.createRule<[Options], MessageIds>({
     },
   ],
   create(context, [options]) {
+    // https://github.com/microsoft/TypeScript/blob/6f1ad5ad8bec5671f7e951a3524b62d82ec4be68/src/compiler/parser.ts#L10591
+    const singleLinePragmaRegEx =
+      /^\/\/\/?\s*@ts-(?<directive>check|nocheck)(?<description>.*)$/;
+
     /*
       The regex used are taken from the ones used in the official TypeScript repo -
-      https://github.com/microsoft/TypeScript/blob/408c760fae66080104bc85c449282c2d207dfe8e/src/compiler/scanner.ts#L288-L296
+      https://github.com/microsoft/TypeScript/blob/6f1ad5ad8bec5671f7e951a3524b62d82ec4be68/src/compiler/scanner.ts#L340-L348
     */
     const commentDirectiveRegExSingleLine =
-      /^\/*\s*@ts-(?<directive>expect-error|ignore|check|nocheck)(?<description>.*)/;
+      /^\/*\s*@ts-(?<directive>expect-error|ignore)(?<description>.*)/;
     const commentDirectiveRegExMultiLine =
-      /^\s*(?:\/|\*)*\s*@ts-(?<directive>expect-error|ignore|check|nocheck)(?<description>.*)/;
-    const sourceCode = context.getSourceCode();
+      /^\s*(?:\/|\*)*\s*@ts-(?<directive>expect-error|ignore)(?<description>.*)/;
 
     const descriptionFormats = new Map<string, RegExp>();
     for (const directive of [
@@ -110,44 +129,115 @@ export default util.createRule<[Options], MessageIds>({
       }
     }
 
+    function execDirectiveRegEx(
+      regex: RegExp,
+      str: string,
+    ): MatchedTSDirective | null {
+      const match = regex.exec(str);
+      if (!match) {
+        return null;
+      }
+
+      const { directive, description } = nullThrows(
+        match.groups,
+        'RegExp should contain groups',
+      );
+      return {
+        directive: nullThrows(
+          directive,
+          'RegExp should contain "directive" group',
+        ),
+        description: nullThrows(
+          description,
+          'RegExp should contain "description" group',
+        ),
+      };
+    }
+
+    function findDirectiveInComment(
+      comment: TSESTree.Comment,
+    ): MatchedTSDirective | null {
+      if (comment.type === AST_TOKEN_TYPES.Line) {
+        const matchedPragma = execDirectiveRegEx(
+          singleLinePragmaRegEx,
+          `//${comment.value}`,
+        );
+        if (matchedPragma) {
+          return matchedPragma;
+        }
+
+        return execDirectiveRegEx(
+          commentDirectiveRegExSingleLine,
+          comment.value,
+        );
+      }
+
+      const commentLines = comment.value.split('\n');
+      return execDirectiveRegEx(
+        commentDirectiveRegExMultiLine,
+        commentLines[commentLines.length - 1],
+      );
+    }
+
     return {
       Program(): void {
-        const comments = sourceCode.getAllComments();
+        const comments = context.sourceCode.getAllComments();
 
         comments.forEach(comment => {
-          const regExp =
-            comment.type === AST_TOKEN_TYPES.Line
-              ? commentDirectiveRegExSingleLine
-              : commentDirectiveRegExMultiLine;
-
-          const match = regExp.exec(comment.value);
+          const match = findDirectiveInComment(comment);
           if (!match) {
             return;
           }
-          const { directive, description } = match.groups!;
+          const { directive, description } = match;
 
           const fullDirective = `ts-${directive}` as keyof Options;
 
           const option = options[fullDirective];
           if (option === true) {
-            context.report({
-              data: { directive },
-              node: comment,
-              messageId: 'tsDirectiveComment',
-            });
+            if (directive === 'ignore') {
+              // Special case to suggest @ts-expect-error instead of @ts-ignore
+              context.report({
+                node: comment,
+                messageId: 'tsIgnoreInsteadOfExpectError',
+                suggest: [
+                  {
+                    messageId: 'replaceTsIgnoreWithTsExpectError',
+                    fix(fixer): TSESLint.RuleFix {
+                      const commentText = comment.value.replace(
+                        /@ts-ignore/,
+                        '@ts-expect-error',
+                      );
+                      return fixer.replaceText(
+                        comment,
+                        comment.type === AST_TOKEN_TYPES.Line
+                          ? `//${commentText}`
+                          : `/*${commentText}*/`,
+                      );
+                    },
+                  },
+                ],
+              });
+            } else {
+              context.report({
+                data: { directive },
+                node: comment,
+                messageId: 'tsDirectiveComment',
+              });
+            }
           }
 
           if (
             option === 'allow-with-description' ||
             (typeof option === 'object' && option.descriptionFormat)
           ) {
-            const {
-              minimumDescriptionLength = defaultMinimumDescriptionLength,
-            } = options;
+            const { minimumDescriptionLength } = options;
             const format = descriptionFormats.get(fullDirective);
             if (
-              util.getStringLength(description.trim()) <
-              minimumDescriptionLength
+              getStringLength(description.trim()) <
+              nullThrows(
+                minimumDescriptionLength,
+                'Expected minimumDescriptionLength to be set',
+              )
             ) {
               context.report({
                 data: { directive, minimumDescriptionLength },

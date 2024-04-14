@@ -39,9 +39,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   eslintrc,
   selectedRange,
   fileType,
-  onEsASTChange,
-  onScopeChange,
-  onTsASTChange,
+  onASTChange,
   onMarkersChange,
   onChange,
   onSelect,
@@ -58,6 +56,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
     const tabsDefault = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       code: editor.getModel()!,
       tsconfig: monaco.editor.createModel(
         tsconfig,
@@ -77,6 +76,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   });
 
   const updateMarkers = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const model = editor.getModel()!;
     const markers = monaco.editor.getModelMarkers({
       resource: model.uri,
@@ -125,14 +125,14 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = webLinter.onLint((uri, messages) => {
+      const model = monaco.editor.getModel(monaco.Uri.file(uri));
+      if (!model) {
+        return;
+      }
       const diagnostics = parseLintResults(messages, codeActions, ruleId =>
         monaco.Uri.parse(webLinter.rules.get(ruleId)?.url ?? ''),
       );
-      monaco.editor.setModelMarkers(
-        monaco.editor.getModel(monaco.Uri.file(uri))!,
-        'eslint',
-        diagnostics,
-      );
+      monaco.editor.setModelMarkers(model, 'eslint', diagnostics);
       updateMarkers();
     });
     return () => disposable();
@@ -140,12 +140,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = webLinter.onParse((uri, model) => {
-      onEsASTChange(model.storedAST);
-      onScopeChange(model.storedScope as Record<string, unknown> | undefined);
-      onTsASTChange(model.storedTsAST);
+      onASTChange(model);
     });
     return () => disposable();
-  }, [webLinter, onEsASTChange, onScopeChange, onTsASTChange]);
+  }, [webLinter, onASTChange]);
 
   useEffect(() => {
     const createRuleUri = (name: string): string =>
@@ -271,7 +269,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return debounce(() => editor.layout(), 1);
   }, [editor]);
 
-  const container = editor.getContainerDomNode?.() ?? editor.getDomNode();
+  const container = editor.getContainerDomNode();
 
   useResizeObserver(container, () => {
     resize();

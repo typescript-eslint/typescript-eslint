@@ -2,7 +2,15 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SymbolFlags } from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  formatWordList,
+  getParserServices,
+  isClosingBraceToken,
+  isOpeningBraceToken,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type Options = [
   {
@@ -29,7 +37,7 @@ type MessageIds =
   | 'singleExportIsType'
   | 'typeOverValue';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
   meta: {
     type: 'suggestion',
@@ -66,9 +74,8 @@ export default util.createRule<Options, MessageIds>({
   ],
 
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
-    const sourceCode = context.getSourceCode();
-    const sourceExportsMap: { [key: string]: SourceExports } = {};
-    const services = util.getParserServices(context);
+    const sourceExportsMap: Record<string, SourceExports> = {};
+    const services = getParserServices(context);
 
     /**
      * Helper for identifying if an export specifier resolves to a
@@ -82,10 +89,14 @@ export default util.createRule<Options, MessageIds>({
     ): boolean | undefined {
       const checker = services.program.getTypeChecker();
       const symbol = services.getSymbolAtLocation(specifier.exported);
-      const aliasedSymbol = checker.getAliasedSymbol(symbol!);
+      if (!symbol) {
+        return undefined;
+      }
+
+      const aliasedSymbol = checker.getAliasedSymbol(symbol);
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {
+      if (aliasedSymbol.escapedName === 'unknown') {
         return undefined;
       }
 
@@ -96,6 +107,7 @@ export default util.createRule<Options, MessageIds>({
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
         // Coerce the source into a string for use as a lookup entry.
         const source = getSourceFromExport(node) ?? 'undefined';
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const sourceExports = (sourceExportsMap[source] ||= {
           source,
           reportValueExports: [],
@@ -167,7 +179,11 @@ export default util.createRule<Options, MessageIds>({
                 node: report.node,
                 messageId: 'typeOverValue',
                 *fix(fixer) {
-                  yield* fixExportInsertType(fixer, sourceCode, report.node);
+                  yield* fixExportInsertType(
+                    fixer,
+                    context.sourceCode,
+                    report.node,
+                  );
                 },
               });
               continue;
@@ -175,7 +191,7 @@ export default util.createRule<Options, MessageIds>({
 
             // We have both type and value violations.
             const allExportNames = report.typeBasedSpecifiers.map(
-              specifier => `${specifier.local.name}`,
+              specifier => specifier.local.name,
             );
 
             if (allExportNames.length === 1) {
@@ -189,12 +205,16 @@ export default util.createRule<Options, MessageIds>({
                   if (fixMixedExportsWithInlineTypeSpecifier) {
                     yield* fixAddTypeSpecifierToNamedExports(fixer, report);
                   } else {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                    yield* fixSeparateNamedExports(
+                      fixer,
+                      context.sourceCode,
+                      report,
+                    );
                   }
                 },
               });
             } else {
-              const exportNames = util.formatWordList(allExportNames);
+              const exportNames = formatWordList(allExportNames);
 
               context.report({
                 node: report.node,
@@ -204,7 +224,11 @@ export default util.createRule<Options, MessageIds>({
                   if (fixMixedExportsWithInlineTypeSpecifier) {
                     yield* fixAddTypeSpecifierToNamedExports(fixer, report);
                   } else {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                    yield* fixSeparateNamedExports(
+                      fixer,
+                      context.sourceCode,
+                      report,
+                    );
                   }
                 },
               });
@@ -229,20 +253,20 @@ function* fixExportInsertType(
   sourceCode: Readonly<TSESLint.SourceCode>,
   node: TSESTree.ExportNamedDeclaration,
 ): IterableIterator<TSESLint.RuleFix> {
-  const exportToken = util.nullThrows(
+  const exportToken = nullThrows(
     sourceCode.getFirstToken(node),
-    util.NullThrowsReasons.MissingToken('export', node.type),
+    NullThrowsReasons.MissingToken('export', node.type),
   );
 
   yield fixer.insertTextAfter(exportToken, ' type');
 
   for (const specifier of node.specifiers) {
     if (specifier.exportKind === 'type') {
-      const kindToken = util.nullThrows(
+      const kindToken = nullThrows(
         sourceCode.getFirstToken(specifier),
-        util.NullThrowsReasons.MissingToken('export', specifier.type),
+        NullThrowsReasons.MissingToken('export', specifier.type),
       );
-      const firstTokenAfter = util.nullThrows(
+      const firstTokenAfter = nullThrows(
         sourceCode.getTokenAfter(kindToken, {
           includeComments: true,
         }),
@@ -270,22 +294,22 @@ function* fixSeparateNamedExports(
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 
-  const exportToken = util.nullThrows(
+  const exportToken = nullThrows(
     sourceCode.getFirstToken(node),
-    util.NullThrowsReasons.MissingToken('export', node.type),
+    NullThrowsReasons.MissingToken('export', node.type),
   );
 
   // Filter the bad exports from the current line.
   const filteredSpecifierNames = valueSpecifiers
     .map(getSpecifierText)
     .join(', ');
-  const openToken = util.nullThrows(
-    sourceCode.getFirstToken(node, util.isOpeningBraceToken),
-    util.NullThrowsReasons.MissingToken('{', node.type),
+  const openToken = nullThrows(
+    sourceCode.getFirstToken(node, isOpeningBraceToken),
+    NullThrowsReasons.MissingToken('{', node.type),
   );
-  const closeToken = util.nullThrows(
-    sourceCode.getLastToken(node, util.isClosingBraceToken),
-    util.NullThrowsReasons.MissingToken('}', node.type),
+  const closeToken = nullThrows(
+    sourceCode.getLastToken(node, isClosingBraceToken),
+    NullThrowsReasons.MissingToken('}', node.type),
   );
 
   // Remove exports from the current line which we're going to re-insert.

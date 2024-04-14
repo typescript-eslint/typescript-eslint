@@ -35,7 +35,9 @@ function filterConfig(
   return options
     .map(group => ({
       heading: group.heading,
-      fields: group.fields.filter(item => String(item.key).includes(filter)),
+      fields: group.fields.filter(item =>
+        String(item.key.toLowerCase()).includes(filter.toLowerCase()),
+      ),
     }))
     .filter(group => group.fields.length > 0);
 }
@@ -54,7 +56,7 @@ function ConfigEditorField({
   item,
   value,
   onChange,
-}: ConfigEditorFieldProps): JSX.Element {
+}: ConfigEditorFieldProps): React.JSX.Element {
   return (
     <label className={styles.searchResult}>
       <span className={styles.searchResultDescription}>
@@ -62,7 +64,7 @@ function ConfigEditorField({
         {item.label && <br />}
         {item.label && <span> {item.label}</span>}
       </span>
-      {(item.type === 'boolean' && (
+      {item.type === 'boolean' ? (
         <Checkbox
           name={`config_${item.key}`}
           value={item.key}
@@ -72,15 +74,16 @@ function ConfigEditorField({
             onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
           }
         />
-      )) ||
-        (item.type === 'string' && item.enum && (
+      ) : (
+        item.enum && (
           <Dropdown
             name={`config_${item.key}`}
             value={String(value)}
             options={item.enum}
             onChange={(value): void => onChange(item.key, value)}
           />
-        ))}
+        )
+      )}
     </label>
   );
 }
@@ -90,7 +93,7 @@ function ConfigEditor({
   values,
   options,
   className,
-}: ConfigEditorProps): JSX.Element {
+}: ConfigEditorProps): React.JSX.Element {
   const [filter, setFilter] = useState<string>('');
 
   const filteredOptions = useMemo(() => {
@@ -101,6 +104,8 @@ function ConfigEditor({
     (name: string, value: unknown): void => {
       const newConfig = { ...values };
       if (value === '' || value == null) {
+        // Filter out falsy values from the new config
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete newConfig[name];
       } else {
         newConfig[name] = value;

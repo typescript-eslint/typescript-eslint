@@ -1,6 +1,7 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
 
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
+import type { ClassicConfig } from './Config';
 import type { Linter } from './Linter';
 import type { ParserOptions } from './ParserOptions';
 import type {
@@ -10,10 +11,9 @@ import type {
   SharedConfigurationSettings,
 } from './Rule';
 
-interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
+interface ValidTestCase<Options extends Readonly<unknown[]>> {
   /**
    * Name for the test case.
-   * @since 8.1.0
    */
   readonly name?: string;
   /**
@@ -23,7 +23,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * Environments for the test case.
    */
-  readonly env?: Readonly<Record<string, boolean>>;
+  readonly env?: Readonly<Linter.EnvironmentConfig>;
   /**
    * The fake filename for the test case. Useful for rules that make assertion about filenames.
    */
@@ -31,11 +31,11 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * The additional global variables.
    */
-  readonly globals?: Record<string, 'off' | 'readonly' | 'writable' | true>;
+  readonly globals?: Readonly<Linter.GlobalsConfig>;
   /**
    * Options for the test case.
    */
-  readonly options?: Readonly<TOptions>;
+  readonly options?: Readonly<Options>;
   /**
    * The absolute path for the parser.
    */
@@ -50,16 +50,15 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   readonly settings?: Readonly<SharedConfigurationSettings>;
   /**
    * Run this case exclusively for debugging in supported test frameworks.
-   * @since 7.29.0
    */
   readonly only?: boolean;
 }
 
-interface SuggestionOutput<TMessageIds extends string> {
+interface SuggestionOutput<MessageIds extends string> {
   /**
    * Reported message ID.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId: MessageIds;
   /**
    * The data used to fill the message template.
    */
@@ -75,20 +74,20 @@ interface SuggestionOutput<TMessageIds extends string> {
 }
 
 interface InvalidTestCase<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
-> extends ValidTestCase<TOptions> {
+  MessageIds extends string,
+  Options extends Readonly<unknown[]>,
+> extends ValidTestCase<Options> {
   /**
    * Expected errors.
    */
-  readonly errors: readonly TestCaseError<TMessageIds>[];
+  readonly errors: readonly TestCaseError<MessageIds>[];
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
   readonly output?: string | null;
 }
 
-interface TestCaseError<TMessageIds extends string> {
+interface TestCaseError<MessageIds extends string> {
   /**
    * The 1-based column number of the reported start location.
    */
@@ -112,11 +111,11 @@ interface TestCaseError<TMessageIds extends string> {
   /**
    * Reported message ID.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId: MessageIds;
   /**
    * Reported suggestions.
    */
-  readonly suggestions?: readonly SuggestionOutput<TMessageIds>[] | null;
+  readonly suggestions?: readonly SuggestionOutput<MessageIds>[] | null;
   /**
    * The type of the reported AST node.
    */
@@ -128,7 +127,6 @@ interface TestCaseError<TMessageIds extends string> {
 
 /**
  * @param text a string describing the rule
- * @param callback the test callback
  */
 type RuleTesterTestFrameworkFunction = (
   text: string,
@@ -136,14 +134,14 @@ type RuleTesterTestFrameworkFunction = (
 ) => void;
 
 interface RunTests<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
+  MessageIds extends string,
+  Options extends Readonly<unknown[]>,
 > {
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: readonly (ValidTestCase<TOptions> | string)[];
-  readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[];
+  readonly valid: readonly (ValidTestCase<Options> | string)[];
+  readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
 }
-interface RuleTesterConfig extends Linter.Config {
+interface RuleTesterConfig extends ClassicConfig.Config {
   // should be require.resolve(parserPackageName)
   readonly parser: string;
   readonly parserOptions?: Readonly<ParserOptions>;
@@ -162,10 +160,10 @@ declare class RuleTesterBase {
    * @param rule The rule to test.
    * @param test The collection of tests to run.
    */
-  run<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
+  run<MessageIds extends string, Options extends Readonly<unknown[]>>(
     ruleName: string,
-    rule: RuleModule<TMessageIds, TOptions>,
-    tests: RunTests<TMessageIds, TOptions>,
+    rule: RuleModule<MessageIds, Options>,
+    tests: RunTests<MessageIds, Options>,
   ): void;
 
   /**
@@ -192,11 +190,11 @@ declare class RuleTesterBase {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
+  defineRule<MessageIds extends string, Options extends Readonly<unknown[]>>(
     name: string,
     rule:
-      | RuleCreateFunction<TMessageIds, TOptions>
-      | RuleModule<TMessageIds, TOptions>,
+      | RuleCreateFunction<MessageIds, Options>
+      | RuleModule<MessageIds, Options>,
   ): void;
 }
 

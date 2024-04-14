@@ -10,7 +10,9 @@ import { isReadonlyArray } from './isReadonlyArray';
  * @param rule A new-style rule object
  * @returns JSON Schema for the rule's options.
  */
-export function getRuleOptionsSchema(rule: AnyRuleModule): JSONSchema4 | null {
+export function getRuleOptionsSchema(
+  rule: Partial<AnyRuleModule>,
+): JSONSchema4 | null {
   const schema = rule.meta?.schema;
 
   // Given a tuple of schemas, insert warning level at the beginning
@@ -31,5 +33,5 @@ export function getRuleOptionsSchema(rule: AnyRuleModule): JSONSchema4 | null {
   }
 
   // Given a full schema, leave it alone
-  return schema || null;
+  return schema ?? null;
 }

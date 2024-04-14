@@ -180,8 +180,7 @@ function getWatchProgramsForProjects(
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
 
-      updatedProgram =
-        updatedProgram ?? existingWatch.getProgram().getProgram();
+      updatedProgram ??= existingWatch.getProgram().getProgram();
       // sets parent pointers in source files
       updatedProgram.getTypeChecker();
 
@@ -268,6 +267,7 @@ function createWatchProgram(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
+  watchCompilerHost.jsDocParsingMode = parseSettings.jsDocParsingMode;
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;
@@ -400,6 +400,7 @@ function maybeInvalidateProgram(
      * We need to make sure typescript knows this so it can update appropriately
      */
     log('tsconfig has changed - triggering program update. %s', tsconfigPath);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fileWatchCallbackTrackingMap
       .get(tsconfigPath)!
       .forEach(cb => cb(tsconfigPath, ts.FileWatcherEventKind.Changed));
@@ -427,12 +428,12 @@ function maybeInvalidateProgram(
     current = next;
     const folderWatchCallbacks = folderWatchCallbackTrackingMap.get(current);
     if (folderWatchCallbacks) {
-      folderWatchCallbacks.forEach(cb => {
+      for (const cb of folderWatchCallbacks) {
         if (currentDir !== current) {
           cb(currentDir, ts.FileWatcherEventKind.Changed);
         }
-        cb(current!, ts.FileWatcherEventKind.Changed);
-      });
+        cb(current, ts.FileWatcherEventKind.Changed);
+      }
       hasCallback = true;
     }
 

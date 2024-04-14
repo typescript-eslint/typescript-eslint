@@ -1,6 +1,7 @@
 import type {
   CacheDurationSeconds,
   DebugLevel,
+  JSDocParsingMode,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
@@ -46,6 +47,18 @@ interface ParseOptions {
   filePath?: string;
 
   /**
+   * If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
+   *
+   * The valid values for this rule are:
+   * - `'all'` - parse all JSDoc comments, always.
+   * - `'none'` - parse no JSDoc comments, ever.
+   * - `'type-info'` - parse just JSDoc comments that are required to provide correct type-info. TS will always parse JSDoc in non-TS files, but never in TS files.
+   *
+   * If you do not rely on JSDoc tags from the TypeScript AST, then you can safely set this to `'none'` to improve performance.
+   */
+  jsDocParsingMode?: JSDocParsingMode;
+
+  /**
    * Enable parsing of JSX.
    * For more details, see https://www.typescriptlang.org/docs/handbook/jsx.html
    *
@@ -88,6 +101,16 @@ interface ParseOptions {
   suppressDeprecatedPropertyWarnings?: boolean;
 }
 
+/**
+ * Granular options to configure the project service.
+ */
+export interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default inferred project settings.
+   */
+  allowDefaultProjectForFiles?: string[];
+}
+
 interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
@@ -97,12 +120,21 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
+   * Whether to create a shared TypeScript server to power program creation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
+   */
+  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *
    * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
    *
-   * See: https://github.com/typescript-eslint/typescript-eslint/issues/2094
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/2094
    */
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
 
@@ -134,8 +166,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
+   *
+   * If set to `false`, `null` or `undefined` type information will not be returned.
    */
-  project?: string[] | string | true | null;
+  project?: string[] | string | boolean | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -175,6 +209,9 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
    * whether or not ESLint is being used as part of a single run.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
    */
   allowAutomaticSingleRunInference?: boolean;
 
@@ -199,30 +236,36 @@ export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
-export interface ParserWeakMap<TKey, TValueBase> {
-  get<TValue extends TValueBase>(key: TKey): TValue;
+export interface ParserWeakMap<Key, ValueBase> {
+  get<Value extends ValueBase>(key: Key): Value;
   has(key: unknown): boolean;
 }
 
 export interface ParserWeakMapESTreeToTSNode<
-  TKey extends TSESTree.Node = TSESTree.Node,
+  Key extends TSESTree.Node = TSESTree.Node,
 > {
-  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  get<KeyBase extends Key>(key: KeyBase): TSESTreeToTSNode<KeyBase>;
   has(key: unknown): boolean;
 }
 
+export interface ParserServicesBase {
+  emitDecoratorMetadata: boolean | undefined;
+  experimentalDecorators: boolean | undefined;
+}
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }
 export interface ParserServicesWithoutTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: null;
 }
 export type ParserServices =

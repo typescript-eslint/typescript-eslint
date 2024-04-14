@@ -7,14 +7,14 @@ import { deepMerge, isObjectNotArray } from './deepMerge';
  * @param userOptions the user opts
  * @returns the options with defaults
  */
-function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
-  defaultOptions: Readonly<TDefault>,
-  userOptions: Readonly<TUser> | null,
-): TDefault {
+function applyDefault<User extends readonly unknown[], Default extends User>(
+  defaultOptions: Readonly<Default>,
+  userOptions: Readonly<User> | null,
+): Default {
   // clone defaults
   const options = JSON.parse(
     JSON.stringify(defaultOptions),
-  ) as AsMutable<TDefault>;
+  ) as AsMutable<Default>;
 
   if (userOptions == null) {
     return options;
@@ -38,7 +38,7 @@ function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
 }
 
 type AsMutable<T extends readonly unknown[]> = {
-  -readonly [TKey in keyof T]: T[TKey];
+  -readonly [Key in keyof T]: T[Key];
 };
 
 export { applyDefault };

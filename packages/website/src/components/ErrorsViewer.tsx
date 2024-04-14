@@ -35,17 +35,19 @@ function severityClass(
   severity: Monaco.MarkerSeverity,
 ): AlertBlockProps['type'] {
   switch (severity) {
+    /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison -- Monaco is imported as a type */
     case 8:
       return 'danger';
     case 4:
       return 'warning';
     case 2:
       return 'note';
+    /* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
   }
   return 'info';
 }
 
-function FixButton(props: FixButtonProps): JSX.Element {
+function FixButton(props: FixButtonProps): React.JSX.Element {
   return (
     <button
       className="button button--primary button--sm"
@@ -64,7 +66,7 @@ function ErrorBlock({
   item,
   setIsLocked,
   isLocked,
-}: ErrorBlockProps): JSX.Element {
+}: ErrorBlockProps): React.JSX.Element {
   return (
     <AlertBlock type={severityClass(item.severity)}>
       <div className={clsx(!!item.fixer && styles.fixerContainer)}>
@@ -104,7 +106,7 @@ export function ErrorViewer({
   value,
   title,
   type,
-}: ErrorViewerProps): JSX.Element {
+}: ErrorViewerProps): React.JSX.Element {
   return (
     <div className={styles.list}>
       <div className="margin-top--md">
@@ -113,7 +115,7 @@ export function ErrorViewer({
             <h4>{title}</h4>
           </div>
           <pre className={styles.errorPre}>
-            {type === 'danger' ? value?.stack : value.message}
+            {type === 'danger' ? value.stack : value.message}
           </pre>
         </AlertBlock>
       </div>
@@ -121,7 +123,7 @@ export function ErrorViewer({
   );
 }
 
-export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
+export function ErrorsViewer({ value }: ErrorsViewerProps): React.JSX.Element {
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {

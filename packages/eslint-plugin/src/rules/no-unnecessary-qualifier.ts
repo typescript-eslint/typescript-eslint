@@ -3,9 +3,9 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-unnecessary-qualifier',
   meta: {
     docs: {
@@ -24,10 +24,9 @@ export default util.createRule({
   create(context) {
     const namespacesInScope: ts.Node[] = [];
     let currentFailedNamespaceExpression: TSESTree.Node | null = null;
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
 
     function tryGetAliasedSymbol(
       symbol: ts.Symbol,
@@ -92,12 +91,10 @@ export default util.createRule({
       const fromScope = getSymbolInScope(
         tsQualifier,
         accessedSymbol.flags,
-        sourceCode.getText(name),
+        context.sourceCode.getText(name),
       );
 
-      return (
-        fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
-      );
+      return !!fromScope && symbolsAreEqual(accessedSymbol, fromScope);
     }
 
     function visitNamespaceAccess(
@@ -115,7 +112,7 @@ export default util.createRule({
           node: qualifier,
           messageId: 'unnecessaryQualifier',
           data: {
-            name: sourceCode.getText(name),
+            name: context.sourceCode.getText(name),
           },
           fix(fixer) {
             return fixer.removeRange([qualifier.range[0], name.range[0]]);
@@ -160,7 +157,11 @@ export default util.createRule({
     }
 
     return {
-      TSModuleDeclaration: enterDeclaration,
+      'TSModuleDeclaration > TSModuleBlock'(
+        node: TSESTree.TSModuleBlock,
+      ): void {
+        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
+      },
       TSEnumDeclaration: enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
         enterDeclaration,

@@ -3,7 +3,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-extra-parens';
 
@@ -347,10 +347,6 @@ typeof (a);
       options: ['all', { nestedBinaryExpressions: false }],
     },
     {
-      code: 'const x = (1 as 1)++;',
-      options: ['all', { nestedBinaryExpressions: false }],
-    },
-    {
       code: 'function *x() { yield (1 as 1); yield 1; }',
       options: ['all', { nestedBinaryExpressions: false }],
     },
@@ -480,11 +476,6 @@ typeof (a);
       options: ['all', { nestedBinaryExpressions: false }],
     },
     {
-      code: 'const x = (<1>1)++;',
-      parserOptions: { ecmaFeatures: { jsx: false } },
-      options: ['all', { nestedBinaryExpressions: false }],
-    },
-    {
       code: 'function *x() { yield (<1>1); yield 1; }',
       parserOptions: { ecmaFeatures: { jsx: false } },
       options: ['all', { nestedBinaryExpressions: false }],
@@ -508,6 +499,26 @@ declare const f: <T>(x: T) => any
     {
       code: `
 f<(number | string)[]>(['a', 1])
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+f<(number)>(1)
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+f<(number) | string>(1)
       `,
       parserOptions: {
         ecmaFeatures: {
@@ -605,6 +616,16 @@ f<(number | string)[]>(['a', 1])
         {
           messageId: 'unexpected',
           column: 8,
+        },
+      ],
+    },
+    {
+      code: 'a<(A) | number>((1));',
+      output: 'a<(A) | number>(1);',
+      errors: [
+        {
+          messageId: 'unexpected',
+          column: 17,
         },
       ],
     },
@@ -713,7 +734,7 @@ const Component = (
     />
 )
       `,
-      output: `
+      output: noFormat`
 const Component =${' '}
     <div>
         <p />

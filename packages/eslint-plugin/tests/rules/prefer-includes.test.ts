@@ -211,6 +211,7 @@ ruleTester.run('prefer-includes', rule, {
           a?.indexOf(b) === -1;
         }
       `,
+      output: null,
       errors: [{ messageId: 'preferIncludes' }],
     },
     {
@@ -219,6 +220,7 @@ ruleTester.run('prefer-includes', rule, {
           a?.indexOf(b) !== -1;
         }
       `,
+      output: null,
       errors: [{ messageId: 'preferIncludes' }],
     },
 
@@ -232,6 +234,33 @@ ruleTester.run('prefer-includes', rule, {
       output: `
         function f(a: string): void {
           a.includes('bar');
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+    },
+    // test SequenceExpression
+    {
+      code: `
+        function f(a: string): void {
+          /bar/.test((1 + 1, a));
+        }
+      `,
+      output: `
+        function f(a: string): void {
+          (1 + 1, a).includes('bar');
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+    },
+    {
+      code: `
+        function f(a: string): void {
+          /\\0'\\\\\\n\\r\\v\\t\\f/.test(a);
+        }
+      `,
+      output: `
+        function f(a: string): void {
+          a.includes('\\0\\'\\\\\\n\\r\\v\\t\\f');
         }
       `,
       errors: [{ messageId: 'preferStringIncludes' }],

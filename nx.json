@@ -1,48 +1,92 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "package", "prebuild", "test"],
-        "accessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ="
+  "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "release": {
+    "projects": ["*"],
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github",
+        "renderer": "tools/release/changelog-renderer"
+      },
+      "projectChangelogs": {
+        "renderer": "tools/release/changelog-renderer"
       }
+    },
+    "version": {
+      "conventionalCommits": true
     }
   },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production"],
+      "cache": true
     },
     "test": {
       "inputs": [
         "default",
+        "^production",
         "{workspaceRoot}/jest.config.js",
         "{workspaceRoot}/jest.config.base.js"
       ],
-      "outputs": ["{projectRoot}/coverage"]
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true
     },
-    "lint": {
+    "@nx/jest:jest": {
       "inputs": [
         "default",
-        "{workspaceRoot}/.eslintrc.js",
-        "{workspaceRoot}/yarn.lock",
-        "{workspaceRoot}/.eslintignore"
-      ]
+        "^production",
+        "{workspaceRoot}/jest.config.js",
+        "{workspaceRoot}/jest.config.base.js"
+      ],
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true,
+      "options": {
+        "jestConfig": "{projectRoot}/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "dependsOn": ["eslint-plugin:build"],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/eslint.config.mjs",
+        {
+          "dependentTasksOutputFiles": "**/*.js",
+          "transitive": false
+        }
+      ],
+      "cache": true
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals",
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml",
       {
         "runtime": "node -v"
       },
       {
         "runtime": "echo $NETLIFY"
-      }
+      },
+      {
+        "runtime": "yarn -v"
+      },
+      "{workspaceRoot}/yarn.lock"
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
-    "production": ["default"]
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ]
   }
 }

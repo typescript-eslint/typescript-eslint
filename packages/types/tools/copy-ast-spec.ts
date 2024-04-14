@@ -61,7 +61,11 @@ async function copyFile(
     encoding: 'utf-8',
   });
 
-  await execAsync('yarn', ['prettier', '--write', outpath], {});
+  await execAsync(
+    'yarn',
+    ['run', '--top-level', 'prettier', '--write', outpath],
+    {},
+  );
 
   console.log('Copied', fileName);
 }
@@ -79,7 +83,7 @@ async function main(): Promise<void> {
   ]);
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

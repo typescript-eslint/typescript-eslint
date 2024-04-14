@@ -1,10 +1,22 @@
 import type * as ts from 'typescript';
 
+import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
 
 type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
+
+// Workaround to support new TS version features for consumers on old TS versions
+declare module 'typescript' {
+  // Added in TypeScript 5.3
+  enum JSDocParsingMode {}
+}
+// https://github.com/typescript-eslint/typescript-eslint/issues/8172
+declare module 'typescript/lib/tsserverlibrary' {
+  // Added in TypeScript 5.3
+  enum JSDocParsingMode {}
+}
 
 /**
  * Internal settings used by the parser to run on a file.
@@ -58,6 +70,11 @@ export interface MutableParseSettings {
   errorOnUnknownASTType: boolean;
 
   /**
+   * Experimental: TypeScript server to power program creation.
+   */
+  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
+
+  /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
    *
    * @remarks
@@ -75,6 +92,11 @@ export interface MutableParseSettings {
    * Path of the file being parsed.
    */
   filePath: string;
+
+  /**
+   * JSDoc parsing style to pass through to TypeScript
+   */
+  jsDocParsingMode: ts.JSDocParsingMode;
 
   /**
    * Whether parsing of JSX is enabled.

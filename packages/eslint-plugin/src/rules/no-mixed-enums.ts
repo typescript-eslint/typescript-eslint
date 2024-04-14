@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 
 enum AllowedType {
   Number,
@@ -13,7 +13,7 @@ enum AllowedType {
   Unknown,
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-mixed-enums',
   meta: {
     docs: {
@@ -29,7 +29,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
     interface CollectedDefinitions {
@@ -45,7 +45,7 @@ export default util.createRule({
         imports: [],
         previousSibling: undefined,
       };
-      let scope: Scope | null = context.getScope();
+      let scope: Scope | null = context.sourceCode.getScope(node);
 
       for (const definition of scope.upper?.set.get(name)?.defs ?? []) {
         if (
@@ -59,7 +59,7 @@ export default util.createRule({
       }
 
       while (scope) {
-        scope.set.get(name)?.defs?.forEach(definition => {
+        scope.set.get(name)?.defs.forEach(definition => {
           if (definition.type === DefinitionType.ImportBinding) {
             found.imports.push(definition.node);
           }
@@ -160,10 +160,12 @@ export default util.createRule({
         node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration &&
         node.parent.parent.type === AST_NODE_TYPES.TSModuleBlock
       ) {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/8352
         // TODO: We don't need to dip into the TypeScript type checker here!
         // Merged namespaces must all exist in the same file.
         // We could instead compare this file's nodes to find the merges.
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.id);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const declarations = typeChecker
           .getSymbolAtLocation(tsNode)!
           .getDeclarations()!;
@@ -207,10 +209,7 @@ export default util.createRule({
             desiredType ??= currentType;
           }
 
-          if (
-            currentType !== desiredType &&
-            (currentType !== undefined || desiredType === AllowedType.String)
-          ) {
+          if (currentType !== desiredType) {
             context.report({
               messageId: 'mixed',
               node: member.initializer ?? member,

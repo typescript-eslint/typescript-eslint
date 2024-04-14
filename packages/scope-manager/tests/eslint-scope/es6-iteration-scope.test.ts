@@ -6,7 +6,7 @@ import {
   expectToBeVariableDefinition,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 iteration scope', () => {
   it('let materialize iteration scope for ForInStatement#1', () => {

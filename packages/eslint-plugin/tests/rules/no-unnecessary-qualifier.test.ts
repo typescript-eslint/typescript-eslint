@@ -29,6 +29,12 @@ namespace Y {
 }
     `,
     `
+namespace A {}
+namespace A.B {
+  export type Z = 1;
+}
+    `,
+    `
 enum A {
   X,
   Y,
@@ -51,6 +57,30 @@ namespace X {
     `
 namespace X {
   const z = X.y;
+}
+    `,
+    `
+enum Foo {
+  One,
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
+}
+    `,
+    `
+namespace Foo {
+  export enum Foo {
+    One,
+  }
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
 }
     `,
   ],
@@ -140,6 +170,30 @@ namespace A {
   export namespace B {
     export type T = number;
     const x: T = 3;
+  }
+}
+      `,
+    },
+    {
+      code: `
+namespace A {
+  export namespace B.C {
+    export type D = number;
+    const x: A.B.C.D = 3;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId,
+          type: AST_NODE_TYPES.TSQualifiedName,
+        },
+      ],
+      output: `
+namespace A {
+  export namespace B.C {
+    export type D = number;
+    const x: D = 3;
   }
 }
       `,

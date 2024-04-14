@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import * as util from '../../util';
+import { getParserServices } from '../../util';
 import type { SelectorsString } from './enums';
 import {
   MetaSelectors,
@@ -167,13 +167,13 @@ function createValidator(
       count,
       affixes: affixes?.join(', '),
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
-      regex: custom?.regex?.toString(),
+      regex: custom?.regex.toString(),
       regexMatch:
         custom?.match === true
           ? 'match'
           : custom?.match === false
-          ? 'not match'
-          : null,
+            ? 'not match'
+            : null,
     };
   }
 
@@ -419,7 +419,7 @@ const SelectorsAllowedToHaveTypes =
   Selectors.objectLiteralProperty |
   Selectors.typeProperty |
   Selectors.parameterProperty |
-  Selectors.accessor;
+  Selectors.classicAccessor;
 
 function isCorrectType(
   node: TSESTree.Node,
@@ -435,7 +435,7 @@ function isCorrectType(
     return true;
   }
 
-  const services = util.getParserServices(context);
+  const services = getParserServices(context);
   const checker = services.program.getTypeChecker();
   const type = services
     .getTypeAtLocation(node)

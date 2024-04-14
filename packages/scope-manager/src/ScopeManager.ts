@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { SourceType, TSESTree } from '@typescript-eslint/types';
 
 import { assert } from './assert';
 import type { Scope } from './scope';
@@ -27,8 +27,8 @@ import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
-  sourceType?: 'module' | 'script';
   impliedStrict?: boolean;
+  sourceType?: SourceType;
 }
 
 /**
@@ -39,7 +39,6 @@ class ScopeManager {
   public readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
   /**
    * The root scope
-   * @public
    */
   public globalScope: GlobalScope | null;
   public readonly nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
@@ -93,7 +92,6 @@ class ScopeManager {
    * Get the variables that a given AST node defines. The gotten variables' `def[].node`/`def[].parent` property is the node.
    * If the node does not define any variable, this returns an empty array.
    * @param node An AST node to get their variables.
-   * @public
    */
   public getDeclaredVariables(node: TSESTree.Node): Variable[] {
     return this.declaredVariables.get(node) ?? [];
@@ -106,7 +104,6 @@ class ScopeManager {
    * @param node An AST node to get their scope.
    * @param inner If the node has multiple scopes, this returns the outermost scope normally.
    *                If `inner` is `true` then this returns the innermost scope.
-   * @public
    */
   public acquire(node: TSESTree.Node, inner = false): Scope | null {
     function predicate(testScope: Scope): boolean {

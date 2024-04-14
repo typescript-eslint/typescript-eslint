@@ -14,12 +14,41 @@ ruleTester.run('ts-expect-error', rule, {
  @ts-expect-error running with long description in a block
 */
     `,
+    `
+/* @ts-expect-error not on the last line
+ */
+    `,
+    `
+/**
+ * @ts-expect-error not on the last line
+ */
+    `,
+    `
+/* not on the last line
+ * @ts-expect-error
+ */
+    `,
+    `
+/* @ts-expect-error
+ * not on the last line */
+    `,
     {
       code: '// @ts-expect-error',
       options: [{ 'ts-expect-error': false }],
     },
     {
       code: '// @ts-expect-error here is why the error is expected',
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ * @ts-expect-error here is why the error is expected */
+      `,
       options: [
         {
           'ts-expect-error': 'allow-with-description',
@@ -36,7 +65,33 @@ ruleTester.run('ts-expect-error', rule, {
       ],
     },
     {
+      code: `
+/*
+ * @ts-expect-error exactly 21 characters*/
+      `,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 21,
+        },
+      ],
+    },
+    {
       code: '// @ts-expect-error: TS1234 because xyz',
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+          minimumDescriptionLength: 10,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ * @ts-expect-error: TS1234 because xyz */
+      `,
       options: [
         {
           'ts-expect-error': {
@@ -83,14 +138,146 @@ ruleTester.run('ts-expect-error', rule, {
     {
       code: `
 /*
-@ts-expect-error
-*/
+@ts-expect-error */
       `,
       options: [{ 'ts-expect-error': true }],
       errors: [
         {
           data: { directive: 'expect-error' },
           messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/** on the last line
+  @ts-expect-error */
+      `,
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/** on the last line
+ * @ts-expect-error */
+      `,
+      options: [{ 'ts-expect-error': true }],
+      errors: [
+        {
+          data: { directive: 'expect-error' },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-expect-error: TODO */
+      `,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 10,
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', minimumDescriptionLength: 10 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-expect-error: TS1234 because xyz */
+      `,
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+          minimumDescriptionLength: 25,
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', minimumDescriptionLength: 25 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-expect-error: TS1234 */
+      `,
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-expect-error    : TS1234 */
+      `,
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', format: '^: TS\\d+ because .+$' },
+          messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-expect-error 👨‍👩‍👧‍👦 */
+      `,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
           line: 2,
           column: 1,
         },
@@ -280,6 +467,29 @@ ruleTester.run('ts-ignore', rule, {
         },
       ],
     },
+    `
+/*
+ @ts-ignore
+*/
+    `,
+    `
+/* @ts-ignore not on the last line
+ */
+    `,
+    `
+/**
+ * @ts-ignore not on the last line
+ */
+    `,
+    `
+/* not on the last line
+ * @ts-expect-error
+ */
+    `,
+    `
+/* @ts-ignore
+ * not on the last line */
+    `,
     {
       code: '// @ts-ignore: TS1234 because xyz',
       options: [
@@ -299,17 +509,87 @@ ruleTester.run('ts-ignore', rule, {
         },
       ],
     },
+    {
+      code: `
+/*
+ * @ts-ignore here is why the error is expected */
+      `,
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
+        },
+      ],
+    },
+    {
+      code: '// @ts-ignore exactly 21 characters',
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
+          minimumDescriptionLength: 21,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ * @ts-ignore exactly 21 characters*/
+      `,
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
+          minimumDescriptionLength: 21,
+        },
+      ],
+    },
+    {
+      code: `
+/*
+ * @ts-ignore: TS1234 because xyz */
+      `,
+      options: [
+        {
+          'ts-ignore': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+          minimumDescriptionLength: 10,
+        },
+      ],
+    },
   ],
   invalid: [
     {
       code: '// @ts-ignore',
-      options: [{ 'ts-ignore': true }],
+      options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: '// @ts-ignore',
+      options: [
+        { 'ts-ignore': true, 'ts-expect-error': 'allow-with-description' },
+      ],
+      errors: [
+        {
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error',
+            },
+          ],
         },
       ],
     },
@@ -317,10 +597,15 @@ ruleTester.run('ts-ignore', rule, {
       code: '// @ts-ignore',
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error',
+            },
+          ],
         },
       ],
     },
@@ -329,38 +614,159 @@ ruleTester.run('ts-ignore', rule, {
       options: [{ 'ts-ignore': true }],
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '/* @ts-expect-error */',
+            },
+          ],
         },
       ],
     },
     {
       code: `
 /*
- @ts-ignore
-*/
+ @ts-ignore */
       `,
       options: [{ 'ts-ignore': true }],
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 2,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: `
+/*
+ @ts-expect-error */
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+/** on the last line
+  @ts-ignore */
+      `,
+      options: [{ 'ts-ignore': true }],
+      errors: [
+        {
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: `
+/** on the last line
+  @ts-expect-error */
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+/** on the last line
+ * @ts-ignore */
+      `,
+      options: [{ 'ts-ignore': true }],
+      errors: [
+        {
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: `
+/** on the last line
+ * @ts-expect-error */
+      `,
+            },
+          ],
         },
       ],
     },
     {
       code: '/** @ts-ignore */',
-      options: [{ 'ts-ignore': true }],
+      options: [{ 'ts-ignore': true, 'ts-expect-error': false }],
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '/** @ts-expect-error */',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-ignore: TODO */
+      `,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+          minimumDescriptionLength: 10,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: `
+/**
+ * @ts-expect-error: TODO */
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+/**
+ * @ts-ignore: TS1234 because xyz */
+      `,
+      options: [
+        {
+          'ts-expect-error': {
+            descriptionFormat: '^: TS\\d+ because .+$',
+          },
+          minimumDescriptionLength: 25,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'tsIgnoreInsteadOfExpectError',
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: `
+/**
+ * @ts-expect-error: TS1234 because xyz */
+      `,
+            },
+          ],
         },
       ],
     },
@@ -368,10 +774,15 @@ ruleTester.run('ts-ignore', rule, {
       code: '// @ts-ignore: Suppress next line',
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error: Suppress next line',
+            },
+          ],
         },
       ],
     },
@@ -379,10 +790,15 @@ ruleTester.run('ts-ignore', rule, {
       code: '/////@ts-ignore: Suppress next line',
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '/////@ts-expect-error: Suppress next line',
+            },
+          ],
         },
       ],
     },
@@ -395,10 +811,20 @@ if (false) {
       `,
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 3,
           column: 3,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: `
+if (false) {
+  // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -555,6 +981,19 @@ ruleTester.run('ts-nocheck', rule, {
         },
       ],
     },
+    '//// @ts-nocheck - pragma comments may contain 2 or 3 leading slashes',
+    `
+/**
+ @ts-nocheck
+*/
+    `,
+    `
+/*
+ @ts-nocheck
+*/
+    `,
+    '/** @ts-nocheck */',
+    '/* @ts-nocheck */',
   ],
   invalid: [
     {
@@ -581,58 +1020,7 @@ ruleTester.run('ts-nocheck', rule, {
       ],
     },
     {
-      code: '/* @ts-nocheck */',
-      options: [{ 'ts-nocheck': true }],
-      errors: [
-        {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-/*
- @ts-nocheck
-*/
-      `,
-      options: [{ 'ts-nocheck': true }],
-      errors: [
-        {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '/** @ts-nocheck */',
-      options: [{ 'ts-nocheck': true }],
-      errors: [
-        {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
       code: '// @ts-nocheck: Suppress next line',
-      errors: [
-        {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '/////@ts-nocheck: Suppress next line',
       errors: [
         {
           data: { directive: 'nocheck' },
@@ -781,6 +1169,34 @@ ruleTester.run('ts-check', rule, {
         },
       ],
     },
+    {
+      code: '//// @ts-check - pragma comments may contain 2 or 3 leading slashes',
+      options: [{ 'ts-check': true }],
+    },
+    {
+      code: `
+/**
+ @ts-check
+*/
+      `,
+      options: [{ 'ts-check': true }],
+    },
+    {
+      code: `
+/*
+ @ts-check
+*/
+      `,
+      options: [{ 'ts-check': true }],
+    },
+    {
+      code: '/** @ts-check */',
+      options: [{ 'ts-check': true }],
+    },
+    {
+      code: '/* @ts-check */',
+      options: [{ 'ts-check': true }],
+    },
   ],
   invalid: [
     {
@@ -796,61 +1212,8 @@ ruleTester.run('ts-check', rule, {
       ],
     },
     {
-      code: '/* @ts-check */',
-      options: [{ 'ts-check': true }],
-      errors: [
-        {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-/*
- @ts-check
-*/
-      `,
-      options: [{ 'ts-check': true }],
-      errors: [
-        {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '/** @ts-check */',
-      options: [{ 'ts-check': true }],
-      errors: [
-        {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
       code: '// @ts-check: Suppress next line',
       options: [{ 'ts-check': true }],
-      errors: [
-        {
-          data: { directive: 'check' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '/////@ts-check: Suppress next line',
-      options: [{ 'ts-check': true }],
-
       errors: [
         {
           data: { directive: 'check' },

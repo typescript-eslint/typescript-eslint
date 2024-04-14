@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import type * as ESQuery from 'esquery';
 import type * as ts from 'typescript';
 
 export type CompilerFlags = Record<string, unknown>;
@@ -17,7 +18,7 @@ export type TabType = 'code' | 'eslintrc' | 'tsconfig';
 
 export type ConfigFileType = `${ts.Extension}`;
 
-export type ConfigShowAst = 'es' | 'scope' | 'ts' | false;
+export type ConfigShowAst = 'es' | 'scope' | 'ts' | 'types' | false;
 
 export interface ConfigModel {
   fileType?: ConfigFileType;
@@ -29,6 +30,10 @@ export interface ConfigModel {
   showAST?: ConfigShowAst;
   scroll?: boolean;
   showTokens?: boolean;
+  esQuery?: {
+    selector: ESQuery.Selector;
+    filter?: string;
+  };
 }
 
 export type SelectedRange = [number, number];

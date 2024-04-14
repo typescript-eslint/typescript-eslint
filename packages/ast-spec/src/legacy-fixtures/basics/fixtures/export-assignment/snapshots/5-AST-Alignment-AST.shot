@@ -30,8 +30,7 @@ exports[`AST Fixtures legacy-fixtures basics export-assignment AST Alignment - A
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 87],
     loc: {

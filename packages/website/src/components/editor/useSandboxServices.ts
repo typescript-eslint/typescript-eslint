@@ -1,13 +1,18 @@
 import { useColorMode } from '@docusaurus/theme-common';
 import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
+import semverSatisfies from 'semver/functions/satisfies';
 
+// eslint-disable-next-line @typescript-eslint/internal/no-relative-paths-to-internal-packages
+import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
-import { type CreateLinter, createLinter } from '../linter/createLinter';
+import type { CreateLinter } from '../linter/createLinter';
+import { createLinter } from '../linter/createLinter';
 import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
+import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
@@ -69,6 +74,11 @@ export const useSandboxServices = (
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
+        sandboxInstance.monaco.languages.registerInlayHintsProvider(
+          sandboxInstance.language,
+          createTwoslashInlayProvider(sandboxInstance),
+        );
+
         const system = createFileSystem(props, sandboxInstance.tsvfs);
 
         const worker = await sandboxInstance.getWorkerProcess();
@@ -93,7 +103,9 @@ export const useSandboxServices = (
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )
-            .filter(item => parseFloat(item) >= 4.3)
+            .filter(item =>
+              semverSatisfies(item, rootPackageJson.devDependencies.typescript),
+            )
             .sort((a, b) => b.localeCompare(a)),
         );
 
@@ -103,14 +115,23 @@ export const useSandboxServices = (
           sandboxInstance,
         });
       })
-      .catch(setServices);
-
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          setServices(err);
+        } else {
+          setServices(new Error(String(err)));
+        }
+      });
     return (): void => {
       if (!sandboxInstance) {
         return;
       }
 
-      const editorModel = sandboxInstance.editor.getModel()!;
+      const editorModel = sandboxInstance.editor.getModel();
+      if (!editorModel) {
+        return;
+      }
+
       sandboxInstance.monaco.editor.setModelMarkers(
         editorModel,
         sandboxInstance.editor.getId(),

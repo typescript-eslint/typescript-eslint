@@ -2,7 +2,12 @@ import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
-import * as util from '../util';
+import {
+  createRule,
+  getNameFromIndexSignature,
+  getNameFromMember,
+  MemberNameType,
+} from '../util';
 
 export type MessageIds =
   | 'incorrectGroupOrder'
@@ -13,6 +18,7 @@ type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
   | ReadonlyType
+  | 'accessor'
   | 'call-signature'
   | 'constructor'
   | 'field'
@@ -24,6 +30,7 @@ type MemberKind =
 
 type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
+  | 'accessor'
   | 'field'
   | 'get'
   | 'method'
@@ -62,7 +69,7 @@ type Order = AlphabeticalOrder | 'as-written';
 interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
   optionalityOrder?: OptionalityOrder;
-  order: Order;
+  order?: Order;
 }
 
 type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
@@ -163,6 +170,37 @@ export const defaultOrder: MemberType[] = [
   'private-constructor',
 
   'constructor',
+
+  // Accessors
+  'public-static-accessor',
+  'protected-static-accessor',
+  'private-static-accessor',
+  '#private-static-accessor',
+
+  'public-decorated-accessor',
+  'protected-decorated-accessor',
+  'private-decorated-accessor',
+
+  'public-instance-accessor',
+  'protected-instance-accessor',
+  'private-instance-accessor',
+  '#private-instance-accessor',
+
+  'public-abstract-accessor',
+  'protected-abstract-accessor',
+
+  'public-accessor',
+  'protected-accessor',
+  'private-accessor',
+  '#private-accessor',
+
+  'static-accessor',
+  'instance-accessor',
+  'abstract-accessor',
+
+  'decorated-accessor',
+
+  'accessor',
 
   // Getters
   'public-static-get',
@@ -268,6 +306,7 @@ const allMemberTypes = Array.from(
       'method',
       'call-signature',
       'constructor',
+      'accessor',
       'get',
       'set',
       'static-initialization',
@@ -287,12 +326,13 @@ const allMemberTypes = Array.from(
           all.add(`${accessibility}-${type}`); // e.g. `public-field`
         }
 
-        // Only class instance fields, methods, get and set can have decorators attached to them
+        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
         if (
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
             type === 'method' ||
+            type === 'accessor' ||
             type === 'get' ||
             type === 'set')
         ) {
@@ -349,12 +389,14 @@ function getNodeType(node: Member): MemberKind | null {
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
       return node.readonly ? 'readonly-field' : 'field';
+    case AST_NODE_TYPES.AccessorProperty:
+      return 'accessor';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : node.readonly
-        ? 'readonly-field'
-        : 'field';
+          ? 'readonly-field'
+          : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
@@ -380,12 +422,12 @@ function getMemberRawName(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  const { name, type } = util.getNameFromMember(member, sourceCode);
+  const { name, type } = getNameFromMember(member, sourceCode);
 
-  if (type === util.MemberNameType.Quoted) {
+  if (type === MemberNameType.Quoted) {
     return name.slice(1, -1);
   }
-  if (type === util.MemberNameType.Private) {
+  if (type === MemberNameType.Private) {
     return name.slice(1);
   }
   return name;
@@ -395,7 +437,6 @@ function getMemberRawName(
  * Gets the member name based on the member type.
  *
  * @param node the node to be evaluated.
- * @param sourceCode
  */
 function getMemberName(
   node: Member,
@@ -417,7 +458,7 @@ function getMemberName(
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
-      return util.getNameFromIndexSignature(node);
+      return getNameFromIndexSignature(node);
     case AST_NODE_TYPES.StaticBlock:
       return 'static block';
     default:
@@ -465,6 +506,7 @@ function getRankOrder(
   const stack = memberGroups.slice(); // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const memberGroup = stack.shift()!;
     rank = orderConfig.findIndex(memberType =>
       Array.isArray(memberType)
@@ -480,7 +522,7 @@ function getAccessibility(node: Member): Accessibility {
   if ('accessibility' in node && node.accessibility) {
     return node.accessibility;
   }
-  if ('key' in node && node.key?.type === AST_NODE_TYPES.PrivateIdentifier) {
+  if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
     return '#private';
   }
   return 'public';
@@ -512,8 +554,8 @@ function getRank(
     'static' in node && node.static
       ? 'static'
       : abstract
-      ? 'abstract'
-      : 'instance';
+        ? 'abstract'
+        : 'instance';
   const accessibility = getAccessibility(node);
 
   // Collect all existing member groups that apply to this node...
@@ -574,6 +616,59 @@ function getRank(
 }
 
 /**
+ * Groups members into arrays of consecutive members with the same rank.
+ * If, for example, the memberSet parameter looks like the following...
+ * @example
+ * ```
+ * interface Foo {
+ *   [a: string]: number;
+ *
+ *   a: x;
+ *   B: x;
+ *   c: x;
+ *
+ *   c(): void;
+ *   B(): void;
+ *   a(): void;
+ *
+ *   (): Baz;
+ *
+ *   new (): Bar;
+ * }
+ * ```
+ * ...the resulting array will look like: [[a, B, c], [c, B, a]].
+ * @param memberSet The members to be grouped.
+ * @param memberType The configured order of member types.
+ * @param supportsModifiers It'll get passed to getRank().
+ * @returns The array of groups of members.
+ */
+function groupMembersByType(
+  members: Member[],
+  memberTypes: MemberType[],
+  supportsModifiers: boolean,
+): Member[][] {
+  const groupedMembers: Member[][] = [];
+  const memberRanks = members.map(member =>
+    getRank(member, memberTypes, supportsModifiers),
+  );
+  let previousRank: number | undefined = undefined;
+  members.forEach((member, index) => {
+    if (index === members.length - 1) {
+      return;
+    }
+    const rankOfCurrentMember = memberRanks[index];
+    const rankOfNextMember = memberRanks[index + 1];
+    if (rankOfCurrentMember === previousRank) {
+      groupedMembers.at(-1)?.push(member);
+    } else if (rankOfCurrentMember === rankOfNextMember) {
+      groupedMembers.push([member]);
+      previousRank = rankOfCurrentMember;
+    }
+  });
+  return groupedMembers;
+}
+
+/**
  * Gets the lowest possible rank(s) higher than target.
  * e.g. given the following order:
  *   ...
@@ -589,7 +684,7 @@ function getRank(
  * public-instance-method.
  * If a lowest possible rank is a member group, a comma separated list of ranks is returned.
  * @param ranks the existing ranks in the object.
- * @param target the target rank.
+ * @param target the minimum target rank to filter on.
  * @param order the current order to be validated.
  * @returns the name(s) of the lowest possible rank without dashes (-).
  */
@@ -611,7 +706,7 @@ function getLowestRank(
   return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'member-ordering',
   meta: {
     type: 'suggestion',
@@ -697,7 +792,9 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      default: defaultOrder,
+      default: {
+        memberTypes: defaultOrder,
+      },
     },
   ],
   create(context, [options]) {
@@ -720,13 +817,13 @@ export default util.createRule<Options, MessageIds>({
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      for (const member of members) {
         const rank = getRank(member, groupOrder, supportsModifiers);
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, context.sourceCode);
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
         if (rank === -1) {
-          return;
+          continue;
         }
 
         // Works for 1st item because x < undefined === false for any x (typeof string)
@@ -749,7 +846,7 @@ export default util.createRule<Options, MessageIds>({
           previousRanks.push(rank);
           memberGroups.push([member]);
         }
-      });
+      }
 
       return isCorrectlySorted ? memberGroups : null;
     }
@@ -758,7 +855,7 @@ export default util.createRule<Options, MessageIds>({
      * Checks if the members are alphabetically sorted.
      *
      * @param members Members to be validated.
-     * @param caseSensitive indicates if the alpha ordering is case sensitive or not.
+     * @param order What order the members should be sorted in.
      *
      * @return True if all members are correctly sorted.
      */
@@ -771,7 +868,7 @@ export default util.createRule<Options, MessageIds>({
 
       // Find first member which isn't correctly sorted
       members.forEach(member => {
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, context.sourceCode);
 
         // Note: Not all members have names
         if (name) {
@@ -800,6 +897,10 @@ export default util.createRule<Options, MessageIds>({
       previousName: string,
       order: AlphabeticalOrder,
     ): boolean {
+      if (name === previousName) {
+        return false;
+      }
+
       switch (order) {
         case 'alphabetically':
           return name < previousName;
@@ -837,7 +938,7 @@ export default util.createRule<Options, MessageIds>({
           messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
           data: {
-            member: getMemberName(member, context.getSourceCode()),
+            member: getMemberName(member, context.sourceCode),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
@@ -888,6 +989,21 @@ export default util.createRule<Options, MessageIds>({
       let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
+      /**
+       * It runs an alphabetic sort on the groups of the members of the class in the source code.
+       * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
+       */
+      const checkAlphaSortForAllMembers = (memberSet: Member[]): undefined => {
+        const hasAlphaSort = !!(order && order !== 'as-written');
+        if (hasAlphaSort && Array.isArray(memberTypes)) {
+          groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
+            members => {
+              checkAlphaSort(members, order as AlphabeticalOrder);
+            },
+          );
+        }
+      };
+
       // returns true if everything is good and false if an error was reported
       const checkOrder = (memberSet: Member[]): boolean => {
         const hasAlphaSort = !!(order && order !== 'as-written');
@@ -901,20 +1017,20 @@ export default util.createRule<Options, MessageIds>({
           );
 
           if (grouped == null) {
+            checkAlphaSortForAllMembers(members);
             return false;
           }
 
           if (hasAlphaSort) {
-            return !grouped.some(
-              groupMember =>
-                !checkAlphaSort(groupMember, order as AlphabeticalOrder),
+            grouped.map(groupMember =>
+              checkAlphaSort(groupMember, order as AlphabeticalOrder),
             );
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
         }
 
-        return true;
+        return false;
       };
 
       if (Array.isArray(orderConfig)) {
@@ -946,6 +1062,8 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     return {
       ClassDeclaration(node): void {
         validateMembersOrder(
@@ -976,5 +1094,6 @@ export default util.createRule<Options, MessageIds>({
         );
       },
     };
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
 });

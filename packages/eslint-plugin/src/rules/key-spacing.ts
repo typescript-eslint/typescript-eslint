@@ -1,32 +1,34 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import {
+  createRule,
+  getStringLength,
+  isClosingBracketToken,
+  isColonToken,
+} from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('key-spacing');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const baseSchema = Array.isArray(baseRule.meta.schema)
   ? baseRule.meta.schema[0]
   : baseRule.meta.schema;
 
-/**
- * TODO: replace with native .at() once Node 14 stops being supported
- */
-function at<T>(arr: T[], position: number): T | undefined {
-  if (position < 0) {
-    return arr[arr.length + position];
-  }
-  return arr[position];
-}
-
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'key-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/key-spacing'],
     type: 'layout',
     docs: {
       description:
@@ -41,7 +43,6 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{}],
 
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
     const baseRules = baseRule.create(context);
 
     /**
@@ -49,8 +50,8 @@ export default util.createRule<Options, MessageIds>({
      */
     function adjustedColumn(position: TSESTree.Position): number {
       const line = position.line - 1; // position.line is 1-indexed
-      return util.getStringLength(
-        at(sourceCode.lines, line)!.slice(0, position.column),
+      return getStringLength(
+        context.sourceCode.lines.at(line)!.slice(0, position.column),
       );
     }
 
@@ -59,9 +60,9 @@ export default util.createRule<Options, MessageIds>({
      * until it finds the last token before a colon punctuator and returns it.
      */
     function getLastTokenBeforeColon(node: TSESTree.Node): TSESTree.Token {
-      const colonToken = sourceCode.getTokenAfter(node, util.isColonToken)!;
+      const colonToken = context.sourceCode.getTokenAfter(node, isColonToken)!;
 
-      return sourceCode.getTokenBefore(colonToken)!;
+      return context.sourceCode.getTokenBefore(colonToken)!;
     }
 
     type KeyTypeNode =
@@ -98,15 +99,15 @@ export default util.createRule<Options, MessageIds>({
      */
     function getKeyText(node: KeyTypeNodeWithTypeAnnotation): string {
       if (node.type !== AST_NODE_TYPES.TSIndexSignature) {
-        return sourceCode.getText(node.key);
+        return context.sourceCode.getText(node.key);
       }
 
-      const code = sourceCode.getText(node);
+      const code = context.sourceCode.getText(node);
       return code.slice(
         0,
-        sourceCode.getTokenAfter(
-          at(node.parameters, -1)!,
-          util.isClosingBracketToken,
+        context.sourceCode.getTokenAfter(
+          node.parameters.at(-1)!,
+          isClosingBracketToken,
         )!.range[1] - node.range[0],
       );
     }
@@ -120,7 +121,7 @@ export default util.createRule<Options, MessageIds>({
       return getLastTokenBeforeColon(
         node.type !== AST_NODE_TYPES.TSIndexSignature
           ? node.key
-          : at(node.parameters, -1)!,
+          : node.parameters.at(-1)!,
       ).loc.end;
     }
 
@@ -143,12 +144,11 @@ export default util.createRule<Options, MessageIds>({
                 typeAnnotation.range[0] - difference,
                 typeAnnotation.range[0],
               ]);
-            } else {
-              return fixer.insertTextBefore(
-                typeAnnotation,
-                ' '.repeat(-difference),
-              );
             }
+            return fixer.insertTextBefore(
+              typeAnnotation,
+              ' '.repeat(-difference),
+            );
           },
           data: {
             computed: '',
@@ -164,9 +164,15 @@ export default util.createRule<Options, MessageIds>({
       mode: 'minimum' | 'strict',
     ): void {
       const { typeAnnotation } = node;
-      const colon = typeAnnotation.loc.start.column;
-      const typeStart = typeAnnotation.typeAnnotation.loc.start.column;
-      const difference = typeStart - colon - 1 - expectedWhitespaceAfterColon;
+      const colonToken = context.sourceCode.getFirstToken(typeAnnotation)!;
+      const typeStart = context.sourceCode.getTokenAfter(colonToken, {
+        includeComments: true,
+      })!.loc.start.column;
+      const difference =
+        typeStart -
+        colonToken.loc.start.column -
+        1 -
+        expectedWhitespaceAfterColon;
       if (mode === 'strict' ? difference : difference < 0) {
         context.report({
           node,
@@ -174,15 +180,11 @@ export default util.createRule<Options, MessageIds>({
           fix: fixer => {
             if (difference > 0) {
               return fixer.removeRange([
-                typeAnnotation.typeAnnotation.range[0] - difference,
-                typeAnnotation.typeAnnotation.range[0],
+                colonToken.range[1],
+                colonToken.range[1] + difference,
               ]);
-            } else {
-              return fixer.insertTextBefore(
-                typeAnnotation.typeAnnotation,
-                ' '.repeat(-difference),
-              );
             }
+            return fixer.insertTextAfter(colonToken, ' '.repeat(-difference));
           },
           data: {
             computed: '',
@@ -215,12 +217,12 @@ export default util.createRule<Options, MessageIds>({
        * last comment is adjacent to the candidate property, and that successive
        * comments are adjacent to each other.
        */
-      const leadingComments = sourceCode.getCommentsBefore(candidate);
+      const leadingComments = context.sourceCode.getCommentsBefore(candidate);
 
       if (
         leadingComments.length &&
         leadingComments[0].loc.start.line - groupEndLine <= 1 &&
-        candidateValueStartLine - at(leadingComments, -1)!.loc.end.line <= 1
+        candidateValueStartLine - leadingComments.at(-1)!.loc.end.line <= 1
       ) {
         for (let i = 1; i < leadingComments.length; i++) {
           if (
@@ -243,35 +245,35 @@ export default util.createRule<Options, MessageIds>({
         (typeof options.align === 'object'
           ? options.align.on
           : typeof options.multiLine?.align === 'object'
-          ? options.multiLine.align.on
-          : options.multiLine?.align ?? options.align) ?? 'colon';
+            ? options.multiLine.align.on
+            : options.multiLine?.align ?? options.align) ?? 'colon';
       const beforeColon =
         (typeof options.align === 'object'
           ? options.align.beforeColon
           : options.multiLine
-          ? typeof options.multiLine.align === 'object'
-            ? options.multiLine.align.beforeColon
-            : options.multiLine.beforeColon
-          : options.beforeColon) ?? false;
+            ? typeof options.multiLine.align === 'object'
+              ? options.multiLine.align.beforeColon
+              : options.multiLine.beforeColon
+            : options.beforeColon) ?? false;
       const expectedWhitespaceBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (typeof options.align === 'object'
           ? options.align.afterColon
           : options.multiLine
-          ? typeof options.multiLine.align === 'object'
-            ? options.multiLine.align.afterColon
-            : options.multiLine.afterColon
-          : options.afterColon) ?? true;
+            ? typeof options.multiLine.align === 'object'
+              ? options.multiLine.align.afterColon
+              : options.multiLine.afterColon
+            : options.afterColon) ?? true;
       const expectedWhitespaceAfterColon = afterColon ? 1 : 0;
       const mode =
         (typeof options.align === 'object'
           ? options.align.mode
           : options.multiLine
-          ? typeof options.multiLine.align === 'object'
-            ? // same behavior as in original rule
-              options.multiLine.align.mode ?? options.multiLine.mode
-            : options.multiLine.mode
-          : options.mode) ?? 'strict';
+            ? typeof options.multiLine.align === 'object'
+              ? // same behavior as in original rule
+                options.multiLine.align.mode ?? options.multiLine.mode
+              : options.multiLine.mode
+            : options.mode) ?? 'strict';
 
       for (const node of group) {
         if (isKeyTypeNode(node)) {
@@ -306,17 +308,16 @@ export default util.createRule<Options, MessageIds>({
                   ? 'extraKey'
                   : 'extraValue'
                 : align === 'colon'
-                ? 'missingKey'
-                : 'missingValue',
+                  ? 'missingKey'
+                  : 'missingValue',
             fix: fixer => {
               if (difference > 0) {
                 return fixer.removeRange([
                   toCheck.range[0] - difference,
                   toCheck.range[0],
                 ]);
-              } else {
-                return fixer.insertTextBefore(toCheck, ' '.repeat(-difference));
               }
+              return fixer.insertTextBefore(toCheck, ' '.repeat(-difference));
             },
             data: {
               computed: '',
@@ -343,8 +344,8 @@ export default util.createRule<Options, MessageIds>({
             ? options.singleLine.beforeColon
             : options.beforeColon
           : options.multiLine
-          ? options.multiLine.beforeColon
-          : options.beforeColon) ?? false;
+            ? options.multiLine.beforeColon
+            : options.beforeColon) ?? false;
       const expectedWhitespaceBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (singleLine
@@ -352,8 +353,8 @@ export default util.createRule<Options, MessageIds>({
             ? options.singleLine.afterColon
             : options.afterColon
           : options.multiLine
-          ? options.multiLine.afterColon
-          : options.afterColon) ?? true;
+            ? options.multiLine.afterColon
+            : options.afterColon) ?? true;
       const expectedWhitespaceAfterColon = afterColon ? 1 : 0;
       const mode =
         (singleLine
@@ -361,8 +362,8 @@ export default util.createRule<Options, MessageIds>({
             ? options.singleLine.mode
             : options.mode
           : options.multiLine
-          ? options.multiLine.mode
-          : options.mode) ?? 'strict';
+            ? options.multiLine.mode
+            : options.mode) ?? 'strict';
 
       if (isApplicable(node)) {
         checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);
@@ -391,7 +392,7 @@ export default util.createRule<Options, MessageIds>({
         let prevNode: TSESTree.Node | undefined = undefined;
 
         for (const node of members) {
-          let prevAlignedNode = at(currentAlignGroup, -1);
+          let prevAlignedNode = currentAlignGroup.at(-1);
           if (prevAlignedNode !== prevNode) {
             prevAlignedNode = undefined;
           }

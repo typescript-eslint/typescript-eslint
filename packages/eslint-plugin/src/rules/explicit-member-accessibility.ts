@@ -1,7 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  getNameFromMember,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -27,7 +32,7 @@ type MessageIds =
   | 'missingAccessibility'
   | 'unwantedPublicAccessibility';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
     hasSuggestions: true,
@@ -98,7 +103,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
-    const sourceCode = context.getSourceCode();
     const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
     const overrides = option.overrides ?? {};
     const ctorCheck = overrides.constructors ?? baseCheck;
@@ -135,9 +139,9 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const { name: methodName } = util.getNameFromMember(
+      const { name: methodName } = getNameFromMember(
         methodDefinition,
-        sourceCode,
+        context.sourceCode,
       );
 
       if (check === 'off' || ignoredMethodNames.has(methodName)) {
@@ -182,8 +186,8 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TSParameterProperty,
     ): TSESLint.ReportFixFunction {
       return function (fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
-        const tokens = sourceCode.getTokens(node);
-        let rangeToRemove: TSESLint.AST.Range;
+        const tokens = context.sourceCode.getTokens(node);
+        let rangeToRemove!: TSESLint.AST.Range;
         for (let i = 0; i < tokens.length; i++) {
           const token = tokens[i];
           if (
@@ -191,7 +195,7 @@ export default util.createRule<Options, MessageIds>({
             token.value === 'public'
           ) {
             const commensAfterPublicKeyword =
-              sourceCode.getCommentsAfter(token);
+              context.sourceCode.getCommentsAfter(token);
             if (commensAfterPublicKeyword.length) {
               // public /* Hi there! */ static foo()
               // ^^^^^^^
@@ -208,7 +212,7 @@ export default util.createRule<Options, MessageIds>({
             }
           }
         }
-        return fixer.removeRange(rangeToRemove!);
+        return fixer.removeRange(rangeToRemove);
       };
     }
 
@@ -227,9 +231,12 @@ export default util.createRule<Options, MessageIds>({
         accessibility: TSESTree.Accessibility,
         fixer: TSESLint.RuleFixer,
       ): TSESLint.RuleFix | null {
-        if (node?.decorators.length) {
+        if (node.decorators.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
-          const nextToken = sourceCode.getTokenAfter(lastDecorator)!;
+          const nextToken = nullThrows(
+            context.sourceCode.getTokenAfter(lastDecorator),
+            NullThrowsReasons.MissingToken('token', 'last decorator'),
+          );
           return fixer.insertTextBefore(nextToken, `${accessibility} `);
         }
         return fixer.insertTextBefore(node, `${accessibility} `);
@@ -269,9 +276,9 @@ export default util.createRule<Options, MessageIds>({
 
       const nodeType = 'class property';
 
-      const { name: propertyName } = util.getNameFromMember(
+      const { name: propertyName } = getNameFromMember(
         propertyDefinition,
-        sourceCode,
+        context.sourceCode,
       );
       if (
         propCheck === 'no-public' &&

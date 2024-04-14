@@ -35,7 +35,7 @@ async function getFileAndStoreLocally(
 
   let contents = await response.text();
   contents = [...banner, '', editFunc(contents)].join('\n');
-  contents = prettier.format(contents, {
+  contents = await prettier.format(contents, {
     parser: 'typescript',
     ...config,
   });
@@ -102,7 +102,7 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

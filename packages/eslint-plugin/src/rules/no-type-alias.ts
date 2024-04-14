@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Values =
   | 'always'
@@ -32,7 +32,7 @@ interface TypeWithLabel {
   compositionType: CompositionType | null;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
     deprecated: true,
@@ -257,6 +257,8 @@ export default util.createRule<Options, MessageIds>({
       type: TypeWithLabel,
       isTopLevel = false,
     ): void {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       if (type.node.type === AST_NODE_TYPES.TSFunctionType) {
         // callback
         if (allowCallbacks === 'never') {
@@ -309,6 +311,7 @@ export default util.createRule<Options, MessageIds>({
         // unhandled type - shouldn't happen
         reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
       }
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
     }
 
     /**

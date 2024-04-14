@@ -7,6 +7,8 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
+import { isParenthesized } from './astUtils';
+
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
   ts.Extension.Dcts,
@@ -135,12 +137,11 @@ function getNameFromMember(
         type: MemberNameType.Quoted,
         name: `"${name}"`,
       };
-    } else {
-      return {
-        type: MemberNameType.Normal,
-        name,
-      };
     }
+    return {
+      type: MemberNameType.Normal,
+      name,
+    };
   }
 
   return {
@@ -150,13 +151,13 @@ function getNameFromMember(
 }
 
 type ExcludeKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
-> = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
+> = { [k in Exclude<keyof Obj, Keys>]: Obj[k] };
 type RequireKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
-> = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
+> = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
   return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
@@ -169,7 +170,7 @@ function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
  * Example: ['foo', 'bar', 'baz' ] returns the string "foo, bar, and baz".
  */
 function formatWordList(words: string[]): string {
-  if (!words?.length) {
+  if (!words.length) {
     return '';
   }
 
@@ -216,6 +217,19 @@ function typeNodeRequiresParentheses(
   );
 }
 
+function isRestParameterDeclaration(decl: ts.Declaration): boolean {
+  return ts.isParameter(decl) && decl.dotDotDotToken != null;
+}
+
+function isParenlessArrowFunction(
+  node: TSESTree.ArrowFunctionExpression,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  return (
+    node.params.length === 1 && !isParenthesized(node.params[0], sourceCode)
+  );
+}
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -227,6 +241,8 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  isRestParameterDeclaration,
+  isParenlessArrowFunction,
   MemberNameType,
   RequireKeys,
   typeNodeRequiresParentheses,

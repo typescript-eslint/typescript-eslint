@@ -13,7 +13,7 @@ interface ConfigTypeScriptProps {
   readonly className?: string;
 }
 
-function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
+function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
   const { config, onChange: onChangeProp, className } = props;
 
   const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
@@ -34,8 +34,8 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
     return Object.values(
       getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
         (group, item) => {
-          const category = item.category!.message;
-          group[category] = group[category] ?? {
+          const category = item.category.message;
+          group[category] ??= {
             heading: category,
             fields: [],
           };
@@ -43,13 +43,13 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
             group[category].fields.push({
               key: item.name,
               type: 'boolean',
-              label: item.description!.message,
+              label: item.description.message,
             });
           } else if (item.type instanceof Map) {
             group[category].fields.push({
               key: item.name,
               type: 'string',
-              label: item.description!.message,
+              label: item.description.message,
               enum: ['', ...Array.from<string>(item.type.keys())],
             });
           }

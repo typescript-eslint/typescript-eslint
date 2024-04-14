@@ -1,7 +1,7 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../../util';
+import { isTypeFlagSet } from '../../util';
 
 /*
  * If passed an enum member, returns the type of the parent. Otherwise,
@@ -12,12 +12,32 @@ import * as util from '../../util';
  * - `Fruit.Apple` --> `Fruit`
  */
 function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const symbol = type.getSymbol()!;
   if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
     return type;
   }
 
-  return typeChecker.getTypeAtLocation(symbol.valueDeclaration!.parent);
+  return typeChecker.getTypeAtLocation(
+    (symbol.valueDeclaration as ts.EnumMember).parent,
+  );
+}
+
+/**
+ * Retrieve only the Enum literals from a type. for example:
+ * - 123 --> []
+ * - {} --> []
+ * - Fruit.Apple --> [Fruit.Apple]
+ * - Fruit.Apple | Vegetable.Lettuce --> [Fruit.Apple, Vegetable.Lettuce]
+ * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit.Apple, Vegetable.Lettuce]
+ * - T extends Fruit --> [Fruit]
+ */
+export function getEnumLiterals(type: ts.Type): ts.LiteralType[] {
+  return tsutils
+    .unionTypeParts(type)
+    .filter((subType): subType is ts.LiteralType =>
+      isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
+    );
 }
 
 /**
@@ -33,8 +53,55 @@ export function getEnumTypes(
   typeChecker: ts.TypeChecker,
   type: ts.Type,
 ): ts.Type[] {
-  return tsutils
-    .unionTypeParts(type)
-    .filter(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral))
-    .map(type => getBaseEnumType(typeChecker, type));
+  return getEnumLiterals(type).map(type => getBaseEnumType(typeChecker, type));
+}
+
+/**
+ * Returns the enum key that matches the given literal node, or null if none
+ * match. For example:
+ * ```ts
+ * enum Fruit {
+ *   Apple = 'apple',
+ *   Banana = 'banana',
+ * }
+ *
+ * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'apple') --> 'Fruit.Apple'
+ * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'banana') --> 'Fruit.Banana'
+ * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'cherry') --> null
+ * ```
+ */
+export function getEnumKeyForLiteral(
+  enumLiterals: ts.LiteralType[],
+  literal: unknown,
+): string | null {
+  for (const enumLiteral of enumLiterals) {
+    if (enumLiteral.value === literal) {
+      const { symbol } = enumLiteral;
+
+      const memberDeclaration = symbol.valueDeclaration as ts.EnumMember;
+      const enumDeclaration = memberDeclaration.parent;
+
+      const memberNameIdentifier = memberDeclaration.name;
+      const enumName = enumDeclaration.name.text;
+
+      switch (memberNameIdentifier.kind) {
+        case ts.SyntaxKind.Identifier:
+          return `${enumName}.${memberNameIdentifier.text}`;
+
+        case ts.SyntaxKind.StringLiteral: {
+          const memberName = memberNameIdentifier.text.replace(/'/g, "\\'");
+
+          return `${enumName}['${memberName}']`;
+        }
+
+        case ts.SyntaxKind.ComputedPropertyName:
+          return `${enumName}[${memberNameIdentifier.expression.getText()}]`;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  return null;
 }

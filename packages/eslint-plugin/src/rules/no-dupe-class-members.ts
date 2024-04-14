@@ -1,15 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-dupe-class-members');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-dupe-class-members',
   meta: {
     type: 'problem',
@@ -46,23 +50,9 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      // for ESLint <= v7
-      ...(rules.MethodDefinition
-        ? {
-            MethodDefinition: wrapMemberDefinitionListener(
-              rules.MethodDefinition,
-            ),
-          }
-        : {}),
-      // for ESLint v8
-      ...(rules['MethodDefinition, PropertyDefinition']
-        ? {
-            'MethodDefinition, PropertyDefinition':
-              wrapMemberDefinitionListener(
-                rules['MethodDefinition, PropertyDefinition'],
-              ),
-          }
-        : {}),
+      'MethodDefinition, PropertyDefinition': wrapMemberDefinitionListener(
+        rules['MethodDefinition, PropertyDefinition'],
+      ),
     };
   },
 });

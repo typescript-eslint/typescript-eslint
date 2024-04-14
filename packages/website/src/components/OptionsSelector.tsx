@@ -2,12 +2,14 @@ import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
-import Checkbox from '@site/src/components/inputs/Checkbox';
-import CopyIcon from '@site/src/icons/copy.svg';
+import CopyIcon from '@theme/Icon/Copy';
 import IconExternalLink from '@theme/Icon/ExternalLink';
-import React, { useCallback } from 'react';
+import SuccessIcon from '@theme/Icon/Success';
+import React, { useCallback, useMemo } from 'react';
+import semverSatisfies from 'semver/functions/satisfies';
 
 import { useClipboard } from '../hooks/useClipboard';
+import Checkbox from './inputs/Checkbox';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
 import ActionLabel from './layout/ActionLabel';
@@ -23,11 +25,13 @@ export interface OptionsSelectorParams {
   readonly tsVersions: readonly string[];
 }
 
+const MIN_TS_VERSION_SEMVER = '>=4.7.4';
+
 function OptionsSelectorContent({
   state,
   setState,
   tsVersions,
-}: OptionsSelectorParams): JSX.Element {
+}: OptionsSelectorParams): React.JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
   );
@@ -46,6 +50,14 @@ function OptionsSelectorContent({
       ?.focus();
   }, [state]);
 
+  const tsVersionsFiltered = useMemo(
+    () =>
+      tsVersions.filter(version =>
+        semverSatisfies(version, MIN_TS_VERSION_SEMVER),
+      ),
+    [tsVersions],
+  );
+
   return (
     <>
       <Expander label="Info">
@@ -54,9 +66,11 @@ function OptionsSelectorContent({
             name="ts"
             className="text--right"
             value={state.ts}
-            disabled={!tsVersions.length}
+            disabled={!tsVersionsFiltered.length}
             onChange={(ts): void => setState({ ts })}
-            options={(tsVersions.length && tsVersions) || [state.ts]}
+            options={
+              tsVersionsFiltered.length ? tsVersionsFiltered : [state.ts]
+            }
           />
         </InputLabel>
         <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>
@@ -97,12 +111,20 @@ function OptionsSelectorContent({
       <Expander label="Actions">
         <ActionLabel name="Copy link" onClick={copyLinkToClipboard}>
           <Tooltip open={copyLink} text="Copied">
-            <CopyIcon width="13.5" height="13.5" />
+            {copyLink ? (
+              <SuccessIcon width="13.5" height="13.5" />
+            ) : (
+              <CopyIcon width="13.5" height="13.5" />
+            )}
           </Tooltip>
         </ActionLabel>
         <ActionLabel name="Copy Markdown" onClick={copyMarkdownToClipboard}>
           <Tooltip open={copyMarkdown} text="Copied">
-            <CopyIcon width="13.5" height="13.5" />
+            {copyMarkdown ? (
+              <SuccessIcon width="13.5" height="13.5" />
+            ) : (
+              <CopyIcon width="13.5" height="13.5" />
+            )}
           </Tooltip>
         </ActionLabel>
         <ActionLabel name="Report as Issue" onClick={openIssue}>
@@ -113,7 +135,7 @@ function OptionsSelectorContent({
   );
 }
 
-function OptionsSelector(props: OptionsSelectorParams): JSX.Element {
+function OptionsSelector(props: OptionsSelectorParams): React.JSX.Element {
   const windowSize = useWindowSize();
   if (windowSize === 'mobile') {
     return (

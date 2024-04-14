@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "5.61.0",
+  "version": "7.6.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -11,7 +11,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "repository": {
     "type": "git",
@@ -21,21 +21,23 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "jest --coverage",
+    "test": "npx jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "5.61.0",
+    "@typescript-eslint/type-utils": "7.6.0",
+    "@typescript-eslint/utils": "7.6.0",
     "natural-compare": "^1.4.0",
-    "prettier": "*"
+    "prettier": "^3.2.5"
   },
   "funding": {
     "type": "opencollective",

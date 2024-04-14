@@ -1,9 +1,15 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getFunctionHeadLoc,
+  getFunctionNameWithKind,
+  getParserServices,
+  upperCaseFirst,
+} from '../util';
 
 interface ScopeInfo {
   upper: ScopeInfo | null;
@@ -17,7 +23,7 @@ type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
 
-export default util.createRule({
+export default createRule({
   name: 'require-await',
   meta: {
     type: 'suggestion',
@@ -34,10 +40,9 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const sourceCode = context.getSourceCode();
     let scopeInfo: ScopeInfo | null = null;
 
     /**
@@ -71,10 +76,10 @@ export default util.createRule({
       ) {
         context.report({
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           messageId: 'missingAwait',
           data: {
-            name: util.upperCaseFirst(util.getFunctionNameWithKind(node)),
+            name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
         });
       }
@@ -102,18 +107,27 @@ export default util.createRule({
     }
 
     /**
-     * mark `scopeInfo.isAsyncYield` to `true` if its a generator
-     * function and the delegate is `true`
+     * Mark `scopeInfo.isAsyncYield` to `true` if it
+     *  1) delegates async generator function
+     *    or
+     *  2) yields thenable type
      */
-    function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
+    function visitYieldExpression(node: TSESTree.YieldExpression): void {
       if (!scopeInfo?.isGen || !node.argument) {
         return;
       }
 
       if (node.argument.type === AST_NODE_TYPES.Literal) {
-        // making this `false` as for literals we don't need to check the definition
+        // ignoring this as for literals we don't need to check the definition
         // eg : async function* run() { yield* 1 }
-        scopeInfo.isAsyncYield ||= false;
+        return;
+      }
+
+      if (!node.delegate) {
+        if (isThenableType(services.esTreeNodeToTSNodeMap.get(node.argument))) {
+          scopeInfo.isAsyncYield = true;
+        }
+        return;
       }
 
       const type = services.getTypeAtLocation(node.argument);
@@ -140,8 +154,9 @@ export default util.createRule({
       'ArrowFunctionExpression:exit': exitFunction,
 
       AwaitExpression: markAsHasAwait,
+      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
-      'YieldExpression[delegate = true]': markAsHasDelegateGen,
+      YieldExpression: visitYieldExpression,
 
       // check body-less async arrow function.
       // ignore `async () => await foo` because it's obviously correct
@@ -152,7 +167,7 @@ export default util.createRule({
         >,
       ): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);
-        if (expression && isThenableType(expression)) {
+        if (isThenableType(expression)) {
           markAsHasAwait();
         }
       },
@@ -173,65 +188,9 @@ export default util.createRule({
 
 function isEmptyFunction(node: FunctionNode): boolean {
   return (
-    node.body?.type === AST_NODE_TYPES.BlockStatement &&
+    node.body.type === AST_NODE_TYPES.BlockStatement &&
     node.body.body.length === 0
   );
-}
-
-// https://github.com/eslint/eslint/blob/03a69dbe86d5b5768a310105416ae726822e3c1c/lib/rules/utils/ast-utils.js#L382-L392
-/**
- * Gets the `(` token of the given function node.
- */
-function getOpeningParenOfParams(
-  node: FunctionNode,
-  sourceCode: TSESLint.SourceCode,
-): TSESTree.Token {
-  return util.nullThrows(
-    node.id
-      ? sourceCode.getTokenAfter(node.id, util.isOpeningParenToken)
-      : sourceCode.getFirstToken(node, util.isOpeningParenToken),
-    util.NullThrowsReasons.MissingToken('(', node.type),
-  );
-}
-
-// https://github.com/eslint/eslint/blob/03a69dbe86d5b5768a310105416ae726822e3c1c/lib/rules/utils/ast-utils.js#L1220-L1242
-/**
- * Gets the location of the given function node for reporting.
- */
-function getFunctionHeadLoc(
-  node: FunctionNode,
-  sourceCode: TSESLint.SourceCode,
-): TSESTree.SourceLocation {
-  const parent = util.nullThrows(
-    node.parent,
-    util.NullThrowsReasons.MissingParent,
-  );
-  let start = null;
-  let end = null;
-
-  if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-    const arrowToken = util.nullThrows(
-      sourceCode.getTokenBefore(node.body, util.isArrowToken),
-      util.NullThrowsReasons.MissingToken('=>', node.type),
-    );
-
-    start = arrowToken.loc.start;
-    end = arrowToken.loc.end;
-  } else if (
-    parent.type === AST_NODE_TYPES.Property ||
-    parent.type === AST_NODE_TYPES.MethodDefinition
-  ) {
-    start = parent.loc.start;
-    end = getOpeningParenOfParams(node, sourceCode).loc.start;
-  } else {
-    start = node.loc.start;
-    end = getOpeningParenOfParams(node, sourceCode).loc.start;
-  }
-
-  return {
-    start,
-    end,
-  };
 }
 
 function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {

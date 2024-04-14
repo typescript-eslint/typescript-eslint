@@ -9,10 +9,7 @@ yarn-error.log*
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
-packages/website/playwright-report
-packages/website/playwright/.cache
 packages/website/static/sandbox
-packages/website/test-results
 
 # Runtime data
 pids
@@ -92,8 +89,11 @@ packages/types/src/generated/**/*.ts
 # Yarn 3
 .pnp.*
 .yarn/*
+packages/**/.yarn
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.nx/cache

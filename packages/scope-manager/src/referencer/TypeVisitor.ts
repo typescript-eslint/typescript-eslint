@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import { ParameterDefinition, TypeDefinition } from '../definition';
+import type { Scope } from '../scope';
 import { ScopeType } from '../scope';
 import type { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
@@ -53,6 +54,7 @@ class TypeVisitor extends Visitor {
       });
 
       // there are a few special cases where the type annotation is owned by the parameter, not the pattern
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!didVisitAnnotation && 'typeAnnotation' in param) {
         this.visit(param.typeAnnotation);
       }
@@ -147,7 +149,7 @@ class TypeVisitor extends Visitor {
       scope.type === ScopeType.mappedType
     ) {
       // search up the scope tree to figure out if we're in a nested type scope
-      let currentScope = scope.upper;
+      let currentScope = scope.upper as Scope | undefined;
       while (currentScope) {
         if (
           currentScope.type === ScopeType.functionType ||
@@ -186,7 +188,7 @@ class TypeVisitor extends Visitor {
       this.visit(node.typeParameters);
     }
 
-    node.extends?.forEach(this.visit, this);
+    node.extends.forEach(this.visit, this);
     this.visit(node.body);
 
     if (node.typeParameters) {
