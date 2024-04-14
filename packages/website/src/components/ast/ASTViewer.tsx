@@ -1,3 +1,4 @@
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import type * as ESQuery from 'esquery';
 import React, { useEffect, useMemo } from 'react';
 
@@ -24,7 +25,7 @@ function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.esquery && filter) {
       // @ts-expect-error - esquery requires js ast types
-      return window.esquery.match(value, filter);
+      return window.esquery.match(value, filter, { visitorKeys });
     }
   } catch (e: unknown) {
     console.error(e);
