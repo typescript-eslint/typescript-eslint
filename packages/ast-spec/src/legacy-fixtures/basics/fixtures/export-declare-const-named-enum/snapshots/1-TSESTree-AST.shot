@@ -69,9 +69,9 @@ Program {
             },
           ],
 
-          range: [73, 124],
+          range: [103, 124],
           loc: {
-            start: { column: 0, line: 3 },
+            start: { column: 30, line: 3 },
             end: { column: 1, line: 6 },
           },
         },

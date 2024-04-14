@@ -111,9 +111,9 @@ exports[`AST Fixtures legacy-fixtures basics export-named-enum AST Alignment - A
               },
 -           ],
 
--           range: [73, 110],
+-           range: [89, 110],
 -           loc: {
--             start: { column: 0, line: 3 },
+-             start: { column: 16, line: 3 },
 -             end: { column: 1, line: 6 },
 +             range: [104, 107],
 +             loc: {

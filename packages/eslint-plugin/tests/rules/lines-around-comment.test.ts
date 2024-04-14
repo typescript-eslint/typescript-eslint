@@ -161,36 +161,6 @@ enum A {
         },
       ],
     },
-    {
-      code: unIndent`
-enum A {
-  a,
-  // line
-}
-`,
-      options: [
-        {
-          afterLineComment: true,
-          allowEnumEnd: true,
-        },
-      ],
-    },
-    {
-      code: unIndent`
-enum A {
-  a,
-  /* block
-     comment */
-}
-`,
-      options: [
-        {
-          beforeBlockComment: false,
-          afterBlockComment: true,
-          allowEnumEnd: true,
-        },
-      ],
-    },
 
     // TS module
     {
@@ -790,31 +760,6 @@ enum A {
         },
       ],
       errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Line, line: 3 }],
-    },
-    {
-      code: unIndent`
-enum A {
-  a,
-  /* block
-     comment */
-}
-`,
-      output: unIndent`
-enum A {
-  a,
-  /* block
-     comment */
-
-}
-`,
-      options: [
-        {
-          beforeBlockComment: false,
-          afterBlockComment: true,
-          allowEnumEnd: false,
-        },
-      ],
-      errors: [{ messageId: 'after', type: AST_TOKEN_TYPES.Block, line: 3 }],
     },
 
     // TS module

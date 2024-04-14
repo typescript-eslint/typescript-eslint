@@ -14,9 +14,9 @@ exports[`AST Fixtures declaration TSEnumDeclaration empty AST Alignment - AST 1`
 -         type: 'TSEnumBody',
 -         members: Array [],
 -
--         range: [0, 11],
+-         range: [9, 11],
 -         loc: {
--           start: { column: 0, line: 1 },
+-           start: { column: 9, line: 1 },
 -           end: { column: 11, line: 1 },
 -         },
 -       },

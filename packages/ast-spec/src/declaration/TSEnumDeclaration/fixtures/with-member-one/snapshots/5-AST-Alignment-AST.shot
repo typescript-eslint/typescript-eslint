@@ -52,9 +52,9 @@ exports[`AST Fixtures declaration TSEnumDeclaration with-member-one AST Alignmen
             },
 -         ],
 
--         range: [0, 17],
+-         range: [9, 17],
 -         loc: {
--           start: { column: 0, line: 1 },
+-           start: { column: 9, line: 1 },
 -           end: { column: 1, line: 3 },
 +           range: [13, 14],
 +           loc: {

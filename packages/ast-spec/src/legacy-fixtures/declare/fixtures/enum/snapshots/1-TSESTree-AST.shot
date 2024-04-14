@@ -55,9 +55,9 @@ Program {
           },
         ],
 
-        range: [73, 107],
+        range: [90, 107],
         loc: {
-          start: { column: 0, line: 3 },
+          start: { column: 17, line: 3 },
           end: { column: 1, line: 6 },
         },
       },

@@ -10,9 +10,9 @@ Program {
         type: "TSEnumBody",
         members: [],
 
-        range: [0, 17],
+        range: [15, 17],
         loc: {
-          start: { column: 0, line: 1 },
+          start: { column: 15, line: 1 },
           end: { column: 17, line: 1 },
         },
       },

@@ -13,9 +13,9 @@ Program {
           type: "TSEnumBody",
           members: [],
 
-          range: [0, 18],
+          range: [16, 18],
           loc: {
-            start: { column: 0, line: 1 },
+            start: { column: 16, line: 1 },
             end: { column: 18, line: 1 },
           },
         },
