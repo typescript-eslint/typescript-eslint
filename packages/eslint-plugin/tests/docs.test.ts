@@ -439,8 +439,6 @@ describe('Validating rule metadata', () => {
   const rulesThatRequireTypeInformationInAWayThatsHardToDetect = new Set([
     // the core rule file doesn't use type information, instead it's used in `src/rules/naming-convention-utils/validator.ts`
     'naming-convention',
-    // rule moved to no-useless-template-expression.
-    'no-useless-template-literals',
   ]);
   function requiresFullTypeInformation(content: string): boolean {
     return /getParserServices(\(\s*[^,\s)]+)\s*(,\s*false\s*)?\)/.test(content);
