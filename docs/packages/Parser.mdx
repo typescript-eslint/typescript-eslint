@@ -169,7 +169,7 @@ The identifier that's used for JSX fragment elements (after transpilation).
 If `null`, assumes transpilation will always use a member of the configured `jsxPragma`.
 This should not be a member expression - just the root identifier (i.e. use `"h"` instead of `"h.Fragment"`).
 
-If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
+If you provide `parserOptions.project`, you do not need to set this, as it will be automatically detected from the compiler.
 
 ### `jsxPragma`
 
@@ -180,7 +180,7 @@ If you're using a library other than React (like `preact`), then you should chan
 
 This should not be a member expression - just the root identifier (i.e. use `"React"` instead of `"React.createElement"`).
 
-If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
+If you provide `parserOptions.project`, you do not need to set this, as it will be automatically detected from the compiler.
 
 ### `lib`
 
@@ -190,7 +190,7 @@ For valid options, see the [TypeScript compiler options](https://www.typescriptl
 
 Specifies the TypeScript `lib`s that are available. This is used by the scope analyser to ensure there are global variables declared for the types exposed by TypeScript.
 
-If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
+If you provide `parserOptions.project`, you do not need to set this, as it will be automatically detected from the compiler.
 
 ### `programs`
 
@@ -206,27 +206,27 @@ All linted files must be part of the provided program(s).
 
 > Default `undefined`.
 
-This option allows you to provide a path to your project's `tsconfig.json`. **This setting is required if you want to use rules which require type information**. Relative paths are interpreted relative to the current working directory if `tsconfigRootDir` is not set. If you intend on running ESLint from directories other than the project root, you should consider using `tsconfigRootDir`.
+A path to your project's TSConfig. **This setting is required to use [rules which require type information](../getting-started/Typed_Linting.mdx)**.
 
-- Accepted values:
+Accepted value types:
 
-  ```js
-  // find the tsconfig.json nearest each source file
-  project: true,
+```js
+// find the tsconfig.json nearest to each source file
+project: true,
 
-  // path
-  project: './tsconfig.json';
+// path
+project: './tsconfig.json';
 
-  // glob pattern
-  project: './packages/**/tsconfig.json';
+// glob pattern
+project: './packages/**/tsconfig.json';
 
-  // array of paths and/or glob patterns
-  project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
+// array of paths and/or glob patterns
+project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
 
-  // ways to disable type-aware linting (useful for overrides configs)
-  project: false;
-  project: null;
-  ```
+// ways to disable type-aware linting (useful for overrides configs)
+project: false;
+project: null;
+```
 
 - If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
 
@@ -236,25 +236,31 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
 
-- TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
+- TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see [#955](https://github.com/typescript-eslint/typescript-eslint/issues/955).
 
-- Note that if this setting is specified, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+:::note
+Relative paths are interpreted relative to the current working directory if [`tsconfigRootDir`](#tsconfigrootdir) is not set.
+:::
 
-  ```jsonc
-  {
-    // extend your base config so you don't have to redefine your compilerOptions
-    "extends": "./tsconfig.json",
-    "include": [
-      "src/**/*.ts",
-      "test/**/*.ts",
-      "typings/**/*.ts",
-      // etc
+If this setting is specified, you must only lint files that are included in the projects as defined by the provided TSConfig file(s). If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
-      // if you have a mixed JS/TS codebase, don't forget to include your JS files
-      "src/**/*.js",
-    ],
-  }
-  ```
+```json
+{
+  // extend your base config so you don't have to redefine your compilerOptions
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "typings/**/*.ts",
+    // etc
+
+    // if you have a mixed JS/TS codebase, don't forget to include your JS files
+    "src/**/*.js"
+  ]
+}
+```
+
+For an option that allows linting files outside of your TSConfig file(s), see [`EXPERIMENTAL_useProjectService`](#experimental_useprojectservice).
 
 ### `projectFolderIgnoreList`
 

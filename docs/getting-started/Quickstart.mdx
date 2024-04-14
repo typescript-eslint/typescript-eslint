@@ -8,17 +8,16 @@ pagination_next: getting-started/typed-linting
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+## Quickstart
+
+This page is a quick-start for [ESLint's new "flat" config format](https://eslint.org/docs/latest/use/configure/configuration-files-new) to go from zero to linting with our recommended rules on your TypeScript code as quickly as possible.
+
 :::note
-This page is a quick-start guide for [ESLint's new "flat" config format](https://eslint.org/docs/latest/use/configure/configuration-files-new) to help you go from zero to linting as quick as possible.
 
 - For the same guide but for [ESLint's legacy format](https://eslint.org/docs/latest/use/configure/configuration-files) — see [Legacy ESLint Setup](./Legacy_ESLint_Setup.mdx).
 - For quickstart information on linting with type information — see [Typed Linting](./Typed_Linting.mdx).
 
 :::
-
-## Quickstart
-
-These steps will get you running ESLint with our recommended rules on your TypeScript code as quickly as possible.
 
 ### Step 1: Installation
 
@@ -82,18 +81,38 @@ ESLint will lint all TypeScript compatible files within the current folder, and 
 - `'@eslint/js'` / `eslint.configs.recommended` turns on [eslint's recommended config](https://www.npmjs.com/package/@eslint/js).
 - `...tseslint.configs.recommended` turns on [our recommended config](../users/Shared_Configurations.mdx#recommended).
 
-See [ESLint's Configuration Files docs](https://eslint.org/docs/user-guide/configuring/configuration-files-new) for more details on configuring ESLint.
-
 ## Next Steps
-
-We provide a plethora of powerful rules that utilize the power of TypeScript's type information.
-
-[Visit the next page for a setup guide](./Typed_Linting.mdx 'Visit the next page for a typed rules setup guide').
 
 If you're having problems getting this working, please have a look at our [Troubleshooting & FAQs](../troubleshooting/FAQ.mdx).
 
-### Documentation Resources
+### Additional Configs
+
+We provide two shared configs that we recommend you consider enabling:
+
+- [`strict`](../users/Shared_Configurations.mdx#strict): a superset of `recommended` that includes more opinionated rules which may also catch bugs.
+- [`stylistic`](../users/Shared_Configurations.mdx#stylistic): additional rules that enforce consistent styling without significantly catching bugs or changing logic.
+
+```js title="eslint.config.js"
+export default tseslint.config(
+  eslint.configs.recommended,
+  // Remove this line
+  ...tseslint.configs.recommended,
+  // Add this line
+  ...tseslint.configs.strict,
+  // Add this line
+  ...tseslint.configs.stylistic,
+);
+```
+
+You can read more about these in our [shared configurations docs](../users/Shared_Configurations.mdx).
+
+### Typed Linting
+
+We also provide a plethora of powerful rules that utilize the power of TypeScript's type information.
+[Visit the next page for a typed rules setup guide](./Typed_Linting.mdx).
+
+## Documentation Resources
 
 - You can read more about configuring ESLint [in their documentation on configuration](https://eslint.org/docs/user-guide/configuring).
 - You can read more about the rules provided by ESLint [in their documentation on their rules](https://eslint.org/docs/rules/).
-- You can read more about the rules provided by typescript-eslint in [our rules documentation](/rules).
+- You can read more about the rules provided by typescript-eslint in our [rules documentation](/rules).

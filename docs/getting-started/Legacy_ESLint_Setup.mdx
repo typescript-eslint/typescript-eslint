@@ -84,9 +84,39 @@ ESLint will lint all TypeScript compatible files within the current folder, and 
 
 ## Next Steps
 
-We provide a plethora of powerful rules that utilize the power of TypeScript's type information. [Visit _Typed Rules_ for a setup guide](./Typed_Linting.mdx).
-
 If you're having problems getting this working, please have a look at our [Troubleshooting & FAQs](../troubleshooting/FAQ.mdx).
+
+### Additional Configs
+
+We provide two shared configs that we recommend you consider enabling:
+
+- [`strict`](../users/Shared_Configurations.mdx#strict): a superset of `recommended` that includes more opinionated rules which may also catch bugs.
+- [`stylistic`](../users/Shared_Configurations.mdx#stylistic): additional rules that enforce consistent styling without significantly catching bugs or changing logic.
+
+```js title=".eslintrc.cjs"
+/* eslint-env node */
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    // Remove this line
+    'plugin:@typescript-eslint/recommended',
+    // Added lines start
+    'plugin:@typescript-eslint/strict',
+    'plugin:@typescript-eslint/stylistic',
+    // Added lines end
+  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
+You can read more about these in our [shared configurations docs](../users/Shared_Configurations.mdx).
+
+### Typed Linting
+
+We also provide a plethora of powerful rules that utilize the power of TypeScript's type information.
+[Visit the next page for a typed rules setup guide](./Typed_Linting.mdx).
 
 ### Documentation Resources
 
