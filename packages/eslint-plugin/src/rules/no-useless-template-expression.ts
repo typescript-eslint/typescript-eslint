@@ -189,7 +189,7 @@ export function makeNoUselessTemplateExpressionRuleObject(): NoUselessTemplateEx
 // and the deprecated version of this rule under its previous name
 // no-useless-template-literals.
 // See https://github.com/typescript-eslint/typescript-eslint/issues/8544
-TODO: Remove in v8
+// TODO: Remove in v8
 export default createRule<[], NoUselessTemplateExpressionMessageId>(
   makeNoUselessTemplateExpressionRuleObject(),
 );
