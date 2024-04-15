@@ -205,10 +205,7 @@ class TypeVisitor extends Visitor {
         node.key,
         new TypeDefinition(
           node.key,
-          node.parent as
-            | TSESTree.TSInterfaceDeclaration
-            | TSESTree.TSTypeAliasDeclaration
-            | TSESTree.TSTypeParameter,
+          node,
         ),
       );
     this.visit(node.constraint);
