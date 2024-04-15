@@ -1,10 +1,6 @@
 import { validateDefaultProjectForFilesGlob } from '../../src/create-program/validateDefaultProjectForFilesGlob';
 
 describe('validateDefaultProjectForFilesGlob', () => {
-  it('does not throw when options is falsy', () => {
-    expect(() => validateDefaultProjectForFilesGlob(false)).not.toThrow();
-  });
-
   it('does not throw when options.allowDefaultProjectForFiles is an empty array', () => {
     expect(() =>
       validateDefaultProjectForFilesGlob({ allowDefaultProjectForFiles: [] }),
@@ -17,6 +13,16 @@ describe('validateDefaultProjectForFilesGlob', () => {
         allowDefaultProjectForFiles: ['./*.js'],
       }),
     ).not.toThrow();
+  });
+
+  it('throws when options.allowDefaultProjectForFiles contains a * glob', () => {
+    expect(() =>
+      validateDefaultProjectForFilesGlob({
+        allowDefaultProjectForFiles: ['*'],
+      }),
+    ).toThrow(
+      /allowDefaultProjectForFiles glob '\*\*\/\*\.js' is the overly wide '\*'\./,
+    );
   });
 
   it('throws when options.allowDefaultProjectForFiles contains a ** glob', () => {

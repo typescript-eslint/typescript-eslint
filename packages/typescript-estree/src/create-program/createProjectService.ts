@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import os from 'node:os';
+
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
@@ -21,9 +23,10 @@ export interface ProjectServiceSettings {
 }
 
 export function createProjectService(
-  options: boolean | ProjectServiceOptions | undefined,
+  optionsRaw: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
 ): ProjectServiceSettings {
+  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
   validateDefaultProjectForFilesGlob(options);
 
   // We import this lazily to avoid its cost for users who don't use the service
@@ -64,12 +67,46 @@ export function createProjectService(
     jsDocParsingMode,
   });
 
-  const optionsOrDefaults = typeof options === 'object' ? options : {};
+  if (options.defaultProject) {
+    let configRead;
+
+    try {
+      configRead = tsserver.readConfigFile(
+        options.defaultProject,
+        system.readFile,
+      );
+    } catch (error) {
+      throw new Error(
+        `Could not parse default project '${options.defaultProject}': ${(error as Error).message}`,
+      );
+    }
+
+    if (configRead.error) {
+      throw new Error(
+        `Could not read default project '${options.defaultProject}': ${tsserver.formatDiagnostic(
+          configRead.error,
+          {
+            getCurrentDirectory: system.getCurrentDirectory,
+            getCanonicalFileName: fileName => fileName,
+            getNewLine: () => os.EOL,
+          },
+        )}`,
+      );
+    }
+
+    service.setCompilerOptionsForInferredProjects(
+      (
+        configRead.config as {
+          compilerOptions: ts.server.protocol.InferredProjectCompilerOptions;
+        }
+      ).compilerOptions,
+    );
+  }
 
   return {
-    allowDefaultProjectForFiles: optionsOrDefaults.allowDefaultProjectForFiles,
+    allowDefaultProjectForFiles: options.allowDefaultProjectForFiles,
     maximumDefaultProjectFileMatchCount:
-      optionsOrDefaults.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
+      options.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
       DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD,
     service,
   };

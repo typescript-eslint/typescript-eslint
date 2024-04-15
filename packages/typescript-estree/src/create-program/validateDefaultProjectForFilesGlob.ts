@@ -8,16 +8,18 @@ See https://typescript-eslint.io/troubleshooting/#allowdefaultprojectforfiles-gl
 `;
 
 export function validateDefaultProjectForFilesGlob(
-  options: boolean | ProjectServiceOptions | undefined,
+  options: ProjectServiceOptions,
 ): void {
-  if (
-    typeof options !== 'object' ||
-    !options.allowDefaultProjectForFiles?.length
-  ) {
+  if (!options.allowDefaultProjectForFiles?.length) {
     return;
   }
 
   for (const glob of options.allowDefaultProjectForFiles) {
+    if (glob === '*') {
+      throw new Error(
+        `allowDefaultProjectForFiles glob '${glob}' is the overly wide '*'.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}`,
+      );
+    }
     if (glob.includes('**')) {
       throw new Error(
         `allowDefaultProjectForFiles glob '${glob}' contains a disallowed '**'.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}`,
