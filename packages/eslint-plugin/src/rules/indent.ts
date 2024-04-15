@@ -369,7 +369,6 @@ export default createRule<Options, MessageIds>({
           decorators: [],
           implements: [],
           superTypeArguments: undefined,
-          superTypeParameters: undefined,
           typeParameters: undefined,
 
           // location data
@@ -479,7 +478,6 @@ export default createRule<Options, MessageIds>({
           name: name as any,
           attributes: attributes as any,
           typeArguments: undefined,
-          typeParameters: undefined,
 
           // location data
           parent: node.parent,

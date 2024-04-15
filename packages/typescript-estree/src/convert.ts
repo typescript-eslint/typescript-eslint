@@ -2889,7 +2889,6 @@ export class Converter {
             type: AST_NODE_TYPES.TSTypeQuery,
             exprName: result,
             typeArguments: undefined,
-            typeParameters: undefined,
           });
         }
         return result;
