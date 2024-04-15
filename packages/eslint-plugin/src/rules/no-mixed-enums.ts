@@ -51,7 +51,7 @@ export default createRule({
         if (
           definition.node.type === AST_NODE_TYPES.TSEnumDeclaration &&
           definition.node.range[0] < node.range[0] &&
-          definition.node.members.length > 0
+          definition.node.body.members.length > 0
         ) {
           found.previousSibling = definition.node;
           break;
@@ -146,7 +146,7 @@ export default createRule({
       // enum MyEnum { A }
       // enum MyEnum { B }
       if (previousSibling) {
-        return getMemberType(previousSibling.members[0]);
+        return getMemberType(previousSibling.body.members[0]);
       }
 
       // Case: Namespace declaration merging
@@ -185,12 +185,12 @@ export default createRule({
       }
 
       // Finally, we default to the type of the first enum member
-      return getMemberType(node.members[0]);
+      return getMemberType(node.body.members[0]);
     }
 
     return {
       TSEnumDeclaration(node): void {
-        if (!node.members.length) {
+        if (!node.body.members.length) {
           return;
         }
 
@@ -199,7 +199,7 @@ export default createRule({
           return;
         }
 
-        for (const member of node.members) {
+        for (const member of node.body.members) {
           const currentType = getMemberType(member);
           if (currentType === AllowedType.Unknown) {
             return;
