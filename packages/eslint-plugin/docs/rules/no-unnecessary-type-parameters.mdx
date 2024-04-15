@@ -1,5 +1,5 @@
 ---
-description: 'Disallow type parameters that only appear once'
+description: 'Disallow type parameters that only appear once.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -21,12 +21,12 @@ At best unnecessary type parameters make code harder to read. At worst they can 
 <TabItem value="❌ Incorrect">
 
 ```ts
-function third<A, B, C>(a: A, b: B, c: C): C {
-  return c;
+function second<A, B>(a: A, b: B): B {
+  return b;
 }
 
-function parseYAML<T>(input: string): T {
-  // ...
+function parseJSON<T>(input: string): T {
+  return JSON.parse(input);
 }
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
@@ -44,12 +44,12 @@ class Joiner<T extends string | number> {
 <TabItem value="✅ Correct">
 
 ```ts
-function third<C>(a: unknown, b: unknown, c: C): C {
-  return c;
+function second<B>(a: unknown, b: B): B {
+  return b;
 }
 
-function parseYAML(input: string): unknown {
-  // ...
+function parseJSON(input: string): unknown {
+  return JSON.parse(input);
 }
 
 function printProperty<T>(obj: T, key: keyof T) {
@@ -90,7 +90,7 @@ assertType<number>('abc');
 // Argument of type 'string' is not assignable to parameter of type 'number'.
 ```
 
-If you're using this pattern then you'll want to disable this rule.
+If you're using this pattern then you'll want to disable this rule on files that test types.
 
 ## Further Reading
 
