@@ -3,7 +3,6 @@ import type * as ts from 'typescript';
 
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
-import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import {
@@ -76,24 +75,10 @@ function getProgramAndAST(
     return createNoProgram(parseSettings);
   }
 
-  const fromProjectProgram = createProjectProgram(
+  return createProjectProgram(
     parseSettings,
     getWatchProgramsForProjects(parseSettings),
   );
-  if (fromProjectProgram) {
-    return fromProjectProgram;
-  }
-
-  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-  if (parseSettings.DEPRECATED__createDefaultProgram) {
-    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-    const fromDefaultProgram = createDefaultProgram(parseSettings);
-    if (fromDefaultProgram) {
-      return fromDefaultProgram;
-    }
-  }
-
-  return createIsolatedProgram(parseSettings);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
