@@ -20,9 +20,7 @@ describe('validateDefaultProjectForFilesGlob', () => {
       validateDefaultProjectForFilesGlob({
         allowDefaultProjectForFiles: ['*'],
       }),
-    ).toThrow(
-      /allowDefaultProjectForFiles glob '\*\*\/\*\.js' is the overly wide '\*'\./,
-    );
+    ).toThrow(/allowDefaultProjectForFiles contains the overly wide '\*'\./);
   });
 
   it('throws when options.allowDefaultProjectForFiles contains a ** glob', () => {

@@ -17,7 +17,7 @@ export function validateDefaultProjectForFilesGlob(
   for (const glob of options.allowDefaultProjectForFiles) {
     if (glob === '*') {
       throw new Error(
-        `allowDefaultProjectForFiles glob '${glob}' is the overly wide '*'.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}`,
+        `allowDefaultProjectForFiles contains the overly wide '*'.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}`,
       );
     }
     if (glob.includes('**')) {
