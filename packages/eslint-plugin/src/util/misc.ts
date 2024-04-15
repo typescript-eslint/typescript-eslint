@@ -7,7 +7,9 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import { isParenthesized } from './astUtils';
+import { getStaticValue, isParenthesized } from './astUtils';
+import type { Scope } from '@typescript-eslint/utils/ts-eslint';
+import { getStaticStringValue } from './getStaticStringValue';
 
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
@@ -230,6 +232,39 @@ function isParenlessArrowFunction(
   );
 }
 
+type NodeWithKey =
+  | TSESTree.MemberExpression
+  | TSESTree.MethodDefinition
+  | TSESTree.Property
+  | TSESTree.PropertyDefinition
+  | TSESTree.TSAbstractMethodDefinition
+  | TSESTree.TSAbstractPropertyDefinition;
+function getStaticKeyValue(
+  node: NodeWithKey,
+  scope?: Scope.Scope | undefined,
+): string | null {
+  const key =
+    node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
+  return node.computed
+    ? (getStaticValue(key, scope)?.value as string | null)
+    : key.type === AST_NODE_TYPES.Literal
+      ? getStaticStringValue(key)
+      : 'name' in key
+        ? key.name
+        : '';
+}
+
+/**
+ * Answers whether the member expression looks like
+ * `x.memberName`, `x['memberName']`,
+ * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
+ */
+const isStaticKeyOfValue = (
+  memberExpression: NodeWithKey,
+  value: string,
+  scope?: Scope.Scope | undefined,
+): boolean => value === getStaticKeyValue(memberExpression, scope);
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -238,11 +273,13 @@ export {
   findFirstResult,
   formatWordList,
   getEnumNames,
+  getStaticKeyValue,
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
   isRestParameterDeclaration,
   isParenlessArrowFunction,
+  isStaticKeyOfValue,
   MemberNameType,
   RequireKeys,
   typeNodeRequiresParentheses,

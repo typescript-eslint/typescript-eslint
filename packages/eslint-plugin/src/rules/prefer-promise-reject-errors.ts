@@ -10,6 +10,7 @@ import {
   isPromiseConstructorLike,
   isPromiseLike,
   isReadonlyErrorLike,
+  isStaticKeyOfValue,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -101,6 +102,8 @@ export default createRule<Options, MessageIds>({
           ? callee.property.type === AST_NODE_TYPES.Literal &&
             callee.property.value === 'reject'
           : callee.property.name === 'reject';
+
+        isStaticKeyOfValue();
 
         if (
           !rejectMethodCalled ||
