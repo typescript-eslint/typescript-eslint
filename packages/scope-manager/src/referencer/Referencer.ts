@@ -676,7 +676,7 @@ class Referencer extends Visitor {
       new TSEnumNameDefinition(node.id, node),
     );
 
-    for (const member of node.members) {
+    for (const member of node.body.members) {
       // TS resolves literal named members to be actual names
       // enum Foo {
       //   'a' = 1,
