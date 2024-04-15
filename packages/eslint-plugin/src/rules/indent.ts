@@ -249,8 +249,9 @@ export default createRule<Options, MessageIds>({
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
-          properties: (
-            node.members as (TSESTree.TSEnumMember | TSESTree.TypeElement)[]
+          properties: (node.type === AST_NODE_TYPES.TSEnumDeclaration
+            ? node.body.members
+            : node.members
           ).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,

@@ -2905,13 +2905,26 @@ export class Converter {
       }
 
       case SyntaxKind.EnumDeclaration: {
-        const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
-          type: AST_NODE_TYPES.TSEnumDeclaration,
-          const: hasModifier(SyntaxKind.ConstKeyword, node),
-          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          id: this.convertChild(node.name),
-          members: node.members.map(el => this.convertChild(el)),
-        });
+        const members = node.members.map(el => this.convertChild(el));
+        const result = this.createNode<TSESTree.TSEnumDeclaration>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSEnumDeclaration,
+              body: this.createNode<TSESTree.TSEnumBody>(node, {
+                type: AST_NODE_TYPES.TSEnumBody,
+                members,
+                range: [node.members.pos - 1, node.end],
+              }),
+              const: hasModifier(SyntaxKind.ConstKeyword, node),
+              declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+              id: this.convertChild(node.name),
+            },
+            'members',
+            `'body.members'`,
+            node.members.map(el => this.convertChild(el)),
+          ),
+        );
 
         return this.fixExports(node, result);
       }
