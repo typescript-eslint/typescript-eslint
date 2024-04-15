@@ -36,12 +36,9 @@ export default createRule({
         'TSMethodSignature[typeParameters]',
         'TSEmptyBodyFunctionExpression[typeParameters]',
       ].join(', ')](esNode: TSESTree.FunctionLike): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(esNode) as
-          | ts.SignatureDeclaration
-          | ts.ClassLikeDeclaration;
-        if (!tsNode.typeParameters) {
-          return;
-        }
+        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+          esNode,
+        ) as NodeWithTypeParameters;
 
         const checker = parserServices.program.getTypeChecker();
 
@@ -149,7 +146,7 @@ function countInferredTypeParameterUsage(
   tsNode: ts.SignatureDeclaration | ts.ClassLikeDeclaration,
 ): Map<ts.Identifier, number> | null {
   let inferredCounts: Map<ts.Identifier, number> | null = null;
-  const fnNodes = [];
+  const functionNodes = [];
   if (ts.isFunctionLike(tsNode)) {
     fnNodes.push(tsNode);
   } else if (ts.isClassLike(tsNode)) {
