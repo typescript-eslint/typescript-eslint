@@ -201,13 +201,7 @@ class TypeVisitor extends Visitor {
     this.#referencer.scopeManager.nestMappedTypeScope(node);
     this.#referencer
       .currentScope()
-      .defineIdentifier(
-        node.key,
-        new TypeDefinition(
-          node.key,
-          node,
-        ),
-      );
+      .defineIdentifier(node.key, new TypeDefinition(node.key, node));
     this.visit(node.constraint);
     this.visit(node.nameType);
     this.visit(node.typeAnnotation);
