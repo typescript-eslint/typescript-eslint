@@ -4,11 +4,9 @@ exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 1
 "Options: { "ignoreEnums": false }
 
 enum foo {
-~~~~~~~~~~
   SECOND = 1000,
-~~~~~~~~~~~~~~~~
+           ~~~~ No magic number: 1000.
 }
-~
 "
 `;
 
@@ -16,11 +14,8 @@ exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 2
 "Options: { "ignoreEnums": true }
 
 enum foo {
-~~~~~~~~~~
   SECOND = 1000,
-~~~~~~~~~~~~~~~~
 }
-~
 "
 `;
 

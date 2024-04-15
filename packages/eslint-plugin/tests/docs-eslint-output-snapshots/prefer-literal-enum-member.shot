@@ -4,20 +4,69 @@ exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLin
 "Incorrect
 
 const str = 'Test';
-~~~~~~~~~~~~~~~~~~~
 enum Invalid {
-~~~~~~~~~~~~~~
   A = str, // Variable assignment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
   B = {}, // Object assignment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
   C = \`A template literal string\`, // Template literal
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   D = new Set(1, 2, 3), // Constructor in assignment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
   E = 2 + 2, // Expression assignment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
 }
-~
+"
+`;
+
+exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 2`] = `
+"Correct
+
+enum Valid {
+  A,
+  B = 'TestStr', // A regular string
+  C = 4, // A number
+  D = null,
+  E = /some_regex/,
+}
+"
+`;
+
+exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allowBitwiseExpressions": true }
+
+const x = 1;
+enum Foo {
+  A = x << 0,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  B = x >> 0,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  C = x >>> 0,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  D = x | 0,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  E = x & 0,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  F = x ^ 0,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  G = ~x,
+  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+}
+"
+`;
+
+exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allowBitwiseExpressions": true }
+
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = 1 >>> 0,
+  D = 1 | 0,
+  E = 1 & 0,
+  F = 1 ^ 0,
+  G = ~1,
+}
 "
 `;

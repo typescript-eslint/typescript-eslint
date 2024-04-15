@@ -109,30 +109,68 @@ exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLi
 "Incorrect
 
 enum Fruit {
-~~~~~~~~~~~~
   Apple,
-~~~~~~~~
   Banana,
-~~~~~~~~~
   Cherry,
-~~~~~~~~~
 }
-~
-
 
 declare const fruit: Fruit;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 switch (fruit) {
-~~~~~~~~~~~~~~~~
+        ~~~~~ Switch is not exhaustive. Cases not matched: Fruit.Banana | Fruit.Cherry
   case Fruit.Apple:
-~~~~~~~~~~~~~~~~~~~
     console.log('an apple');
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     break;
-~~~~~~~~~~
 }
-~
+"
+`;
+
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 6`] = `
+"Correct
+
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  case Fruit.Banana:
+    console.log('a banana');
+    break;
+
+  case Fruit.Cherry:
+    console.log('a cherry');
+    break;
+}
+"
+`;
+
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 7`] = `
+"Correct
+
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  default:
+    console.log('a fruit');
+    break;
+}
 "
 `;

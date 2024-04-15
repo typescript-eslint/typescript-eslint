@@ -4,14 +4,43 @@ exports[`Validating rule docs no-mixed-enums.mdx code examples ESLint output 1`]
 "Incorrect
 
 enum Status {
-~~~~~~~~~~~~~
   Unknown,
-~~~~~~~~~~
   Closed = 1,
-~~~~~~~~~~~~~
   Open = 'open',
-~~~~~~~~~~~~~~~~
+         ~~~~~~ Mixing number and string enums can be confusing.
 }
-~
+"
+`;
+
+exports[`Validating rule docs no-mixed-enums.mdx code examples ESLint output 2`] = `
+"Correct
+
+enum Status {
+  Unknown = 0,
+  Closed = 1,
+  Open = 2,
+}
+"
+`;
+
+exports[`Validating rule docs no-mixed-enums.mdx code examples ESLint output 3`] = `
+"Correct
+
+enum Status {
+  Unknown,
+  Closed,
+  Open,
+}
+"
+`;
+
+exports[`Validating rule docs no-mixed-enums.mdx code examples ESLint output 4`] = `
+"Correct
+
+enum Status {
+  Unknown = 'unknown',
+  Closed = 'closed',
+  Open = 'open',
+}
 "
 `;

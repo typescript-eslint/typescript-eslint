@@ -5,14 +5,43 @@ exports[`Validating rule docs no-use-before-define.mdx code examples ESLint outp
 Options: { "enums": true }
 
 const x = Foo.FOO;
-~~~~~~~~~~~~~~~~~~
-
+          ~~~ 'Foo' was used before it was defined.
 
 enum Foo {
-~~~~~~~~~~
   FOO,
-~~~~~~
 }
-~
+"
+`;
+
+exports[`Validating rule docs no-use-before-define.mdx code examples ESLint output 2`] = `
+"Correct
+Options: { "enums": false }
+
+function foo() {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+"
+`;
+
+exports[`Validating rule docs no-use-before-define.mdx code examples ESLint output 3`] = `
+"Options: { "typedefs": false }
+
+let myVar: StringOrNumber;
+type StringOrNumber = string | number;
+"
+`;
+
+exports[`Validating rule docs no-use-before-define.mdx code examples ESLint output 4`] = `
+"Options: { "ignoreTypeReferences": true }
+
+let var1: StringOrNumber;
+type StringOrNumber = string | number;
+
+let var2: Enum;
+enum Enum {}
 "
 `;
