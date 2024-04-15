@@ -73,6 +73,18 @@ export default createRule({
           const { uses } = usage.get(typeParameter.name)!;
           let explicitUsesCount = 0;
           for (const use of uses) {
+            // Type parameters passed as type arguments might legitimately be used
+            // Example:
+            //   type Props<T> = { onClick: (value: T) => T; }
+            //   declare function Component<T>(props: Props<T>): void;
+            if (
+              ts.isTypeReferenceNode(use.location.parent) &&
+              ts.isTypeReferenceNode(use.location.parent.parent) &&
+              ts.isParameter(use.location.parent.parent.parent)
+            ) {
+              explicitUsesCount = Infinity;
+              break;
+            }
             const pos = use.location.getStart();
             if (pos > tsNode.getStart() && pos < declEndPos) {
               explicitUsesCount++;
