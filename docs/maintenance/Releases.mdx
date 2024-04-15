@@ -17,8 +17,9 @@ Per [Users > Releases > Major Releases](../users/Releases.mdx#major-releases), w
 1. Create a milestone by the name of the release [example: [Milestone 6.0.0](https://github.com/typescript-eslint/typescript-eslint/milestone/8)].
 1. If an issue for changes to recommended rule configs doesn't yet exist, create one [example: [Changes to the `recommended` sets for 5.0.0](https://github.com/typescript-eslint/typescript-eslint/issues/5900)].
 1. Add any breaking changes intended for the release to that milestone.
-1. Search for source code comments (excluding `CHANGELOG.md` files) that mention a todo for the new major version, and create corresponding issues in that milestone.
+1. Search for source code comments (excluding `CHANGELOG.md` files) that mention deprecated code and/or a todo for the new major version, and create corresponding issues in that milestone.
    - For example, for a new major version 8, searches might include:
+     - `/deprecated|todo/i`
      - `/v8/i`
      - `/todo.*v?8/i`
 1. Create two new branches off `main` in the project repository (not a personal fork):
