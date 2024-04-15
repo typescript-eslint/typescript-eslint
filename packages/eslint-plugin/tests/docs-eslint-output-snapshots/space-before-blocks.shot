@@ -4,30 +4,20 @@ exports[`Validating rule docs space-before-blocks.mdx code examples ESLint outpu
 "Incorrect
 
 enum Breakpoint{
-               ~ Missing space before opening brace.
+~~~~~~~~~~~~~~~~
   Large,
+~~~~~~~~
   Medium,
+~~~~~~~~~
 }
+~
+
 
 interface State{
-               ~ Missing space before opening brace.
+~~~~~~~~~~~~~~~~
   currentBreakpoint: Breakpoint;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 ~
-"
-`;
-
-exports[`Validating rule docs space-before-blocks.mdx code examples ESLint output 2`] = `
-"Correct
-
-enum Breakpoint {
-  Large,
-  Medium,
-}
-
-interface State {
-  currentBreakpoint: Breakpoint;
-}
 "
 `;

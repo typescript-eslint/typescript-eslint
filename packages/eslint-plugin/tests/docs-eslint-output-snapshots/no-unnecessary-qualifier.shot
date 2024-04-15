@@ -4,10 +4,13 @@ exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint 
 "Incorrect
 
 enum A {
+~~~~~~~~
   B,
+~~~~
   C = A.B,
-      ~ Qualifier is unnecessary since 'B' is in scope.
+~~~~~~~~~~
 }
+~
 "
 `;
 
@@ -18,26 +21,6 @@ namespace A {
   export type B = number;
   const x: A.B = 3;
            ~ Qualifier is unnecessary since 'B' is in scope.
-}
-"
-`;
-
-exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint output 3`] = `
-"Correct
-
-enum A {
-  B,
-  C = B,
-}
-"
-`;
-
-exports[`Validating rule docs no-unnecessary-qualifier.mdx code examples ESLint output 4`] = `
-"Correct
-
-namespace A {
-  export type B = number;
-  const x: B = 3;
 }
 "
 `;
