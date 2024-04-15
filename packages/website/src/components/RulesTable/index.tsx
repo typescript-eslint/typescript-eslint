@@ -46,7 +46,7 @@ function RuleRow({
   if (!rule.docs?.url) {
     return null;
   }
-  const { fixable, hasSuggestions, type, deprecated } = rule;
+  const { fixable, hasSuggestions, deprecated } = rule;
   const { requiresTypeChecking, extendsBaseRule } = rule.docs;
   const actualRecommended = getActualRecommended(rule);
   return (
