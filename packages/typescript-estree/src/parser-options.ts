@@ -199,29 +199,12 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   DEPRECATED__createDefaultProgram?: boolean;
 
   /**
-   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
-   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
-   * on a file in an IDE).
-   *
-   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
-   * is important because there is significant overhead to managing the so called Watch Programs
-   * needed for the long-running use-case.
-   *
-   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
-   * whether or not ESLint is being used as part of a single run.
-   *
-   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
-   * environment variable to `"false"` or `"true"`.
-   */
-  allowAutomaticSingleRunInference?: boolean;
-
-  /**
    * Granular control of the expiry lifetime of our internal caches.
    * You can specify the number of seconds as an integer number, or the string
    * 'Infinity' if you never want the cache to expire.
    *
    * By default cache entries will be evicted after 30 seconds, or will persist
-   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
+   * indefinitely if `disallowAutomaticSingleRunInference = false` AND the parser
    * infers that it is a single run.
    */
   cacheLifetime?: {
@@ -230,6 +213,28 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: CacheDurationSeconds;
   };
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * By default, we will use common heuristics to infer whether ESLint is being
+   * used as part of a single run. This option disables those heuristics, and
+   * therefore the performance optimizations gained by them.
+   *
+   * In other words, typescript-eslint is faster by default, and this option
+   * disables an automatic performance optimization.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
+   * Otherwise, the default value is `false`.
+   */
+  disallowAutomaticSingleRunInference?: boolean;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;

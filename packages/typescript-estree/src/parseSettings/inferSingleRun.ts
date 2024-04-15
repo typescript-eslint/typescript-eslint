@@ -33,8 +33,8 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
     return true;
   }
 
-  // Currently behind a flag while we gather real-world feedback
-  if (options.allowAutomaticSingleRunInference) {
+  // Ideally, we'd like to try to auto-detect CI or CLI usage that lets us infer a single CLI run.
+  if (!options.disallowAutomaticSingleRunInference) {
     const possibleEslintBinPaths = [
       'node_modules/.bin/eslint', // npm or yarn repo
       'node_modules/eslint/bin/eslint.js', // pnpm repo
