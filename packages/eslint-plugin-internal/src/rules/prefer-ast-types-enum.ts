@@ -41,7 +41,6 @@ export default createRule({
       Literal(node: TSESTree.Literal): void {
         if (
           node.parent.type === AST_NODE_TYPES.TSEnumMember &&
-          node.parent.parent.parent.type === AST_NODE_TYPES.TSEnumDeclaration &&
           ['AST_NODE_TYPES', 'AST_TOKEN_TYPES', 'DefinitionType'].includes(
             node.parent.parent.parent.id.name,
           )
