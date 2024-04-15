@@ -3,15 +3,14 @@
 exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-function third<A, B, C>(a: A, b: B, c: C): C {
-               ~ Type parameter A is used only once.
-                  ~ Type parameter B is used only once.
-  return c;
+function second<A, B>(a: A, b: B): B {
+                ~ Type parameter A is used only once.
+  return b;
 }
 
-function parseYAML<T>(input: string): T {
+function parseJSON<T>(input: string): T {
                    ~ Type parameter T is used only once.
-  // ...
+  return JSON.parse(input);
 }
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
@@ -31,12 +30,12 @@ class Joiner<T extends string | number> {
 exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples ESLint output 2`] = `
 "Correct
 
-function third<C>(a: unknown, b: unknown, c: C): C {
-  return c;
+function second<B>(a: unknown, b: B): B {
+  return b;
 }
 
-function parseYAML(input: string): unknown {
-  // ...
+function parseJSON(input: string): unknown {
+  return JSON.parse(input);
 }
 
 function printProperty<T>(obj: T, key: keyof T) {

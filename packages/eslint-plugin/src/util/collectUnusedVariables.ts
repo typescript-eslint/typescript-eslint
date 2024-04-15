@@ -755,11 +755,8 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
  * - variables within declaration files
  * - variables within ambient module declarations
  */
-function collectUnusedVariables<
-  MessageIds extends string,
-  Options extends readonly unknown[],
->(
-  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+function collectUnusedVariables(
+  context: Readonly<TSESLint.RuleContext<string, readonly unknown[]>>,
 ): ReadonlySet<TSESLint.Scope.Variable> {
   return UnusedVarsVisitor.collectUnusedVariables(context);
 }
