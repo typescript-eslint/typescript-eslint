@@ -8,13 +8,9 @@ description: 'Disallow type parameters that only appear once'
 
 This rule forbids type parameters that only appear once in a function, method, or class definition.
 
-Type parameters relate two types. If a generic type parameter only appears once, then it is not relating anything. It can usually be replaced with explicit types such as `unknown`.
+Type parameters relate two types. If a type parameter only appears once, then it is not relating anything. It can usually be replaced with explicit types such as `unknown`.
 
 At best unnecessary type parameters make code harder to read. At worst they can be used to disguise unsafe type assertions.
-
-## Options
-
-None.
 
 ## Examples
 
@@ -45,7 +41,7 @@ class Joiner<T extends string | number> {
 ### ✅ Correct
 
 ```ts
-function third<A, B, C>(a: unknown, b: unknown, c: C): C {
+function third<C>(a: unknown, b: unknown, c: C): C {
   return c;
 }
 
@@ -77,7 +73,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 
 ## When Not To Use It
 
-This rule will prevent using type parameters to test types, for example:
+This rule will report on functions that use type parameters solely to test types, for example:
 
 ```ts
 function assertType<T>(arg: T) {}
