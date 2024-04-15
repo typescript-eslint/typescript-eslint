@@ -207,7 +207,7 @@ const additionalKeys: AdditionalKeys = {
   TSDeclareKeyword: [],
   TSEmptyBodyFunctionExpression: ['id', ...SharedVisitorKeys.FunctionType],
   TSEnumBody: ['members'],
-  TSEnumDeclaration: ['body', 'id'],
+  TSEnumDeclaration: ['id', 'body'],
   TSEnumMember: ['id', 'initializer'],
   TSExportAssignment: ['expression'],
   TSExportKeyword: [],
