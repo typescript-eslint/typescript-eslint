@@ -5,4 +5,5 @@ import type { TSEnumMember } from '../../element/TSEnumMember/spec';
 export interface TSEnumBody extends BaseNode {
   type: AST_NODE_TYPES.TSEnumBody;
   members: TSEnumMember[];
+  parent: TSEnumDeclaration;
 }
