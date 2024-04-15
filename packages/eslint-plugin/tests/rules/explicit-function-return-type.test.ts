@@ -8,6 +8,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
+    'return;',
     {
       code: `
 function test(): void {
@@ -267,6 +268,17 @@ const myObj = {
     },
     {
       code: `
+() => {
+  const foo = 'foo';
+  return function (): string {
+    return foo;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
 function fn() {
   return (): void => {};
 }
@@ -276,6 +288,31 @@ function fn() {
     {
       code: `
 function fn() {
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn() {
+  const bar = () => (): number => 1;
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+function fn(arg: boolean) {
+  if (arg) {
+    return () => (): number => 1;
+  } else {
+    return function (): string {
+      return 'foo';
+    };
+  }
+
   return function (): void {};
 }
       `,
@@ -1225,6 +1262,43 @@ function fn() {
           endLine: 3,
           column: 10,
           endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+function fn() {
+  const bar = () => (): number => 1;
+  const baz = () => () => 'baz';
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 24,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      code: `
+function fn(arg: boolean) {
+  if (arg) return 'string';
+  return function (): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 12,
         },
       ],
     },

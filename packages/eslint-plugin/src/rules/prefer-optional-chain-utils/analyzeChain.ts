@@ -461,7 +461,6 @@ export function analyzeChain(
     PreferOptionalChainMessageIds,
     [PreferOptionalChainOptions]
   >,
-  sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
   operator: TSESTree.LogicalExpression['operator'],
@@ -486,18 +485,27 @@ export function analyzeChain(
     }
   })();
 
-  let subChain: ValidOperand[] = [];
+  // Things like x !== null && x !== undefined have two nodes, but they are
+  // one logical unit here, so we'll allow them to be grouped.
+  let subChain: (ValidOperand | readonly ValidOperand[])[] = [];
   const maybeReportThenReset = (
-    newChainSeed?: readonly ValidOperand[],
+    newChainSeed?: readonly [ValidOperand, ...ValidOperand[]],
   ): void => {
     if (subChain.length > 1) {
+      const subChainFlat = subChain.flat();
       context.report({
         messageId: 'preferOptionalChain',
         loc: {
-          start: subChain[0].node.loc.start,
-          end: subChain[subChain.length - 1].node.loc.end,
+          start: subChainFlat[0].node.loc.start,
+          end: subChainFlat[subChainFlat.length - 1].node.loc.end,
         },
-        ...getFixer(sourceCode, parserServices, operator, options, subChain),
+        ...getFixer(
+          context.sourceCode,
+          parserServices,
+          operator,
+          options,
+          subChainFlat,
+        ),
       });
     }
 
@@ -513,13 +521,11 @@ export function analyzeChain(
     //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ first "chain"
     //                          ^^^^^^^^^^^ newChainSeed
     //                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ second chain
-    subChain = newChainSeed ? [...newChainSeed] : [];
+    subChain = newChainSeed ? [newChainSeed] : [];
   };
 
   for (let i = 0; i < chain.length; i += 1) {
-    const lastOperand = subChain[subChain.length - 1] as
-      | ValidOperand
-      | undefined;
+    const lastOperand = subChain.flat().at(-1);
     const operand = chain[i];
 
     const validatedOperands = analyzeOperand(parserServices, operand, i, chain);

@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": true
   },
   "include": [
     "ts/included01.ts",
     "ts/included02.tsx",
     "js/included01.js",
     "js/included02.jsx",
-    "other/included.vue",
-  ],
+    "other/included.vue"
+  ]
 }

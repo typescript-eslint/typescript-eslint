@@ -1,3 +1,183 @@
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- add `name` field to shared configs and flat config types
+
+- bump npm dependency ranges
+
+- **utils:** add types for both flat and legacy eslint classes
+
+
+### 🩹 Fixes
+
+- **typescript-eslint:** fix type errors when using `exactOptionalPropertyTypes`
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.5.0 (2024-04-01)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.4.0 (2024-03-25)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.1 (2024-03-18)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.0 (2024-03-18)
+
+
+### 🚀 Features
+
+- **utils:** add parser name to thrown parser error message
+
+- **eslint-plugin:** add meta.docs.recommended setting for strict config options
+
+
+### 🩹 Fixes
+
+- correct `engines.node` constraints in `package.json`
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alexu
+- Arka Pratim Chaudhuri
+- auvred
+- Derrick Isaacson
+- fnx
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Marta Cardoso
+- Michaël De Boey
+- Tristan Rasmussen
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.2.0 (2024-03-11)
+
+
+### 🚀 Features
+
+- support TS 5.4
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- auvred
+- Chris Plummer
+- Fotis Papadogeorgopoulos
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Wayne Zhang
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.1 (2024-03-04)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.0 (2024-02-26)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.0.2 (2024-02-19)
+
+
+### 🩹 Fixes
+
+- fix tsconfig-less check errors, fix `@types/eslint` incompatibilities, add tests
+
+- **utils:** use mergeable interface for `settings` property
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Gareth Jones
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.0.1 (2024-02-12)
+
+This was a version bump only for utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# 7.0.0 (2024-02-12)
+
+
+### 🚀 Features
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements
+
+- add support for flat configs
+
+- **utils:** revert removal of backwards-compat functions
+
+
+#### ⚠️  Breaking Changes
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kirk Waiblinger
+- StyleShit
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.21.0 (2024-02-05)
+
+
+### 🚀 Features
+
+- export plugin metadata
+
+- allow `parserOptions.project: false`
+
+- **utils:** improve eslint types
+
+- **eslint-plugin:** add rule prefer-find
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Kirk Waiblinger
+- Pete Gonzalez
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 6.20.0 (2024-01-29)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.

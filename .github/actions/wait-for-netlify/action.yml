@@ -11,5 +11,5 @@ inputs:
     description: How long to wait between retries of the Netlify api
 
 runs:
-  using: node16
+  using: node20
   main: index.js

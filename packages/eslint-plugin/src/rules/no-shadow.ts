@@ -5,7 +5,6 @@ import type {
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -283,6 +282,7 @@ export default createRule<Options, MessageIds>({
      * @returns Whether or not the variable name is allowed.
      */
     function isAllowed(variable: TSESLint.Scope.Variable): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return options.allow!.includes(variable.name);
     }
 
@@ -646,11 +646,12 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      'Program:exit'(): void {
-        const globalScope = getScope(context);
+      'Program:exit'(node): void {
+        const globalScope = context.sourceCode.getScope(node);
         const stack = globalScope.childScopes.slice();
 
         while (stack.length) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const scope = stack.pop()!;
 
           stack.push(...scope.childScopes);

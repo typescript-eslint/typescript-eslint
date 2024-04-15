@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { createRule, deepMerge } from '../util';
@@ -203,8 +202,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
-
     // use the base options as the defaults for the cases
     const baseOptions = options;
     const overrides = baseOptions.overrides ?? {};
@@ -242,7 +239,7 @@ export default createRule<Options, MessageIds>({
 
       let messageId: MessageIds | null = null;
       let missingDelimiter = false;
-      const lastToken = sourceCode.getLastToken(member, {
+      const lastToken = context.sourceCode.getLastToken(member, {
         includeComments: false,
       });
 
@@ -250,11 +247,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const commentsAfterLastToken = sourceCode
+      const commentsAfterLastToken = context.sourceCode
         .getCommentsAfter(lastToken)
         .pop();
 
-      const sourceCodeLines = sourceCode.getLines();
+      const sourceCodeLines = context.sourceCode.getLines();
       const lastTokenLine = sourceCodeLines[lastToken.loc.start.line - 1];
 
       const optsSemi = getOption('semi');

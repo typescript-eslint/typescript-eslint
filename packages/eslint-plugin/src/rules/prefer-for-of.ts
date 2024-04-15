@@ -1,11 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  getDeclaredVariables,
-  getSourceCode,
-} from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule, isAssignee } from '../util';
 
 export default createRule({
   name: 'prefer-for-of',
@@ -106,67 +102,12 @@ export default createRule({
       );
     }
 
-    function isAssignee(node: TSESTree.Node): boolean {
-      const parent = node.parent;
-      if (!parent) {
-        return false;
-      }
-
-      // a[i] = 1, a[i] += 1, etc.
-      if (
-        parent.type === AST_NODE_TYPES.AssignmentExpression &&
-        parent.left === node
-      ) {
-        return true;
-      }
-
-      // delete a[i]
-      if (
-        parent.type === AST_NODE_TYPES.UnaryExpression &&
-        parent.operator === 'delete' &&
-        parent.argument === node
-      ) {
-        return true;
-      }
-
-      // a[i]++, --a[i], etc.
-      if (
-        parent.type === AST_NODE_TYPES.UpdateExpression &&
-        parent.argument === node
-      ) {
-        return true;
-      }
-
-      // [a[i]] = [0]
-      if (parent.type === AST_NODE_TYPES.ArrayPattern) {
-        return true;
-      }
-
-      // [...a[i]] = [0]
-      if (parent.type === AST_NODE_TYPES.RestElement) {
-        return true;
-      }
-
-      // ({ foo: a[i] }) = { foo: 0 }
-      if (
-        parent.type === AST_NODE_TYPES.Property &&
-        parent.value === node &&
-        parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
-        isAssignee(parent.parent)
-      ) {
-        return true;
-      }
-
-      return false;
-    }
-
     function isIndexOnlyUsedWithArray(
       body: TSESTree.Statement,
       indexVar: TSESLint.Scope.Variable,
       arrayExpression: TSESTree.Expression,
     ): boolean {
-      const sourceCode = getSourceCode(context);
-      const arrayText = sourceCode.getText(arrayExpression);
+      const arrayText = context.sourceCode.getText(arrayExpression);
       return indexVar.references.every(reference => {
         const id = reference.identifier;
         const node = id.parent;
@@ -175,7 +116,7 @@ export default createRule({
           (node.type === AST_NODE_TYPES.MemberExpression &&
             node.object.type !== AST_NODE_TYPES.ThisExpression &&
             node.property === id &&
-            sourceCode.getText(node.object) === arrayText &&
+            context.sourceCode.getText(node.object) === arrayText &&
             !isAssignee(node))
         );
       });
@@ -207,7 +148,7 @@ export default createRule({
           return;
         }
 
-        const [indexVar] = getDeclaredVariables(context, node.init);
+        const [indexVar] = context.sourceCode.getDeclaredVariables(node.init);
         if (
           isIncrement(node.update, indexName) &&
           isIndexOnlyUsedWithArray(node.body, indexVar, arrayExpression)

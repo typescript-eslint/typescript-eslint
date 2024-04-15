@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import prettier from 'prettier';
 
-import { PACKAGES_WEBSITE } from './paths.mjs';
+import { PACKAGES_WEBSITE } from './paths.mts';
 
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
 
@@ -189,7 +189,7 @@ async function stringifyObject(
   });
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

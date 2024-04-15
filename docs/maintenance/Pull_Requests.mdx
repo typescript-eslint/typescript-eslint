@@ -10,7 +10,7 @@ Many users are new to open source and/or typed linting.
 It's imperative we give them a positive, uplifting experience.
 
 :::tip
-If you're ever unsure on any part of PR reviews, don't hesitate to loop in a maintainer that has more context to help!
+If you're ever unsure on any part of PR reviews, don't hesitate to loop in a maintainer who has more context to help!
 :::
 
 ## Governance
@@ -24,7 +24,7 @@ Per the scales from [Contribution Tiers > Pointing](./Contributor_Tiers.mdx#poin
 - "Unusual"-categorized: require two maintainer approvals.
   These include significant refactors with cross-project and public API ramifications.
 
-## PR Flow
+## PR Review Flow
 
 :::note
 We include a set of common responses to PRs in [`.github/replies.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/replies.yml), intended to be used with the [Refined Saved Replies](https://github.com/JoshuaKGoldberg/refined-saved-replies) extension.
@@ -32,7 +32,97 @@ Don't treat these as exact responses you must use: they're just a starting copy+
 Please do adopt your specific responses to your personal tone and to match the thread for non-straightforward PRs.
 :::
 
-TODO: This will be filled out... soon!
+Open pull requests ideally switch between two states:
+
+- Ready for review: either newly created or after [review is re-requested](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#re-requesting-a-review)
+- Waiting for author activity: either by virtue of [being a draft](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) or having the [`awaiting response` label](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+label%3A%22awaiting+response%22)
+
+Add the `awaiting response` label to a PR whenever you post a review.
+It will be automatically removed if the author re-requests review.
+
+### Be Kind
+
+Above all else, be _encouraging_ and _friendly_ in tone.
+
+- Phrase feedback as opportunities for improvement rather than chastising.
+- Call out any positive aspects you see - especially in larger pull requests.
+- Use happy emojis frequently.
+- If you have the energy, post a fun (but not inappropriate) GIF with your review.
+  - We often use the _GIFs for Github_ extension: available as [GIFs for GitHub (Chrome)](https://chrome.google.com/webstore/detail/gifs-for-github/dkgjnpbipbdaoaadbdhpiokaemhlphep) and [GIFs for GitHub (Firefox)](https://addons.mozilla.org/en-US/firefox/addon/gifs-for-github).
+
+Pull requests are the first time many community members meaningfully interact with us - or, oftentimes, any open source maintainers at all.
+It's important that we provide a positive, uplifting experience. ❤️
+
+### Reviewing a PR
+
+Before reviewing a pull request, try to look back over the backing issue to (re-)familiarize yourself with it.
+You may find it useful to:
+
+- Attempt to simplify the provided reduction (["code golf"](https://en.wikipedia.org/wiki/Code_golf))
+- Look back through previous issues and PRs around the same area of code / lint rule
+
+If there's no backing issue:
+
+- If the PR is a straightforward docs or tooling fix that doesn't impact users, it's ok to review it as-is
+- Otherwise, add the `please fill out the template` label and post a comment like the _Needs Issue_ template
+
+Upon completing your review, if the build is passing and you feel comfortable merging it in, go ahead and squash merge.
+Otherwise, add the `1 approval` label.
+
+#### Common Things to Look For
+
+- Style: that can you read through the code easily, there are comments for necessary tricky areas, and not unnecessary comments otherwise.
+  - Try not to nitpick things that don't matter.
+  - If something is standard in the repo but not enforced, consider mentioning it as a non-blocking comment and filing an issue to enforce it.
+- Thoroughness: does it handle relevant edge cases? Commonly:
+  - Generics and type parameters (see: `getConstrainedTypeAtLocation`).
+  - Parenthesis and whitespace (see: `getWrappingFixer`).
+  - Unions and intersections (see: `unionTypeParts` and `intersectionTypeParts`).
+- Unit tests:
+  - All lines are covered per the Codecov / `yarn jest path/to/impacted/file --coverage` report.
+  - Both "positive" and "negative" ("valid" and "invalid") cases exist, if reasonably possible to test for.
+  - Fixes and suggestions, if present, don't remove `//` or `/*` comments
+  - `invalid` lint rule errors include line and column information
+  - Valid syntax edge cases don't cause the rule to crash, even if they cause a type error in TypeScript
+
+#### Individual Comments
+
+Post about one comment per area of praise note, suggested change, or non-actionable note.
+It's fine to use multiple ancillary comments to indicate _"(also here)"_ notes, but don't overwhelm with requests.
+
+:::tip
+If you're posting more than a couple types of comments, consider prefixing them with category indicators such as `[Docs]`, `[Praise]`, `[Testing]`, etc.
+This helps avoid the review feeling like a huge slog of big requests.
+:::
+
+Be clear in each of your comments what you're looking for or saying.
+Err on the side of providing more information than you think is needed.
+
+Try to default to a questioning tone for points that aren't clear bugs.
+Encourage authors to think on your suggestions: _"I think (xyz), but am not sure - what do you think?"_.
+
+#### Preliminary or Repeat Reviews
+
+Sometimes you may want to post a preliminary review, and/or realize later on you missed something in an earlier review.
+Both are reasonable and fine.
+
+For preliminary reviews, be clear with what scale you're reviewing at: _"Reviewing on architecture now, will look in more detail once it's settled"_.
+
+For repeat reviews, be clear when it's something you missed earlier and/or there's new information.
+Don't apologize if the missed information was only made clear because of requested changes - this is part of the review process!
+
+### Other States
+
+#### External Blockers
+
+If the PR is blocked on something, such as an external API or discussion in an issue, add the appropriate `blocked by *` label.
+Explain why in a comment that links to at least a tracking issue for the blocker.
+
+#### Out-of-Band Questions
+
+Authors sometimes separately ask questions as comments on PRs, sometimes including an `@` tag.
+Put back the `awaiting response` label if you answer the questions.
+Don't worry if you miss some of these questions; we prefer going through the formal re-requesting review to make sure the `awaiting response` label is removed as needed.
 
 ## Pruning Old PRs
 
@@ -44,10 +134,12 @@ Our flow for PRs that have been waiting for >=1 month is:
 3. Wait 2 weeks
 4. If they still haven't responded, close the PR with a message like the _Pruning Stale PR_ template
 
-## Suggestions
+## Searching for PRs
 
-Consider adding fun to PR reviews with GIFs.
-The benefits of using GIFs in PR reviews are that it adds a touch of humor and lightheartedness to the process, builds camaraderie and team spirit, and can help break the ice by making users feel welcomed.
-Please remember to use appropriate and respectful GIFs and use them sparingly; GIFs should enhance the conversation, not detract from it.
+Assorted other queries for PRs include:
 
-> We like to use the _GIFs for Github_ extension: available as [GIFs for GitHub (Chrome)](https://chrome.google.com/webstore/detail/gifs-for-github/dkgjnpbipbdaoaadbdhpiokaemhlphep) and [GIFs for GitHub (Firefox)](https://addons.mozilla.org/en-US/firefox/addon/gifs-for-github). ✨
+- [All PRs you commented on](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Aopen+is%3Apr+commenter%3A%40me)
+- [All non-draft, non-`awaiting response` PRs](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Aopen+is%3Apr+-label%3A%22awaiting+response%22+-is%3Adraft)
+- [All non-draft, non-`awaiting response` PRs not blocked or already approved](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Aopen+is%3Apr+-label%3A%22awaiting+response%22+-is%3Adraft+-label%3A%22blocked+by+another+PR%22+-label%3A%22blocked+by+another+issue%22+-label%3A%22blocked+by+external+API%22+-review%3Aapproved+)
+
+If you have time, consider occasionally looking through old PRs to make sure there aren't any questions left unanswered for weeks.
