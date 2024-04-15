@@ -147,7 +147,7 @@ See https://typescript-eslint.io/troubleshooting/#allowdefaultprojectforfiles-gl
 Matching files:
 - a
 - b
-- /repos/repo/path/PascalCaseDirectory/camelCaseFile.ts
+- ${path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts')}
 
 If you absolutely need more files included, set parserOptions.EXPERIMENTAL_useProjectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `);
