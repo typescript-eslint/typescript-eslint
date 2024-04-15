@@ -32,6 +32,40 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 > We release a new version our tooling every week.
 > _Please_ ensure that you [check our the latest list of "extension" rules](/rules/#extension-rules) **_before_** filing an issue.
 
+<HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
+
+## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
+
+These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProjectForFiles` with an excessively wide glob.
+`allowDefaultProjectForFiles` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
+
+To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
+For example:
+
+```diff title="eslint.config.js"
+parserOptions: {
+  EXPERIMENTAL_useProjectService: {
+    allowDefaultProjectForFiles: [
+-      "**/*.js",
++      "./*.js"
+    ]
+  }
+}
+```
+
+You may also need to include more files in your `tsconfig.json`.
+For example:
+
+```diff title="tsconfig.json"
+"include": [
+  "src",
++ "*.js"
+]
+```
+
+If you cannot do this, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
+Be sure to include a minimal reproduction we can work with to understand your use case!
+
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
 These errors are caused by an ESLint config requesting type information be generated for a file that isn't included in the TypeScript configuration.
@@ -499,6 +533,6 @@ If you think you're having issues with performance, see our [Performance Trouble
 
 ## Are TypeScript project references supported?
 
-No, TypeScript project references are not yet supported.
+Yes, but only with [`EXPERIMENTAL_useProjectService`](../packages/Parser.mdx#experimental_useprojectservice).
 
 See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.
