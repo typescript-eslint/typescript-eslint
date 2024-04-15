@@ -1,7 +1,7 @@
 :::danger Deprecated
 
 This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
-See [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
 :::
 
