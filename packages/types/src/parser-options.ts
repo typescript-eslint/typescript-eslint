@@ -28,7 +28,8 @@ type EcmaVersion =
   | 2022
   | 2023
   | 2024
-  | 'latest';
+  | 'latest'
+  | undefined;
 
 type SourceTypeClassic = 'module' | 'script';
 type SourceType = SourceTypeClassic | 'commonjs';
@@ -37,11 +38,13 @@ type JSDocParsingMode = 'all' | 'none' | 'type-info';
 
 // If you add publicly visible options here, make sure they're also documented in `docs/packages/Parser.mdx`
 interface ParserOptions {
-  ecmaFeatures?: {
-    globalReturn?: boolean;
-    jsx?: boolean;
-    [key: string]: unknown;
-  };
+  ecmaFeatures?:
+    | {
+        globalReturn?: boolean | undefined;
+        jsx?: boolean | undefined;
+        [key: string]: unknown;
+      }
+    | undefined;
   ecmaVersion?: EcmaVersion;
 
   // scope-manager specific
@@ -69,7 +72,7 @@ interface ParserOptions {
   project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: (RegExp | string)[];
   range?: boolean;
-  sourceType?: SourceType;
+  sourceType?: SourceType | undefined;
   tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;

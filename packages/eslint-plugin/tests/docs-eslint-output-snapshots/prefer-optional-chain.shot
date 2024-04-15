@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+foo && foo.a && foo.a.b && foo.a.b.c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+foo && foo['a'] && foo['a'].b && foo['a'].b.c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// With empty objects
+(((foo || {}).a || {}).b || {}).c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+ ~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  ~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+(((foo || {})['a'] || {}).b || {}).c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  ~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// With negated \`or\`s
+!foo || !foo.bar;
+~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+!foo || !foo[bar];
+~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+!foo || !foo.bar || !foo.bar.baz || !foo.bar.baz();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// this rule also supports converting chained strict nullish checks:
+foo &&
+~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  foo.a != null &&
+~~~~~~~~~~~~~~~
+  foo.a.b !== null &&
+  foo.a.b.c != undefined &&
+  foo.a.b.c.d !== undefined &&
+  foo.a.b.c.d.e;
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 2`] = `
+"Correct
+
+foo?.a?.b?.c;
+foo?.['a']?.b?.c;
+foo?.a?.b?.method?.();
+
+foo?.a?.b?.c?.d?.e;
+
+!foo?.bar;
+!foo?.[bar];
+!foo?.bar?.baz?.();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 3`] = `
+"Options: { "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": true }
+
+declare const foo: { bar: boolean } | null | undefined;
+declare function acceptsBoolean(arg: boolean): void;
+
+// ✅ typechecks succesfully as the expression only returns \`boolean\`
+acceptsBoolean(foo != null && foo.bar);
+               ~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// ❌ typechecks UNSUCCESSFULLY as the expression returns \`boolean | undefined\`
+acceptsBoolean(foo?.bar);
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 4`] = `
+"Incorrect
+Options: { "checkAny": true }
+
+declare const thing: any;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 5`] = `
+"Correct
+Options: { "checkAny": false }
+
+declare const thing: any;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 6`] = `
+"Incorrect
+Options: { "checkUnknown": true }
+
+declare const thing: unknown;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 7`] = `
+"Correct
+Options: { "checkUnknown": false }
+
+declare const thing: unknown;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 8`] = `
+"Incorrect
+Options: { "checkString": true }
+
+declare const thing: string;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 9`] = `
+"Correct
+Options: { "checkString": false }
+
+declare const thing: string;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 10`] = `
+"Incorrect
+Options: { "checkNumber": true }
+
+declare const thing: number;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 11`] = `
+"Correct
+Options: { "checkNumber": false }
+
+declare const thing: number;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 12`] = `
+"Incorrect
+Options: { "checkBoolean": true }
+
+declare const thing: true;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 13`] = `
+"Correct
+Options: { "checkBoolean": false }
+
+declare const thing: true;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 14`] = `
+"Incorrect
+Options: { "checkBigInt": true }
+
+declare const thing: bigint;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 15`] = `
+"Correct
+Options: { "checkBigInt": false }
+
+declare const thing: bigint;
+
+thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 16`] = `
+"Incorrect
+Options: { "requireNullish": true }
+
+declare const thing1: string | null;
+thing1 && thing1.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 17`] = `
+"Correct
+Options: { "requireNullish": true }
+
+declare const thing1: string | null;
+thing1?.toString();
+
+declare const thing2: string;
+thing2 && thing2.toString();
+"
+`;

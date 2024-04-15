@@ -667,7 +667,7 @@ export type LooseRuleDefinition =
   // TODO - ESLint v9 will remove support for RuleCreateFunction
   | LooseRuleCreateFunction
   | {
-      meta?: object;
+      meta?: object | undefined;
       create: LooseRuleCreateFunction;
     };
 /*

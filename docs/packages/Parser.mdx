@@ -57,13 +57,16 @@ interface ParserOptions {
 
 ### `allowAutomaticSingleRunInference`
 
-> Default `false`.
+> Default `process.env.TSESTREE_SINGLE_RUN` or `false`.
 
 Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
 
 When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../getting-started/Typed_Linting.mdx), this distinction is important for performance.
 There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
 Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
+
+This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN` environment variable to `"false"` or `"true"`.
+For example, `TSESTREE_SINGLE_RUN=true npx eslint .` will enable it.
 
 :::tip
 We've seen `allowAutomaticSingleRunInference` improve linting speed in CI by up to 10-20%.

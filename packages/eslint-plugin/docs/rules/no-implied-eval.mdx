@@ -36,8 +36,6 @@ This rule aims to eliminate implied `eval()` through the use of `new Function()`
 <TabItem value="❌ Incorrect">
 
 ```ts
-/* eslint @typescript-eslint/no-implied-eval: "error" */
-
 setTimeout('alert(`Hi!`);', 100);
 
 setInterval('alert(`Hi!`);', 100);
@@ -65,8 +63,6 @@ const fn = new Function('a', 'b', 'return a + b');
 <TabItem value="✅ Correct">
 
 ```ts
-/* eslint @typescript-eslint/no-implied-eval: "error" */
-
 setTimeout(function () {
   alert('Hi!');
 }, 100);
