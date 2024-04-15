@@ -11,6 +11,15 @@ import TabItem from '@theme/TabItem';
 
 This rule reports template literals that contain substitution expressions (also variously referred to as embedded expressions or string interpolations) that are unnecessary and can be simplified.
 
+:::info[Migration from `no-useless-template-literals`]
+
+This rule was formerly known as [`no-useless-template-literals`](./no-useless-template-literals.mdx).
+We encourage users to migrate to the new name, `no-useless-template-expression`, as the old name will be removed in a future major version of typescript-eslint.
+
+The new name is a drop-in replacement with identical functionality.
+
+:::
+
 ## Examples
 
 <Tabs>
@@ -65,7 +74,7 @@ const wrappedIntersection = intersectionWithString;
 :::info
 This rule does not aim to flag template literals without substitution expressions that could have been written as an ordinary string.
 That is to say, this rule will not help you turn `` `this` `` into `"this"`.
-If you are looking for such a rule, you can configure the [`quotes`](./quotes.mdx) rule to do this.
+If you are looking for such a rule, you can configure the [`@stylistic/ts/quotes`](https://eslint.style/rules/ts/quotes) rule to do this.
 :::
 
 ## When Not To Use It
@@ -75,4 +84,4 @@ When you want to allow string expressions inside template literals.
 ## Related To
 
 - [`restrict-template-expressions`](./restrict-template-expressions.mdx)
-- [`quotes`](./quotes.mdx)
+- [`@stylistic/ts/quotes`](https://eslint.style/rules/ts/quotes)

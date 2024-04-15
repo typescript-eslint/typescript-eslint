@@ -14,6 +14,15 @@ The fundamental benefit of `Error` objects is that they automatically keep track
 
 This rule restricts what can be thrown as an exception.
 
+:::info[Migration from `no-throw-literal`]
+
+This rule was formerly known as [`no-throw-literal`](./no-throw-literal.mdx).
+We encourage users to migrate to the new name, `only-throw-error`, as the old name will be removed in a future major version of typescript-eslint.
+
+The new name is a drop-in replacement with identical functionality.
+
+:::
+
 ## Examples
 
 This rule is aimed at maintaining consistency when throwing exception by disallowing to throw literals and other expressions which cannot possibly be an `Error` object.
