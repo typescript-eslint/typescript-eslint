@@ -32,6 +32,7 @@ export = {
     '@typescript-eslint/no-unnecessary-qualifier': 'off',
     '@typescript-eslint/no-unnecessary-type-arguments': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    '@typescript-eslint/no-unnecessary-type-parameters': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',

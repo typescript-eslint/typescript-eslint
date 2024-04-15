@@ -2,11 +2,8 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { MakeRequired } from '../util';
 import { createRule, getParserServices } from '../util';
-
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
 
 type NodeWithTypeParameters = MakeRequired<
   ts.SignatureDeclaration | ts.ClassLikeDeclaration,
@@ -33,17 +30,17 @@ export default createRule({
 
     return {
       [[
+        'ArrowFunctionExpression[typeParameters]',
         'ClassDeclaration[typeParameters]',
         'ClassExpression[typeParameters]',
-        'ArrowFunctionExpression[typeParameters]',
         'FunctionDeclaration[typeParameters]',
         'FunctionExpression[typeParameters]',
         'TSCallSignatureDeclaration[typeParameters]',
         'TSConstructorType[typeParameters]',
         'TSDeclareFunction[typeParameters]',
+        'TSEmptyBodyFunctionExpression[typeParameters]',
         'TSFunctionType[typeParameters]',
         'TSMethodSignature[typeParameters]',
-        'TSEmptyBodyFunctionExpression[typeParameters]',
       ].join(', ')](esNode: TSESTree.FunctionLike): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
           esNode,
@@ -51,7 +48,6 @@ export default createRule({
 
         const checker = parserServices.program.getTypeChecker();
 
-        // XXX this collects a lot more usage than is needed for this rule.
         usage ??= tsutils.collectVariableUsage(tsNode.getSourceFile());
 
         // We need to resolve and analyze the inferred return type of a function
@@ -63,27 +59,30 @@ export default createRule({
         // for a valid type signature.
         let declEndPos = tsNode.end;
         if (
+          ts.isArrowFunction(tsNode) ||
           ts.isFunctionDeclaration(tsNode) ||
+          ts.isFunctionExpression(tsNode) ||
           ts.isMethodDeclaration(tsNode)
         ) {
           declEndPos = tsNode.body?.getStart() ?? tsNode.end;
         }
 
         for (const typeParameter of tsNode.typeParameters) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const { uses } = usage.get(typeParameter.name)!;
-          let numExplicitUses = 0;
+          let explicitUsesCount = 0;
           for (const use of uses) {
             const pos = use.location.getStart();
             if (pos > tsNode.getStart() && pos < declEndPos) {
-              numExplicitUses++;
-              if (numExplicitUses >= 2) {
+              explicitUsesCount++;
+              if (explicitUsesCount >= 2) {
                 break;
               }
             }
           }
-          const inferredUses = inferredCounts?.get(typeParameter.name) ?? 0;
-          const numUses = numExplicitUses + inferredUses;
-          if (numUses === 1) {
+          const inferredUsesCount =
+            inferredCounts?.get(typeParameter.name) ?? 0;
+          if (explicitUsesCount + inferredUsesCount === 1) {
             context.report({
               data: {
                 name: typeParameter.name.text,
@@ -98,8 +97,10 @@ export default createRule({
   },
 });
 
-// Fill in a counter of the number of times each type parameter appears in
-// the given type.
+/**
+ * Fills in a counter of the number of times each type parameter appears in
+ * the given type.
+ */
 function collectTypeParameterUsage(
   checker: ts.TypeChecker,
   rootType: ts.Type,

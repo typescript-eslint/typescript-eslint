@@ -2,6 +2,9 @@
 description: 'Disallow type parameters that only appear once'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-parameters** for documentation.
@@ -14,9 +17,8 @@ At best unnecessary type parameters make code harder to read. At worst they can 
 
 ## Examples
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 function third<A, B, C>(a: A, b: B, c: C): C {
@@ -38,7 +40,8 @@ class Joiner<T extends string | number> {
 }
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 function third<C>(a: unknown, b: unknown, c: C): C {
@@ -71,6 +74,9 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 }
 ```
 
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 This rule will report on functions that use type parameters solely to test types, for example:
@@ -85,8 +91,6 @@ assertType<number>('abc');
 ```
 
 If you're using this pattern then you'll want to disable this rule.
-
-If you're using generic type parameters to implement phantom types then you'll also run afoul of this rule.
 
 ## Further Reading
 
