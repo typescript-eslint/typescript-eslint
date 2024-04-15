@@ -23,6 +23,7 @@ const testFiles = glob.sync(`**/*.src.ts`, {
 
 function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
+    disallowAutomaticSingleRunInference: true,
     loc: true,
     range: true,
     tokens: true,
