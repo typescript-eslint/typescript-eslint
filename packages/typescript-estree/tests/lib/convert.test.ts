@@ -308,7 +308,7 @@ describe('convert', () => {
       esImportDeclaration.assertions;
 
       expect(emitWarning).toHaveBeenCalledWith(
-        `The 'assertions' property is deprecated on CallExpression nodes. Use 'attributes' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'assertions' property is deprecated on ImportDeclaration nodes. Use 'attributes' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
         'DeprecationWarning',
       );
     });
