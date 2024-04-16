@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/stylistic',
     rules: {
       '@typescript-eslint/adjacent-overload-signatures': 'error',
       '@typescript-eslint/array-type': 'error',

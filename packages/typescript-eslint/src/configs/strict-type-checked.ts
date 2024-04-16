@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/strict-type-checked',
     rules: {
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/ban-ts-comment': [
@@ -35,10 +36,7 @@ export default (
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
       '@typescript-eslint/no-extraneous-class': 'error',
-      '@typescript-eslint/no-floating-promises': [
-        'error',
-        { ignoreVoid: false },
-      ],
+      '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
       'no-implied-eval': 'off',
       '@typescript-eslint/no-implied-eval': 'error',
@@ -56,8 +54,6 @@ export default (
       '@typescript-eslint/no-redundant-type-constituents': 'error',
       '@typescript-eslint/no-require-imports': 'error',
       '@typescript-eslint/no-this-alias': 'error',
-      'no-throw-literal': 'off',
-      '@typescript-eslint/no-throw-literal': 'error',
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
       '@typescript-eslint/no-unnecessary-condition': 'error',
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
@@ -75,6 +71,8 @@ export default (
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-useless-template-literals': 'error',
+      'no-throw-literal': 'off',
+      '@typescript-eslint/only-throw-error': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       '@typescript-eslint/prefer-includes': 'error',
       '@typescript-eslint/prefer-literal-enum-member': 'error',

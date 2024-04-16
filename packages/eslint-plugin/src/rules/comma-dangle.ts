@@ -116,7 +116,7 @@ export default createRule<Options, MessageIds>({
     function getLastItem(node: TSESTree.Node): TSESTree.Node | null {
       switch (node.type) {
         case AST_NODE_TYPES.TSEnumDeclaration:
-          return last(node.members);
+          return last(node.body.members);
         case AST_NODE_TYPES.TSTypeParameterDeclaration:
           return last(node.params);
         case AST_NODE_TYPES.TSTupleType:
