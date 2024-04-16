@@ -279,12 +279,11 @@ describe('convert', () => {
   });
 
   describe('suppressDeprecatedPropertyWarnings', () => {
-    const getEsCallExpression = (
+    const getEsImportDeclaration = (
       converterOptions?: ConverterOptions,
-    ): TSESTree.CallExpression => {
-      const ast = convertCode(`callee<T>();`);
-      const tsCallExpression = (ast.statements[0] as ts.ExpressionStatement)
-        .expression as ts.CallExpression;
+    ): TSESTree.ImportDeclaration => {
+      const ast = convertCode('import ""');
+      const tsImportDeclaration = ast.statements[0] as ts.ImportDeclaration;
       const instance = new Converter(ast, {
         shouldPreserveNodeMaps: true,
         ...converterOptions,
@@ -294,22 +293,22 @@ describe('convert', () => {
 
       const maps = instance.getASTMaps();
 
-      return maps.tsNodeToESTreeNodeMap.get(tsCallExpression);
+      return maps.tsNodeToESTreeNodeMap.get(tsImportDeclaration);
     };
 
     it('warns on a deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
       const emitWarning = jest
         .spyOn(process, 'emitWarning')
         .mockImplementation();
-      const esCallExpression = getEsCallExpression({
+      const esImportDeclaration = getEsImportDeclaration({
         suppressDeprecatedPropertyWarnings: false,
       });
 
       // eslint-disable-next-line deprecation/deprecation
-      esCallExpression.typeParameters;
+      esImportDeclaration.assertions;
 
       expect(emitWarning).toHaveBeenCalledWith(
-        `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'assertions' property is deprecated on CallExpression nodes. Use 'attributes' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
         'DeprecationWarning',
       );
     });
@@ -318,13 +317,13 @@ describe('convert', () => {
       const emitWarning = jest
         .spyOn(process, 'emitWarning')
         .mockImplementation();
-      const esCallExpression = getEsCallExpression({
+      const esImportDeclaration = getEsImportDeclaration({
         suppressDeprecatedPropertyWarnings: false,
       });
 
       /* eslint-disable deprecation/deprecation */
-      esCallExpression.typeParameters;
-      esCallExpression.typeParameters;
+      esImportDeclaration.assertions;
+      esImportDeclaration.assertions;
       /* eslint-enable deprecation/deprecation */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
@@ -334,31 +333,31 @@ describe('convert', () => {
       const emitWarning = jest
         .spyOn(process, 'emitWarning')
         .mockImplementation();
-      const esCallExpression = getEsCallExpression({
+      const esImportDeclaration = getEsImportDeclaration({
         suppressDeprecatedPropertyWarnings: true,
       });
 
       // eslint-disable-next-line deprecation/deprecation
-      esCallExpression.typeParameters;
+      esImportDeclaration.assertions;
 
       expect(emitWarning).not.toHaveBeenCalled();
     });
 
     it('does not allow enumeration of deprecated properties', () => {
-      const esCallExpression = getEsCallExpression();
+      const esImportDeclaration = getEsImportDeclaration();
 
-      expect(Object.keys(esCallExpression)).not.toContain('typeParameters');
+      expect(Object.keys(esImportDeclaration)).not.toContain('assertions');
     });
 
     it('allows writing to the deprecated property as a new enumerable value', () => {
-      const esCallExpression = getEsCallExpression();
+      const esImportDeclaration = getEsImportDeclaration();
 
       // eslint-disable-next-line deprecation/deprecation
-      esCallExpression.typeParameters = undefined;
+      esImportDeclaration.assertions = [];
 
       // eslint-disable-next-line deprecation/deprecation
-      expect(esCallExpression.typeParameters).toBeUndefined();
-      expect(Object.keys(esCallExpression)).toContain('typeParameters');
+      expect(esImportDeclaration.assertions).toBeUndefined();
+      expect(Object.keys(esImportDeclaration)).toContain('assertions');
     });
   });
 });
