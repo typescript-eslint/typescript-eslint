@@ -1,3 +1,18 @@
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** replace `no-new-symbol` with `no-new-native-nonconstructor`
+
+
+### ❤️  Thank You
+
+- Dave
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.6.0 (2024-04-08)
 
 
