@@ -3,6 +3,16 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../src/rules/no-unnecessary-type-parameters';
 import { getFixturesRootDir } from '../RuleTester';
 
+const jestConsole = console;
+
+beforeEach(() => {
+  global.console = require('console');
+});
+
+afterEach(() => {
+  global.console = jestConsole;
+});
+
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
@@ -16,6 +26,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
+    `
+      class ClassyArray<T> {
+        arr1: T[];
+        arr2: T[];
+      }
+    `,
     `
       class ClassyArray<T> {
         arr: T[];
@@ -33,12 +49,69 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     `
+      abstract class ClassyArray<T> {
+        arr: T[];
+        abstract workWith(value: T): void;
+      }
+    `,
+    `
       class Box<T> {
         val: T | null = null;
         get() {
           return this.val;
         }
       }
+    `,
+    `
+      class Joiner<T extends string | number> {
+        join(els: T[]) {
+          return els.map(el => '' + el).join(',');
+        }
+      }
+    `,
+    `
+      class Joiner {
+        join<T extends string | number>(els: T[]) {
+          return els.map(el => '' + el).join(',');
+        }
+      }
+    `,
+    `
+      declare class Foo {
+        getProp<T>(this: Record<'prop', T>): T;
+      }
+    `,
+    'type Fn = <T>(input: T) => T;',
+    'type Fn = <T extends string>(input: T) => T;',
+    'type Fn = <T extends string>(input: T) => `a${T}b`;',
+    'type Fn = new <T>(input: T) => T;',
+    'type Fn = <T>(input: Partial<T>) => input is T;',
+    'type Fn = <T>(input: T) => { [K in keyof T]: K };',
+    'type Fn = <T>(input: T) => { [K in keyof T as K]: string };',
+    'type Fn = <T>(input: T) => { [K in keyof T as `${K & string}`]: string };',
+    'type Fn = <T>(input: T) => Partial<T>;',
+    'type Fn = <T>(input: { [i: number]: T }) => T;',
+    'type Fn = <T>(input: { [i: number]: T }) => Partial<T>;',
+    'type Fn = <T>(input: { [i: string]: T }) => Partial<T>;',
+    'type Fn = <T>(input: T) => { [i: number]: T };',
+    'type Fn = <T>(input: T) => { [i: string]: T };',
+    "type Fn = <T extends unknown[]>(input: T) => Omit<T, 'length'>;",
+    `
+      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+
+      declare const isNodeOfType: <NodeType extends AST_NODE_TYPES>(
+        nodeType: NodeType,
+      ) => node is Extract<TSESTree.Node, { type: NodeType }>;
+    `,
+    `
+      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+
+      const isNodeOfType =
+        <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
+        (
+          node: TSESTree.Node | null,
+        ): node is Extract<TSESTree.Node, { type: NodeType }> =>
+          node?.type === nodeType;
     `,
     `
       interface I {
@@ -76,6 +149,11 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         v = 1;
         map.set(key, v);
         return v;
+      }
+    `,
+    `
+      function makeMap<K, V>() {
+        return new Map<K, V>();
       }
     `,
     `
@@ -155,34 +233,28 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
-declare function useFocus<T extends HTMLOrSVGElement>(): {
-  ref: React.RefObject<T>;
-};
+      declare function useFocus<T extends HTMLOrSVGElement>(): {
+        ref: React.RefObject<T>;
+      };
     `,
-
-    'type Fn = <T>(value: T) => T;',
-    'type Fn = new <T>(value: T) => T;',
-    'type Fn = <T>(value: Partial<T>) => value is T;',
-    'type Fn = <T>(value: T) => { [K in keyof T]: K };',
   ],
 
   invalid: [
     {
       code: 'const func = <T,>(param: T) => null;',
-      errors: [{ messageId: 'sole' }],
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
     {
       code: 'const f1 = <T,>(): T => {};',
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
-
     {
       code: `
         interface I {
           <T>(value: T): void;
         }
       `,
-      errors: [{ messageId: 'sole' }],
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
     {
       code: `
@@ -192,12 +264,11 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
       `,
       errors: [{ messageId: 'sole' }],
     },
-
     {
       code: `
         class Joiner<T extends string | number> {
-          join(els: T[]) {
-            return els.map(el => '' + el).join(',');
+          join(el: T, other: string) {
+            return [el, other].join(',');
           }
         }
       `,
@@ -205,33 +276,32 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
     },
     {
       code: `
-        class Joiner {
-          join<T extends string | number>(els: T[]) {
-            return els.map(el => '' + el).join(',');
-          }
-        }
+        declare class C<V> {}
       `,
-      errors: [{ messageId: 'sole' }],
+      errors: [{ messageId: 'sole', data: { name: 'V' } }],
     },
     {
       code: `
-        declare class C<V> {
+        declare class C {
           method<T, U>(param: T): U;
-          prop: <P>() => P;
         }
       `,
       errors: [
         { messageId: 'sole', data: { name: 'T' } },
         { messageId: 'sole', data: { name: 'U' } },
-        { messageId: 'sole', data: { name: 'P' } },
       ],
     },
     {
       code: `
+        declare class C {
+          prop: <P>() => P;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'P' } }],
+    },
+    {
+      code: `
         declare class Foo {
-          prop: string;
-          getProp<T>(this: Record<'prop', T>): T;
-          compare<T>(this: Record<'prop', T>, other: Record<'prop', T>): number;
           foo<T>(this: T): void;
         }
       `,
@@ -239,11 +309,9 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
         {
           messageId: 'sole',
           data: { name: 'T' },
-          line: 6,
         },
       ],
     },
-
     {
       code: `
         function third<A, B, C>(a: A, b: B, c: C): C {
@@ -256,7 +324,12 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
       ],
     },
     {
-      code: 'function parseYAML<T>(input: string): T {}',
+      // function ListComponent<T>(props: { items: T[]; onSelect: (item: T) => void }) {}
+      code: `
+        function parseYAML<T>(input: string): T {
+          return input as any as T;
+        }
+      `,
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
     {
@@ -279,17 +352,6 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
           data: { name: 'T' },
           messageId: 'sole',
         },
-      ],
-    },
-    {
-      code: `
-        function makeMap<K, V>() {
-          return new Map<K, V>();
-        }
-      `,
-      errors: [
-        { messageId: 'sole', data: { name: 'K' } },
-        { messageId: 'sole', data: { name: 'V' } },
       ],
     },
     {
@@ -372,13 +434,14 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
       code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
       errors: [{ messageId: 'sole', data: { name: 'U' } }],
     },
-    // {
-    //   code: 'declare function get<T extends string, U>(param: Record<T, U>): boolean;',
-    //   errors: [
-    //     { messageId: 'sole', data: { name: 'T' } },
-    //     { messageId: 'sole', data: { name: 'U' } },
-    //   ],
-    // },
+    {
+      code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
+      errors: [
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'U' } },
+        { messageId: 'sole', data: { name: 'V' } },
+      ],
+    },
     {
       code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
       errors: [
@@ -392,6 +455,28 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
     {
+      code: 'type Fn = <T>() => [];',
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        type Other = 0;
+        type Fn = <T>() => Other;
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        type Other = 0 | 1;
+        type Fn = <T>() => Other;
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: 'type Fn = <U>(param: U) => void;',
+      errors: [{ messageId: 'sole', data: { name: 'U' } }],
+    },
+    {
       code: 'type Ctr = new <T>() => T;',
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
@@ -401,6 +486,10 @@ declare function useFocus<T extends HTMLOrSVGElement>(): {
     },
     {
       code: 'type Fn = <T>(value: unknown) => value is T;',
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
   ],
