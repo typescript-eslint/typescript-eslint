@@ -22,6 +22,11 @@ const ruleTester = new RuleTester({
   },
 });
 
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootPath,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
+
 const ruleError = (
   line: number,
   column: number,
@@ -253,6 +258,11 @@ function test<T>(a: T) {
   const t16 = undefined !== a;
 }
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] == null;
+}
+    `,
 
     // Predicate functions
     `
@@ -319,6 +329,11 @@ function test<T extends string | null>(a: T) {
   return a ?? 'default';
 }
     `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ?? 'default';
+}
+    `,
     // Indexing cases
     `
 declare const arr: object[];
@@ -348,6 +363,20 @@ tuple[n]?.toUpperCase();
     `
 if (arr?.[42]) {
 }
+    `,
+    `
+type ItemA = { bar: string; baz: string };
+type ItemB = { bar: string; qux: string };
+declare const foo: ItemA[] | ItemB[];
+foo[0]?.bar;
+    `,
+    `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
     `,
     `
 declare const returnsArr: undefined | (() => string[]);
@@ -567,9 +596,6 @@ foo?.[key]?.trim();
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -584,9 +610,6 @@ foo?.[key].trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -605,9 +628,6 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     {
@@ -628,9 +648,6 @@ function Foo(outer: Outer, key: Foo): number | undefined {
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: `
@@ -645,9 +662,6 @@ foo?.[key]?.trim();
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
@@ -738,8 +752,55 @@ declare let foo: number;
 foo ||= 1;
     `,
     `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+    `,
+    `
+enum Keys {
+  A = 'A',
+  B = 'B',
+}
+type Foo = {
+  [Keys.A]: number | null;
+  [Keys.B]: number;
+};
+declare const foo: Foo;
+declare const key: Keys;
+foo[key] ??= 1;
+    `,
+    {
+      code: `
+declare const foo: { bar?: number };
+foo.bar ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number } };
+foo['bar'].baz ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    `
 declare let foo: number;
 foo &&= 1;
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ??= 'default';
+}
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6264
     `
@@ -767,9 +828,6 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
         EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
       },
     },
     `
@@ -815,6 +873,7 @@ for (let i = 0; b1 && b2; i++) {
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
       `,
+      output: null,
       errors: [
         ruleError(4, 12, 'alwaysTruthy'),
         ruleError(5, 12, 'alwaysTruthy'),
@@ -850,6 +909,7 @@ if (b1 && false && b2) {
 if (b1 || b2 || true) {
 }
       `,
+      output: null,
       errors: [
         ruleError(4, 5, 'alwaysTruthy'),
         ruleError(6, 11, 'alwaysFalsy'),
@@ -864,6 +924,7 @@ function test<T extends object>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
     },
     {
@@ -872,6 +933,7 @@ function test<T extends false>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'alwaysFalsy')],
     },
     {
@@ -880,6 +942,7 @@ function test<T extends 'a' | 'b'>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
     },
 
@@ -890,6 +953,7 @@ function test(a: 'a') {
   return a === 'a';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'literalBooleanExpression')],
     },
     {
@@ -898,6 +962,7 @@ const y = 1;
 if (y === 0) {
 }
       `,
+      output: null,
       errors: [ruleError(3, 5, 'literalBooleanExpression')],
     },
     {
@@ -911,6 +976,7 @@ const x = Foo.a;
 if (x === Foo.a) {
 }
       `,
+      output: null,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
     },
     // Workaround https://github.com/microsoft/TypeScript/issues/37160
@@ -927,6 +993,7 @@ function test(a: string) {
   const t8 = null !== a;
 }
       `,
+      output: null,
       errors: [
         ruleError(3, 14, 'noOverlapBooleanExpression'),
         ruleError(4, 14, 'noOverlapBooleanExpression'),
@@ -951,6 +1018,7 @@ function test(a?: string) {
   const t8 = null !== a;
 }
       `,
+      output: null,
       errors: [
         ruleError(7, 14, 'noOverlapBooleanExpression'),
         ruleError(8, 14, 'noOverlapBooleanExpression'),
@@ -971,6 +1039,7 @@ function test(a: null | string) {
   const t8 = null !== a;
 }
       `,
+      output: null,
       errors: [
         ruleError(3, 14, 'noOverlapBooleanExpression'),
         ruleError(4, 14, 'noOverlapBooleanExpression'),
@@ -999,6 +1068,7 @@ function test<T extends object>(a: T) {
   const t16 = undefined !== a;
 }
       `,
+      output: null,
       errors: [
         ruleError(3, 14, 'noOverlapBooleanExpression'),
         ruleError(4, 14, 'noOverlapBooleanExpression'),
@@ -1025,6 +1095,7 @@ function test(a: string) {
   return a ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
     {
@@ -1033,6 +1104,7 @@ function test(a: string | false) {
   return a ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
     {
@@ -1041,6 +1113,7 @@ function test<T extends string>(a: T) {
   return a ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
     // nullish + array index without optional chaining
@@ -1050,6 +1123,7 @@ function test(a: { foo: string }[]) {
   return a[0].foo ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
     {
@@ -1058,6 +1132,7 @@ function test(a: null) {
   return a ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'alwaysNullish')],
     },
     {
@@ -1066,6 +1141,7 @@ function test(a: null[]) {
   return a[0] ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'alwaysNullish')],
     },
     {
@@ -1074,6 +1150,7 @@ function test<T extends null>(a: T) {
   return a ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'alwaysNullish')],
     },
     {
@@ -1082,9 +1159,18 @@ function test(a: never) {
   return a ?? 'default';
 }
       `,
+      output: null,
       errors: [ruleError(3, 10, 'never')],
     },
-
+    {
+      code: `
+function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
+  num ?? 'default';
+}
+      `,
+      output: null,
+      errors: [ruleError(3, 3, 'neverNullish')],
+    },
     // Predicate functions
     {
       code: `
@@ -1106,6 +1192,7 @@ function nothing3(x: [string, string]) {
   return x.filter(() => false);
 }
       `,
+      output: null,
       errors: [
         ruleError(2, 24, 'alwaysTruthy'),
         ruleError(4, 10, 'alwaysFalsy'),
@@ -1123,6 +1210,7 @@ declare const dict: Record<string, object>;
 if (dict['mightNotExist']) {
 }
       `,
+      output: null,
       errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
@@ -1154,6 +1242,7 @@ declare const arr: object[];
 if (arr.filter) {
 }
       `,
+      output: null,
       errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
@@ -1165,6 +1254,7 @@ function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
       `,
+      output: null,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
@@ -1188,6 +1278,7 @@ while (true) {}
 for (; true; ) {}
 do {} while (true);
       `,
+      output: null,
       options: [{ allowConstantLoopConditions: false }],
       errors: [
         ruleError(2, 8, 'alwaysTruthy'),
@@ -1788,6 +1879,7 @@ const a = null;
 if (!a) {
 }
       `,
+      output: null,
       errors: [ruleError(3, 6, 'alwaysTruthy')],
     },
     {
@@ -1796,6 +1888,7 @@ const a = true;
 if (!a) {
 }
       `,
+      output: null,
       errors: [ruleError(3, 6, 'alwaysFalsy')],
     },
     {
@@ -1808,6 +1901,7 @@ let speech: never = sayHi();
 if (!speech) {
 }
       `,
+      output: null,
       errors: [ruleError(7, 6, 'never')],
     },
     {
@@ -1816,6 +1910,7 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'noStrictNullCheck',
@@ -1878,6 +1973,7 @@ function pick<Obj extends Record<string, 1 | 2 | 3>, Key extends keyof Obj>(
 
 pick({ foo: 1, bar: 2 }, 'bar');
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysTruthy',
@@ -1898,6 +1994,7 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysTruthy',
@@ -1913,6 +2010,7 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
 declare let foo: {};
 foo ??= 1;
       `,
+      output: null,
       errors: [
         {
           messageId: 'neverNullish',
@@ -1928,6 +2026,7 @@ foo ??= 1;
 declare let foo: number;
 foo ??= 1;
       `,
+      output: null,
       errors: [
         {
           messageId: 'neverNullish',
@@ -1943,6 +2042,7 @@ foo ??= 1;
 declare let foo: null;
 foo ??= null;
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysNullish',
@@ -1958,6 +2058,7 @@ foo ??= null;
 declare let foo: {};
 foo ||= 1;
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysTruthy',
@@ -1973,6 +2074,7 @@ foo ||= 1;
 declare let foo: null;
 foo ||= null;
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysFalsy',
@@ -1988,6 +2090,7 @@ foo ||= null;
 declare let foo: {};
 foo &&= 1;
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysTruthy',
@@ -2003,6 +2106,7 @@ foo &&= 1;
 declare let foo: null;
 foo &&= null;
       `,
+      output: null,
       errors: [
         {
           messageId: 'alwaysFalsy',
@@ -2010,6 +2114,23 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { bar: number };
+foo.bar ??= 1;
+      `,
+      output: null,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 8,
         },
       ],
     },

@@ -17,7 +17,6 @@ ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     "const string = 'a';",
     'const string = `a`;',
-
     `
       declare const string: 'a';
       \`\${string}b\`;
@@ -132,6 +131,10 @@ ruleTester.run('no-useless-template-literals', rule, {
     noFormat`
       \`with windows \r new line\`;
     `,
+
+    `
+\`not a useless \${String.raw\`nested interpolation \${a}\`}\`;
+    `,
   ],
 
   invalid: [
@@ -144,6 +147,30 @@ ruleTester.run('no-useless-template-literals', rule, {
           line: 1,
           column: 4,
           endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: '`${1n}`;',
+      output: '`1`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 6,
+        },
+      ],
+    },
+    {
+      code: '`${/a/}`;',
+      output: '`/a/`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 7,
         },
       ],
     },
@@ -258,6 +285,32 @@ ruleTester.run('no-useless-template-literals', rule, {
     },
 
     {
+      code: '`${Infinity}`;',
+      output: '`Infinity`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 12,
+        },
+      ],
+    },
+
+    {
+      code: '`${NaN}`;',
+      output: '`NaN`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 7,
+        },
+      ],
+    },
+
+    {
       code: "`${'a'} ${'b'}`;",
       output: '`a b`;',
       errors: [
@@ -309,14 +362,92 @@ ruleTester.run('no-useless-template-literals', rule, {
     },
 
     {
-      code: "`a${'b'}`;",
-      output: '`ab`;',
+      code: "`use${'less'}`;",
+      output: '`useless`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
-          column: 5,
-          endColumn: 8,
+        },
+      ],
+    },
+
+    {
+      code: '`use${`less`}`;',
+      output: '`useless`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const nested: string, interpolation: string;
+\`use\${\`less\${nested}\${interpolation}\`}\`;
+      `,
+      output: `
+declare const nested: string, interpolation: string;
+\`useless\${nested}\${interpolation}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+
+    {
+      code: noFormat`
+\`u\${
+  // hopefully this comment is not needed.
+  'se'
+
+}\${
+  \`le\${  \`ss\`  }\`
+}\`;
+      `,
+      output: `
+\`use\${
+  \`less\`
+}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 4,
+        },
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 7,
+          column: 3,
+          endLine: 7,
+        },
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 7,
+          column: 10,
+          endLine: 7,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+\`use\${
+  \`less\`
+}\`;
+      `,
+      output: `
+\`useless\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 3,
+          column: 3,
+          endColumn: 9,
         },
       ],
     },

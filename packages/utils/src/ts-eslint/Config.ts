@@ -3,11 +3,7 @@
 import type { Parser as ParserType } from './Parser';
 import type * as ParserOptionsTypes from './ParserOptions';
 import type { Processor as ProcessorType } from './Processor';
-import type {
-  AnyRuleModule,
-  RuleCreateFunction,
-  SharedConfigurationSettings,
-} from './Rule';
+import type { LooseRuleDefinition, SharedConfigurationSettings } from './Rule';
 
 /** @internal */
 export namespace SharedConfig {
@@ -31,6 +27,17 @@ export namespace SharedConfig {
   }
 
   export type ParserOptions = ParserOptionsTypes.ParserOptions;
+
+  export interface PluginMeta {
+    /**
+     * The meta.name property should match the npm package name for your plugin.
+     */
+    name: string;
+    /**
+     * The meta.version property should match the npm package version for your plugin.
+     */
+    version: string;
+  }
 }
 
 export namespace ClassicConfig {
@@ -119,9 +126,10 @@ export namespace ClassicConfig {
 export namespace FlatConfig {
   export type EcmaVersion = ParserOptionsTypes.EcmaVersion;
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
-  export type Parser = ParserType.ParserModule;
+  export type Parser = ParserType.LooseParserModule;
   export type ParserOptions = SharedConfig.ParserOptions;
-  export type Processor = ProcessorType.ProcessorModule;
+  export type PluginMeta = SharedConfig.PluginMeta;
+  export type Processor = ProcessorType.LooseProcessorModule;
   export type RuleEntry = SharedConfig.RuleEntry;
   export type RuleLevel = SharedConfig.RuleLevel;
   export type RuleLevelAndOptions = SharedConfig.RuleLevelAndOptions;
@@ -131,41 +139,40 @@ export namespace FlatConfig {
   export type SeverityString = SharedConfig.SeverityString;
   export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
 
-  export interface PluginMeta {
-    /**
-     * The meta.name property should match the npm package name for your plugin.
-     */
-    name: string;
-    /**
-     * The meta.version property should match the npm package version for your plugin.
-     */
-    version: string;
+  export interface SharedConfigs {
+    [key: string]: Config;
   }
   export interface Plugin {
     /**
      * Shared configurations bundled with the plugin.
      * Users will reference these directly in their config (i.e. `plugin.configs.recommended`).
      */
-    configs?: Record<string, Config>;
+    configs?: SharedConfigs;
     /**
      * Metadata about your plugin for easier debugging and more effective caching of plugins.
      */
-    meta?: PluginMeta;
+    meta?: { [K in keyof PluginMeta]?: PluginMeta[K] | undefined };
     /**
      * The definition of plugin processors.
      * Users can stringly reference the processor using the key in their config (i.e., `"pluginName/processorName"`).
      */
-    processors?: Record<string, Processor>;
+    processors?: Partial<Record<string, Processor>> | undefined;
     /**
      * The definition of plugin rules.
      * The key must be the name of the rule that users will use
      * Users can stringly reference the rule using the key they registered the plugin under combined with the rule name.
      * i.e. for the user config `plugins: { foo: pluginReference }` - the reference would be `"foo/ruleName"`.
      */
-    rules?: Record<string, RuleCreateFunction | AnyRuleModule>;
+    rules?: Record<string, LooseRuleDefinition> | undefined;
   }
   export interface Plugins {
-    [pluginAlias: string]: Plugin;
+    /**
+     * We intentionally omit the `configs` key from this object because it avoids
+     * type conflicts with old plugins that haven't updated their configs to flat configs yet.
+     * It's valid to reference these old plugins because ESLint won't access the
+     * `.config` property of a plugin when evaluating a flat config.
+     */
+    [pluginAlias: string]: Omit<Plugin, 'configs'>;
   }
 
   export interface LinterOptions {
@@ -174,9 +181,15 @@ export namespace FlatConfig {
      */
     noInlineConfig?: boolean;
     /**
-     * A Boolean value indicating if unused disable directives should be tracked and reported.
+     * A severity string indicating if and how unused disable and enable
+     * directives should be tracked and reported. For legacy compatibility, `true`
+     * is equivalent to `"warn"` and `false` is equivalent to `"off"`.
+     * @default "off"
      */
-    reportUnusedDisableDirectives?: boolean;
+    reportUnusedDisableDirectives?:
+      | SharedConfig.Severity
+      | SharedConfig.SeverityString
+      | boolean;
   }
 
   export interface LanguageOptions {
@@ -190,7 +203,7 @@ export namespace FlatConfig {
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
-    globals?: GlobalsConfig;
+    globals?: GlobalsConfig | undefined;
     /**
      * An object containing a `parse()` method or a `parseForESLint()` method.
      * @default
@@ -204,7 +217,7 @@ export namespace FlatConfig {
      * An object specifying additional options that are passed directly to the parser.
      * The available options are parser-dependent.
      */
-    parserOptions?: ParserOptions;
+    parserOptions?: ParserOptions | undefined;
     /**
      * The type of JavaScript source code.
      * Possible values are `"script"` for traditional script files, `"module"` for ECMAScript modules (ESM), and `"commonjs"` for CommonJS files.
@@ -219,19 +232,37 @@ export namespace FlatConfig {
     sourceType?: SourceType;
   }
 
+  // The function form is undocumented but allowed:
+  // https://github.com/eslint/eslint/issues/18118
+  //
+  // We have to support it as well because the DefinitelyTyped configs define it
+  // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e26919eb3426f5ba85fed394c90c39efb217037a/types/eslint/index.d.ts#L1208-L1223
+  //
+  // If we don't then users can't use shareable configs defined using the DT types
+  // https://github.com/typescript-eslint/typescript-eslint/issues/8467
+  export type FileSpec = string | ((filePath: string) => boolean);
+
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
     /**
+     * An string to identify the configuration object. Used in error messages and inspection tools.
+     */
+    name?: string;
+    /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
-    files?: string[];
+    files?: (
+      | FileSpec
+      // yes, a single layer of array nesting is supported
+      | FileSpec[]
+    )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
      * If not specified, the configuration object applies to all files matched by files.
      */
-    ignores?: string[];
+    ignores?: FileSpec[];
     /**
      * An object containing settings related to how JavaScript is configured for linting.
      */
@@ -262,5 +293,6 @@ export namespace FlatConfig {
     settings?: Settings;
   }
   export type ConfigArray = Config[];
-  export type ConfigFile = ConfigArray | (() => Promise<ConfigArray>);
+  export type ConfigPromise = Promise<ConfigArray>;
+  export type ConfigFile = ConfigArray | ConfigPromise;
 }

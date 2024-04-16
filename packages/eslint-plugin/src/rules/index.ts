@@ -1,3 +1,5 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 import adjacentOverloadSignatures from './adjacent-overload-signatures';
 import arrayType from './array-type';
 import awaitThenable from './await-thenable';
@@ -12,6 +14,7 @@ import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
 import consistentGenericConstructors from './consistent-generic-constructors';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
+import consistentReturn from './consistent-return';
 import consistentTypeAssertions from './consistent-type-assertions';
 import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeExports from './consistent-type-exports';
@@ -98,11 +101,13 @@ import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
+import onlyThrowError from './only-throw-error';
 import paddingLineBetweenStatements from './padding-line-between-statements';
 import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferDestructuring from './prefer-destructuring';
 import preferEnumInitializers from './prefer-enum-initializers';
+import preferFind from './prefer-find';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
 import preferIncludes from './prefer-includes';
@@ -137,6 +142,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import useUnknownInCatchCallbackVariable from './use-unknown-in-catch-callback-variable';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -153,6 +159,7 @@ export default {
   'comma-spacing': commaSpacing,
   'consistent-generic-constructors': consistentGenericConstructors,
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
+  'consistent-return': consistentReturn,
   'consistent-type-assertions': consistentTypeAssertions,
   'consistent-type-definitions': consistentTypeDefinitions,
   'consistent-type-exports': consistentTypeExports,
@@ -239,11 +246,13 @@ export default {
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
+  'only-throw-error': onlyThrowError,
   'padding-line-between-statements': paddingLineBetweenStatements,
   'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
   'prefer-destructuring': preferDestructuring,
   'prefer-enum-initializers': preferEnumInitializers,
+  'prefer-find': preferFind,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,
   'prefer-includes': preferIncludes,
@@ -278,4 +287,5 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
-};
+  'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,
+} satisfies Linter.PluginRules;

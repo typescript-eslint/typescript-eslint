@@ -1,10 +1,7 @@
 'use strict';
 
 // pack the packages ahead of time and create a mapping for use in the tests
-require('ts-node').register({
-  transpileOnly: true,
-  files: ['./pack-packages.ts'],
-});
+require('tsx/cjs');
 const { tseslintPackages } = require('./tools/pack-packages');
 
 // @ts-check
@@ -15,7 +12,7 @@ module.exports = {
   globals: {
     tseslintPackages,
   },
-  testMatch: ['**/tests/*.test.ts'],
+  testRegex: ['/tests/[^/]+.test.ts$'],
   rootDir: __dirname,
 
   // TODO(Brad Zacher) - for some reason if we run more than 1 test at a time

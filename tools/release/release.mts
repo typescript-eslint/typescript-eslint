@@ -1,9 +1,5 @@
 import { execaSync } from 'execa';
-import {
-  releaseChangelog,
-  releasePublish,
-  releaseVersion,
-} from 'nx/src/command-line/release';
+import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release';
 import yargs from 'yargs';
 
 const options = await yargs(process.argv.slice(2))
@@ -60,8 +56,9 @@ if (workspaceVersion === null) {
     '⏭️ No changes detected across any package, skipping publish step altogether',
   );
 } else {
-  await releasePublish({
+  const publishStatus = await releasePublish({
     dryRun: options.dryRun,
     verbose: options.verbose,
   });
+  process.exit(publishStatus);
 }

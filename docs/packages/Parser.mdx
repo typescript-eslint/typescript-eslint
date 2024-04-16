@@ -40,13 +40,14 @@ interface ParserOptions {
   };
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
+  experimentalDecorators?: boolean;
   extraFileExtensions?: string[];
   jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  programs?: import('typescript').Program;
-  project?: string | string[] | true;
+  programs?: import('typescript').Program[];
+  project?: string | string[] | boolean | null;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -56,13 +57,16 @@ interface ParserOptions {
 
 ### `allowAutomaticSingleRunInference`
 
-> Default `false`.
+> Default `process.env.TSESTREE_SINGLE_RUN` or `false`.
 
 Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
 
-When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../linting/Typed_Linting.mdx), this distinction is important for performance.
+When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../getting-started/Typed_Linting.mdx), this distinction is important for performance.
 There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
 Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
+
+This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN` environment variable to `"false"` or `"true"`.
+For example, `TSESTREE_SINGLE_RUN=true npx eslint .` will enable it.
 
 :::tip
 We've seen `allowAutomaticSingleRunInference` improve linting speed in CI by up to 10-20%.
@@ -90,7 +94,7 @@ More details can be found in the [TypeScript handbook's JSX docs](https://www.ty
 
 **NOTE:** this setting does not affect known file types (`.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.mts`, `.cts`, `.tsx`, `.json`) because the TypeScript compiler has its own internal handling for known file extensions.
 
-<!-- https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285 -->
+{/* https://github.com/microsoft/TypeScript/blob/d6e483b8dabd8fd37c00954c3f2184bb7f1eb90c/src/compiler/utilities.ts#L6281-L6285 */}
 
 The exact behavior is as follows:
 
@@ -126,7 +130,13 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 
 > Default `undefined`.
 
-This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](../linting/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+
+### `experimentalDecorators`
+
+> Default `undefined`.
+
+This option allow you to tell parser to act as if `experimentalDecorators: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ### `extraFileExtensions`
 
@@ -212,13 +222,17 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
   // array of paths and/or glob patterns
   project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
+
+  // ways to disable type-aware linting (useful for overrides configs)
+  project: false;
+  project: null;
   ```
 
 - If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
 
   - This is done by checking that source file's directory tree for the nearest `tsconfig.json`.
 
-- If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
+- If you use project references, TypeScript will **not** automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 
 - Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
 
@@ -237,8 +251,8 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
       // etc
 
       // if you have a mixed JS/TS codebase, don't forget to include your JS files
-      "src/**/*.js"
-    ]
+      "src/**/*.js",
+    ],
   }
   ```
 

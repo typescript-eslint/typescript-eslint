@@ -38,12 +38,14 @@ describe('getProjectConfigFiles', () => {
     expect(actual).toEqual(project);
   });
 
-  it('returns the project when given as undefined', () => {
-    const project = undefined;
+  describe('it does not enable type-aware linting when given as', () => {
+    for (const project of [undefined, null, false]) {
+      it(`${project}`, () => {
+        const actual = getProjectConfigFiles(parseSettings, project);
 
-    const actual = getProjectConfigFiles(parseSettings, project);
-
-    expect(actual).toBeNull();
+        expect(actual).toBeNull();
+      });
+    }
   });
 
   describe('when caching hits', () => {

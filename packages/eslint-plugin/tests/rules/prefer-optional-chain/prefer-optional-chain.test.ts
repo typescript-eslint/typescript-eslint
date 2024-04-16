@@ -28,6 +28,35 @@ describe('|| {}', () => {
       'foo ?? {};',
       '(foo ?? {})?.bar;',
       'foo ||= bar ?? {};',
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = null;
+        const b = 0;
+        a === undefined || b === null || b === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = 0;
+        const b = 0;
+        a === undefined || b === undefined || b === null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = 0;
+        const b = 0;
+        b === null || a === undefined || b === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const b = 0;
+        b === null || b === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = 0;
+        const b = 0;
+        b != null && a !== null && a !== undefined;
+      `,
     ],
     invalid: [
       {
@@ -907,6 +936,7 @@ describe('hand-crafted cases', () => {
         declare const x: 0n | { a: string };
         !x || x.a;
       `,
+      "typeof globalThis !== 'undefined' && globalThis.Array();",
     ],
     invalid: [
       // two  errors
@@ -1656,6 +1686,7 @@ describe('hand-crafted cases', () => {
             null !== foo.bar.baz &&
             'undefined' !== typeof foo.bar.baz;
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1679,6 +1710,7 @@ describe('hand-crafted cases', () => {
             foo.bar.baz !== null &&
             typeof foo.bar.baz !== 'undefined';
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1702,6 +1734,7 @@ describe('hand-crafted cases', () => {
             null !== foo.bar.baz &&
             undefined !== foo.bar.baz;
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1909,6 +1942,61 @@ describe('hand-crafted cases', () => {
                 output: `
           declare const foo: { bar: number } | null | undefined;
           foo?.bar;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: boolean } | null | undefined;
+          declare function acceptsBoolean(arg: boolean): void;
+          acceptsBoolean(foo != null && foo.bar);
+        `,
+        output: `
+          declare const foo: { bar: boolean } | null | undefined;
+          declare function acceptsBoolean(arg: boolean): void;
+          acceptsBoolean(foo?.bar);
+        `,
+        options: [
+          {
+            allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing:
+              true,
+          },
+        ],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
+          function foo(globalThis?: { Array: Function }) {
+            typeof globalThis !== 'undefined' && globalThis.Array();
+          }
+        `,
+        output: `
+          function foo(globalThis?: { Array: Function }) {
+            globalThis?.Array();
+          }
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+          },
+        ],
+      },
+      {
+        code: `
+          typeof globalThis !== 'undefined' && globalThis.Array && globalThis.Array();
+        `,
+        output: null,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          typeof globalThis !== 'undefined' && globalThis.Array?.();
         `,
               },
             ],

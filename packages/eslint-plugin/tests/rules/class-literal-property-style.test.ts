@@ -84,6 +84,48 @@ abstract class Mx {
         \`;
       }
     `,
+    `
+      class Mx {
+        set p1(val) {}
+        get p1() {
+          return '';
+        }
+      }
+    `,
+    `
+      let p1 = 'p1';
+      class Mx {
+        set [p1](val) {}
+        get [p1]() {
+          return '';
+        }
+      }
+    `,
+    `
+      let p1 = 'p1';
+      class Mx {
+        set [/* before set */ p1 /* after set */](val) {}
+        get [/* before get */ p1 /* after get */]() {
+          return '';
+        }
+      }
+    `,
+    `
+      class Mx {
+        set ['foo'](val) {}
+        get foo() {
+          return '';
+        }
+        set bar(val) {}
+        get ['bar']() {
+          return '';
+        }
+        set ['baz'](val) {}
+        get baz() {
+          return '';
+        }
+      }
+    `,
     {
       code: `
         class Mx {
@@ -173,6 +215,45 @@ class Mx {
             return styled.button\`
               color: \${props => (props.primary ? 'hotpink' : 'turquoise')};
             \`;
+          }
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class A {
+          private readonly foo: string = 'bar';
+          constructor(foo: string) {
+            this.foo = foo;
+          }
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class A {
+          private readonly foo: string = 'bar';
+          constructor(foo: string) {
+            this['foo'] = foo;
+          }
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class A {
+          private readonly foo: string = 'bar';
+          constructor(foo: string) {
+            const bar = new (class {
+              private readonly foo: string = 'baz';
+              constructor() {
+                this.foo = 'qux';
+              }
+            })();
+            this['foo'] = foo;
           }
         }
       `,
@@ -617,6 +698,127 @@ class Mx {
         },
       ],
       options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {
+        this.foo = 'qux';
+      }
+    })();
+  }
+}
+      `,
+      options: ['getters'],
+      errors: [
+        {
+          messageId: 'preferGetterStyle',
+          column: 20,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class A {
+  private get foo() { return 'bar'; }
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {
+        this.foo = 'qux';
+      }
+    })();
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  private readonly ['foo']: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {}
+    })();
+
+    if (bar) {
+      this.foo = 'baz';
+    }
+  }
+}
+      `,
+      options: ['getters'],
+      errors: [
+        {
+          messageId: 'preferGetterStyle',
+          column: 24,
+          line: 6,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class A {
+  private readonly ['foo']: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private get foo() { return 'baz'; }
+      constructor() {}
+    })();
+
+    if (bar) {
+      this.foo = 'baz';
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    function func() {
+      this.foo = 'aa';
+    }
+  }
+}
+      `,
+      options: ['getters'],
+      errors: [
+        {
+          messageId: 'preferGetterStyle',
+          column: 20,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class A {
+  private get foo() { return 'bar'; }
+  constructor(foo: string) {
+    function func() {
+      this.foo = 'aa';
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });

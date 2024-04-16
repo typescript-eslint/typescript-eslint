@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-as-const.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+let bar: 2 = 2;
+         ~ Expected a \`const\` assertion instead of a literal type annotation.
+let foo = <'bar'>'bar';
+           ~~~~~ Expected a \`const\` instead of a literal type assertion.
+let foo = { bar: 'baz' as 'baz' };
+                          ~~~~~ Expected a \`const\` instead of a literal type assertion.
+"
+`;
+
+exports[`Validating rule docs prefer-as-const.mdx code examples ESLint output 2`] = `
+"Correct
+
+let foo = 'bar';
+let foo = 'bar' as const;
+let foo: 'bar' = 'bar' as const;
+let bar = 'bar' as string;
+let foo = <string>'bar';
+let foo = { bar: 'baz' };
+"
+`;

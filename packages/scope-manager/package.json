@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "6.19.0",
+  "version": "7.7.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -16,8 +16,9 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/scope-manager",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -44,11 +46,12 @@
     "typecheck": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.19.0",
-    "@typescript-eslint/visitor-keys": "6.19.0"
+    "@typescript-eslint/types": "7.7.0",
+    "@typescript-eslint/visitor-keys": "7.7.0"
   },
   "devDependencies": {
-    "@typescript-eslint/typescript-estree": "6.19.0",
+    "@types/glob": "*",
+    "@typescript-eslint/typescript-estree": "7.7.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

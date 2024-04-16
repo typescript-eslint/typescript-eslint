@@ -20,7 +20,7 @@ module.exports = {
     'node',
   ],
   setupFilesAfterEnv: ['console-fail-test/setup.js'],
-  testMatch: ['**/tests/**/*.test.ts', '**/tests/**/*.spec.ts'],
+  testRegex: ['./tests/.+\\.test\\.ts$', './tests/.+\\.spec\\.ts$'],
   transform: {
     '^.+\\.(t|j)sx?$': [
       '@swc/jest',
