@@ -50,6 +50,7 @@
     "@typescript-eslint/visitor-keys": "7.7.0"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "7.7.0",
     "glob": "*",

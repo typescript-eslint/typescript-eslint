@@ -64,12 +64,9 @@
     "ts-api-utils": "^1.3.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "*",
-    "@babel/parser": "*",
+    "@jest/types": "29.6.3",
     "glob": "*",
     "jest": "29.7.0",
-    "jest-specific-snapshot": "^8.0.0",
-    "make-dir": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "tmp": "*",

@@ -19,20 +19,18 @@ export default {
         '@babel/eslint-parser',
         '@babel/parser',
         '@babel/types',
-        '@prettier/sync',
         '@nx/workspace',
         'cross-fetch',
-        'execa',
         'glob',
         'husky',
         'jest-specific-snapshot',
-        // integration-tests expect it to be present in the root package.json
-        'tslint',
         'make-dir',
         'ncp',
         'tmp',
 
-        '@typescript-eslint/eslint-plugin',
+        // imported in eslint.config.js
+        '@typescript-eslint/utils',
+        // imported in eslint.config.mjs
         '@typescript-eslint/eslint-plugin-internal',
       ],
       entry: ['tools/release/changelog-renderer.js'],
@@ -45,6 +43,8 @@ export default {
       ignore: [
         'src/**/fixtures/**',
         'tests/*.type-test.ts',
+        // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
+        // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
       ],
     },
@@ -54,17 +54,14 @@ export default {
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
     },
-    'packages/eslint-plugin-tslint': {
-      ignore: ['tests/fixtures/**'],
-    },
     'packages/integration-tests': {
       ignore: ['fixtures/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
     },
-    'packages/rule-tester': {
-      ignore: ['tests/eslint-base/fixtures/**'],
+    'packages/repo-tools': {
+      ignoreDependencies: ['tsconfig.json'],
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
@@ -78,29 +75,33 @@ export default {
     },
     'packages/website': {
       entry: [
-        'docusaurus.config.js',
+        'docusaurus.config.mts',
         'src/pages/**/*.tsx',
 
+        // imported in MDX docs
         'src/components/RulesTable/index.tsx',
         'src/components/TypeScriptOverlap/index.tsx',
-        'src/hooks/useRulesMeta.ts',
+        'src/components/team/TeamBioList.tsx',
+        'src/components/team/TeamBioDivider.tsx',
 
+        // used by Docusaurus
         'src/theme/CodeBlock/Content/String.tsx',
         'src/theme/MDXComponents/index.tsx',
-        'src/theme/NotFound/index.tsx',
+        'src/theme/NotFound/Content/index.tsx',
         'src/theme/prism-include-languages.js',
       ],
       ignoreDependencies: [
+        // used in MDX docs
         'raw-loader',
-        'react-dom',
-        '@typescript-eslint/utils',
-        '@typescript-eslint/typescript-estree',
-        '@typescript-eslint/scope-manager',
+
+        // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
+        'esquery',
+
+        '@babel/runtime',
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
         '@docusaurus/theme-search-algolia',
-        '@docusaurus/plugin-content-docs',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
         '@docusaurus/router',
@@ -108,15 +109,16 @@ export default {
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
         '@docusaurus/theme-classic',
-        '@docusaurus/theme-classic',
         '@generated/docusaurus.config',
         '^@theme/.*',
         '^@theme-original/.*',
-        'esquery',
       ],
     },
     'packages/website-eslint': {
-      ignoreDependencies: ['vt'],
+      ignoreDependencies: [
+        // virtual module
+        'vt',
+      ],
       entry: [
         'src/index.js',
         'src/mock/assert.js',

@@ -60,6 +60,7 @@
     "@typescript-eslint/utils": "7.7.0"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "downlevel-dts": "*",
     "jest": "29.7.0",
     "prettier": "^3.2.5",
