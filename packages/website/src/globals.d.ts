@@ -3,9 +3,9 @@ import type * as ts from 'typescript';
 
 declare global {
   interface WindowRequire {
-    <T extends unknown[]>(
+    (
       files: string[],
-      success?: (...arg: T) => void,
+      success?: (...arg: unknown[]) => void,
       error?: (e: Error) => void,
     ): void;
     config: (arg: {

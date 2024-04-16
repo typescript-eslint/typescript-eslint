@@ -79,8 +79,7 @@ export default createRule({
             //   declare function Component<T>(props: Props<T>): void;
             if (
               ts.isTypeReferenceNode(use.location.parent) &&
-              ts.isTypeReferenceNode(use.location.parent.parent) &&
-              ts.isParameter(use.location.parent.parent.parent)
+              ts.isTypeReferenceNode(use.location.parent.parent)
             ) {
               explicitUsesCount = Infinity;
               break;

@@ -122,7 +122,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     `
-      // function ListComponent<T>(props: { items: T[]; onSelect: (item: T) => void }) {}
+      function ListComponent<T>(props: { items: T[]; onSelect: (item: T) => void }) {}
     `,
     `
       interface ItemProps<T> {
@@ -130,6 +130,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         onSelect: (item: T) => void;
       }
       function ListComponent<T>(props: ItemProps<T>) {}
+    `,
+    `
+      function useFocus<T extends HTMLOrSVGElement>(): [
+        React.RefObject<T>,
+        () => void,
+      ];
     `,
     'declare function get(): void;',
     'declare function get<T>(param: T[]): T;',
@@ -140,7 +146,19 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function example<T>(a: Set<T>, b: T[]): void;',
     'declare function example<T>(a: Map<T, T>): void;',
     'declare function example<T, U extends T>(t: T, u: U): U;',
+    'declare function makeSet<K>(): Set<K>;',
+    'declare function makeSet<K>(): [Set<K>];',
+    'declare function makeSets<K>(): Set<K>[];',
+    'declare function makeSets<K>(): [Set<K>][];',
+    'declare function makeMap<K, V>(): Map<K, V>;',
+    'declare function makeMap<K, V>(): [Map<K, V>];',
     'declare function arrayOfPairs<T>(): [T, T][];',
+    'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
+    `
+declare function useFocus<T extends HTMLOrSVGElement>(): {
+  ref: React.RefObject<T>;
+};
+    `,
 
     'type Fn = <T>(value: T) => T;',
     'type Fn = new <T>(value: T) => T;',
@@ -266,17 +284,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     {
       code: `
         function makeMap<K, V>() {
-          return new Map<K, V>();
-        }
-      `,
-      errors: [
-        { messageId: 'sole', data: { name: 'K' } },
-        { messageId: 'sole', data: { name: 'V' } },
-      ],
-    },
-    {
-      code: `
-        function makeMap<K, V>(): Map<K, V> {
           return new Map<K, V>();
         }
       `,
