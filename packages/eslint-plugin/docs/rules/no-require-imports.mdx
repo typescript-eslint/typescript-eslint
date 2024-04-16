@@ -69,7 +69,7 @@ With `{allowAsImport: true}`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts
+```ts option='{ "allowAsImport": true }'
 var foo = require('foo');
 const foo = require('foo');
 let foo = require('foo');
@@ -78,7 +78,7 @@ let foo = require('foo');
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts
+```ts option='{ "allowAsImport": true }'
 import foo = require('foo');
 require('foo');
 import foo from 'foo';
