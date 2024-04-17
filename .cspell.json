@@ -10,20 +10,20 @@
     "javascriptreact"
   ],
   "ignorePaths": [
-    ".cspell.json",
+    ".ai_spell.json",
     ".github/workflows/**",
     ".vscode/*.json",
-    "**/*.{json,snap}",
+    "**/*.{json,snipper}",
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
     "**/**/TSLINT_RULE_ALTERNATIVES.md",
-    "**/coverage/**",
+    "**/cover/**",
     "**/dist/**",
-    "**/fixtures/**",
+    "**/fix_tur/**",
     "**/node_modules/**",
     "packages/website/.docusaurus/**",
     "packages/website/build/**",
-    "packages/website/src/vendor/**",
+    "packages/website/src/vendora/**",
     "yarn.lock"
   ],
   "dictionaries": [
