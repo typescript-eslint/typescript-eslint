@@ -85,6 +85,9 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'type Fn = <T extends string>(input: T) => T;',
     'type Fn = <T extends string>(input: T) => `a${T}b`;',
     'type Fn = new <T>(input: T) => T;',
+    'type Fn = <T>(input: T) => typeof input;',
+    'type Fn = <T>(input: T) => keyof typeof input;',
+    'type Fn = <T>(input: Partial<T>) => typeof input;',
     'type Fn = <T>(input: Partial<T>) => input is T;',
     'type Fn = <T>(input: T) => { [K in keyof T]: K };',
     'type Fn = <T>(input: T) => { [K in keyof T as K]: string };',
@@ -96,23 +99,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'type Fn = <T>(input: T) => { [i: number]: T };',
     'type Fn = <T>(input: T) => { [i: string]: T };',
     "type Fn = <T extends unknown[]>(input: T) => Omit<T, 'length'>;",
-    `
-      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-
-      declare const isNodeOfType: <NodeType extends AST_NODE_TYPES>(
-        nodeType: NodeType,
-      ) => node is Extract<TSESTree.Node, { type: NodeType }>;
-    `,
-    `
-      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-
-      const isNodeOfType =
-        <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
-        (
-          node: TSESTree.Node | null,
-        ): node is Extract<TSESTree.Node, { type: NodeType }> =>
-          node?.type === nodeType;
-    `,
     `
       interface I {
         <T>(value: T): T;
@@ -187,7 +173,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     `
-      function getLength<T extends { lenght: number }>(x: T) {
+      function lengthyIdentity<T extends { length: number }>(x: T) {
         return x;
       }
     `,
@@ -195,7 +181,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       interface Lengthy {
         length: number;
       }
-      function getLength<T extends Lengthy>(x: T) {
+      function lengthyIdentity<T extends Lengthy>(x: T) {
         return x;
       }
     `,
@@ -215,6 +201,18 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         () => void,
       ];
     `,
+    `
+      function findFirstResult<U>(
+        inputs: unknown[],
+        getResult: (t: unknown) => U | undefined,
+      ): U | undefined;
+    `,
+    `
+      function findFirstResult<T, U>(
+        inputs: T[],
+        getResult: (t: T) => () => [U | undefined],
+      ): () => [U | undefined];
+    `,
     'declare function get(): void;',
     'declare function get<T>(param: T[]): T;',
     'declare function box<T>(val: T): { val: T };',
@@ -231,11 +229,87 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeMap<K, V>(): Map<K, V>;',
     'declare function makeMap<K, V>(): [Map<K, V>];',
     'declare function arrayOfPairs<T>(): [T, T][];',
+    'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
       declare function useFocus<T extends HTMLOrSVGElement>(): {
         ref: React.RefObject<T>;
       };
+    `,
+    `
+      type Obj = { a: string };
+
+      declare function hasOwnProperty<K extends keyof Obj>(
+        obj: Obj,
+        key: K,
+      ): obj is Obj & { [key in K]-?: Obj[key] };
+    `,
+    `
+      type AsMutable<T extends readonly unknown[]> = {
+        -readonly [Key in keyof T]: T[Key];
+      };
+
+      declare function makeMutable<T>(input: T): MakeMutable<T>;
+    `,
+    `
+      type AsMutable<T extends readonly unknown[]> = {
+        -readonly [Key in keyof T]: T[Key];
+      };
+
+      declare function makeMutable<T>(input: T): MakeMutable<typeof input>;
+    `,
+    `
+      interface Middle {
+        inner: boolean;
+      }
+
+      type Conditional<T extends Middle> = {} & (T['inner'] extends true ? {} : {});
+
+      function withMiddle<T extends Middle = Middle>(options: T): Conditional<T> {
+        return options;
+      }
+    `,
+    `
+      import * as ts from 'typescript';
+
+      declare function forEachReturnStatement<T>(
+        body: ts.Block,
+        visitor: (stmt: ts.ReturnStatement) => T,
+      ): T | undefined;
+    `,
+    `
+      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+
+      declare const isNodeOfType: <NodeType extends AST_NODE_TYPES>(
+        nodeType: NodeType,
+      ) => node is Extract<TSESTree.Node, { type: NodeType }>;
+    `,
+    `
+      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+
+      const isNodeOfType =
+        <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
+        (
+          node: TSESTree.Node | null,
+        ): node is Extract<TSESTree.Node, { type: NodeType }> =>
+          node?.type === nodeType;
+    `,
+    `
+      import type { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/types';
+
+      export const isNotTokenOfTypeWithConditions =
+        <
+          TokenType extends AST_TOKEN_TYPES,
+          ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
+          Conditions extends Partial<ExtractedToken>,
+        >(
+          tokenType: TokenType,
+          conditions: Conditions,
+        ): ((
+          token: TSESTree.Token | null | undefined,
+        ) => token is Exclude<TSESTree.Token, Conditions & ExtractedToken>) =>
+        (token): token is Exclude<TSESTree.Token, Conditions & ExtractedToken> =>
+          tokenType in conditions;
     `,
   ],
 
@@ -377,7 +451,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         interface Lengthy {
           length: number;
         }
-        function getLength<T extends { lenght: number }>(x: T) {
+        function getLength<T extends { length: number }>(x: T) {
           return x.length;
         }
       `,
@@ -482,6 +556,10 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: 'type Fn = <T>() => { [K in keyof T]: K };',
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
     {

@@ -3,9 +3,11 @@ import type * as ts from 'typescript';
 
 declare global {
   interface WindowRequire {
-    (
+    // We know it's an unsafe assertion. This is fine.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+    <T extends unknown[]>(
       files: string[],
-      success?: (...arg: unknown[]) => void,
+      success?: (...arg: T) => void,
       error?: (e: Error) => void,
     ): void;
     config: (arg: {

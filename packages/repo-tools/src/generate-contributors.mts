@@ -35,6 +35,8 @@ interface User {
   html_url: string;
 }
 
+// This is an internal script, we're ok with the unsafe assertion. 🤫
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 async function getData<T>(url: string | undefined): Promise<T | null> {
   if (url == null) {
     return null;

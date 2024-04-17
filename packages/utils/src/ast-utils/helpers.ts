@@ -40,19 +40,18 @@ export const isNodeOfTypeWithConditions = <
 
 export const isTokenOfTypeWithConditions = <
   TokenType extends AST_TOKEN_TYPES,
-  ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
   Conditions extends Partial<TSESTree.Token & { type: TokenType }>,
 >(
   tokenType: TokenType,
   conditions: Conditions,
 ): ((
   token: TSESTree.Token | null | undefined,
-) => token is Conditions & ExtractedToken) => {
+) => token is Conditions & Extract<TSESTree.Token, { type: TokenType }>) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
     token: TSESTree.Token | null | undefined,
-  ): token is Conditions & ExtractedToken =>
+  ): token is Conditions & Extract<TSESTree.Token, { type: TokenType }> =>
     token?.type === tokenType &&
     entries.every(
       ([key, value]) => token[key as keyof TSESTree.Token] === value,

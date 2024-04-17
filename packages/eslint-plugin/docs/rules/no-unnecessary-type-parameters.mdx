@@ -11,9 +11,12 @@ import TabItem from '@theme/TabItem';
 
 This rule forbids type parameters that only appear once in a function, method, or class definition.
 
-Type parameters relate two types. If a type parameter only appears once, then it is not relating anything. It can usually be replaced with explicit types such as `unknown`.
+Type parameters relate two types.
+If a type parameter only appears once, then it is not relating anything.
+It can usually be replaced with explicit types such as `unknown`.
 
-At best unnecessary type parameters make code harder to read. At worst they can be used to disguise unsafe type assertions.
+At best unnecessary type parameters make code harder to read.
+At worst they can be used to disguise unsafe type assertions.
 
 ## Examples
 
@@ -31,12 +34,6 @@ function parseJSON<T>(input: string): T {
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
   console.log(obj[key]);
-}
-
-class Joiner<T extends string | number> {
-  join(els: T[]) {
-    return els.map(el => '' + el).join(',');
-  }
 }
 ```
 
@@ -56,12 +53,6 @@ function printProperty<T>(obj: T, key: keyof T) {
   console.log(obj[key]);
 }
 
-class Joiner {
-  join(els: (string | number)[]) {
-    return els.map(el => '' + el).join(',');
-  }
-}
-
 // T appears twice: in the type of arg and as the return type
 function identity<T>(arg: T): T {
   return arg;
@@ -76,6 +67,19 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 
 </TabItem>
 </Tabs>
+
+## Limitations
+
+Note that this rule must allow any type parameter that is used multiple times, even if those uses are via a type argument.
+For example, the following `T` is technically used twice, even though its name only appears once after declaration:
+
+```ts
+type Pair<T> = [T, T];
+
+declare function logPair<T>(pair: Pair<T>);
+```
+
+As a result, this rule won't report on type parameters used in types such as `Array` (including the `T[]` shorthand), `Map`, and `Set`.
 
 ## When Not To Use It
 
