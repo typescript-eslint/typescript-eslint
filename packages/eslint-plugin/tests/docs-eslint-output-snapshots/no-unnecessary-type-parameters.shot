@@ -17,13 +17,6 @@ function printProperty<T, K extends keyof T>(obj: T, key: K) {
                           ~~~~~~~~~~~~~~~~~ Type parameter K is used only once.
   console.log(obj[key]);
 }
-
-class Joiner<T extends string | number> {
-             ~~~~~~~~~~~~~~~~~~~~~~~~~ Type parameter T is used only once.
-  join(els: T[]) {
-    return els.map(el => '' + el).join(',');
-  }
-}
 "
 `;
 
@@ -40,12 +33,6 @@ function parseJSON(input: string): unknown {
 
 function printProperty<T>(obj: T, key: keyof T) {
   console.log(obj[key]);
-}
-
-class Joiner {
-  join(els: (string | number)[]) {
-    return els.map(el => '' + el).join(',');
-  }
 }
 
 // T appears twice: in the type of arg and as the return type
