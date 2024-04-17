@@ -118,6 +118,7 @@ function collectTypeParameterUsageCounts(
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
+  const typeCounts = new Map<ts.Type, number>();
   const visitedConstraints = new Set<ts.TypeNode>();
   let functionLikeType = false;
   let visitedDefault = false;
@@ -139,7 +140,11 @@ function collectTypeParameterUsageCounts(
     area: IdentifierArea,
     asRepeatedType: boolean,
   ): void {
-    if (!type) {
+    // Seeing the same type > (threshold=3 ** 2) times indicates a likely
+    // recursive type, like `T = { [P in keyof T]: T }`.
+    // If it's not recursive, then heck, we've seen it enough times that any
+    // referenced types have been counted enough to qualify as used.
+    if (!type || incrementTypeCount(type) > 9) {
       return;
     }
 
@@ -261,6 +266,12 @@ function collectTypeParameterUsageCounts(
     };
     identifierCount[area] += value;
     identifierCounts.set(id, identifierCount);
+  }
+
+  function incrementTypeCount(type: ts.Type): number {
+    const count = (typeCounts.get(type) ?? 0) + 1;
+    typeCounts.set(type, count);
+    return count;
   }
 
   function visitSignature(
