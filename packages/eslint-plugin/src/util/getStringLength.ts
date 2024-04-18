@@ -1,6 +1,4 @@
-import Graphemer from 'graphemer';
-
-let splitter: Graphemer | undefined;
+import { countGrapheme } from 'unicode-segmenter/grapheme';
 
 function isASCII(value: string): boolean {
   return /^[\u0020-\u007f]*$/u.test(value);
@@ -11,7 +9,5 @@ export function getStringLength(value: string): number {
     return value.length;
   }
 
-  splitter ??= new Graphemer();
-
-  return splitter.countGraphemes(value);
+  return countGrapheme(value);
 }
