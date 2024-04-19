@@ -225,7 +225,7 @@ const additionalKeys: AdditionalKeys = {
   TSIntersectionType: ['types'],
   TSIntrinsicKeyword: [],
   TSLiteralType: ['literal'],
-  TSMappedType: ['nameType', 'typeParameter', 'typeAnnotation'],
+  TSMappedType: ['key', 'constraint', 'nameType', 'typeAnnotation'],
   TSMethodSignature: ['typeParameters', 'key', 'params', 'returnType'],
   TSModuleBlock: ['body'],
   TSModuleDeclaration: ['id', 'body'],
