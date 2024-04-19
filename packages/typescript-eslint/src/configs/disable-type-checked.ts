@@ -17,6 +17,7 @@ export default (
     '@typescript-eslint/consistent-return': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/dot-notation': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
