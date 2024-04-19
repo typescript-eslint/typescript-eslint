@@ -3,7 +3,8 @@ import type * as ts from 'typescript';
 
 declare global {
   interface WindowRequire {
-    // We know it's an unsafe assertion. This is fine.
+    // We know it's an unsafe assertion. It's for window.require usage, so we
+    // don't have to use verbose type assertions on every call.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
     <T extends unknown[]>(
       files: string[],

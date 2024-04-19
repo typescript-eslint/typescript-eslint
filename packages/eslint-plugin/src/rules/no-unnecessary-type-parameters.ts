@@ -94,8 +94,8 @@ function countTypeParameterUsage(
 }
 
 /**
- * Fills in a counter of the number of times each type parameter appears in
- * the given type by recursively descending through type references.
+ * Populates {@link identifierCounts} by the number of times each type parameter
+ * appears in the given type by recursively descending through type references.
  * This is essentially a limited subset of the scope manager, but for types.
  */
 function collectTypeParameterUsageCounts(
@@ -124,7 +124,7 @@ function collectTypeParameterUsageCounts(
 
   function visitType(type: ts.Type | undefined, asRepeatedType: boolean): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
-    // recursive type, like `T = { [P in keyof T]: T }`.
+    // recursive type, like `type T = { [P in keyof T]: T }`.
     // If it's not recursive, then heck, we've seen it enough times that any
     // referenced types have been counted enough to qualify as used.
     if (!type || incrementTypeCount(type) > 9) {
