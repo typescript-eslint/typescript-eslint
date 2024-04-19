@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/strict-type-checked-only',
     rules: {
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-array-delete': 'error',
@@ -31,8 +32,6 @@ export default (
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/no-mixed-enums': 'error',
       '@typescript-eslint/no-redundant-type-constituents': 'error',
-      'no-throw-literal': 'off',
-      '@typescript-eslint/no-throw-literal': 'error',
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
       '@typescript-eslint/no-unnecessary-condition': 'error',
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
@@ -44,6 +43,8 @@ export default (
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
       '@typescript-eslint/no-useless-template-literals': 'error',
+      'no-throw-literal': 'off',
+      '@typescript-eslint/only-throw-error': 'error',
       '@typescript-eslint/prefer-includes': 'error',
       'prefer-promise-reject-errors': 'off',
       '@typescript-eslint/prefer-promise-reject-errors': 'error',

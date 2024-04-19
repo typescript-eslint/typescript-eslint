@@ -1,3 +1,87 @@
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** replace `no-new-symbol` with `no-new-native-nonconstructor`
+
+
+### ❤️  Thank You
+
+- Dave
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- bump npm dependency ranges
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.5.0 (2024-04-01)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] handle TaggedTemplateExpression
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle exactOptionalPropertyTypes compiler option
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kim Sang Du
+- Mark de Dios
+- Naru
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.4.0 (2024-03-25)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [consistent-type-imports] ignore files with decorators, experimentalDecorators, and emitDecoratorMetadata
+
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle tagged templates
+
+- **eslint-plugin:** deprecate no-throw-literal and add a renamed only-throw-error
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] address multipart nullish checks false positive
+
+- **eslint-plugin:** [prefer-optional-chain] properly disambiguate between `boolean` and `false`
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] avoid remove const casting on template literals with expressions inside
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Brad Zacher
+- Josh Goldberg ✨
+- Kim Sang Du
+- Kirk Waiblinger
+- Marco Pasqualetti
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.3.1 (2024-03-18)
 
 

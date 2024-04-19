@@ -24,10 +24,33 @@ const parser: TSESLint.FlatConfig.Parser = {
   parseForESLint: parserBase.parseForESLint,
 };
 
-const plugin: TSESLint.FlatConfig.Plugin = {
-  meta: pluginBase.meta,
-  rules: pluginBase.rules,
-};
+/*
+we could build a plugin object here without the `configs` key - but if we do
+that then we create a situation in which
+```
+require('typescript-eslint').plugin !== require('@typescript-eslint/eslint-plugin')
+```
+
+This is bad because it means that 3rd party configs would be required to use
+`typescript-eslint` or else they would break a user's config if the user either
+used `tseslint.configs.recomended` et al or
+```
+{
+  plugins: {
+    '@typescript-eslint': tseslint.plugin,
+  },
+}
+```
+
+This might be something we could consider okay (eg 3rd party flat configs must
+use our new package); however legacy configs consumed via `@eslint/eslintrc`
+would never be able to satisfy this constraint and thus users would be blocked
+from using them.
+*/
+const plugin: TSESLint.FlatConfig.Plugin = pluginBase as Omit<
+  typeof pluginBase,
+  'configs'
+>;
 
 const configs = {
   all: allConfig(plugin, parser),
