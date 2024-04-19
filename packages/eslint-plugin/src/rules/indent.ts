@@ -383,6 +383,7 @@ export default createRule<Options, MessageIds>({
       TSMappedType(node: TSESTree.TSMappedType) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const squareBracketStart = context.sourceCode.getTokenBefore(
+          // eslint-disable-next-line deprecation/deprecation
           node.typeParameter,
         )!;
 
@@ -393,6 +394,7 @@ export default createRule<Options, MessageIds>({
             {
               parent: node,
               type: AST_NODE_TYPES.Property,
+              // eslint-disable-next-line deprecation/deprecation
               key: node.typeParameter as any,
               value: node.typeAnnotation as any,
 
