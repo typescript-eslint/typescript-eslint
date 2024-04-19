@@ -1,5 +1,6 @@
 import { createProgram } from '@typescript-eslint/typescript-estree';
 import fs from 'fs';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import glob = require('glob');
 import path from 'path';
 

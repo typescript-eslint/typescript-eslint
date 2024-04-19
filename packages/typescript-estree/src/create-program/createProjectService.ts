@@ -22,6 +22,7 @@ export function createProjectService(
 ): ProjectServiceSettings {
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
   // TODO: see getWatchProgramsForProjects

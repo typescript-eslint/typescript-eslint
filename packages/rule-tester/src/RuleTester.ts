@@ -103,6 +103,7 @@ export class RuleTester extends TestFramework {
       try {
         // instead of creating a hard dependency, just use a soft require
         // a bit weird, but if they're using this tooling, it'll be installed
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const parser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
         parser.clearCaches();
       } catch {
@@ -524,6 +525,7 @@ export class RuleTester extends TestFramework {
 
     this.#linter.defineParser(
       config.parser,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       wrapParser(require(config.parser) as Parser.ParserModule),
     );
 

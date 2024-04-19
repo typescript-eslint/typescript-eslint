@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import glob = require('glob');
 import * as path from 'path';
 import * as ts from 'typescript';
