@@ -3,7 +3,7 @@ import { requiresQuoting } from '../src';
 describe('getDeclaration', () => {
   describe('valid identifier', () => {
     it('upper and lower case alphabet', () => {
-      const name = 'fooBar';
+      const name = 'c';
       const result = requiresQuoting(name);
       expect(result).toBe(false);
     });
@@ -44,6 +44,7 @@ describe('getDeclaration', () => {
   });
 
   describe('invalid identifier', () => {
+    // This test case is written because it is possible to access object properties, but dot annotation is not accessible.
     it('only number', () => {
       const name = '12345';
       const result = requiresQuoting(name);
@@ -78,6 +79,7 @@ describe('getDeclaration', () => {
     it('include special symbol at middle', () => {
       const name = 'asd!fs';
       const result = requiresQuoting(name);
+
       expect(result).toBe(true);
     });
   });
