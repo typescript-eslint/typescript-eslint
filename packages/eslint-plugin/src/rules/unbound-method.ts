@@ -135,9 +135,9 @@ export default createRule<Options, MessageIds>({
     function checkIfMethodAndReport(
       node: TSESTree.Node,
       symbol: ts.Symbol | undefined,
-    ): void {
+    ): boolean {
       if (!symbol) {
-        return;
+        return false;
       }
 
       const { dangerous, firstParamIsThis } = checkIfMethod(
@@ -152,7 +152,9 @@ export default createRule<Options, MessageIds>({
               : 'unbound',
           node,
         });
+        return true;
       }
+      return false;
     }
 
     return {
@@ -173,22 +175,25 @@ export default createRule<Options, MessageIds>({
 
         checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
       },
-      'VariableDeclarator, AssignmentExpression'(
-        node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
-      ): void {
-        const [idNode, initNode] =
-          node.type === AST_NODE_TYPES.VariableDeclarator
-            ? [node.id, node.init]
-            : [node.left, node.right];
+      ObjectPattern(node): void {
+        let initNode: TSESTree.Node | null = null;
+        if (node.parent.type === AST_NODE_TYPES.VariableDeclarator) {
+          initNode = node.parent.init;
+        } else if (
+          node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
+          node.parent.type === AST_NODE_TYPES.AssignmentExpression
+        ) {
+          initNode = node.parent.right;
+        }
 
-        if (initNode && idNode.type === AST_NODE_TYPES.ObjectPattern) {
-          const rightSymbol = services.getSymbolAtLocation(initNode);
+        if (initNode) {
+          const initSymbol = services.getSymbolAtLocation(initNode);
           const initTypes = services.getTypeAtLocation(initNode);
 
           const notImported =
-            rightSymbol && isNotImported(rightSymbol, currentSourceFile);
+            initSymbol && isNotImported(initSymbol, currentSourceFile);
 
-          idNode.properties.forEach(property => {
+          node.properties.forEach(property => {
             if (
               property.type === AST_NODE_TYPES.Property &&
               property.key.type === AST_NODE_TYPES.Identifier
@@ -209,6 +214,42 @@ export default createRule<Options, MessageIds>({
               );
             }
           });
+          return;
+        }
+
+        if (node.typeAnnotation) {
+          const subtypes = tsutils.unionTypeParts(
+            services.getTypeAtLocation(node.typeAnnotation.typeAnnotation),
+          );
+          for (const property of node.properties) {
+            for (const subtype of subtypes) {
+              if (
+                property.type !== AST_NODE_TYPES.Property ||
+                property.key.type !== AST_NODE_TYPES.Identifier
+              ) {
+                continue;
+              }
+
+              const propertyKey = property.key;
+              if (
+                checkIfMethodAndReport(
+                  propertyKey,
+                  subtype.getProperty(propertyKey.name),
+                ) ||
+                (tsutils.isIntersectionType(subtype) &&
+                  tsutils
+                    .intersectionTypeParts(subtype)
+                    .some(intersectionSubtype =>
+                      checkIfMethodAndReport(
+                        propertyKey,
+                        intersectionSubtype.getProperty(propertyKey.name),
+                      ),
+                    ))
+              ) {
+                break;
+              }
+            }
+          }
         }
       },
     };

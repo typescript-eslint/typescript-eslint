@@ -284,6 +284,43 @@ class Foo {
 }
 const { bound } = new Foo();
     `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+function foo({ bound } = new Foo()) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+declare const bar: Foo;
+function foo({ bound }: Foo) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+class Bar {
+  bound = () => 'bar';
+}
+function foo({ bound }: Foo | Bar) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+type foo = ({ bound }: Foo) => void;
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+class Bar {
+  bound = () => 'bar';
+}
+function foo({ bound }: Foo & Bar) {}
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     `
 class BaseClass {
@@ -510,6 +547,193 @@ let unbound;
       errors: [
         {
           line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo = new Foo()) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = bar) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+
+  foo({ unbound }: Foo) {}
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+type foo = ({ unbound }: Foo) => void;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo | Bar) {}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: { unbound: () => string } | Foo) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+function foo({ unbound }: Foo | Bar) {}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+type foo = ({ unbound }: Foo & { foo: () => 'bar' }) => void;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+type foo = ({ unbound }: (Foo & { foo: () => 'bar' }) | Bar) => void;
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+type foo = ({ unbound }: Foo & Bar) => void;
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+
+  other = function() {}
+}
+class Bar {
+  unbound = () => {};
+}
+type foo = ({ unbound, ...rest }: Foo & Bar) => void;
+      `,
+      errors: [
+        {
+          line: 10,
           messageId: 'unbound',
         },
       ],
