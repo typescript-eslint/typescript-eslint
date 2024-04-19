@@ -1,5 +1,3 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -27,18 +25,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const rules = baseRule.create(context);
-
-    function isSeparatedNumeric(node: TSESTree.Literal): boolean {
-      return typeof node.value === 'number' && node.raw.includes('_');
-    }
-    return {
-      Literal(node: TSESTree.Literal): void {
-        rules.Literal({
-          ...node,
-          raw: isSeparatedNumeric(node) ? node.raw.replace(/_/g, '') : node.raw,
-        } as never);
-      },
-    };
+    return baseRule.create(context);
   },
 });
