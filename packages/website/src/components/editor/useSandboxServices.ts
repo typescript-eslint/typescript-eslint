@@ -91,6 +91,7 @@ export const useSandboxServices = (
 
         window.system = system;
         window.esquery = lintUtils.esquery;
+        window.visitorKeys = lintUtils.visitorKeys;
 
         const webLinter = createLinter(
           system,

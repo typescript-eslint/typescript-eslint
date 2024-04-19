@@ -19987,7 +19987,6 @@ __metadata:
     "@typescript-eslint/parser": 7.6.0
     "@typescript-eslint/rule-schema-to-typescript-types": 7.6.0
     "@typescript-eslint/types": 7.6.0
-    "@typescript-eslint/visitor-keys": 7.6.0
     "@typescript-eslint/website-eslint": 7.6.0
     clsx: ^2.1.0
     copy-webpack-plugin: ^12.0.0
