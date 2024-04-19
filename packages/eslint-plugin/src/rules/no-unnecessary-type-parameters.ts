@@ -50,10 +50,7 @@ export default createRule({
 
         for (const typeParameter of tsNode.typeParameters) {
           const identifierCounts = counts.get(typeParameter.name);
-          if (
-            !identifierCounts ||
-            identifierCounts.general + identifierCounts.return > 2
-          ) {
+          if (!identifierCounts || identifierCounts > 2) {
             continue;
           }
 
@@ -70,13 +67,6 @@ export default createRule({
   },
 });
 
-interface IdentifierCounts {
-  general: number;
-  return: number;
-}
-
-type IdentifierArea = keyof IdentifierCounts;
-
 /**
  * Count uses of type parameters in inferred return types.
  * We need to resolve and analyze the inferred return type of a function
@@ -86,8 +76,8 @@ type IdentifierArea = keyof IdentifierCounts;
 function countTypeParameterUsage(
   checker: ts.TypeChecker,
   node: NodeWithTypeParameters,
-): Map<ts.Identifier, IdentifierCounts> {
-  const counts = new Map<ts.Identifier, IdentifierCounts>();
+): Map<ts.Identifier, number> {
+  const counts = new Map<ts.Identifier, number>();
 
   if (ts.isClassLike(node)) {
     for (const typeParameter of node.typeParameters) {
@@ -111,7 +101,7 @@ function countTypeParameterUsage(
 function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
-  identifierCounts: Map<ts.Identifier, IdentifierCounts>,
+  identifierCounts: Map<ts.Identifier, number>,
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -125,18 +115,14 @@ function collectTypeParameterUsageCounts(
     ts.isConstructorDeclaration(node)
   ) {
     functionLikeType = true;
-    visitSignature(checker.getSignatureFromDeclaration(node), 'general');
+    visitSignature(checker.getSignatureFromDeclaration(node));
   }
 
   if (!functionLikeType) {
-    visitType(type, 'general', false);
+    visitType(type, false);
   }
 
-  function visitType(
-    type: ts.Type | undefined,
-    area: IdentifierArea,
-    asRepeatedType: boolean,
-  ): void {
+  function visitType(type: ts.Type | undefined, asRepeatedType: boolean): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `T = { [P in keyof T]: T }`.
     // If it's not recursive, then heck, we've seen it enough times that any
@@ -152,7 +138,7 @@ function collectTypeParameterUsageCounts(
         | undefined;
 
       if (declaration) {
-        incrementIdentifierCount(declaration.name, area, asRepeatedType);
+        incrementIdentifierCount(declaration.name, asRepeatedType);
 
         // Visiting the type of a constrained type parameter will recurse into
         // the constraint. We avoid infinite loops by visiting each only once.
@@ -161,54 +147,46 @@ function collectTypeParameterUsageCounts(
           !visitedConstraints.has(declaration.constraint)
         ) {
           visitedConstraints.add(declaration.constraint);
-          visitType(
-            checker.getTypeAtLocation(declaration.constraint),
-            area,
-            false,
-          );
+          visitType(checker.getTypeAtLocation(declaration.constraint), false);
         }
 
         if (declaration.default && !visitedDefault) {
           visitedDefault = true;
-          visitType(
-            checker.getTypeAtLocation(declaration.default),
-            area,
-            false,
-          );
+          visitType(checker.getTypeAtLocation(declaration.default), false);
         }
       }
     }
 
     // Intersections and unions like `0 | 1`
     else if (tsutils.isUnionOrIntersectionType(type)) {
-      visitTypesList(type.types, area, false);
+      visitTypesList(type.types, false);
     }
 
     // Index access types like `T[K]`
     else if (tsutils.isIndexedAccessType(type)) {
-      visitType(type.objectType, area, false);
-      visitType(type.indexType, area, false);
+      visitType(type.objectType, false);
+      visitType(type.indexType, false);
     }
 
     // Tuple types like `[K, V]`
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTupleType(type) || tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        visitType(typeArgument, area, true);
+        visitType(typeArgument, true);
       }
     }
 
     // Template literals like `a${T}b`
     else if (tsutils.isTemplateLiteralType(type)) {
       for (const subType of type.types) {
-        visitType(subType, area, false);
+        visitType(subType, false);
       }
     }
 
     // Conditional types like `T extends string ? T : never`
     else if (tsutils.isConditionalType(type)) {
-      visitType(type.checkType, area, false);
-      visitType(type.extendsType, area, false);
+      visitType(type.checkType, false);
+      visitType(type.extendsType, false);
     }
 
     // Catch-all: inferred object types like `{ K: V }`.
@@ -216,53 +194,48 @@ function collectTypeParameterUsageCounts(
     // `isTypeReference` to avoid descending into all the properties of a
     // generic interface/class, e.g. `Map<K, V>`.
     else if (tsutils.isObjectType(type)) {
-      visitSymbolsListOnce(type.getProperties(), area, false);
+      visitSymbolsListOnce(type.getProperties(), false);
 
       if (isMappedType(type)) {
-        visitType(type.typeParameter, area, false);
+        visitType(type.typeParameter, false);
       }
 
       for (const typeArgument of type.aliasTypeArguments ?? []) {
-        visitType(typeArgument, area, true);
+        visitType(typeArgument, true);
       }
 
-      visitType(type.getNumberIndexType(), area, true);
-      visitType(type.getStringIndexType(), area, true);
+      visitType(type.getNumberIndexType(), true);
+      visitType(type.getStringIndexType(), true);
 
       type.getCallSignatures().forEach(signature => {
         functionLikeType = true;
-        visitSignature(signature, area);
+        visitSignature(signature);
       });
 
       type.getConstructSignatures().forEach(signature => {
         functionLikeType = true;
-        visitSignature(signature, area);
+        visitSignature(signature);
       });
     }
 
     // Catch-all: operator types like `keyof T`
     else if (isOperatorType(type)) {
-      visitType(type.type, area, false);
+      visitType(type.type, false);
     }
 
     // Catch-all: generic type references like `Exclude<T, null>`
     else if (type.aliasTypeArguments) {
-      visitTypesList(type.aliasTypeArguments, area, true);
+      visitTypesList(type.aliasTypeArguments, true);
     }
   }
 
   function incrementIdentifierCount(
     id: ts.Identifier,
-    area: IdentifierArea,
     asRepeatedType: boolean,
   ): void {
+    const identifierCount = identifierCounts.get(id) ?? 0;
     const value = asRepeatedType ? 2 : 1;
-    const identifierCount = identifierCounts.get(id) ?? {
-      general: 0,
-      return: 0,
-    };
-    identifierCount[area] += value;
-    identifierCounts.set(id, identifierCount);
+    identifierCounts.set(id, identifierCount + value);
   }
 
   function incrementTypeCount(type: ts.Type): number {
@@ -271,37 +244,32 @@ function collectTypeParameterUsageCounts(
     return count;
   }
 
-  function visitSignature(
-    signature: ts.Signature | undefined,
-    area: IdentifierArea,
-  ): void {
+  function visitSignature(signature: ts.Signature | undefined): void {
     if (!signature) {
       return;
     }
 
     if (signature.thisParameter) {
-      visitType(checker.getTypeOfSymbol(signature.thisParameter), area, false);
+      visitType(checker.getTypeOfSymbol(signature.thisParameter), false);
     }
 
     for (const parameter of signature.parameters) {
-      visitType(checker.getTypeOfSymbol(parameter), area, false);
+      visitType(checker.getTypeOfSymbol(parameter), false);
     }
 
     for (const typeParameter of signature.getTypeParameters() ?? []) {
-      visitType(typeParameter, area, false);
+      visitType(typeParameter, false);
     }
 
     visitType(
       checker.getTypePredicateOfSignature(signature)?.type ??
         signature.getReturnType(),
-      'return',
       false,
     );
   }
 
   function visitSymbolsListOnce(
     symbols: ts.Symbol[],
-    area: IdentifierArea,
     asRepeatedType: boolean,
   ): void {
     if (visitedSymbolLists.has(symbols)) {
@@ -311,17 +279,17 @@ function collectTypeParameterUsageCounts(
     visitedSymbolLists.add(symbols);
 
     for (const symbol of symbols) {
-      visitType(checker.getTypeOfSymbol(symbol), area, asRepeatedType);
+      visitType(checker.getTypeOfSymbol(symbol), asRepeatedType);
     }
   }
 
   function visitTypesList(
     types: readonly ts.Type[] | undefined,
-    area: IdentifierArea,
+
     asRepeatedType: boolean,
   ): void {
     for (const type of types ?? []) {
-      visitType(type, area, asRepeatedType);
+      visitType(type, asRepeatedType);
     }
   }
 }
