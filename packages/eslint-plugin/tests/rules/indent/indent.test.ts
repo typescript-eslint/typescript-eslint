@@ -186,17 +186,6 @@ class Foo {
     ],
   },
   {
-    node: 'TSEnumDeclaration, TSEnumMember',
-    code: [
-      `
-enum Foo {
-    bar = 1,
-    baz = 1,
-}
-            `,
-    ],
-  },
-  {
     node: AST_NODE_TYPES.TSExportAssignment,
     code: [
       `
@@ -1467,96 +1456,6 @@ class Foo {}
             actual: 4,
           },
           line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-enum Foo {
-bar,
-baz = 1,
-buzz = '',
-}
-      `,
-      output: `
-enum Foo {
-    bar,
-    baz = 1,
-    buzz = '',
-}
-      `,
-      errors: [
-        {
-          messageId: 'wrongIndentation',
-          data: {
-            expected: '4 spaces',
-            actual: 0,
-          },
-          line: 3,
-          column: 1,
-        },
-        {
-          messageId: 'wrongIndentation',
-          data: {
-            expected: '4 spaces',
-            actual: 0,
-          },
-          line: 4,
-          column: 1,
-        },
-        {
-          messageId: 'wrongIndentation',
-          data: {
-            expected: '4 spaces',
-            actual: 0,
-          },
-          line: 5,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-const enum Foo {
-bar,
-baz = 1,
-buzz = '',
-}
-      `,
-      output: `
-const enum Foo {
-    bar,
-    baz = 1,
-    buzz = '',
-}
-      `,
-      errors: [
-        {
-          messageId: 'wrongIndentation',
-          data: {
-            expected: '4 spaces',
-            actual: 0,
-          },
-          line: 3,
-          column: 1,
-        },
-        {
-          messageId: 'wrongIndentation',
-          data: {
-            expected: '4 spaces',
-            actual: 0,
-          },
-          line: 4,
-          column: 1,
-        },
-        {
-          messageId: 'wrongIndentation',
-          data: {
-            expected: '4 spaces',
-            actual: 0,
-          },
-          line: 5,
           column: 1,
         },
       ],

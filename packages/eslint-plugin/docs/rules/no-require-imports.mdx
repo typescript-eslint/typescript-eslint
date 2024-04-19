@@ -45,14 +45,14 @@ With `{allow: ['/package\\.json$']}`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts
+```ts option='{ "allow": ["/package.json$"] }'
 console.log(require('../data.json').version);
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts
+```ts option='{ "allow": ["/package.json$"] }'
 console.log(require('../package.json').version);
 ```
 

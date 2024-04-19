@@ -10,7 +10,6 @@ export const defaultParseSettings: ParseSettings = {
   comment: true,
   comments: [],
   debugLevel: new Set(),
-  DEPRECATED__createDefaultProgram: false,
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   errorOnUnknownASTType: false,
   EXPERIMENTAL_projectService: undefined,

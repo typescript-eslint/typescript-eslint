@@ -249,8 +249,9 @@ export default createRule<Options, MessageIds>({
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
-          properties: (
-            node.members as (TSESTree.TSEnumMember | TSESTree.TypeElement)[]
+          properties: (node.type === AST_NODE_TYPES.TSEnumDeclaration
+            ? node.body.members
+            : node.members
           ).map(
             member =>
               TSPropertySignatureToProperty(member) as TSESTree.Property,
@@ -382,6 +383,7 @@ export default createRule<Options, MessageIds>({
       TSMappedType(node: TSESTree.TSMappedType) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const squareBracketStart = context.sourceCode.getTokenBefore(
+          // eslint-disable-next-line deprecation/deprecation
           node.typeParameter,
         )!;
 
@@ -392,6 +394,7 @@ export default createRule<Options, MessageIds>({
             {
               parent: node,
               type: AST_NODE_TYPES.Property,
+              // eslint-disable-next-line deprecation/deprecation
               key: node.typeParameter as any,
               value: node.typeAnnotation as any,
 
