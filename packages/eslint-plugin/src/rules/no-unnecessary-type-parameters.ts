@@ -52,10 +52,7 @@ export default createRule({
           const identifierCounts = counts.get(typeParameter.name);
           if (
             !identifierCounts ||
-            identifierCounts.general > 2 ||
-            identifierCounts.return > 2 ||
-            (identifierCounts.general === 2 && identifierCounts.return) ||
-            (identifierCounts.return === 2 && identifierCounts.general)
+            identifierCounts.general + identifierCounts.return > 2
           ) {
             continue;
           }
