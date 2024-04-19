@@ -25,6 +25,49 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
         },
         typeAnnotation: TSMappedType {
           type: 'TSMappedType',
+-         constraint: TSTypeOperator {
+-           type: 'TSTypeOperator',
+-           operator: 'keyof',
+-           typeAnnotation: TSTypeReference {
+-             type: 'TSTypeReference',
+-             typeName: Identifier {
+-               type: 'Identifier',
+-               decorators: Array [],
+-               name: 'T',
+-               optional: false,
+-
+-               range: [104, 105],
+-               loc: {
+-                 start: { column: 14, line: 4 },
+-                 end: { column: 15, line: 4 },
+-               },
+-             },
+-
+-             range: [104, 105],
+-             loc: {
+-               start: { column: 14, line: 4 },
+-               end: { column: 15, line: 4 },
+-             },
+-           },
+-
+-           range: [98, 105],
+-           loc: {
+-             start: { column: 8, line: 4 },
+-             end: { column: 15, line: 4 },
+-           },
+-         },
+-         key: Identifier {
+-           type: 'Identifier',
+-           decorators: Array [],
+-           name: 'P',
+-           optional: false,
+-
+-           range: [93, 94],
+-           loc: {
+-             start: { column: 3, line: 4 },
+-             end: { column: 4, line: 4 },
+-           },
+-         },
           nameType: TSLiteralType {
             type: 'TSLiteralType',
             literal: Literal {
@@ -96,62 +139,45 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
               end: { column: 29, line: 4 },
             },
           },
-          typeParameter: TSTypeParameter {
-            type: 'TSTypeParameter',
--           const: false,
-            constraint: TSTypeOperator {
-              type: 'TSTypeOperator',
-              operator: 'keyof',
-              typeAnnotation: TSTypeReference {
-                type: 'TSTypeReference',
-                typeName: Identifier {
-                  type: 'Identifier',
--                 decorators: Array [],
-                  name: 'T',
--                 optional: false,
-
-                  range: [104, 105],
-                  loc: {
-                    start: { column: 14, line: 4 },
-                    end: { column: 15, line: 4 },
-                  },
-                },
-
-                range: [104, 105],
-                loc: {
-                  start: { column: 14, line: 4 },
-                  end: { column: 15, line: 4 },
-                },
-              },
-
-              range: [98, 105],
-              loc: {
-                start: { column: 8, line: 4 },
-                end: { column: 15, line: 4 },
-              },
-            },
--           in: false,
--           name: Identifier {
--             type: 'Identifier',
--             decorators: Array [],
--             name: 'P',
--             optional: false,
--
--             range: [93, 94],
--             loc: {
--               start: { column: 3, line: 4 },
--               end: { column: 4, line: 4 },
--             },
--           },
--           out: false,
++         typeParameter: TSTypeParameter {
++           type: 'TSTypeParameter',
++           constraint: TSTypeOperator {
++             type: 'TSTypeOperator',
++             operator: 'keyof',
++             typeAnnotation: TSTypeReference {
++               type: 'TSTypeReference',
++               typeName: Identifier {
++                 type: 'Identifier',
++                 name: 'T',
++
++                 range: [104, 105],
++                 loc: {
++                   start: { column: 14, line: 4 },
++                   end: { column: 15, line: 4 },
++                 },
++               },
++
++               range: [104, 105],
++               loc: {
++                 start: { column: 14, line: 4 },
++                 end: { column: 15, line: 4 },
++               },
++             },
++
++             range: [98, 105],
++             loc: {
++               start: { column: 8, line: 4 },
++               end: { column: 15, line: 4 },
++             },
++           },
 +           name: 'P',
-
-            range: [93, 105],
-            loc: {
-              start: { column: 3, line: 4 },
-              end: { column: 15, line: 4 },
-            },
-          },
++
++           range: [93, 105],
++           loc: {
++             start: { column: 3, line: 4 },
++             end: { column: 15, line: 4 },
++           },
++         },
 
           range: [88, 122],
           loc: {
