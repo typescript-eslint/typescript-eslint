@@ -135,7 +135,7 @@ async function main(): Promise<void> {
 
   console.log(
     markdownTable([
-      ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style', 'Comment'],
+      ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style'],
       ...Object.entries(rules).map(([ruleName, { meta }]) => {
         const { deprecated } = meta;
         const { extendsBaseRule, recommended, requiresTypeChecking } =
@@ -149,7 +149,6 @@ async function main(): Promise<void> {
           recommended === 'recommended' ? '🟩' : '',
           recommended === 'strict' ? '🔵' : '',
           recommended === 'stylistic' ? '🔸' : '',
-          meta.type === 'layout' ? 'layout 📐' : '(todo)',
         ];
       }),
     ]),
