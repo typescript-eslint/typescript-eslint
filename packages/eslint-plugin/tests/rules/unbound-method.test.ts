@@ -724,7 +724,7 @@ type foo = ({ unbound }: Foo & Bar) => void;
 class Foo {
   unbound = function () {};
 
-  other = function() {}
+  other = function () {};
 }
 class Bar {
   unbound = () => {};
