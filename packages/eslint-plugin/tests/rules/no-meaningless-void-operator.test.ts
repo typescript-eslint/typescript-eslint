@@ -65,6 +65,7 @@ foo();
     },
     {
       options: [{ checkNever: true }],
+      output: null,
       code: `
 function bar(x: never) {
   void x;

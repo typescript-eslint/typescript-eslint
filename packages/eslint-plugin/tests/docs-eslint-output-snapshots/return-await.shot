@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 1`] = `
+"Incorrect
+Options: "in-try-catch"
+
+async function invalidInTryCatch1() {
+  try {
+    return Promise.resolve('try');
+           ~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+  } catch (e) {}
+}
+
+async function invalidInTryCatch2() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return await Promise.resolve('catch');
+  }
+}
+
+async function invalidInTryCatch3() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return Promise.resolve('catch');
+           ~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+  } finally {
+    console.log('cleanup');
+  }
+}
+
+async function invalidInTryCatch4() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    throw new Error('error2');
+  } finally {
+    return await Promise.resolve('finally');
+  }
+}
+
+async function invalidInTryCatch5() {
+  return await Promise.resolve('try');
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
+}
+
+async function invalidInTryCatch6() {
+  return await 'value';
+         ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 2`] = `
+"Correct
+Options: "in-try-catch"
+
+async function validInTryCatch1() {
+  try {
+    return await Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validInTryCatch2() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return Promise.resolve('catch');
+  }
+}
+
+async function validInTryCatch3() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    return await Promise.resolve('catch');
+  } finally {
+    console.log('cleanup');
+  }
+}
+
+async function validInTryCatch4() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    throw new Error('error2');
+  } finally {
+    return Promise.resolve('finally');
+  }
+}
+
+async function validInTryCatch5() {
+  return Promise.resolve('try');
+}
+
+async function validInTryCatch6() {
+  return 'value';
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: "always"
+
+async function invalidAlways1() {
+  try {
+    return Promise.resolve('try');
+           ~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+  } catch (e) {}
+}
+
+async function invalidAlways2() {
+  return Promise.resolve('try');
+         ~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+}
+
+async function invalidAlways3() {
+  return await 'value';
+         ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 4`] = `
+"Correct
+Options: "always"
+
+async function validAlways1() {
+  try {
+    return await Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validAlways2() {
+  return await Promise.resolve('try');
+}
+
+async function validAlways3() {
+  return 'value';
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: "never"
+
+async function invalidNever1() {
+  try {
+    return await Promise.resolve('try');
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
+  } catch (e) {}
+}
+
+async function invalidNever2() {
+  return await Promise.resolve('try');
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
+}
+
+async function invalidNever3() {
+  return await 'value';
+         ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 6`] = `
+"Correct
+Options: "never"
+
+async function validNever1() {
+  try {
+    return Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validNever2() {
+  return Promise.resolve('try');
+}
+
+async function validNever3() {
+  return 'value';
+}
+"
+`;
