@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "7.5.0",
+  "version": "7.7.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -68,21 +68,21 @@
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.0",
-    "@types/json-schema": "^7.0.12",
-    "@types/semver": "^7.5.0",
-    "@typescript-eslint/scope-manager": "7.5.0",
-    "@typescript-eslint/types": "7.5.0",
-    "@typescript-eslint/typescript-estree": "7.5.0",
-    "semver": "^7.5.4"
+    "@types/json-schema": "^7.0.15",
+    "@types/semver": "^7.5.8",
+    "@typescript-eslint/scope-manager": "7.7.0",
+    "@typescript-eslint/types": "7.7.0",
+    "@typescript-eslint/typescript-estree": "7.7.0",
+    "semver": "^7.6.0"
   },
   "peerDependencies": {
     "eslint": "^8.56.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "7.5.0",
+    "@typescript-eslint/parser": "7.7.0",
     "downlevel-dts": "*",
     "jest": "29.7.0",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*"
   },

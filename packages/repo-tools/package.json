@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "7.5.0",
+  "version": "7.7.0",
   "private": true,
   "scripts": {
     "//": "NOTE: intentionally no build step in this package",
@@ -19,7 +19,7 @@
     "@nx/devkit": "*",
     "cross-fetch": "*",
     "execa": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "semver": "7.6.0",
     "tmp": "*",
