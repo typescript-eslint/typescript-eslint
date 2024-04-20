@@ -212,7 +212,7 @@ jobs:
           CI: true
 
       - name: Store coverage for uploading
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.package }}-coverage
