@@ -1240,6 +1240,31 @@ const x: Foo = {
       ],
     },
     {
+      code: `
+function foo(): any {
+  class Foo {
+    foo = () => () => {
+      return console.log('foo');
+    };
+  }
+}
+      `,
+      options: [
+        {
+          allowTypedFunctionExpressions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          endLine: 4,
+          column: 20,
+          endColumn: 22,
+        },
+      ],
+    },
+    {
       code: '() => () => {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
