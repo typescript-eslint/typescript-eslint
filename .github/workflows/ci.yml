@@ -202,19 +202,19 @@ jobs:
       # packages don't collect coverage on purpose, so forcing `--coverage=true`
       # would override the config
       - name: Run unit tests with coverage for ${{ matrix.package }}
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         run: npx nx test ${{ matrix.package }}
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
-        if: env.PRIMARY_NODE_VERSION != matrix.node-version
+        if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
         run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
 
       - name: Store coverage for uploading
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version
-        uses: actions/upload-artifact@v3
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.package }}-coverage
           path: packages/${{ matrix.package }}/coverage/lcov.info
