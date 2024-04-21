@@ -68,7 +68,7 @@ describe('typeFlagUtils', () => {
         ['type Test = string | number;', ts.TypeFlags.String],
         ['type Test = string & { foo: string };', ts.TypeFlags.Intersection],
       ])(
-        'when code is "%s" and flagsToCheck is %d , returns is true',
+        'when code is "%s" and flagsToCheck is %d , returns true',
         runTestIsTypeFlagSet,
       );
     });
@@ -86,7 +86,7 @@ describe('typeFlagUtils', () => {
         ['type Test = string | number;', ts.TypeFlags.Any],
         ['type Test = string & { foo: string }', ts.TypeFlags.String],
       ])(
-        'when code is "%s" and flagsToCheck is %d , returns is false',
+        'when code is "%s" and flagsToCheck is %d , returns false',
         runTestIsNotTypeFlagSet,
       );
     });
