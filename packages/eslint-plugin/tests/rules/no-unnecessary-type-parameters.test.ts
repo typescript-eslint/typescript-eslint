@@ -191,14 +191,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     `
-      function ListComponent<T>(props: { items: T[]; onSelect: (item: T) => void }) {}
+      function ItemComponent<T>(props: { item: T; onSelect: (item: T) => void }) {}
     `,
     `
       interface ItemProps<T> {
-        items: readonly T[];
+        item: readonly T;
         onSelect: (item: T) => void;
       }
-      function ListComponent<T>(props: ItemProps<T>) {}
+      function ItemComponent<T>(props: ItemProps<T>) {}
     `,
     `
       function useFocus<T extends HTMLOrSVGElement>(): [
@@ -260,6 +260,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       declare function useFocus<T extends HTMLOrSVGElement>(): {
         ref: React.RefObject<T>;
       };
+    `,
+    `
+      interface TwoMethods<T> {
+        a(x: T): void;
+        b(x: T): void;
+      }
+
+      declare function two<T>(props: TwoMethods<T>): void;
     `,
     `
       type Obj = { a: string };
@@ -434,7 +442,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       ],
     },
     {
-      // function ListComponent<T>(props: { items: T[]; onSelect: (item: T) => void }) {}
       code: `
         function parseYAML<T>(input: string): T {
           return input as any as T;
