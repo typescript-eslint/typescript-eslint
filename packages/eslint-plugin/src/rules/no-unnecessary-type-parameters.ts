@@ -123,6 +123,11 @@ function collectTypeParameterUsageCounts(
   }
 
   function visitType(type: ts.Type | undefined, asRepeatedType: boolean): void {
+    // console.log(
+    //   'visitType',
+    //   type && checker.typeToString(type),
+    //   asRepeatedType,
+    // );
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
     // If it's not recursive, then heck, we've seen it enough times that any
@@ -159,13 +164,13 @@ function collectTypeParameterUsageCounts(
 
     // Intersections and unions like `0 | 1`
     else if (tsutils.isUnionOrIntersectionType(type)) {
-      visitTypesList(type.types, false);
+      visitTypesList(type.types, asRepeatedType);
     }
 
     // Index access types like `T[K]`
     else if (tsutils.isIndexedAccessType(type)) {
-      visitType(type.objectType, false);
-      visitType(type.indexType, false);
+      visitType(type.objectType, asRepeatedType);
+      visitType(type.indexType, asRepeatedType);
     }
 
     // Tuple types like `[K, V]`
@@ -179,14 +184,14 @@ function collectTypeParameterUsageCounts(
     // Template literals like `a${T}b`
     else if (tsutils.isTemplateLiteralType(type)) {
       for (const subType of type.types) {
-        visitType(subType, false);
+        visitType(subType, asRepeatedType);
       }
     }
 
     // Conditional types like `T extends string ? T : never`
     else if (tsutils.isConditionalType(type)) {
-      visitType(type.checkType, false);
-      visitType(type.extendsType, false);
+      visitType(type.checkType, asRepeatedType);
+      visitType(type.extendsType, asRepeatedType);
     }
 
     // Catch-all: inferred object types like `{ K: V }`.
@@ -220,7 +225,7 @@ function collectTypeParameterUsageCounts(
 
     // Catch-all: operator types like `keyof T`
     else if (isOperatorType(type)) {
-      visitType(type.type, false);
+      visitType(type.type, asRepeatedType);
     }
 
     // Catch-all: generic type references like `Exclude<T, null>`
@@ -285,7 +290,6 @@ function collectTypeParameterUsageCounts(
 
   function visitTypesList(
     types: readonly ts.Type[] | undefined,
-
     asRepeatedType: boolean,
   ): void {
     for (const type of types ?? []) {

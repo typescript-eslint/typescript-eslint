@@ -28,8 +28,13 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
     `
       class ClassyArray<T> {
-        arr1: T[];
-        arr2: T[];
+        arr: T[];
+      }
+    `,
+    `
+      class ClassyArray<T> {
+        value1: T;
+        value2: T;
       }
     `,
     `
@@ -213,6 +218,26 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         getResult: (t: T) => () => [U | undefined],
       ): () => [U | undefined];
     `,
+    `
+      function getData<T>(url: string): Promise<T | null> {
+        return Promise.resolve(null);
+      }
+    `,
+    `
+      function getData<T>(url: string): Promise<T extends null ? T : null> {
+        return Promise.resolve(null);
+      }
+    `,
+    `
+      function getData<T extends string>(url: string): Promise<\`a\${T}b\`> {
+        return Promise.resolve(null);
+      }
+    `,
+    `
+      async function getData<T>(url: string): Promise<T | null> {
+        return null;
+      }
+    `,
     'declare function get(): void;',
     'declare function get<T>(param: T[]): T;',
     'declare function box<T>(val: T): { val: T };',
@@ -356,6 +381,17 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
+        declare class C<T, U> {
+          method(param: T): U;
+        }
+      `,
+      errors: [
+        { messageId: 'sole', data: { name: 'T' } },
+        { messageId: 'sole', data: { name: 'U' } },
+      ],
+    },
+    {
+      code: `
         declare class C {
           method<T, U>(param: T): U;
         }
@@ -448,9 +484,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
-        interface Lengthy {
-          length: number;
-        }
         function getLength<T extends { length: number }>(x: T) {
           return x.length;
         }
