@@ -254,6 +254,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeMap<K, V>(): Map<K, V>;',
     'declare function makeMap<K, V>(): [Map<K, V>];',
     'declare function arrayOfPairs<T>(): [T, T][];',
+    'declare function fetchJson<T>(url: string): Promise<T>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
