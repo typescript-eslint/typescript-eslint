@@ -13,7 +13,6 @@ import {
   DEPRECATED_RULE_EMOJI,
   EXTENSION_RULE_EMOJI,
   FIXABLE_EMOJI,
-  FORMATTING_RULE_EMOJI,
   RECOMMENDED_CONFIG_EMOJI,
   STRICT_CONFIG_EMOJI,
   STYLISTIC_CONFIG_EMOJI,
@@ -47,10 +46,9 @@ function RuleRow({
   if (!rule.docs?.url) {
     return null;
   }
-  const { fixable, hasSuggestions, type, deprecated } = rule;
+  const { fixable, hasSuggestions, deprecated } = rule;
   const { requiresTypeChecking, extendsBaseRule } = rule.docs;
   const actualRecommended = getActualRecommended(rule);
-  const formatting = type === 'layout';
   return (
     <tr>
       <td>
@@ -103,12 +101,6 @@ function RuleRow({
         title={extendsBaseRule ? 'extends base rule' : undefined}
       >
         {extendsBaseRule ? EXTENSION_RULE_EMOJI : ''}
-      </td>
-      <td
-        className={styles.attrCol}
-        title={formatting ? 'formatting' : undefined}
-      >
-        {formatting ? FORMATTING_RULE_EMOJI : ''}
       </td>
       <td
         className={styles.attrCol}
@@ -191,7 +183,6 @@ export default function RulesTable(): React.JSX.Element {
           match(filters.suggestions, !!r.hasSuggestions),
           match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
           match(filters.extension, !!r.docs?.extendsBaseRule),
-          match(filters.formatting, r.type === 'layout'),
           match(filters.deprecated, !!r.deprecated),
         ].filter((o): o is boolean => o !== undefined);
         return opinions.every(o => o);
@@ -247,11 +238,6 @@ export default function RulesTable(): React.JSX.Element {
             label={`${EXTENSION_RULE_EMOJI} extension`}
           />
           <RuleFilterCheckBox
-            mode={filters.formatting}
-            setMode={(newMode): void => changeFilter('formatting', newMode)}
-            label={`${FORMATTING_RULE_EMOJI} formatting`}
-          />
-          <RuleFilterCheckBox
             mode={filters.deprecated}
             setMode={(newMode): void => changeFilter('deprecated', newMode)}
             label={`${DEPRECATED_RULE_EMOJI} deprecated`}
@@ -287,11 +273,6 @@ export default function RulesTable(): React.JSX.Element {
               </div>
             </th>
             <th className={styles.attrCol}>
-              <div title="Whether the rule has to do with formatting.">
-                {FORMATTING_RULE_EMOJI}
-              </div>
-            </th>
-            <th className={styles.attrCol}>
               <div title="Whether the rule is deprecated.">
                 {DEPRECATED_RULE_EMOJI}
               </div>
@@ -316,7 +297,6 @@ type FilterCategory =
   | 'suggestions'
   | 'typeInformation'
   | 'extension'
-  | 'formatting'
   | 'deprecated';
 type FiltersState = Record<FilterCategory, FilterMode>;
 const neutralFiltersState: FiltersState = {
@@ -327,7 +307,6 @@ const neutralFiltersState: FiltersState = {
   suggestions: 'neutral',
   typeInformation: 'neutral',
   extension: 'neutral',
-  formatting: 'neutral',
   deprecated: 'neutral',
 };
 

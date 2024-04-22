@@ -321,7 +321,7 @@ export default tseslint.config(
   },
   // Added lines start
   {
-    files: ['*.js'],
+    files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
   },
   // Added lines end
@@ -346,7 +346,7 @@ module.exports = {
   // Added lines start
   overrides: [
     {
-      files: ['*.js'],
+      files: ['**/*.js'],
       extends: ['plugin:@typescript-eslint/disable-type-checked'],
     },
   ],

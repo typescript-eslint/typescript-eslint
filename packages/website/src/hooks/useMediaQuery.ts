@@ -29,7 +29,7 @@ const useMediaQuery = (mediaQuery: string): boolean => {
     }
 
     documentChangeHandler();
-    return () => {
+    return (): void => {
       try {
         mediaQueryList.removeEventListener('change', documentChangeHandler);
       } catch {
