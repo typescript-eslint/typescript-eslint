@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export {
-  // TODO(v9) - remove this in the next major
+  // TODO(eslint@v10) - remove this in the next major
   /**
    * @deprecated - use ESLint instead
    */
