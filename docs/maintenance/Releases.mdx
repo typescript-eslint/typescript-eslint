@@ -23,9 +23,9 @@ Per [Users > Releases > Major Releases](../users/Releases.mdx#major-releases), w
    - `v${major}`
    - `v${major}-canary-auto-release`
 1. Raise a PR from `v${major}-canary-auto-release` to `main` modifying the [`ci.yml` workflow](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml) [example: [chore: add auto-canary release for v6](https://github.com/typescript-eslint/typescript-eslint/pull/5883)]:
-   - Under `pushes:` at the beginning of the file, add an `- v${major}` list item.
+   - Under `push:` > `branches:` at the beginning of the file, add an `- v${major}` list item.
    - Add a `publish_canary_version_v${major}` step the same as `publish_canary_version` except:
-     - Add the condition: `if: github.ref == 'refs/heads/v${major}'`.
+     - Change the `if` condition's branch check to: `if: github.ref == 'refs/heads/v${major}'`.
      - Its publish command should be `npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}`.
    - Merge this into `main` once reviewed and rebase the `v${major}` branch.
 
