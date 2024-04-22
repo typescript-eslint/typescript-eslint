@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import os from 'node:os';
+
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
@@ -46,10 +48,10 @@ export function createProjectService(
     logger: {
       close: doNothing,
       endGroup: doNothing,
-      getLogFileName: () => undefined,
-      hasLevel: () => false,
+      getLogFileName: (): undefined => undefined,
+      hasLevel: (): boolean => false,
       info: doNothing,
-      loggingEnabled: () => false,
+      loggingEnabled: (): boolean => false,
       msg: doNothing,
       perftrc: doNothing,
       startGroup: doNothing,
@@ -57,6 +59,42 @@ export function createProjectService(
     session: undefined,
     jsDocParsingMode,
   });
+
+  if (typeof options === 'object' && options.defaultProject) {
+    let configRead;
+
+    try {
+      configRead = tsserver.readConfigFile(
+        options.defaultProject,
+        system.readFile,
+      );
+    } catch (error) {
+      throw new Error(
+        `Could not parse default project '${options.defaultProject}': ${(error as Error).message}`,
+      );
+    }
+
+    if (configRead.error) {
+      throw new Error(
+        `Could not read default project '${options.defaultProject}': ${tsserver.formatDiagnostic(
+          configRead.error,
+          {
+            getCurrentDirectory: system.getCurrentDirectory,
+            getCanonicalFileName: fileName => fileName,
+            getNewLine: () => os.EOL,
+          },
+        )}`,
+      );
+    }
+
+    service.setCompilerOptionsForInferredProjects(
+      (
+        configRead.config as {
+          compilerOptions: ts.server.protocol.InferredProjectCompilerOptions;
+        }
+      ).compilerOptions,
+    );
+  }
 
   return {
     allowDefaultProjectForFiles:

@@ -32,8 +32,6 @@ export = {
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
     '@typescript-eslint/no-invalid-void-type': 'error',
-    'no-loss-of-precision': 'off',
-    '@typescript-eslint/no-loss-of-precision': 'error',
     '@typescript-eslint/no-meaningless-void-operator': 'error',
     '@typescript-eslint/no-misused-new': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
