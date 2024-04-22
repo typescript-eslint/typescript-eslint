@@ -1,5 +1,4 @@
 import path from 'path';
-
 import { inferSingleRun } from '../../src/parseSettings/inferSingleRun';
 
 describe('inferSingleRun', () => {
