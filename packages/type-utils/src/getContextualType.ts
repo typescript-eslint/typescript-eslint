@@ -24,7 +24,11 @@ export function getContextualType(
     return parent.type ? checker.getTypeFromTypeNode(parent.type) : undefined;
   } else if (ts.isJsxExpression(parent)) {
     return checker.getContextualType(parent);
-  } else if (ts.isPropertyAssignment(parent) && ts.isIdentifier(node)) {
+  } else if (
+    ts.isIdentifier(node) &&
+    (ts.isPropertyAssignment(parent) ||
+      ts.isShorthandPropertyAssignment(parent))
+  ) {
     return checker.getContextualType(node);
   } else if (
     ts.isBinaryExpression(parent) &&
