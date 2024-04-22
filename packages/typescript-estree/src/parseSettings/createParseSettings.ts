@@ -68,9 +68,6 @@ export function createParseSettings(
     codeFullText,
     comment: tsestreeOptions.comment === true,
     comments: [],
-    DEPRECATED__createDefaultProgram:
-      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      tsestreeOptions.DEPRECATED__createDefaultProgram === true,
     debugLevel:
       tsestreeOptions.debugLevel === true
         ? new Set(['typescript-eslint'])

@@ -8,7 +8,14 @@ import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
-export interface RuleMetaDataDocs {
+export interface RuleRecommendationAcrossConfigs<
+  Options extends readonly unknown[],
+> {
+  recommended: true;
+  strict: Partial<Options>;
+}
+
+export interface RuleMetaDataDocs<Options extends readonly unknown[]> {
   /**
    * Concise description of the rule
    */
@@ -18,7 +25,7 @@ export interface RuleMetaDataDocs {
    * Used by the build tools to generate the recommended and strict configs.
    * Exclude to not include it as a recommendation.
    */
-  recommended?: RuleRecommendation;
+  recommended?: RuleRecommendation | RuleRecommendationAcrossConfigs<Options>;
   /**
    * The URL of the rule's docs
    */
@@ -36,7 +43,10 @@ export interface RuleMetaDataDocs {
   extendsBaseRule?: boolean | string;
 }
 
-export interface RuleMetaData<MessageIds extends string> {
+export interface RuleMetaData<
+  MessageIds extends string,
+  Options extends readonly unknown[],
+> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -44,7 +54,7 @@ export interface RuleMetaData<MessageIds extends string> {
   /**
    * Documentation for the rule, unnecessary for custom rules/plugins
    */
-  docs?: RuleMetaDataDocs;
+  docs?: RuleMetaDataDocs<Options>;
   /**
    * The fixer category. Omit if there is no fixer
    */
@@ -63,9 +73,8 @@ export interface RuleMetaData<MessageIds extends string> {
    * The type of rule.
    * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
    * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
-   * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
-  type: 'layout' | 'problem' | 'suggestion';
+  type: 'problem' | 'suggestion';
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
@@ -630,7 +639,7 @@ export interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<MessageIds>;
+  meta: RuleMetaData<MessageIds, Options>;
 
   /**
    * Function which returns an object with methods that ESLint calls to “visit”
@@ -658,7 +667,7 @@ export type LooseRuleDefinition =
   // TODO - ESLint v9 will remove support for RuleCreateFunction
   | LooseRuleCreateFunction
   | {
-      meta?: object;
+      meta?: object | undefined;
       create: LooseRuleCreateFunction;
     };
 /*

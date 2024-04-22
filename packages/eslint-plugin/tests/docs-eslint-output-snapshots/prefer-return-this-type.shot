@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-return-this-type.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+class Foo {
+  f1(): Foo {
+        ~~~ Use \`this\` type instead.
+    return this;
+  }
+  f2 = (): Foo => {
+           ~~~ Use \`this\` type instead.
+    return this;
+  };
+  f3(): Foo | undefined {
+    return Math.random() > 0.5 ? this : undefined;
+  }
+}
+"
+`;
+
+exports[`Validating rule docs prefer-return-this-type.mdx code examples ESLint output 2`] = `
+"Correct
+
+class Foo {
+  f1(): this {
+    return this;
+  }
+  f2() {
+    return this;
+  }
+  f3 = (): this => {
+    return this;
+  };
+  f4 = () => {
+    return this;
+  };
+}
+
+class Base {}
+class Derived extends Base {
+  f(): Base {
+    return this;
+  }
+}
+"
+`;

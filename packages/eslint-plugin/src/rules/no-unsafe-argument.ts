@@ -1,10 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 import {
   createRule,
   getParserServices,
+  isRestParameterDeclaration,
   isTypeAnyArrayType,
   isTypeAnyType,
   isUnsafeAssignment,
@@ -59,7 +60,7 @@ class FunctionSignature {
       const type = checker.getTypeOfSymbolAtLocation(param, tsNode);
 
       const decl = param.getDeclarations()?.[0];
-      if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
+      if (decl && isRestParameterDeclaration(decl)) {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {

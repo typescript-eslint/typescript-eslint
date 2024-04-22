@@ -49,6 +49,22 @@ describe('parser', () => {
     });
   });
 
+  it('overrides `errorOnTypeScriptSyntacticAndSemanticIssues: false` when provided `errorOnTypeScriptSyntacticAndSemanticIssues: false`', () => {
+    const code = 'const valid = true;';
+    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    parseForESLint(code, { errorOnTypeScriptSyntacticAndSemanticIssues: true });
+    expect(spy).toHaveBeenCalledWith(code, {
+      comment: true,
+      ecmaFeatures: {},
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      jsx: false,
+      loc: true,
+      range: true,
+      sourceType: 'script',
+      tokens: true,
+    });
+  });
+
   it('sets `loggerFn: false` on typescript-estree when provided `warnOnUnsupportedTypeScriptVersion: false`', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
@@ -56,6 +72,7 @@ describe('parser', () => {
     expect(spy).toHaveBeenCalledWith(code, {
       comment: true,
       ecmaFeatures: {},
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
       jsx: false,
       loc: true,
       loggerFn: false,
@@ -73,6 +90,7 @@ describe('parser', () => {
     expect(spy).toHaveBeenCalledWith(code, {
       comment: true,
       ecmaFeatures: {},
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
       jsx: false,
       loc: true,
       range: true,

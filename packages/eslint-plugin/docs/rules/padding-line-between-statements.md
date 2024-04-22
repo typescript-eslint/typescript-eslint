@@ -1,33 +1,11 @@
----
-description: 'Require or disallow padding lines between statements.'
----
+:::danger Deprecated
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/padding-line-between-statements** for documentation.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-This rule extends the base [`eslint/padding-line-between-statements`](https://eslint.org/docs/rules/padding-line-between-statements) rule.
-It adds support for TypeScript constructs such as `interface` and `type`.
+:::
 
-## Options
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
 
-In addition to options provided by ESLint, `interface` and `type` can be used as statement types.
-
-For example, to add blank lines before interfaces and type definitions:
-
-```jsonc
-{
-  // Example - Add blank lines before interface and type definitions.
-  "padding-line-between-statements": "off",
-  "@typescript-eslint/padding-line-between-statements": [
-    "error",
-    {
-      "blankLine": "always",
-      "prev": "*",
-      "next": ["interface", "type"],
-    },
-  ],
-}
-```
-
-**Note:** ESLint `cjs-export` and `cjs-import` statement types are renamed to `exports` and `require` respectively.
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

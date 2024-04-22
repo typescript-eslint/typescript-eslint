@@ -585,6 +585,7 @@ interface Foo {
           }
         }
       `,
+      output: null,
       errors: [
         {
           messageId: 'errorMethod',

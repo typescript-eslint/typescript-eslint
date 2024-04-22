@@ -64,7 +64,6 @@ export default tseslint.config(
 
   // extends ...
   eslint.configs.recommended,
-  ...compat.config(eslintPluginPlugin.configs.recommended),
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
@@ -83,7 +82,6 @@ export default tseslint.config(
           // in the rare case that we do - just need to manually restart their IDE.
           glob: 'Infinity',
         },
-        sourceType: 'module',
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -176,6 +174,8 @@ export default tseslint.config(
       //
 
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+      '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
+        'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
@@ -347,7 +347,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
-      'eslint-plugin/consistent-output': 'off', // Might eventually be removed from `eslint-plugin/recommended`: https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/284
       'jest/no-disabled-tests': 'error',
       'jest/no-focused-tests': 'error',
       'jest/no-alias-methods': 'error',
@@ -413,6 +412,8 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
     },
+
+    extends: [...compat.config(eslintPluginPlugin.configs.recommended)],
   },
   {
     files: [

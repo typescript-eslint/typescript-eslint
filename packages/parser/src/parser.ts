@@ -119,13 +119,18 @@ function parseForESLint(
   );
 
   const tsestreeOptions = {
-    comment: true,
     jsx: validateBoolean(parserOptions.ecmaFeatures.jsx),
+    ...(!warnOnUnsupportedTypeScriptVersion && { loggerFn: false }),
+    ...parserOptions,
+    // Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
+    // comment, loc, range, and tokens should always be set for ESLint usage
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8347
+    comment: true,
     loc: true,
     range: true,
     tokens: true,
-    ...(!warnOnUnsupportedTypeScriptVersion && { loggerFn: false }),
-    ...parserOptions,
   } satisfies TSESTreeOptions;
 
   const analyzeOptions: AnalyzeOptions = {
@@ -139,7 +144,6 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, tsestreeOptions);
   ast.sourceType = parserOptions.sourceType;
 
-  let emitDecoratorMetadata = parserOptions.emitDecoratorMetadata === true;
   if (services.program) {
     // automatically apply the options configured for the program
     const compilerOptions = services.program.getCompilerOptions();
@@ -170,16 +174,15 @@ function parseForESLint(
         analyzeOptions.jsxFragmentName,
       );
     }
-    if (compilerOptions.emitDecoratorMetadata === true) {
-      emitDecoratorMetadata = true;
-    }
-  }
-
-  if (emitDecoratorMetadata) {
-    analyzeOptions.emitDecoratorMetadata = true;
   }
 
   const scopeManager = analyze(ast, analyzeOptions);
+
+  // if not defined - override from the parserOptions
+  services.emitDecoratorMetadata ??=
+    parserOptions.emitDecoratorMetadata === true;
+  services.experimentalDecorators ??=
+    parserOptions.experimentalDecorators === true;
 
   return { ast, services, scopeManager, visitorKeys };
 }

@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/stylistic-type-checked-only',
     rules: {
       'dot-notation': 'off',
       '@typescript-eslint/dot-notation': 'error',

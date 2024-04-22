@@ -10,7 +10,10 @@ import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
-    '@typescript-eslint/ban-ts-comment': 'error',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { minimumDescriptionLength: 10 },
+    ],
     '@typescript-eslint/ban-types': 'error',
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
@@ -20,8 +23,6 @@ export = {
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
     '@typescript-eslint/no-extraneous-class': 'error',
     '@typescript-eslint/no-invalid-void-type': 'error',
-    'no-loss-of-precision': 'off',
-    '@typescript-eslint/no-loss-of-precision': 'error',
     '@typescript-eslint/no-misused-new': 'error',
     '@typescript-eslint/no-namespace': 'error',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
