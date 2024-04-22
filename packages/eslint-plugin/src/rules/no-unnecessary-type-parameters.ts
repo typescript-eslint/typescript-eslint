@@ -1,4 +1,6 @@
+import type { Reference } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -46,9 +48,23 @@ export default createRule({
         ) as NodeWithTypeParameters;
 
         const checker = parserServices.program.getTypeChecker();
-        const counts = countTypeParameterUsage(checker, tsNode);
+        let counts: Map<ts.Identifier, number> | undefined;
 
         for (const typeParameter of tsNode.typeParameters) {
+          const esTypeParameter =
+            parserServices.tsNodeToESTreeNodeMap.get<TSESTree.TSTypeParameter>(
+              typeParameter,
+            );
+          const scope = context.sourceCode.getScope(esTypeParameter);
+
+          // Quick path: if the type parameter is used multiple times in the AST,
+          // we don't need to dip into types to know it's repeated.
+          if (isTypeParameterRepeatedInAST(esTypeParameter, scope.references)) {
+            continue;
+          }
+
+          // For any inferred types, we have to dip into type checking.
+          counts ??= countTypeParameterUsage(checker, tsNode);
           const identifierCounts = counts.get(typeParameter.name);
           if (!identifierCounts || identifierCounts > 2) {
             continue;
@@ -58,7 +74,7 @@ export default createRule({
             data: {
               name: typeParameter.name.text,
             },
-            node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
+            node: esTypeParameter,
             messageId: 'sole',
           });
         }
@@ -66,6 +82,54 @@ export default createRule({
     };
   },
 });
+
+function isTypeParameterRepeatedInAST(
+  node: TSESTree.TSTypeParameter,
+  references: Reference[],
+): boolean {
+  let total = 0;
+
+  for (const reference of references) {
+    // References inside the type parameter's definition don't count.
+    if (
+      reference.identifier.range[0] < node.range[1] &&
+      reference.identifier.range[1] > node.range[0]
+    ) {
+      continue;
+    }
+
+    // Neither do references that aren't to the same type parameter,
+    // namely value-land (non-type) identifiers of the type parameter's type,
+    // and references to different type parameters or values.
+    if (
+      !reference.isTypeReference ||
+      reference.identifier.name !== node.name.name
+    ) {
+      continue;
+    }
+
+    // If the type parameter is being used as a type argument, then we
+    // know the type parameter is being reused and can't be reported.
+    if (
+      reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference &&
+      reference.identifier.parent.parent.type ===
+        AST_NODE_TYPES.TSTypeParameterInstantiation &&
+      reference.identifier.parent.parent.params.includes(
+        reference.identifier.parent,
+      )
+    ) {
+      return true;
+    }
+
+    total += 1;
+
+    if (total > 2) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /**
  * Count uses of type parameters in inferred return types.
@@ -123,11 +187,6 @@ function collectTypeParameterUsageCounts(
   }
 
   function visitType(type: ts.Type | undefined, asRepeatedType: boolean): void {
-    // console.log(
-    //   'visitType',
-    //   type && checker.typeToString(type),
-    //   asRepeatedType,
-    // );
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
     // If it's not recursive, then heck, we've seen it enough times that any
@@ -289,10 +348,10 @@ function collectTypeParameterUsageCounts(
   }
 
   function visitTypesList(
-    types: readonly ts.Type[] | undefined,
+    types: readonly ts.Type[],
     asRepeatedType: boolean,
   ): void {
-    for (const type of types ?? []) {
+    for (const type of types) {
       visitType(type, asRepeatedType);
     }
   }

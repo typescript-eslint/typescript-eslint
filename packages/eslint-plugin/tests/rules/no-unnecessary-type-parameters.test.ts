@@ -3,16 +3,6 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../src/rules/no-unnecessary-type-parameters';
 import { getFixturesRootDir } from '../RuleTester';
 
-const jestConsole = console;
-
-beforeEach(() => {
-  global.console = require('console');
-});
-
-afterEach(() => {
-  global.console = jestConsole;
-});
-
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
@@ -291,6 +281,13 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       };
 
       declare function makeMutable<T>(input: T): MakeMutable<typeof input>;
+    `,
+    `
+      type ValueNulls<U extends string> = {} & {
+        [P in U]: null;
+      };
+
+      declare function invert<T extends string>(obj: T): ValueNulls<T>;
     `,
     `
       interface Middle {
