@@ -48,10 +48,10 @@ export function createProjectService(
     logger: {
       close: doNothing,
       endGroup: doNothing,
-      getLogFileName: () => undefined,
-      hasLevel: () => false,
+      getLogFileName: (): undefined => undefined,
+      hasLevel: (): boolean => false,
       info: doNothing,
-      loggingEnabled: () => false,
+      loggingEnabled: (): boolean => false,
       msg: doNothing,
       perftrc: doNothing,
       startGroup: doNothing,
