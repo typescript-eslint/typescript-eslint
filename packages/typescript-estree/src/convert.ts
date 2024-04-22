@@ -3559,7 +3559,7 @@ export class Converter {
         : (): Value => {
             if (!warned) {
               process.emitWarning(
-                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use '${preferredKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use ${preferredKey} instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
                 'DeprecationWarning',
               );
               warned = true;
