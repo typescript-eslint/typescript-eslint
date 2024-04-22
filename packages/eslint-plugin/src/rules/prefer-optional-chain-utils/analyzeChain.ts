@@ -20,6 +20,7 @@ import {
   NullThrowsReasons,
   OperatorPrecedence,
 } from '../../util';
+import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
 import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
@@ -493,20 +494,26 @@ export function analyzeChain(
   ): void => {
     if (subChain.length > 1) {
       const subChainFlat = subChain.flat();
-      context.report({
-        messageId: 'preferOptionalChain',
-        loc: {
-          start: subChainFlat[0].node.loc.start,
-          end: subChainFlat[subChainFlat.length - 1].node.loc.end,
+      checkNullishAndReport(
+        context,
+        parserServices,
+        options,
+        subChainFlat.slice(0, -1).map(({ node }) => node),
+        {
+          messageId: 'preferOptionalChain',
+          loc: {
+            start: subChainFlat[0].node.loc.start,
+            end: subChainFlat[subChainFlat.length - 1].node.loc.end,
+          },
+          ...getFixer(
+            context.sourceCode,
+            parserServices,
+            operator,
+            options,
+            subChainFlat,
+          ),
         },
-        ...getFixer(
-          context.sourceCode,
-          parserServices,
-          operator,
-          options,
-          subChainFlat,
-        ),
-      });
+      );
     }
 
     // we've reached the end of a chain of logical expressions

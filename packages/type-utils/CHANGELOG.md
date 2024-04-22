@@ -1,3 +1,25 @@
+## 7.7.1 (2024-04-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] handle shorthand property assignment
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.0 (2024-04-15)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.6.0 (2024-04-08)
 
 

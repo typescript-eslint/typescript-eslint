@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { inferSingleRun } from '../../src/parseSettings/inferSingleRun';
 
 describe('inferSingleRun', () => {
@@ -50,7 +52,7 @@ describe('inferSingleRun', () => {
   });
 
   it('returns true when run by the ESLint CLI in npm/yarn', () => {
-    process.argv = ['node', 'node_modules/.bin/eslint'];
+    process.argv = ['node', path.normalize('node_modules/.bin/eslint')];
 
     const actual = inferSingleRun({ project: true });
 
@@ -58,7 +60,10 @@ describe('inferSingleRun', () => {
   });
 
   it('returns true when run by the ESLint CLI in pnpm', () => {
-    process.argv = ['node', 'node_modules/eslint/bin/eslint.js'];
+    process.argv = [
+      'node',
+      path.normalize('node_modules/eslint/bin/eslint.js'),
+    ];
 
     const actual = inferSingleRun({ project: true });
 

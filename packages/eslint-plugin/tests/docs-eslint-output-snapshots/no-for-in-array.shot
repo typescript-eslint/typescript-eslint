@@ -6,18 +6,14 @@ exports[`Validating rule docs no-for-in-array.mdx code examples ESLint output 1`
 declare const array: string[];
 
 for (const i in array) {
-~~~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
+~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
   console.log(array[i]);
-~~~~~~~~~~~~~~~~~~~~~~~~
 }
-~
 
 for (const i in array) {
-~~~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
+~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
   console.log(i, array[i]);
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
-~
 "
 `;
 

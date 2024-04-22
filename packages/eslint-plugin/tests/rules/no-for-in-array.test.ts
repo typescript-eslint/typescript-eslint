@@ -1,5 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-for-in-array';
 import { getFixturesRootDir } from '../RuleTester';
@@ -38,7 +37,10 @@ for (const x in [3, 4, 5]) {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
+          line: 2,
+          column: 1,
+          endLine: 2,
+          endColumn: 27,
         },
       ],
     },
@@ -52,7 +54,10 @@ for (const x in z) {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
+          line: 3,
+          column: 1,
+          endLine: 3,
+          endColumn: 19,
         },
       ],
     },
@@ -67,7 +72,10 @@ const fn = (arr: number[]) => {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 23,
         },
       ],
     },
@@ -82,7 +90,10 @@ const fn = (arr: number[] | string[]) => {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 23,
         },
       ],
     },
@@ -97,7 +108,72 @@ const fn = <T extends any[]>(arr: T) => {
       errors: [
         {
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
+          line: 3,
+          column: 3,
+          endLine: 3,
+          endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+for (const x
+  in
+    (
+      (
+        (
+          [3, 4, 5]
+        )
+      )
+    )
+  )
+  // weird
+  /* spot for a */
+  // comment
+  /* ) */
+  /* ( */
+  {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          messageId: 'forInViolation',
+          line: 2,
+          column: 1,
+          endLine: 11,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+for (const x
+  in
+    (
+      (
+        (
+          [3, 4, 5]
+        )
+      )
+    )
+  )
+  // weird
+  /* spot for a */
+  // comment
+  /* ) */
+  /* ( */
+
+  ((((console.log('body without braces ')))));
+
+      `,
+      errors: [
+        {
+          messageId: 'forInViolation',
+          line: 2,
+          column: 1,
+          endLine: 11,
+          endColumn: 4,
         },
       ],
     },

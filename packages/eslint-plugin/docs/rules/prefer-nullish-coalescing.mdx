@@ -65,7 +65,7 @@ foo ?? 'a string';
 
 ### `ignoreConditionalTests`
 
-Setting this option to `true` will cause the rule to ignore any cases that are located within a conditional test. This is set to `false` by default.
+Setting this option to `false` will cause the rule to also check cases that are located within a conditional test. This is set to `true` by default.
 
 Generally expressions within conditional tests intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
