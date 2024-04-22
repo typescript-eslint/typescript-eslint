@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export {
-  // TODO - remove this in the next major
+  // TODO(v9) - remove this in the next major
   /**
-   * @deprecated - use FlatESLint or LegacyESLint instead
+   * @deprecated - use ESLint instead
    */
-  LegacyESLint as ESLint,
+  LegacyESLint,
 } from './eslint/LegacyESLint';
 export { FlatESLint } from './eslint/FlatESLint';
-export { LegacyESLint } from './eslint/LegacyESLint';
+export { FlatESLint as ESLint } from './eslint/FlatESLint';
