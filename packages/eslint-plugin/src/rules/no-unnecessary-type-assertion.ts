@@ -196,6 +196,7 @@ export default createRule<Options, MessageIds>({
           ) {
             return;
           }
+
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
