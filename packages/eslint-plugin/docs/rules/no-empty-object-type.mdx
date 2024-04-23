@@ -19,7 +19,7 @@ let anyNonNullishValue: {} = 'Intentionally allowed by TypeScript.';
 Often, developers writing `{}` actually mean either:
 
 - `object`: representing any _object_ value
-- `unknown`: representing any value _other than `null` and `undefined`_
+- `NonNullable<unknown>`: representing any value _other than `null` and `undefined`_
 - An object with no properties: which can't easily be represented in TypeScript's structural type system
 
 To avoid confusion around the `{}` type allowing non-object values, this rule bans usage of the `{}` type.
