@@ -513,6 +513,10 @@ export default tseslint.config(
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      /* This rule
+        (1) causes false reports because it reads from `typeParameters` rather than `typeArguments`, and
+        (2) is unnecessary in TypeScript components */
+      'react/prop-types': 'off',
     },
     settings: {
       react: {
