@@ -100,7 +100,8 @@ The following options are supported:
 
 - `arguments`: Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`
 - `attributes`: Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`
-- `heritageTypes`: Disables checking an asynchronous named method in a type whose extended/implemented heritage type expects that method to return `void`
+- `heritageTypes`: Disables checking an asynchronous method in a type whose extended/implemented heritage type expects that method to return `void`
+  - **Limitation:** For now, this option only checks named methods: that is, call/construct/index signatures are ignored. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Index signature checking may be implemented in the future.
 - `properties`: Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`
 - `returns`: Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`
 - `variables`: Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`
