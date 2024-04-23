@@ -315,7 +315,7 @@ class UnusedVarsVisitor<
   protected TSMappedType(node: TSESTree.TSMappedType): void {
     // mapped types create a variable for their type name, but it's not necessary to reference it,
     // so we shouldn't consider it as unused for the purpose of this rule.
-    this.markVariableAsUsed(node.typeParameter.name);
+    this.markVariableAsUsed(node.key);
   }
 
   protected TSMethodSignature = this.visitFunctionTypeSignature;

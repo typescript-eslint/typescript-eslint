@@ -1946,27 +1946,66 @@ describe('hand-crafted cases', () => {
           declare const thing1: string | null;
           thing1 && thing1.toString();
         `,
-        options: [{ requireNullish: true }],
-        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const thing1: string | null;
+          thing1?.toString();
+        `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const thing1: string | null;
           thing1 && thing1.toString() && true;
         `,
-        options: [{ requireNullish: true }],
-        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const thing1: string | null;
+          thing1?.toString() && true;
+        `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: string | null;
           foo && foo.toString() && foo.toString();
         `,
-        options: [{ requireNullish: true }],
-        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string | null;
+          foo?.toString() && foo.toString();
+        `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
@@ -1997,27 +2036,66 @@ describe('hand-crafted cases', () => {
           declare const foo: string | null;
           (foo || {}).toString();
         `,
-        options: [{ requireNullish: true }],
-        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string | null;
+          foo?.toString();
+        `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: string;
           (foo || undefined || {}).toString();
         `,
-        options: [{ requireNullish: true }],
-        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string;
+          (foo || undefined)?.toString();
+        `,
+              },
+            ],
+          },
+        ],
       },
       {
         code: `
           declare const foo: string | null;
           (foo || undefined || {}).toString();
         `,
-        options: [{ requireNullish: true }],
-        errors: [{ messageId: 'preferOptionalChain' }],
         output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string | null;
+          (foo || undefined)?.toString();
+        `,
+              },
+            ],
+          },
+        ],
       },
 
       // allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing

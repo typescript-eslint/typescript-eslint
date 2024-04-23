@@ -69,8 +69,6 @@ export = {
     '@typescript-eslint/no-invalid-void-type': 'error',
     'no-loop-func': 'off',
     '@typescript-eslint/no-loop-func': 'error',
-    'no-loss-of-precision': 'off',
-    '@typescript-eslint/no-loss-of-precision': 'error',
     'no-magic-numbers': 'off',
     '@typescript-eslint/no-magic-numbers': 'error',
     '@typescript-eslint/no-meaningless-void-operator': 'error',
