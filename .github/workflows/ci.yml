@@ -325,11 +325,11 @@ jobs:
         uses: ./.github/actions/prepare-build
 
       - name: Figure out and apply the next canary version
-        run: npx nx run repo-tools:apply-canary-version
+        run: OVERRIDE_MAJOR_VERSION=8 npx nx run repo-tools:apply-canary-version
 
       - name: Publish all packages to npm with the canary tag
         # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
-        run: npx nx publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v8
+        run: npx nx release publish --tag rc-v8 --verbose
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -2,8 +2,18 @@ import { workspaceRoot } from '@nx/devkit';
 import { execaSync } from 'execa';
 import semver from 'semver';
 
+// We are either releasing a canary version of the latest major version, or one for the next major.
+const overrideMajorVersion = process.env.OVERRIDE_MAJOR_VERSION;
+
 const preid = 'alpha';
-const distTag = 'canary';
+
+let distTag = 'canary';
+if (overrideMajorVersion) {
+  console.log(
+    `Overriding canary major version base to v${overrideMajorVersion}`,
+  );
+  distTag = `rc-v${overrideMajorVersion}`;
+}
 
 const currentLatestVersion = execaSync('npm', [
   'view',
@@ -11,11 +21,14 @@ const currentLatestVersion = execaSync('npm', [
   'version',
 ]).stdout.trim();
 
-const currentCanaryVersion = execaSync('npm', [
-  'view',
-  `@typescript-eslint/eslint-plugin@${distTag}`,
-  'version',
-]).stdout.trim();
+let currentCanaryVersion = null;
+try {
+  currentCanaryVersion = execaSync('npm', [
+    'view',
+    `@typescript-eslint/eslint-plugin@${distTag}`,
+    'version',
+  ]).stdout.trim();
+} catch {}
 
 console.log('\nResolved current versions: ', {
   currentLatestVersion,
@@ -24,28 +37,40 @@ console.log('\nResolved current versions: ', {
 
 let nextCanaryVersion: string | null;
 
-if (semver.gte(currentLatestVersion, currentCanaryVersion)) {
-  console.log(
-    '\nLatest version is greater than or equal to the current canary version, starting new prerelease base...',
-  );
-  // Determine next minor version above the currentLatestVersion
-  nextCanaryVersion = semver.inc(
-    currentLatestVersion,
-    'prerelease',
-    undefined,
-    preid,
-  );
+if (overrideMajorVersion) {
+  nextCanaryVersion = currentCanaryVersion
+    ? semver.inc(currentCanaryVersion, 'prerelease', undefined, preid)
+    : semver.inc(currentLatestVersion, 'premajor', undefined, preid);
 } else {
-  console.log(
-    '\nLatest version is less than the current canary version, incrementing the existing prerelease base...',
-  );
-  // Determine next prerelease version above the currentCanaryVersion
-  nextCanaryVersion = semver.inc(
-    currentCanaryVersion,
-    'prerelease',
-    undefined,
-    preid,
-  );
+  if (!currentCanaryVersion) {
+    throw new Error(
+      'An unexpected error occurred, no current canary version could be read from the npm registry',
+    );
+  }
+
+  if (semver.gte(currentLatestVersion, currentCanaryVersion)) {
+    console.log(
+      '\nLatest version is greater than or equal to the current canary version, starting new prerelease base...',
+    );
+    // Determine next minor version above the currentLatestVersion
+    nextCanaryVersion = semver.inc(
+      currentLatestVersion,
+      'prerelease',
+      undefined,
+      preid,
+    );
+  } else {
+    console.log(
+      '\nLatest version is less than the current canary version, incrementing the existing prerelease base...',
+    );
+    // Determine next prerelease version above the currentCanaryVersion
+    nextCanaryVersion = semver.inc(
+      currentCanaryVersion,
+      'prerelease',
+      undefined,
+      preid,
+    );
+  }
 }
 
 if (!nextCanaryVersion) {
