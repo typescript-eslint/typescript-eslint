@@ -60,9 +60,6 @@ export default {
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
     },
-    'packages/repo-tools': {
-      ignoreDependencies: ['tsconfig.json'],
-    },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
     },
