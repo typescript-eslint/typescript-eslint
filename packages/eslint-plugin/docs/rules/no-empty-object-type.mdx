@@ -1,0 +1,65 @@
+---
+description: 'Disallow accidentally using the "empty object" type.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-empty-object-type** for documentation.
+
+The `{}`, or "empty object" type in TypeScript is a common source of confusion for developers unfamiliar with TypeScript's structural typing.
+`{}` represents any _non-nullish value_, including literals like `0` and `""`:
+
+```ts
+let anyNonNullishValue: {} = 'Intentionally allowed by TypeScript.';
+```
+
+Often, developers writing `{}` actually mean either:
+
+- `object`: representing any _object_ value
+- `unknown`: representing any value _other than `null` and `undefined`_
+
+To avoid confusion around the `{}` type allowing non-object values, this rule bans usage of the `{}` type.
+
+:::tip
+If you do have a use case for an API allowing any _non-nullish value_, you can always use an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) or [disable the rule in your ESLint config](https://eslint.org/docs/latest/use/configure/rules#using-configuration-files-1).
+:::
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+let anyObject: {};
+let anyValue: {};
+let emptyObject: {};
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+let anyObject: object;
+let anyValue: unknown;
+let emptyObject: Record<string, never>;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your code commonly needs to represent the _"any non-nullish value"_ type, this rule may not be for you.
+Projects that extensively use type operations such as conditional types and mapped types oftentimes benefit from disabling this rule.
+
+## Further Reading
+
+- [Enhancement: [ban-types] Split the {} ban into a separate, better-phrased rule](https://github.com/typescript-eslint/typescript-eslint/issues/8700)
+- [The Empty Object Type in TypeScript](https://www.totaltypescript.com/the-empty-object-type-in-typescript)
+
+## Related To
+
+- [`no-empty-interface`](./no-empty-interface.mdx)

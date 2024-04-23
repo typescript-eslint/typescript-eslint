@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-empty-object-type.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+let anyObject: {};
+               ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
+                  - If that's what you want, disable this lint rule with an inline comment or in your ESLint config.
+                  - If you want a type meaning "any object", you probably want \`object\` instead.
+                  - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                  - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
+let anyValue: {};
+              ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
+                 - If that's what you want, disable this lint rule with an inline comment or in your ESLint config.
+                 - If you want a type meaning "any object", you probably want \`object\` instead.
+                 - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                 - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
+let emptyObject: {};
+                 ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
+                    - If that's what you want, disable this lint rule with an inline comment or in your ESLint config.
+                    - If you want a type meaning "any object", you probably want \`object\` instead.
+                    - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                    - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
+"
+`;
+
+exports[`Validating rule docs no-empty-object-type.mdx code examples ESLint output 2`] = `
+"Correct
+
+let anyObject: object;
+let anyValue: unknown;
+let emptyObject: Record<string, never>;
+"
+`;
