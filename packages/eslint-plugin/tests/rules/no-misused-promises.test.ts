@@ -500,8 +500,6 @@ foo(bar);
       },
       options: [{ checksVoidReturn: { attributes: true } }],
     },
-    // #region checksVoidReturn.heritageTypes
-    // #region checksVoidReturn.heritageTypes: Extending a class
     {
       // Valid void-returning class
       code: `
@@ -613,8 +611,6 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       `,
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Extending an abstract class
     {
       // Valid class
       code: `
@@ -697,8 +693,6 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       `,
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Extending an interface
     {
       // Valid interface
       code: `
@@ -781,8 +775,6 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       `,
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Extending type aliases
     {
       // Valid class extending type literals intersection
       code: `
@@ -837,8 +829,6 @@ interface MyAsyncInterface extends MyGenericType<false> {
       `,
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Multiple heritage types
     {
       // Valid interface extending two interfaces
       code: `
@@ -902,8 +892,6 @@ class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
       `,
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Class expressions
     {
       // Valid class expression extending a class
       code: `
@@ -954,8 +942,6 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       `,
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Unnamed methods (call/construct/index signatures)
     {
       // Call signatures: TS allows overloads with different return types, so we ignore these
       code: `
@@ -1020,8 +1006,6 @@ interface MyAsyncInterface extends MySyncInterfaceSignatures {
       `,
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Combinations
     {
       // Valid combination
       code: `
@@ -1059,8 +1043,6 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
-    // #endregion
-    // #endregion
   ],
 
   invalid: [
@@ -1836,8 +1818,6 @@ consume(...cbs);
       `,
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
-    // #region checksVoidReturn.heritageTypes
-    // #region checksVoidReturn.heritageTypes: Extending a class
     {
       code: `
 class MyClass {
@@ -1900,8 +1880,6 @@ interface MyInterfaceExtendsMyClass extends MyClass {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Extending an abstract class
     {
       code: `
 abstract class MyAbstractClass {
@@ -1958,8 +1936,6 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Extending an interface
     {
       code: `
 interface MyInterface {
@@ -2016,8 +1992,6 @@ interface MySubInterface extends MyInterface {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Extending type aliases
     {
       code: `
 type MyTypeIntersection = { setThing(): void } & { thing: number };
@@ -2055,8 +2029,6 @@ interface MyAsyncInterface extends MyGenericType<false> {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Multiple heritage types
     {
       code: `
 interface MyInterface {
@@ -2150,8 +2122,6 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Class expressions
     {
       // Invalid class expression implementing an interface
       code: `
@@ -2218,8 +2188,6 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Unnamed methods (call/construct/index signatures)
     {
       // Mixed signatures: not handling index signatures (yet); only the named method should error
       code: `
@@ -2248,8 +2216,6 @@ interface MyAsyncInterface extends MySyncInterface {
         },
       ],
     },
-    // #endregion
-    // #region checksVoidReturn.heritageTypes: Combinations
     {
       code: `
 interface MyCall {
@@ -2297,7 +2263,5 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
         },
       ],
     },
-    // #endregion
-    // #endregion
   ],
 });
