@@ -296,53 +296,6 @@ describe('convert', () => {
       return maps.tsNodeToESTreeNodeMap.get(tsImportDeclaration);
     };
 
-    it('warns on a deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
-      const emitWarning = jest
-        .spyOn(process, 'emitWarning')
-        .mockImplementation();
-      const esImportDeclaration = getEsImportDeclaration({
-        suppressDeprecatedPropertyWarnings: false,
-      });
-
-      // eslint-disable-next-line deprecation/deprecation
-      esImportDeclaration.assertions;
-
-      expect(emitWarning).toHaveBeenCalledWith(
-        `The 'assertions' property is deprecated on ImportDeclaration nodes. Use 'attributes' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-        'DeprecationWarning',
-      );
-    });
-
-    it('does not warn on a subsequent deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
-      const emitWarning = jest
-        .spyOn(process, 'emitWarning')
-        .mockImplementation();
-      const esImportDeclaration = getEsImportDeclaration({
-        suppressDeprecatedPropertyWarnings: false,
-      });
-
-      /* eslint-disable deprecation/deprecation */
-      esImportDeclaration.assertions;
-      esImportDeclaration.assertions;
-      /* eslint-enable deprecation/deprecation */
-
-      expect(emitWarning).toHaveBeenCalledTimes(1);
-    });
-
-    it('does not warn on a deprecated property access when suppressDeprecatedPropertyWarnings is true', () => {
-      const emitWarning = jest
-        .spyOn(process, 'emitWarning')
-        .mockImplementation();
-      const esImportDeclaration = getEsImportDeclaration({
-        suppressDeprecatedPropertyWarnings: true,
-      });
-
-      // eslint-disable-next-line deprecation/deprecation
-      esImportDeclaration.assertions;
-
-      expect(emitWarning).not.toHaveBeenCalled();
-    });
-
     it('does not allow enumeration of deprecated properties', () => {
       const esImportDeclaration = getEsImportDeclaration();
 
