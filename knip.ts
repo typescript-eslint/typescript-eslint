@@ -76,15 +76,10 @@ export default {
         'src/pages/**/*.tsx',
 
         // imported in MDX docs
-        'src/components/RulesTable/index.tsx',
-        'src/components/TypeScriptOverlap/index.tsx',
-        'src/components/team/TeamBioList.tsx',
-        'src/components/team/TeamBioDivider.tsx',
+        'src/components/**/*.tsx',
 
         // used by Docusaurus
-        'src/theme/CodeBlock/Content/String.tsx',
-        'src/theme/MDXComponents/index.tsx',
-        'src/theme/NotFound/Content/index.tsx',
+        'src/theme/**/index.tsx',
         'src/theme/prism-include-languages.js',
       ],
       ignoreDependencies: [
