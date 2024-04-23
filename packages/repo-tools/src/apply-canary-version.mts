@@ -28,7 +28,9 @@ try {
     `@typescript-eslint/eslint-plugin@${distTag}`,
     'version',
   ]).stdout.trim();
-} catch {}
+} catch {
+  // (ignored - this is just a debug helper)
+}
 
 console.log('\nResolved current versions: ', {
   currentLatestVersion,
