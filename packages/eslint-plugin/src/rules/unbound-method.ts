@@ -7,7 +7,8 @@ import {
   createRule,
   getModifiers,
   getParserServices,
-  isIdentifier,
+  isBuiltinSymbolLike,
+  isSymbolFromDefaultLibrary,
 } from '../util';
 
 //------------------------------------------------------------------------------
@@ -83,12 +84,6 @@ const isNotImported = (
   );
 };
 
-const getNodeName = (node: TSESTree.Node): string | null =>
-  node.type === AST_NODE_TYPES.Identifier ? node.name : null;
-
-const getMemberFullName = (node: TSESTree.MemberExpression): string =>
-  `${getNodeName(node.object)}.${getNodeName(node.property)}`;
-
 const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
@@ -157,25 +152,67 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
-    return {
-      MemberExpression(node: TSESTree.MemberExpression): void {
-        if (isSafeUse(node)) {
-          return;
-        }
-
-        const objectSymbol = services.getSymbolAtLocation(node.object);
+    function isNativelyBound(
+      object: TSESTree.Node,
+      property: TSESTree.Node,
+    ): boolean {
+      if (
+        object.type === AST_NODE_TYPES.Identifier &&
+        property.type === AST_NODE_TYPES.Identifier
+      ) {
+        const objectSymbol = services.getSymbolAtLocation(object);
+        const notImported =
+          objectSymbol && isNotImported(objectSymbol, currentSourceFile);
 
         if (
-          objectSymbol &&
-          nativelyBoundMembers.has(getMemberFullName(node)) &&
-          isNotImported(objectSymbol, currentSourceFile)
+          notImported &&
+          nativelyBoundMembers.has(`${object.name}.${property.name}`)
         ) {
+          return true;
+        }
+      }
+
+      return (
+        isBuiltinSymbolLike(
+          services.program,
+          services.getTypeAtLocation(object),
+          [
+            'NumberConstructor',
+            'Number',
+            'ObjectConstructor',
+            'Object',
+            'StringConstructor',
+            'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
+            'SymbolConstructor',
+            'ArrayConstructor',
+            'Array',
+            'ProxyConstructor',
+            'DateConstructor',
+            'Date',
+            'Atomics',
+            'Math',
+            'JSON',
+          ],
+        ) &&
+        isSymbolFromDefaultLibrary(
+          services.program,
+          services.getTypeAtLocation(property).getSymbol(),
+        )
+      );
+    }
+
+    return {
+      MemberExpression(node: TSESTree.MemberExpression): void {
+        if (isSafeUse(node) || isNativelyBound(node.object, node.property)) {
           return;
         }
 
         checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
       },
       ObjectPattern(node): void {
+        if (isNodeInsideTypeDeclaration(node)) {
+          return;
+        }
         let initNode: TSESTree.Node | null = null;
         if (node.parent.type === AST_NODE_TYPES.VariableDeclarator) {
           initNode = node.parent.init;
@@ -186,66 +223,58 @@ export default createRule<Options, MessageIds>({
           initNode = node.parent.right;
         }
 
-        if (initNode) {
-          const initSymbol = services.getSymbolAtLocation(initNode);
-          const initTypes = services.getTypeAtLocation(initNode);
+        for (const property of node.properties) {
+          if (
+            property.type !== AST_NODE_TYPES.Property ||
+            property.key.type !== AST_NODE_TYPES.Identifier
+          ) {
+            continue;
+          }
 
-          const notImported =
-            initSymbol && isNotImported(initSymbol, currentSourceFile);
-
-          node.properties.forEach(property => {
-            if (
-              property.type === AST_NODE_TYPES.Property &&
-              property.key.type === AST_NODE_TYPES.Identifier
-            ) {
-              if (
-                notImported &&
-                isIdentifier(initNode) &&
-                nativelyBoundMembers.has(
-                  `${initNode.name}.${property.key.name}`,
-                )
-              ) {
-                return;
-              }
-
-              checkIfMethodAndReport(
+          if (initNode) {
+            if (!isNativelyBound(initNode, property.key)) {
+              const reported = checkIfMethodAndReport(
                 property.key,
-                initTypes.getProperty(property.key.name),
+                services
+                  .getTypeAtLocation(initNode)
+                  .getProperty(property.key.name),
               );
-            }
-          });
-          return;
-        }
-
-        if (node.typeAnnotation) {
-          const subtypes = tsutils.unionTypeParts(
-            services.getTypeAtLocation(node.typeAnnotation.typeAnnotation),
-          );
-          for (const property of node.properties) {
-            for (const subtype of subtypes) {
-              if (
-                property.type !== AST_NODE_TYPES.Property ||
-                property.key.type !== AST_NODE_TYPES.Identifier
-              ) {
+              if (reported) {
                 continue;
               }
+              // In assignment patterns, we should also check the type of
+              // Foo's nativelyBound method because initNode might be used as
+              // default value:
+              //   function ({ nativelyBound }: Foo = NativeObject) {}
+            } else if (node.parent.type !== AST_NODE_TYPES.AssignmentPattern) {
+              continue;
+            }
+          }
 
-              const propertyKey = property.key;
-              if (
-                checkIfMethodAndReport(
-                  propertyKey,
-                  subtype.getProperty(propertyKey.name),
-                ) ||
-                (tsutils.isIntersectionType(subtype) &&
-                  tsutils
-                    .intersectionTypeParts(subtype)
-                    .some(intersectionSubtype =>
-                      checkIfMethodAndReport(
-                        propertyKey,
-                        intersectionSubtype.getProperty(propertyKey.name),
-                      ),
-                    ))
-              ) {
+          for (const unionPart of tsutils.unionTypeParts(
+            services.getTypeAtLocation(node),
+          )) {
+            const propertyKey = property.key;
+            const reported = checkIfMethodAndReport(
+              propertyKey,
+              unionPart.getProperty(propertyKey.name),
+            );
+            if (reported) {
+              break;
+            }
+
+            if (!tsutils.isIntersectionType(unionPart)) {
+              continue;
+            }
+
+            for (const intersectionPart of tsutils.intersectionTypeParts(
+              unionPart,
+            )) {
+              const reported = checkIfMethodAndReport(
+                propertyKey,
+                intersectionPart.getProperty(propertyKey.name),
+              );
+              if (reported) {
                 break;
               }
             }
@@ -255,6 +284,24 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function isNodeInsideTypeDeclaration(node: TSESTree.Node): boolean {
+  let parent: TSESTree.Node | undefined = node;
+  while ((parent = parent.parent)) {
+    if (
+      (parent.type === AST_NODE_TYPES.ClassDeclaration && parent.declare) ||
+      parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+      parent.type === AST_NODE_TYPES.TSDeclareFunction ||
+      parent.type === AST_NODE_TYPES.TSFunctionType ||
+      parent.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+      parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
+      (parent.type === AST_NODE_TYPES.VariableDeclaration && parent.declare)
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
 
 interface CheckMethodResult {
   dangerous: boolean;
