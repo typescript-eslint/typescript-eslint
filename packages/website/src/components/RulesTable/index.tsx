@@ -2,6 +2,7 @@ import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
@@ -12,7 +13,6 @@ import {
   DEPRECATED_RULE_EMOJI,
   EXTENSION_RULE_EMOJI,
   FIXABLE_EMOJI,
-  FORMATTING_RULE_EMOJI,
   RECOMMENDED_CONFIG_EMOJI,
   STRICT_CONFIG_EMOJI,
   STYLISTIC_CONFIG_EMOJI,
@@ -31,6 +31,13 @@ function interpolateCode(
   return fragments.map((v, i) => (i % 2 === 0 ? v : <code key={i}>{v}</code>));
 }
 
+function getActualRecommended({
+  docs,
+}: RulesMeta[number]): RuleRecommendation | undefined {
+  const recommended = docs?.recommended;
+  return typeof recommended === 'object' ? 'recommended' : recommended;
+}
+
 function RuleRow({
   rule,
 }: {
@@ -39,11 +46,9 @@ function RuleRow({
   if (!rule.docs?.url) {
     return null;
   }
-  const { fixable, hasSuggestions, type, deprecated } = rule;
-  const { recommended, requiresTypeChecking, extendsBaseRule } = rule.docs;
-  const actualRecommended =
-    typeof recommended === 'object' ? 'recommended' : recommended;
-  const formatting = type === 'layout';
+  const { fixable, hasSuggestions, deprecated } = rule;
+  const { requiresTypeChecking, extendsBaseRule } = rule.docs;
+  const actualRecommended = getActualRecommended(rule);
   return (
     <tr>
       <td>
@@ -96,12 +101,6 @@ function RuleRow({
         title={extendsBaseRule ? 'extends base rule' : undefined}
       >
         {extendsBaseRule ? EXTENSION_RULE_EMOJI : ''}
-      </td>
-      <td
-        className={styles.attrCol}
-        title={formatting ? 'formatting' : undefined}
-      >
-        {formatting ? FORMATTING_RULE_EMOJI : ''}
       </td>
       <td
         className={styles.attrCol}
@@ -171,19 +170,19 @@ export default function RulesTable(): React.JSX.Element {
   const relevantRules = useMemo(
     () =>
       rules.filter(r => {
+        const actualRecommended = getActualRecommended(r);
         const opinions = [
-          match(filters.recommended, r.docs?.recommended === 'recommended'),
+          match(filters.recommended, actualRecommended === 'recommended'),
           match(
             filters.strict,
-            r.docs?.recommended === 'recommended' ||
-              r.docs?.recommended === 'strict',
+            actualRecommended === 'recommended' ||
+              actualRecommended === 'strict',
           ),
-          match(filters.stylistic, r.docs?.recommended === 'stylistic'),
+          match(filters.stylistic, actualRecommended === 'stylistic'),
           match(filters.fixable, !!r.fixable),
           match(filters.suggestions, !!r.hasSuggestions),
           match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
           match(filters.extension, !!r.docs?.extendsBaseRule),
-          match(filters.formatting, r.type === 'layout'),
           match(filters.deprecated, !!r.deprecated),
         ].filter((o): o is boolean => o !== undefined);
         return opinions.every(o => o);
@@ -239,11 +238,6 @@ export default function RulesTable(): React.JSX.Element {
             label={`${EXTENSION_RULE_EMOJI} extension`}
           />
           <RuleFilterCheckBox
-            mode={filters.formatting}
-            setMode={(newMode): void => changeFilter('formatting', newMode)}
-            label={`${FORMATTING_RULE_EMOJI} formatting`}
-          />
-          <RuleFilterCheckBox
             mode={filters.deprecated}
             setMode={(newMode): void => changeFilter('deprecated', newMode)}
             label={`${DEPRECATED_RULE_EMOJI} deprecated`}
@@ -279,11 +273,6 @@ export default function RulesTable(): React.JSX.Element {
               </div>
             </th>
             <th className={styles.attrCol}>
-              <div title="Whether the rule has to do with formatting.">
-                {FORMATTING_RULE_EMOJI}
-              </div>
-            </th>
-            <th className={styles.attrCol}>
               <div title="Whether the rule is deprecated.">
                 {DEPRECATED_RULE_EMOJI}
               </div>
@@ -308,7 +297,6 @@ type FilterCategory =
   | 'suggestions'
   | 'typeInformation'
   | 'extension'
-  | 'formatting'
   | 'deprecated';
 type FiltersState = Record<FilterCategory, FilterMode>;
 const neutralFiltersState: FiltersState = {
@@ -319,7 +307,6 @@ const neutralFiltersState: FiltersState = {
   suggestions: 'neutral',
   typeInformation: 'neutral',
   extension: 'neutral',
-  formatting: 'neutral',
   deprecated: 'neutral',
 };
 

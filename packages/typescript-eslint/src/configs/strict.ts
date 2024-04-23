@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/strict',
     rules: {
       '@typescript-eslint/ban-ts-comment': [
         'error',
@@ -31,8 +32,6 @@ export default (
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
       '@typescript-eslint/no-extraneous-class': 'error',
       '@typescript-eslint/no-invalid-void-type': 'error',
-      'no-loss-of-precision': 'off',
-      '@typescript-eslint/no-loss-of-precision': 'error',
       '@typescript-eslint/no-misused-new': 'error',
       '@typescript-eslint/no-namespace': 'error',
       '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',

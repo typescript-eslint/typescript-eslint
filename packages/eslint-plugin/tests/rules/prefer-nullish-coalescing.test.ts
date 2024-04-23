@@ -147,35 +147,30 @@ x === null ? x : y;
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
 
     // ignoreMixedLogicalExpressions
@@ -424,6 +419,7 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'noStrictNullCheck',
@@ -706,7 +702,6 @@ declare const x: ${type} | ${nullish};
 if (() => x || 'foo') {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -732,7 +727,6 @@ declare const x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -788,6 +782,7 @@ declare const c: ${type};
 declare const x: string | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { number: true, boolean: true, bigint: true },
@@ -800,6 +795,7 @@ x || y;
 declare const x: number | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { string: true, boolean: true, bigint: true },
@@ -812,6 +808,7 @@ x || y;
 declare const x: boolean | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { string: true, number: true, bigint: true },
@@ -824,6 +821,7 @@ x || y;
 declare const x: bigint | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { string: true, number: true, boolean: true },
@@ -837,6 +835,7 @@ x || y;
 declare const x: '' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -854,6 +853,7 @@ x || y;
 declare const x: \`\` | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -871,6 +871,7 @@ x || y;
 declare const x: 0 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -888,6 +889,7 @@ x || y;
 declare const x: 0n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -905,6 +907,7 @@ x || y;
 declare const x: false | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -923,6 +926,7 @@ x || y;
 declare const x: 'a' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -940,6 +944,7 @@ x || y;
 declare const x: \`hello\${'string'}\` | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -957,6 +962,7 @@ x || y;
 declare const x: 1 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -974,6 +980,7 @@ x || y;
 declare const x: 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -991,6 +998,7 @@ x || y;
 declare const x: true | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1009,6 +1017,7 @@ x || y;
 declare const x: 'a' | 'b' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1026,6 +1035,7 @@ x || y;
 declare const x: 'a' | \`b\` | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1043,6 +1053,7 @@ x || y;
 declare const x: 0 | 1 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1060,6 +1071,7 @@ x || y;
 declare const x: 1 | 2 | 3 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1077,6 +1089,7 @@ x || y;
 declare const x: 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1094,6 +1107,7 @@ x || y;
 declare const x: 1n | 2n | 3n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1111,6 +1125,7 @@ x || y;
 declare const x: true | false | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1129,6 +1144,7 @@ x || y;
 declare const x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1146,6 +1162,7 @@ x || y;
 declare const x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1163,6 +1180,7 @@ x || y;
 declare const x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1180,6 +1198,7 @@ x || y;
 declare const x: true | false | null | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1197,6 +1216,7 @@ x || y;
 declare const x: 0 | 'foo' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1216,6 +1236,7 @@ x || y;
 declare const x: 0 | 'foo' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1235,6 +1256,7 @@ x || y;
 declare const x: null;
 x || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -1246,6 +1268,7 @@ x || y;
 const x = undefined;
 x || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -1256,6 +1279,7 @@ x || y;
       code: `
 null || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -1266,6 +1290,7 @@ null || y;
       code: `
 undefined || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',

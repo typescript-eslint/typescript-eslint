@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/strict-type-checked-only',
     rules: {
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-array-delete': 'error',

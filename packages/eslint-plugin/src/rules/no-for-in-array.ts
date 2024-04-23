@@ -6,6 +6,7 @@ import {
   getParserServices,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
+import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
 export default createRule({
   name: 'no-for-in-array',
@@ -36,7 +37,7 @@ export default createRule({
           (type.flags & ts.TypeFlags.StringLike) !== 0
         ) {
           context.report({
-            node,
+            loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forInViolation',
           });
         }

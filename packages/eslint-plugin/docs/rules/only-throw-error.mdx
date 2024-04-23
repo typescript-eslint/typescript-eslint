@@ -39,10 +39,10 @@ throw `${err}`;
 const err = '';
 throw err;
 
-function err() {
+function getError() {
   return '';
 }
-throw err();
+throw getError();
 
 const foo = {
   bar: '',
@@ -70,10 +70,10 @@ try {
 const err = new Error();
 throw err;
 
-function err() {
+function getError() {
   return new Error();
 }
-throw err();
+throw getError();
 
 const foo = {
   bar: new Error(),

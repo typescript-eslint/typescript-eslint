@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-for-in-array.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare const array: string[];
+
+for (const i in array) {
+~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
+  console.log(array[i]);
+}
+
+for (const i in array) {
+~~~~~~~~~~~~~~~~~~~~~~ For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.
+  console.log(i, array[i]);
+}
+"
+`;
+
+exports[`Validating rule docs no-for-in-array.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare const array: string[];
+
+for (const value of array) {
+  console.log(value);
+}
+
+for (let i = 0; i < array.length; i += 1) {
+  console.log(i, array[i]);
+}
+
+array.forEach((value, i) => {
+  console.log(i, value);
+});
+
+for (const [i, value] of array.entries()) {
+  console.log(i, value);
+}
+"
+`;

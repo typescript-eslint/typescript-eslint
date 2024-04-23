@@ -70,7 +70,7 @@ Example of incorrect code when `ignoreClassesThatImplementAnInterface` is set to
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts
+```ts option='{ "ignoreClassesThatImplementAnInterface": "public-fields" }'
 class X implements Y {
   method() {}
   property = () => {};
@@ -86,7 +86,7 @@ class X implements Y {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts
+```ts option='{ "ignoreClassesThatImplementAnInterface": "public-fields" }'
 class X implements Y {
   method() {}
   property = () => {};

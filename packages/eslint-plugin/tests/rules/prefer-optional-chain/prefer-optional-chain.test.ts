@@ -815,22 +815,64 @@ describe('hand-crafted cases', () => {
           declare const x: string;
           x && x.length;
         `,
-        options: [
-          {
-            requireNullish: true,
-          },
-        ],
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: string;
+          foo && foo.toString();
+        `,
+        options: [{ requireNullish: true }],
       },
       {
         code: `
           declare const x: string | number | boolean | object;
           x && x.toString();
         `,
-        options: [
-          {
-            requireNullish: true,
-          },
-        ],
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string };
+          foo && foo.bar && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: string;
+          foo && foo.toString() && foo.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string };
+          foo && foo.bar && foo.bar.toString() && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo1: { bar: string | null };
+          foo1 && foo1.bar;
+        `,
+        options: [{ requireNullish: true }],
+      },
+      {
+        code: `
+          declare const foo: string;
+          (foo || {}).toString();
+        `,
+        options: [{ requireNullish: true }],
+      },
+
+      {
+        code: `
+          declare const foo: string | null;
+          (foo || 'a' || {}).toString();
+        `,
+        options: [{ requireNullish: true }],
       },
       {
         code: `
@@ -1686,6 +1728,7 @@ describe('hand-crafted cases', () => {
             null !== foo.bar.baz &&
             'undefined' !== typeof foo.bar.baz;
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1709,6 +1752,7 @@ describe('hand-crafted cases', () => {
             foo.bar.baz !== null &&
             typeof foo.bar.baz !== 'undefined';
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1732,6 +1776,7 @@ describe('hand-crafted cases', () => {
             null !== foo.bar.baz &&
             undefined !== foo.bar.baz;
         `,
+        output: null,
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -1891,6 +1936,164 @@ describe('hand-crafted cases', () => {
           {
             messageId: 'preferOptionalChain',
             suggestions: null,
+          },
+        ],
+      },
+
+      // requireNullish
+      {
+        code: `
+          declare const thing1: string | null;
+          thing1 && thing1.toString();
+        `,
+        output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const thing1: string | null;
+          thing1?.toString();
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const thing1: string | null;
+          thing1 && thing1.toString() && true;
+        `,
+        output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const thing1: string | null;
+          thing1?.toString() && true;
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: string | null;
+          foo && foo.toString() && foo.toString();
+        `,
+        output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string | null;
+          foo?.toString() && foo.toString();
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo && foo.bar && foo.bar.toString();
+        `,
+        output: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo?.bar?.toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo && foo.bar && foo.bar.toString() && foo.bar.toString();
+        `,
+        output: `
+          declare const foo: { bar: string | null | undefined } | null | undefined;
+          foo?.bar?.toString() && foo.bar.toString();
+        `,
+        options: [{ requireNullish: true }],
+        errors: [{ messageId: 'preferOptionalChain' }],
+      },
+      {
+        code: `
+          declare const foo: string | null;
+          (foo || {}).toString();
+        `,
+        output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string | null;
+          foo?.toString();
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: string;
+          (foo || undefined || {}).toString();
+        `,
+        output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string;
+          (foo || undefined)?.toString();
+        `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: string | null;
+          (foo || undefined || {}).toString();
+        `,
+        output: null,
+        options: [{ requireNullish: true }],
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
+          declare const foo: string | null;
+          (foo || undefined)?.toString();
+        `,
+              },
+            ],
           },
         ],
       },

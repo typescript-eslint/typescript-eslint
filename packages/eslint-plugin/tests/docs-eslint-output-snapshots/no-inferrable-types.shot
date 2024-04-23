@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-inferrable-types.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const a: bigint = 10n;
+      ~~~~~~~~~~~~~~~ Type bigint trivially inferred from a bigint literal, remove type annotation.
+const a: bigint = BigInt(10);
+      ~~~~~~~~~~~~~~~~~~~~~~ Type bigint trivially inferred from a bigint literal, remove type annotation.
+const a: boolean = !0;
+      ~~~~~~~~~~~~~~~ Type boolean trivially inferred from a boolean literal, remove type annotation.
+const a: boolean = Boolean(null);
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~ Type boolean trivially inferred from a boolean literal, remove type annotation.
+const a: boolean = true;
+      ~~~~~~~~~~~~~~~~~ Type boolean trivially inferred from a boolean literal, remove type annotation.
+const a: null = null;
+      ~~~~~~~~~~~~~~ Type null trivially inferred from a null literal, remove type annotation.
+const a: number = 10;
+      ~~~~~~~~~~~~~~ Type number trivially inferred from a number literal, remove type annotation.
+const a: number = Infinity;
+      ~~~~~~~~~~~~~~~~~~~~ Type number trivially inferred from a number literal, remove type annotation.
+const a: number = NaN;
+      ~~~~~~~~~~~~~~~ Type number trivially inferred from a number literal, remove type annotation.
+const a: number = Number('1');
+      ~~~~~~~~~~~~~~~~~~~~~~~ Type number trivially inferred from a number literal, remove type annotation.
+const a: RegExp = /a/;
+      ~~~~~~~~~~~~~~~ Type RegExp trivially inferred from a RegExp literal, remove type annotation.
+const a: RegExp = new RegExp('a');
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type RegExp trivially inferred from a RegExp literal, remove type annotation.
+const a: string = \`str\`;
+      ~~~~~~~~~~~~~~~~~ Type string trivially inferred from a string literal, remove type annotation.
+const a: string = String(1);
+      ~~~~~~~~~~~~~~~~~~~~~ Type string trivially inferred from a string literal, remove type annotation.
+const a: symbol = Symbol('a');
+      ~~~~~~~~~~~~~~~~~~~~~~~ Type symbol trivially inferred from a symbol literal, remove type annotation.
+const a: undefined = undefined;
+      ~~~~~~~~~~~~~~~~~~~~~~~~ Type undefined trivially inferred from a undefined literal, remove type annotation.
+const a: undefined = void someValue;
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type undefined trivially inferred from a undefined literal, remove type annotation.
+
+class Foo {
+  prop: number = 5;
+  ~~~~~~~~~~~~~~~~~ Type number trivially inferred from a number literal, remove type annotation.
+}
+
+function fn(a: number = 5, b: boolean = true) {}
+            ~~~~~~~~~~~~~ Type number trivially inferred from a number literal, remove type annotation.
+                           ~~~~~~~~~~~~~~~~~ Type boolean trivially inferred from a boolean literal, remove type annotation.
+"
+`;
+
+exports[`Validating rule docs no-inferrable-types.mdx code examples ESLint output 2`] = `
+"Correct
+
+const a = 10n;
+const a = BigInt(10);
+const a = !0;
+const a = Boolean(null);
+const a = true;
+const a = null;
+const a = 10;
+const a = Infinity;
+const a = NaN;
+const a = Number('1');
+const a = /a/;
+const a = new RegExp('a');
+const a = \`str\`;
+const a = String(1);
+const a = Symbol('a');
+const a = undefined;
+const a = void someValue;
+
+class Foo {
+  prop = 5;
+}
+
+function fn(a = 5, b = true) {}
+"
+`;
+
+exports[`Validating rule docs no-inferrable-types.mdx code examples ESLint output 3`] = `
+"Options: { "ignoreParameters": true }
+
+function foo(a: number = 5, b: boolean = true) {
+  // ...
+}
+"
+`;
+
+exports[`Validating rule docs no-inferrable-types.mdx code examples ESLint output 4`] = `
+"Options: { "ignoreProperties": true }
+
+class Foo {
+  prop: number = 5;
+}
+"
+`;
