@@ -79,7 +79,7 @@ export default {
         'src/components/**/*.tsx',
 
         // used by Docusaurus
-        'src/theme/**/index.tsx',
+        'src/theme/**/*.tsx',
         'src/theme/prism-include-languages.js',
       ],
       ignoreDependencies: [
