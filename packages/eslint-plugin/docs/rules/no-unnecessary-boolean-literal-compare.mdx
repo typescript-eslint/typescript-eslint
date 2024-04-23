@@ -101,11 +101,11 @@ Examples of code for this rule with `{ allowComparingNullableBooleansToFalse: fa
 
 ```ts option='{ "allowComparingNullableBooleansToFalse": false }'
 declare const someUndefinedCondition: boolean | undefined;
-if (someUndefinedCondition === false) {
+if (!(someUndefinedCondition === false)) {
 }
 
 declare const someNullCondition: boolean | null;
-if (someNullCondition !== false) {
+if (!(someNullCondition !== false)) {
 }
 ```
 
