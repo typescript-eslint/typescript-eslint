@@ -244,7 +244,7 @@ Relative paths are interpreted relative to the current working directory if [`ts
 
 If this setting is specified, you must only lint files that are included in the projects as defined by the provided TSConfig file(s). If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
-```json
+```jsonc
 {
   // extend your base config so you don't have to redefine your compilerOptions
   "extends": "./tsconfig.json",
@@ -255,8 +255,8 @@ If this setting is specified, you must only lint files that are included in the 
     // etc
 
     // if you have a mixed JS/TS codebase, don't forget to include your JS files
-    "src/**/*.js"
-  ]
+    "src/**/*.js",
+  ],
 }
 ```
 
