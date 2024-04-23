@@ -24,8 +24,6 @@ export = {
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
-    'no-loss-of-precision': 'off',
-    '@typescript-eslint/no-loss-of-precision': 'error',
     '@typescript-eslint/no-misused-new': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
     '@typescript-eslint/no-namespace': 'error',

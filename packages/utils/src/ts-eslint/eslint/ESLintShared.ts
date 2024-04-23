@@ -155,7 +155,7 @@ export interface ESLintOptions<Config extends Linter.ConfigType> {
    * The types of the rules that the `eslint.lintFiles()` and `eslint.lintText()` methods use for autofix.
    * @default null
    */
-  fixTypes?: ('directive' | 'layout' | 'problem' | 'suggestion')[] | null;
+  fixTypes?: ('directive' | 'problem' | 'suggestion')[] | null;
   /**
    * If false is present, the `eslint.lintFiles()` method doesn't interpret glob patterns.
    * @default true

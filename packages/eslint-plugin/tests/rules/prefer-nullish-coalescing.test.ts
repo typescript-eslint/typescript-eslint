@@ -147,35 +147,30 @@ x === null ? x : y;
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeValidTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
 
     // ignoreMixedLogicalExpressions
@@ -707,7 +702,6 @@ declare const x: ${type} | ${nullish};
 if (() => x || 'foo') {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -733,7 +727,6 @@ declare const x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
