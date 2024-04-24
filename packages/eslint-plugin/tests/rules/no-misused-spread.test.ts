@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-misused-spread';
 import { getFixturesRootDir } from '../RuleTester';
@@ -81,6 +81,18 @@ ruleTester.run('no-misused-spread', rule, {
       declare function getIterable(): Iterable<number>;
 
       const a = [...getIterable()];
+    `,
+
+    `
+      declare const data: Uint8Array;
+
+      const a = [...data];
+    `,
+
+    `
+      declare const data: TypedArray;
+
+      const a = [...data];
     `,
 
     'const o = { ...{ a: 1, b: 2 } };',
@@ -227,6 +239,44 @@ ruleTester.run('no-misused-spread', rule, {
         declare const a: A & { b: string };
 
         const o = { ...a };
+      `,
+    },
+
+    `
+      class A {
+        [Symbol.iterator]() {
+          return {
+            next() {
+              return { done: true, value: undefined };
+            },
+          };
+        }
+      }
+
+      const a = [...new A()];
+    `,
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          [Symbol.iterator]() {
+            return {
+              next() {
+                return { done: true, value: undefined };
+              },
+            };
+          }
+        }
+
+        const a = [...new A()];
+      `,
+    },
+
+    {
+      options: [{ allowClassInstances: true }],
+      code: noFormat`
+        const a = { ...new (class A { static value = 1; })() };
       `,
     },
   ],
@@ -529,7 +579,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 1,
           column: 13,
@@ -547,7 +597,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -565,7 +615,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -583,7 +633,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -601,7 +651,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -619,7 +669,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -641,7 +691,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Map',
+            type: 'Iterable',
           },
           line: 3,
           column: 11,
@@ -664,7 +714,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Map',
+            type: 'Iterable',
           },
           line: 7,
           column: 21,
@@ -682,7 +732,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Map',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -700,7 +750,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Map',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -718,7 +768,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Map',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -736,7 +786,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Map',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -754,7 +804,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Set',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -765,7 +815,7 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
-        declare const promise: Promise<number>;
+        const promise = new Promise(() => {});
         const o = { ...promise };
       `,
       errors: [
@@ -1046,12 +1096,40 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
+      options: [{ allowClassInstances: true }],
+      code: `
+        class A {
+          [Symbol.iterator]() {
+            return {
+              next() {
+                return { done: true, value: undefined };
+              },
+            };
+          }
+        }
+
+        const a = { ...new A() };
+      `,
+      errors: [
+        {
+          messageId: 'noSpreadInObject',
+          data: {
+            type: 'Iterable',
+          },
+          line: 12,
+          column: 21,
+          endColumn: 31,
+        },
+      ],
+    },
+
+    {
       code: `
         const o = { ...new Date() };
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 2,
           column: 21,
           endColumn: 34,
@@ -1073,7 +1151,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 10,
           column: 21,
           endColumn: 31,
@@ -1093,7 +1171,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 25,
@@ -1113,7 +1191,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 25,
@@ -1133,7 +1211,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 30,
@@ -1153,7 +1231,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 30,
@@ -1173,7 +1251,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 31,
@@ -1193,7 +1271,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 25,
@@ -1213,10 +1291,58 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 8,
           column: 21,
           endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        const a = {
+          ...class A {
+            static value = 1;
+            nonStatic = 2;
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'noClassDeclarationSpreadInObject',
+          line: 3,
+          column: 11,
+          endLine: 6,
+          endColumn: 12,
+        },
+      ],
+    },
+
+    {
+      code: noFormat`
+        const a = { ...(class A { static value = 1 }) }
+      `,
+      errors: [
+        {
+          messageId: 'noClassDeclarationSpreadInObject',
+          line: 2,
+          column: 21,
+          endColumn: 54,
+        },
+      ],
+    },
+
+    {
+      code: noFormat`
+        const a = { ...new (class A { static value = 1; })() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassInstanceSpreadInObject',
+          line: 2,
+          column: 21,
+          endColumn: 61,
         },
       ],
     },

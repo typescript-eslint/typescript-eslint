@@ -6,7 +6,7 @@ description: 'Disallow using the spread operator when it might cause unexpected 
 >
 > See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
 
-The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript, but it can only be used with types that support it. This rule disallows using the spread operator on types where spreading can lead to unexpected behavior.
+The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript that can be misused in ways not always detectable by TypeScript. This rule disallows using the spread operator on types where spreading can lead to unexpected behavior.
 
 ## Examples
 
