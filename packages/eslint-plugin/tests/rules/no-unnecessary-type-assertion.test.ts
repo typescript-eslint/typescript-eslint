@@ -6,12 +6,23 @@ import rule from '../../src/rules/no-unnecessary-type-assertion';
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     sourceType: 'module',
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },
   parser: '@typescript-eslint/parser',
 });
+
+const optionsWithOnUncheckedIndexedAccess = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+};
+
+const optionsWithExactOptionalPropertyTypes = {
+  tsconfigRootDir: rootDir,
+  project: './tsconfig.exactOptionalPropertyTypes.json',
+};
 
 ruleTester.run('no-unnecessary-type-assertion', rule, {
   valid: [
@@ -25,10 +36,34 @@ if (
   const name = member.id as TSESTree.StringLiteral;
 }
     `,
+    `
+      const c = 1;
+      let z = c as number;
+    `,
+    `
+      const c = 1;
+      let z = c as const;
+    `,
+    `
+      const c = 1;
+      let z = c as 1;
+    `,
+    `
+      type Bar = 'bar';
+      const data = {
+        x: 'foo' as 'foo',
+        y: 'bar' as Bar,
+      };
+    `,
+    "[1, 2, 3, 4, 5].map(x => [x, 'A' + x] as [number, string]);",
+    `
+      let x: Array<[number, string]> = [1, 2, 3, 4, 5].map(
+        x => [x, 'A' + x] as [number, string],
+      );
+    `,
+    'let y = 1 as 1;',
     'const foo = 3 as number;',
     'const foo = <number>3;',
-    'const foo = <3>3;',
-    'const foo = 3 as 3;',
     `
 type Tuple = [3, 'hi', 'bye'];
 const foo = [3, 'hi', 'bye'] as Tuple;
@@ -53,6 +88,10 @@ let foo: number = bar!;
 declare const a: { data?: unknown };
 
 const x = a.data!;
+    `,
+    `
+declare function foo(arg?: number): number | void;
+const bar: number = foo()!;
     `,
     {
       code: `
@@ -175,9 +214,6 @@ const c = [...a, ...b] as const;
       code: 'const a = [1, 2] as const;',
     },
     {
-      code: "const a = 'a' as const;",
-    },
-    {
       code: "const a = { foo: 'foo' } as const;",
     },
     {
@@ -189,9 +225,6 @@ const c = <const>[...a, ...b];
     },
     {
       code: 'const a = <const>[1, 2];',
-    },
-    {
-      code: "const a = <const>'a';",
     },
     {
       code: "const a = <const>{ foo: 'foo' };",
@@ -242,9 +275,123 @@ const item = arr[0] as object;
 declare const arr: (object | undefined)[];
 const item = <object>arr[0];
     `,
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      parserOptions: optionsWithOnUncheckedIndexedAccess,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    `
+const myString = 'foo';
+const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | null | number;
+};
+const bar = foo.a as string | undefined;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | number;
+};
+const bar = foo.a as string | undefined | bigint;
+      `,
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
   ],
 
   invalid: [
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8737
+    {
+      code: 'const a = `a` as const;',
+      output: 'const a = `a`;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = 'a' as const;",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: "const a = <const>'a';",
+      output: "const a = 'a';",
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1 }],
+    },
+    {
+      code: 'const foo = <3>3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: 'const foo = 3 as 3;',
+      output: 'const foo = 3;',
+      errors: [{ messageId: 'unnecessaryAssertion', line: 1, column: 13 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = <Foo>3;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
+    {
+      code: `
+        type Foo = 3;
+        const foo = 3 as Foo;
+      `,
+      output: `
+        type Foo = 3;
+        const foo = 3;
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion', line: 3, column: 21 }],
+    },
     {
       code: `
 const foo = 3;
@@ -549,6 +696,24 @@ y = 0;
     },
     {
       code: `
+declare function foo(arg?: number): number | void;
+const bar: number | void = foo()!;
+      `,
+      output: `
+declare function foo(arg?: number): number | void;
+const bar: number | void = foo();
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 3,
+          column: 28,
+          endColumn: 34,
+        },
+      ],
+    },
+    {
+      code: `
 declare function foo(): number;
 const a = foo()!;
       `,
@@ -814,6 +979,77 @@ const foo = (3 + 5);
           column: 13,
         },
       ],
+    },
+    // onUncheckedIndexedAccess = false
+    {
+      code: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]!);
+  }
+}
+      `,
+      output: `
+function foo(item: string) {}
+function bar(items: string[]) {
+  for (let i = 0; i < items.length; i++) {
+    foo(items[i]);
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 9,
+        },
+      ],
+    },
+    // exactOptionalPropertyTypes = true
+    {
+      code: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a as string | undefined;
+      `,
+      output: `
+declare const foo: {
+  a?: string;
+};
+const bar = foo.a;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 13,
+        },
+      ],
+      parserOptions: optionsWithExactOptionalPropertyTypes,
+    },
+    {
+      code: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a as string | undefined;
+      `,
+      output: `
+declare const foo: {
+  a?: string | undefined;
+};
+const bar = foo.a;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 5,
+          column: 13,
+        },
+      ],
+      parserOptions: optionsWithExactOptionalPropertyTypes,
     },
   ],
 });

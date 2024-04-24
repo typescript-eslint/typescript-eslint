@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-implied-eval.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+setTimeout('alert(\`Hi!\`);', 100);
+           ~~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
+
+setInterval('alert(\`Hi!\`);', 100);
+            ~~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
+
+setImmediate('alert(\`Hi!\`)');
+             ~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
+
+execScript('alert(\`Hi!\`)');
+           ~~~~~~~~~~~~~~ Implied eval. Consider passing a function.
+
+window.setTimeout('count = 5', 10);
+                  ~~~~~~~~~~~ Implied eval. Consider passing a function.
+
+window.setInterval('foo = bar', 10);
+                   ~~~~~~~~~~~ Implied eval. Consider passing a function.
+
+const fn = '() = {}';
+setTimeout(fn, 100);
+           ~~ Implied eval. Consider passing a function.
+
+const fn = () => {
+  return 'x = 10';
+};
+setTimeout(fn(), 100);
+           ~~~~ Implied eval. Consider passing a function.
+
+const fn = new Function('a', 'b', 'return a + b');
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Implied eval. Do not use the Function constructor to create functions.
+"
+`;
+
+exports[`Validating rule docs no-implied-eval.mdx code examples ESLint output 2`] = `
+"Correct
+
+setTimeout(function () {
+  alert('Hi!');
+}, 100);
+
+setInterval(function () {
+  alert('Hi!');
+}, 100);
+
+setImmediate(function () {
+  alert('Hi!');
+});
+
+execScript(function () {
+  alert('Hi!');
+});
+
+const fn = () => {};
+setTimeout(fn, 100);
+
+const foo = {
+  fn: function () {},
+};
+setTimeout(foo.fn, 100);
+setTimeout(foo.fn.bind(this), 100);
+
+class Foo {
+  static fn = () => {};
+}
+
+setTimeout(Foo.fn, 100);
+"
+`;

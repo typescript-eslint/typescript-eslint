@@ -102,6 +102,7 @@ import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
+import onlyThrowError from './only-throw-error';
 import paddingLineBetweenStatements from './padding-line-between-statements';
 import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
@@ -142,6 +143,7 @@ import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
+import useUnknownInCatchCallbackVariable from './use-unknown-in-catch-callback-variable';
 
 export default {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
@@ -246,6 +248,7 @@ export default {
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
+  'only-throw-error': onlyThrowError,
   'padding-line-between-statements': paddingLineBetweenStatements,
   'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
@@ -286,4 +289,5 @@ export default {
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
+  'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,
 } satisfies Linter.PluginRules;

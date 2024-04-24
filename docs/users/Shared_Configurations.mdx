@@ -178,6 +178,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+Some rules also enabled in `recommended` default to more strict settings in this configuration.
 See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
 
 :::caution
@@ -208,6 +209,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+Some rules also enabled in `recommended-type-checked` default to more strict settings in this configuration.
 See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
 
 :::caution
@@ -319,7 +321,7 @@ export default tseslint.config(
   },
   // Added lines start
   {
-    files: ['*.js'],
+    files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
   },
   // Added lines end
@@ -344,7 +346,7 @@ module.exports = {
   // Added lines start
   overrides: [
     {
-      files: ['*.js'],
+      files: ['**/*.js'],
       extends: ['plugin:@typescript-eslint/disable-type-checked'],
     },
   ],

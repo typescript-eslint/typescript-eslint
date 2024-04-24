@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-regexp-exec.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+'something'.match(/thing/);
+            ~~~~~ Use the \`RegExp#exec()\` method instead.
+
+'some things are just things'.match(/thing/);
+                              ~~~~~ Use the \`RegExp#exec()\` method instead.
+
+const text = 'something';
+const search = /thing/;
+text.match(search);
+     ~~~~~ Use the \`RegExp#exec()\` method instead.
+"
+`;
+
+exports[`Validating rule docs prefer-regexp-exec.mdx code examples ESLint output 2`] = `
+"Correct
+
+/thing/.exec('something');
+
+'some things are just things'.match(/thing/g);
+
+const text = 'something';
+const search = /thing/;
+search.exec(text);
+"
+`;

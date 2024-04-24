@@ -1,3 +1,217 @@
+## 7.7.1 (2024-04-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] handle shorthand property assignment
+
+- **eslint-plugin:** [explicit-function-return-type] fix checking wrong ancestor's return type
+
+- **eslint-plugin:** [prefer-optional-chain] only look at left operand for `requireNullish`
+
+- **eslint-plugin:** [no-for-in-array] refine report location
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] allow non-null assertion for void type
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** replace `no-new-symbol` with `no-new-native-nonconstructor`
+
+
+### ❤️  Thank You
+
+- Dave
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- bump npm dependency ranges
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.5.0 (2024-04-01)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] handle TaggedTemplateExpression
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle exactOptionalPropertyTypes compiler option
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kim Sang Du
+- Mark de Dios
+- Naru
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.4.0 (2024-03-25)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [consistent-type-imports] ignore files with decorators, experimentalDecorators, and emitDecoratorMetadata
+
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle tagged templates
+
+- **eslint-plugin:** deprecate no-throw-literal and add a renamed only-throw-error
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] address multipart nullish checks false positive
+
+- **eslint-plugin:** [prefer-optional-chain] properly disambiguate between `boolean` and `false`
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] avoid remove const casting on template literals with expressions inside
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Brad Zacher
+- Josh Goldberg ✨
+- Kim Sang Du
+- Kirk Waiblinger
+- Marco Pasqualetti
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.1 (2024-03-18)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] revert disable of ignoreVoid in strict config
+
+
+### ❤️  Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.0 (2024-03-18)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [restrict-template-expressions] add `allowArray` option
+
+- **eslint-plugin:** add meta.docs.recommended setting for strict config options
+
+- **eslint-plugin:** add rule `use-unknown-in-catch-callback-variables`
+
+- **eslint-plugin:** [prefer-reduce-type-parameter] supports tuple, union, intersection
+
+
+### 🩹 Fixes
+
+- correct `engines.node` constraints in `package.json`
+
+- **eslint-plugin:** [unbound-method] check method definition in object literal using longhand form
+
+- **eslint-plugin:** [consistent-type-imports] handle imports without specifiers
+
+- **eslint-plugin:** [no-redundant-type-constituents] incorrectly marks & string as redundant
+
+- **eslint-plugin:** [no-unnecessary-qualifier] handle merge namespace with enum
+
+- **eslint-plugin:** [no-unused-expressions] false negatives when using assertions
+
+- **eslint-plugin:** [ban-ts-comment] more accurate handling of multiline comments
+
+- **eslint-plugin:** [explicit-function-return-type, explicit-module-boundary-types] improved checking for allowHigherOrderFunctions option
+
+- **eslint-plugin:** [class-literal-property-style] ignore property assigned in constructor
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix false negative for const variable declarations
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alexu
+- Arka Pratim Chaudhuri
+- auvred
+- Derrick Isaacson
+- fnx
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Marta Cardoso
+- Michaël De Boey
+- Tristan Rasmussen
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.2.0 (2024-03-11)
+
+
+### 🚀 Features
+
+- support TS 5.4
+
+- **eslint-plugin:** [prefer-string-starts-ends-with] add allowSingleElementEquality option
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** expose *-type-checked-only configs for extension
+
+- **eslint-plugin:** [member-ordering] report alphabetical sorting for all groups instead of just the first failing group
+
+- **eslint-plugin:** [no-var-requires, no-require-imports] support template literal
+
+- **eslint-plugin:** [no-useless-template-literals] detect TemplateLiteral
+
+- **eslint-plugin:** [no-unnecessary-condition] handle union array and tuple type
+
+- **eslint-plugin:** [prefer-find] support ternary branches in prefer-find
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- auvred
+- Chris Plummer
+- Fotis Papadogeorgopoulos
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Wayne Zhang
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.1.1 (2024-03-04)
 
 This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.

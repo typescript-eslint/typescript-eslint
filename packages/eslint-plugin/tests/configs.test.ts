@@ -23,7 +23,9 @@ function entriesToObject<T = unknown>(value: [string, T][]): Record<string, T> {
   }, {});
 }
 
-function filterRules(values: Record<string, string>): [string, string][] {
+function filterRules(
+  values: Record<string, string | unknown[]>,
+): [string, string | unknown[]][] {
   return Object.entries(values).filter(([name]) =>
     name.startsWith(RULE_NAME_PREFIX),
   );
@@ -39,7 +41,7 @@ function filterAndMapRuleConfigs({
   excludeDeprecated,
   typeChecked,
   recommendations,
-}: FilterAndMapRuleConfigsSettings = {}): [string, string][] {
+}: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
   let result = Object.entries(rules);
 
   if (excludeDeprecated) {
@@ -55,16 +57,41 @@ function filterAndMapRuleConfigs({
   }
 
   if (recommendations) {
-    result = result.filter(([, rule]) =>
-      recommendations.includes(rule.meta.docs?.recommended),
-    );
+    result = result.filter(([, rule]) => {
+      switch (typeof rule.meta.docs?.recommended) {
+        case 'undefined':
+          return false;
+        case 'object':
+          return Object.keys(rule.meta.docs.recommended).some(recommended =>
+            recommendations.includes(recommended as RuleRecommendation),
+          );
+        case 'string':
+          return recommendations.includes(rule.meta.docs.recommended);
+      }
+    });
   }
 
-  return result.map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'error']);
+  const highestRecommendation = recommendations?.filter(Boolean).at(-1);
+
+  return result.map(([name, rule]) => {
+    const customRecommendation =
+      highestRecommendation &&
+      typeof rule.meta.docs?.recommended === 'object' &&
+      rule.meta.docs.recommended[
+        highestRecommendation as 'recommended' | 'strict'
+      ];
+
+    return [
+      `${RULE_NAME_PREFIX}${name}`,
+      customRecommendation && typeof customRecommendation !== 'boolean'
+        ? ['error', customRecommendation[0]]
+        : 'error',
+    ];
+  });
 }
 
 function itHasBaseRulesOverriden(
-  unfilteredConfigRules: Record<string, string>,
+  unfilteredConfigRules: Record<string, string | unknown[]>,
 ): void {
   it('has the base rules overriden by the appropriate extension rules', () => {
     const ruleNames = new Set(Object.keys(unfilteredConfigRules));
@@ -166,7 +193,7 @@ describe('recommended-type-checked-only.ts', () => {
 });
 
 describe('strict.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs.strict.rules;
 
   it('contains all strict rules, excluding type checked ones', () => {
@@ -185,7 +212,7 @@ describe('strict.ts', () => {
 });
 
 describe('strict-type-checked.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs['strict-type-checked'].rules;
 
   it('contains all strict rules', () => {
@@ -202,7 +229,7 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('strict-type-checked-only.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs['strict-type-checked-only'].rules;
 
   it('contains only type-checked strict rules', () => {
@@ -221,7 +248,7 @@ describe('strict-type-checked-only.ts', () => {
 });
 
 describe('stylistic.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs.stylistic.rules;
 
   it('contains all stylistic rules, excluding deprecated or type checked ones', () => {
