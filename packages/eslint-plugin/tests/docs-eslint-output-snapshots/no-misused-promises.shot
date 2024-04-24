@@ -66,6 +66,18 @@ eventEmitter.on('some-event', async () => {
   await doSomething();
   otherSynchronousCall();
 });
+
+interface MySyncInterface {
+  setThing(): void;
+}
+class MyClass implements MySyncInterface {
+  async setThing(): Promise<void> {
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise-returning method provided where a void return was expected by heritage type 'MySyncInterface'.
+    this.thing = await fetchThing();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}
 "
 `;
 
@@ -110,6 +122,15 @@ eventEmitter.on('some-event', () => {
 
   handler().catch(handleError);
 });
+
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+class MyClass implements MyAsyncInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
 "
 `;
 
