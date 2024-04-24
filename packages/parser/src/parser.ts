@@ -106,6 +106,11 @@ function parseForESLint(
   const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
     jsx: validateBoolean(options.ecmaFeatures.jsx),
+    /**
+     * Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
+     * https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
+     */
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
   });
   const analyzeOptions: AnalyzeOptions = {
     globalReturn: options.ecmaFeatures.globalReturn,
@@ -123,6 +128,7 @@ function parseForESLint(
     options.warnOnUnsupportedTypeScriptVersion,
     true,
   );
+
   if (!warnOnUnsupportedTypeScriptVersion) {
     parserOptions.loggerFn = false;
   }
@@ -130,7 +136,6 @@ function parseForESLint(
   const { ast, services } = parseAndGenerateServices(code, parserOptions);
   ast.sourceType = options.sourceType;
 
-  let emitDecoratorMetadata = options.emitDecoratorMetadata === true;
   if (services.program) {
     // automatically apply the options configured for the program
     const compilerOptions = services.program.getCompilerOptions();
@@ -161,14 +166,11 @@ function parseForESLint(
         analyzeOptions.jsxFragmentName,
       );
     }
-    if (compilerOptions.emitDecoratorMetadata === true) {
-      emitDecoratorMetadata = true;
-    }
   }
 
-  if (emitDecoratorMetadata) {
-    analyzeOptions.emitDecoratorMetadata = true;
-  }
+  // if not defined - override from the parserOptions
+  services.emitDecoratorMetadata ??= options.emitDecoratorMetadata === true;
+  services.experimentalDecorators ??= options.experimentalDecorators === true;
 
   const scopeManager = analyze(ast, analyzeOptions);
 
