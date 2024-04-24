@@ -33,7 +33,7 @@ If you do have a use case for an API allowing `{}`, you can always use an [ESLin
 
 Note that this rule does not report:
 
-- `{}` as a type constituent in an intersection type (e.g. `type NonNullable<T> = T & unknown`), as this is useful in type system operations.
+- `{}` as a type constituent in an intersection type (e.g. `type NonNullable<T> = T & {}`), as this is useful in type system operations.
 - `{}` as an empty function body with a `void` return type (e.g. `() => {}`), as this is a function body, not a type.
 
 ## Examples
