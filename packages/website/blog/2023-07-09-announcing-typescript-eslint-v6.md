@@ -46,12 +46,12 @@ These are the changes that users of typescript-eslint -generally, any developer 
 
 ### Reworked Configuration Names
 
-The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://typescript-eslint.io/linting/configs).
+The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](/users/configs).
 typescript-eslint v5 provided three recommended configurations:
 
-- [`recommended`](https://typescript-eslint.io/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
-- [`recommended-requiring-type-checking`](https://typescript-eslint.io/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
-- [`strict`](https://typescript-eslint.io/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+- [`recommended`](/users/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
+- [`recommended-requiring-type-checking`](/users/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
+- [`strict`](/users/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
 
 Those configurations worked well for most projects.
 However, some users correctly noted two flaws in that approach:
@@ -106,11 +106,11 @@ module.exports = {
 };
 ```
 
-See [our _Configurations_ linting docs](/linting/configs) for the updated documentation on configurations provided by typescript-eslint.
+See [our _Configurations_ linting docs](/users/configs) for the updated documentation on configurations provided by typescript-eslint.
 
 For more information on these changes, see:
 
-- [Our documentation on our configurations](https://typescript-eslint.io/linting/configs).
+- [Our documentation on our configurations](/users/configs).
 - [Configs: Have recommended/strict configs include lesser configs, and simplify type checked names](https://github.com/typescript-eslint/typescript-eslint/discussions/6019) for the discussion leading up to these configuration changes.
 - [feat(eslint-plugin): rework configs: recommended, strict, stylistic; -type-checked](https://github.com/typescript-eslint/typescript-eslint/pull/5251) for the pull request implementing the changes.
 
@@ -485,8 +485,8 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-implicit-any-catch`, replaced by the TSConfig option [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables)
   - `@typescript-eslint/no-parameter-properties`, replaced by `@typescript-eslint/parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`, replaced by `@typescript-eslint/sort-type-constituents`
-- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://typescript-eslint.io/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://typescript-eslint.io/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
+- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](/rules/prefer-nullish-coalescing) rule to also check `||=` expressions.
+- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](/rules/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
 - ✨ [feat(eslint-plugin): [restrict-plus-operands] change checkCompoundAssignments to skipCompoundAssignments](https://github.com/typescript-eslint/typescript-eslint/pull/7027): inverses the logical value of the option and renames it
 - ✨ [feat(eslint-plugin): [prefer-optional-chain] handle cases where the first operands are unrelated to the rest of the chain and add type info](https://github.com/typescript-eslint/typescript-eslint/pull/6397): uses type information to make the rule more intelligent about when to flag violations
 
@@ -561,7 +561,7 @@ Rules can still retrieve their full backing TypeScript type checker with `servic
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-See [_Custom Rules_](https://typescript-eslint.io/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
+See [_Custom Rules_](/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
 
 ### AST Breaking Changes
 

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-array-constructor.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+Array(0, 1, 2);
+~~~~~~~~~~~~~~ The array literal notation [] is preferable.
+new Array(0, 1, 2);
+~~~~~~~~~~~~~~~~~~ The array literal notation [] is preferable.
+"
+`;
+
+exports[`Validating rule docs no-array-constructor.mdx code examples ESLint output 2`] = `
+"Correct
+
+Array<number>(0, 1, 2);
+new Array<Foo>(x, y, z);
+
+Array(500);
+new Array(someOtherArray.length);
+"
+`;

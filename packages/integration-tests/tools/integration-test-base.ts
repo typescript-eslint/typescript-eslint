@@ -72,10 +72,6 @@ function integrationTest(
             devDependencies: {
               ...BASE_DEPENDENCIES,
               ...fixturePackageJson.devDependencies,
-              // install tslint with the base version if required
-              tslint: fixturePackageJson.devDependencies.tslint
-                ? rootPackageJson.devDependencies.tslint
-                : undefined,
             },
             // ensure everything uses the locally packed versions instead of the NPM versions
             resolutions: {
@@ -186,11 +182,12 @@ export function eslintIntegrationTest(
 }
 
 export function typescriptIntegrationTest(
+  testName: string,
   testFilename: string,
   tscArgs: string[],
   assertOutput: (out: string) => void,
 ): void {
-  integrationTest('typescript', testFilename, async testFolder => {
+  integrationTest(testName, testFilename, async testFolder => {
     const [result] = await Promise.allSettled([
       execFile('yarn', ['tsc', '--noEmit', ...tscArgs], {
         cwd: testFolder,

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-require-imports.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const lib1 = require('lib1');
+             ~~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+const { lib2 } = require('lib2');
+                 ~~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+import lib3 = require('lib3');
+              ~~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+"
+`;
+
+exports[`Validating rule docs no-require-imports.mdx code examples ESLint output 2`] = `
+"Correct
+
+import * as lib1 from 'lib1';
+import { lib2 } from 'lib2';
+import * as lib3 from 'lib3';
+"
+`;
+
+exports[`Validating rule docs no-require-imports.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allow": ["/package.json$"] }
+
+console.log(require('../data.json').version);
+            ~~~~~~~~~~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+"
+`;
+
+exports[`Validating rule docs no-require-imports.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allow": ["/package.json$"] }
+
+console.log(require('../package.json').version);
+"
+`;

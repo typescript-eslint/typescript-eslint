@@ -10,6 +10,7 @@ import {
   OperatorPrecedence,
 } from '../util';
 import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
+import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import {
   gatherLogicalOperands,
@@ -141,9 +142,9 @@ export default createRule<
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
-        context.report({
-          node: parentNode,
+        checkNullishAndReport(context, parserServices, options, [leftNode], {
           messageId: 'preferOptionalChain',
+          node: parentNode,
           suggest: [
             {
               messageId: 'optionalChainSuggest',
@@ -179,6 +180,7 @@ export default createRule<
         const { operands, newlySeenLogicals } = gatherLogicalOperands(
           node,
           parserServices,
+          context.sourceCode,
           options,
         );
 

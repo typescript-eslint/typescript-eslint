@@ -1,6 +1,6 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/linting/configs
+// SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
@@ -11,8 +11,10 @@ export default (
   _plugin: FlatConfig.Plugin,
   _parser: FlatConfig.Parser,
 ): FlatConfig.Config => ({
+  name: 'typescript-eslint/disable-type-checked',
   rules: {
     '@typescript-eslint/await-thenable': 'off',
+    '@typescript-eslint/consistent-return': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/naming-convention': 'off',
@@ -42,6 +44,7 @@ export default (
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+    '@typescript-eslint/only-throw-error': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
     '@typescript-eslint/prefer-find': 'off',
     '@typescript-eslint/prefer-includes': 'off',
@@ -63,6 +66,7 @@ export default (
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
   languageOptions: { parserOptions: { project: false, program: null } },
 });

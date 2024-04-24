@@ -1,0 +1,553 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 1`] = `
+"Options: { "allowAliases": "always" }
+
+// primitives
+type Foo = 'a';
+
+type Foo = 'a' | 'b';
+
+type Foo = string;
+
+type Foo = string | string[];
+
+type Foo = string & string[];
+
+type Foo = \`foo-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+
+type Foo = Bar | Baz;
+
+type Foo = Bar & Baz;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 2`] = `
+"Options: { "allowAliases": "in-unions" }
+
+// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = string & string[];
+           ~~~~~~ Aliases in intersection types are not allowed.
+                    ~~~~~~~~ Aliases in intersection types are not allowed.
+
+type Foo = \`foo-\${number}\`;
+           ~~~~~~~~~~~~~~~ Type aliases are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+
+type Foo = Bar & Baz;
+           ~~~ Aliases in intersection types are not allowed.
+                 ~~~ Aliases in intersection types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 3`] = `
+"Options: { "allowAliases": "in-unions" }
+
+// primitives
+type Foo = 'a' | 'b';
+
+type Foo = string | string[];
+
+type Foo = \`a-\${number}\` | \`b-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar | Baz;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 4`] = `
+"Options: { "allowAliases": "in-intersections" }
+
+// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = 'a' | 'b';
+           ~~~ Aliases in union types are not allowed.
+                 ~~~ Aliases in union types are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = string | string[];
+           ~~~~~~ Aliases in union types are not allowed.
+                    ~~~~~~~~ Aliases in union types are not allowed.
+
+type Foo = \`a-\${number}\` | \`b-\${number}\`;
+           ~~~~~~~~~~~~~ Aliases in union types are not allowed.
+                           ~~~~~~~~~~~~~ Aliases in union types are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+
+type Foo = Bar | Baz;
+           ~~~ Aliases in union types are not allowed.
+                 ~~~ Aliases in union types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 5`] = `
+"Options: { "allowAliases": "in-intersections" }
+
+// primitives
+type Foo = string & string[];
+
+type Foo = \`a-\${number}\` & \`b-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar & Baz;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 6`] = `
+"Options: { "allowAliases": "in-unions-and-intersections" }
+
+// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = \`foo-\${number}\`;
+           ~~~~~~~~~~~~~~~ Type aliases are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 7`] = `
+"Options: { "allowAliases": "in-unions-and-intersections" }
+
+// primitives
+type Foo = 'a' | 'b';
+
+type Foo = string | string[];
+
+type Foo = string & string[];
+
+type Foo = \`a-\${number}\` & \`b-\${number}\`;
+
+type Foo = \`a-\${number}\` | \`b-\${number}\`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar | Baz;
+
+type Foo = Bar & Baz;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 8`] = `
+"Options: { "allowCallbacks": "always" }
+
+type Foo = () => void;
+
+type Foo = (name: string) => string;
+
+class Person {}
+
+type Foo = (name: string, age: number) => string | Person;
+
+type Foo = (name: string, age: number) => string & Person;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 9`] = `
+"Options: { "allowConditionalTypes": "always" }
+
+type Foo<T> = T extends number ? number : null;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 10`] = `
+"Options: { "allowConstructors": "always" }
+
+type Foo = new () => void;
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 11`] = `
+"Options: { "allowLiterals": "always" }
+
+type Foo = {};
+
+type Foo = {
+  name: string;
+  age: number;
+};
+
+type Foo = {
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
+};
+
+type Foo = { name: string } | { age: number };
+
+type Foo = { name: string } & { age: number };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 12`] = `
+"Options: { "allowLiterals": "in-unions" }
+
+type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type Foo = { name: string } & { age: number };
+           ~~~~~~~~~~~~~~~~ Literals in intersection types are not allowed.
+                              ~~~~~~~~~~~~~~~ Literals in intersection types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 13`] = `
+"Options: { "allowLiterals": "in-unions" }
+
+type Foo = { name: string } | { age: number };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 14`] = `
+"Options: { "allowLiterals": "in-intersections" }
+
+type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type Foo = { name: string } | { age: number };
+           ~~~~~~~~~~~~~~~~ Literals in union types are not allowed.
+                              ~~~~~~~~~~~~~~~ Literals in union types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 15`] = `
+"Options: { "allowLiterals": "in-intersections" }
+
+type Foo = { name: string } & { age: number };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 16`] = `
+"Options: { "allowLiterals": "in-unions-and-intersections" }
+
+type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 17`] = `
+"Options: { "allowLiterals": "in-unions-and-intersections" }
+
+type Foo = { name: string } | { age: number };
+
+type Foo = { name: string } & { age: number };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 18`] = `
+"Options: { "allowMappedTypes": "always" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 19`] = `
+"Options: { "allowMappedTypes": "in-unions" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
+                                                     ~ Mapped types in intersection types are not allowed.
+  readonly [P in keyof U]: U[P];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in intersection types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 20`] = `
+"Options: { "allowMappedTypes": "in-unions" }
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 21`] = `
+"Options: { "allowMappedTypes": "in-intersections" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+  | { readonly [P in keyof U]: U[P] };
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 22`] = `
+"Options: { "allowMappedTypes": "in-intersections" }
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 23`] = `
+"Options: { "allowMappedTypes": "in-unions-and-intersections" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 24`] = `
+"Options: { "allowMappedTypes": "in-unions-and-intersections" }
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+  | { readonly [P in keyof U]: U[P] };
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+
+type Foo<T, U> = { readonly [P in keyof T]: T[P] } & {
+  readonly [P in keyof U]: U[P];
+};
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 25`] = `
+"Options: { "allowTupleTypes": "always" }
+
+type Foo = [number];
+
+type Foo = [number] | [number, number];
+
+type Foo = [number] & [number, number];
+
+type Foo = [number] | ([number, number] & [string, string]);
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 26`] = `
+"Options: { "allowTupleTypes": "in-unions" }
+
+type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [number] & [number, number];
+           ~~~~~~~~ Tuple Types in intersection types are not allowed.
+                      ~~~~~~~~~~~~~~~~ Tuple Types in intersection types are not allowed.
+
+type Foo = [string] & [number];
+           ~~~~~~~~ Tuple Types in intersection types are not allowed.
+                      ~~~~~~~~ Tuple Types in intersection types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 27`] = `
+"Options: { "allowTupleTypes": "in-unions" }
+
+type Foo = [number] | [number, number];
+
+type Foo = [string] | [number];
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 28`] = `
+"Options: { "allowTupleTypes": "in-intersections" }
+
+type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [number] | [number, number];
+           ~~~~~~~~ Tuple Types in union types are not allowed.
+                      ~~~~~~~~~~~~~~~~ Tuple Types in union types are not allowed.
+
+type Foo = [string] | [number];
+           ~~~~~~~~ Tuple Types in union types are not allowed.
+                      ~~~~~~~~ Tuple Types in union types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 29`] = `
+"Options: { "allowTupleTypes": "in-intersections" }
+
+type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 30`] = `
+"Options: { "allowTupleTypes": "in-unions-and-intersections" }
+
+type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [string];
+           ~~~~~~~~ Type tuple types are not allowed.
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 31`] = `
+"Options: { "allowTupleTypes": "in-unions-and-intersections" }
+
+type Foo = [number] & [number, number];
+
+type Foo = [string] | [number];
+"
+`;
+
+exports[`Validating rule docs no-type-alias.mdx code examples ESLint output 32`] = `
+"Options: { "allowGenerics": "always" }
+
+type Foo = Bar<string>;
+
+type Foo = Record<string, number>;
+
+type Foo = Readonly<Bar>;
+
+type Foo = Partial<Bar>;
+
+type Foo = Omit<Bar, 'a' | 'b'>;
+"
+`;

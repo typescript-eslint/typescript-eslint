@@ -18,7 +18,7 @@ TODO - convert this to /utils/ts-eslint
 */
 import type { TSESLint } from '@typescript-eslint/utils';
 
-interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
+export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
    * Allows you to "extend" a set of configs similar to `extends` from the
    * classic configs.
@@ -91,14 +91,17 @@ export function config(
       return config;
     }
 
-    if (config.files) {
-      const files = config.files;
-      return [
-        ...extendsArr.map(conf => ({ ...conf, files: [...files] })),
-        config,
-      ];
-    }
+    const extension = {
+      ...(config.files && { files: config.files }),
+      ...(config.ignores && { ignores: config.ignores }),
+    };
 
-    return [...extendsArr, config];
+    return [
+      ...extendsArr.map(conf => ({
+        ...conf,
+        ...extension,
+      })),
+      config,
+    ];
   });
 }

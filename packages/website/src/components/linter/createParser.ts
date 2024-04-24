@@ -67,6 +67,7 @@ export function createParser(
         throw new Error('Failed to get program');
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const tsAst = program.getSourceFile(filePath)!;
 
       const converted = utils.astConverter(tsAst, parseSettings, true);
@@ -77,6 +78,7 @@ export function createParser(
       });
 
       const checker = program.getTypeChecker();
+      const compilerOptions = program.getCompilerOptions();
 
       onUpdate(filePath, {
         storedAST: converted.estree,
@@ -89,6 +91,9 @@ export function createParser(
         ast: converted.estree,
         services: {
           program,
+          emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
+          experimentalDecorators:
+            compilerOptions.experimentalDecorators ?? false,
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
           getSymbolAtLocation: node =>

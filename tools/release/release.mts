@@ -42,16 +42,12 @@ if (!options.dryRun) {
 }
 
 // This will create a release on GitHub
-const changelogStatus = await releaseChangelog({
+await releaseChangelog({
   versionData: projectsVersionData,
   version: workspaceVersion,
   dryRun: options.dryRun,
   verbose: options.verbose,
 });
-if (changelogStatus !== 0) {
-  console.error('🚨 Failed to generate changelog');
-  process.exit(changelogStatus);
-}
 
 // An explicit null value here means that no changes were detected across any package
 // eslint-disable-next-line eqeqeq

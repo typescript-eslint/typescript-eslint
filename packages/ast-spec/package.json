@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "7.0.1",
+  "version": "7.7.1",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -9,7 +9,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "files": [
     "dist",
@@ -25,6 +25,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -47,14 +48,14 @@
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
     "@babel/parser": "*",
-    "@microsoft/api-extractor": "^7.38.0",
+    "@microsoft/api-extractor": "^7.43.0",
     "glob": "*",
     "jest": "29.7.0",
-    "jest-diff": "^29.6.2",
-    "jest-snapshot": "^29.6.2",
+    "jest-diff": "^29.7.0",
+    "jest-snapshot": "^29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"

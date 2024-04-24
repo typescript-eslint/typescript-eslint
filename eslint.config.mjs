@@ -64,7 +64,6 @@ export default tseslint.config(
 
   // extends ...
   eslint.configs.recommended,
-  ...compat.config(eslintPluginPlugin.configs.recommended),
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
@@ -83,7 +82,6 @@ export default tseslint.config(
           // in the rare case that we do - just need to manually restart their IDE.
           glob: 'Infinity',
         },
-        sourceType: 'module',
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -132,7 +130,6 @@ export default tseslint.config(
         { allowIIFEs: true },
       ],
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-non-null-assertion': 'off',
       'no-constant-condition': 'off',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
@@ -158,7 +155,11 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+        {
+          caughtErrors: 'all',
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+        },
       ],
       '@typescript-eslint/prefer-nullish-coalescing': [
         'error',
@@ -173,6 +174,8 @@ export default tseslint.config(
       //
 
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+      '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
+        'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
@@ -237,7 +240,8 @@ export default tseslint.config(
       //
       // eslint-plugin-import
       //
-
+      // enforces consistent type specifier style for named imports
+      'import/consistent-type-specifier-style': 'error',
       // disallow non-import statements appearing before import statements
       'import/first': 'error',
       // Require a newline after the last import/require in a group
@@ -292,6 +296,7 @@ export default tseslint.config(
       // eslint-plugin-unicorn
       //
 
+      'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
     },
   },
@@ -337,11 +342,11 @@ export default tseslint.config(
         'error',
         { allow: ['arrowFunctions'] },
       ],
+      '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
-      'eslint-plugin/consistent-output': 'off', // Might eventually be removed from `eslint-plugin/recommended`: https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/284
       'jest/no-disabled-tests': 'error',
       'jest/no-focused-tests': 'error',
       'jest/no-alias-methods': 'error',
@@ -407,6 +412,8 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
     },
+
+    extends: [...compat.config(eslintPluginPlugin.configs.recommended)],
   },
   {
     files: [
@@ -471,7 +478,7 @@ export default tseslint.config(
     files: ['packages/ast-spec/src/**/*.{ts,tsx,cts,mts}'],
     rules: {
       // disallow ALL unused vars
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'all' }],
       '@typescript-eslint/sort-type-constituents': 'error',
     },
   },
