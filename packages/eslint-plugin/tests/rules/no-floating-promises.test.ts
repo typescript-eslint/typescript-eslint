@@ -2065,7 +2065,7 @@ guzz;
           allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
         },
       ],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [{ line: 15, messageId: 'floatingVoid' }],
     },
     {
       code: `
@@ -2089,7 +2089,7 @@ guzz().then(() => {});
           allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
         },
       ],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [{ line: 15, messageId: 'floatingVoid' }],
     },
     {
       code: `
