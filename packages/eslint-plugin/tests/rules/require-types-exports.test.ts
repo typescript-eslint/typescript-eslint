@@ -303,6 +303,24 @@ ruleTester.run('require-types-exports', rule, {
         return value;
       }
     `,
+
+    `
+      import type { A } from './types';
+
+      export type T1 = number;
+
+      export interface T2 {
+        key: number;
+      }
+
+      export const value: { a: { b: { c: T1 } } } | [string, T2 | A] = {
+        a: {
+          b: {
+            c: 1,
+          },
+        },
+      };
+    `,
   ],
 
   invalid: [
@@ -1735,6 +1753,46 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 24,
           data: {
             name: 'Arg2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        import type { A } from './types';
+
+        type T1 = number;
+
+        interface T2 {
+          key: number;
+        }
+
+        export const value: { a: { b: { c: T1 } } } | [string, T2 | A] = {
+          a: {
+            b: {
+              c: 1,
+            },
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 10,
+          column: 44,
+          endColumn: 46,
+          data: {
+            name: 'T1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 10,
+          column: 64,
+          endColumn: 66,
+          data: {
+            name: 'T2',
           },
         },
       ],

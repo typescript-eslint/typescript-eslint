@@ -1,3 +1,4 @@
+import type { Reference } from '@typescript-eslint/scope-manager';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -11,6 +12,12 @@ type FunctionNode =
   | TSESTree.TSDeclareFunction
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
+
+type TypeReference = Reference & {
+  identifier: {
+    parent: TSESTree.TSTypeReference;
+  };
+};
 
 export default createRule<[], MessageIds>({
   name: 'require-types-exports',
@@ -28,8 +35,22 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    const typeReferences = new Set<TypeReference>();
     const externalizedTypes = new Set<string>();
     const reportedTypes = new Set<string>();
+
+    function collectTypeReferences(node: TSESTree.Program): void {
+      const scope = context.sourceCode.getScope(node);
+
+      scope.references.forEach(r => {
+        if (
+          r.resolved?.isTypeVariable &&
+          r.identifier.parent.type === AST_NODE_TYPES.TSTypeReference
+        ) {
+          typeReferences.add(r as TypeReference);
+        }
+      });
+    }
 
     function collectImportedTypes(node: TSESTree.ImportSpecifier): void {
       externalizedTypes.add(node.local.name);
@@ -60,6 +81,8 @@ export default createRule<[], MessageIds>({
       for (const declaration of node.declaration.declarations) {
         if (declaration.init?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           checkFunctionTypes(declaration.init);
+        } else {
+          checkVariableTypes(declaration);
         }
       }
     }
@@ -107,6 +130,21 @@ export default createRule<[], MessageIds>({
         .forEach(checkTypeNode);
     }
 
+    function checkVariableTypes(
+      node: TSESTree.LetOrConstOrVarDeclarator,
+    ): void {
+      if (node.id.type !== AST_NODE_TYPES.Identifier) {
+        return;
+      }
+
+      typeReferences.forEach(r => {
+        // TODO: Probably not the best way to do it...
+        if (isLocationOverlapping(r.identifier.loc, node.loc)) {
+          checkTypeNode(r.identifier.parent);
+        }
+      });
+    }
+
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
       const name = getTypeName(node);
 
@@ -141,7 +179,37 @@ export default createRule<[], MessageIds>({
       return '';
     }
 
+    function isLocationOverlapping(
+      location: TSESTree.Node['loc'],
+      container: TSESTree.Node['loc'],
+    ): boolean {
+      if (
+        location.start.line < container.start.line ||
+        location.end.line > container.end.line
+      ) {
+        return false;
+      }
+
+      if (
+        location.start.line === container.start.line &&
+        location.start.column < container.start.column
+      ) {
+        return false;
+      }
+
+      if (
+        location.end.line === container.end.line &&
+        location.end.column > container.end.column
+      ) {
+        return false;
+      }
+
+      return true;
+    }
+
     return {
+      Program: collectTypeReferences,
+
       'ImportDeclaration ImportSpecifier, ImportSpecifier':
         collectImportedTypes,
 
