@@ -124,7 +124,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isIterable(type, checker)) {
+      if (isIterable(type, checker) && !isString(type)) {
         context.report({
           node,
           messageId: 'noSpreadInObject',
