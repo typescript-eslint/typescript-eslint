@@ -19,15 +19,22 @@ let anyNonNullishValue: {} = 'Intentionally allowed by TypeScript.';
 Often, developers writing `{}` actually mean either:
 
 - `object`: representing any _object_ value
-- `NonNullable<unknown>`: representing any value _other than `null` and `undefined`_. In most contexts this is the same as `{}`, but more explicit
 - `unknown`: representing any value at all, including `null` and `undefined`
 - An object with no properties: which can't easily be represented in TypeScript's structural type system
 
-To avoid confusion around the `{}` type allowing non-object values, this rule bans usage of the `{}` type.
+In other words, the "empty object" type `{}` really means _"any value that is defined"_.
+That includes arrays, class instances, functions, and primitives such as `string` and `symbol`.
+
+To avoid confusion around the `{}` type allowing any _non-nullish value_, this rule bans usage of the `{}` type.
 
 :::tip
-If you do have a use case for an API allowing any _non-nullish value_, you can always use an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) or [disable the rule in your ESLint config](https://eslint.org/docs/latest/use/configure/rules#using-configuration-files-1).
+If you do have a use case for an API allowing `{}`, you can always use an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) or [disable the rule in your ESLint config](https://eslint.org/docs/latest/use/configure/rules#using-configuration-files-1).
 :::
+
+Note that this rule does not report:
+
+- `{}` as a type constituent in an intersection type (e.g. `type NonNullable<T> = T & unknown`), as this is useful in type system operations.
+- `{}` as an empty function body with a `void` return type (e.g. `() => {}`), as this is a function body, not a type.
 
 ## Examples
 

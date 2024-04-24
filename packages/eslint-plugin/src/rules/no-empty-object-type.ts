@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -26,7 +27,14 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     return {
-      'TSTypeLiteral[members.length=0]'(node): void {
+      TSTypeLiteral(node): void {
+        if (
+          node.members.length ||
+          node.parent.type === AST_NODE_TYPES.TSIntersectionType
+        ) {
+          return;
+        }
+
         context.report({
           messageId: 'banEmptyObjectType',
           node,

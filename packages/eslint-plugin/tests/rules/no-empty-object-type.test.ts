@@ -11,6 +11,7 @@ ruleTester.run('no-empty-object-type', rule, {
     'let value: object;',
     'let value: Object;',
     'let value: { inner: true };',
+    'type MyNonNullable<T> = T & {};',
   ],
   invalid: [
     {
@@ -76,6 +77,35 @@ let value: unknown;
               output: `
 let value: Record<string, never>;
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'type MyUnion<T> = T | {};',
+      errors: [
+        {
+          column: 23,
+          line: 1,
+          endColumn: 25,
+          endLine: 1,
+          messageId: 'banEmptyObjectType',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type MyUnion<T> = T | object;',
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type MyUnion<T> = T | unknown;',
+            },
+            {
+              data: { replacement: 'Record<string, never>' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type MyUnion<T> = T | Record<string, never>;',
             },
           ],
         },
