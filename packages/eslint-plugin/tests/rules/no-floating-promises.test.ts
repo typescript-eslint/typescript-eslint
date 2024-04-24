@@ -499,74 +499,51 @@ void promiseArray;
 ['I', 'am', 'just', 'an', 'array'];
       `,
     },
-    // Branded type annotations in `allowForKnownSafePromises`
+    // Branded type annotations on variables containing promises
     {
       code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: Foo = Promise.resolve(5);
-guzz;
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: Foo = Promise.resolve(5);
-guzz.then(() => {});
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: Foo = Promise.resolve(5);
-guzz.catch();
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: Foo = Promise.resolve(5);
-guzz.finally();
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: Foo = Promise.resolve(5);
-0 ? guzz.catch() : 2;
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: Foo = Promise.resolve(5);
-null ?? guzz.catch();
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    // extended classes as type annotations in `allowForKnownSafePromises`
-    {
-      code: `
-class SafePromise<T> extends Promise<T> {}
-let guzz: SafePromise<number> = Promise.resolve(5);
+interface SecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): SecureThenable<TResult1 | TResult2>;
+}
+let guzz: SecureThenable<number> = Promise.resolve(5);
 guzz;
       `,
       options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
       ],
     },
     {
       code: `
-class SafePromise<T> extends Promise<T> {}
-let guzz: SafePromise<number> = Promise.resolve(5);
+interface SecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): SecureThenable<TResult1 | TResult2>;
+}
+let guzz: SecureThenable<number> = Promise.resolve(5);
 guzz.then(() => {});
       `,
       options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
       ],
     },
     {
@@ -591,133 +568,66 @@ guzz.finally();
     },
     {
       code: `
-class SafePromise<T> extends Promise<T> {}
-let guzz: SafePromise<number> = Promise.resolve(5);
+type Foo = Promise<number> & { hey?: string };
+let guzz: Foo = Promise.resolve(5);
 0 ? guzz.catch() : 2;
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
-    {
-      code: `
-class SafePromise<T> extends Promise<T> {}
-let guzz: SafePromise<number> = Promise.resolve(5);
-null ?? guzz.catch();
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
-    },
-    // thenable interfaces as type annotations in `allowForKnownSafePromises`
-    {
-      code: `
-interface SecureThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SecureThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
-      | undefined
-      | null,
-  ): SecureThenable<TResult1 | TResult2>;
-}
-let guzz: SecureThenable<number> = Promise.resolve(5);
-guzz;
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-interface SecureThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SecureThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
-      | undefined
-      | null,
-  ): SecureThenable<TResult1 | TResult2>;
-}
-let guzz: SecureThenable<number> = Promise.resolve(5);
-guzz.then(() => {});
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-interface SecureThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SecureThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
-      | undefined
-      | null,
-  ): SecureThenable<TResult1 | TResult2>;
-}
-let guzz: SecureThenable<number> = Promise.resolve(5);
-0 ? guzz.then(() => {}) : 2;
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-interface SecureThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SecureThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
-      | undefined
-      | null,
-  ): SecureThenable<TResult1 | TResult2>;
-}
-let guzz: SecureThenable<number> = Promise.resolve(5);
-null ?? guzz.then(() => {});
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
-        },
-      ],
-    },
-    // branded type annotations on promise returning functions (or async functions) in `allowForKnownSafePromises`
     {
       code: `
 type Foo = Promise<number> & { hey?: string };
-let guzz: () => Foo = () => Promise.resolve(5);
+let guzz: Foo = Promise.resolve(5);
+null ?? guzz.catch();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    // branded type annotations on promise returning functions (or async functions)
+    {
+      code: `
+interface SecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): SecureThenable<TResult1 | TResult2>;
+}
+let guzz: () => SecureThenable<number> = () => Promise.resolve(5);
 guzz();
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
+      ],
     },
     {
       code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: () => Foo = () => Promise.resolve(5);
+interface SecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): SecureThenable<TResult1 | TResult2>;
+}
+let guzz: () => SecureThenable<number> = () => Promise.resolve(5);
 guzz().then(() => {});
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
+      ],
     },
     {
       code: `
@@ -730,26 +640,30 @@ guzz().catch();
     {
       code: `
 type Foo = Promise<number> & { hey?: string };
-let guzz: () => Foo = () => Promise.resolve(5);
+let guzz: () => Foo = async () => 5;
 guzz().finally();
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
     {
       code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: () => Foo = () => Promise.resolve(5);
+class SafePromise<T> extends Promise<T> {}
+let guzz: () => SafePromise<number> = async () => 5;
 0 ? guzz().catch() : 2;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
-type Foo = Promise<number> & { hey?: string };
-let guzz: () => Foo = () => Promise.resolve(5);
+class SafePromise<T> extends Promise<T> {}
+let guzz: () => SafePromise<number> = async () => 5;
 null ?? guzz().catch();
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     // type from es5.d.ts using `allowForKnownSafePromises`
     {
@@ -2131,23 +2045,49 @@ cursed();
     },
     {
       code: `
-class UnsafePromise<T> extends Promise<T> {}
-let guzz: UnsafePromise<number> = Promise.resolve(5);
+interface InsecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | InsecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | InsecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): InsecureThenable<TResult1 | TResult2>;
+}
+let guzz: InsecureThenable<number> = Promise.resolve(5);
 guzz;
       `,
       options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
       ],
       errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
     {
       code: `
-class UnsafePromise<T> extends Promise<T> {}
-let guzz: UnsafePromise<number> = Promise.resolve(5);
-guzz.then(() => {});
+interface InsecureThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | InsecureThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | InsecureThenable<TResult2>)
+      | undefined
+      | null,
+  ): InsecureThenable<TResult1 | TResult2>;
+}
+let guzz: () => InsecureThenable<number> = () => Promise.resolve(5);
+guzz().then(() => {});
       `,
       options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SecureThenable' }],
+        },
       ],
       errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
@@ -2165,8 +2105,8 @@ guzz.catch();
     {
       code: `
 class UnsafePromise<T> extends Promise<T> {}
-let guzz: UnsafePromise<number> = Promise.resolve(5);
-guzz.finally();
+let guzz: () => UnsafePromise<number> = async () => 5;
+guzz().finally();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
@@ -2175,8 +2115,8 @@ guzz.finally();
     },
     {
       code: `
-class UnsafePromise<T> extends Promise<T> {}
-let guzz: UnsafePromise<number> = Promise.resolve(5);
+type UnsafePromise = Promise<number> & { hey?: string };
+let guzz: UnsafePromise = Promise.resolve(5);
 0 ? guzz.catch() : 2;
       `,
       options: [
@@ -2186,9 +2126,9 @@ let guzz: UnsafePromise<number> = Promise.resolve(5);
     },
     {
       code: `
-class UnsafePromise<T> extends Promise<T> {}
-let guzz: UnsafePromise<number> = Promise.resolve(5);
-null ?? guzz.catch();
+type UnsafePromise = Promise<number> & { hey?: string };
+let guzz: () => UnsafePromise = async () => 5;
+null ?? guzz().catch();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
