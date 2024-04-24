@@ -13,15 +13,16 @@ import {
   getOperatorPrecedence,
   getParserServices,
   OperatorPrecedence,
+  readonlynessOptionsDefaults,
+  readonlynessOptionsSchema,
   typeMatchesSpecifier,
-  typeOrValueSpecifierSchema_v2,
 } from '../util';
 
 type Options = [
   {
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
-    allowForKnownSafePromises?: Exclude<TypeOrValueSpecifier, string>[];
+    allowForKnownSafePromises?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -87,10 +88,7 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
-          allowForKnownSafePromises: {
-            type: 'array',
-            items: typeOrValueSpecifierSchema_v2,
-          },
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -101,7 +99,7 @@ export default createRule<Options, MessageId>({
     {
       ignoreVoid: true,
       ignoreIIFE: false,
-      allowForKnownSafePromises: [],
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
     },
   ],
 
@@ -289,9 +287,8 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatcheSpecifier(
             services,
-            member,
             options.allowForKnownSafePromises,
-            undefined,
+            services.getTypeAtLocation(member),
           )
         ) {
           return { isUnhandled: false };
@@ -343,9 +340,8 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatcheSpecifier(
             services,
-            node,
             options.allowForKnownSafePromises,
-            undefined,
+            services.getTypeAtLocation(node),
           )
         ) {
           return { isUnhandled: false };
@@ -360,21 +356,6 @@ export default createRule<Options, MessageId>({
           return leftResult;
         }
         return isUnhandledPromise(checker, node.right);
-      } else if (
-        node.type === AST_NODE_TYPES.TSAsExpression ||
-        node.type === AST_NODE_TYPES.TSTypeAssertion
-      ) {
-        if (
-          doesTypeMatcheSpecifier(
-            services,
-            node,
-            options.allowForKnownSafePromises,
-            undefined,
-          )
-        ) {
-          return { isUnhandled: false };
-        }
-        return isUnhandledPromise(checker, node.expression);
       }
 
       // We conservatively return false for all other types of expressions because
@@ -388,35 +369,21 @@ export default createRule<Options, MessageId>({
 /**
  * It checks whether a node's type matches one of the types listed in the `allowForKnownSafePromises` config
  * @param services services variable passed from context function to check the type of a node
- * @param node the node whose type is to be calculated to know whether it is a safe promise or not
  * @param options The config object of `allowForKnownSafePromises`
- * @param type The type of the node, either provide this or node, if both are given this param is going to get used, if both are `undefined`, `false` is returned
+ * @param type The type of the node
  * @returns `true` if the type matches, `false` if it isn't
  */
 function doesTypeMatcheSpecifier(
   services: ParserServicesWithTypeInformation,
-  node: TSESTree.Node | undefined,
   options: TypeOrValueSpecifier[] | undefined,
-  type: ts.Type | undefined,
+  type: ts.Type,
 ): boolean {
-  let typeOfNode: ts.Type;
-  if (!type && !node) {
-    return false;
-  } else if (!type && node) {
-    typeOfNode = services.getTypeAtLocation(node);
-  } else if (!node && type) {
-    typeOfNode = type;
-  } else if (node && type) {
-    typeOfNode = type;
-  }
-
-  if (Array.isArray(options) && options.length > 0) {
-    const result = options.some(specifier =>
-      typeMatchesSpecifier(typeOfNode, specifier, services.program),
-    );
-    return result;
-  }
-  return false;
+  return (
+    !!options?.length &&
+    options.some(specifier =>
+      typeMatchesSpecifier(type, specifier, services.program),
+    )
+  );
 }
 
 function isPromiseArray(
@@ -434,9 +401,7 @@ function isPromiseArray(
       if (Array.isArray(options) && options.length > 0) {
         return !tsutils
           .unionTypeParts(arrayType)
-          .some(type =>
-            doesTypeMatcheSpecifier(services, undefined, options, type),
-          );
+          .some(type => doesTypeMatcheSpecifier(services, options, type));
       }
       if (isPromiseLike(checker, node, arrayType)) {
         return true;
@@ -445,14 +410,7 @@ function isPromiseArray(
 
     if (checker.isTupleType(ty)) {
       for (const tupleElementType of checker.getTypeArguments(ty)) {
-        if (
-          doesTypeMatcheSpecifier(
-            services,
-            undefined,
-            options,
-            tupleElementType,
-          )
-        ) {
+        if (doesTypeMatcheSpecifier(services, options, tupleElementType)) {
           return false;
         }
         if (isPromiseLike(checker, node, tupleElementType)) {
