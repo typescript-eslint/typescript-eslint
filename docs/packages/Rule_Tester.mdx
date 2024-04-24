@@ -75,6 +75,14 @@ ruleTester.run('my-rule', rule, {
         /* ... */
       ],
     },
+    // multi-pass fixes can be tested using the array form of output
+    {
+      code: 'const d = 1;',
+      output: ['const e = 1;', 'const f = 1;'],
+      errors: [
+        /* ... */
+      ],
+    },
 
     // suggestions can be tested via errors
     {
