@@ -269,6 +269,12 @@ ruleTester.run('require-types-exports', rule, {
     `,
 
     `
+      import { Arg } from './types';
+
+      export function f(a: Arg): void {}
+    `,
+
+    `
       import type { Arg } from './types';
 
       export function f(a: Arg): void {}
@@ -1589,6 +1595,48 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 41,
           data: {
             name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Arg1 = number;
+        type Arg2 = boolean;
+        type Ret = string;
+
+        export declare function f<T extends Arg2>(
+          a: { b: { c: Arg1 | number | { d: T } } },
+          e: Arg1,
+        ): { a: { b: T | Ret } };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 45,
+          endColumn: 49,
+          data: {
+            name: 'Arg2',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 24,
+          endColumn: 28,
+          data: {
+            name: 'Arg1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 9,
+          column: 26,
+          endColumn: 29,
+          data: {
+            name: 'Ret',
           },
         },
       ],
