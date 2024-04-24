@@ -29,7 +29,7 @@ try {
     'version',
   ]).stdout.trim();
 } catch {
-  // (ignored - this is just a debug helper)
+  // (ignored - currentCanaryVersion can be null)
 }
 
 console.log('\nResolved current versions: ', {
