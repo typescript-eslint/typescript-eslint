@@ -108,12 +108,17 @@ export default createRule<[], MessageIds>({
       }
 
       for (const def of variable.defs) {
+        if (def.type !== DefinitionType.Variable || !def.node.init) {
+          continue;
+        }
+
         if (
-          def.type === DefinitionType.Variable &&
-          (def.node.init?.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-            def.node.init?.type === AST_NODE_TYPES.FunctionExpression)
+          def.node.init.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          def.node.init.type === AST_NODE_TYPES.FunctionExpression
         ) {
           checkFunctionTypes(def.node.init);
+        } else {
+          checkVariableTypes(def.node);
         }
       }
     }
@@ -133,10 +138,6 @@ export default createRule<[], MessageIds>({
     function checkVariableTypes(
       node: TSESTree.LetOrConstOrVarDeclarator,
     ): void {
-      if (node.id.type !== AST_NODE_TYPES.Identifier) {
-        return;
-      }
-
       typeReferences.forEach(r => {
         // TODO: Probably not the best way to do it...
         if (isLocationOverlapping(r.identifier.loc, node.loc)) {
