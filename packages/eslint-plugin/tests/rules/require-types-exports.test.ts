@@ -291,6 +291,18 @@ ruleTester.run('require-types-exports', rule, {
 
       export function f<T extends Arg>(a: T): void {}
     `,
+
+    `
+      export type R = number;
+
+      export function f() {
+        const value: { num: R } = {
+          num: 1,
+        };
+
+        return value;
+      }
+    `,
   ],
 
   invalid: [
@@ -1595,6 +1607,31 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 41,
           data: {
             name: 'Arg',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type R = number;
+
+        export function f() {
+          const value: { num: R } = {
+            num: 1,
+          };
+
+          return value;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 31,
+          endColumn: 32,
+          data: {
+            name: 'R',
           },
         },
       ],
