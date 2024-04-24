@@ -75,7 +75,8 @@ ruleTester.run('my-rule', rule, {
         /* ... */
       ],
     },
-    // multi-pass fixes can be tested using the array form of output
+    // Multi-pass fixes can be tested using the array form of output.
+    // Note: this is unique to typescript-eslint, and doesn't exist in ESLint core.
     {
       code: 'const d = 1;',
       output: ['const e = 1;', 'const f = 1;'],
