@@ -19,8 +19,7 @@ export default createRule<[], MessageIds>({
     docs: {
       recommended: 'strict',
       requiresTypeChecking: true,
-      description:
-        'Require exporting types that are used in exported functions declarations',
+      description: 'Require exporting types that are used in exported entities',
     },
     messages: {
       requireTypeExport: 'Expected type "{{ name }}" to be exported',

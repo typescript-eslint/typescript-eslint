@@ -1,16 +1,17 @@
 ---
-description: 'Require exporting types that are used in exported functions declarations.'
+description: 'Require exporting types that are used in exported entities.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/require-types-exports** for documentation.
 
-When exporting functions from a module, it is recommended to export also all the
-types that are used in the function declarations. This is useful for consumers of
-the module, as it allows them to use the types in their own code without having to
-use things like [`Parameters`](https://www.typescriptlang.org/docs/handbook/utility-types.html#parameterstype)
-or [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype) to extract the types from the function.
+When exporting entities from a module, it is recommended to export also all the
+types that are used in their declarations. This is useful for consumers of the
+module, as it allows them to use the types in their own code without having to
+use utility types like [`Parameters`](https://www.typescriptlang.org/docs/handbook/utility-types.html#parameterstype)
+or [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype)
+in order to extract the types from your code.
 
 ## Examples
 
