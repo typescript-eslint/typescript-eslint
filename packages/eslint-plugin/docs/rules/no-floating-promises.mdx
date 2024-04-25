@@ -130,8 +130,7 @@ Examples of code for this rule with:
 ```json
 {
   "allowForKnownSafePromises": [
-    { "from": "file", "name": "Foo" },
-    { "from": "file", "name": "Shaw" },
+    { "from": "file", "name": "SafePromise" },
     { "from": "lib", "name": "PromiseLike" },
     { "from": "package", "name": "Bar", "package": "bar-lib" }
   ]
@@ -141,32 +140,24 @@ Examples of code for this rule with:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-type Foo = Promise<number> & { __linterBrands?: string };
-let Bazz = Promise.resolve(2);
-Bazz;
-Bazz.then(() => {});
-Bazz.catch();
-Bazz.finally();
+```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+type SafePromise = Promise<number> & { __linterBrands?: string };
+let promise = Promise.resolve(2);
+promise;
+promise.then(() => {});
+promise.catch();
+promise.finally();
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
-type Foo = Promise<number> & { __linterBrands?: string };
-let Bazz = Promise.resolve(2);
-Bazz as Foo; // apply the safe type as a type assertion
-(Bazz as Foo).then(() => {});
-(Bazz as Foo).catch();
-(Bazz as Foo).finally();
-
-// it also works in the form of type annotations
-type Shaw = Promise<number> & { __linterBrands?: string };
-let Guzz: Shaw = Promise.resolve(2); // can be used as type annotation too
-Guzz.then(() => {});
-Guzz.catch();
-Guzz.finally();
+```ts option='{"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+type SafePromise = Promise<number> & { __linterBrands?: string }; // promises can be marked as safe by using branded types
+let promise: SafePromise = Promise.resolve(2);
+promise.then(() => {});
+promise.catch();
+promise.finally();
 ```
 
 </TabItem>

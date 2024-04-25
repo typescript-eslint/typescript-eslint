@@ -73,37 +73,29 @@ await (async function () {
 
 exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 5`] = `
 "Incorrect
-Options: {"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
-type Foo = Promise<number> & { __linterBrands?: string };
-let Bazz = Promise.resolve(2);
-Bazz;
-~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
-Bazz.then(() => {});
-~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
-Bazz.catch();
-~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
-Bazz.finally();
-~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+type SafePromise = Promise<number> & { __linterBrands?: string };
+let promise = Promise.resolve(2);
+promise;
+~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+promise.then(() => {});
+~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+promise.catch();
+~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+promise.finally();
+~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
 "
 `;
 
 exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 6`] = `
 "Correct
-Options: {"allowForKnownSafePromises":[{"from":"file","name":"Foo"},{"from":"file","name":"Shaw"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
-type Foo = Promise<number> & { __linterBrands?: string };
-let Bazz = Promise.resolve(2);
-Bazz as Foo; // apply the safe type as a type assertion
-(Bazz as Foo).then(() => {});
-(Bazz as Foo).catch();
-(Bazz as Foo).finally();
-
-// it also works in the form of type annotations
-type Shaw = Promise<number> & { __linterBrands?: string };
-let Guzz: Shaw = Promise.resolve(2); // can be used as type annotation too
-Guzz.then(() => {});
-Guzz.catch();
-Guzz.finally();
+type SafePromise = Promise<number> & { __linterBrands?: string }; // promises can be marked as safe by using branded types
+let promise: SafePromise = Promise.resolve(2);
+promise.then(() => {});
+promise.catch();
+promise.finally();
 "
 `;
