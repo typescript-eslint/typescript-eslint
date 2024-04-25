@@ -39,6 +39,11 @@ function clearProgramCache(): void {
   existingPrograms.clear();
 }
 
+const defaultProjectMatchedFiles = new Set<string>();
+function clearDefaultProjectMatchedFiles(): void {
+  defaultProjectMatchedFiles.clear();
+}
+
 /**
  * @param parseSettings Internal settings for parsing the file
  * @param hasFullTypeInformation True if the program should be attempted to be calculated from provided tsconfig files
@@ -53,6 +58,7 @@ function getProgramAndAST(
       parseSettings.EXPERIMENTAL_projectService,
       parseSettings,
       hasFullTypeInformation,
+      defaultProjectMatchedFiles,
     );
     if (fromProjectService) {
       return fromProjectService;
@@ -271,6 +277,7 @@ export {
   parse,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
+  clearDefaultProjectMatchedFiles,
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };
