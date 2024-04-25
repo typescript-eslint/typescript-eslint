@@ -2578,20 +2578,29 @@ export class Converter {
           );
         }
 
-        return this.createNode<TSESTree.TSMappedType>(node, {
-          type: AST_NODE_TYPES.TSMappedType,
-          nameType: this.convertChild(node.nameType) ?? null,
-          optional:
-            node.questionToken &&
-            (node.questionToken.kind === SyntaxKind.QuestionToken ||
-              getTextForTokenKind(node.questionToken.kind)),
-          readonly:
-            node.readonlyToken &&
-            (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
-              getTextForTokenKind(node.readonlyToken.kind)),
-          typeAnnotation: node.type && this.convertChild(node.type),
-          typeParameter: this.convertChild(node.typeParameter),
-        });
+        return this.createNode<TSESTree.TSMappedType>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSMappedType,
+              constraint: this.convertChild(node.typeParameter.constraint),
+              key: this.convertChild(node.typeParameter.name),
+              nameType: this.convertChild(node.nameType) ?? null,
+              optional:
+                node.questionToken &&
+                (node.questionToken.kind === SyntaxKind.QuestionToken ||
+                  getTextForTokenKind(node.questionToken.kind)),
+              readonly:
+                node.readonlyToken &&
+                (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
+                  getTextForTokenKind(node.readonlyToken.kind)),
+              typeAnnotation: node.type && this.convertChild(node.type),
+            },
+            'typeParameter',
+            "'constraint' and 'key'",
+            this.convertChild(node.typeParameter),
+          ),
+        );
       }
 
       case SyntaxKind.ParenthesizedExpression:
@@ -2820,13 +2829,26 @@ export class Converter {
       }
 
       case SyntaxKind.EnumDeclaration: {
-        const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
-          type: AST_NODE_TYPES.TSEnumDeclaration,
-          const: hasModifier(SyntaxKind.ConstKeyword, node),
-          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          id: this.convertChild(node.name),
-          members: node.members.map(el => this.convertChild(el)),
-        });
+        const members = node.members.map(el => this.convertChild(el));
+        const result = this.createNode<TSESTree.TSEnumDeclaration>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSEnumDeclaration,
+              body: this.createNode<TSESTree.TSEnumBody>(node, {
+                type: AST_NODE_TYPES.TSEnumBody,
+                members,
+                range: [node.members.pos - 1, node.end],
+              }),
+              const: hasModifier(SyntaxKind.ConstKeyword, node),
+              declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+              id: this.convertChild(node.name),
+            },
+            'members',
+            `'body.members'`,
+            node.members.map(el => this.convertChild(el)),
+          ),
+        );
 
         return this.fixExports(node, result);
       }
@@ -3440,6 +3462,45 @@ export class Converter {
     });
 
     return node as Properties & Record<AliasKey, Properties[ValueKey]>;
+  }
+
+  #withDeprecatedGetter<
+    Properties extends { type: string },
+    Key extends string,
+    Value,
+  >(
+    node: Properties,
+    deprecatedKey: Key,
+    preferredKey: string,
+    value: Value,
+  ): Properties & Record<Key, Value> {
+    let warned = false;
+
+    Object.defineProperty(node, deprecatedKey, {
+      configurable: true,
+      get: this.options.suppressDeprecatedPropertyWarnings
+        ? (): Value => value
+        : (): Value => {
+            if (!warned) {
+              process.emitWarning(
+                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use ${preferredKey} instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                'DeprecationWarning',
+              );
+              warned = true;
+            }
+
+            return value;
+          },
+      set(value): void {
+        Object.defineProperty(node, deprecatedKey, {
+          enumerable: true,
+          writable: true,
+          value,
+        });
+      },
+    });
+
+    return node as Properties & Record<Key, Value>;
   }
 
   #throwError(node: ts.Node | number, message: string): asserts node is never {

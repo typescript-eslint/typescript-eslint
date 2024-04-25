@@ -279,11 +279,12 @@ describe('convert', () => {
   });
 
   describe('suppressDeprecatedPropertyWarnings', () => {
-    const getEsImportDeclaration = (
+    const getEsCallExpression = (
       converterOptions?: ConverterOptions,
-    ): TSESTree.ImportDeclaration => {
-      const ast = convertCode('import ""');
-      const tsImportDeclaration = ast.statements[0] as ts.ImportDeclaration;
+    ): TSESTree.CallExpression => {
+      const ast = convertCode(`callee<T>();`);
+      const tsCallExpression = (ast.statements[0] as ts.ExpressionStatement)
+        .expression as ts.CallExpression;
       const instance = new Converter(ast, {
         shouldPreserveNodeMaps: true,
         ...converterOptions,
@@ -293,24 +294,157 @@ describe('convert', () => {
 
       const maps = instance.getASTMaps();
 
-      return maps.tsNodeToESTreeNodeMap.get(tsImportDeclaration);
+      return maps.tsNodeToESTreeNodeMap.get(tsCallExpression);
     };
 
-    it('does not allow enumeration of deprecated properties', () => {
-      const esImportDeclaration = getEsImportDeclaration();
+    const getTsMappedType = (
+      converterOptions?: ConverterOptions,
+    ): TSESTree.TSMappedType => {
+      const ast = convertCode(`
+        type MappedType = {
+          [Key in Type]: Value;
+        };
+      `);
+      const tsMappedType = (ast.statements[0] as ts.TypeAliasDeclaration)
+        .type as ts.MappedTypeNode;
+      const instance = new Converter(ast, {
+        shouldPreserveNodeMaps: true,
+        ...converterOptions,
+      });
 
-      expect(Object.keys(esImportDeclaration)).not.toContain('assertions');
+      instance.convertProgram();
+
+      const maps = instance.getASTMaps();
+
+      return maps.tsNodeToESTreeNodeMap.get(tsMappedType);
+    };
+
+    it('warns on a deprecated aliased property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
+      const esCallExpression = getEsCallExpression({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      // eslint-disable-next-line deprecation/deprecation
+      esCallExpression.typeParameters;
+
+      expect(emitWarning).toHaveBeenCalledWith(
+        `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        'DeprecationWarning',
+      );
     });
 
-    it('allows writing to the deprecated property as a new enumerable value', () => {
-      const esImportDeclaration = getEsImportDeclaration();
+    it('does not warn on a subsequent deprecated aliased property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
+      const esCallExpression = getEsCallExpression({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      /* eslint-disable deprecation/deprecation */
+      esCallExpression.typeParameters;
+      esCallExpression.typeParameters;
+      /* eslint-enable deprecation/deprecation */
+
+      expect(emitWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not warn on a deprecated aliased property access when suppressDeprecatedPropertyWarnings is true', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
+      const esCallExpression = getEsCallExpression({
+        suppressDeprecatedPropertyWarnings: true,
+      });
 
       // eslint-disable-next-line deprecation/deprecation
-      esImportDeclaration.assertions = [];
+      esCallExpression.typeParameters;
+
+      expect(emitWarning).not.toHaveBeenCalled();
+    });
+
+    it('does not allow enumeration of deprecated aliased properties', () => {
+      const esCallExpression = getEsCallExpression();
+
+      expect(Object.keys(esCallExpression)).not.toContain('typeParameters');
+    });
+
+    it('allows writing to the deprecated aliased property as a new enumerable value', () => {
+      const esCallExpression = getEsCallExpression();
 
       // eslint-disable-next-line deprecation/deprecation
-      expect(esImportDeclaration.assertions).toBeUndefined();
-      expect(Object.keys(esImportDeclaration)).toContain('assertions');
+      esCallExpression.typeParameters = undefined;
+
+      // eslint-disable-next-line deprecation/deprecation
+      expect(esCallExpression.typeParameters).toBeUndefined();
+      expect(Object.keys(esCallExpression)).toContain('typeParameters');
+    });
+
+    it('warns on a deprecated getter property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
+      const tsMappedType = getTsMappedType({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      // eslint-disable-next-line deprecation/deprecation
+      tsMappedType.typeParameter;
+
+      expect(emitWarning).toHaveBeenCalledWith(
+        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        'DeprecationWarning',
+      );
+    });
+
+    it('does not warn on a subsequent deprecated getter property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
+      const tsMappedType = getTsMappedType({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      /* eslint-disable deprecation/deprecation */
+      tsMappedType.typeParameter;
+      tsMappedType.typeParameter;
+      /* eslint-enable deprecation/deprecation */
+
+      expect(emitWarning).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not warn on a deprecated getter property access when suppressDeprecatedPropertyWarnings is true', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
+      const tsMappedType = getTsMappedType({
+        suppressDeprecatedPropertyWarnings: true,
+      });
+
+      // eslint-disable-next-line deprecation/deprecation
+      tsMappedType.typeParameter;
+
+      expect(emitWarning).not.toHaveBeenCalled();
+    });
+
+    it('does not allow enumeration of deprecated getter properties', () => {
+      const tsMappedType = getTsMappedType();
+
+      expect(Object.keys(tsMappedType)).not.toContain('typeParameter');
+    });
+
+    it('allows writing to the deprecated getter property as a new enumerable value', () => {
+      const tsMappedType = getTsMappedType();
+
+      // eslint-disable-next-line deprecation/deprecation
+      tsMappedType.typeParameter = undefined!;
+
+      // eslint-disable-next-line deprecation/deprecation
+      expect(tsMappedType.typeParameter).toBeUndefined();
+      expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
   });
 });
