@@ -285,7 +285,7 @@ export default createRule<Options, MessageId>({
             ? node.callee.object
             : node;
         if (
-          doesTypeMatcheSpecifier(
+          doesTypeMatchSpecifier(
             services,
             options.allowForKnownSafePromises,
             services.getTypeAtLocation(member),
@@ -338,7 +338,7 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.NewExpression
       ) {
         if (
-          doesTypeMatcheSpecifier(
+          doesTypeMatchSpecifier(
             services,
             options.allowForKnownSafePromises,
             services.getTypeAtLocation(node),
@@ -373,7 +373,7 @@ export default createRule<Options, MessageId>({
  * @param type The type of the node
  * @returns `true` if the type matches, `false` if it isn't
  */
-function doesTypeMatcheSpecifier(
+function doesTypeMatchSpecifier(
   services: ParserServicesWithTypeInformation,
   options: TypeOrValueSpecifier[] | undefined,
   type: ts.Type,
@@ -401,7 +401,7 @@ function isPromiseArray(
       if (Array.isArray(options) && options.length > 0) {
         return !tsutils
           .unionTypeParts(arrayType)
-          .some(type => doesTypeMatcheSpecifier(services, options, type));
+          .some(type => doesTypeMatchSpecifier(services, options, type));
       }
       if (isPromiseLike(checker, node, arrayType)) {
         return true;
@@ -410,7 +410,7 @@ function isPromiseArray(
 
     if (checker.isTupleType(ty)) {
       for (const tupleElementType of checker.getTypeArguments(ty)) {
-        if (doesTypeMatcheSpecifier(services, options, tupleElementType)) {
+        if (doesTypeMatchSpecifier(services, options, tupleElementType)) {
           return false;
         }
         if (isPromiseLike(checker, node, tupleElementType)) {
