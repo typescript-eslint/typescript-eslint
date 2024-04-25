@@ -12,7 +12,9 @@ export = {
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/consistent-type-exports': 'off',
+    '@typescript-eslint/consistent-type-imports': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-array-delete': 'off',
