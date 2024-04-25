@@ -24,7 +24,7 @@ Per [Users > Releases > Major Releases](../users/Releases.mdx#major-releases), w
    - Under `push:` > `branches:` at the beginning of the file, add an `- v${major}` list item.
    - Add a `publish_canary_version_v${major}` step the same as `publish_canary_version` except:
      - Change the `if` condition's branch check to: `if: github.ref == 'refs/heads/v${major}'`.
-     - Its publish command should be `npx nx publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}`.
+     - Its publish command should be `npx nx release publish --tag rc-v${major} --verbose`.
    - Merge this into `main` once reviewed and rebase the `v${major}` branch.
 
 ### 2. Merging Breaking Changes
