@@ -323,7 +323,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members;
 
       expect(emitWarning).toHaveBeenCalledWith(
-        `The 'members' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'members' property is deprecated on CallExpression nodes. Use 'body.members' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
         'DeprecationWarning',
       );
     });
