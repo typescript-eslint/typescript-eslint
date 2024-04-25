@@ -71,39 +71,13 @@ export default util.createRule<Options, MessageIds>({
           context.sourceCode.getScope(node),
           'require',
         );
-        const parent =
-          node.parent.type === AST_NODE_TYPES.ChainExpression
-            ? node.parent.parent
-            : node.parent;
-
-        if (allowAsImport) {
-          if (
-            [
-              AST_NODE_TYPES.CallExpression,
-              AST_NODE_TYPES.MemberExpression,
-              AST_NODE_TYPES.NewExpression,
-              AST_NODE_TYPES.TSAsExpression,
-              AST_NODE_TYPES.TSTypeAssertion,
-              AST_NODE_TYPES.VariableDeclarator,
-              AST_NODE_TYPES.ExpressionStatement,
-            ].includes(parent.type)
-          ) {
-            if (!variable?.identifiers.length) {
-              context.report({
-                node,
-                messageId: 'noRequireImports',
-              });
-            }
-          }
-        } else {
-          // ignore non-global require usage as it's something user-land custom instead
-          // of the commonjs standard
-          if (!variable?.identifiers.length) {
-            context.report({
-              node,
-              messageId: 'noRequireImports',
-            });
-          }
+        // ignore non-global require usage as it's something user-land custom instead
+        // of the commonjs standard
+        if (!variable?.identifiers.length) {
+          context.report({
+            node,
+            messageId: 'noRequireImports',
+          });
         }
       },
       TSExternalModuleReference(node): void {

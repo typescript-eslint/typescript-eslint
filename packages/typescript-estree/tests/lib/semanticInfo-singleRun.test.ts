@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import glob = require('glob');
+import * as glob from 'glob';
 import * as path from 'path';
 
 import { getCanonicalFileName } from '../../src/create-program/shared';
