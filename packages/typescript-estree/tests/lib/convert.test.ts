@@ -279,42 +279,37 @@ describe('convert', () => {
   });
 
   describe('suppressDeprecatedPropertyWarnings', () => {
-    const getEsTsEnumDeclaration = (
-      converterOptions?: ConverterOptions,
-    ): TSESTree.TSEnumDeclaration => {
-      const ast = convertCode(`enum E {}`);
-      const tsEnumDeclaration = ast.statements[0] as ts.EnumDeclaration;
-      const instance = new Converter(ast, {
-        shouldPreserveNodeMaps: true,
-        ...converterOptions,
-      });
+    const makeNodeGetter =
+      <S extends ts.Statement, T extends TSESTree.Node>(
+        code: string,
+        tsToEsNode: (statement: S) => TSNode,
+      ) =>
+      (converterOptions?: ConverterOptions): T => {
+        const ast = convertCode(code);
+        const instance = new Converter(ast, {
+          shouldPreserveNodeMaps: true,
+          ...converterOptions,
+        });
 
-      instance.convertProgram();
+        instance.convertProgram();
 
-      const maps = instance.getASTMaps();
+        return instance
+          .getASTMaps()
+          .tsNodeToESTreeNodeMap.get(tsToEsNode(ast.statements[0] as S));
+      };
 
-      return maps.tsNodeToESTreeNodeMap.get(tsEnumDeclaration);
-    };
+    const getEsTsEnumDeclaration = makeNodeGetter<
+      ts.EnumDeclaration,
+      TSESTree.TSEnumDeclaration
+    >('enum Enum {}', enumDeclaration => enumDeclaration);
 
-    const getEsTsMappedType = (
-      converterOptions?: ConverterOptions,
-    ): TSESTree.TSMappedType => {
-      const ast = convertCode(`
-        type MappedType = {
-          [Key in Type]: Value;
-        };
-      `);
-      const tsMappedType = (ast.statements[0] as ts.TypeAliasDeclaration)
-        .type as ts.MappedTypeNode;
-      const instance = new Converter(ast, {
-        shouldPreserveNodeMaps: true,
-        ...converterOptions,
-      });
-
-      instance.convertProgram();
-
-      return instance.getASTMaps().tsNodeToESTreeNodeMap.get(tsMappedType);
-    };
+    const getEsTsMappedType = makeNodeGetter<
+      ts.TypeAliasDeclaration,
+      TSESTree.TSMappedType
+    >(
+      'type MappedType = { [Key in Type]: Value };',
+      ({ type }) => type as ts.MappedTypeNode,
+    );
 
     it('warns on a deprecated aliased property access when suppressDeprecatedPropertyWarnings is false', () => {
       const emitWarning = jest
