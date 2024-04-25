@@ -301,7 +301,7 @@ describe('convert', () => {
     const getEsTsEnumDeclaration = makeNodeGetter<
       ts.EnumDeclaration,
       TSESTree.TSEnumDeclaration
-    >('enum Enum {}', enumDeclaration => enumDeclaration);
+    >('enum Enum { A }', enumDeclaration => enumDeclaration);
 
     const getEsTsMappedType = makeNodeGetter<
       ts.TypeAliasDeclaration,
@@ -371,7 +371,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members = [];
 
       // eslint-disable-next-line deprecation/deprecation
-      expect(esTsEnumDeclaration.members).toBeUndefined();
+      expect(esTsEnumDeclaration.members).toEqual([]);
       expect(Object.keys(esTsEnumDeclaration)).toContain('members');
     });
 
