@@ -64,7 +64,7 @@ const capitalObj: { a: string } = { a: 'string' };
 
 The default options provide a set of "best practices", intended to provide safety and standardization in your codebase:
 
-- Don't use the upper-case primitive types, you should use the lower-case types for consistency.
+- Don't use the upper-case primitive types or `Object`, you should use the lower-case types for consistency.
 - Avoid the `Function` type, as it provides little safety for the following reasons:
   - It provides no type safety when calling the value, which means it's easy to provide the wrong arguments.
   - It accepts class declarations, which will fail when called, as they are called without the `new` keyword.
