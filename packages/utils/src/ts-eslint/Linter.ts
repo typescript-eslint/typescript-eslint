@@ -114,11 +114,18 @@ declare class LinterBase {
 namespace Linter {
   export interface LinterOptions {
     /**
+     * Which config format to use.
+     * @default 'flat'
+     */
+    configType?: ConfigTypeSpecifier;
+
+    /**
      * path to a directory that should be considered as the current working directory.
      */
     cwd?: string;
   }
 
+  export type ConfigTypeSpecifier = 'eslintrc' | 'flat';
   export type EnvironmentConfig = SharedConfig.EnvironmentConfig;
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
   export type GlobalVariableOption = SharedConfig.GlobalVariableOption;
