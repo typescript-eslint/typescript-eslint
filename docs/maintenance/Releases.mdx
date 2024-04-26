@@ -28,10 +28,10 @@ Per [Users > Releases > Major Releases](../users/Releases.mdx#major-releases), w
    - `v${major}-canary-auto-release`
 1. Raise a PR from `v${major}-canary-auto-release` to `main` modifying [`ci.yml` workflow](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml) and README.md [example: [chore: add auto-canary release for v6](https://github.com/typescript-eslint/typescript-eslint/pull/5883)]:
    - `ci.yml`:
-     - Under `pushes:` at the beginning of the file, add an `- v${major}` list item.
+     - Under `push:` > `branches:` at the beginning of the file, add a `- v${major}` list item.
      - Add a `publish_canary_version_v${major}` step the same as `publish_canary_version` except:
-       - Add the condition: `if: github.ref == 'refs/heads/v${major}'`.
-       - Its publish command should be `npx nx release publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}`.
+       - Change the `if` condition's branch check to: `if: github.ref == 'refs/heads/v${major}'`.
+       - Its publish command should be `npx nx release publish --tag rc-v${major} --verbose`.
    - `README.md`:
      - Add a link to a `v${major}--typescript-eslint.netlify.app` preview deploy environment on Netlify that you create for the branch.
    - Merge this into `main` once reviewed and rebase the `v${major}` branch.

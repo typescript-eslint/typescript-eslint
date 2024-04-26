@@ -223,7 +223,10 @@ export default createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.CallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||
           node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-          node.parent.type === AST_NODE_TYPES.JSXExpressionContainer)
+          node.parent.type === AST_NODE_TYPES.JSXExpressionContainer ||
+          (node.parent.type === AST_NODE_TYPES.TemplateLiteral &&
+            node.parent.parent.type ===
+              AST_NODE_TYPES.TaggedTemplateExpression))
       ) {
         return;
       }
