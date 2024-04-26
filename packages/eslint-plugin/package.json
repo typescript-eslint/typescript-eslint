@@ -28,7 +28,7 @@
     }
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -103,7 +103,7 @@
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^7.0.0",
-    "eslint": "^8.56.0"
+    "eslint": "^8.57.0"
   },
   "peerDependenciesMeta": {
     "typescript": {
