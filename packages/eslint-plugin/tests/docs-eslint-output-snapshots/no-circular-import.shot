@@ -4,10 +4,12 @@ exports[`Validating rule docs no-circular-import.mdx code examples ESLint output
 "Incorrect
 
 // foo.ts
-import './bar';
+import { bar } from './bar';
+export const foo = 1;
 
 // bar.ts
-import './foo';
+import { foo } from './foo';
+export const bar = 1;
 "
 `;
 
@@ -15,9 +17,11 @@ exports[`Validating rule docs no-circular-import.mdx code examples ESLint output
 "Correct
 
 // foo.ts
-import './bar';
+import type { bar } from './bar';
+export type baz = number;
 
 // bar.ts
-import './baz';
+import { type baz } from './baz';
+export type bar = number;
 "
 `;
