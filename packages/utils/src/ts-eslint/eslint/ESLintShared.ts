@@ -100,7 +100,7 @@ export declare class ESLintBase<
   /**
    * The type of configuration used by this class.
    */
-  static readonly configType: 'eslintrc' | 'flat';
+  static readonly configType: Linter.ConfigTypeSpecifier;
 }
 export interface ESLintOptions<Config extends Linter.ConfigType> {
   /**
