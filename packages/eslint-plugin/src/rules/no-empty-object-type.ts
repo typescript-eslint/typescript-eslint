@@ -37,14 +37,12 @@ export default createRule({
         context.report({
           messageId: 'banEmptyObjectType',
           node,
-          suggest: ['object', 'unknown', 'Record<string, never>'].map(
-            replacement => ({
-              data: { replacement },
-              messageId: 'replaceEmptyObjectType',
-              fix: (fixer): TSESLint.RuleFix =>
-                fixer.replaceText(node, replacement),
-            }),
-          ),
+          suggest: ['object', 'unknown'].map(replacement => ({
+            data: { replacement },
+            messageId: 'replaceEmptyObjectType',
+            fix: (fixer): TSESLint.RuleFix =>
+              fixer.replaceText(node, replacement),
+          })),
         });
       },
     };

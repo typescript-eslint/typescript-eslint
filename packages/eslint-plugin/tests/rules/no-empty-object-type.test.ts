@@ -34,11 +34,6 @@ ruleTester.run('no-empty-object-type', rule, {
               messageId: 'replaceEmptyObjectType',
               output: 'let value: unknown;',
             },
-            {
-              data: { replacement: 'Record<string, never>' },
-              messageId: 'replaceEmptyObjectType',
-              output: 'let value: Record<string, never>;',
-            },
           ],
         },
       ],
@@ -71,13 +66,6 @@ let value: object;
 let value: unknown;
       `,
             },
-            {
-              data: { replacement: 'Record<string, never>' },
-              messageId: 'replaceEmptyObjectType',
-              output: `
-let value: Record<string, never>;
-      `,
-            },
           ],
         },
       ],
@@ -101,11 +89,6 @@ let value: Record<string, never>;
               data: { replacement: 'unknown' },
               messageId: 'replaceEmptyObjectType',
               output: 'type MyUnion<T> = T | unknown;',
-            },
-            {
-              data: { replacement: 'Record<string, never>' },
-              messageId: 'replaceEmptyObjectType',
-              output: 'type MyUnion<T> = T | Record<string, never>;',
             },
           ],
         },

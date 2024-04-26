@@ -20,7 +20,6 @@ Often, developers writing `{}` actually mean either:
 
 - `object`: representing any _object_ value
 - `unknown`: representing any value at all, including `null` and `undefined`
-- An object with no properties: which can't easily be represented in TypeScript's structural type system
 
 In other words, the "empty object" type `{}` really means _"any value that is defined"_.
 That includes arrays, class instances, functions, and primitives such as `string` and `symbol`.
@@ -41,7 +40,6 @@ Note that this rule does not report on `{}` as a type constituent in an intersec
 ```ts
 let anyObject: {};
 let anyValue: {};
-let emptyObject: {};
 ```
 
 </TabItem>
@@ -50,7 +48,6 @@ let emptyObject: {};
 ```ts
 let anyObject: object;
 let anyValue: unknown;
-let emptyObject: Record<string, never>;
 ```
 
 </TabItem>
