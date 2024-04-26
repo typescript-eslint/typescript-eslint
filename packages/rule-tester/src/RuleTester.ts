@@ -214,13 +214,16 @@ export class RuleTester extends TestFramework {
       if (test.parser === TYPESCRIPT_ESLINT_PARSER) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
-      if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
-      }
-      return test;
+      return {
+        ...test,
+        filename: test.filename || getFilename(test.parserOptions),
+        parserOptions: {
+          // Re-running simulates --fix mode, which implies an isolated program
+          // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+          disallowAutomaticSingleRunInference: true,
+          ...test.parserOptions,
+        },
+      };
     };
 
     const normalizedTests = {
