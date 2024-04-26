@@ -236,7 +236,7 @@ project: null;
 
 - Note that using wide globs `**` in your `parserOptions.project` may cause performance implications. Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time. For more info see [#2611](https://github.com/typescript-eslint/typescript-eslint/issues/2611).
 
-- TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see [#955](https://github.com/typescript-eslint/typescript-eslint/issues/955).
+- TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignores all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see [#955](https://github.com/typescript-eslint/typescript-eslint/issues/955).
 
 :::note
 Relative paths are interpreted relative to the current working directory if [`tsconfigRootDir`](#tsconfigrootdir) is not set.
