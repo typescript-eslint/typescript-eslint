@@ -1,6 +1,7 @@
 import {
   ImplicitLibVariable,
   ScopeType,
+  Variable,
   Visitor,
 } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -10,6 +11,7 @@ import {
   ESLintUtils,
   TSESLint,
 } from '@typescript-eslint/utils';
+import { isDefinitionFile } from './misc';
 
 class UnusedVarsVisitor<
   MessageIds extends string,
@@ -22,6 +24,7 @@ class UnusedVarsVisitor<
 
   readonly #scopeManager: TSESLint.Scope.ScopeManager;
   // readonly #unusedVariables = new Set<TSESLint.Scope.Variable>();
+  readonly #isDefinitionFile: boolean;
 
   private constructor(context: TSESLint.RuleContext<MessageIds, Options>) {
     super({
@@ -32,6 +35,8 @@ class UnusedVarsVisitor<
       context.sourceCode.scopeManager,
       'Missing required scope manager',
     );
+
+    this.#isDefinitionFile = isDefinitionFile(context.filename);
   }
 
   public static collectUnusedVariables<
@@ -60,7 +65,12 @@ class UnusedVarsVisitor<
     scope: TSESLint.Scope.Scope,
     unusedVariables = new Set<TSESLint.Scope.Variable>(),
   ): ReadonlySet<TSESLint.Scope.Variable> {
-    for (const variable of scope.variables) {
+    const implicitlyExported = allVariablesImplicitlyExported(
+      scope,
+      this.#isDefinitionFile,
+    );
+
+    for (const variable of implicitlyExported ? [] : scope.variables) {
       if (
         // skip function expression names,
         scope.functionExpressionScope ||
@@ -439,6 +449,47 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return node.parent!.type.startsWith('Export');
   });
+}
+
+function allVariablesImplicitlyExported(
+  scope: TSESLint.Scope.Scope,
+  isDefinitionFile: boolean,
+): boolean {
+  // TODO: does this also happen in ambient module declarations?
+  if (
+    !isDefinitionFile ||
+    !(
+      scope.type === ScopeType.tsModule ||
+      scope.type === ScopeType.module ||
+      scope.type === ScopeType.global
+    )
+  ) {
+    return false;
+  }
+
+  // TODO: test modules, globals
+  // TODO: look for `export {}`
+
+  function isExportImportEquals(variable: Variable): boolean {
+    for (const def of variable.defs) {
+      if (
+        def.type === TSESLint.Scope.DefinitionType.ImportBinding &&
+        def.node.type === AST_NODE_TYPES.TSImportEqualsDeclaration &&
+        def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  for (const variable of scope.variables) {
+    if (isExported(variable) && !isExportImportEquals(variable)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
