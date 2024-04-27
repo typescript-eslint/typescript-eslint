@@ -1,3 +1,22 @@
+## 7.7.1 (2024-04-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] handle shorthand property assignment ([#8800](https://github.com/typescript-eslint/typescript-eslint/pull/8800))
+- **eslint-plugin:** [explicit-function-return-type] fix checking wrong ancestor's return type ([#8809](https://github.com/typescript-eslint/typescript-eslint/pull/8809))
+- **eslint-plugin:** [prefer-optional-chain] only look at left operand for `requireNullish` ([#8559](https://github.com/typescript-eslint/typescript-eslint/pull/8559))
+- **eslint-plugin:** [no-for-in-array] refine report location ([#8874](https://github.com/typescript-eslint/typescript-eslint/pull/8874))
+- **eslint-plugin:** [no-unnecessary-type-assertion] allow non-null assertion for void type ([#8912](https://github.com/typescript-eslint/typescript-eslint/pull/8912))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kirk Waiblinger @kirkwaiblinger
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.7.0 (2024-04-15)
 
 

@@ -20,6 +20,7 @@ import {
   NullThrowsReasons,
   OperatorPrecedence,
 } from '../../util';
+import { checkNullishAndReport } from './checkNullishAndReport';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
 import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
@@ -60,13 +61,24 @@ const analyzeAndChainOperand: OperandAnalyzer = (
   chain,
 ) => {
   switch (operand.comparisonType) {
-    case NullishComparisonType.Boolean:
+    case NullishComparisonType.Boolean: {
+      const nextOperand = chain.at(index + 1);
+      if (
+        nextOperand?.comparisonType ===
+          NullishComparisonType.NotStrictEqualNull &&
+        operand.comparedName.type === AST_NODE_TYPES.Identifier
+      ) {
+        return null;
+      }
+      return [operand];
+    }
+
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 
     case NullishComparisonType.NotStrictEqualNull: {
       // handle `x !== null && x !== undefined`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualUndefined &&
@@ -93,7 +105,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.NotStrictEqualUndefined: {
       // handle `x !== undefined && x !== null`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualNull &&
@@ -131,7 +143,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.StrictEqualNull: {
       // handle `x === null || x === undefined`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.StrictEqualUndefined &&
@@ -158,7 +170,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.StrictEqualUndefined: {
       // handle `x === undefined || x === null`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType === NullishComparisonType.StrictEqualNull &&
         compareNodes(operand.comparedName, nextOperand.comparedName) ===
@@ -493,20 +505,26 @@ export function analyzeChain(
   ): void => {
     if (subChain.length > 1) {
       const subChainFlat = subChain.flat();
-      context.report({
-        messageId: 'preferOptionalChain',
-        loc: {
-          start: subChainFlat[0].node.loc.start,
-          end: subChainFlat[subChainFlat.length - 1].node.loc.end,
+      checkNullishAndReport(
+        context,
+        parserServices,
+        options,
+        subChainFlat.slice(0, -1).map(({ node }) => node),
+        {
+          messageId: 'preferOptionalChain',
+          loc: {
+            start: subChainFlat[0].node.loc.start,
+            end: subChainFlat[subChainFlat.length - 1].node.loc.end,
+          },
+          ...getFixer(
+            context.sourceCode,
+            parserServices,
+            operator,
+            options,
+            subChainFlat,
+          ),
         },
-        ...getFixer(
-          context.sourceCode,
-          parserServices,
-          operator,
-          options,
-          subChainFlat,
-        ),
-      });
+      );
     }
 
     // we've reached the end of a chain of logical expressions
