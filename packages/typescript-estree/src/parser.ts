@@ -39,6 +39,11 @@ function clearProgramCache(): void {
   existingPrograms.clear();
 }
 
+const defaultProjectMatchedFiles = new Set<string>();
+function clearDefaultProjectMatchedFiles(): void {
+  defaultProjectMatchedFiles.clear();
+}
+
 /**
  * @param parseSettings Internal settings for parsing the file
  * @param hasFullTypeInformation True if the program should be attempted to be calculated from provided tsconfig files
@@ -53,6 +58,7 @@ function getProgramAndAST(
       parseSettings.EXPERIMENTAL_projectService,
       parseSettings,
       hasFullTypeInformation,
+      defaultProjectMatchedFiles,
     );
     if (fromProjectService) {
       return fromProjectService;
@@ -81,11 +87,11 @@ function getProgramAndAST(
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface EmptyObject {}
+/* eslint-disable @typescript-eslint/ban-types */
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject);
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {}) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {});
+/* eslint-enable @typescript-eslint/ban-types */
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
@@ -152,12 +158,12 @@ function clearParseAndGenerateServicesCalls(): void {
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   code: ts.SourceFile | string,
-  options: T,
+  tsestreeOptions: T,
 ): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
    */
-  const parseSettings = createParseSettings(code, options);
+  const parseSettings = createParseSettings(code, tsestreeOptions);
 
   /**
    * If this is a single run in which the user has not provided any existing programs but there
@@ -196,8 +202,9 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     parseSettings.programs != null || parseSettings.projects.length > 0;
 
   if (
-    typeof options.errorOnTypeScriptSyntacticAndSemanticIssues === 'boolean' &&
-    options.errorOnTypeScriptSyntacticAndSemanticIssues
+    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
+      'boolean' &&
+    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
   ) {
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
   }
@@ -219,15 +226,15 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * In this scenario we cannot rely upon the singleRun AOT compiled programs because the SourceFiles will not contain the source
    * with the latest fixes applied. Therefore we fallback to creating the quickest possible isolated program from the updated source.
    */
-  if (parseSettings.singleRun && options.filePath) {
-    parseAndGenerateServicesCalls[options.filePath] =
-      (parseAndGenerateServicesCalls[options.filePath] || 0) + 1;
+  if (parseSettings.singleRun && tsestreeOptions.filePath) {
+    parseAndGenerateServicesCalls[tsestreeOptions.filePath] =
+      (parseAndGenerateServicesCalls[tsestreeOptions.filePath] || 0) + 1;
   }
 
   const { ast, program } =
     parseSettings.singleRun &&
-    options.filePath &&
-    parseAndGenerateServicesCalls[options.filePath] > 1
+    tsestreeOptions.filePath &&
+    parseAndGenerateServicesCalls[tsestreeOptions.filePath] > 1
       ? createIsolatedProgram(parseSettings)
       : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
@@ -271,6 +278,7 @@ export {
   parse,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
+  clearDefaultProjectMatchedFiles,
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };

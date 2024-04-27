@@ -58,7 +58,6 @@ interface ParserOptions {
   experimentalDecorators?: boolean;
 
   // typescript-estree specific
-  comment?: boolean;
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
@@ -67,10 +66,9 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   filePath?: string;
   jsDocParsingMode?: JSDocParsingMode;
-  loc?: boolean;
   programs?: Program[] | null;
   project?: string[] | string | boolean | null;
-  projectFolderIgnoreList?: (RegExp | string)[];
+  projectFolderIgnoreList?: string[];
   range?: boolean;
   sourceType?: SourceType | undefined;
   tokens?: boolean;

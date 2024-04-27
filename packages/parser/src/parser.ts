@@ -6,6 +6,7 @@ import { analyze } from '@typescript-eslint/scope-manager';
 import type { Lib, TSESTree } from '@typescript-eslint/types';
 import { ParserOptions } from '@typescript-eslint/types';
 import type {
+  AST,
   ParserServices,
   TSESTreeOptions,
 } from '@typescript-eslint/typescript-estree';
@@ -18,12 +19,14 @@ import { ScriptTarget } from 'typescript';
 
 const log = debug('typescript-eslint:parser:parser');
 
+interface ESLintProgram extends AST<{ comment: true; tokens: true }> {
+  comments: TSESTree.Comment[];
+  range: [number, number];
+  tokens: TSESTree.Token[];
+}
+
 interface ParseForESLintResult {
-  ast: TSESTree.Program & {
-    range?: [number, number];
-    tokens?: TSESTree.Token[];
-    comments?: TSESTree.Comment[];
-  };
+  ast: ESLintProgram;
   services: ParserServices;
   visitorKeys: VisitorKeys;
   scopeManager: ScopeManager;
@@ -87,54 +90,59 @@ function parse(
 
 function parseForESLint(
   code: ts.SourceFile | string,
-  options?: ParserOptions | null,
+  parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
-  if (!options || typeof options !== 'object') {
-    options = {};
+  if (!parserOptions || typeof parserOptions !== 'object') {
+    parserOptions = {};
   } else {
-    options = { ...options };
+    parserOptions = { ...parserOptions };
   }
   // https://eslint.org/docs/user-guide/configuring#specifying-parser-options
   // if sourceType is not provided by default eslint expect that it will be set to "script"
-  if (options.sourceType !== 'module' && options.sourceType !== 'script') {
-    options.sourceType = 'script';
+  if (
+    parserOptions.sourceType !== 'module' &&
+    parserOptions.sourceType !== 'script'
+  ) {
+    parserOptions.sourceType = 'script';
   }
-  if (typeof options.ecmaFeatures !== 'object') {
-    options.ecmaFeatures = {};
+  if (typeof parserOptions.ecmaFeatures !== 'object') {
+    parserOptions.ecmaFeatures = {};
   }
-
-  const parserOptions: TSESTreeOptions = {};
-  Object.assign(parserOptions, options, {
-    jsx: validateBoolean(options.ecmaFeatures.jsx),
-    /**
-     * Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
-     * https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
-     */
-    errorOnTypeScriptSyntacticAndSemanticIssues: false,
-  });
-  const analyzeOptions: AnalyzeOptions = {
-    globalReturn: options.ecmaFeatures.globalReturn,
-    jsxPragma: options.jsxPragma,
-    jsxFragmentName: options.jsxFragmentName,
-    lib: options.lib,
-    sourceType: options.sourceType,
-  };
 
   /**
    * Allow the user to suppress the warning from typescript-estree if they are using an unsupported
    * version of TypeScript
    */
   const warnOnUnsupportedTypeScriptVersion = validateBoolean(
-    options.warnOnUnsupportedTypeScriptVersion,
+    parserOptions.warnOnUnsupportedTypeScriptVersion,
     true,
   );
 
-  if (!warnOnUnsupportedTypeScriptVersion) {
-    parserOptions.loggerFn = false;
-  }
+  const tsestreeOptions = {
+    jsx: validateBoolean(parserOptions.ecmaFeatures.jsx),
+    ...(!warnOnUnsupportedTypeScriptVersion && { loggerFn: false }),
+    ...parserOptions,
+    // Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8681#issuecomment-2000411834
+    errorOnTypeScriptSyntacticAndSemanticIssues: false,
+    // comment, loc, range, and tokens should always be set for ESLint usage
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8347
+    comment: true,
+    loc: true,
+    range: true,
+    tokens: true,
+  } satisfies TSESTreeOptions;
 
-  const { ast, services } = parseAndGenerateServices(code, parserOptions);
-  ast.sourceType = options.sourceType;
+  const analyzeOptions: AnalyzeOptions = {
+    globalReturn: parserOptions.ecmaFeatures.globalReturn,
+    jsxPragma: parserOptions.jsxPragma,
+    jsxFragmentName: parserOptions.jsxFragmentName,
+    lib: parserOptions.lib,
+    sourceType: parserOptions.sourceType,
+  };
+
+  const { ast, services } = parseAndGenerateServices(code, tsestreeOptions);
+  ast.sourceType = parserOptions.sourceType;
 
   if (services.program) {
     // automatically apply the options configured for the program
@@ -168,11 +176,13 @@ function parseForESLint(
     }
   }
 
-  // if not defined - override from the parserOptions
-  services.emitDecoratorMetadata ??= options.emitDecoratorMetadata === true;
-  services.experimentalDecorators ??= options.experimentalDecorators === true;
-
   const scopeManager = analyze(ast, analyzeOptions);
+
+  // if not defined - override from the parserOptions
+  services.emitDecoratorMetadata ??=
+    parserOptions.emitDecoratorMetadata === true;
+  services.experimentalDecorators ??=
+    parserOptions.experimentalDecorators === true;
 
   return { ast, services, scopeManager, visitorKeys };
 }

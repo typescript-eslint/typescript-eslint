@@ -52,7 +52,7 @@
     "typecheck": "npx nx run-many --target=typecheck --parallel"
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
     "@actions/core": "^1.10.1",
@@ -119,7 +119,7 @@
     "rimraf": "^5.0.5",
     "tmp": "^0.2.3",
     "tsx": "*",
-    "typescript": ">=4.7.4 <5.5.0",
+    "typescript": ">=4.8.4 <5.5.0",
     "typescript-eslint": "workspace:^",
     "yargs": "17.7.2"
   },
