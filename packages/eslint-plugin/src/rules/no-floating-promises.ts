@@ -106,6 +106,9 @@ export default createRule<Options, MessageId>({
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    // TODO: #5439
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const allowForKnownSafePromises = options.allowForKnownSafePromises!;
 
     return {
       ExpressionStatement(node): void {
@@ -265,12 +268,7 @@ export default createRule<Options, MessageId>({
       // or array thereof.
 
       if (
-        isPromiseArray(
-          services,
-          options.allowForKnownSafePromises,
-          checker,
-          tsNode,
-        )
+        isPromiseArray(services, allowForKnownSafePromises, checker, tsNode)
       ) {
         return { isUnhandled: true, promiseArray: true };
       }
@@ -287,7 +285,7 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatchSpecifier(
             services,
-            options.allowForKnownSafePromises,
+            allowForKnownSafePromises,
             services.getTypeAtLocation(member),
           )
         ) {
@@ -340,7 +338,7 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatchSpecifier(
             services,
-            options.allowForKnownSafePromises,
+            allowForKnownSafePromises,
             services.getTypeAtLocation(node),
           )
         ) {
@@ -366,29 +364,19 @@ export default createRule<Options, MessageId>({
   },
 });
 
-/**
- * It checks whether a node's type matches one of the types listed in the `allowForKnownSafePromises` config
- * @param services services variable passed from context function to check the type of a node
- * @param options The config object of `allowForKnownSafePromises`
- * @param type The type of the node
- * @returns `true` if the type matches, `false` if it isn't
- */
 function doesTypeMatchSpecifier(
   services: ParserServicesWithTypeInformation,
-  options: TypeOrValueSpecifier[] | undefined,
+  options: TypeOrValueSpecifier[],
   type: ts.Type,
 ): boolean {
-  return (
-    !!options?.length &&
-    options.some(specifier =>
-      typeMatchesSpecifier(type, specifier, services.program),
-    )
+  return options.some(specifier =>
+    typeMatchesSpecifier(type, specifier, services.program),
   );
 }
 
 function isPromiseArray(
   services: ParserServicesWithTypeInformation,
-  options: TypeOrValueSpecifier[] | undefined,
+  options: TypeOrValueSpecifier[],
   checker: ts.TypeChecker,
   node: ts.Node,
 ): boolean {
@@ -398,7 +386,7 @@ function isPromiseArray(
     .map(t => checker.getApparentType(t))) {
     if (checker.isArrayType(ty)) {
       const arrayType = checker.getTypeArguments(ty)[0];
-      if (Array.isArray(options) && options.length > 0) {
+      if (options.length > 0) {
         return !tsutils
           .unionTypeParts(arrayType)
           .some(type => doesTypeMatchSpecifier(services, options, type));

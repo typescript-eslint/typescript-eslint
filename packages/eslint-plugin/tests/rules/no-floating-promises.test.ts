@@ -2135,5 +2135,23 @@ null ?? guzz().catch();
       ],
       errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
+    {
+      code: `
+declare const arrayOrPromiseTuple: Foo<unknown>[];
+arrayOrPromiseTuple;
+type Foo<T> = Promise<T> & { hey?: string };
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
+arrayOrPromiseTuple;
+type Foo<T> = Promise<T> & { hey?: string };
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
   ],
 });
