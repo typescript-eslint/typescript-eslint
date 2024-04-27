@@ -386,10 +386,13 @@ function isPromiseArray(
     .map(t => checker.getApparentType(t))) {
     if (checker.isArrayType(ty)) {
       const arrayType = checker.getTypeArguments(ty)[0];
-      if (options.length > 0) {
-        return !tsutils
+      if (
+        options.length > 0 &&
+        tsutils
           .unionTypeParts(arrayType)
-          .some(type => doesTypeMatchSpecifier(services, options, type));
+          .some(type => doesTypeMatchSpecifier(services, options, type))
+      ) {
+        return false;
       }
       if (isPromiseLike(checker, node, arrayType)) {
         return true;
