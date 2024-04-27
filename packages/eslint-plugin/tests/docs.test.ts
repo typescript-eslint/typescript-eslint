@@ -125,14 +125,39 @@ describe('Validating rule docs', () => {
     unistUtilVisit = await dynamicImport('unist-util-visit');
   });
 
+  const oldStylisticRules = [
+    'block-spacing.md',
+    'brace-style.md',
+    'camelcase.md',
+    'comma-dangle.md',
+    'comma-spacing.md',
+    'func-call-spacing.md',
+    'indent.md',
+    'key-spacing.md',
+    'keyword-spacing.md',
+    'lines-around-comment.md',
+    'lines-between-class-members.md',
+    'member-delimiter-style.md',
+    'no-extra-parens.md',
+    'no-extra-semi.md',
+    'object-curly-spacing.md',
+    'padding-line-between-statements.md',
+    'quotes.md',
+    'semi.md',
+    'space-before-blocks.md',
+    'space-before-function-paren.md',
+    'space-infix-ops.md',
+    'type-annotation-spacing.md',
+  ];
+
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
-    'camelcase.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    ...oldStylisticRules,
   ]);
 
   const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
@@ -235,8 +260,7 @@ describe('Validating rule docs', () => {
       if (
         !rulesWithComplexOptions.has(ruleName) &&
         Array.isArray(schema) &&
-        !rule.meta.docs?.extendsBaseRule &&
-        rule.meta.type !== 'layout'
+        !rule.meta.docs?.extendsBaseRule
       ) {
         test('each rule option should be mentioned in a heading', () => {
           const headingTextAfterOptions = headings
@@ -367,6 +391,7 @@ describe('Validating rule docs', () => {
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
+                disallowAutomaticSingleRunInference: true,
                 tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
               },

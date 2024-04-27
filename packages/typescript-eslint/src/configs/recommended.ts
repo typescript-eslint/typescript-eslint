@@ -26,8 +26,6 @@ export default (
       '@typescript-eslint/no-duplicate-enum-values': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
-      'no-loss-of-precision': 'off',
-      '@typescript-eslint/no-loss-of-precision': 'error',
       '@typescript-eslint/no-misused-new': 'error',
       '@typescript-eslint/no-namespace': 'error',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',

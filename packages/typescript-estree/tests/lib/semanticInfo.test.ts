@@ -23,6 +23,7 @@ const testFiles = glob.sync(`**/*.src.ts`, {
 
 function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
+    disallowAutomaticSingleRunInference: true,
     loc: true,
     range: true,
     tokens: true,
@@ -301,15 +302,6 @@ describe('semanticInfo', () => {
       );
     });
   }
-
-  it('default program produced with option', () => {
-    const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
-      ...createOptions('<input>'),
-      DEPRECATED__createDefaultProgram: true,
-    });
-
-    expectToHaveParserServices(parseResult.services);
-  });
 
   it('empty programs array should throw', () => {
     const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');

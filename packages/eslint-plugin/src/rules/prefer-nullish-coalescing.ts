@@ -100,7 +100,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      ignoreConditionalTests: false,
+      ignoreConditionalTests: true,
       ignoreTernaryTests: false,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {

@@ -39,7 +39,7 @@
   },
   "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -76,7 +76,7 @@
     "semver": "^7.6.0"
   },
   "peerDependencies": {
-    "eslint": "^8.56.0"
+    "eslint": "^8.57.0"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "7.7.1",
