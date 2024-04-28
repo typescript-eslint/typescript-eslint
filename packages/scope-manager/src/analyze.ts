@@ -57,9 +57,9 @@ interface AnalyzeOptions {
    */
   sourceType?: SourceType;
 
+  // TODO - remove this in v8
   /**
-   * Emit design-type metadata for decorated declarations in source.
-   * Defaults to `false`.
+   * @deprecated This option never did what it was intended for and will be removed in a future major release.
    */
   emitDecoratorMetadata?: boolean;
 }
@@ -96,9 +96,7 @@ function analyze(
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
     lib: providedOptions?.lib ?? ['esnext'],
-    emitDecoratorMetadata:
-      providedOptions?.emitDecoratorMetadata ??
-      DEFAULT_OPTIONS.emitDecoratorMetadata,
+    emitDecoratorMetadata: false,
   };
 
   // ensure the option is lower cased

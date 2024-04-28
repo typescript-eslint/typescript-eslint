@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-find.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+[1, 2, 3].filter(x => x > 1)[0];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer .find(...) instead of .filter(...)[0].
+
+[1, 2, 3].filter(x => x > 1).at(0);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer .find(...) instead of .filter(...)[0].
+"
+`;
+
+exports[`Validating rule docs prefer-find.mdx code examples ESLint output 2`] = `
+"Correct
+
+[1, 2, 3].find(x => x > 1);
+"
+`;

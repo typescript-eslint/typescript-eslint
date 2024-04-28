@@ -9,8 +9,12 @@ declare module 'eslint' {
   const Linter: unknown;
   const RuleTester: unknown;
   const SourceCode: unknown;
-  const CLIEngine: unknown;
-  const ESLint: unknown;
 
-  export { Linter, RuleTester, SourceCode, CLIEngine, ESLint };
+  export { Linter, RuleTester, SourceCode };
+}
+declare module 'eslint/use-at-your-own-risk' {
+  const FlatESLint: unknown;
+  const LegacyESLint: unknown;
+
+  export { FlatESLint, LegacyESLint };
 }

@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+// Should indicate that no value is returned (void)
+function test() {
+~~~~~~~~~~~~~ Missing return type on function.
+  return;
+}
+
+// Should indicate that a number is returned
+var fn = function () {
+         ~~~~~~~~~ Missing return type on function.
+  return 1;
+};
+
+// Should indicate that a string is returned
+var arrowFn = () => 'test';
+                 ~~ Missing return type on function.
+
+class Test {
+  // Should indicate that no value is returned (void)
+  method() {
+  ~~~~~~ Missing return type on function.
+    return;
+  }
+}
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 2`] = `
+"Correct
+
+// No return value should be expected (void)
+function test(): void {
+  return;
+}
+
+// A return value of type number
+var fn = function (): number {
+  return 1;
+};
+
+// A return value of type string
+var arrowFn = (): string => 'test';
+
+class Test {
+  // No return value should be expected (void)
+  method(): void {
+    return;
+  }
+}
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allowExpressions": true }
+
+function test() {}
+~~~~~~~~~~~~~ Missing return type on function.
+
+const fn = () => {};
+              ~~ Missing return type on function.
+
+export default () => {};
+                  ~~ Missing return type on function.
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allowExpressions": true }
+
+node.addEventListener('click', () => {});
+
+node.addEventListener('click', function () {});
+
+const foo = arr.map(i => i * i);
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "allowTypedFunctionExpressions": true }
+
+let arrowFn = () => 'test';
+                 ~~ Missing return type on function.
+
+let funcExpr = function () {
+               ~~~~~~~~~ Missing return type on function.
+  return 'test';
+};
+
+let objectProp = {
+  foo: () => 1,
+  ~~~~~ Missing return type on function.
+};
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "allowTypedFunctionExpressions": true }
+
+type FuncType = () => string;
+
+let arrowFn: FuncType = () => 'test';
+
+let funcExpr: FuncType = function () {
+  return 'test';
+};
+
+let asTyped = (() => '') as () => string;
+let castTyped = <() => string>(() => '');
+
+interface ObjectType {
+  foo(): number;
+}
+let objectProp: ObjectType = {
+  foo: () => 1,
+};
+let objectPropAs = {
+  foo: () => 1,
+} as ObjectType;
+let objectPropCast = <ObjectType>{
+  foo: () => 1,
+};
+
+declare function functionWithArg(arg: () => number);
+functionWithArg(() => 1);
+
+declare function functionWithObjectArg(arg: { method: () => number });
+functionWithObjectArg({
+  method() {
+    return 1;
+  },
+});
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 7`] = `
+"Incorrect
+Options: { "allowHigherOrderFunctions": true }
+
+var arrowFn = () => () => {};
+                       ~~ Missing return type on function.
+
+function fn() {
+  return function () {};
+         ~~~~~~~~~ Missing return type on function.
+}
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 8`] = `
+"Correct
+Options: { "allowHigherOrderFunctions": true }
+
+var arrowFn = () => (): void => {};
+
+function fn() {
+  return function (): void {};
+}
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 9`] = `
+"Incorrect
+Options: { "allowDirectConstAssertionInArrowFunctions": true }
+
+const func = (value: number) => ({ type: 'X', value }) as any;
+                             ~~ Missing return type on function.
+const func = (value: number) => ({ type: 'X', value }) as Action;
+                             ~~ Missing return type on function.
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 10`] = `
+"Correct
+Options: { "allowDirectConstAssertionInArrowFunctions": true }
+
+const func = (value: number) => ({ foo: 'bar', value }) as const;
+const func = () => x as const;
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 11`] = `
+"Incorrect
+Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
+
+var join = (a: string, b: string) => \`\${a}\${b}\`;
+                                  ~~ Missing return type on function.
+
+const log = (message: string) => {
+                              ~~ Missing return type on function.
+  console.log(message);
+};
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 12`] = `
+"Correct
+Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
+
+var log = (message: string) => void console.log(message);
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 13`] = `
+"Incorrect
+Options: { "allowFunctionsWithoutTypeParameters": true }
+
+function foo<T>(t: T) {
+~~~~~~~~~~~~~~~ Missing return type on function.
+  return t;
+}
+
+const bar = <T>(t: T) => t;
+                      ~~ Missing return type on function.
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 14`] = `
+"Correct
+Options: { "allowFunctionsWithoutTypeParameters": true }
+
+function foo<T>(t: T): T {
+  return t;
+}
+
+const bar = <T>(t: T): T => t;
+
+function allowedFunction(x: string) {
+  return x;
+}
+
+const allowedArrow = (x: string) => x;
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 15`] = `
+"Incorrect
+Options: { "allowIIFEs": true }
+
+var func = () => 'foo';
+              ~~ Missing return type on function.
+"
+`;
+
+exports[`Validating rule docs explicit-function-return-type.mdx code examples ESLint output 16`] = `
+"Correct
+Options: { "allowIIFEs": true }
+
+var foo = (() => 'foo')();
+
+var bar = (function () {
+  return 'bar';
+})();
+"
+`;
