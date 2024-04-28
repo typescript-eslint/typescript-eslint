@@ -39,7 +39,7 @@ function EditorTabs<T extends boolean | string>({
           >
             {item.label}
             {additionalTabsInfo?.[item.label] ? (
-              <div>
+              <div className={styles.tabErrors}>
                 {additionalTabsInfo[item.label] > 99
                   ? '99+'
                   : additionalTabsInfo[item.label]}
