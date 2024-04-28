@@ -1,7 +1,6 @@
 ---
 id: typed-linting
 title: Linting with Type Information
-pagination_next: getting-started/typed-linting/monorepos
 ---
 
 import Tabs from '@theme/Tabs';
@@ -85,7 +84,7 @@ In more detail:
 
 :::caution
 Your ESLint config file may start receiving a parsing error about type information.
-See [our TSConfig inclusion FAQ](../troubleshooting/FAQ.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+See [our TSConfig inclusion FAQ](../troubleshooting/FAQs.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 :::
 
 With that done, run the same lint command you ran before.
@@ -186,7 +185,7 @@ module.exports = {
 See [the `@typescript-eslint/parser` docs for more details](../packages/Parser.mdx#project).
 
 :::note
-If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
+If your project is a multi-package monorepo, see [our docs on configuring a monorepo](../troubleshooting/typed-linting/Monorepos.mdx).
 :::
 
 ### How can I disable type-aware linting for a subset of files?
@@ -266,4 +265,4 @@ This means that generally they usually only run a complete lint before a push, o
 
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting and FAQs page](../troubleshooting/FAQ.mdx).
+If you're having problems getting this working, please have a look at our [Troubleshooting FAQs](../troubleshooting/FAQs.mdx).

@@ -3498,7 +3498,7 @@ export class Converter {
         : (): Properties[typeof valueKey] => {
             if (!warned) {
               process.emitWarning(
-                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/troubleshooting/faqs#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
                 'DeprecationWarning',
               );
               warned = true;

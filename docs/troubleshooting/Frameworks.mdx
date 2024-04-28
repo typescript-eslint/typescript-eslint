@@ -1,0 +1,102 @@
+---
+id: frameworks
+title: Frameworks
+slug: /troubleshooting/frameworks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
+
+You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        project: ['./tsconfig.json'],
+        // Add this line
+        extraFileExtensions: ['.vue'],
+      },
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  // ... the rest of your config ...
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json'],
+    // Add this line
+    extraFileExtensions: ['.vue'],
+  },
+};
+```
+
+</TabItem>
+</Tabs>
+
+## I am running into errors when parsing TypeScript in my .vue files
+
+If you are running into issues parsing .vue files, it might be because parsers like [`vue-eslint-parser`](https://www.npmjs.com/package/vue-eslint-parser) are required to parse `.vue` files. In this case you can move `@typescript-eslint/parser` inside `parserOptions` and use `vue-eslint-parser` as the top level parser.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import tseslint from 'typescript-eslint';
+// Add this line
+import vueParser from 'vue-eslint-parser';
+
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    languageOptions: {
+      // Remove this line
+      parser: tseslint.parser,
+      // Add this line
+      parser: vueParser,
+      parserOptions: {
+        // Add this line
+        parser: tseslint.parser,
+        sourceType: 'module',
+      },
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  // ... the rest of your config ...
+  // Remove this line
+  parser: '@typescript-eslint/parser',
+  // Add this line
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    // Add this line
+    extraFileExtensions: ['.vue'],
+  },
+};
+```
+
+</TabItem>
+</Tabs>
+
+The `parserOptions.parser` option can also specify an object to specify multiple parsers. See the [`vue-eslint-parser` usage guide](https://eslint.vuejs.org/user-guide/#usage) for more details.

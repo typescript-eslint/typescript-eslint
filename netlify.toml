@@ -32,8 +32,12 @@
   to = "/linting/typed-linting"
 
 [[redirects]]
+  from = "/linting/troubleshooting"
+  to = "/troubleshooting/faqs"
+
+[[redirects]]
   from = "/docs/linting/monorepo"
-  to = "/linting/typed-linting/monorepos"
+  to = "/linting/troubleshooting/typed-linting/Monorepos"
 
 [[redirects]]
   from = "/docs/linting/tslint"

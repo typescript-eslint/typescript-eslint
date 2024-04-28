@@ -51,7 +51,7 @@ Explicitly indicating which TSConfig files are used for typed linting can be use
 Developers like being given explicit control over their tooling.
 However, we've seen a few issues arise from this approach:
 
-- Particularly large repos can end up with so many TSConfig globs, they become confusing to developers or even cause [performance issues from overly permissive globs](/troubleshooting/performance-troubleshooting#wide-includes-in-your-eslint-options)
+- Particularly large repos can end up with so many TSConfig globs, they become confusing to developers or even cause [performance issues from overly permissive globs](/troubleshooting/typed-linting/Performance-troubleshooting#wide-includes-in-your-eslint-options)
 - Needing to change a template ESLint config every time it's used for a different repository structure is a pain
 - Using a TSConfig that's different from what your editor uses can result in different lint reports between the editor and the command-line
 

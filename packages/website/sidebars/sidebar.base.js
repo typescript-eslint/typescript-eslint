@@ -6,21 +6,19 @@ module.exports = {
       collapsible: false,
       items: [
         {
-          label: 'Quickstart',
-          id: 'getting-started/quickstart',
-          type: 'doc',
-        },
-        {
           collapsible: false,
-          items: ['getting-started/typed-linting/monorepos'],
-          label: 'Linting with Type Information',
+          items: ['getting-started/legacy-eslint-setup'],
+          label: 'Quickstart',
           link: {
-            id: 'getting-started/typed-linting',
+            id: 'getting-started/quickstart',
             type: 'doc',
           },
           type: 'category',
         },
-        'getting-started/legacy-eslint-setup',
+        {
+          id: 'getting-started/typed-linting',
+          type: 'doc',
+        },
       ],
       label: 'Getting Started',
       link: {
@@ -29,16 +27,30 @@ module.exports = {
       },
       type: 'category',
     },
-
     {
       collapsible: false,
       items: [
         'troubleshooting/faqs',
-        'troubleshooting/performance-troubleshooting',
+        'troubleshooting/frameworks',
+        {
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'troubleshooting/typed-linting/monorepos',
+            'troubleshooting/typed-linting/performance',
+          ],
+          label: 'Linting with Type Information',
+          link: {
+            id: 'troubleshooting/typed-linting',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+        'troubleshooting/working-with-javascript',
         'troubleshooting/formatting',
         'troubleshooting/tslint',
       ],
-      label: 'Troubleshooting & FAQs',
+      label: 'Troubleshooting',
       link: {
         id: 'troubleshooting/faqs',
         type: 'doc',
@@ -48,11 +60,6 @@ module.exports = {
     {
       collapsible: false,
       items: [
-        {
-          label: 'Rules',
-          href: '/rules/',
-          type: 'link',
-        },
         'users/configs',
         'users/dependency-versions',
         'users/releases',
