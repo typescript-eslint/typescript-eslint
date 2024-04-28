@@ -254,18 +254,18 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    function fooFunction(foo: Array<ArrayClass<string>>) {
-      return foo.map(e => e.foo);
-    }
-          `,
+function fooFunction(foo: Array<ArrayClass<string>>) {
+  return foo.map(e => e.foo);
+}
+      `,
       options: [{ default: 'array-simple' }],
     },
     {
       code: `
-    function bazFunction(baz: Arr<ArrayClass<String>>) {
-      return baz.map(e => e.baz);
-    }
-          `,
+function bazFunction(baz: Arr<ArrayClass<String>>) {
+  return baz.map(e => e.baz);
+}
+      `,
       options: [{ default: 'array-simple' }],
     },
     {
@@ -282,19 +282,19 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    namespace fooName {
-      type BarType = { bar: string };
-      type BazType<T> = Arr<T>;
-    }
-          `,
+namespace fooName {
+  type BarType = { bar: string };
+  type BazType<T> = Arr<T>;
+}
+      `,
       options: [{ default: 'array-simple' }],
     },
     {
       code: `
-    interface FooInterface {
-      '.bar': { baz: string[] };
-    }
-          `,
+interface FooInterface {
+  '.bar': { baz: string[] };
+}
+      `,
       options: [{ default: 'array-simple' }],
     },
     {
@@ -307,18 +307,18 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    function barFunction(bar: ArrayClass<String>[]) {
-      return bar.map(e => e.bar);
-    }
-          `,
+function barFunction(bar: ArrayClass<String>[]) {
+  return bar.map(e => e.bar);
+}
+      `,
       options: [{ default: 'array' }],
     },
     {
       code: `
-    function bazFunction(baz: Arr<ArrayClass<String>>) {
-      return baz.map(e => e.baz);
-    }
-          `,
+function bazFunction(baz: Arr<ArrayClass<String>>) {
+  return baz.map(e => e.baz);
+}
+      `,
       options: [{ default: 'array' }],
     },
     {
@@ -335,10 +335,10 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    interface FooInterface {
-      '.bar': { baz: string[] };
-    }
-          `,
+interface FooInterface {
+  '.bar': { baz: string[] };
+}
+      `,
       options: [{ default: 'array' }],
     },
     {
@@ -356,18 +356,18 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    function fooFunction(foo: Array<ArrayClass<string>>) {
-      return foo.map(e => e.foo);
-    }
-          `,
+function fooFunction(foo: Array<ArrayClass<string>>) {
+  return foo.map(e => e.foo);
+}
+      `,
       options: [{ default: 'generic' }],
     },
     {
       code: `
-    function bazFunction(baz: Arr<ArrayClass<String>>) {
-      return baz.map(e => e.baz);
-    }
-          `,
+function bazFunction(baz: Arr<ArrayClass<String>>) {
+  return baz.map(e => e.baz);
+}
+      `,
       options: [{ default: 'generic' }],
     },
     {
@@ -1342,12 +1342,12 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    // Ignore user defined aliases
-    let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
-          `,
+// Ignore user defined aliases
+let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
+      `,
       output: `
-    // Ignore user defined aliases
-    let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
+// Ignore user defined aliases
+let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
           `,
       options: [{ default: 'array-simple' }],
       errors: [
@@ -1361,20 +1361,20 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    interface ArrayClass<T> {
-      foo: Array<T>;
-      bar: T[];
-      baz: Arr<T>;
-      xyz: this[];
-    }
-          `,
+interface ArrayClass<T> {
+  foo: Array<T>;
+  bar: T[];
+  baz: Arr<T>;
+  xyz: this[];
+}
+      `,
       output: `
-    interface ArrayClass<T> {
-      foo: T[];
-      bar: T[];
-      baz: Arr<T>;
-      xyz: this[];
-    }
+interface ArrayClass<T> {
+  foo: T[];
+  bar: T[];
+  baz: Arr<T>;
+  xyz: this[];
+}
           `,
       options: [{ default: 'array-simple' }],
       errors: [
@@ -1388,14 +1388,14 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    function barFunction(bar: ArrayClass<String>[]) {
-      return bar.map(e => e.bar);
-    }
-          `,
+function barFunction(bar: ArrayClass<String>[]) {
+  return bar.map(e => e.bar);
+}
+      `,
       output: `
-    function barFunction(bar: Array<ArrayClass<String>>) {
-      return bar.map(e => e.bar);
-    }
+function barFunction(bar: Array<ArrayClass<String>>) {
+  return bar.map(e => e.bar);
+}
           `,
       options: [{ default: 'array-simple' }],
       errors: [
@@ -1530,12 +1530,12 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    // Ignore user defined aliases
-    let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
-          `,
+// Ignore user defined aliases
+let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
+      `,
       output: `
-    // Ignore user defined aliases
-    let yyyy: Arr<Arr<string>[][]> = [[[['2']]]];
+// Ignore user defined aliases
+let yyyy: Arr<Arr<string>[][]> = [[[['2']]]];
           `,
       options: [{ default: 'array' }],
       errors: [
@@ -1549,12 +1549,12 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    interface ArrayClass<T> {
-      foo: Array<T>;
-      bar: T[];
-      baz: Arr<T>;
-    }
-          `,
+interface ArrayClass<T> {
+  foo: Array<T>;
+  bar: T[];
+  baz: Arr<T>;
+}
+      `,
       output: `
     interface ArrayClass<T> {
       foo: T[];
@@ -1574,10 +1574,10 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    function fooFunction(foo: Array<ArrayClass<string>>) {
-      return foo.map(e => e.foo);
-    }
-          `,
+function fooFunction(foo: Array<ArrayClass<string>>) {
+  return foo.map(e => e.foo);
+}
+      `,
       output: `
     function fooFunction(foo: ArrayClass<string>[]) {
       return foo.map(e => e.foo);
@@ -1724,12 +1724,12 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    // Ignore user defined aliases
-    let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
-          `,
+// Ignore user defined aliases
+let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
+      `,
       output: `
-    // Ignore user defined aliases
-    let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
+// Ignore user defined aliases
+let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
           `,
       options: [{ default: 'generic' }],
       errors: [
@@ -1743,18 +1743,18 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    interface ArrayClass<T> {
-      foo: Array<T>;
-      bar: T[];
-      baz: Arr<T>;
-    }
-          `,
+interface ArrayClass<T> {
+  foo: Array<T>;
+  bar: T[];
+  baz: Arr<T>;
+}
+      `,
       output: `
-    interface ArrayClass<T> {
-      foo: Array<T>;
-      bar: Array<T>;
-      baz: Arr<T>;
-    }
+interface ArrayClass<T> {
+  foo: Array<T>;
+  bar: Array<T>;
+  baz: Arr<T>;
+}
           `,
       options: [{ default: 'generic' }],
       errors: [
@@ -1768,14 +1768,14 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    function barFunction(bar: ArrayClass<String>[]) {
-      return bar.map(e => e.bar);
-    }
-          `,
+function barFunction(bar: ArrayClass<String>[]) {
+  return bar.map(e => e.bar);
+}
+      `,
       output: `
-    function barFunction(bar: Array<ArrayClass<String>>) {
-      return bar.map(e => e.bar);
-    }
+function barFunction(bar: Array<ArrayClass<String>>) {
+  return bar.map(e => e.bar);
+}
           `,
       options: [{ default: 'generic' }],
       errors: [
@@ -1828,14 +1828,14 @@ ruleTester.run('array-type', rule, {
     },
     {
       code: `
-    interface FooInterface {
-      '.bar': { baz: string[] };
-    }
-          `,
+interface FooInterface {
+  '.bar': { baz: string[] };
+}
+      `,
       output: `
-    interface FooInterface {
-      '.bar': { baz: Array<string> };
-    }
+interface FooInterface {
+  '.bar': { baz: Array<string> };
+}
           `,
       options: [{ default: 'generic' }],
       errors: [

@@ -42,8 +42,8 @@ const y: readonly string[] = ['a', 'b'];
 
 ### `"generic"`
 
-Always use `Array<T>` or `ReadonlyArray<T>` or `Readonly<T[]>` for all array types.
-However, `readonly T[]` is modified to `ReadonlyArray<T>`.
+Always use `Array<T>`, `ReadonlyArray<T>`, or `Readonly<T[]>` for all array types.
+`readonly T[]` will be modified to `ReadonlyArray<T>`.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
