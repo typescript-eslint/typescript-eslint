@@ -4,7 +4,6 @@
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 import rule from '../../../src/rules/no-unused-vars';
@@ -1228,7 +1227,7 @@ function f() {
     },
     {
       code: '/*global a */',
-      errors: [definedError('a', '', AST_NODE_TYPES.Program)],
+      errors: [definedError('a', '')],
     },
     {
       code: `
