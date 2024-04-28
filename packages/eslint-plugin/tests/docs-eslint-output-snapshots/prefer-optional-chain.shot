@@ -202,6 +202,7 @@ Options: { "requireNullish": true }
 
 declare const thing1: string | null;
 thing1 && thing1.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
 "
 `;
 
