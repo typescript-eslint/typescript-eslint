@@ -1,0 +1,226 @@
+---
+authors:
+  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+    name: Josh Goldberg
+    title: typescript-eslint Maintainer
+    url: https://github.com/JoshuaKGoldberg
+description: Announcing the release of typescript-eslint's v8 beta, including its changes and timeline.
+slug: announcing-typescript-eslint-v8-beta
+tags: [breaking changes, typescript-eslint, v7, v8]
+title: Announcing typescript-eslint v8 Beta
+---
+
+[typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
+We've been working on a set of breaking changes and general features that we're excited to get in front of users soon.
+And now, we're excited to say that typescript-eslint v8 is ready for public beta testing! 🎉
+
+Our plan for typescript-eslint v8 is to:
+
+1. Have users try out betas starting in May of 2024
+2. Respond to user feedback for the next ~1-2 months
+3. Release a stable version summer of 2024
+
+Nothing mentioned in this blog post is set in stone.
+If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v8` channel!
+
+<!--truncate-->
+
+## Trying Out v8
+
+Please do try out the typescript-eslint v8 beta!
+
+### As A New User
+
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](https://v8--typescript-eslint.netlify.app/getting-started).
+It'll walk you through setting up typescript-eslint in a project.
+
+To use v8 specifically, see the following section for an updated install command.
+
+### As An Existing User
+
+If you already use typescript-eslint, you'll need to first replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with `@rc-v8` versions:
+
+```shell
+npm i @typescript-eslint/eslint-plugin@rc-v8 @typescript-eslint/parser@rc-v8 --save-dev
+```
+
+We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#reworked-configuration-names) — especially if it's been a while since you've reworked your linter config.
+
+## User-Facing Changes
+
+These are the changes that users of typescript-eslint -generally, any developer running ESLint on TypeScript code- should pay attention to when upgrading typescript-eslint from v7 to v8.
+
+> ⏳ indicates a change that has been scheduled for v8 but not yet released.
+> We'll update this blog post as the corresponding pull requests land.
+
+### ⏳ ESLint v9 Support
+
+typescript-eslint v8 ships will full support for ESLint v9.
+
+typescript-eslint v7 was our first version that supported ESLint's [new "flat" config file format](https://eslint.org/docs/latest/use/configure/configuration-files), which was already available in ESLint v8.
+ESLint v9 still supports ESLint's [older legacy config file format](https://eslint.org/docs/latest/use/configure/configuration-files-deprecated) so our tooling does as well.
+However, ESLint v9 also includes a set of breaking changes that we added support for in typescript-eslint v8.
+See the [ESLint v9 release blog post](https://eslint.org/blog/2024/04/eslint-v9.0.0-released) and for more details.
+
+### ⏳ Project Service
+
+The biggest new feature added in this version is the stability of our new "project service".
+In short, the project service is a new way to enable [typed linting](/getting-started/typed-linting) that is generally _easier to configure_ and _faster at runtime_ than our previous offerings.
+It's been experimentally available since v6.1.0 under the name `EXPERIMENTAL_useProjectService`; now, we've renamed it to `projectService`.
+
+You can use the new project service in your configuration instead of the previous `parserOptions.project`:
+
+```js title="eslint.config.js"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        // Remove this line
+        project: true,
+        // Add this line
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+);
+```
+
+The project service will automatically find the closest `tsconfig.json` for each file (like `project: true`).
+It also allows enabling typed linting for files not explicitly included in a `tsconfig.json`.
+This should remove the need for custom `tsconfig.eslint.json` files to lint files like `eslint.config.js`!
+
+```js title="eslint.config.js"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        // Remove this line
+        project: ['packages/*/tsconfig.json', 'tsconfig.eslint.json'],
+        // Add this line
+        projectService: {
+          allowDefaultProjectForFiles: ['./*.js'],
+          defaultProject: './tsconfig.json',
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+);
+```
+
+Internally, the project service uses the same TypeScript APIs that editors such as VS Code use.
+Doing so should make it harder to accidentally configure different type information for ESLint than what you see in day-to-day editing.
+
+We're thrilled to have this option promoted to stable in v8.
+We'll soon release a [dedicated `parserOptions` blog post](https://github.com/typescript-eslint/typescript-eslint/pull/8031) walking through the new option in more details.
+
+### Updated Configuration Rules
+
+Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations - and with which options.
+Because this release also includes a reworking of the configurations themselves, the list of changes is too large to put in this blog post.
+Instead see the table in [Changes to configurations for 8.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/8914) for a full list of the changes.
+
+Please do try out the new rule configurations presets and let us know in that discussion!
+
+:::tip
+If your ESLint configuration contains many `rules` configurations, we suggest the following strategy to start anew:
+
+1. Remove all your rules configurations
+2. Extend from the preset configs that make sense for you
+3. Run ESLint on your project
+4. In your ESLint configuration, turn off any rules creating errors that don't make sense for your project - with comments explaining why
+5. In your ESLint configuration and/or with inline `eslint-disable` comments, turn off any rules creating too many errors for you to fix - with _"TODO"_ comments linking to tracking issues/tickets to re-enable them
+
+:::
+
+### Rule Breaking Changes
+
+Several rules were changed in significant enough ways to be considered breaking changes:
+
+- ⏳ [Rules: Deprecate prefer-ts-expect-error in favor of ban-ts-comment](https://github.com/typescript-eslint/typescript-eslint/issues/8333)
+- ⏳ [chore(eslint-plugin): deprecate no-var-requires in favor of no-require-imports](https://github.com/typescript-eslint/typescript-eslint/pull/8334)
+- [feat(eslint-plugin): deprecate no-throw-literal and add a renamed only-throw-error](https://github.com/typescript-eslint/typescript-eslint/pull/8701)
+- ⏳ [fix(eslint-plugin): [no-useless-template-literals] rename to no-useless-template-expression](https://github.com/typescript-eslint/typescript-eslint/pull/8821)
+- [feat(eslint-plugin): deprecate no-loss-of-precision extension rule](https://github.com/typescript-eslint/typescript-eslint/pull/8832)
+- [feat(eslint-plugin): remove formatting/layout rules](https://github.com/typescript-eslint/typescript-eslint/pull/8833)
+- [feat(eslint-plugin): [prefer-nullish-coalescing] change ignoreConditionalTests default to true](https://github.com/typescript-eslint/typescript-eslint/pull/8872)
+- [feat(eslint-plugin): [no-unused-vars] align catch behavior to ESLint 9](https://github.com/typescript-eslint/typescript-eslint/pull/8971)
+- ⏳ [feat(eslint-plugin): split no-empty-object-type rule out from ban-types rule](https://github.com/typescript-eslint/typescript-eslint/pull/8977)
+
+### Tooling Breaking Changes
+
+- ⏳ [Enhancement: Error if configuration options aren't provided as expected](https://github.com/typescript-eslint/typescript-eslint/issues/6403)
+- [fix(typescript-estree): enable dot globs for project by default](https://github.com/typescript-eslint/typescript-eslint/pull/8818)
+- [feat(typescript-estree): remove slow deprecated and isolated programs](https://github.com/typescript-eslint/typescript-eslint/pull/8834)
+- [feat(typescript-estree): rename automaticSingleRunInference to disallowAutomaticSingleRunInference](https://github.com/typescript-eslint/typescript-eslint/pull/8922)
+- [chore: bump minimum versions for v8](https://github.com/typescript-eslint/typescript-eslint/pull/8973)
+  - ESLint support range was changed from `^8.56.0` to `^8.57.0`
+  - Node.js support range was changed from `^18.18.0 || >=20.0.0` to `^18.18.0 || ^20.9.0 || >=21.1.0`
+  - TypeScript support range was changed from `>=4.7.4 <5.5.0` to `>=4.8.4 <5.5.0`
+
+## Developer-Facing Changes
+
+typescript-eslint v6 comes with a suite of cleanups and improvements for developers as well.
+If you author any ESLint plugins or other tools that interact with TypeScript syntax, then we recommend you try out typescript-eslint v6 soon.
+It includes some breaking changes that you may need to accommodate for.
+
+:::tip
+If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v8` channel!
+:::
+
+### AST Breaking Changes
+
+These PRs changed the AST shapes generated by typescript-eslint when parsing code.
+If you author any ESLint rules that refer to the syntax mentioned by them, these are relevant to you.
+
+- ⏳ [Enhancement: add strict parent types for nodes that have well-defined parents](https://github.com/typescript-eslint/typescript-eslint/issues/6225)
+- [feat(typescript-estree): split TSMappedType typeParameter into constraint and key](https://github.com/typescript-eslint/typescript-eslint/pull/7065)
+- ⏳ [feat(ast-spec): remove deprecated type params](https://github.com/typescript-eslint/typescript-eslint/pull/8933)
+
+### Other Developer-Facing Breaking Changes
+
+- ⏳ [Repo: Rule [options] parameter should be non-nullable if defaultOptions exists](https://github.com/typescript-eslint/typescript-eslint/issues/5439)
+- [feat(parser): always enable comment, loc, range, tokens](https://github.com/typescript-eslint/typescript-eslint/pull/8617)
+- ⏳ [feat(rule-tester): support multipass fixes](https://github.com/typescript-eslint/typescript-eslint/pull/8883)
+- [chore(type-utils)!: remove IsNullableTypeOptions interface](https://github.com/typescript-eslint/typescript-eslint/pull/8934)
+- [feat(utils): swap LegacyESLint out for FlatESLint as ESLint export](https://github.com/typescript-eslint/typescript-eslint/pull/8972)
+- [chore(type-utils): remove getTypeArguments](https://github.com/typescript-eslint/typescript-eslint/pull/8938)
+- ⏳ [feat(utils): remove deprecated context helpers](https://github.com/typescript-eslint/typescript-eslint/pull/9000)
+
+## Appreciation
+
+We'd like to extend a sincere _thank you_ to everybody who pitched in to make typescript-eslint v8 possible.
+
+- Ourselves on the maintenance team:
+  - [Auvred](https://github.com/auvred)
+  - [Armano](https://github.com/armano2)
+  - [Brad Zacher](https://github.com/bradzacher)
+  - [James Henry](https://github.com/JamesHenry)
+  - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
+  - [Joshua Chen](https://github.com/Josh-Cena)
+  - [Kirk Waiblinger](https://github.com/kirkwaiblinger)
+- Community contributors whose PRs were merged into the 8.0.0 release:
+  <!-- cspell:disable -->
+  - [Thomas Huchedé](https://github.com/thuchede)
+  - [Yukihiro Hasegawa](https://github.com/y-hsgw)
+  - _(more to come as PRs are merged)_
+  <!-- cspell:enable -->
+
+See the [v8.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/9) for the list of issues and associated merged pull requests.
+
+## Supporting typescript-eslint
+
+If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
+We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
+Thanks! 💖

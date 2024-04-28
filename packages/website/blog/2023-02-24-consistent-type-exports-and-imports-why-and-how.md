@@ -186,6 +186,6 @@ See [our Getting Started docs](/getting-started) for more information on linting
 
 ## Supporting typescript-eslint
 
-If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
+If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
 We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
 Thanks! 💖
