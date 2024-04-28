@@ -90,10 +90,6 @@ function isValidFalseBooleanCheckType(
     }
   }
 
-  if (options.requireNullish === true) {
-    return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
-  }
-
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
   if (options.checkAny === true) {
     allowedFlags |= ts.TypeFlags.Any;

@@ -89,6 +89,10 @@ declare const a: { data?: unknown };
 
 const x = a.data!;
     `,
+    `
+declare function foo(arg?: number): number | void;
+const bar: number = foo()!;
+    `,
     {
       code: `
 type Foo = number;
@@ -702,6 +706,24 @@ y = 0;
         {
           messageId: 'contextuallyUnnecessary',
           line: 5,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg?: number): number | void;
+const bar: number | void = foo()!;
+      `,
+      output: `
+declare function foo(arg?: number): number | void;
+const bar: number | void = foo();
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 3,
+          column: 28,
+          endColumn: 34,
         },
       ],
     },
