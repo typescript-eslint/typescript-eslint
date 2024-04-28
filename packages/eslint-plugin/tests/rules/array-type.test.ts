@@ -1348,7 +1348,7 @@ let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
       output: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
-          `,
+      `,
       options: [{ default: 'array-simple' }],
       errors: [
         {
@@ -1375,7 +1375,7 @@ interface ArrayClass<T> {
   baz: Arr<T>;
   xyz: this[];
 }
-          `,
+      `,
       options: [{ default: 'array-simple' }],
       errors: [
         {
@@ -1396,7 +1396,7 @@ function barFunction(bar: ArrayClass<String>[]) {
 function barFunction(bar: Array<ArrayClass<String>>) {
   return bar.map(e => e.bar);
 }
-          `,
+      `,
       options: [{ default: 'array-simple' }],
       errors: [
         {
@@ -1536,7 +1536,7 @@ let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
       output: `
 // Ignore user defined aliases
 let yyyy: Arr<Arr<string>[][]> = [[[['2']]]];
-          `,
+      `,
       options: [{ default: 'array' }],
       errors: [
         {
@@ -1556,12 +1556,12 @@ interface ArrayClass<T> {
 }
       `,
       output: `
-    interface ArrayClass<T> {
-      foo: T[];
-      bar: T[];
-      baz: Arr<T>;
-    }
-          `,
+interface ArrayClass<T> {
+  foo: T[];
+  bar: T[];
+  baz: Arr<T>;
+}
+      `,
       options: [{ default: 'array' }],
       errors: [
         {
@@ -1579,10 +1579,10 @@ function fooFunction(foo: Array<ArrayClass<string>>) {
 }
       `,
       output: `
-    function fooFunction(foo: ArrayClass<string>[]) {
-      return foo.map(e => e.foo);
-    }
-          `,
+function fooFunction(foo: ArrayClass<string>[]) {
+  return foo.map(e => e.foo);
+}
+      `,
       options: [{ default: 'array' }],
       errors: [
         {
@@ -1730,7 +1730,7 @@ let yyyy: Arr<Array<Arr<string>>[]> = [[[['2']]]];
       output: `
 // Ignore user defined aliases
 let yyyy: Arr<Array<Array<Arr<string>>>> = [[[['2']]]];
-          `,
+      `,
       options: [{ default: 'generic' }],
       errors: [
         {
@@ -1755,7 +1755,7 @@ interface ArrayClass<T> {
   bar: Array<T>;
   baz: Arr<T>;
 }
-          `,
+      `,
       options: [{ default: 'generic' }],
       errors: [
         {
@@ -1776,7 +1776,7 @@ function barFunction(bar: ArrayClass<String>[]) {
 function barFunction(bar: Array<ArrayClass<String>>) {
   return bar.map(e => e.bar);
 }
-          `,
+      `,
       options: [{ default: 'generic' }],
       errors: [
         {
@@ -1836,7 +1836,7 @@ interface FooInterface {
 interface FooInterface {
   '.bar': { baz: Array<string> };
 }
-          `,
+      `,
       options: [{ default: 'generic' }],
       errors: [
         {
