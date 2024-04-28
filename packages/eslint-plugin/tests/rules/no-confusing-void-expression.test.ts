@@ -404,6 +404,22 @@ const x: HigherOrderType = () => () =>
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
+    {
+      code: `
+function foo(): void {
+  () => () => console.log();
+}
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+function foo(): any {
+  () => () => console.log();
+}
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
   ],
 
   invalid: [
@@ -993,6 +1009,22 @@ function test(): unknown {
   console.log();
 }
       `,
+    },
+    {
+      options: [{ ignoreVoidInVoid: true }],
+      code: `
+function foo(): void {
+  () => () => console.log();
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: null,
     },
   ],
 });
