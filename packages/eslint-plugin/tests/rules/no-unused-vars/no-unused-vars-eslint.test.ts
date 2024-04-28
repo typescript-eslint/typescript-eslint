@@ -1341,7 +1341,6 @@ function foo() {
           messageId: 'unusedVar',
           data: { varName: 'foo', action: 'defined', additional: '' },
           line: 2,
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
