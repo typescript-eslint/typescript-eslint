@@ -404,22 +404,6 @@ const x: HigherOrderType = () => () =>
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
-    {
-      code: `
-function foo(): void {
-  () => () => console.log();
-}
-      `,
-      options: [{ ignoreVoidInVoid: true }],
-    },
-    {
-      code: `
-function foo(): any {
-  () => () => console.log();
-}
-      `,
-      options: [{ ignoreVoidInVoid: true }],
-    },
   ],
 
   invalid: [
@@ -1011,20 +995,44 @@ function test(): unknown {
       `,
     },
     {
-      options: [{ ignoreVoidInVoid: true }],
       code: `
 function foo(): void {
   () => () => console.log();
 }
       `,
+      options: [{ ignoreVoidInVoid: true }],
       errors: [
         {
           line: 3,
-          column: 10,
-          messageId: 'invalidVoidExprReturnLast',
+          column: 15,
+          messageId: 'invalidVoidExprArrow',
         },
       ],
-      output: null,
+      output: `
+function foo(): void {
+  () => () => { console.log(); };
+}
+      `,
+    },
+    {
+      code: `
+function foo(): any {
+  () => () => console.log();
+}
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 15,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+function foo(): any {
+  () => () => { console.log(); };
+}
+      `,
     },
   ],
 });
