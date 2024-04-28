@@ -40,7 +40,6 @@ ruleTester.defineRule('use-every-a', context => {
 function definedError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'unusedVar',
@@ -49,7 +48,6 @@ function definedError(
       action: 'defined',
       additional,
     },
-    type,
   };
 }
 
@@ -63,7 +61,6 @@ function definedError(
 function assignedError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'unusedVar',
@@ -72,7 +69,6 @@ function assignedError(
       action: 'assigned a value',
       additional,
     },
-    type,
   };
 }
 
