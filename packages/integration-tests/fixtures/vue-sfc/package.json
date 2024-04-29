@@ -1,8 +1,8 @@
 {
   "devDependencies": {
-    "vue-eslint-parser": "latest",
     "eslint-plugin-vue": "latest",
-    "vuex": "latest",
-    "vue-property-decorator": "latest"
+    "vue-eslint-parser": "^9.4.2",
+    "vue-property-decorator": "^9.1.2",
+    "vuex": "^4.1.0"
   }
 }

@@ -2,13 +2,5 @@
 // not require a program to be specified to ensure a fast and simple initial
 // setup. Users can add on one of our other configs if they want to opt in to
 // more expensive checks.
-module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  plugins: ['@typescript-eslint'],
-};
+const tseslint = require('typescript-eslint');
+module.exports = tseslint.config(...tseslint.configs.recommended);

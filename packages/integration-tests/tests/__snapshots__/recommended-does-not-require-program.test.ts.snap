@@ -24,16 +24,7 @@ exports[`recommended-does-not-require-program eslint should work successfully 1`
     "output": "const foo: unknown = true;
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [
-      {
-        "replacedBy": [],
-        "ruleId": "no-extra-semi",
-      },
-      {
-        "replacedBy": [],
-        "ruleId": "no-mixed-spaces-and-tabs",
-      },
-    ],
+    "usedDeprecatedRules": [],
     "warningCount": 0,
   },
 ]
