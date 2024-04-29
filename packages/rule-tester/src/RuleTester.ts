@@ -1077,7 +1077,8 @@ function isSerializable(val: unknown): boolean {
   if (typeof val === 'object') {
     const valAsObj = val as Record<string, unknown>;
     for (const property in valAsObj) {
-      if (Object.hasOwn(valAsObj, property)) {
+      // TODO: use `Object.hasOwn` (used in eslint@9) once we upgrade to eslint@9
+      if (Object.prototype.hasOwnProperty.call(valAsObj, property)) {
         if (!isSerializablePrimitiveOrPlainObject(valAsObj[property])) {
           return false;
         }
