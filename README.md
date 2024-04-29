@@ -24,9 +24,6 @@
 <p align="center">
 👆
 </p>
-<p align="center">
-  Using ESLint v9? See: <a href="https://github.com/typescript-eslint/typescript-eslint/issues/8211">ESLint v9 Support</a>.
-</p>
 <!-- markdownlint-enable MD033 -->
 
 ## Code Contributors
