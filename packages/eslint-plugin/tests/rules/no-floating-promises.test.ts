@@ -694,6 +694,16 @@ type Foo<T> = Promise<T> & { hey?: string };
     },
     {
       code: `
+type SafePromise = Promise<number> & { __linterBrands?: string };
+declare const myTag: (strings: TemplateStringsArray) => SafePromise;
+myTag\`abc\`;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
 declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
 myTag\`abc\`.catch(() => {});
       `,
@@ -2152,6 +2162,15 @@ type Foo<T> = Promise<T> & { hey?: string };
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+type SafePromise = Promise<number> & { __linterBrands?: string };
+declare const myTag: (strings: TemplateStringsArray) => SafePromise;
+myTag\`abc\`;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
   ],
 });

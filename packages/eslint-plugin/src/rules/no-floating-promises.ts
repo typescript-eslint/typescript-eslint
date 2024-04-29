@@ -321,6 +321,15 @@ export default createRule<Options, MessageId>({
         // All other cases are unhandled.
         return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+        if (
+          doesTypeMatchSpecifier(
+            services,
+            allowForKnownSafePromises,
+            services.getTypeAtLocation(node),
+          )
+        ) {
+          return { isUnhandled: false };
+        }
         return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
