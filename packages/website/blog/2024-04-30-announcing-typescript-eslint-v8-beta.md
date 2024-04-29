@@ -1,6 +1,6 @@
 ---
 authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+  - image_url: /img/team/joshuakgoldberg.jpg
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
@@ -187,6 +187,41 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
 - ⏳ [Enhancement: add strict parent types for nodes that have well-defined parents](https://github.com/typescript-eslint/typescript-eslint/issues/6225)
 - [feat(typescript-estree): split TSMappedType typeParameter into constraint and key](https://github.com/typescript-eslint/typescript-eslint/pull/7065)
 - ⏳ [feat(ast-spec): remove deprecated type params](https://github.com/typescript-eslint/typescript-eslint/pull/8933)
+
+### ⏳ Custom Rule `meta.docs` Types
+
+`@typescript-eslint/utils` has long exported a [`RuleCreator` utility](https://typescript-eslint.io/developers/custom-rules#rulecreator) for making custom well-typed custom ESLint rules.
+That `RuleCreator` is used internally by `@typescript-eslint/eslint-plugin` - and in fact, up through typescript-eslint v7, it hardcoded the same types for rules' `meta.docs` as `@typescript-eslint/eslint-plugin`!
+
+In typescript-eslint v8, we've made two changes to `RuleCreator`:
+
+- Rule `meta.docs` by default only allows the properties defined in ESLint's [Custom Rules > Rule Structure docs](https://eslint.org/docs/latest/extend/custom-rules#rule-structure): `description` and `url`
+- `RuleCreator` allows an optional type parameter to specify additional allowed properties
+
+For example, this rule includes the common `meta.docs.recommended` property as a `boolean`:
+
+```ts
+interface MyPluginDocs {
+  recommended: boolean;
+}
+
+const createRule = ESLintUtils.RuleCreator<MyPluginDocs>(
+  name => `https://example.com/rule/${name}`,
+);
+
+createRule({
+  // ...
+  meta: {
+    docs: {
+      description: '...',
+      recommended: true,
+    },
+    // ...
+  },
+});
+```
+
+See [feat(utils): allow specifying additional rule meta.docs in RuleCreator](https://github.com/typescript-eslint/typescript-eslint/pull/9025) for more details.
 
 ### Other Developer-Facing Breaking Changes
 
