@@ -8,7 +8,6 @@ import util from 'node:util';
 import type * as ParserType from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
-import stringify from 'json-stable-stringify-without-jsonify';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
@@ -21,6 +20,7 @@ import { Linter } from '@typescript-eslint/utils/ts-eslint';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint';
+import stringify from 'json-stable-stringify-without-jsonify';
 import merge from 'lodash.merge';
 
 import { TestFramework } from './TestFramework';
@@ -1053,8 +1053,9 @@ function assertASTDidntChange(beforeAST: unknown, afterAST: unknown): void {
 /**
  * Check if a value is a primitive or plain object created by the Object constructor.
  */
-function isSerializablePrimitiveOrPlainObject(val: unknown) {
+function isSerializablePrimitiveOrPlainObject(val: unknown): boolean {
   return (
+    // eslint-disable-next-line eqeqeq
     val === null ||
     typeof val === 'string' ||
     typeof val === 'boolean' ||
@@ -1069,7 +1070,7 @@ function isSerializablePrimitiveOrPlainObject(val: unknown) {
  * Functions or objects like RegExp cannot be serialized by JSON.stringify().
  * Inspired by: https://stackoverflow.com/questions/30579940/reliable-way-to-check-if-objects-is-serializable-in-javascript
  */
-function isSerializable(val: unknown) {
+function isSerializable(val: unknown): boolean {
   if (!isSerializablePrimitiveOrPlainObject(val)) {
     return false;
   }
@@ -1095,9 +1096,9 @@ function isSerializable(val: unknown) {
  * Check if this test case is a duplicate of one we have seen before.
  */
 function checkDuplicateTestCase(
-  item: ValidTestCase<unknown[]> | InvalidTestCase<string, unknown[]>,
-  seenTestCases: Set<string>,
-) {
+  item: unknown,
+  seenTestCases: Set<unknown>,
+): void {
   if (!isSerializable(item)) {
     /*
      * If we can't serialize a test case (because it contains a function, RegExp, etc), skip the check.
