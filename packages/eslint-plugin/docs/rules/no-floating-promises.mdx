@@ -119,7 +119,7 @@ await (async function () {
 
 This option allows marking specific types as "safe" to be floating. For example, you may need to do this in the case of libraries whose APIs return Promises whose rejections are safely handled by the library.
 
-Each item must be one of :
+Each item must be one of:
 
 - A type defined in a file (`{from: "file", name: "Foo", path: "src/foo-file.ts"}` with `path` being an optional path relative to the project root directory)
 - A type from the default library (`{from: "lib", name: "PromiseLike"}`)
