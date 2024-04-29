@@ -30,10 +30,10 @@ The following additional configuration options are available by specifying them 
 
 ```ts
 interface ParserOptions {
-  allowAutomaticSingleRunInference?: boolean;
   cacheLifetime?: {
     glob?: number | 'Infinity';
   };
+  disallowAutomaticSingleRunInference?: boolean;
   ecmaFeatures?: {
     jsx?: boolean;
     globalReturn?: boolean;
@@ -55,22 +55,23 @@ interface ParserOptions {
 }
 ```
 
-### `allowAutomaticSingleRunInference`
+### `disallowAutomaticSingleRunInference`
 
-> Default `process.env.TSESTREE_SINGLE_RUN` or `false`.
+> Default `process.env.TSESTREE_SINGLE_RUN` or `true`.
 
-Whether to use common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
+Whether to stop using common heuristics to infer whether ESLint is being used as part of a single run (as opposed to `--fix` mode or in a persistent session such as an editor extension).
+In other words, typescript-eslint is faster by default, and this option disables an automatic performance optimization.
 
 When typescript-eslint handles TypeScript Program management behind the scenes for [linting with type information](../getting-started/Typed_Linting.mdx), this distinction is important for performance.
 There is significant overhead to managing TypeScript "Watch" Programs needed for the long-running use-case.
 Being able to assume the single run case allows typescript-eslint to faster immutable Programs instead.
 
 This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN` environment variable to `"false"` or `"true"`.
-For example, `TSESTREE_SINGLE_RUN=true npx eslint .` will enable it.
+For example, `TSESTREE_SINGLE_RUN=false npx eslint .` will disable it.
 
-:::tip
-We've seen `allowAutomaticSingleRunInference` improve linting speed in CI by up to 10-20%.
-Our plan is to [enable `allowAutomaticSingleRunInference` by default in an upcoming major version](https://github.com/typescript-eslint/typescript-eslint/issues/8121).
+:::note
+We recommend leaving this option off if possible.
+We've seen allowing automatic single run inference improve linting speed in CI by up to 10-20%.
 :::
 
 ### `cacheLifetime`
@@ -79,7 +80,7 @@ This option allows you to granularly control our internal cache expiry lengths.
 
 You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
 
-By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run (see [`allowAutomaticSingleRunInference`](#allowAutomaticSingleRunInference)).
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run (see [`disallowAutomaticSingleRunInference`](#disallowAutomaticSingleRunInference)).
 
 ### `ecmaFeatures`
 

@@ -168,6 +168,7 @@ describe('parseAndGenerateServices', () => {
     const config: TSESTreeOptions = {
       EXPERIMENTAL_useProjectService: false,
       comment: true,
+      disallowAutomaticSingleRunInference: true,
       tokens: true,
       range: true,
       loc: true,
@@ -346,6 +347,7 @@ describe('parseAndGenerateServices', () => {
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
+        disallowAutomaticSingleRunInference: true,
         tokens: true,
         range: true,
         loc: true,
@@ -486,6 +488,7 @@ describe('parseAndGenerateServices', () => {
           const code = 'var a = true';
           const config: TSESTreeOptions = {
             comment: true,
+            disallowAutomaticSingleRunInference: true,
             tokens: true,
             range: true,
             loc: true,
@@ -530,6 +533,7 @@ describe('parseAndGenerateServices', () => {
     it("shouldn't turn on debugger if no options were provided", () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: [],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).not.toHaveBeenCalled();
     });
@@ -537,6 +541,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('eslint:*,-eslint:code-path');
@@ -545,6 +550,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('typescript-eslint:*');
@@ -553,6 +559,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on both eslint and typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint', 'eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith(
@@ -565,6 +572,7 @@ describe('parseAndGenerateServices', () => {
         expect(() =>
           parser.parseAndGenerateServices('const x = 1;', {
             debugLevel: ['typescript'],
+            disallowAutomaticSingleRunInference: true,
             filePath: './path-that-doesnt-exist.ts',
             project: ['./tsconfig-that-doesnt-exist.json'],
           }),
@@ -590,6 +598,7 @@ describe('parseAndGenerateServices', () => {
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
+        disallowAutomaticSingleRunInference: true,
         tokens: true,
         range: true,
         loc: true,
@@ -631,6 +640,7 @@ describe('parseAndGenerateServices', () => {
             cacheLifetime: {
               glob: lifetime,
             },
+            disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
             tsconfigRootDir: FIXTURES_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],

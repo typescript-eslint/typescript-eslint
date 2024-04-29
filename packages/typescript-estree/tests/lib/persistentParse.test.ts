@@ -77,6 +77,7 @@ function parseFile(
   ignoreTsconfigRootDir?: boolean,
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
+    disallowAutomaticSingleRunInference: true,
     project: './tsconfig.json',
     tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
     filePath: relative
