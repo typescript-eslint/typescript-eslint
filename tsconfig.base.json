@@ -6,7 +6,7 @@
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "lib": ["ES2021"],
+    "lib": ["ES2022"],
     "module": "Node16",
     "moduleResolution": "Node16",
     "noImplicitReturns": true,
@@ -16,6 +16,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2021"
+    "target": "ES2022"
   }
 }

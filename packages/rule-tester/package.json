@@ -51,6 +51,7 @@
     "@typescript-eslint/typescript-estree": "7.7.1",
     "@typescript-eslint/utils": "7.7.1",
     "ajv": "^6.12.6",
+    "json-stable-stringify-without-jsonify": "^1.0.1",
     "lodash.merge": "4.6.2",
     "semver": "^7.6.0"
   },
@@ -59,6 +60,7 @@
     "eslint": "^8.56.0"
   },
   "devDependencies": {
+    "@types/json-stable-stringify-without-jsonify": "^1.0.2",
     "@types/lodash.merge": "4.6.9",
     "@typescript-eslint/parser": "7.7.1",
     "chai": "^4.4.1",

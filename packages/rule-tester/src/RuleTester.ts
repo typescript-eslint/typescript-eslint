@@ -8,6 +8,7 @@ import util from 'node:util';
 import type * as ParserType from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
+import stringify from 'json-stable-stringify-without-jsonify';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
@@ -354,6 +355,9 @@ export class RuleTester extends TestFramework {
       );
     }
 
+    const seenValidTestCases = new Set<string>();
+    const seenInvalidTestCases = new Set<string>();
+
     if (typeof rule === 'function') {
       emitLegacyRuleAPIWarning(ruleName);
     }
@@ -403,7 +407,12 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(ruleName, rule, valid);
+              this.#testValidTemplate(
+                ruleName,
+                rule,
+                valid,
+                seenValidTestCases,
+              );
             });
           });
         });
@@ -419,7 +428,12 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(ruleName, rule, invalid);
+              this.#testInvalidTemplate(
+                ruleName,
+                rule,
+                invalid,
+                seenInvalidTestCases,
+              );
             });
           });
         });
@@ -631,6 +645,7 @@ export class RuleTester extends TestFramework {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     itemIn: ValidTestCase<Options> | string,
+    seenValidTestCases: Set<string>,
   ): void {
     const item: ValidTestCase<Options> =
       typeof itemIn === 'object' ? itemIn : { code: itemIn };
@@ -645,6 +660,8 @@ export class RuleTester extends TestFramework {
         "Optional test case property 'name' must be a string",
       );
     }
+
+    checkDuplicateTestCase(item, seenValidTestCases);
 
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
@@ -673,6 +690,7 @@ export class RuleTester extends TestFramework {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     item: InvalidTestCase<MessageIds, Options>,
+    seenInvalidTestCases: Set<string>,
   ): void {
     assert.ok(
       typeof item.code === 'string',
@@ -692,6 +710,8 @@ export class RuleTester extends TestFramework {
     if (Array.isArray(item.errors) && item.errors.length === 0) {
       assert.fail('Invalid cases must have at least one error');
     }
+
+    checkDuplicateTestCase(item, seenInvalidTestCases);
 
     const ruleHasMetaMessages =
       hasOwnProperty(rule, 'meta') && hasOwnProperty(rule.meta, 'messages');
@@ -1028,6 +1048,71 @@ export class RuleTester extends TestFramework {
  */
 function assertASTDidntChange(beforeAST: unknown, afterAST: unknown): void {
   assert.deepStrictEqual(beforeAST, afterAST, 'Rule should not modify AST.');
+}
+
+/**
+ * Check if a value is a primitive or plain object created by the Object constructor.
+ */
+function isSerializablePrimitiveOrPlainObject(val: unknown) {
+  return (
+    val === null ||
+    typeof val === 'string' ||
+    typeof val === 'boolean' ||
+    typeof val === 'number' ||
+    (typeof val === 'object' && val.constructor === Object) ||
+    Array.isArray(val)
+  );
+}
+
+/**
+ * Check if a value is serializable.
+ * Functions or objects like RegExp cannot be serialized by JSON.stringify().
+ * Inspired by: https://stackoverflow.com/questions/30579940/reliable-way-to-check-if-objects-is-serializable-in-javascript
+ */
+function isSerializable(val: unknown) {
+  if (!isSerializablePrimitiveOrPlainObject(val)) {
+    return false;
+  }
+  if (typeof val === 'object') {
+    const valAsObj = val as Record<string, unknown>;
+    for (const property in valAsObj) {
+      if (Object.hasOwn(valAsObj, property)) {
+        if (!isSerializablePrimitiveOrPlainObject(valAsObj[property])) {
+          return false;
+        }
+        if (typeof valAsObj[property] === 'object') {
+          if (!isSerializable(valAsObj[property])) {
+            return false;
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
+
+/**
+ * Check if this test case is a duplicate of one we have seen before.
+ */
+function checkDuplicateTestCase(
+  item: ValidTestCase<unknown[]> | InvalidTestCase<string, unknown[]>,
+  seenTestCases: Set<string>,
+) {
+  if (!isSerializable(item)) {
+    /*
+     * If we can't serialize a test case (because it contains a function, RegExp, etc), skip the check.
+     * This might happen with properties like: options, plugins, settings, languageOptions.parser, languageOptions.parserOptions.
+     */
+    return;
+  }
+
+  const serializedTestCase = stringify(item);
+
+  assert(
+    !seenTestCases.has(serializedTestCase),
+    'detected duplicate test case',
+  );
+  seenTestCases.add(serializedTestCase);
 }
 
 /**
