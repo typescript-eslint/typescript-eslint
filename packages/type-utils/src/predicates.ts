@@ -2,6 +2,7 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import { isPromiseLike } from './builtinSymbolLikes';
 import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
@@ -123,6 +124,7 @@ export function isTypeUnknownArrayType(
 
 export enum AnyType {
   Any,
+  PromiseAny,
   AnyArray,
   Safe,
 }
@@ -130,15 +132,28 @@ export enum AnyType {
  * @returns `AnyType.Any` if the type is `any`, `AnyType.AnyArray` if the type is `any[]` or `readonly any[]`,
  *          otherwise it returns `AnyType.Safe`.
  */
-export function isAnyOrAnyArrayTypeDiscriminated(
+export function discriminateAnyType(
   type: ts.Type,
   checker: ts.TypeChecker,
+  program: ts.Program,
 ): AnyType {
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }
   if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
+  }
+  if (isPromiseLike(program, type) && tsutils.isTypeReference(type)) {
+    const awaitedType = type.typeArguments?.[0];
+    if (awaitedType) {
+      const awaitedAnyType = discriminateAnyType(awaitedType, checker, program);
+      if (
+        awaitedAnyType === AnyType.Any ||
+        awaitedAnyType === AnyType.PromiseAny
+      ) {
+        return AnyType.PromiseAny;
+      }
+    }
   }
   return AnyType.Safe;
 }

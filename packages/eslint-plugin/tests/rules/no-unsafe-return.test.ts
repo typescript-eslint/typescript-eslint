@@ -67,12 +67,17 @@ function foo(): Set<any> {
 }
     `,
     `
-async function foo(): any {
-  return {} as any;
+async function foo(): Promise<any> {
+  return Promise.resolve({} as any);
 }
     `,
     `
 async function foo(): Promise<any> {
+  return {} as any;
+}
+    `,
+    `
+function foo(): object {
   return Promise.resolve({} as any);
 }
     `,
@@ -438,6 +443,20 @@ function bar() {
     },
     {
       code: `
+declare function foo(arg: null | (() => any)): void;
+foo(() => 'foo' as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 11,
+          endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: `
 declare const value: any;
 async function foo() {
   return value;
@@ -448,7 +467,6 @@ async function foo() {
           messageId: 'unsafeReturn',
           line: 4,
           column: 3,
-          endColumn: 16,
         },
       ],
     },
@@ -464,7 +482,9 @@ function foo() {
           messageId: 'unsafeReturn',
           line: 4,
           column: 3,
-          endColumn: 16,
+          data: {
+            type: 'Promise<any>',
+          },
         },
       ],
     },
@@ -480,21 +500,9 @@ async function foo(): Promise<number> {
           messageId: 'unsafeReturn',
           line: 4,
           column: 3,
-          endColumn: 16,
-        },
-      ],
-    },
-    {
-      code: `
-declare function foo(arg: null | (() => any)): void;
-foo(() => 'foo' as any);
-      `,
-      errors: [
-        {
-          messageId: 'unsafeReturn',
-          line: 3,
-          column: 3,
-          endColumn: 21,
+          data: {
+            type: 'Promise<any>',
+          },
         },
       ],
     },
@@ -508,8 +516,129 @@ async function foo(arg: number) {
         {
           messageId: 'unsafeReturn',
           line: 3,
-          column: 11,
-          endColumn: 23,
+          column: 3,
+          data: {
+            type: 'Promise<any>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Promise<any> {
+  return {} as any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'any',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Promise<object> {
+  return {} as any;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'any',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Promise<object> {
+  return Promise.resolve<any>({});
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'Promise<any>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Promise<object> {
+  return Promise.resolve<Promise<Promise<any>>>({} as any);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'Promise<any>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+async function foo(): Promise<object> {
+  return Promise.resolve<Promise<Promise<any>>>({} as Promise<any>);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'Promise<any>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+async function foo(): Promise<object> {
+  return {} as Promise<Promise<Promise<Promise<any>>>>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'Promise<any>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  return {} as Promise<Promise<Promise<Promise<any>>>>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: 'Promise<any>',
+          },
         },
       ],
     },

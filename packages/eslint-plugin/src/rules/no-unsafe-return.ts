@@ -6,16 +6,18 @@ import * as ts from 'typescript';
 import {
   AnyType,
   createRule,
+  discriminateAnyType,
   getConstrainedTypeAtLocation,
   getContextualType,
   getParserServices,
   getThisExpression,
-  isAnyOrAnyArrayTypeDiscriminated,
+  isPromiseLike,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownArrayType,
   isTypeUnknownType,
   isUnsafeAssignment,
+  getAwaitedType,
 } from '../util';
 
 export default createRule({
@@ -73,33 +75,20 @@ export default createRule({
       /* istanbul ignore next */ return null;
     }
 
-    function getAwaitedType(node: ts.Node, type: ts.Type): ts.Type {
-      if (
-        tsutils.isThenableType(checker, node, type) &&
-        tsutils.isTypeReference(type)
-      ) {
-        const awaitedType = type.typeArguments?.[0];
-        if (awaitedType) {
-          return awaitedType;
-        }
-      }
-      return type;
-    }
-
     function checkReturn(
       returnNode: TSESTree.Node,
       reportingNode: TSESTree.Node = returnNode,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
-      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
-      const awaitedType = getAwaitedType(tsNode, returnNodeType);
-      const anyType = isAnyOrAnyArrayTypeDiscriminated(awaitedType, checker);
+      const type = checker.getTypeAtLocation(tsNode);
+      const anyType = discriminateAnyType(type, checker, services.program);
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
       }
 
       // function has an explicit return type, so ensure it's a safe return
+      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
       // function expressions will not have their return type modified based on receiver typing
@@ -119,14 +108,35 @@ export default createRule({
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
         for (const signature of tsutils.getCallSignaturesOfType(functionType)) {
+          const signatureReturnType = signature.getReturnType();
+
           if (
-            returnNodeType === signature.getReturnType() ||
+            returnNodeType === signatureReturnType ||
             isTypeFlagSet(
-              getAwaitedType(functionTSNode, signature.getReturnType()),
+              signatureReturnType,
               ts.TypeFlags.Any | ts.TypeFlags.Unknown,
             )
           ) {
             return;
+          }
+          if (functionNode.async) {
+            const awaitedSignatureReturnType = getAwaitedType(
+              services.program,
+              signatureReturnType,
+            );
+            const awaitedReturnNodeType = getAwaitedType(
+              services.program,
+              returnNodeType,
+            );
+            if (
+              awaitedReturnNodeType === awaitedSignatureReturnType ||
+              isTypeFlagSet(
+                awaitedSignatureReturnType,
+                ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+              )
+            ) {
+              return;
+            }
           }
         }
       }
@@ -148,6 +158,24 @@ export default createRule({
           ) {
             return;
           }
+          if (
+            anyType === AnyType.PromiseAny &&
+            isPromiseLike(services.program, functionReturnType) &&
+            isTypeUnknownType(
+              getAwaitedType(services.program, functionReturnType),
+            )
+          ) {
+            return;
+          }
+        }
+
+        if (
+          anyType === AnyType.PromiseAny &&
+          functionType
+            .getCallSignatures()
+            .every(sig => !isPromiseLike(services.program, sig.getReturnType()))
+        ) {
+          return;
         }
 
         let messageId: 'unsafeReturn' | 'unsafeReturnThis' = 'unsafeReturn';
@@ -170,7 +198,12 @@ export default createRule({
           node: reportingNode,
           messageId,
           data: {
-            type: anyType === AnyType.Any ? 'any' : 'any[]',
+            type:
+              anyType === AnyType.Any
+                ? 'any'
+                : anyType === AnyType.AnyArray
+                  ? 'any[]'
+                  : 'Promise<any>',
           },
         });
       }

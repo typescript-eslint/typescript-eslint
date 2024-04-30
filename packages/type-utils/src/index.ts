@@ -15,6 +15,7 @@ export * from './propertyTypes';
 export * from './requiresQuoting';
 export * from './TypeOrValueSpecifier';
 export * from './typeFlagUtils';
+export * from './getAwaitedType';
 export {
   getDecorators,
   getModifiers,
