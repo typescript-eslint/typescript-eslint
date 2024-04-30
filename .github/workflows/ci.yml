@@ -148,7 +148,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      - name: Run integrations tests
+      - name: Run integration tests
         run: yarn test-integration
         env:
           CI: true
