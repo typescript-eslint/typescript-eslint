@@ -46,6 +46,14 @@ function foo(): any {
   return {} as any;
 }
     `,
+    `
+declare function foo(arg: () => any): void;
+foo((): any => 'foo' as any);
+    `,
+    `
+declare function foo(arg: null | (() => any)): void;
+foo((): any => 'foo' as any);
+    `,
     // explicit any array return type is allowed, if you want to be unsafe like that
     `
 function foo(): any[] {
@@ -478,9 +486,8 @@ async function foo(): Promise<number> {
     },
     {
       code: `
-async function foo(arg: number) {
-  return arg as any;
-}
+declare function foo(arg: null | (() => any)): void;
+foo(() => 'foo' as any);
       `,
       errors: [
         {
@@ -501,8 +508,8 @@ async function foo(arg: number) {
         {
           messageId: 'unsafeReturn',
           line: 3,
-          column: 3,
-          endColumn: 30,
+          column: 11,
+          endColumn: 23,
         },
       ],
     },

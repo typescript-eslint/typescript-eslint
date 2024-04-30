@@ -337,15 +337,12 @@ function ancestorHasReturnType(node: FunctionNode): boolean {
       // const x: Foo = () => {};
       // Assume that a typed variable types the function expression
       case AST_NODE_TYPES.VariableDeclarator:
-        if (ancestor.id.typeAnnotation) {
-          return true;
-        }
-        break;
+        return !!ancestor.id.typeAnnotation;
+
       case AST_NODE_TYPES.PropertyDefinition:
-        if (ancestor.typeAnnotation) {
-          return true;
-        }
-        break;
+        return !!ancestor.typeAnnotation;
+      case AST_NODE_TYPES.ExpressionStatement:
+        return false;
     }
 
     ancestor = ancestor.parent;

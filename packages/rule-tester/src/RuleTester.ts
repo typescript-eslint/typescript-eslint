@@ -704,6 +704,23 @@ export class RuleTester extends TestFramework {
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
 
+    for (const message of messages) {
+      if (hasOwnProperty(message, 'suggestions')) {
+        const seenMessageIndices = new Map<string, number>();
+
+        for (let i = 0; i < message.suggestions.length; i += 1) {
+          const suggestionMessage = message.suggestions[i].desc;
+          const previous = seenMessageIndices.get(suggestionMessage);
+
+          assert.ok(
+            !seenMessageIndices.has(suggestionMessage),
+            `Suggestion message '${suggestionMessage}' reported from suggestion ${i} was previously reported by suggestion ${previous}. Suggestion messages should be unique within an error.`,
+          );
+          seenMessageIndices.set(suggestionMessage, i);
+        }
+      }
+    }
+
     if (typeof item.errors === 'number') {
       if (item.errors === 0) {
         assert.fail("Invalid cases must have 'error' value greater than 0");
