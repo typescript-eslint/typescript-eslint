@@ -2401,24 +2401,28 @@ describe('base cases', () => {
   describe('should ignore spacing sanity checks', () => {
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
-      invalid: [
-        // it should ignore whitespace in the expressions
-        ...BaseCases({
-          operator: '&&',
-          mutateCode: c => c.replace(/\./g, '.      '),
-          // note - the rule will use raw text for computed expressions - so we
-          //        need to ensure that the spacing for the computed member
-          //        expressions is retained for correct fixer matching
-          mutateOutput: c =>
-            c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.      ')),
-        }),
-        ...BaseCases({
-          operator: '&&',
-          mutateCode: c => c.replace(/\./g, '.\n'),
-          mutateOutput: c =>
-            c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.\n')),
-        }),
-      ],
+      invalid: Object.values(
+        Object.fromEntries(
+          [
+            // it should ignore whitespace in the expressions
+            ...BaseCases({
+              operator: '&&',
+              mutateCode: c => c.replace(/\./g, '.      '),
+              // note - the rule will use raw text for computed expressions - so we
+              //        need to ensure that the spacing for the computed member
+              //        expressions is retained for correct fixer matching
+              mutateOutput: c =>
+                c.replace(/(\[.+])/g, m => m.replace(/\./g, '.      ')),
+            }),
+            ...BaseCases({
+              operator: '&&',
+              mutateCode: c => c.replace(/\./g, '.\n'),
+              mutateOutput: c =>
+                c.replace(/(\[.+])/g, m => m.replace(/\./g, '.\n')),
+            }),
+          ].map(testCase => [testCase.code, testCase]),
+        ),
+      ),
     });
   });
 });

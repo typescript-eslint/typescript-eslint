@@ -2800,5 +2800,11 @@ const sortedWithGrouping: RunTests<MessageIds, Options> = {
 
 ruleTester.run('member-ordering-alphabetically-order', rule, {
   valid: [...sortedWithoutGrouping.valid, ...sortedWithGrouping.valid],
-  invalid: [...sortedWithoutGrouping.invalid, ...sortedWithGrouping.invalid],
+  invalid: Object.values(
+    Object.fromEntries(
+      [...sortedWithoutGrouping.invalid, ...sortedWithGrouping.invalid].map(
+        testCase => [testCase.code, testCase],
+      ),
+    ),
+  ),
 });
