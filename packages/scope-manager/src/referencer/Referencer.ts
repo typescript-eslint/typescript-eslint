@@ -326,6 +326,7 @@ class Referencer extends Visitor {
     let left = node.left;
     switch (left.type) {
       case AST_NODE_TYPES.TSAsExpression:
+      // @ts-expect-error Intentional fallthrough
       case AST_NODE_TYPES.TSTypeAssertion:
         // explicitly visit the type annotation
         this.visitType(left.typeAnnotation);
@@ -815,4 +816,5 @@ class Referencer extends Visitor {
   }
 }
 
-export { Referencer, ReferencerOptions };
+export { Referencer };
+export type { ReferencerOptions };

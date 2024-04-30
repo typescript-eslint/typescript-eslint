@@ -1,13 +1,24 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "outDir": "../../dist/out-tsc/website-eslint",
     "allowJs": true,
-    // opt-in files for checking
-    "checkJs": false,
-    // build is done via esbuild
-    "noEmit": true,
     "skipLibCheck": true
   },
   "include": ["src", "types", "build.ts"],
   "references": []
 }
+
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "compilerOptions": {
+//     "allowJs": true,
+//     // opt-in files for checking
+//     "checkJs": false,
+//     // build is done via esbuild
+//     "noEmit": true,
+//     "skipLibCheck": true
+//   },
+//   "include": ["src", "types", "build.ts"],
+//   "references": []
+// }

@@ -1,17 +1,36 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true,
-    "declaration": true,
-    "types": ["node", "jest"]
+    "rootDir": "src",
+    "outDir": "dist",
+    "emitDeclarationOnly": false,
+    "resolveJsonModule": true
   },
-  "include": ["src", "typings"],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
+  "include": ["src/**/*"],
   "references": [
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../visitor-keys/tsconfig.build.json" }
+    {
+      "path": "../types/tsconfig.build.json"
+    },
+    {
+      "path": "../visitor-keys/tsconfig.build.json"
+    }
   ]
 }
+
+// {
+//   "extends": "./tsconfig.json",
+//   "compilerOptions": {
+//     "composite": true,
+//     "outDir": "./dist",
+//     "rootDir": "./src",
+//     "resolveJsonModule": true,
+//     "declaration": true,
+//     "types": ["node", "jest"]
+//   },
+//   "include": ["src", "typings"],
+//   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
+//   "references": [
+//     { "path": "../types/tsconfig.build.json" },
+//     { "path": "../visitor-keys/tsconfig.build.json" }
+//   ]
+// }

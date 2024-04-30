@@ -2,6 +2,7 @@ import type { PunctuationSyntaxKind } from 'typescript';
 
 import type { PunctuatorTokenToText } from '../src';
 
+// @ts-expect-error Intentionally unused, only here to test types
 type _Test = {
   readonly [T in PunctuationSyntaxKind]: PunctuatorTokenToText[T];
   // If there are any PunctuationSyntaxKind members that don't have a

@@ -1283,6 +1283,7 @@ export class Converter {
       }
 
       case SyntaxKind.GetAccessor:
+      // @ts-expect-error Intentionally allowing fallthrough in switch for identical cases
       case SyntaxKind.SetAccessor: {
         if (
           node.parent.kind === SyntaxKind.InterfaceDeclaration ||
@@ -1756,7 +1757,7 @@ export class Converter {
       }
 
       // Classes
-
+      // @ts-expect-error Intentionally allowing fallthrough in switch for identical cases
       case SyntaxKind.ClassDeclaration:
         if (
           !node.name &&
@@ -2726,7 +2727,7 @@ export class Converter {
             ),
         });
       }
-
+      // @ts-expect-error Intentionally allowing fallthrough in switch for identical cases
       case SyntaxKind.FunctionType: {
         // eslint-disable-next-line deprecation/deprecation
         const { modifiers } = node;

@@ -1,13 +1,27 @@
 {
-  "extends": "./tsconfig.build.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
+    "outDir": "../../dist/out-tsc/typescript-estree"
   },
   "include": ["src", "typings", "tests", "tools"],
   "exclude": ["tests/fixtures/**/*"],
   "references": [
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../visitor-keys/tsconfig.build.json" }
+    {
+      "path": "./tsconfig.build.json"
+    }
   ]
 }
+
+// {
+//   "extends": "./tsconfig.build.json",
+//   "compilerOptions": {
+//     "composite": false,
+//     "rootDir": "."
+//   },
+//   "include": ["src", "typings", "tests", "tools"],
+//   "exclude": ["tests/fixtures/**/*"],
+//   "references": [
+//     { "path": "../types/tsconfig.build.json" },
+//     { "path": "../visitor-keys/tsconfig.build.json" }
+//   ]
+// }

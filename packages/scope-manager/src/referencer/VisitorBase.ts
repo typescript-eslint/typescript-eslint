@@ -83,4 +83,5 @@ abstract class VisitorBase {
   }
 }
 
-export { VisitorBase, VisitorOptions, VisitorKeys };
+export { VisitorBase };
+export type { VisitorOptions, VisitorKeys };

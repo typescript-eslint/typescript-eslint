@@ -127,15 +127,17 @@ function createHash(content: string): string {
 }
 
 export {
-  ASTAndDefiniteProgram,
-  ASTAndNoProgram,
-  ASTAndProgram,
   CORE_COMPILER_OPTIONS,
   canonicalDirname,
-  CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,
+};
+export type {
+  ASTAndDefiniteProgram,
+  ASTAndNoProgram,
+  ASTAndProgram,
+  CanonicalPath,
 };

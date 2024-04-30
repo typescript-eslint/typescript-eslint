@@ -1,12 +1,29 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "jsx": "preserve",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
+    "outDir": "dist",
+    "emitDeclarationOnly": false,
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
-  "exclude": ["**/fixtures/**"]
+  "exclude": ["**/fixtures/**"],
+  "references": [
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    }
+  ]
 }
+
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "compilerOptions": {
+//     "composite": true,
+//     "jsx": "preserve",
+//     "outDir": "./dist",
+//     "rootDir": "./src",
+//     "resolveJsonModule": true
+//   },
+//   "include": ["src", "typings"],
+//   "exclude": ["**/fixtures/**"]
+// }

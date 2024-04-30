@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/scope-manager",
+    "noImplicitAny": false
+  },
   "files": [],
-  "include": [],
   "references": [
     {
       "path": "./tsconfig.build.json"
@@ -9,11 +12,25 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
-  "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": false
-  }
+  ]
 }
+
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "files": [],
+//   "include": [],
+//   "references": [
+//     {
+//       "path": "./tsconfig.build.json"
+//     },
+//     {
+//       "path": "./tsconfig.spec.json"
+//     }
+//   ],
+//   "compilerOptions": {
+//     "forceConsistentCasingInFileNames": true,
+//     "strict": true,
+//     "noImplicitReturns": true,
+//     "noFallthroughCasesInSwitch": false
+//   }
+// }

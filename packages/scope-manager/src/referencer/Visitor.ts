@@ -42,4 +42,5 @@ class Visitor extends VisitorBase {
   }
 }
 
-export { Visitor, VisitorBase, VisitorOptions };
+export { Visitor, VisitorBase };
+export type { VisitorOptions };

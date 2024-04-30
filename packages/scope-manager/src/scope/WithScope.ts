@@ -18,7 +18,7 @@ class WithScope extends ScopeBase<
   ) {
     super(scopeManager, ScopeType.with, upperScope, block, false);
   }
-  close(scopeManager: ScopeManager): Scope | null {
+  override close(scopeManager: ScopeManager): Scope | null {
     if (this.shouldStaticallyClose()) {
       return super.close(scopeManager);
     }

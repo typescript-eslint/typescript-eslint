@@ -1,21 +1,54 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "emitDecoratorMetadata": false,
     "esModuleInterop": true,
-    "lib": ["ES2021"],
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "experimentalDecorators": false,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "lib": ["es2022"],
+    "module": "NodeNext",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "paths": {},
+    "noUnusedLocals": true,
     "pretty": true,
-    "resolveJsonModule": true,
+    "removeComments": false,
+    "resolveJsonModule": false,
+    "skipDefaultLibCheck": false,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
-    "target": "ES2021"
+    "target": "es2022",
+    "verbatimModuleSyntax": false
   }
 }
+
+// {
+//   "compilerOptions": {
+//     "allowSyntheticDefaultImports": true,
+//     "allowUnreachableCode": false,
+//     "allowUnusedLabels": false,
+//     "declaration": true,
+//     "declarationMap": true,
+//     "esModuleInterop": true,
+//     "lib": ["ES2021"],
+//     "module": "Node16",
+//     "moduleResolution": "Node16",
+//     "noImplicitReturns": true,
+//     "paths": {},
+//     "pretty": true,
+//     "resolveJsonModule": true,
+//     "skipLibCheck": true,
+//     "sourceMap": true,
+//     "strict": true,
+//     "target": "ES2021"
+//   }
+// }

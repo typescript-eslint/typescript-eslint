@@ -83,7 +83,7 @@ interface ParserOptions {
   [additionalProperties: string]: unknown;
 }
 
-export {
+export type {
   CacheDurationSeconds,
   DebugLevel,
   EcmaVersion,

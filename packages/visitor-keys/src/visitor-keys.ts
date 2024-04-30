@@ -275,4 +275,5 @@ const additionalKeys: AdditionalKeys = {
 
 const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith(additionalKeys);
 
-export { visitorKeys, VisitorKeys };
+export { visitorKeys };
+export type { VisitorKeys };

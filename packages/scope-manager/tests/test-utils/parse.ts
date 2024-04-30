@@ -59,4 +59,5 @@ function parseAndAnalyze(
   return { ast, scopeManager };
 }
 
-export { parse, parseAndAnalyze, AnalyzeOptions };
+export { parse, parseAndAnalyze };
+export type { AnalyzeOptions };
