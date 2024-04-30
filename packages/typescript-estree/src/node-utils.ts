@@ -189,7 +189,8 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
-  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
+  // TODO: Bring this back in once it supports ESLint 9
+  // (eslint-disable-next-line) deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -523,7 +524,8 @@ export function getTokenType(
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
   } else if ('originalKeywordKind' in token) {
-    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    // TODO: Bring this back in once it supports ESLint 9
+    // (eslint-disable-next-line) deprecation/deprecation -- intentional fallback for older TS versions
     keywordKind = token.originalKeywordKind;
   }
   if (keywordKind) {
@@ -788,7 +790,8 @@ export function firstDefined<T, U>(
 
 export function identifierIsThisKeyword(id: ts.Identifier): boolean {
   return (
-    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
+    // TODO: Bring this back in once it supports ESLint 9
+    // (eslint-disable-next-line deprecation/deprecation) -- intentional for older TS versions
     (isAtLeast50 ? ts.identifierToKeywordKind(id) : id.originalKeywordKind) ===
     SyntaxKind.ThisKeyword
   );

@@ -1,5 +1,6 @@
 // Wrappers around ESLint's deprecation of existing methods
-/* eslint-disable deprecation/deprecation -- TODO - delete in the next major (v8) */
+// TODO: Bring this back in once it supports ESLint 9
+/* (eslint-disable) deprecation/deprecation -- TODO - delete in the next major (v8) */
 import type { Scope, SourceCode } from '../ts-eslint';
 import type { RuleContext } from '../ts-eslint/Rule';
 import type { TSESTree } from '../ts-estree';

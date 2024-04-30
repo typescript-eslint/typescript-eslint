@@ -28,8 +28,9 @@ describe('convert', () => {
 
       function fakeUnknownKind(node: ts.Node): void {
         ts.forEachChild(node, fakeUnknownKind);
+        // TODO: Bring this back in once it supports ESLint 9
+        // (eslint-disable-next-line) deprecation/deprecation
         // @ts-expect-error -- intentionally writing to a readonly field
-        // eslint-disable-next-line deprecation/deprecation
         node.kind = ts.SyntaxKind.UnparsedPrologue;
       }
 
@@ -327,7 +328,8 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       esCallExpression.typeParameters;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -344,10 +346,11 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      // TODO: Bring this back in once it supports ESLint 9
+      /* (eslint-disable) deprecation/deprecation */
       esCallExpression.typeParameters;
       esCallExpression.typeParameters;
-      /* eslint-enable deprecation/deprecation */
+      /* (eslint-enable) deprecation/deprecation */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -360,7 +363,8 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       esCallExpression.typeParameters;
 
       expect(emitWarning).not.toHaveBeenCalled();
@@ -375,10 +379,12 @@ describe('convert', () => {
     it('allows writing to the deprecated aliased property as a new enumerable value', () => {
       const esCallExpression = getEsCallExpression();
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       esCallExpression.typeParameters = undefined;
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       expect(esCallExpression.typeParameters).toBeUndefined();
       expect(Object.keys(esCallExpression)).toContain('typeParameters');
     });
@@ -391,7 +397,8 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       tsMappedType.typeParameter;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -408,10 +415,11 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      // TODO: Bring this back in once it supports ESLint 9
+      /* (eslint-disable) deprecation/deprecation */
       tsMappedType.typeParameter;
       tsMappedType.typeParameter;
-      /* eslint-enable deprecation/deprecation */
+      /* (eslint-enable) deprecation/deprecation */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -424,7 +432,8 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       tsMappedType.typeParameter;
 
       expect(emitWarning).not.toHaveBeenCalled();
@@ -439,10 +448,12 @@ describe('convert', () => {
     it('allows writing to the deprecated getter property as a new enumerable value', () => {
       const tsMappedType = getTsMappedType();
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       tsMappedType.typeParameter = undefined!;
 
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       expect(tsMappedType.typeParameter).toBeUndefined();
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });

@@ -12,7 +12,8 @@ export interface DropdownProps {
   readonly placeholder?: string;
 }
 
-// eslint-disable-next-line react/display-name
+// TODO: Bring this back in once it supports ESLint 9
+// (eslint-disable-next-line) react/display-name
 const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
   (props, ref): React.JSX.Element => {
     return (

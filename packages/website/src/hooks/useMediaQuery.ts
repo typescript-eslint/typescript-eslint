@@ -24,7 +24,8 @@ const useMediaQuery = (mediaQuery: string): boolean => {
       mediaQueryList.addEventListener('change', documentChangeHandler);
     } catch {
       // Safari isn't supporting mediaQueryList.addEventListener
-      // eslint-disable-next-line deprecation/deprecation
+      // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       mediaQueryList.addListener(documentChangeHandler);
     }
 
@@ -34,7 +35,8 @@ const useMediaQuery = (mediaQuery: string): boolean => {
         mediaQueryList.removeEventListener('change', documentChangeHandler);
       } catch {
         // Safari isn't supporting mediaQueryList.removeEventListener
-        // eslint-disable-next-line deprecation/deprecation
+        // TODO: Bring this back in once it supports ESLint 9
+        // (eslint-disable-next-line) deprecation/deprecation
         mediaQueryList.removeListener(documentChangeHandler);
       }
     };

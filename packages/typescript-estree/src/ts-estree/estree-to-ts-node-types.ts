@@ -80,7 +80,8 @@ export interface EstreeToTsNodeTypes {
   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
   [AST_NODE_TYPES.ImportAttribute]: 'ImportAttribute' extends keyof typeof ts
     ? ts.ImportAttribute
-    : // eslint-disable-next-line deprecation/deprecation
+    : // TODO: Bring this back in once it supports ESLint 9
+      // (eslint-disable-next-line) deprecation/deprecation
       ts.AssertEntry;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
