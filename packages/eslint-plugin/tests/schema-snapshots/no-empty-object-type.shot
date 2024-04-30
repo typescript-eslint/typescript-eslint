@@ -4,11 +4,31 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 "
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowInterfaces": {
+        "enum": ["always", "never", "with-single-extends"],
+        "type": "string"
+      },
+      "allowObjectTypes": {
+        "enum": ["always", "never"],
+        "type": "string"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];"
+type Options = [
+  {
+    allowInterfaces?: 'always' | 'never' | 'with-single-extends';
+    allowObjectTypes?: 'always' | 'never';
+  },
+];
+"
 `;

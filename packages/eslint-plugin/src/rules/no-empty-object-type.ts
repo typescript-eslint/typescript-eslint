@@ -3,7 +3,25 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-export default createRule({
+export type AllowInterfaces = 'always' | 'never' | 'with-single-extends';
+
+export type AllowObjectTypes = 'always' | 'never';
+
+export type Options = [
+  {
+    allowInterfaces?: AllowInterfaces;
+    allowObjectTypes?: AllowObjectTypes;
+  },
+];
+
+export type MessageIds =
+  | 'noEmpty'
+  | 'noEmptyInterfaceWithSuper'
+  | 'replaceEmptyInterface'
+  | 'replaceEmptyInterfaceWithSuper'
+  | 'replaceEmptyObjectType';
+
+export default createRule<Options, MessageIds>({
   name: 'no-empty-object-type',
   meta: {
     type: 'suggestion',
@@ -13,38 +31,136 @@ export default createRule({
     },
     hasSuggestions: true,
     messages: {
-      banEmptyObjectType: [
+      noEmpty: [
         'The `{}` ("empty object") type allows any non-nullish value, including literals like `0` and `""`.',
-        "- If that's what you want, disable this lint rule with an inline comment or in your ESLint config.",
+        "- If that's what you want, disable this lint rule with an inline comment or configure the '{{ option }}' rule option.",
         '- If you want a type meaning "any object", you probably want `object` instead.',
         '- If you want a type meaning "any value", you probably want `unknown` instead.',
       ].join('\n'),
+      noEmptyInterfaceWithSuper:
+        'An interface declaring no members is equivalent to its supertype.',
+      replaceEmptyInterface: 'Replace empty interface with `{{replacement}}`.',
+      replaceEmptyInterfaceWithSuper:
+        'Replace empty interface with a type alias.',
       replaceEmptyObjectType: 'Replace `{}` with `{{replacement}}`.',
     },
-    schema: [],
-  },
-  defaultOptions: [],
-  create(context) {
-    return {
-      TSTypeLiteral(node): void {
-        if (
-          node.members.length ||
-          node.parent.type === AST_NODE_TYPES.TSIntersectionType
-        ) {
-          return;
-        }
-
-        context.report({
-          messageId: 'banEmptyObjectType',
-          node,
-          suggest: ['object', 'unknown'].map(replacement => ({
-            data: { replacement },
-            messageId: 'replaceEmptyObjectType',
-            fix: (fixer): TSESLint.RuleFix =>
-              fixer.replaceText(node, replacement),
-          })),
-        });
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowInterfaces: {
+            enum: ['always', 'never', 'with-single-extends'],
+            type: 'string',
+          },
+          allowObjectTypes: {
+            enum: ['always', 'never'],
+            type: 'string',
+          },
+        },
       },
+    ],
+  },
+  defaultOptions: [
+    {
+      allowInterfaces: 'never',
+      allowObjectTypes: 'never',
+    },
+  ],
+  create(context, [{ allowInterfaces, allowObjectTypes }]) {
+    return {
+      ...(allowInterfaces !== 'always' && {
+        TSInterfaceDeclaration(node): void {
+          const extend = node.extends;
+          if (
+            node.body.body.length !== 0 ||
+            (extend.length === 1 &&
+              allowInterfaces === 'with-single-extends') ||
+            extend.length > 1
+          ) {
+            return;
+          }
+
+          const scope = context.sourceCode.getScope(node);
+
+          const mergedWithClassDeclaration = scope.set
+            .get(node.id.name)
+            ?.defs.some(
+              def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
+            );
+
+          if (extend.length === 0) {
+            context.report({
+              data: { option: 'allowInterfaces' },
+              node: node.id,
+              messageId: 'noEmpty',
+              ...(!mergedWithClassDeclaration && {
+                suggest: ['object', 'unknown'].map(replacement => ({
+                  fix(fixer): TSESLint.RuleFix {
+                    const id = context.sourceCode.getText(node.id);
+                    const typeParam = node.typeParameters
+                      ? context.sourceCode.getText(node.typeParameters)
+                      : '';
+
+                    return fixer.replaceText(
+                      node,
+                      `type ${id}${typeParam} = ${replacement}`,
+                    );
+                  },
+                  messageId: 'replaceEmptyInterface',
+                })),
+              }),
+            });
+            return;
+          }
+
+          context.report({
+            node: node.id,
+            messageId: 'noEmptyInterfaceWithSuper',
+            ...(!mergedWithClassDeclaration && {
+              suggest: [
+                {
+                  fix(fixer): TSESLint.RuleFix {
+                    const extended = context.sourceCode.getText(extend[0]);
+                    const id = context.sourceCode.getText(node.id);
+                    const typeParam = node.typeParameters
+                      ? context.sourceCode.getText(node.typeParameters)
+                      : '';
+
+                    return fixer.replaceText(
+                      node,
+                      `type ${id}${typeParam} = ${extended}`,
+                    );
+                  },
+                  messageId: 'replaceEmptyInterfaceWithSuper',
+                },
+              ],
+            }),
+          });
+        },
+      }),
+      ...(allowObjectTypes !== 'always' && {
+        TSTypeLiteral(node): void {
+          if (
+            node.members.length ||
+            node.parent.type === AST_NODE_TYPES.TSIntersectionType
+          ) {
+            return;
+          }
+
+          context.report({
+            data: { option: 'allowObjectTypes' },
+            messageId: 'noEmpty',
+            node,
+            suggest: ['object', 'unknown'].map(replacement => ({
+              data: { replacement },
+              messageId: 'replaceEmptyObjectType',
+              fix: (fixer): TSESLint.RuleFix =>
+                fixer.replaceText(node, replacement),
+            })),
+          });
+        },
+      }),
     };
   },
 });

@@ -5,17 +5,34 @@ exports[`Validating rule docs no-empty-object-type.mdx code examples ESLint outp
 
 let anyObject: {};
                ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
-                  - If that's what you want, disable this lint rule with an inline comment or in your ESLint config.
+                  - If that's what you want, disable this lint rule with an inline comment or configure the 'allowObjectTypes' rule option.
                   - If you want a type meaning "any object", you probably want \`object\` instead.
                   - If you want a type meaning "any value", you probably want \`unknown\` instead.
 let anyValue: {};
               ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
-                 - If that's what you want, disable this lint rule with an inline comment or in your ESLint config.
+                 - If that's what you want, disable this lint rule with an inline comment or configure the 'allowObjectTypes' rule option.
                  - If you want a type meaning "any object", you probably want \`object\` instead.
                  - If you want a type meaning "any value", you probably want \`unknown\` instead.
-let emptyObject: {};
+
+interface AnyObjectA {}
+          ~~~~~~~~~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
+                     - If that's what you want, disable this lint rule with an inline comment or configure the 'allowInterfaces' rule option.
+                     - If you want a type meaning "any object", you probably want \`object\` instead.
+                     - If you want a type meaning "any value", you probably want \`unknown\` instead.
+interface AnyValueA {}
+          ~~~~~~~~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
+                    - If that's what you want, disable this lint rule with an inline comment or configure the 'allowInterfaces' rule option.
+                    - If you want a type meaning "any object", you probably want \`object\` instead.
+                    - If you want a type meaning "any value", you probably want \`unknown\` instead.
+
+type AnyObjectB = {};
+                  ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
+                     - If that's what you want, disable this lint rule with an inline comment or configure the 'allowObjectTypes' rule option.
+                     - If you want a type meaning "any object", you probably want \`object\` instead.
+                     - If you want a type meaning "any value", you probably want \`unknown\` instead.
+type AnyValueB = {};
                  ~~ The \`{}\` ("empty object") type allows any non-nullish value, including literals like \`0\` and \`""\`.
-                    - If that's what you want, disable this lint rule with an inline comment or in your ESLint config.
+                    - If that's what you want, disable this lint rule with an inline comment or configure the 'allowObjectTypes' rule option.
                     - If you want a type meaning "any object", you probably want \`object\` instead.
                     - If you want a type meaning "any value", you probably want \`unknown\` instead.
 "
@@ -26,6 +43,30 @@ exports[`Validating rule docs no-empty-object-type.mdx code examples ESLint outp
 
 let anyObject: object;
 let anyValue: unknown;
-let emptyObject: Record<string, never>;
+
+type AnyObjectA = object;
+type AnyValueA = unknown;
+
+type AnyObjectB = object;
+type AnyValueB = unknown;
+
+let objectWith: { property: boolean };
+
+interface InterfaceWith {
+  property: boolean;
+}
+
+type TypeWith = { property: boolean };
+"
+`;
+
+exports[`Validating rule docs no-empty-object-type.mdx code examples ESLint output 3`] = `
+"Options: { "allowInterfaces": "with-single-extends" }
+
+interface Base {
+  value: boolean;
+}
+
+interface Derived extends Base {}
 "
 `;

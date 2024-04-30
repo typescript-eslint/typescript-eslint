@@ -17,8 +17,8 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the declaration of empty interfaces',
-      recommended: 'stylistic',
     },
+    deprecated: true,
     fixable: 'code',
     hasSuggestions: true,
     messages: {
