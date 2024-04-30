@@ -64,9 +64,10 @@
     "@babel/types": "^7.24.0",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.0",
-    "@nx/eslint": "18.2.3",
-    "@nx/jest": "18.2.3",
-    "@nx/workspace": "18.2.3",
+    "@nx/eslint": "19.0.0-beta.8",
+    "@nx/jest": "19.0.0-beta.8",
+    "@nx/js": "19.0.0-beta.8",
+    "@nx/workspace": "19.0.0-beta.8",
     "@swc/core": "^1.4.12",
     "@swc/jest": "^0.2.36",
     "@types/babel__code-frame": "^7.0.6",
@@ -112,7 +113,7 @@
     "markdownlint-cli": "^0.39.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.14",
-    "nx": "18.2.3",
+    "nx": "19.0.0-beta.8",
     "prettier": "3.2.5",
     "pretty-format": "^29.7.0",
     "raw-loader": "^4.0.2",
@@ -141,8 +142,7 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^4.7.2",
-    "typescript": "5.4.3",
-    "@nx/eslint@17.3.1": "patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch"
+    "typescript": "5.4.3"
   },
   "packageManager": "yarn@3.8.1"
 }
