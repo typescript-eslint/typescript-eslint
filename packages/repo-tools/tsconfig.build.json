@@ -3,12 +3,25 @@
   "compilerOptions": {
     // repo tools are executed with tsx
     "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
+    "outDir": "dist",
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
   "references": []
 }
+
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "compilerOptions": {
+//     // repo tools are executed with tsx
+//     "allowImportingTsExtensions": true,
+//     "noEmit": true,
+//     "composite": true,
+//     "outDir": "./dist",
+//     "rootDir": "./src",
+//     "resolveJsonModule": true
+//   },
+//   "include": ["src", "typings"],
+//   "references": []
+// }

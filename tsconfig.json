@@ -7,6 +7,9 @@
       "path": "./packages/ast-spec"
     },
     {
+      "path": "./packages/repo-tools"
+    },
+    {
       "path": "./packages/scope-manager"
     },
     {
