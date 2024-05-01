@@ -1,9 +1,25 @@
 {
-  "extends": "./tsconfig.build.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
+    "outDir": "../../dist/out-tsc/type-utils"
   },
-  "include": ["src", "typings", "tests", "tools"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }
+
+// {
+//   "extends": "./tsconfig.build.json",
+//   "compilerOptions": {
+//     "composite": false,
+//     "rootDir": "."
+//   },
+//   "include": ["src", "typings", "tests", "tools"],
+//   "references": [{ "path": "../utils/tsconfig.build.json" }]
+// }

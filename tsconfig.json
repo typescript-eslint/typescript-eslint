@@ -16,6 +16,9 @@
       "path": "./packages/scope-manager"
     },
     {
+      "path": "./packages/type-utils"
+    },
+    {
       "path": "./packages/types"
     },
     {
