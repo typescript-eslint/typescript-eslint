@@ -74,8 +74,6 @@ const mockedAfterAll = jest.mocked(RuleTester.afterAll);
 const mockedDescribe = jest.mocked(RuleTester.describe);
 const mockedDescribeSkip = jest.mocked(RuleTester.describeSkip);
 const mockedIt = jest.mocked(RuleTester.it);
-const _mockedItOnly = jest.mocked(RuleTester.itOnly);
-const _mockedItSkip = jest.mocked(RuleTester.itSkip);
 const runRuleForItemSpy = jest.spyOn(
   RuleTester.prototype,
   // @ts-expect-error -- method is private
@@ -92,7 +90,8 @@ const EMPTY_PROGRAM: TSESTree.Program = {
   tokens: [],
   range: [0, 0],
 };
-runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
+// TODO: Fix need for any
+runRuleForItemSpy.mockImplementation((_1, _2, testCase: any) => {
   return {
     messages:
       'errors' in testCase
@@ -134,7 +133,8 @@ const NOOP_RULE: RuleModule<'error'> = {
 };
 
 function getTestConfigFromCall(): unknown[] {
-  return runRuleForItemSpy.mock.calls.map(c => {
+  // TODO: Fix need for any
+  return runRuleForItemSpy.mock.calls.map((c: any) => {
     return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
   });
 }
@@ -283,7 +283,7 @@ describe('RuleTester', () => {
   it('schedules the parser caches to be cleared afterAll', () => {
     // it should schedule the afterAll
     expect(mockedAfterAll).toHaveBeenCalledTimes(0);
-    const _ruleTester = new RuleTester({
+    new RuleTester({
       parser: '@typescript-eslint/parser',
       parserOptions: {
         project: 'tsconfig.json',

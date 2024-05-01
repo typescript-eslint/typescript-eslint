@@ -13,6 +13,9 @@
       "path": "./packages/repo-tools"
     },
     {
+      "path": "./packages/rule-tester"
+    },
+    {
       "path": "./packages/scope-manager"
     },
     {
