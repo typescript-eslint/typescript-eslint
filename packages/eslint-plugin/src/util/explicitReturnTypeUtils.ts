@@ -355,9 +355,8 @@ export {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   doesImmediatelyReturnFunctionExpression,
-  FunctionExpression,
-  FunctionNode,
   isTypedFunctionExpression,
   isValidFunctionExpressionReturnType,
   ancestorHasReturnType,
 };
+export type { FunctionExpression, FunctionNode };

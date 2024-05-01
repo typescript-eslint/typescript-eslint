@@ -177,6 +177,8 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSConstructorType]: ts.ConstructorTypeNode;
   [AST_NODE_TYPES.TSConstructSignatureDeclaration]: ts.ConstructSignatureDeclaration;
   [AST_NODE_TYPES.TSDeclareFunction]: ts.FunctionDeclaration;
+  // TODO: Check this type makes sense
+  [AST_NODE_TYPES.TSEnumBody]: ts.EnumDeclaration['members'];
   [AST_NODE_TYPES.TSEnumDeclaration]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumMember]: ts.EnumMember;
   [AST_NODE_TYPES.TSExportAssignment]: ts.ExportAssignment;
@@ -296,7 +298,5 @@ export interface EstreeToTsNodeTypes {
 export type TSESTreeToTSNode<T extends TSESTree.Node = TSESTree.Node> = Extract<
   ts.Token<ts.SyntaxKind.ImportKeyword | ts.SyntaxKind.NewKeyword> | TSNode,
   // if this errors, it means that one of the AST_NODE_TYPES is not defined in the above interface
-  // TODO: Fix type error
-  // EstreeToTsNodeTypes[T['type']]
-  any
+  EstreeToTsNodeTypes[T['type']]
 >;

@@ -134,17 +134,19 @@ enum TypeModifiers {
 type TypeModifiersString = keyof typeof TypeModifiers;
 
 export {
-  IndividualAndMetaSelectorsString,
   MetaSelectors,
-  MetaSelectorsString,
   Modifiers,
-  ModifiersString,
   PredefinedFormats,
-  PredefinedFormatsString,
   Selectors,
-  SelectorsString,
   TypeModifiers,
-  TypeModifiersString,
   UnderscoreOptions,
+};
+export type {
+  IndividualAndMetaSelectorsString,
+  MetaSelectorsString,
+  ModifiersString,
+  PredefinedFormatsString,
+  SelectorsString,
+  TypeModifiersString,
   UnderscoreOptionsString,
 };

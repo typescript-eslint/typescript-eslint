@@ -1,15 +1,31 @@
 {
-  "extends": "./tsconfig.build.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
+    "outDir": "../../dist/out-tsc/eslint-plugin"
   },
-  "include": ["src", "typings", "tests", "tools", "index.d.ts", "rules.d.ts"],
+  "include": ["tools", "typings"],
   "references": [
-    { "path": "../utils/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../rule-schema-to-typescript-types/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../type-utils/tsconfig.build.json" }
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ]
 }
+
+// {
+//   "extends": "./tsconfig.build.json",
+//   "compilerOptions": {
+//     "composite": false,
+//     "rootDir": "."
+//   },
+//   "include": ["src", "typings", "tests", "tools", "index.d.ts", "rules.d.ts"],
+//   "references": [
+//     { "path": "../utils/tsconfig.build.json" },
+//     { "path": "../parser/tsconfig.build.json" },
+//     { "path": "../rule-schema-to-typescript-types/tsconfig.build.json" },
+//     { "path": "../scope-manager/tsconfig.build.json" },
+//     { "path": "../type-utils/tsconfig.build.json" }
+//   ]
+// }

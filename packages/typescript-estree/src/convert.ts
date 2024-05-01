@@ -601,7 +601,8 @@ export class Converter {
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
-      const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
+      // TODO: Fix as any usage
+      const result = this.createNode<TSESTree.JSXNamespacedName>(node as any, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         namespace: this.createNode<TSESTree.JSXIdentifier>(node, {
           type: AST_NODE_TYPES.JSXIdentifier,

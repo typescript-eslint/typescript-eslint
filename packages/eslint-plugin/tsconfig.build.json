@@ -1,19 +1,44 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // specifically disable declarations for the plugin
-    // see reasoning in packages/eslint-plugin/rules.d.ts
-    "declaration": false,
-    "declarationMap": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
+    "outDir": "dist",
+    "emitDeclarationOnly": false,
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
   "references": [
-    { "path": "../utils/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../type-utils/tsconfig.build.json" }
+    {
+      "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../parser/tsconfig.build.json"
+    },
+    {
+      "path": "../scope-manager/tsconfig.build.json"
+    },
+    {
+      "path": "../type-utils/tsconfig.build.json"
+    }
   ]
 }
+
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "compilerOptions": {
+//     // specifically disable declarations for the plugin
+//     // see reasoning in packages/eslint-plugin/rules.d.ts
+//     "declaration": false,
+//     "declarationMap": false,
+//     "outDir": "./dist",
+//     "rootDir": "./src",
+//     "resolveJsonModule": true
+//   },
+//   "include": ["src", "typings"],
+//   "references": [
+//     { "path": "../utils/tsconfig.build.json" },
+//     { "path": "../parser/tsconfig.build.json" },
+//     { "path": "../scope-manager/tsconfig.build.json" },
+//     { "path": "../type-utils/tsconfig.build.json" }
+//   ]
+// }
