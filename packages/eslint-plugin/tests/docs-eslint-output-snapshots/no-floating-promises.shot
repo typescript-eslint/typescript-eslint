@@ -75,8 +75,8 @@ exports[`Validating rule docs no-floating-promises.mdx code examples ESLint outp
 "Incorrect
 Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
-type SafePromise = Promise<number> & { __linterBrands?: string };
-let promise = Promise.resolve(2);
+type UnsafePromise = Promise<number> & { __linterBrands?: string };
+let promise: UnsafePromise = Promise.resolve(2);
 promise;
 ~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
 promise.then(() => {});
