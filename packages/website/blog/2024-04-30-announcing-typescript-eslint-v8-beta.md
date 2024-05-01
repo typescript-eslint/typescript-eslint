@@ -171,8 +171,8 @@ Several rules were changed in significant enough ways to be considered breaking 
 
 ## Developer-Facing Changes
 
-typescript-eslint v6 comes with a suite of cleanups and improvements for developers as well.
-If you author any ESLint plugins or other tools that interact with TypeScript syntax, then we recommend you try out typescript-eslint v6 soon.
+typescript-eslint v8 comes with a suite of cleanups and improvements for developers as well.
+If you author any ESLint plugins or other tools that interact with TypeScript syntax, then we recommend you try out typescript-eslint v8 soon.
 It includes some breaking changes that you may need to accommodate for.
 
 :::tip
