@@ -177,4 +177,5 @@ function parseForESLint(
   return { ast, services, scopeManager, visitorKeys };
 }
 
-export { parse, parseForESLint, ParserOptions };
+export { parse, parseForESLint };
+export type { ParserOptions };

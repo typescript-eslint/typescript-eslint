@@ -7,6 +7,9 @@
       "path": "./packages/ast-spec"
     },
     {
+      "path": "./packages/parser"
+    },
+    {
       "path": "./packages/repo-tools"
     },
     {
