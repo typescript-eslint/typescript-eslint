@@ -13,6 +13,9 @@
       "path": "./packages/repo-tools"
     },
     {
+      "path": "./packages/rule-schema-to-typescript-types"
+    },
+    {
       "path": "./packages/rule-tester"
     },
     {
