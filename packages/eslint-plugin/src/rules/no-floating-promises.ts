@@ -108,7 +108,7 @@ export default createRule<Options, MessageId>({
     const checker = services.program.getTypeChecker();
     // TODO: #5439
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const safePromisesSpecifiers = options.allowForKnownSafePromises!;
+    const allowForKnownSafePromises = options.allowForKnownSafePromises!;
 
     return {
       ExpressionStatement(node): void {
@@ -267,7 +267,9 @@ export default createRule<Options, MessageId>({
       // Check the type. At this point it can't be unhandled if it isn't a promise
       // or array thereof.
 
-      if (isPromiseArray(services, safePromisesSpecifiers, checker, tsNode)) {
+      if (
+        isPromiseArray(services, allowForKnownSafePromises, checker, tsNode)
+      ) {
         return { isUnhandled: true, promiseArray: true };
       }
 
@@ -283,7 +285,7 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatchSpecifier(
             services,
-            safePromisesSpecifiers,
+            allowForKnownSafePromises,
             services.getTypeAtLocation(member),
           )
         ) {
@@ -322,7 +324,7 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatchSpecifier(
             services,
-            safePromisesSpecifiers,
+            allowForKnownSafePromises,
             services.getTypeAtLocation(node),
           )
         ) {
@@ -345,7 +347,7 @@ export default createRule<Options, MessageId>({
         if (
           doesTypeMatchSpecifier(
             services,
-            safePromisesSpecifiers,
+            allowForKnownSafePromises,
             services.getTypeAtLocation(node),
           )
         ) {
