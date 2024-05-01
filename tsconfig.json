@@ -7,6 +7,9 @@
       "path": "./packages/ast-spec"
     },
     {
+      "path": "./packages/integration-tests"
+    },
+    {
       "path": "./packages/parser"
     },
     {
