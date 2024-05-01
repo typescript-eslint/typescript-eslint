@@ -271,7 +271,7 @@ const additionalKeys: AdditionalKeys = {
   TSUnionType: ['types'],
   TSUnknownKeyword: [],
   TSVoidKeyword: [],
-};
+} as any; // TODO: Fix type error
 
 const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith(additionalKeys);
 

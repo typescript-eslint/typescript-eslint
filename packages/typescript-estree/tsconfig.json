@@ -3,11 +3,13 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/typescript-estree"
   },
-  "include": ["src", "typings", "tests", "tools"],
-  "exclude": ["tests/fixtures/**/*"],
+  "files": [],
   "references": [
     {
       "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ]
 }

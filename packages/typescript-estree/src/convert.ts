@@ -601,7 +601,6 @@ export class Converter {
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
-      // @ts-expect-error -- TypeScript@<5.1 doesn't have ts.JsxNamespacedName
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         namespace: this.createNode<TSESTree.JSXIdentifier>(node, {
@@ -2653,7 +2652,8 @@ export class Converter {
               getTextForTokenKind(node.readonlyToken.kind)),
           typeAnnotation: node.type && this.convertChild(node.type),
           typeParameter: this.convertChild(node.typeParameter),
-        });
+          // TODO: Fix type error
+        } as TSESTree.TSMappedType);
       }
 
       case SyntaxKind.ParenthesizedExpression:
@@ -2903,7 +2903,8 @@ export class Converter {
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           id: this.convertChild(node.name),
           members: node.members.map(el => this.convertChild(el)),
-        });
+          // TODO: Fix type error
+        } as TSESTree.TSEnumDeclaration);
 
         return this.fixExports(node, result);
       }

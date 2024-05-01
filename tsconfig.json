@@ -16,6 +16,9 @@
       "path": "./packages/typescript-estree"
     },
     {
+      "path": "./packages/utils"
+    },
+    {
       "path": "./packages/visitor-keys"
     },
     {
