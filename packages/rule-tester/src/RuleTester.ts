@@ -604,7 +604,8 @@ export class RuleTester extends TestFramework {
       if (!messages.length || fixedResult.output === code) {
         continue;
       }
-      outputs.push((code = fixedResult.output));
+      code = fixedResult.output;
+      outputs.push(code);
 
       // Verify if autofix makes a syntax error or not.
       const errorMessageInFix = this.#linter
