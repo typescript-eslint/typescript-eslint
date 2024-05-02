@@ -1,9 +1,9 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
+import { dedupeTestCases } from '../../dedupeTestCases';
 import { getFixturesRootDir } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
-import { dedupeTestCases } from '../../dedupeTestCases';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
