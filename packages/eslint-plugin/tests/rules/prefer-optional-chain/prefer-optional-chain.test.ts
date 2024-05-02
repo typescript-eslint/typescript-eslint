@@ -3,6 +3,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../../src/rules/prefer-optional-chain';
 import { getFixturesRootDir } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
+import { dedupeTestCases } from '../../dedupeTestCases';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -2401,27 +2402,23 @@ describe('base cases', () => {
   describe('should ignore spacing sanity checks', () => {
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
-      invalid: Object.values(
-        Object.fromEntries(
-          [
-            // it should ignore whitespace in the expressions
-            ...BaseCases({
-              operator: '&&',
-              mutateCode: c => c.replace(/\./g, '.      '),
-              // note - the rule will use raw text for computed expressions - so we
-              //        need to ensure that the spacing for the computed member
-              //        expressions is retained for correct fixer matching
-              mutateOutput: c =>
-                c.replace(/(\[.+])/g, m => m.replace(/\./g, '.      ')),
-            }),
-            ...BaseCases({
-              operator: '&&',
-              mutateCode: c => c.replace(/\./g, '.\n'),
-              mutateOutput: c =>
-                c.replace(/(\[.+])/g, m => m.replace(/\./g, '.\n')),
-            }),
-          ].map(testCase => [testCase.code, testCase]),
-        ),
+      invalid: dedupeTestCases(
+        // it should ignore whitespace in the expressions
+        BaseCases({
+          operator: '&&',
+          mutateCode: c => c.replace(/\./g, '.      '),
+          // note - the rule will use raw text for computed expressions - so we
+          //        need to ensure that the spacing for the computed member
+          //        expressions is retained for correct fixer matching
+          mutateOutput: c =>
+            c.replace(/(\[.+])/g, m => m.replace(/\./g, '.      ')),
+        }),
+        BaseCases({
+          operator: '&&',
+          mutateCode: c => c.replace(/\./g, '.\n'),
+          mutateOutput: c =>
+            c.replace(/(\[.+])/g, m => m.replace(/\./g, '.\n')),
+        }),
       ),
     });
   });

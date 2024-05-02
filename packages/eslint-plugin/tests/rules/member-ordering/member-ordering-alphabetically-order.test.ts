@@ -3,6 +3,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
+import { dedupeTestCases } from '../../dedupeTestCases';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -2800,11 +2801,8 @@ const sortedWithGrouping: RunTests<MessageIds, Options> = {
 
 ruleTester.run('member-ordering-alphabetically-order', rule, {
   valid: [...sortedWithoutGrouping.valid, ...sortedWithGrouping.valid],
-  invalid: Object.values(
-    Object.fromEntries(
-      [...sortedWithoutGrouping.invalid, ...sortedWithGrouping.invalid].map(
-        testCase => [testCase.code, testCase],
-      ),
-    ),
+  invalid: dedupeTestCases(
+    sortedWithoutGrouping.invalid,
+    sortedWithGrouping.invalid,
   ),
 });
