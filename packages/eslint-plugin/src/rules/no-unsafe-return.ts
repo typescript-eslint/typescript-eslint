@@ -7,6 +7,7 @@ import {
   AnyType,
   createRule,
   discriminateAnyType,
+  getAwaitedType,
   getConstrainedTypeAtLocation,
   getContextualType,
   getParserServices,
@@ -17,7 +18,6 @@ import {
   isTypeUnknownArrayType,
   isTypeUnknownType,
   isUnsafeAssignment,
-  getAwaitedType,
 } from '../util';
 
 export default createRule({

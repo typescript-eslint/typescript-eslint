@@ -1,5 +1,6 @@
-import * as ts from 'typescript';
 import * as tsutils from 'ts-api-utils';
+import type * as ts from 'typescript';
+
 import { isPromiseLike } from './builtinSymbolLikes';
 
 export function getAwaitedType(program: ts.Program, type: ts.Type): ts.Type {
