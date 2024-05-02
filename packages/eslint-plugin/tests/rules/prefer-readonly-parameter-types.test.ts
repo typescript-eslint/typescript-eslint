@@ -8,6 +8,7 @@ import type {
 } from '../../src/util';
 import { readonlynessOptionsDefaults } from '../../src/util';
 import { getFixturesRootDir } from '../RuleTester';
+import { dedupeTestCases } from '../dedupeTestCases';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -482,22 +483,24 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
   ],
   invalid: [
     // arrays
-    ...arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
-      const type = baseType
-        .replace(/readonly /g, '')
-        .replace(/Readonly<(.+?)>/g, '$1')
-        .replace(/ReadonlyArray/g, 'Array');
-      return {
-        code: `function foo(arg: ${type}) {}`,
-        errors: [
-          {
-            messageId: 'shouldBeReadonly',
-            column: 14,
-            endColumn: 19 + type.length,
-          },
-        ],
-      };
-    }),
+    ...dedupeTestCases(
+      arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
+        const type = baseType
+          .replace(/readonly /g, '')
+          .replace(/Readonly<(.+?)>/g, '$1')
+          .replace(/ReadonlyArray/g, 'Array');
+        return {
+          code: `function foo(arg: ${type}) {}`,
+          errors: [
+            {
+              messageId: 'shouldBeReadonly',
+              column: 14,
+              endColumn: 19 + type.length,
+            },
+          ],
+        };
+      }),
+    ),
     // nested arrays
     {
       code: 'function foo(arg: readonly string[][]) {}',

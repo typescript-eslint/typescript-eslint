@@ -1,6 +1,14 @@
-export const dedupeTestCases = <T>(...caseArrays: (readonly T[])[]): T[] =>
-  Object.values(
+export const dedupeTestCases = <T>(...caseArrays: (readonly T[])[]): T[] => {
+  const cases = caseArrays.flat();
+  const dedupedCases = Object.values(
     Object.fromEntries(
-      caseArrays.flat().map(testCase => [JSON.stringify(testCase), testCase]),
+      cases.map(testCase => [JSON.stringify(testCase), testCase]),
     ),
   );
+  if (cases.length === dedupedCases.length) {
+    throw new Error(
+      '`dedupeTestCases` is not necessary — no duplicate test cases detected!',
+    );
+  }
+  return dedupedCases;
+};
