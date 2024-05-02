@@ -593,6 +593,9 @@ export class RuleTester extends TestFramework {
         // @ts-expect-error -- we don't define deprecated members on our types
         SourceCode.prototype.getComments = getComments;
       }
+      if (messages.length === 0) {
+        break;
+      }
 
       const fatalErrorMessage = messages.find(m => m.fatal);
       assert(
@@ -601,8 +604,8 @@ export class RuleTester extends TestFramework {
       );
 
       fixedResult = SourceCodeFixer.applyFixes(code, messages);
-      if (!messages.length || fixedResult.output === code) {
-        continue;
+      if (fixedResult.output === code) {
+        break;
       }
       code = fixedResult.output;
       outputs.push(code);
