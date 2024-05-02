@@ -103,11 +103,11 @@ export default createRule({
       if (!functionType) {
         functionType = services.getTypeAtLocation(functionNode);
       }
-
+      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
-        for (const signature of tsutils.getCallSignaturesOfType(functionType)) {
+        for (const signature of callSignatures) {
           const signatureReturnType = signature.getReturnType();
 
           if (
@@ -144,7 +144,7 @@ export default createRule({
       if (anyType !== AnyType.Safe) {
         // Allow cases when the declared return type of the function is either unknown or unknown[]
         // and the function is returning any or any[].
-        for (const signature of functionType.getCallSignatures()) {
+        for (const signature of callSignatures) {
           const functionReturnType = signature.getReturnType();
           if (
             anyType === AnyType.Any &&
@@ -171,9 +171,10 @@ export default createRule({
 
         if (
           anyType === AnyType.PromiseAny &&
-          functionType
-            .getCallSignatures()
-            .every(sig => !isPromiseLike(services.program, sig.getReturnType()))
+          callSignatures.every(
+            signature =>
+              !isPromiseLike(services.program, signature.getReturnType()),
+          )
         ) {
           return;
         }
@@ -208,7 +209,7 @@ export default createRule({
         });
       }
 
-      for (const signature of functionType.getCallSignatures()) {
+      for (const signature of callSignatures) {
         const functionReturnType = signature.getReturnType();
         const result = isUnsafeAssignment(
           returnNodeType,
