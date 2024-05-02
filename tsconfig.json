@@ -7,6 +7,9 @@
       "path": "./packages/ast-spec"
     },
     {
+      "path": "./packages/eslint-plugin"
+    },
+    {
       "path": "./packages/integration-tests"
     },
     {

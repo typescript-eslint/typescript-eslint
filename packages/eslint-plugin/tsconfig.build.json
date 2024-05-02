@@ -1,6 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    // specifically disable declarations for the plugin (which requires disabling composite)
+    // see reasoning in packages/eslint-plugin/rules.d.ts
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
     "rootDir": "src",
     "outDir": "dist",
     "emitDeclarationOnly": false,
