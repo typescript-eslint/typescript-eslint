@@ -3,7 +3,6 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
-import { dedupeTestCases } from '../../dedupeTestCases';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1830,156 +1829,6 @@ class FooTestGetter {
         },
       ],
     },
-
-    // default option + interface + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-interface Foo {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-}
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-};
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class Foo {
-  public static c: string = '';
-  public static b: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-}
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-        },
-      ],
-    },
-
     // default option + class expression + wrong order within group and wrong group order + alphabetically
     {
       code: `
@@ -2801,8 +2650,5 @@ const sortedWithGrouping: RunTests<MessageIds, Options> = {
 
 ruleTester.run('member-ordering-alphabetically-order', rule, {
   valid: [...sortedWithoutGrouping.valid, ...sortedWithGrouping.valid],
-  invalid: dedupeTestCases(
-    sortedWithoutGrouping.invalid,
-    sortedWithGrouping.invalid,
-  ),
+  invalid: [...sortedWithoutGrouping.invalid, ...sortedWithGrouping.invalid],
 });

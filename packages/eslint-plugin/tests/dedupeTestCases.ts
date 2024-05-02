@@ -1,3 +1,4 @@
+let numCalls = 0;
 export const dedupeTestCases = <T>(...caseArrays: (readonly T[])[]): T[] => {
   const cases = caseArrays.flat();
   const dedupedCases = Object.values(
@@ -5,9 +6,10 @@ export const dedupeTestCases = <T>(...caseArrays: (readonly T[])[]): T[] => {
       cases.map(testCase => [JSON.stringify(testCase), testCase]),
     ),
   );
+  numCalls++;
   if (cases.length === dedupedCases.length) {
     throw new Error(
-      '`dedupeTestCases` is not necessary — no duplicate test cases detected!',
+      `Call #${numCalls} of \`dedupeTestCases\` is not necessary — no duplicate test cases detected!`,
     );
   }
   return dedupedCases;
