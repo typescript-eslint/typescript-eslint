@@ -1,3 +1,21 @@
+## 7.8.0 (2024-04-29)
+
+
+### 🚀 Features
+
+- **typescript-estree:** add maximumDefaultProjectFileMatchCount and wide allowDefaultProjectForFiles glob restrictions
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- jsfm01
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.7.1 (2024-04-22)
 
 
