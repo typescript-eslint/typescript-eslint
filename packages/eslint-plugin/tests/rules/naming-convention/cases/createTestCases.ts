@@ -83,187 +83,172 @@ type Cases = {
 }[];
 
 export function createTestCases(cases: Cases): void {
-  const ruleTester = new RuleTester({
-    parser: '@typescript-eslint/parser',
-  });
+  const createValidTestCases = (): TSESLint.ValidTestCase<Options>[] =>
+    Object.values(
+      Object.fromEntries(
+        cases.flatMap(test =>
+          Object.entries(formatTestNames).flatMap(([formatLoose, names]) =>
+            names.valid.flatMap(name => {
+              const format = [formatLoose as PredefinedFormatsString];
+              const createCase = (
+                preparedName: string,
+                options: Selector,
+              ): [string, TSESLint.ValidTestCase<Options>] => {
+                const testCase = {
+                  options: [{ ...options, filter: IGNORED_FILTER }],
+                  code: `// ${JSON.stringify(options)}\n${test.code
+                    .map(code => code.replace(REPLACE_REGEX, preparedName))
+                    .join('\n')}`,
+                };
+                return [JSON.stringify(testCase), testCase];
+              };
 
-  ruleTester.run('naming-convention', rule, {
-    invalid: createInvalidTestCases(),
-    valid: createValidTestCases(),
-  });
+              return [
+                createCase(name, { ...test.options, format }),
 
-  function createValidTestCases(): TSESLint.ValidTestCase<Options>[] {
-    const newCases: TSESLint.ValidTestCase<Options>[] = [];
+                // leadingUnderscore
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'forbid',
+                }),
+                createCase(`_${name}`, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'require',
+                }),
+                createCase(`__${name}`, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'requireDouble',
+                }),
+                createCase(`_${name}`, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allow',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allow',
+                }),
+                createCase(`__${name}`, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allowDouble',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allowDouble',
+                }),
+                createCase(`_${name}`, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allowSingleOrDouble',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allowSingleOrDouble',
+                }),
+                createCase(`__${name}`, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allowSingleOrDouble',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  leadingUnderscore: 'allowSingleOrDouble',
+                }),
 
-    for (const test of cases) {
-      for (const [formatLoose, names] of Object.entries(formatTestNames)) {
-        const format = [formatLoose as PredefinedFormatsString];
-        for (const name of names.valid) {
-          const createCase = (
-            preparedName: string,
-            options: Selector,
-          ): TSESLint.ValidTestCase<Options> => ({
-            options: [
-              {
-                ...options,
-                filter: IGNORED_FILTER,
-              },
-            ],
-            code: `// ${JSON.stringify(options)}\n${test.code
-              .map(code => code.replace(REPLACE_REGEX, preparedName))
-              .join('\n')}`,
-          });
+                // trailingUnderscore
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'forbid',
+                }),
+                createCase(`${name}_`, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'require',
+                }),
+                createCase(`${name}__`, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'requireDouble',
+                }),
+                createCase(`${name}_`, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allow',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allow',
+                }),
+                createCase(`${name}__`, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allowDouble',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allowDouble',
+                }),
+                createCase(`${name}_`, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allowSingleOrDouble',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allowSingleOrDouble',
+                }),
+                createCase(`${name}__`, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allowSingleOrDouble',
+                }),
+                createCase(name, {
+                  ...test.options,
+                  format,
+                  trailingUnderscore: 'allowSingleOrDouble',
+                }),
 
-          newCases.push(
-            createCase(name, {
-              ...test.options,
-              format,
-            }),
+                // prefix
+                createCase(`MyPrefix${name}`, {
+                  ...test.options,
+                  format,
+                  prefix: ['MyPrefix'],
+                }),
+                createCase(`MyPrefix2${name}`, {
+                  ...test.options,
+                  format,
+                  prefix: ['MyPrefix1', 'MyPrefix2'],
+                }),
 
-            // leadingUnderscore
-            createCase(name, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'forbid',
+                // suffix
+                createCase(`${name}MySuffix`, {
+                  ...test.options,
+                  format,
+                  suffix: ['MySuffix'],
+                }),
+                createCase(`${name}MySuffix2`, {
+                  ...test.options,
+                  format,
+                  suffix: ['MySuffix1', 'MySuffix2'],
+                }),
+              ];
             }),
-            createCase(`_${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'require',
-            }),
-            createCase(`__${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'requireDouble',
-            }),
-            createCase(`_${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allow',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allow',
-            }),
-            createCase(`__${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowDouble',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowDouble',
-            }),
-            createCase(`_${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(`__${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowSingleOrDouble',
-            }),
-
-            // trailingUnderscore
-            createCase(name, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'forbid',
-            }),
-            createCase(`${name}_`, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'require',
-            }),
-            createCase(`${name}__`, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'requireDouble',
-            }),
-            createCase(`${name}_`, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allow',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allow',
-            }),
-            createCase(`${name}__`, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowDouble',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowDouble',
-            }),
-            createCase(`${name}_`, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(`${name}__`, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(name, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowSingleOrDouble',
-            }),
-
-            // prefix
-            createCase(`MyPrefix${name}`, {
-              ...test.options,
-              format,
-              prefix: ['MyPrefix'],
-            }),
-            createCase(`MyPrefix2${name}`, {
-              ...test.options,
-              format,
-              prefix: ['MyPrefix1', 'MyPrefix2'],
-            }),
-
-            // suffix
-            createCase(`${name}MySuffix`, {
-              ...test.options,
-              format,
-              suffix: ['MySuffix'],
-            }),
-            createCase(`${name}MySuffix2`, {
-              ...test.options,
-              format,
-              suffix: ['MySuffix1', 'MySuffix2'],
-            }),
-          );
-        }
-      }
-    }
-
-    return newCases;
-  }
+          ),
+        ),
+      ),
+    );
 
   function createInvalidTestCases(): TSESLint.InvalidTestCase<
     MessageIds,
@@ -480,4 +465,13 @@ export function createTestCases(cases: Cases): void {
 
     return newCases;
   }
+
+  const ruleTester = new RuleTester({
+    parser: '@typescript-eslint/parser',
+  });
+
+  ruleTester.run('naming-convention', rule, {
+    invalid: createInvalidTestCases(),
+    valid: createValidTestCases(),
+  });
 }
