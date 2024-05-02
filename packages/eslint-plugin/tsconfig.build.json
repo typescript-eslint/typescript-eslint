@@ -6,9 +6,9 @@
     "composite": false,
     "declaration": false,
     "declarationMap": false,
+    "emitDeclarationOnly": false,
     "rootDir": "src",
     "outDir": "dist",
-    "emitDeclarationOnly": false,
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],

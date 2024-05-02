@@ -10,6 +10,9 @@
       "path": "./packages/eslint-plugin"
     },
     {
+      "path": "./packages/eslint-plugin-internal"
+    },
+    {
       "path": "./packages/integration-tests"
     },
     {

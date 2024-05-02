@@ -206,7 +206,8 @@ const additionalKeys: AdditionalKeys = {
   TSDeclareFunction: SharedVisitorKeys.Function,
   TSDeclareKeyword: [],
   TSEmptyBodyFunctionExpression: ['id', ...SharedVisitorKeys.FunctionType],
-  TSEnumDeclaration: ['id', 'members'],
+  TSEnumBody: ['members'],
+  TSEnumDeclaration: ['id', 'body'],
   TSEnumMember: ['id', 'initializer'],
   TSExportAssignment: ['expression'],
   TSExportKeyword: [],
@@ -271,7 +272,7 @@ const additionalKeys: AdditionalKeys = {
   TSUnionType: ['types'],
   TSUnknownKeyword: [],
   TSVoidKeyword: [],
-} as any; // TODO: Fix type error
+};
 
 const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith(additionalKeys);
 

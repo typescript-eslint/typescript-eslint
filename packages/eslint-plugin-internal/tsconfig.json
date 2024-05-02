@@ -1,10 +1,18 @@
 {
-  "extends": "./tsconfig.build.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    // specifically disable declarations for the plugin (which requires disabling composite)
     "composite": false,
-    "target": "ES2022",
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
     "rootDir": "."
   },
   "include": ["src", "typings", "tests", "index.d.ts"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "references": [
+    {
+      "path": "../utils/tsconfig.build.json"
+    }
+  ]
 }
