@@ -257,11 +257,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: true,
-        },
-      ],
+      options: [{ checkParameterProperties: true }],
     },
     {
       code: `
@@ -274,11 +270,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: false,
-        },
-      ],
+      options: [{ checkParameterProperties: false }],
     },
 
     // type functions
@@ -483,6 +475,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
   ],
   invalid: [
     // arrays
+    // Removing readonly causes duplicates
     ...dedupeTestCases(
       arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
         const type = baseType
@@ -651,11 +644,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: true,
-        },
-      ],
+      options: [{ checkParameterProperties: true }],
       errors: [
         {
           messageId: 'shouldBeReadonly',
@@ -699,11 +688,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: false,
-        },
-      ],
+      options: [{ checkParameterProperties: false }],
       errors: [
         {
           messageId: 'shouldBeReadonly',
