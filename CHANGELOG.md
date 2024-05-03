@@ -1,3 +1,85 @@
+## 7.8.0 (2024-04-29)
+
+
+### 🚀 Features
+
+- **rule-tester:** assert suggestion messages are unique ([#8995](https://github.com/typescript-eslint/typescript-eslint/pull/8995))
+- **typescript-estree:** add maximumDefaultProjectFileMatchCount and wide allowDefaultProjectForFiles glob restrictions ([#8925](https://github.com/typescript-eslint/typescript-eslint/pull/8925))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-argument] handle  tagged templates ([#8746](https://github.com/typescript-eslint/typescript-eslint/pull/8746))
+- **eslint-plugin:** [prefer-optional-chain] suggests optional chaining during strict null equality check ([#8717](https://github.com/typescript-eslint/typescript-eslint/pull/8717))
+- **eslint-plugin:** [consistent-type-assertions] handle tagged templates ([#8993](https://github.com/typescript-eslint/typescript-eslint/pull/8993))
+- **eslint-plugin:** [no-unsafe-return] handle union types ([#9001](https://github.com/typescript-eslint/typescript-eslint/pull/9001))
+- **eslint-plugin:** [no-unused-vars] clear error report range ([#8640](https://github.com/typescript-eslint/typescript-eslint/pull/8640))
+- **utils:** export ESLint backwards-compat functions ([#8976](https://github.com/typescript-eslint/typescript-eslint/pull/8976))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Josh Goldberg ✨
+- jsfm01 @jsfm01
+- Kim Sang Du @developer-bandi
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.1 (2024-04-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] handle shorthand property assignment ([#8800](https://github.com/typescript-eslint/typescript-eslint/pull/8800))
+- **eslint-plugin:** [explicit-function-return-type] fix checking wrong ancestor's return type ([#8809](https://github.com/typescript-eslint/typescript-eslint/pull/8809))
+- **eslint-plugin:** [prefer-optional-chain] only look at left operand for `requireNullish` ([#8559](https://github.com/typescript-eslint/typescript-eslint/pull/8559))
+- **eslint-plugin:** [no-for-in-array] refine report location ([#8874](https://github.com/typescript-eslint/typescript-eslint/pull/8874))
+- **eslint-plugin:** [no-unnecessary-type-assertion] allow non-null assertion for void type ([#8912](https://github.com/typescript-eslint/typescript-eslint/pull/8912))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kirk Waiblinger @kirkwaiblinger
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** replace `no-new-symbol` with `no-new-native-nonconstructor` ([#8895](https://github.com/typescript-eslint/typescript-eslint/pull/8895))
+- **typescript-estree:** add defaultProject for project service ([#8815](https://github.com/typescript-eslint/typescript-eslint/pull/8815))
+
+### ❤️  Thank You
+
+- Dave @reduckted
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- add `name` field to shared configs and flat config types ([#8863](https://github.com/typescript-eslint/typescript-eslint/pull/8863))
+- bump npm dependency ranges ([#8860](https://github.com/typescript-eslint/typescript-eslint/pull/8860))
+- **utils:** add types for both flat and legacy eslint classes ([#8861](https://github.com/typescript-eslint/typescript-eslint/pull/8861))
+
+### 🩹 Fixes
+
+- **typescript-eslint:** fix type errors when using `exactOptionalPropertyTypes` ([#8786](https://github.com/typescript-eslint/typescript-eslint/pull/8786))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Brad Zacher @bradzacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.5.0 (2024-04-01)
 
 

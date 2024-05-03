@@ -1,3 +1,84 @@
+## 7.8.0 (2024-04-29)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-argument] handle  tagged templates
+
+- **eslint-plugin:** [prefer-optional-chain] suggests optional chaining during strict null equality check
+
+- **eslint-plugin:** [consistent-type-assertions] handle tagged templates
+
+- **eslint-plugin:** [no-unsafe-return] handle union types
+
+- **eslint-plugin:** [no-unused-vars] clear error report range
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- jsfm01
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.1 (2024-04-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] handle shorthand property assignment
+
+- **eslint-plugin:** [explicit-function-return-type] fix checking wrong ancestor's return type
+
+- **eslint-plugin:** [prefer-optional-chain] only look at left operand for `requireNullish`
+
+- **eslint-plugin:** [no-for-in-array] refine report location
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] allow non-null assertion for void type
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** replace `no-new-symbol` with `no-new-native-nonconstructor`
+
+
+### ❤️  Thank You
+
+- Dave
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- bump npm dependency ranges
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.5.0 (2024-04-01)
 
 

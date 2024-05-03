@@ -328,6 +328,7 @@ export class XXXX {
   public constructor(readonly value: string) {}
 }
       `,
+      output: null,
       options: [
         {
           accessibility: 'off',
@@ -381,6 +382,7 @@ export class WithParameterProperty {
   public constructor(readonly value: string) {}
 }
       `,
+      output: null,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
@@ -427,6 +429,7 @@ export class XXXX {
   public constructor(readonly samosa: string) {}
 }
       `,
+      output: null,
       options: [
         {
           accessibility: 'off',
@@ -481,6 +484,7 @@ class Test {
   public constructor(readonly foo: string) {}
 }
       `,
+      output: null,
       options: [
         {
           accessibility: 'explicit',
@@ -535,6 +539,7 @@ class Test {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -599,6 +604,7 @@ class Test {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -660,6 +666,7 @@ class Test {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -879,6 +886,7 @@ class Test {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -1024,6 +1032,7 @@ class Test {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -1225,6 +1234,7 @@ class Test {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -1284,6 +1294,7 @@ class Test {
   constructor(public x: number) {}
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
@@ -1356,6 +1367,7 @@ class Test {
   x = 2;
 }
       `,
+      output: null,
       options: [
         {
           accessibility: 'off',
@@ -1436,6 +1448,7 @@ class Test {
   constructor(public x: any[]) {}
 }
       `,
+      output: null,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
@@ -1763,6 +1776,7 @@ abstract class SomeClass {
   abstract method(): string;
 }
       `,
+      output: null,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
@@ -1837,6 +1851,7 @@ abstract class SomeClass {
   abstract x: string;
 }
       `,
+      output: null,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
@@ -1922,6 +1937,7 @@ class DecoratedClass {
   }
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'missingAccessibility',
