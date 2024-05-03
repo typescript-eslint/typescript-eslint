@@ -467,6 +467,9 @@ async function foo() {
           messageId: 'unsafeReturn',
           line: 4,
           column: 3,
+          data: {
+            type: 'any',
+          },
         },
       ],
     },
