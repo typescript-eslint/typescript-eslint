@@ -204,7 +204,9 @@ export default createRule<Options, MessageIds>({
             node.typeName.name === 'Array' ||
             node.typeName.name === 'ReadonlyArray' ||
             node.typeName.name === 'Readonly'
-          )
+          ) ||
+          (node.typeName.name === 'Readonly' &&
+            node.typeArguments?.params[0].type !== AST_NODE_TYPES.TSArrayType)
         ) {
           return;
         }
