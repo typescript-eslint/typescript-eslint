@@ -230,22 +230,14 @@ export default createRule({
       if (isAwait && !isThenable) {
         // any/unknown could be thenable; do not auto-fix
         const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
-        const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
-          removeAwait(fixer, node);
 
         context.report({
           messageId: 'nonPromiseAwait',
           node,
-          ...(useAutoFix
-            ? { fix }
-            : {
-                suggest: [
-                  {
-                    messageId: 'nonPromiseAwait',
-                    fix,
-                  },
-                ],
-              }),
+          ...fixOrSuggest(useAutoFix, {
+            messageId: 'nonPromiseAwait',
+            fix: fixer => removeAwait(fixer, node),
+          }),
         });
         return;
       }
@@ -255,24 +247,18 @@ export default createRule({
 
       if (option === 'always') {
         if (!isAwait && isThenable) {
-          const fix = (
-            fixer: TSESLint.RuleFixer,
-          ): TSESLint.RuleFix | TSESLint.RuleFix[] =>
-            insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression));
-
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'requiredPromiseAwaitSuggestion',
-                      fix,
-                    },
-                  ],
-                }),
+            ...fixOrSuggest(useAutoFix, {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              fix: fixer =>
+                insertAwait(
+                  fixer,
+                  node,
+                  isHigherPrecedenceThanAwait(expression),
+                ),
+            }),
           });
         }
 
@@ -281,21 +267,13 @@ export default createRule({
 
       if (option === 'never') {
         if (isAwait) {
-          const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
-            removeAwait(fixer, node);
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'disallowedPromiseAwaitSuggestion',
-                      fix,
-                    },
-                  ],
-                }),
+            ...fixOrSuggest(useAutoFix, {
+              messageId: 'disallowedPromiseAwaitSuggestion',
+              fix: fixer => removeAwait(fixer, node),
+            }),
           });
         }
 
@@ -304,40 +282,27 @@ export default createRule({
 
       if (option === 'in-try-catch') {
         if (isAwait && !affectsErrorHandling) {
-          const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
-            removeAwait(fixer, node);
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'disallowedPromiseAwaitSuggestion',
-                      fix,
-                    },
-                  ],
-                }),
+            ...fixOrSuggest(useAutoFix, {
+              messageId: 'disallowedPromiseAwaitSuggestion',
+              fix: fixer => removeAwait(fixer, node),
+            }),
           });
         } else if (!isAwait && affectsErrorHandling) {
-          const fix = (
-            fixer: TSESLint.RuleFixer,
-          ): TSESLint.RuleFix | TSESLint.RuleFix[] =>
-            insertAwait(fixer, node, isHigherPrecedenceThanAwait(expression));
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            ...(useAutoFix
-              ? { fix }
-              : {
-                  suggest: [
-                    {
-                      messageId: 'requiredPromiseAwaitSuggestion',
-                      fix,
-                    },
-                  ],
-                }),
+            ...fixOrSuggest(useAutoFix, {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              fix: fixer =>
+                insertAwait(
+                  fixer,
+                  node,
+                  isHigherPrecedenceThanAwait(expression),
+                ),
+            }),
           });
         }
 
@@ -390,3 +355,12 @@ export default createRule({
     };
   },
 });
+
+function fixOrSuggest<MessageId extends string>(
+  useFix: boolean,
+  suggestion: TSESLint.SuggestionReportDescriptor<MessageId>,
+):
+  | { fix: TSESLint.ReportFixFunction }
+  | { suggest: TSESLint.SuggestionReportDescriptor<MessageId>[] } {
+  return useFix ? { fix: suggestion.fix } : { suggest: [suggestion] };
+}
