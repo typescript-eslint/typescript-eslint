@@ -251,32 +251,15 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          for (const unionPart of tsutils.unionTypeParts(
-            services.getTypeAtLocation(node),
-          )) {
-            const propertyKey = property.key;
+          for (const intersectionPart of tsutils
+            .unionTypeParts(services.getTypeAtLocation(node))
+            .flatMap(unionPart => tsutils.intersectionTypeParts(unionPart))) {
             const reported = checkIfMethodAndReport(
-              propertyKey,
-              unionPart.getProperty(propertyKey.name),
+              property.key,
+              intersectionPart.getProperty(property.key.name),
             );
             if (reported) {
               break;
-            }
-
-            if (!tsutils.isIntersectionType(unionPart)) {
-              continue;
-            }
-
-            for (const intersectionPart of tsutils.intersectionTypeParts(
-              unionPart,
-            )) {
-              const reported = checkIfMethodAndReport(
-                propertyKey,
-                intersectionPart.getProperty(propertyKey.name),
-              );
-              if (reported) {
-                break;
-              }
             }
           }
         }
