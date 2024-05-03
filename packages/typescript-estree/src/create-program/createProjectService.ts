@@ -4,6 +4,9 @@ import os from 'node:os';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
+import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
+
+const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
 const doNothing = (): void => {};
 
@@ -15,13 +18,17 @@ export type TypeScriptProjectService = ts.server.ProjectService;
 
 export interface ProjectServiceSettings {
   allowDefaultProjectForFiles: string[] | undefined;
+  maximumDefaultProjectFileMatchCount: number;
   service: TypeScriptProjectService;
 }
 
 export function createProjectService(
-  options: boolean | ProjectServiceOptions | undefined,
+  optionsRaw: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
 ): ProjectServiceSettings {
+  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
+  validateDefaultProjectForFilesGlob(options);
+
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
@@ -48,10 +55,10 @@ export function createProjectService(
     logger: {
       close: doNothing,
       endGroup: doNothing,
-      getLogFileName: () => undefined,
-      hasLevel: () => false,
+      getLogFileName: (): undefined => undefined,
+      hasLevel: (): boolean => false,
       info: doNothing,
-      loggingEnabled: () => false,
+      loggingEnabled: (): boolean => false,
       msg: doNothing,
       perftrc: doNothing,
       startGroup: doNothing,
@@ -60,7 +67,7 @@ export function createProjectService(
     jsDocParsingMode,
   });
 
-  if (typeof options === 'object' && options.defaultProject) {
+  if (options.defaultProject) {
     let configRead;
 
     try {
@@ -97,10 +104,10 @@ export function createProjectService(
   }
 
   return {
-    allowDefaultProjectForFiles:
-      typeof options === 'object'
-        ? options.allowDefaultProjectForFiles
-        : undefined,
+    allowDefaultProjectForFiles: options.allowDefaultProjectForFiles,
+    maximumDefaultProjectFileMatchCount:
+      options.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
+      DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD,
     service,
   };
 }
