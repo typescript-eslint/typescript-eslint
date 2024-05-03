@@ -1034,5 +1034,41 @@ function foo(): any {
 }
       `,
     },
+    {
+      code: `
+type Foo = any;
+(): Foo => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 12,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = any;
+(): Foo => { console.log(); };
+      `,
+    },
+    {
+      code: `
+type Foo = unknown;
+(): Foo => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 12,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = unknown;
+(): Foo => { console.log(); };
+      `,
+    },
   ],
 });

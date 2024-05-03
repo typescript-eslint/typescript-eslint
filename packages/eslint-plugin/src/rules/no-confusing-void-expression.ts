@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -7,6 +11,7 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getContextualType,
   getParserServices,
   isClosingParenToken,
   isOpeningParenToken,
@@ -145,7 +150,7 @@ export default createRule<Options, MessageId>({
           // handle arrow function shorthand
 
           if (options.ignoreVoidInVoid) {
-            if (hasValidReturnType(invalidAncestor)) {
+            if (hasValidReturnType(services, invalidAncestor)) {
               return;
             }
           }
@@ -208,7 +213,7 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidInVoid) {
             const functionNode = findFunction(invalidAncestor);
 
-            if (hasValidReturnType(functionNode)) {
+            if (hasValidReturnType(services, functionNode)) {
               return;
             }
           }
@@ -424,6 +429,7 @@ export default createRule<Options, MessageId>({
     }
 
     function hasValidReturnType(
+      services: ParserServicesWithTypeInformation,
       node:
         | TSESTree.FunctionExpression
         | TSESTree.ArrowFunctionExpression
@@ -431,12 +437,33 @@ export default createRule<Options, MessageId>({
         | null,
     ): boolean {
       if (node != null) {
+        const checker = services.program.getTypeChecker();
+        const functionTSNode = services.esTreeNodeToTSNodeMap.get(node);
+        const functionType =
+          (ts.isFunctionExpression(functionTSNode) ||
+          ts.isArrowFunction(functionTSNode)
+            ? getContextualType(checker, functionTSNode)
+            : services.getTypeAtLocation(node)) ??
+          services.getTypeAtLocation(node);
+
+        if (functionTSNode.type) {
+          for (const signature of tsutils.getCallSignaturesOfType(
+            functionType,
+          )) {
+            return !(
+              tsutils.isTypeFlagSet(
+                signature.getReturnType(),
+                ts.TypeFlags.Any,
+              ) ||
+              tsutils.isTypeFlagSet(
+                signature.getReturnType(),
+                ts.TypeFlags.Unknown,
+              )
+            );
+          }
+        }
+
         if (
-          (node.returnType &&
-            node.returnType.typeAnnotation.type !==
-              AST_NODE_TYPES.TSAnyKeyword &&
-            node.returnType.typeAnnotation.type !==
-              AST_NODE_TYPES.TSUnknownKeyword) ||
           ((node.type === AST_NODE_TYPES.FunctionExpression ||
             node.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
             isValidFunctionExpressionReturnType(node, {
