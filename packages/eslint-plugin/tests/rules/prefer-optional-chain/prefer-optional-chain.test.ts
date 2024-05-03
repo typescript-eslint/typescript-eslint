@@ -251,7 +251,8 @@ describe('|| {}', () => {
               {
                 messageId: 'optionalChainSuggest',
                 output: `
-          if (foo) {            foo?.bar;
+          if (foo) {
+            foo?.bar;
           }
         `,
               },
@@ -274,7 +275,8 @@ describe('|| {}', () => {
               {
                 messageId: 'optionalChainSuggest',
                 output: `
-          if (foo?.bar) {            foo.bar;
+          if (foo?.bar) {
+            foo.bar;
           }
         `,
               },
@@ -1127,7 +1129,9 @@ describe('hand-crafted cases', () => {
               {
                 messageId: 'optionalChainSuggest',
                 output: `
-          class Foo {            constructor() {              new.target?.length;
+          class Foo {
+            constructor() {
+              new.target?.length;
             }
           }
         `,
@@ -1793,7 +1797,8 @@ describe('hand-crafted cases', () => {
           }
         `,
         output: `
-          function foo(globalThis?: { Array: Function }) {            globalThis?.Array();
+          function foo(globalThis?: { Array: Function }) {
+            globalThis?.Array();
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
