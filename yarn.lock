@@ -3849,7 +3849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:^3.0.0":
+"@mdx-js/react@npm:^3.0.0, @mdx-js/react@npm:^3.0.1":
   version: 3.0.1
   resolution: "@mdx-js/react@npm:3.0.1"
   dependencies:
@@ -4374,7 +4374,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/sync@npm:^0.5.1":
+"@prettier/sync@npm:*, @prettier/sync@npm:^0.5.1":
   version: 0.5.2
   resolution: "@prettier/sync@npm:0.5.2"
   dependencies:
@@ -5431,6 +5431,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-helmet@npm:^6.1.11":
+  version: 6.1.11
+  resolution: "@types/react-helmet@npm:6.1.11"
+  dependencies:
+    "@types/react": "*"
+  checksum: e329d8ad82c365fec7dd7d91c8b6d167faac30cef0d9f1e27d7e895172a0ebfa65829fb4acabbe79283b01cbbe5840a845caeb50148ceef6f3fad42b3c2c4bdc
+  languageName: node
+  linkType: hard
+
 "@types/react-router-config@npm:*, @types/react-router-config@npm:^5.0.7":
   version: 5.0.11
   resolution: "@types/react-router-config@npm:5.0.11"
@@ -5442,7 +5451,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-router-dom@npm:*":
+"@types/react-router-dom@npm:*, @types/react-router-dom@npm:^5.3.3":
   version: 5.3.3
   resolution: "@types/react-router-dom@npm:5.3.3"
   dependencies:
@@ -5856,6 +5865,7 @@ __metadata:
     "@nx/devkit": 19.5.2
     "@nx/eslint": 19.5.2
     "@nx/jest": 19.5.2
+    "@nx/js": 19.5.2
     "@nx/workspace": 19.5.2
     "@swc/core": ^1.4.12
     "@swc/jest": ^0.2.36
@@ -19528,6 +19538,8 @@ __metadata:
     prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
+  peerDependencies:
+    eslint: ^8.56.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -20220,8 +20232,12 @@ __metadata:
     "@docusaurus/preset-classic": ^3.2.1
     "@docusaurus/remark-plugin-npm2yarn": ^3.2.1
     "@docusaurus/theme-common": ^3.2.1
+    "@mdx-js/react": ^3.0.1
+    "@prettier/sync": "*"
     "@types/mdast": ^4.0.3
     "@types/react": "*"
+    "@types/react-helmet": ^6.1.11
+    "@types/react-router-dom": ^5.3.3
     "@types/unist": ^3.0.2
     "@typescript-eslint/eslint-plugin": "workspace:*"
     "@typescript-eslint/parser": "workspace:*"

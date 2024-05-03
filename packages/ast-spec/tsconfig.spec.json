@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/scope-manager",
+    "outDir": "../../dist/out-tsc/ast-spec",
     "types": ["jest", "node"],
     "noImplicitAny": false
   },
@@ -20,6 +20,9 @@
     "**/*.d.ts"
   ],
   "references": [
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
     {
       "path": "./tsconfig.build.json"
     }

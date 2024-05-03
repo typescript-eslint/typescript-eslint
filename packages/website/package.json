@@ -11,8 +11,7 @@
     "lint": "npx nx lint",
     "serve": "docusaurus serve",
     "start": "npx nx start",
-    "swizzle": "docusaurus swizzle",
-    "typecheck": "tsc -b ./tsconfig.json"
+    "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",
@@ -22,7 +21,10 @@
     "@docusaurus/preset-classic": "^3.2.1",
     "@docusaurus/remark-plugin-npm2yarn": "^3.2.1",
     "@docusaurus/theme-common": "^3.2.1",
+    "@mdx-js/react": "^3.0.1",
+    "@prettier/sync": "*",
     "@typescript-eslint/parser": "workspace:*",
+    "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",
     "@typescript-eslint/website-eslint": "workspace:*",
     "@uiw/react-shields": "2.0.1",
     "clsx": "^2.1.0",
@@ -48,6 +50,8 @@
     "@docusaurus/module-type-aliases": "^3.2.1",
     "@types/mdast": "^4.0.3",
     "@types/react": "*",
+    "@types/react-helmet": "^6.1.11",
+    "@types/react-router-dom": "^5.3.3",
     "@types/unist": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "workspace:*",
     "@typescript-eslint/rule-schema-to-typescript-types": "workspace:*",

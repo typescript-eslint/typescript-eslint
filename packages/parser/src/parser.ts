@@ -3,8 +3,7 @@ import type {
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
 import { analyze } from '@typescript-eslint/scope-manager';
-import type { Lib, TSESTree } from '@typescript-eslint/types';
-import { ParserOptions } from '@typescript-eslint/types';
+import type { Lib, ParserOptions, TSESTree } from '@typescript-eslint/types';
 import type {
   AST,
   ParserServices,
@@ -187,4 +186,5 @@ function parseForESLint(
   return { ast, services, scopeManager, visitorKeys };
 }
 
-export { parse, parseForESLint, ParserOptions };
+export { parse, parseForESLint };
+export type { ParserOptions };

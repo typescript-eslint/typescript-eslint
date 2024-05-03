@@ -1,9 +1,12 @@
 {
-  "extends": "./tsconfig.build.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
+    "outDir": "../../dist/out-tsc/rule-schema-to-typescript-types"
   },
-  "include": ["src", "tests", "typings"],
-  "references": []
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ]
 }

@@ -54,7 +54,7 @@ const serializer: NewPlugin = {
     const loc = node.loc;
     const range = node.range;
 
-    const outputLines = [];
+    const outputLines: string[] = [];
     const childIndentation = indentation + config.indent;
 
     const printValue = (value: unknown): string =>

@@ -24,14 +24,13 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "build": "npx tsc -b tsconfig.build.json",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "npx jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "test": "npx jest --coverage"
   },
   "dependencies": {
     "@typescript-eslint/type-utils": "8.2.0",

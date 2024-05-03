@@ -1,11 +1,15 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
+    "outDir": "dist",
+    "emitDeclarationOnly": false,
     "resolveJsonModule": true
   },
   "include": ["src"],
-  "references": [{ "path": "../parser/tsconfig.build.json" }]
+  "references": [
+    {
+      "path": "../parser/tsconfig.build.json"
+    }
+  ]
 }

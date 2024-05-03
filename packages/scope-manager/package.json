@@ -42,8 +42,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
-    "test": "npx nx test --code-coverage",
-    "typecheck": "npx nx typecheck"
+    "test": "npx nx test --code-coverage"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.2.0",

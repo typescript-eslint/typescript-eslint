@@ -1,14 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/scope-manager",
-    "types": ["jest", "node"],
-    "noImplicitAny": false
+    "outDir": "../../dist/out-tsc/integration-tests",
+    "types": ["jest", "node"]
   },
-  "exclude": ["tests/fixtures"],
   "include": [
     "tests",
-    "tools",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",

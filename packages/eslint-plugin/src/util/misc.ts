@@ -235,8 +235,6 @@ function isParenlessArrowFunction(
 export {
   arrayGroupByToMap,
   arraysAreEqual,
-  Equal,
-  ExcludeKeys,
   findFirstResult,
   formatWordList,
   getEnumNames,
@@ -246,8 +244,8 @@ export {
   isRestParameterDeclaration,
   isParenlessArrowFunction,
   MemberNameType,
-  RequireKeys,
   typeNodeRequiresParentheses,
   upperCaseFirst,
   findLastIndex,
 };
+export type { Equal, ExcludeKeys, RequireKeys };

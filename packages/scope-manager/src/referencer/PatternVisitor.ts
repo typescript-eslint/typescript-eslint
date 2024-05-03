@@ -138,4 +138,5 @@ class PatternVisitor extends VisitorBase {
   }
 }
 
-export { PatternVisitor, PatternVisitorCallback, PatternVisitorOptions };
+export { PatternVisitor };
+export type { PatternVisitorCallback, PatternVisitorOptions };

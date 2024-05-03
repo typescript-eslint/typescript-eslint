@@ -1,13 +1,25 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // specifically disable declarations for the plugin
+    // specifically disable declarations for the plugin (which requires disabling composite)
+    "composite": false,
     "declaration": false,
     "declarationMap": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "emitDeclarationOnly": false,
+    "rootDir": "src",
+    "outDir": "dist",
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
-  "references": [{ "path": "../utils/tsconfig.build.json" }]
+  "references": [
+    {
+      "path": "../rule-tester/tsconfig.build.json"
+    },
+    {
+      "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../type-utils/tsconfig.build.json"
+    }
+  ]
 }

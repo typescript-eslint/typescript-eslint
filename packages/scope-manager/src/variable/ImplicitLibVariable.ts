@@ -42,4 +42,5 @@ class ImplicitLibVariable extends ESLintScopeVariable implements Variable {
   }
 }
 
-export { ImplicitLibVariable, ImplicitLibVariableOptions };
+export { ImplicitLibVariable };
+export type { ImplicitLibVariableOptions };

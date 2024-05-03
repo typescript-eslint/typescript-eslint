@@ -52,7 +52,7 @@ class GlobalScope extends ScopeBase<
     );
   }
 
-  public close(scopeManager: ScopeManager): Scope | null {
+  public override close(scopeManager: ScopeManager): Scope | null {
     assert(this.leftToResolve);
 
     for (const ref of this.leftToResolve) {

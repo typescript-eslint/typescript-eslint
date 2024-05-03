@@ -12,6 +12,7 @@ type BinaryOperatorWithoutInvalidTypes = Exclude<
   | SyntaxKind.CommaToken // -> SequenceExpression
   | SyntaxKind.QuestionQuestionToken // -> LogicalExpression
 >;
+
 type _Test = {
   readonly [T in BinaryOperatorWithoutInvalidTypes]: BinaryOperatorToText[T];
   // If there are any BinaryOperator members that don't have a corresponding
