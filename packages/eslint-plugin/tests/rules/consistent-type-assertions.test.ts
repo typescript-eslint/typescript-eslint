@@ -7,11 +7,10 @@ import type {
   Options,
 } from '../../src/rules/consistent-type-assertions';
 import rule from '../../src/rules/consistent-type-assertions';
+import { dedupeTestCases } from '../dedupeTestCases';
 import { batchedSingleLineTests } from '../RuleTester';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
 
 const ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE = `
 const x = <Foo>new Generic<int>();
@@ -33,6 +32,7 @@ const ANGLE_BRACKET_TESTS = `${ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE}
 const x = <const>{ key: 'value' };
 `;
 
+// Intentionally contains a duplicate in order to mirror ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE
 const AS_TESTS_EXCEPT_CONST_CASE = `
 const x = new Generic<int>() as Foo;
 const x = b as A;
@@ -84,15 +84,14 @@ print\`\${<Foo>{ bar: 5 }}\`
 
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
-    ...batchedSingleLineTests<Options>({
-      code: AS_TESTS,
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'allow',
-        },
-      ],
-    }),
+    ...dedupeTestCases(
+      batchedSingleLineTests<Options>({
+        code: AS_TESTS,
+        options: [
+          { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
+        ],
+      }),
+    ),
     ...batchedSingleLineTests<Options>({
       code: ANGLE_BRACKET_TESTS,
       options: [
@@ -104,12 +103,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     }),
     ...batchedSingleLineTests<Options>({
       code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'allow',
-        },
-      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
     }),
     ...batchedSingleLineTests<Options>({
       code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
@@ -138,29 +132,11 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    {
-      code: 'const x = <const>[1];',
-      options: [
-        {
-          assertionStyle: 'never',
-        },
-      ],
-    },
-    {
-      code: 'const x = [1] as const;',
-      options: [
-        {
-          assertionStyle: 'never',
-        },
-      ],
-    },
+    { code: 'const x = <const>[1];', options: [{ assertionStyle: 'never' }] },
+    { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
     {
       code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
+      parserOptions: { ecmaFeatures: { jsx: true } },
       options: [
         {
           assertionStyle: 'as',
@@ -170,279 +146,25 @@ ruleTester.run('consistent-type-assertions', rule, {
     },
   ],
   invalid: [
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: AS_TESTS,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'angle-bracket',
-          line: 2,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 3,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 4,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 5,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 6,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 7,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 8,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 9,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 10,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 11,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 12,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 13,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 14,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 15,
-        },
-        {
-          messageId: 'angle-bracket',
-          line: 16,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: ANGLE_BRACKET_TESTS,
-      options: [
-        {
-          assertionStyle: 'as',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 2,
-        },
-        {
-          messageId: 'as',
-          line: 3,
-        },
-        {
-          messageId: 'as',
-          line: 4,
-        },
-        {
-          messageId: 'as',
-          line: 5,
-        },
-        {
-          messageId: 'as',
-          line: 6,
-        },
-        {
-          messageId: 'as',
-          line: 7,
-        },
-        {
-          messageId: 'as',
-          line: 8,
-        },
-        {
-          messageId: 'as',
-          line: 9,
-        },
-        {
-          messageId: 'as',
-          line: 10,
-        },
-        {
-          messageId: 'as',
-          line: 11,
-        },
-        {
-          messageId: 'as',
-          line: 12,
-        },
-        {
-          messageId: 'as',
-          line: 13,
-        },
-        {
-          messageId: 'as',
-          line: 14,
-        },
-        {
-          messageId: 'as',
-          line: 15,
-        },
-        {
-          messageId: 'as',
-          line: 16,
-        },
-      ],
-      output: AS_TESTS,
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: AS_TESTS_EXCEPT_CONST_CASE,
-      options: [
-        {
-          assertionStyle: 'never',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'never',
-          line: 2,
-        },
-        {
-          messageId: 'never',
-          line: 3,
-        },
-        {
-          messageId: 'never',
-          line: 4,
-        },
-        {
-          messageId: 'never',
-          line: 5,
-        },
-        {
-          messageId: 'never',
-          line: 6,
-        },
-        {
-          messageId: 'never',
-          line: 7,
-        },
-        {
-          messageId: 'never',
-          line: 8,
-        },
-        {
-          messageId: 'never',
-          line: 9,
-        },
-        {
-          messageId: 'never',
-          line: 10,
-        },
-        {
-          messageId: 'never',
-          line: 11,
-        },
-        {
-          messageId: 'never',
-          line: 12,
-        },
-        {
-          messageId: 'never',
-          line: 13,
-        },
-        {
-          messageId: 'never',
-          line: 14,
-        },
-        {
-          messageId: 'never',
-          line: 15,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE,
-      options: [
-        {
-          assertionStyle: 'never',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'never',
-          line: 2,
-        },
-        {
-          messageId: 'never',
-          line: 3,
-        },
-        {
-          messageId: 'never',
-          line: 4,
-        },
-        {
-          messageId: 'never',
-          line: 5,
-        },
-        {
-          messageId: 'never',
-          line: 6,
-        },
-        {
-          messageId: 'never',
-          line: 7,
-        },
-        {
-          messageId: 'never',
-          line: 8,
-        },
-        {
-          messageId: 'never',
-          line: 9,
-        },
-        {
-          messageId: 'never',
-          line: 10,
-        },
-        {
-          messageId: 'never',
-          line: 11,
-        },
-        {
-          messageId: 'never',
-          line: 12,
-        },
-        {
-          messageId: 'never',
-          line: 13,
-        },
-        {
-          messageId: 'never',
-          line: 14,
-        },
-        {
-          messageId: 'never',
-          line: 15,
-        },
-      ],
-    }),
+    ...dedupeTestCases(
+      (
+        [
+          ['angle-bracket', AS_TESTS],
+          ['as', ANGLE_BRACKET_TESTS, AS_TESTS],
+          ['never', AS_TESTS_EXCEPT_CONST_CASE],
+          ['never', ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE],
+        ] as const
+      ).flatMap(([assertionStyle, code, output]) =>
+        batchedSingleLineTests<MessageIds, Options>({
+          code,
+          options: [{ assertionStyle }],
+          errors: code
+            .split(`\n`)
+            .map((_, i) => ({ messageId: assertionStyle, line: i + 1 })),
+          output,
+        }),
+      ),
+    ),
     ...batchedSingleLineTests<MessageIds, Options>({
       code: OBJECT_LITERAL_AS_CASTS,
       options: [
@@ -553,12 +275,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     }),
     ...batchedSingleLineTests<MessageIds, Options>({
       code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'never',
-        },
-      ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
       errors: [
         {
           messageId: 'unexpectedObjectTypeAssertion',
@@ -815,22 +532,9 @@ ruleTester.run('consistent-type-assertions', rule, {
     }),
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-      options: [
-        {
-          assertionStyle: 'never',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'never',
-          line: 1,
-        },
-      ],
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      options: [{ assertionStyle: 'never' }],
+      errors: [{ messageId: 'never', line: 1 }],
     },
   ],
 });
