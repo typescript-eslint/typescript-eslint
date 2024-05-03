@@ -7,8 +7,8 @@ import type {
   InferOptionsTypeFromRule,
 } from '../../src/util';
 import { readonlynessOptionsDefaults } from '../../src/util';
-import { getFixturesRootDir } from '../RuleTester';
 import { dedupeTestCases } from '../dedupeTestCases';
+import { getFixturesRootDir } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;

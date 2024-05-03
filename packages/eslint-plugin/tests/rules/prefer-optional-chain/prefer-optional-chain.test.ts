@@ -238,7 +238,8 @@ describe('|| {}', () => {
       },
       {
         code: `
-          if (foo) {            (foo || {}).bar;
+          if (foo) {
+            (foo || {}).bar;
           }
         `,
         errors: [
@@ -260,7 +261,8 @@ describe('|| {}', () => {
       },
       {
         code: `
-          if ((foo || {}).bar) {            foo.bar;
+          if ((foo || {}).bar) {
+            foo.bar;
           }
         `,
         errors: [
@@ -1111,7 +1113,9 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
-          class Foo {            constructor() {              new.target && new.target.length;
+          class Foo {
+            constructor() {
+              new.target && new.target.length;
             }
           }
         `,
@@ -1784,7 +1788,8 @@ describe('hand-crafted cases', () => {
       },
       {
         code: `
-          function foo(globalThis?: { Array: Function }) {            typeof globalThis !== 'undefined' && globalThis.Array();
+          function foo(globalThis?: { Array: Function }) {
+            typeof globalThis !== 'undefined' && globalThis.Array();
           }
         `,
         output: `
