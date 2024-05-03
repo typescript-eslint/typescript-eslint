@@ -2379,6 +2379,7 @@ abstract class SomeClass {
   abstract ['computed-method-name'](): string;
 }
       `,
+      output: null,
       options: [{ accessibility: 'explicit' }],
       errors: [
         {
