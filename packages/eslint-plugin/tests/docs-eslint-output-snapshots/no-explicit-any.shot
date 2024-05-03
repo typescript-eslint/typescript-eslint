@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const age: any = 'seventeen';
+           ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+const ages: any[] = ['seventeen'];
+            ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+const ages: Array<any> = ['seventeen'];
+                  ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 4`] = `
+"Incorrect
+
+function greet(): any {}
+                  ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 5`] = `
+"Incorrect
+
+function greet(): any[] {}
+                  ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 6`] = `
+"Incorrect
+
+function greet(): Array<any> {}
+                        ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 7`] = `
+"Incorrect
+
+function greet(): Array<Array<any>> {}
+                              ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 8`] = `
+"Incorrect
+
+function greet(param: Array<any>): string {}
+                            ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 9`] = `
+"Incorrect
+
+function greet(param: Array<any>): Array<any> {}
+                            ~~~ Unexpected any. Specify a different type.
+                                         ~~~ Unexpected any. Specify a different type.
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 10`] = `
+"Correct
+
+const age: number = 17;
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 11`] = `
+"Correct
+
+const ages: number[] = [17];
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 12`] = `
+"Correct
+
+const ages: Array<number> = [17];
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 13`] = `
+"Correct
+
+function greet(): string {}
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 14`] = `
+"Correct
+
+function greet(): string[] {}
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 15`] = `
+"Correct
+
+function greet(): Array<string> {}
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 16`] = `
+"Correct
+
+function greet(): Array<Array<string>> {}
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 17`] = `
+"Correct
+
+function greet(param: Array<string>): string {}
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 18`] = `
+"Correct
+
+function greet(param: Array<string>): Array<string> {}
+"
+`;
+
+exports[`Validating rule docs no-explicit-any.mdx code examples ESLint output 19`] = `
+"Options: { "ignoreRestArgs": false }
+
+function foo1(...args: any[]): void {}
+                       ~~~ Unexpected any. Specify a different type.
+function foo2(...args: readonly any[]): void {}
+                                ~~~ Unexpected any. Specify a different type.
+function foo3(...args: Array<any>): void {}
+                             ~~~ Unexpected any. Specify a different type.
+function foo4(...args: ReadonlyArray<any>): void {}
+                                     ~~~ Unexpected any. Specify a different type.
+
+declare function bar(...args: any[]): void;
+                              ~~~ Unexpected any. Specify a different type.
+
+const baz = (...args: any[]) => {};
+                      ~~~ Unexpected any. Specify a different type.
+const qux = function (...args: any[]) {};
+                               ~~~ Unexpected any. Specify a different type.
+
+type Quux = (...args: any[]) => void;
+                      ~~~ Unexpected any. Specify a different type.
+type Quuz = new (...args: any[]) => void;
+                          ~~~ Unexpected any. Specify a different type.
+
+interface Grault {
+  (...args: any[]): void;
+            ~~~ Unexpected any. Specify a different type.
+}
+interface Corge {
+  new (...args: any[]): void;
+                ~~~ Unexpected any. Specify a different type.
+}
+interface Garply {
+  f(...args: any[]): void;
+             ~~~ Unexpected any. Specify a different type.
+}
+"
+`;

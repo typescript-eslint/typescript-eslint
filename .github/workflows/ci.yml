@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - v8
   pull_request:
     branches:
       - '**'
@@ -11,7 +12,7 @@ on:
 
 concurrency:
   group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
   PRIMARY_NODE_VERSION: 20
@@ -201,19 +202,19 @@ jobs:
       # packages don't collect coverage on purpose, so forcing `--coverage=true`
       # would override the config
       - name: Run unit tests with coverage for ${{ matrix.package }}
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
         run: npx nx test ${{ matrix.package }}
         env:
           CI: true
       - name: Run unit tests for ${{ matrix.package }}
-        if: env.PRIMARY_NODE_VERSION != matrix.node-version
+        if: env.PRIMARY_NODE_VERSION != matrix.node-version || matrix.os != 'ubuntu-latest'
         run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
 
       - name: Store coverage for uploading
-        if: env.PRIMARY_NODE_VERSION == matrix.node-version
-        uses: actions/upload-artifact@v3
+        if: env.PRIMARY_NODE_VERSION == matrix.node-version && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.package }}-coverage
           path: packages/${{ matrix.package }}/coverage/lcov.info
@@ -256,7 +257,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download coverage reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: coverage
 
@@ -296,6 +297,39 @@ jobs:
       - name: Publish all packages to npm with the canary tag
         # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
         run: npx nx release publish --tag canary --verbose
+        env:
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  publish_canary_version_v8:
+    name: Publish the latest v8 code as a canary version
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
+    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/v8'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # we need the tags to be available
+
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build
+        uses: ./.github/actions/prepare-build
+
+      - name: Figure out and apply the next canary version
+        run: OVERRIDE_MAJOR_VERSION=8 npx nx run repo-tools:apply-canary-version
+
+      - name: Publish all packages to npm with the canary tag
+        # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
+        run: npx nx release publish --tag rc-v8 --verbose
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

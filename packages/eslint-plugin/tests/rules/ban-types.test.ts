@@ -123,6 +123,7 @@ ruleTester.run('ban-types', rule, {
     },
     {
       code: 'let a: Object;',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -138,6 +139,7 @@ ruleTester.run('ban-types', rule, {
     },
     {
       code: 'let a: Object;',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -175,6 +177,7 @@ ruleTester.run('ban-types', rule, {
     },
     {
       code: 'let aa: Foo;',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -242,6 +245,7 @@ ruleTester.run('ban-types', rule, {
     },
     {
       code: 'let c: F;',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -529,6 +533,7 @@ let baz: object = {};
     },
     {
       code: 'type Foo = Bar<any>;',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -550,6 +555,7 @@ let baz: object = {};
     },
     {
       code: noFormat`type Foo = Bar<A,B>;`,
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -571,6 +577,7 @@ let baz: object = {};
     },
     {
       code: 'let a: [];',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -592,6 +599,7 @@ let baz: object = {};
     },
     {
       code: noFormat`let a:  [ ] ;`,
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -638,6 +646,7 @@ let baz: object = {};
     },
     {
       code: 'let a: [[]];',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -659,6 +668,7 @@ let baz: object = {};
     },
     {
       code: 'type Baz = 1 & Foo;',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -674,6 +684,7 @@ let baz: object = {};
     },
     {
       code: 'interface Foo extends Bar {}',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -689,6 +700,7 @@ let baz: object = {};
     },
     {
       code: 'interface Foo extends Bar, Baz {}',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -704,6 +716,7 @@ let baz: object = {};
     },
     {
       code: 'class Foo implements Bar {}',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',
@@ -719,6 +732,7 @@ let baz: object = {};
     },
     {
       code: 'class Foo implements Bar, Baz {}',
+      output: null,
       errors: [
         {
           messageId: 'bannedTypeMessage',

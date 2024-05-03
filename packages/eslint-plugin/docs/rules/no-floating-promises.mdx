@@ -22,8 +22,8 @@ Valid ways of handling a Promise-valued statement include:
 
 This rule also reports when an Array containing Promises is created and not properly handled. The main way to resolve this is by using one of the Promise concurrency methods to create a single Promise, then handling that according to the procedure above. These methods include:
 
-- `Promise.all()`,
-- `Promise.allSettled()`,
+- `Promise.all()`
+- `Promise.allSettled()`
 - `Promise.any()`
 - `Promise.race()`
 
@@ -104,7 +104,7 @@ This allows you to skip checking of async IIFEs (Immediately Invoked function Ex
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
-<!-- prettier-ignore -->
+{/* prettier-ignore */}
 ```ts option='{ "ignoreIIFE": true }' showPlaygroundButton
 await (async function () {
   await res(1);

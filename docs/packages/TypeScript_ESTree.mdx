@@ -252,6 +252,9 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
    * whether or not ESLint is being used as part of a single run.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
    */
   allowAutomaticSingleRunInference?: boolean;
 
@@ -277,9 +280,23 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
  */
 interface ProjectServiceOptions {
   /**
-   * Globs of files to allow running with the default inferred project settings.
+   * Globs of files to allow running with the default project compiler options.
    */
   allowDefaultProjectForFiles?: string[];
+
+  /**
+   * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   */
+  defaultProject?: string;
+
+  /**
+   * The maximum number of files {@link allowDefaultProjectForFiles} may match.
+   * Each file match slows down linting, so if you do need to use this, please
+   * file an informative issue on typescript-eslint explaining why - so we can
+   * help you avoid using it!
+   * @default 8
+   */
+  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
 }
 
 interface ParserServices {

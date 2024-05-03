@@ -93,11 +93,34 @@ type T = import('Foo').Foo;
 const x: import('Bar') = 1;
 ```
 
-## Usage with `emitDecoratorMetadata`
+## Caveat: `@decorators` + `experimentalDecorators: true` + `emitDecoratorMetadata: true`
 
-The `emitDecoratorMetadata` compiler option changes the code the TypeScript emits. In short - it causes TypeScript to create references to value imports when they are used in a type-only location. If you are using `emitDecoratorMetadata` then our tooling will require additional information in order for the rule to work correctly.
+:::note
+If you are using `experimentalDecorators: false` (eg [TypeScript v5.0's stable decorators](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators)) then the rule will always report errors as expected.
+This caveat **only** applies to `experimentalDecorators: true`
+:::
 
-If you are using [type-aware linting](/getting-started/typed-linting), then you just need to ensure that the `tsconfig.json` you've configured for `parserOptions.project` has `emitDecoratorMetadata` turned on. Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on [by setting `parserOptions.emitDecoratorMetadata` to `true`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsemitdecoratormetadata).
+The rule will **_not_** report any errors in files _that contain decorators_ when **both** `experimentalDecorators` and `emitDecoratorMetadata` are turned on.
+
+> See [Blog > Changes to consistent-type-imports when used with legacy decorators and decorator metadata](/blog/changes-to-consistent-type-imports-with-decorators) for more details.
+
+If you are using [type-aware linting](https://typescript-eslint.io/linting/typed-linting) then we will automatically infer your setup from your tsconfig and you should not need to configure anything.
+Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on by setting both [`parserOptions.emitDecoratorMetadata = true`](https://typescript-eslint.io/packages/parser/#emitdecoratormetadata) and [`parserOptions.experimentalDecorators = true`](https://typescript-eslint.io/packages/parser/#experimentaldecorators).
+
+## Comparison with `importsNotUsedAsValues` / `verbatimModuleSyntax`
+
+[`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax) was introduced in TypeScript v5.0 (as a replacement for `importsNotUsedAsValues`).
+This rule and `verbatimModuleSyntax` _mostly_ behave in the same way.
+There are a few behavior differences:
+| Situation | `consistent-type-imports` (ESLint) | `verbatimModuleSyntax` (TypeScript) |
+| -------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
+| Unused imports | Ignored (consider using [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars)) | Type error |
+| Usage with `emitDecoratorMetadata` & `experimentalDecorations` | Ignores files that contain decorators | Reports on files that contain decorators |
+| Failures detected | Does not fail `tsc` build; can be auto-fixed with `--fix` | Fails `tsc` build; cannot be auto-fixed on the command-line |
+| `import { type T } from 'T';` | TypeScript will emit nothing (it "elides" the import) | TypeScript emits `import {} from 'T'` |
+
+Because there are some differences, using both this rule and `verbatimModuleSyntax` at the same time can lead to conflicting errors.
+As such we recommend that you only ever use one _or_ the other -- never both.
 
 ## When Not To Use It
 

@@ -324,6 +324,7 @@ ${PARENT_INDENT}\``,
       code: wrap`\`
   const a = "1";
 ${PARENT_INDENT}\``,
+      output: null,
       errors: [
         {
           messageId: 'templateStringRequiresIndent',
@@ -343,6 +344,7 @@ ruleTester.run({
   ],
 });
       `,
+      output: null,
       errors: [
         {
           messageId: 'templateStringRequiresIndent',
@@ -358,6 +360,7 @@ ruleTester.run({
 ${CODE_INDENT}const a = "1";
   const b = "2";
 ${PARENT_INDENT}\``,
+      output: null,
       errors: [
         {
           messageId: 'templateStringMinimumIndent',
@@ -539,6 +542,7 @@ foo
     // handles prettier errors
     {
       code: wrap`'const x = ";'`,
+      output: null,
       errors: [
         {
           messageId: 'prettierException',

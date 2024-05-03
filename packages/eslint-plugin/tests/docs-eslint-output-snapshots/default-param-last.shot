@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs default-param-last.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function f(a = 0, b: number) {}
+           ~~~~~ Default parameters should be last.
+function f(a: number, b = 0, c: number) {}
+                      ~~~~~ Default parameters should be last.
+function f(a: number, b?: number, c: number) {}
+                      ~~~~~~~~~~ Default parameters should be last.
+class Foo {
+  constructor(
+    public a = 10,
+    ~~~~~~~~~~~~~ Default parameters should be last.
+    private b: number,
+  ) {}
+}
+class Foo {
+  constructor(
+    public a?: number,
+    ~~~~~~~~~~~~~~~~~ Default parameters should be last.
+    private b: number,
+  ) {}
+}
+"
+`;
+
+exports[`Validating rule docs default-param-last.mdx code examples ESLint output 2`] = `
+"Correct
+
+function f(a = 0) {}
+function f(a: number, b = 0) {}
+function f(a: number, b?: number) {}
+function f(a: number, b?: number, c = 0) {}
+function f(a: number, b = 0, c?: number) {}
+class Foo {
+  constructor(
+    public a,
+    private b = 0,
+  ) {}
+}
+class Foo {
+  constructor(
+    public a,
+    private b?: number,
+  ) {}
+}
+"
+`;
