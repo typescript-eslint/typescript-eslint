@@ -532,7 +532,14 @@ async function f() {
       code: `
 declare const promiseArray: Array<Promise<unknown>>;
 async function* generator() {
-  yield promiseArray;
+  yield* promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+async function* generator() {
+  yield Promise.resolve();
 }
       `,
     },
