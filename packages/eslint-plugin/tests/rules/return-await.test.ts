@@ -293,6 +293,101 @@ async function f() {
 }
       `,
     },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  using something = bleh;
+  return await Promise.resolve(2);
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  await using something = bleh;
+  return await Promise.resolve(2);
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  using something = bleh;
+  {
+    return await Promise.resolve(2);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  return Promise.resolve(2);
+  using something = bleh;
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  return await Promise.resolve(2);
+  using something = bleh;
+}
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function returnAwait() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  return await asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return asyncFn();
+  }
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+    },
   ],
   invalid: [
     {
@@ -1396,6 +1491,179 @@ async function f() {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+    if (anotherCondition) {
+      return Promise.resolve(2);
+    }
+  }
+}
+      `,
+      options: ['always'],
+      output: null,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+    if (anotherCondition) {
+      return await Promise.resolve(2);
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    await using something = bleh;
+    if (anotherCondition) {
+      return Promise.resolve(2);
+    }
+  }
+}
+      `,
+      options: ['always'],
+      output: null,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    await using something = bleh;
+    if (anotherCondition) {
+      return await Promise.resolve(2);
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+  } else if (anotherCondition) {
+    return Promise.resolve(2);
+  }
+}
+      `,
+      options: ['always'],
+      output: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+  } else if (anotherCondition) {
+    return await Promise.resolve(2);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return await asyncFn();
+  }
+}
+      `,
+      options: ['in-try-catch'],
+      output: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return asyncFn();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => await asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+      output: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => asyncFn();
+}
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'disallowedPromiseAwait',
         },
       ],
     },
