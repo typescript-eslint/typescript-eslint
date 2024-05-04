@@ -226,6 +226,10 @@ export default createRule<Options, MessageId>({
       nonFunctionHandler?: boolean;
       promiseArray?: boolean;
     } {
+      if (node.type === AST_NODE_TYPES.AssignmentExpression) {
+        return { isUnhandled: false };
+      }
+
       // First, check expressions whose resulting types may not be promise-like
       if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Any child in a comma expression could return a potentially unhandled
@@ -255,6 +259,16 @@ export default createRule<Options, MessageId>({
 
       if (isPromiseArray(checker, tsNode)) {
         return { isUnhandled: true, promiseArray: true };
+      }
+
+      // await expression addresses promises, but not promise arrays.
+      if (node.type === AST_NODE_TYPES.AwaitExpression) {
+        // you would think this wouldn't be strictly necessary, since we're
+        // anyway checking the type of the expression, but, unfortunately TS
+        // reports the result of `await (promise as Promise<number> & number)`
+        // as `Promise<number> & number` instead of `number`. In any case,
+        // this saves us a bit of type checking, anyway.
+        return { isUnhandled: false };
       }
 
       if (!isPromiseLike(checker, tsNode)) {
@@ -290,8 +304,6 @@ export default createRule<Options, MessageId>({
 
         // All other cases are unhandled.
         return { isUnhandled: true };
-      } else if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
-        return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
@@ -300,15 +312,6 @@ export default createRule<Options, MessageId>({
           return alternateResult;
         }
         return isUnhandledPromise(checker, node.consequent);
-      } else if (
-        node.type === AST_NODE_TYPES.MemberExpression ||
-        node.type === AST_NODE_TYPES.Identifier ||
-        node.type === AST_NODE_TYPES.NewExpression
-      ) {
-        // If it is just a property access chain or a `new` call (e.g. `foo.bar` or
-        // `new Promise()`), the promise is not handled because it doesn't have the
-        // necessary then/catch call at the end of the chain.
-        return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
         const leftResult = isUnhandledPromise(checker, node.left);
         if (leftResult.isUnhandled) {
@@ -317,10 +320,8 @@ export default createRule<Options, MessageId>({
         return isUnhandledPromise(checker, node.right);
       }
 
-      // We conservatively return false for all other types of expressions because
-      // we don't want to accidentally fail if the promise is handled internally but
-      // we just can't tell.
-      return { isUnhandled: false };
+      // Anything else is unhandled.
+      return { isUnhandled: true };
     }
   },
 });
