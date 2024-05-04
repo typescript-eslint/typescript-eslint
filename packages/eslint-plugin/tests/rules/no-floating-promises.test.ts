@@ -522,6 +522,12 @@ x = promiseArray;
     },
     {
       code: `
+declare let x: Promise<number>;
+x = Promise.resolve(2);
+      `,
+    },
+    {
+      code: `
 declare const promiseArray: Array<Promise<unknown>>;
 async function f() {
   return promiseArray;
