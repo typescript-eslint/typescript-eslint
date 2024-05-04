@@ -665,35 +665,138 @@ describe('|| {}', () => {
       'foo ?? {};',
       '(foo ?? {})?.bar;',
       'foo ||= bar ?? {};',
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-      `
-        const a = null;
-        const b = 0;
-        a === undefined || b === null || b === undefined;
-      `,
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-      `
-        const a = 0;
-        const b = 0;
-        a === undefined || b === undefined || b === null;
-      `,
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-      `
-        const a = 0;
-        const b = 0;
-        b === null || a === undefined || b === undefined;
-      `,
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-      `
-        const b = 0;
-        b === null || b === undefined;
-      `,
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
-      `
-        const a = 0;
-        const b = 0;
-        b != null && a !== null && a !== undefined;
-      `,
+    ],
+  });
+});
+
+describe('if block with a single statment matches part of the condition', () => {
+  ruleTester.run('prefer-optional-chain', rule, {
+    invalid: [
+      {
+        code: noFormat`if (foo) { foo.bar(); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.bar()',
+      },
+      {
+        code: noFormat`if (foo) { foo(); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.()',
+      },
+      {
+        code: noFormat`if (foo) { foo[bar](); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.[bar]()',
+      },
+      {
+        code: noFormat`if (foo[bar]) { foo[bar].baz(); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo[bar]?.baz()',
+      },
+      {
+        code: noFormat`if (foo.bar.baz()) { foo.bar.baz().bazz(); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo.bar.baz()?.bazz()',
+      },
+      {
+        code: `
+declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
+if (foo && foo.bar && foo.bar.baz) {
+  foo.bar.baz.bazz();
+}
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: `
+declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
+foo?.bar?.baz?.bazz()
+        `,
+      },
+    ],
+    valid: [
+      // Ignore no calls
+      {
+        code: noFormat`if (foo) { foo.bar; }`,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: noFormat`if (foo) { foo.bar?.baz; }`,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      // Ignore when comment exists before or after statement inside consequent
+      {
+        code: noFormat`if (foo) { /* comment */ foo.bar(); }`,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: noFormat`if (foo) { foo.bar(); /* comment */ }`,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      // Ignore when multiple statements exist - only single call expression statement allowed
+      {
+        code: `
+          if (foo) {
+            foo.bar();
+            foo.baz();
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      // Ignore when else is used
+      {
+        code: `
+          declare const x: null | { a: () => string };
+          if (x) {
+            x.a();
+          } else {
+            // do something else
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: `
+          declare const x: null | { a: () => string };
+          if (globalThis) {
+            x.a();
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
     ],
   });
 });
@@ -1708,7 +1811,7 @@ describe('hand-crafted cases', () => {
       'foo === 1 && foo.toFixed();',
       // call arguments are considered
       'foo.bar(a) && foo.bar(a, b).baz;',
-      // type parameters are considered
+      // type arguments are considered
       'foo.bar<a>() && foo.bar<a, b>().baz;',
       // array elements are considered
       '[1, 2].length && [1, 2, 3].length.toFixed();',
@@ -1917,6 +2020,35 @@ describe('hand-crafted cases', () => {
         !x || x.a;
       `,
       "typeof globalThis !== 'undefined' && globalThis.Array();",
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = null;
+        const b = 0;
+        a === undefined || b === null || b === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = 0;
+        const b = 0;
+        a === undefined || b === undefined || b === null;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = 0;
+        const b = 0;
+        b === null || a === undefined || b === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const b = 0;
+        b === null || b === undefined;
+      `,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8380
+      `
+        const a = 0;
+        const b = 0;
+        b != null && a !== null && a !== undefined;
+      `,
     ],
   });
 });

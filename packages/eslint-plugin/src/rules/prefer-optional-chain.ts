@@ -19,6 +19,7 @@ import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
 import {
   gatherLogicalOperands,
+  NullishComparisonType,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
 
@@ -51,6 +52,11 @@ export default createRule<
             type: 'boolean',
             description:
               'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
+          },
+          allowSuggestingOnIfStatements: {
+            type: 'boolean',
+            description:
+              'Allow suggesting optional chain on if statements with a single expression in the consequent.',
           },
           checkAny: {
             type: 'boolean',
@@ -94,6 +100,7 @@ export default createRule<
   defaultOptions: [
     {
       allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
+      allowSuggestingOnIfStatements: false,
       checkAny: true,
       checkBigInt: true,
       checkBoolean: true,
@@ -110,6 +117,85 @@ export default createRule<
 
     return {
       // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
+      'IfStatement[consequent.body.length=1][consequent.type=BlockStatement]': (
+        node: {
+          consequent: { type: AST_NODE_TYPES.BlockStatement };
+        } & TSESTree.IfStatement,
+      ): void => {
+        if (!options.allowSuggestingOnIfStatements) {
+          return;
+        }
+        if (node.alternate) {
+          return;
+        }
+        if (
+          node.test.type !== AST_NODE_TYPES.LogicalExpression &&
+          node.test.type !== AST_NODE_TYPES.Identifier &&
+          node.test.type !== AST_NODE_TYPES.MemberExpression &&
+          node.test.type !== AST_NODE_TYPES.CallExpression
+        ) {
+          return;
+        }
+        const ifBodyStatement = node.consequent.body[0];
+        const hasCommentsInIfBody =
+          context.sourceCode.getCommentsBefore(ifBodyStatement).length ||
+          context.sourceCode.getCommentsAfter(ifBodyStatement).length;
+
+        if (hasCommentsInIfBody) {
+          return;
+        }
+
+        if (ifBodyStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
+          return;
+        }
+        const ifBodyExpression = ifBodyStatement.expression;
+        if (ifBodyExpression.type !== AST_NODE_TYPES.CallExpression) {
+          return;
+        }
+        const currentChain: ValidOperand[] = [
+          {
+            node: node.test,
+            type: OperandValidity.Valid,
+            comparedName: node.test,
+            comparisonType: NullishComparisonType.Boolean,
+            isYoda: false,
+          },
+        ];
+        if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
+          const { newlySeenLogicals, operands } = gatherLogicalOperands(
+            node.test,
+            parserServices,
+            context.sourceCode,
+            options,
+          );
+          for (const logical of newlySeenLogicals) {
+            seenLogicals.add(logical);
+          }
+          for (const operand of operands) {
+            if (operand.type === OperandValidity.Invalid) {
+              return;
+            }
+            currentChain.push(operand);
+          }
+        }
+        currentChain.push({
+          node: ifBodyExpression,
+          type: OperandValidity.Valid,
+          comparedName: ifBodyExpression,
+          comparisonType: NullishComparisonType.Boolean,
+          isYoda: false,
+        });
+        analyzeChain(
+          context,
+          parserServices,
+          options,
+          node,
+          '&&',
+          currentChain,
+        );
+        return;
+      },
+
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
