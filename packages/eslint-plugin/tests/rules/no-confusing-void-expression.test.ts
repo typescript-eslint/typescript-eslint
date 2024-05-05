@@ -404,6 +404,40 @@ const x: HigherOrderType = () => () =>
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
+    {
+      code: `
+function test1(): void;
+function test1(arg: string): any;
+function test1(arg?: string): any | void {
+  if (arg) {
+    return arg;
+  }
+
+  return console.log(); // not reported - ok
+}
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+function test2(arg: string): any;
+function test2(): void;
+function test2(arg?: string): any | void {
+  if (arg) {
+    return arg;
+  }
+
+  return console.log(); // reported - bug
+}
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
+    {
+      code: `
+const test: () => any = (): void => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+    },
   ],
 
   invalid: [
