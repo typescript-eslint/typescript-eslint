@@ -259,6 +259,11 @@ const obj = {
   },
 };
     `,
+    `
+class Foo {
+  [x: string]: any;
+}
+    `,
   ],
   invalid: [
     {

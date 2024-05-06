@@ -320,6 +320,10 @@ class ClassVisitor extends Visitor {
     // intentionally skip
   }
 
+  protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
+    this.visitType(node);
+  }
+
   protected StaticBlock(node: TSESTree.StaticBlock): void {
     this.#referencer.scopeManager.nestClassStaticBlockScope(node);
 
