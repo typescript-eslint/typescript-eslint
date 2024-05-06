@@ -54,7 +54,7 @@ describe('typeFlagUtils', () => {
       expect(result).toBe(expected);
     }
 
-    describe('is type flagas set', () => {
+    describe('is type flags set', () => {
       function runTestIsTypeFlagSet(
         code: string,
         flagsToCheck: ts.TypeFlags,
@@ -73,7 +73,7 @@ describe('typeFlagUtils', () => {
       );
     });
 
-    describe('is not type flagas set', () => {
+    describe('is not type flags set', () => {
       function runTestIsNotTypeFlagSet(
         code: string,
         flagsToCheck: ts.TypeFlags,
