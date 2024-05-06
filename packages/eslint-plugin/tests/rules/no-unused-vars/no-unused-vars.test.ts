@@ -689,6 +689,12 @@ export type T = {
 };
     `,
     `
+type Foo = string;
+export class Bar {
+  [x: Foo]: any;
+}
+    `,
+    `
 namespace Foo {
   export const Foo = 1;
 }
