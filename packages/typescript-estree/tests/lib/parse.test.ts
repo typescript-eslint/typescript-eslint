@@ -367,6 +367,22 @@ describe('parseAndGenerateServices', () => {
             alignErrorPath(error as Error);
           }
         };
+      const testParseExperimentalProjectService =
+        (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
+        (): void => {
+          const result = parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+            project: true,
+            EXPERIMENTAL_useProjectService: true,
+          });
+          const compilerOptions = result.services.program?.getCompilerOptions();
+
+          if (!compilerOptions?.configFilePath) {
+            throw new Error('No config file found, using inferred project');
+          }
+        };
 
       describe('project includes', () => {
         it("doesn't error for matched files", () => {
@@ -477,6 +493,53 @@ describe('parseAndGenerateServices', () => {
             "ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
             The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
           `);
+        });
+      });
+
+      describe('"parserOptions.extraFileExtensions" is non-empty and EXPERIMENTAL_useProjectService is true', () => {
+        describe('the extension matches', () => {
+          it('the file is included', () => {
+            expect(
+              testParseExperimentalProjectService('other/included.vue'),
+            ).not.toThrow();
+          });
+
+          it("the file isn't included", () => {
+            expect(
+              testParseExperimentalProjectService('other/notIncluded.vue'),
+            ).toThrowErrorMatchingInlineSnapshot(
+              `"No config file found, using inferred project"`,
+            );
+          });
+
+          it('duplicate extension', () => {
+            expect(
+              testParseExperimentalProjectService('ts/notIncluded.ts', ['.ts']),
+            ).toThrowErrorMatchingInlineSnapshot(
+              `"No config file found, using inferred project"`,
+            );
+          });
+        });
+
+        it('invalid extension', () => {
+          expect(
+            testParseExperimentalProjectService(
+              'other/unknownFileType.unknown',
+              ['unknown'],
+            ),
+          ).toThrowErrorMatchingInlineSnapshot(
+            `"No config file found, using inferred project"`,
+          );
+        });
+
+        it('the extension does not match', () => {
+          expect(
+            testParseExperimentalProjectService(
+              'other/unknownFileType.unknown',
+            ),
+          ).toThrowErrorMatchingInlineSnapshot(
+            `"No config file found, using inferred project"`,
+          );
         });
       });
     });
