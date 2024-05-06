@@ -233,6 +233,28 @@ RuleTester.itOnly = vitest.it.only;
 RuleTester.describe = vitest.describe;
 ```
 
+#### Node built-in test runner
+
+Consider setting up `RuleTester`'s static properties in a preloaded module using the [`--import`](https://nodejs.org/api/cli.html#--importmodule) or [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag:
+
+```ts
+// setup.js
+import * as test from 'node:test';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = test.afterAll;
+
+RuleTester.it = test.it;
+RuleTester.itOnly = test.it.only;
+RuleTester.describe = test.describe;
+```
+
+Tests can then be [run from the command line](https://nodejs.org/api/test.html#running-tests-from-the-command-line) like so:
+
+```sh
+node --import setup.js --test
+```
+
 ## Options
 
 ### `RuleTester` constructor options
