@@ -112,6 +112,7 @@ runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
     output: testCase.code,
     afterAST: EMPTY_PROGRAM,
     beforeAST: EMPTY_PROGRAM,
+    config: { parser: '' },
   };
 });
 
