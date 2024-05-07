@@ -6,7 +6,6 @@ import type { Linter } from './Linter';
 import type { ParserOptions } from './ParserOptions';
 import type {
   ReportDescriptorMessageData,
-  RuleCreateFunction,
   RuleModule,
   SharedConfigurationSettings,
 } from './Rule';
@@ -192,9 +191,7 @@ declare class RuleTesterBase {
    */
   defineRule<MessageIds extends string, Options extends Readonly<unknown[]>>(
     name: string,
-    rule:
-      | RuleCreateFunction<MessageIds, Options>
-      | RuleModule<MessageIds, Options>,
+    rule: RuleModule<MessageIds, Options>,
   ): void;
 }
 

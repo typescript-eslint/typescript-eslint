@@ -5,13 +5,7 @@ import { Linter as ESLintLinter } from 'eslint';
 import type { ClassicConfig, FlatConfig, SharedConfig } from './Config';
 import type { Parser } from './Parser';
 import type { Processor as ProcessorType } from './Processor';
-import type {
-  AnyRuleCreateFunction,
-  AnyRuleModule,
-  RuleCreateFunction,
-  RuleFix,
-  RuleModule,
-} from './Rule';
+import type { AnyRuleModule, RuleFix, RuleModule } from './Rule';
 import type { SourceCode } from './SourceCode';
 
 export type MinimalRuleModule<
@@ -41,7 +35,7 @@ declare class LinterBase {
    */
   defineRule<MessageIds extends string, Options extends readonly unknown[]>(
     ruleId: string,
-    ruleModule: MinimalRuleModule<MessageIds, Options> | RuleCreateFunction,
+    ruleModule: MinimalRuleModule<MessageIds, Options>,
   ): void;
 
   /**
@@ -49,11 +43,7 @@ declare class LinterBase {
    * @param rulesToDefine map from unique rule identifier to rule
    */
   defineRules<MessageIds extends string, Options extends readonly unknown[]>(
-    rulesToDefine: Record<
-      string,
-      | MinimalRuleModule<MessageIds, Options>
-      | RuleCreateFunction<MessageIds, Options>
-    >,
+    rulesToDefine: Record<string, MinimalRuleModule<MessageIds, Options>>,
   ): void;
 
   /**
@@ -276,11 +266,6 @@ namespace Linter {
     parserOptions?: ParserOptions;
   }
 
-  // TODO - RuleCreateFunction is no longer supported in ESLint v9
-  export type LegacyPluginRules = Record<
-    string,
-    AnyRuleCreateFunction | AnyRuleModule
-  >;
   export type PluginRules = Record<string, AnyRuleModule>;
 
   export interface Plugin {
@@ -303,7 +288,7 @@ namespace Linter {
     /**
      * The definition of plugin rules.
      */
-    rules?: LegacyPluginRules;
+    rules?: PluginRules;
   }
 }
 

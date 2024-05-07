@@ -9,7 +9,6 @@ import type * as ParserType from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
-  AnyRuleCreateFunction,
   AnyRuleModule,
   Parser,
   ParserOptions,
@@ -75,7 +74,7 @@ let defaultConfig = deepMerge(
 
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
-  readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
+  readonly #rules: Record<string, AnyRuleModule> = {};
   readonly #linter: Linter = new Linter({ configType: 'eslintrc' });
 
   /**
@@ -171,7 +170,7 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleCreateFunction | AnyRuleModule): void {
+  defineRule(name: string, rule: AnyRuleModule): void {
     this.#rules[name] = rule;
   }
 
