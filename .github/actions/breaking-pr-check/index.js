@@ -28,8 +28,10 @@ async function getPullRequest() {
 }
 
 function checkTitle(title) {
-  if (/!/.test(title)) {
-    raiseError(`Do not use exclamation mark ('!') in your PR Title.`);
+  if (/^[a-z]+(\([a-z]+\))?!: /.test(title)) {
+    raiseError(
+      `Do not use exclamation mark ('!') to indicate breaking change in the PR Title.`,
+    );
   }
 }
 
@@ -40,10 +42,14 @@ function checkDescription(body, labels) {
   const [firstLine, secondLine] = body.split(/\r?\n/);
 
   if (!firstLine || !/^BREAKING CHANGE:/.test(firstLine)) {
-    raiseError(`Breaking change PR body should start with "BREAKING CHANGE:"`);
+    raiseError(
+      `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
+    );
   }
   if (!secondLine) {
-    raiseError(`The description of breaking change is missing.`);
+    raiseError(
+      `The description of breaking change is missing. See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
+    );
   }
 }
 
