@@ -1,23 +1,17 @@
-const eslint = require('@eslint/js');
-const tseslint = require('typescript-eslint');
-
-module.exports = tseslint.config({
+module.exports = {
   extends: [
-    eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
   ],
-  languageOptions: {
-    parser: tseslint.parser,
-    parserOptions: {
-      project: true,
-      tsconfigRootDir: __dirname,
-    },
+  root: true,
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: true,
+    tsconfigRootDir: __dirname,
   },
-  plugins: {
-    '@typescript-eslint': tseslint.plugin,
-  },
+  plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/no-unsafe-argument': 'warn',
     '@typescript-eslint/no-unsafe-return': 'warn',
   },
-});
+};

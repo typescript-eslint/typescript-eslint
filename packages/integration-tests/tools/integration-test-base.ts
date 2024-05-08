@@ -149,6 +149,7 @@ export function eslintIntegrationTest(
           filesGlob,
         ],
         {
+          env: legacyConfig ? { ESLINT_USE_FLAT_CONFIG: 'false' } : undefined,
           cwd: testFolder,
         },
       );
