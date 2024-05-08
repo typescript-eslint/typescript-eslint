@@ -98,7 +98,7 @@ export default tseslint.config(
       parserOptions: {
         // Remove this line
         project: true,
-        // Add this line
+        // Add line
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
@@ -110,6 +110,11 @@ export default tseslint.config(
 The project service will automatically find the closest `tsconfig.json` for each file (like `project: true`).
 It also allows enabling typed linting for files not explicitly included in a `tsconfig.json`.
 This should remove the need for custom `tsconfig.eslint.json` files to lint files like `eslint.config.js`!
+
+Typed linting for out-of-project files can be done by specifying two properties of a `parserOptions.projectService` object:
+
+- `allowDefaultProjectForFiles`: a glob of a small number of out-of-project files to enable a slower default project on
+- `defaultProject`: path to a TypeScript configuration file to use for the slower default project
 
 ```js title="eslint.config.js"
 import eslint from '@eslint/js';
@@ -123,11 +128,12 @@ export default tseslint.config(
       parserOptions: {
         // Remove this line
         project: ['packages/*/tsconfig.json', 'tsconfig.eslint.json'],
-        // Add this line
+        // Added lines start
         projectService: {
           allowDefaultProjectForFiles: ['./*.js'],
           defaultProject: './tsconfig.json',
         },
+        // Added lines end
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -138,7 +144,7 @@ export default tseslint.config(
 Internally, the project service uses the same TypeScript APIs that editors such as VS Code use.
 Doing so should make it harder to accidentally configure different type information for ESLint than what you see in day-to-day editing.
 
-We're thrilled to have this option promoted to stable in v8.
+We're thrilled to have the project service option promoted to stable in v8.
 We'll soon release a [dedicated `parserOptions` blog post](https://github.com/typescript-eslint/typescript-eslint/pull/8031) walking through the new option in more details.
 🚀
 
