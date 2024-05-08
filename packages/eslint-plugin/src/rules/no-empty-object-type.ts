@@ -15,11 +15,20 @@ export type Options = [
 ];
 
 export type MessageIds =
-  | 'noEmpty'
+  | 'noEmptyInterface'
+  | 'noEmptyObject'
   | 'noEmptyInterfaceWithSuper'
   | 'replaceEmptyInterface'
   | 'replaceEmptyInterfaceWithSuper'
   | 'replaceEmptyObjectType';
+
+const noEmptyMessage = (emptyType: string): string =>
+  [
+    `${emptyType} allows any non-nullish value, including literals like \`0\` and \`""\`.`,
+    "- If that's what you want, disable this lint rule with an inline comment or configure the '{{ option }}' rule option.",
+    '- If you want a type meaning "any object", you probably want `object` instead.',
+    '- If you want a type meaning "any value", you probably want `unknown` instead.',
+  ].join('\n');
 
 export default createRule<Options, MessageIds>({
   name: 'no-empty-object-type',
@@ -31,12 +40,8 @@ export default createRule<Options, MessageIds>({
     },
     hasSuggestions: true,
     messages: {
-      noEmpty: [
-        'The `{}` ("empty object") type allows any non-nullish value, including literals like `0` and `""`.',
-        "- If that's what you want, disable this lint rule with an inline comment or configure the '{{ option }}' rule option.",
-        '- If you want a type meaning "any object", you probably want `object` instead.',
-        '- If you want a type meaning "any value", you probably want `unknown` instead.',
-      ].join('\n'),
+      noEmptyInterface: noEmptyMessage('An empty interface declaration'),
+      noEmptyObject: noEmptyMessage('The `{}` ("empty object") type'),
       noEmptyInterfaceWithSuper:
         'An interface declaring no members is equivalent to its supertype.',
       replaceEmptyInterface: 'Replace empty interface with `{{replacement}}`.',
@@ -93,7 +98,7 @@ export default createRule<Options, MessageIds>({
             context.report({
               data: { option: 'allowInterfaces' },
               node: node.id,
-              messageId: 'noEmpty',
+              messageId: 'noEmptyInterface',
               ...(!mergedWithClassDeclaration && {
                 suggest: ['object', 'unknown'].map(replacement => ({
                   fix(fixer): TSESLint.RuleFix {
@@ -150,7 +155,7 @@ export default createRule<Options, MessageIds>({
 
           context.report({
             data: { option: 'allowObjectTypes' },
-            messageId: 'noEmpty',
+            messageId: 'noEmptyObject',
             node,
             suggest: ['object', 'unknown'].map(replacement => ({
               data: { replacement },

@@ -66,7 +66,7 @@ class Derived {}
       errors: [
         {
           data: { option: 'allowInterfaces' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyInterface',
           line: 1,
           column: 11,
         },
@@ -77,7 +77,7 @@ class Derived {}
       errors: [
         {
           data: { option: 'allowInterfaces' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyInterface',
           line: 1,
           column: 11,
         },
@@ -227,7 +227,7 @@ type Derived = Base
         },
         {
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           line: 1,
           column: 39,
           endColumn: 41,
@@ -348,7 +348,7 @@ declare namespace BaseAndDerived {
           endColumn: 15,
           endLine: 1,
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
@@ -373,7 +373,7 @@ declare namespace BaseAndDerived {
           endColumn: 15,
           endLine: 1,
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
@@ -399,7 +399,7 @@ declare namespace BaseAndDerived {
           endColumn: 14,
           endLine: 1,
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
@@ -424,7 +424,7 @@ declare namespace BaseAndDerived {
           endColumn: 14,
           endLine: 1,
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
@@ -454,7 +454,7 @@ let value: {
           column: 12,
           endColumn: 2,
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
@@ -483,7 +483,7 @@ let value: unknown;
           endColumn: 25,
           endLine: 1,
           data: { option: 'allowObjectTypes' },
-          messageId: 'noEmpty',
+          messageId: 'noEmptyObject',
           suggestions: [
             {
               data: { replacement: 'object' },
