@@ -55,14 +55,14 @@ function filterAndMapRuleConfigs({
   if (typeChecked) {
     result = result.filter(([, rule]) =>
       typeChecked === 'exclude'
-        ? !rule.meta.docs?.requiresTypeChecking
-        : rule.meta.docs?.requiresTypeChecking,
+        ? !rule.meta.docs.requiresTypeChecking
+        : rule.meta.docs.requiresTypeChecking,
     );
   }
 
   if (recommendations) {
     result = result.filter(([, rule]) => {
-      switch (typeof rule.meta.docs?.recommended) {
+      switch (typeof rule.meta.docs.recommended) {
         case 'undefined':
           return false;
         case 'object':
@@ -80,7 +80,7 @@ function filterAndMapRuleConfigs({
   return result.map(([name, rule]) => {
     const customRecommendation =
       highestRecommendation &&
-      typeof rule.meta.docs?.recommended === 'object' &&
+      typeof rule.meta.docs.recommended === 'object' &&
       rule.meta.docs.recommended[
         highestRecommendation as 'recommended' | 'strict'
       ];
@@ -135,7 +135,7 @@ describe('disable-type-checked.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
 
     const ruleConfigs: [string, string][] = Object.entries(rules)
-      .filter(([, rule]) => rule.meta.docs?.requiresTypeChecking)
+      .filter(([, rule]) => rule.meta.docs.requiresTypeChecking)
       .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off']);
 
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
