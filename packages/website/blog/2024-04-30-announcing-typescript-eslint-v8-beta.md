@@ -55,7 +55,7 @@ These are the changes that users of typescript-eslint -generally, any developer 
 
 ### ⏳ ESLint v9 Support
 
-typescript-eslint v8 ships will full support for ESLint v9.
+typescript-eslint v8 ships with full support for ESLint v9.
 
 typescript-eslint v7 was our first version that supported ESLint's [new "flat" config file format](https://eslint.org/docs/latest/use/configure/configuration-files), which was already available in ESLint v8.
 ESLint v9 still supports ESLint's [older legacy config file format](https://eslint.org/docs/latest/use/configure/configuration-files-deprecated) so our tooling does as well.
