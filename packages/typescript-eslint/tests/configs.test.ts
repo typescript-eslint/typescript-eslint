@@ -8,12 +8,12 @@ import plugin from '../src/index';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
-  .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
+  .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
   .map(
     ([ruleName, rule]) =>
       [
         `${RULE_NAME_PREFIX}${ruleName}`,
-        typeof rule.meta.docs?.extendsBaseRule === 'string'
+        typeof rule.meta.docs.extendsBaseRule === 'string'
           ? rule.meta.docs.extendsBaseRule
           : ruleName,
       ] as const,
