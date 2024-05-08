@@ -10,6 +10,9 @@ tags: [breaking changes, typescript-eslint, v7, v8]
 title: Announcing typescript-eslint v8 Beta
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
 We've been working on a set of breaking changes and general features that we're excited to get in front of users soon.
 And now, we're excited to say that typescript-eslint v8 is ready for public beta testing! 🎉
@@ -21,7 +24,7 @@ Our plan for typescript-eslint v8 is to:
 3. Release a stable version summer of 2024
 
 Nothing mentioned in this blog post is set in stone.
-If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v8` channel!
+If you feel passionately about any of the choices we've made here —positively or negatively— then do let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v8` channel!
 
 <!--truncate-->
 
@@ -40,15 +43,28 @@ To use v8 specifically, see the following section for an updated install command
 
 If you already use typescript-eslint, you'll need to first replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with `@rc-v8` versions:
 
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```shell
+npm typescript-eslint@rc-v8 --save-dev
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
 ```shell
 npm i @typescript-eslint/eslint-plugin@rc-v8 @typescript-eslint/parser@rc-v8 --save-dev
 ```
+
+</TabItem>
+</Tabs>
 
 We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#reworked-configuration-names) — especially if it's been a while since you've reworked your linter config.
 
 ## User-Facing Changes
 
-These are the changes that users of typescript-eslint -generally, any developer running ESLint on TypeScript code- should pay attention to when upgrading typescript-eslint from v7 to v8.
+These are the changes that users of typescript-eslint —generally, any developer running ESLint on TypeScript code— should pay attention to when upgrading typescript-eslint from v7 to v8.
 
 > ⏳ indicates a change that has been scheduled for v8 but not yet released.
 > We'll update this blog post as the corresponding pull requests land.
@@ -124,10 +140,11 @@ Doing so should make it harder to accidentally configure different type informat
 
 We're thrilled to have this option promoted to stable in v8.
 We'll soon release a [dedicated `parserOptions` blog post](https://github.com/typescript-eslint/typescript-eslint/pull/8031) walking through the new option in more details.
+🚀
 
 ### Updated Configuration Rules
 
-Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations - and with which options.
+Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurationsg and with which options.
 Because this release also includes a reworking of the configurations themselves, the list of changes is too large to put in this blog post.
 Instead see the table in [Changes to configurations for 8.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/8914) for a full list of the changes.
 
@@ -139,8 +156,8 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
 1. Remove all your rules configurations
 2. Extend from the preset configs that make sense for you
 3. Run ESLint on your project
-4. In your ESLint configuration, turn off any rules creating errors that don't make sense for your project - with comments explaining why
-5. In your ESLint configuration and/or with inline `eslint-disable` comments, turn off any rules creating too many errors for you to fix - with _"TODO"_ comments linking to tracking issues/tickets to re-enable them
+4. In your ESLint configuration, turn off any rules creating errors that don't make sense for your project — with comments explaining why
+5. In your ESLint configuration and/or with inline `eslint-disable` comments, turn off any rules creating too many errors for you to fix — with _"TODO"_ comments linking to tracking issues/tickets to re-enable them
 
 :::
 
@@ -191,7 +208,7 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
 ### ⏳ Custom Rule `meta.docs` Types
 
 `@typescript-eslint/utils` has long exported a [`RuleCreator` utility](https://typescript-eslint.io/developers/custom-rules#rulecreator) for making custom well-typed custom ESLint rules.
-That `RuleCreator` is used internally by `@typescript-eslint/eslint-plugin` - and in fact, up through typescript-eslint v7, it hardcoded the same types for rules' `meta.docs` as `@typescript-eslint/eslint-plugin`!
+That `RuleCreator` is used internally by `@typescript-eslint/eslint-plugin` — and in fact, up through typescript-eslint v7, it hardcoded the same types for rules' `meta.docs` as `@typescript-eslint/eslint-plugin`!
 
 In typescript-eslint v8, we've made two changes to `RuleCreator`:
 
