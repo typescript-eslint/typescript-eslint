@@ -185,8 +185,19 @@ Several rules were changed in significant enough ways to be considered breaking 
 
 - ⏳ [Enhancement: Error if configuration options aren't provided as expected](https://github.com/typescript-eslint/typescript-eslint/issues/6403)
 - [fix(typescript-estree): enable dot globs for project by default](https://github.com/typescript-eslint/typescript-eslint/pull/8818)
+  - This will cause any `parserOptions.project` globs to match dot (`.`) directories.
+    If you don't want to match them then use a more specific set of globs, or switch to `parserOptions.projectService`.
 - [feat(typescript-estree): remove slow deprecated and isolated programs](https://github.com/typescript-eslint/typescript-eslint/pull/8834)
+  - If you were still using `parserOptions.DEPRECATED__createDefaultProgram`, switch to `parserOptions.projectService` or `parserOptions.project`.
 - [feat(typescript-estree): rename automaticSingleRunInference to disallowAutomaticSingleRunInference](https://github.com/typescript-eslint/typescript-eslint/pull/8922)
+  - We've updated the default to be an opt-out - meaning you no longer need to enable it:
+    ```js
+    parserOptions: {
+      // Remove this line
+      automaticSingleRunInference: true,
+      // ...
+    }
+    ```
 - [chore: bump minimum versions for v8](https://github.com/typescript-eslint/typescript-eslint/pull/8973)
   - ESLint support range was changed from `^8.56.0` to `^8.57.0`
   - Node.js support range was changed from `^18.18.0 || >=20.0.0` to `^18.18.0 || ^20.9.0 || >=21.1.0`
