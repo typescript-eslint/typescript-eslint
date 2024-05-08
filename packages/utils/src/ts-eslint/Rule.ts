@@ -664,7 +664,7 @@ export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
  * @see {@link LooseParserModule}, {@link LooseProcessorModule}
  */
 export type LooseRuleDefinition =
-  // TODO - ESLint v9 will remove support for RuleCreateFunction
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
   | LooseRuleCreateFunction
   | {
       meta?: object | undefined;
