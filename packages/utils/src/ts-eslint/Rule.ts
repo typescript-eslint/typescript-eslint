@@ -663,10 +663,13 @@ export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
  *
  * @see {@link LooseParserModule}, {@link LooseProcessorModule}
  */
-export interface LooseRuleDefinition {
-  meta?: object | undefined;
-  create: LooseRuleCreateFunction;
-}
+export type LooseRuleDefinition =
+  // TODO - ESLint v9 will remove support for RuleCreateFunction
+  | LooseRuleCreateFunction
+  | {
+      meta?: object | undefined;
+      create: LooseRuleCreateFunction;
+    };
 /*
 eslint-disable-next-line @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and
@@ -681,4 +684,13 @@ export type LooseRuleCreateFunction = (context: any) => Record<
   be passed to configs
   */
   Function | undefined
+>;
+
+export type RuleCreateFunction<
+  MessageIds extends string = never,
+  Options extends readonly unknown[] = unknown[],
+> = (context: Readonly<RuleContext<MessageIds, Options>>) => RuleListener;
+export type AnyRuleCreateFunction = RuleCreateFunction<
+  string,
+  readonly unknown[]
 >;
