@@ -13,7 +13,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "string"
       },
       "allowObjectTypes": {
-        "enum": ["always", "never"],
+        "enum": ["always", "in-type-alias-with-name", "never"],
+        "type": "string"
+      },
+      "allowWithName": {
         "type": "string"
       }
     },
@@ -27,7 +30,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     allowInterfaces?: 'always' | 'never' | 'with-single-extends';
-    allowObjectTypes?: 'always' | 'never';
+    allowObjectTypes?: 'always' | 'in-type-alias-with-name' | 'never';
+    allowWithName?: string;
   },
 ];
 "
