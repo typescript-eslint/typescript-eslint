@@ -254,27 +254,39 @@ const redirects: PluginRedirectOptions = {
     },
     {
       from: '/linting/troubleshooting',
-      to: '/troubleshooting',
+      to: '/troubleshooting/faqs',
     },
     {
       from: '/linting/troubleshooting/formatting',
-      to: '/troubleshooting/formatting',
+      to: '/troubleshooting/faqs/formatting',
     },
     {
       from: '/linting/troubleshooting/typed-linting/Performance-troubleshooting',
-      to: '/troubleshooting/typed-linting/Performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
     },
     {
       from: '/linting/troubleshooting/tslint',
-      to: '/troubleshooting/tslint',
+      to: '/troubleshooting/faqs/tslint',
     },
     {
       from: '/linting/typed-linting',
       to: '/getting-started/typed-linting',
     },
     {
+      from: '/troubleshooting',
+      to: '/troubleshooting/faqs',
+    },
+    {
+      from: '/troubleshooting/performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
+    },
+    {
       from: '/linting/troubleshooting/typed-linting/Monorepos',
-      to: '/troubleshooting/typed-linting/Monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
+    },
+    {
+      from: '/troubleshooting/typed-linting/Monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
     },
   ],
 };
