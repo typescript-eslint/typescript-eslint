@@ -113,6 +113,7 @@ export default createRule<Options, MessageIds>({
               messageId: 'noEmptyInterface',
               ...(!mergedWithClassDeclaration && {
                 suggest: ['object', 'unknown'].map(replacement => ({
+                  data: { replacement },
                   fix(fixer): TSESLint.RuleFix {
                     const id = context.sourceCode.getText(node.id);
                     const typeParam = node.typeParameters

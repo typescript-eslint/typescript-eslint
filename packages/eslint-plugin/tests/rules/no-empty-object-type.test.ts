@@ -81,10 +81,21 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
-          data: { option: 'allowInterfaces' },
-          messageId: 'noEmptyInterface',
-          line: 1,
           column: 11,
+          data: { option: 'allowInterfaces' },
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = object`,
+            },
+            {
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = unknown`,
+            },
+          ],
         },
       ],
     },
@@ -92,10 +103,21 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
-          data: { option: 'allowInterfaces' },
-          messageId: 'noEmptyInterface',
-          line: 1,
           column: 11,
+          data: { option: 'allowInterfaces' },
+          line: 1,
+          messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = object`,
+            },
+            {
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = unknown`,
+            },
+          ],
         },
       ],
       options: [{ allowInterfaces: 'never' }],
@@ -112,9 +134,9 @@ class Other {}
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 6,
           column: 11,
+          line: 6,
+          messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
               messageId: 'replaceEmptyInterfaceWithSuper',
@@ -144,9 +166,9 @@ class Derived {}
       `,
       errors: [
         {
-          messageId: 'noEmptyInterfaceWithSuper',
-          line: 6,
           column: 11,
+          line: 6,
+          messageId: 'noEmptyInterfaceWithSuper',
         },
       ],
     },
@@ -550,6 +572,17 @@ let value: unknown;
           endColumn: 15,
           endLine: 1,
           messageId: 'noEmptyInterface',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = object`,
+            },
+            {
+              messageId: 'replaceEmptyInterface',
+              output: `type Base = unknown`,
+            },
+          ],
         },
       ],
       options: [{ allowWithName: '.*Props$' }],
