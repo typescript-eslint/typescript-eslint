@@ -11,6 +11,7 @@ export type Options = [
   {
     allowInterfaces?: AllowInterfaces;
     allowObjectTypes?: AllowObjectTypes;
+    allowInTypeAliasWithName?: boolean;
   },
 ];
 
@@ -59,7 +60,7 @@ export default createRule<Options, MessageIds>({
             type: 'string',
           },
           allowObjectTypes: {
-            enum: ['always', 'never'],
+            enum: ['always', 'in-type-alias-with-name', 'never'],
             type: 'string',
           },
         },
@@ -70,9 +71,13 @@ export default createRule<Options, MessageIds>({
     {
       allowInterfaces: 'never',
       allowObjectTypes: 'never',
+      allowInTypeAliasWithName: false,
     },
   ],
-  create(context, [{ allowInterfaces, allowObjectTypes }]) {
+  create(
+    context,
+    [{ allowInterfaces, allowInTypeAliasWithName, allowObjectTypes }],
+  ) {
     return {
       ...(allowInterfaces !== 'always' && {
         TSInterfaceDeclaration(node): void {
@@ -148,7 +153,9 @@ export default createRule<Options, MessageIds>({
         TSTypeLiteral(node): void {
           if (
             node.members.length ||
-            node.parent.type === AST_NODE_TYPES.TSIntersectionType
+            node.parent.type === AST_NODE_TYPES.TSIntersectionType ||
+            (allowInTypeAliasWithName &&
+              node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration)
           ) {
             return;
           }

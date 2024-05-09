@@ -59,6 +59,10 @@ class Derived {}
       code: 'type Base = {};',
       options: [{ allowObjectTypes: 'always' }],
     },
+    {
+      code: 'type Base = {};',
+      options: [{ allowInTypeAliasWithName: true }],
+    },
   ],
   invalid: [
     {
@@ -498,6 +502,19 @@ let value: unknown;
           ],
         },
       ],
+    },
+    {
+      code: 'type Base = {} | null;',
+      errors: [
+        {
+          column: 13,
+          line: 1,
+          endColumn: 15,
+          endLine: 1,
+          messageId: 'noEmptyObject',
+        },
+      ],
+      options: [{ allowInTypeAliasWithName: true }],
     },
   ],
 });
