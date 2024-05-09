@@ -16,7 +16,7 @@ exports[`recommended-does-not-require-program eslint should work successfully 1`
         "line": 1,
         "message": "'foo' is assigned a value but never used.",
         "messageId": "unusedVar",
-        "nodeType": null,
+        "nodeType": "Identifier",
         "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 2,
       },
