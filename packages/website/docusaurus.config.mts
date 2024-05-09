@@ -277,6 +277,14 @@ const redirects: PluginRedirectOptions = {
       to: '/troubleshooting/faqs',
     },
     {
+      from: '/troubleshooting/formatting',
+      to: '/troubleshooting/faqs/formatting',
+    },
+    {
+      from: '/troubleshooting/tslint',
+      to: '/troubleshooting/faqs/tslint',
+    },
+    {
       from: '/troubleshooting/performance-troubleshooting',
       to: '/troubleshooting/typed-linting/performance',
     },
