@@ -433,9 +433,6 @@ export default createRule<Options, MessageIds>({
             };
 
             context.report({
-              node: writeReferences.length
-                ? writeReferences[writeReferences.length - 1].identifier
-                : unusedVar.identifiers[0],
               loc,
               messageId: 'unusedVar',
               data: unusedVar.references.some(ref => ref.isWrite())
