@@ -1137,7 +1137,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment: {
-        /// eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line deprecation/deprecation
         const { questionToken, exclamationToken } = node;
 
         if (questionToken) {
@@ -1167,7 +1167,7 @@ export class Converter {
       }
 
       case SyntaxKind.ShorthandPropertyAssignment: {
-        /// eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line deprecation/deprecation
         const { modifiers, questionToken, exclamationToken } = node;
 
         if (modifiers) {
@@ -2688,7 +2688,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
-        /// eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line deprecation/deprecation
         const { initializer } = node;
         if (initializer) {
           this.#throwError(
@@ -2737,7 +2737,7 @@ export class Converter {
       }
 
       case SyntaxKind.FunctionType: {
-        /// eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line deprecation/deprecation
         const { modifiers } = node;
         if (modifiers) {
           this.#throwError(

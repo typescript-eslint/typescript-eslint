@@ -34,7 +34,7 @@ const useMediaQuery = (mediaQuery: string): boolean => {
         mediaQueryList.removeEventListener('change', documentChangeHandler);
       } catch {
         // Safari isn't supporting mediaQueryList.removeEventListener
-        /// eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line deprecation/deprecation
         mediaQueryList.removeListener(documentChangeHandler);
       }
     };
