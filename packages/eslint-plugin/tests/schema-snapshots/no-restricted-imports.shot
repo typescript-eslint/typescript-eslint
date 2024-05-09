@@ -15,12 +15,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           {
             "additionalProperties": false,
             "properties": {
-              "allowImportNames": {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
               "allowTypeImports": {
                 "description": "Disallow value imports, but allow type-only imports.",
                 "type": "boolean"
@@ -62,12 +56,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                   {
                     "additionalProperties": false,
                     "properties": {
-                      "allowImportNames": {
-                        "items": {
-                          "type": "string"
-                        },
-                        "type": "array"
-                      },
                       "allowTypeImports": {
                         "description": "Disallow value imports, but allow type-only imports.",
                         "type": "boolean"
@@ -107,17 +95,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                   "items": {
                     "additionalProperties": false,
                     "properties": {
-                      "allowImportNamePattern": {
-                        "type": "string"
-                      },
-                      "allowImportNames": {
-                        "items": {
-                          "type": "string"
-                        },
-                        "minItems": 1,
-                        "type": "array",
-                        "uniqueItems": true
-                      },
                       "allowTypeImports": {
                         "description": "Disallow value imports, but allow type-only imports.",
                         "type": "boolean"
@@ -172,7 +149,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options =
   | (
       | {
-          allowImportNames?: string[];
           /** Disallow value imports, but allow type-only imports. */
           allowTypeImports?: boolean;
           importNames?: string[];
@@ -186,7 +162,6 @@ type Options =
       {
         paths?: (
           | {
-              allowImportNames?: string[];
               /** Disallow value imports, but allow type-only imports. */
               allowTypeImports?: boolean;
               importNames?: string[];
@@ -197,8 +172,6 @@ type Options =
         )[];
         patterns?:
           | {
-              allowImportNamePattern?: string;
-              allowImportNames?: [string, ...string[]];
               /** Disallow value imports, but allow type-only imports. */
               allowTypeImports?: boolean;
               caseSensitive?: boolean;
