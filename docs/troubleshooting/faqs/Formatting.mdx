@@ -26,7 +26,7 @@ Additionally linters typically run each rule isolated from one another. This has
 - any two lint rules can't share config meaning one lint rule's fixer might introduce a violation of another lint rule's fixer (eg one lint rule might use the incorrect indentation character).
 - lint rule fixers can conflict (apply to the same code range), forcing the linter to perform an additional cycle to attempt to apply a fixer to a clean set of code.
 
-These problems cause a linter to be much slower - which can be much more of a problem in projects that enable [typed linting](../getting-started/Typed_Linting.mdx).
+These problems cause a linter to be much slower - which can be much more of a problem in projects that enable [typed linting](../../getting-started/Typed_Linting.mdx).
 Formatting with a linter is also much less consistent and less able to handle edge-cases than a purpose-built formatter.
 The maintenance cost of formatting-related lint rules is typically very high as a result.
 
@@ -94,7 +94,7 @@ Note that even if you use a formatter other than `prettier`, you can use `eslint
 - The _config_ only disables rules from core and other plugins.
 - The _plugin_ loads and runs Prettier inside ESLint.
 
-Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](./typed-linting/Performance.mdx#eslint-plugin-prettier).
+Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](../typed-linting/Performance.mdx#eslint-plugin-prettier).
 However, because it doesn't re-implement Prettier's logic in ESLint, the caveats mentioned about using linters for formatting don't apply to `eslint-plugin-prettier` either.
 
 ## ESLint Core and Formatting

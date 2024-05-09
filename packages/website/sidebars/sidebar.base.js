@@ -30,8 +30,20 @@ module.exports = {
     {
       collapsible: false,
       items: [
-        'troubleshooting/faqs',
-        'troubleshooting/frameworks',
+        {
+          collapsed: false,
+          collapsible: false,
+          items: [
+            'troubleshooting/faqs/formatting',
+            'troubleshooting/faqs/tslint',
+          ],
+          label: 'FAQs',
+          link: {
+            id: 'troubleshooting/faqs',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         {
           collapsed: true,
           collapsible: true,
@@ -47,8 +59,6 @@ module.exports = {
           type: 'category',
         },
         'troubleshooting/working-with-javascript',
-        'troubleshooting/formatting',
-        'troubleshooting/tslint',
       ],
       label: 'Troubleshooting',
       link: {
