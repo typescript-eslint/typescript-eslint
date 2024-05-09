@@ -3,8 +3,6 @@ id: releases
 title: Releases
 ---
 
-<!-- TODO: update references to lerna to be `nx release instead` -->
-
 [Users > Releases](../users/Releases.mdx) describes how our automatic releases are done.
 There is generally no maintenance activity we need to take for the weekly releases.
 
@@ -19,26 +17,69 @@ Per [Users > Releases > Major Releases](../users/Releases.mdx#major-releases), w
 1. Create a milestone by the name of the release [example: [Milestone 6.0.0](https://github.com/typescript-eslint/typescript-eslint/milestone/8)].
 1. If an issue for changes to recommended rule configs doesn't yet exist, create one [example: [Changes to the `recommended` sets for 5.0.0](https://github.com/typescript-eslint/typescript-eslint/issues/5900)].
 1. Add any breaking changes intended for the release to that milestone.
+1. Search for source code comments (excluding `CHANGELOG.md` files) that mention deprecated code and/or a todo for the new major version, and create corresponding issues in that milestone.
+   - For example, for a new major version 8, searches might include:
+     - `/deprecated|todo/i`
+     - `/v8/i`
+     - `/todo.*v?8/i`
+1. Create an issue to raise the minimum versions of dependencies [example: [Enhancement: Raise minimum versions of dependencies for v8](https://github.com/typescript-eslint/typescript-eslint/issues/8929)]
 1. Create two new branches off `main` in the project repository (not a personal fork):
    - `v${major}`
    - `v${major}-canary-auto-release`
-1. Raise a PR from `v${major}-canary-auto-release` to `main` modifying the [`ci.yml` workflow](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml) [example: [chore: add auto-canary release for v6](https://github.com/typescript-eslint/typescript-eslint/pull/5883)]:
-   - Under `push:` > `branches:` at the beginning of the file, add an `- v${major}` list item.
-   - Add a `publish_canary_version_v${major}` step the same as `publish_canary_version` except:
-     - Change the `if` condition's branch check to: `if: github.ref == 'refs/heads/v${major}'`.
-     - Its publish command should be `npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}`.
+1. Raise a PR from `v${major}-canary-auto-release` to `main` modifying [`ci.yml` workflow](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml) and README.md [example: [chore: add auto-canary release for v6](https://github.com/typescript-eslint/typescript-eslint/pull/5883)]:
+   - `ci.yml`:
+     - Under `push:` > `branches:` at the beginning of the file, add a `- v${major}` list item.
+     - Add a `publish_canary_version_v${major}` step the same as `publish_canary_version` except:
+       - Change the `if` condition's branch check to: `if: github.ref == 'refs/heads/v${major}'`.
+       - Its publish command should be `npx nx release publish --tag rc-v${major} --verbose`.
+   - `README.md`:
+     - Add a link to a `v${major}--typescript-eslint.netlify.app` preview deploy environment on Netlify that you create for the branch.
    - Merge this into `main` once reviewed and rebase the `v${major}` branch.
+
+#### 1a. Shared Config Changes
+
+Major versions are our only real chance to change the values in our stable `recommended*` and `stylistic*` configs.
+In parallel to the general PR flow of the major version:
+
+1. Create a `v${major}` channel on the typescript-eslint Discord
+1. Create a discussion with a table summarizing any proposed rule changes [example: [Changes to configurations for 6.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/6014)]
+1. Post that discussion on the typescript-eslint Discord and on social media
+1. Once the greater of (1 month) and (discussion settling down) has passed, file an issue and send a corresponding PR to the `v${major}` branch making the corresponding changes [example: [Configs: Apply changes to config presets for v6](https://github.com/typescript-eslint/typescript-eslint/issues/6759)]
+
+#### 1b. Voluntary Community Testing
+
+In parallel to the shared config changes work, make sure to test out the beta version on popular community projects willing to try it out.
+
+1. Create a pinned issue offering to try out the new version's beta for consumers [example: [Try out v6 beta on various important community repos](https://github.com/typescript-eslint/typescript-eslint/issues/6760)]
+   - Ask each community project if they'd be interested in trying out the new version, such as in their Discord or on their issue tracker.
+   - Each community project that's indicated willingness to receive a PR should have one.
+1. Once the proposed _Shared Config Changes_ are merged into the `v${major}` branch, send a draft PR to each project with the new beta version.
+
+#### 1c. Post Community Testing Config Touchups
+
+There may be additional changes to preset configs discovered as part of the community testing.
+If that's the case:
+
+1. Create a discussion describing the suggested changes [example: [Configs: Last round of "final" changes to configs for v6](https://github.com/typescript-eslint/typescript-eslint/discussions/7130)].
+1. Post this new discussion in the previous config changes one, in the typescript-eslint Discord, and on social media.
+1. Once the greater of (2 weeks) and (discussion settling down) has passed
+
+If possible, we prefer to avoid making a second round of config changes.
+These should only be done for feedback that consistently comes up in community testing.
 
 ### 2. Merging Breaking Changes
 
 1. Send a PR from `v${major}` to `main` [example: [v6.0.0](https://github.com/typescript-eslint/typescript-eslint/pull/5886)].
 1. Change all [breaking change PRs](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+is%3Aopen+label%3A%22breaking+change%22) to target the `v${major}` branch.
    - To signify these changes as breaking, the first line of the PR description must read as `BREAKING CHANGE:`, and second line should briefly summarize the changes.
-   - It is important to note that when merged the commit message must also include `BREAKING CHANGE:` as the first line in order for lerna to recognize it as a breaking change in the release notes. If you miss this it just means more manual work when writing the release documentation.
+   - It is important to note that when merged the commit message must also include `BREAKING CHANGE:` as the first line in order for `nx release` to recognize it as a breaking change in the release notes. If you miss this it just means more manual work when writing the release documentation.
+1. Write and share out a blog post announcing the new beta [example: [Docs: Blog post describing changes & migration strategy for v5->v6](https://github.com/typescript-eslint/typescript-eslint/issues/6466)].
+   - Keep this post up-to-date as changes land in the `v${major}` branch.
 1. Wait until all required PRs have been merged
+1. Write a blog post announcing the new release [example: [Docs: Release blog post for v6](https://github.com/typescript-eslint/typescript-eslint/issues/7153)], and land it in the `v${major}` branch.
 1. Let the release wait for **at least 1 week** to allow time for early adopters to help test it and discuss the changes.
    - Promote it on the [`@tseslint`](https://twitter.com/tseslint) twitter to get some additional attention.
-1. Once discussions have settled, rebase merge the PR on top of `main`.
+1. Once discussions have settled, traditional merge commit the PR on top of `main` by temporarily enabling that merge setting for the repo.
 
 :::note
 _Non_-breaking changes can be merged to `main` or the major branch.
@@ -48,8 +89,8 @@ They don't need any special treatment.
 ### 3. Releasing the Version
 
 1. Discuss with the maintainers to be ready for an [out-of-band](#out-of-band-releases) release. Doing this manually helps ensure someone is on-hand to action any issues that might arise from the major release.
-1. Prepare the release notes. Lerna will automatically generate the release notes on GitHub, however this will be disorganized and unhelpful for users. We need to reorganize the release notes so that breaking changes are placed at the top to make them most visible. If any migrations are required, we must list the steps to make it easy for users.
-   - Example release notes: [`v5.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v5.0.0), [`v4.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v4.0.0), [`v3.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v3.0.0)
+1. Prepare the release notes. `nx release` will automatically generate the release notes on GitHub, however this will be disorganized and unhelpful for users. We need to reorganize the release notes so that breaking changes are placed at the top to make them most visible. If any migrations are required, we must list the steps to make it easy for users.
+   - Example release notes: [`v6.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v6.0.0), [`v5.0.0`](https://github.com/typescript-eslint/typescript-eslint/releases/tag/v5.0.0)
 1. Finally, tweet the release on the `@tseslint` twitter with a link to the GitHub release. Make sure you include additional information about the highlights of the release!
 
 ## Out-of-Band Releases

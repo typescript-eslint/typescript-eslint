@@ -214,13 +214,16 @@ export class RuleTester extends TestFramework {
       if (test.parser === TYPESCRIPT_ESLINT_PARSER) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
-      if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
-      }
-      return test;
+      return {
+        ...test,
+        filename: test.filename || getFilename(test.parserOptions),
+        parserOptions: {
+          // Re-running simulates --fix mode, which implies an isolated program
+          // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+          disallowAutomaticSingleRunInference: true,
+          ...test.parserOptions,
+        },
+      };
     };
 
     const normalizedTests = {
@@ -703,6 +706,23 @@ export class RuleTester extends TestFramework {
 
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
+
+    for (const message of messages) {
+      if (hasOwnProperty(message, 'suggestions')) {
+        const seenMessageIndices = new Map<string, number>();
+
+        for (let i = 0; i < message.suggestions.length; i += 1) {
+          const suggestionMessage = message.suggestions[i].desc;
+          const previous = seenMessageIndices.get(suggestionMessage);
+
+          assert.ok(
+            !seenMessageIndices.has(suggestionMessage),
+            `Suggestion message '${suggestionMessage}' reported from suggestion ${i} was previously reported by suggestion ${previous}. Suggestion messages should be unique within an error.`,
+          );
+          seenMessageIndices.set(suggestionMessage, i);
+        }
+      }
+    }
 
     if (typeof item.errors === 'number') {
       if (item.errors === 0) {

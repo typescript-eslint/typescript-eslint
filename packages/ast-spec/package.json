@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "7.7.1",
+  "version": "7.8.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -9,7 +9,7 @@
     "estree"
   ],
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "files": [
     "dist",

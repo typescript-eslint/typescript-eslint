@@ -391,6 +391,7 @@ describe('Validating rule docs', () => {
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
+                disallowAutomaticSingleRunInference: true,
                 tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
               },
@@ -472,7 +473,7 @@ describe('Validating rule metadata', () => {
     describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
-        // there is no way to access this field but its used only in generation of docs url
+        // there is no way to access this field but it's used only in generation of docs url
         expect(rule.meta.docs?.url).toBe(
           `https://typescript-eslint.io/rules/${ruleName}`,
         );

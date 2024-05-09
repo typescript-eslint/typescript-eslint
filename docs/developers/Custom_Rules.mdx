@@ -99,6 +99,32 @@ export const rule = createRule<Options, MessageIds>({
 });
 ```
 
+#### Extra Rule Docs Types
+
+By default, rule `meta.docs` is allowed to contain only `description` and `url` as described in [ESLint's Custom Rules > Rule Structure docs](https://eslint.org/docs/latest/extend/custom-rules#rule-structure).
+Additional docs properties may be added as a type argument to `ESLintUtils.RuleCreator`:
+
+```ts
+interface MyPluginDocs {
+  recommended: boolean;
+}
+
+const createRule = ESLintUtils.RuleCreator<MyPluginDocs>(
+  name => `https://example.com/rule/${name}`,
+);
+
+createRule({
+  // ...
+  meta: {
+    docs: {
+      description: '...',
+      recommended: true,
+    },
+    // ...
+  },
+});
+```
+
 ### Undocumented Rules
 
 Although it is generally not recommended to create custom rules without documentation, if you are sure you want to do this you can use the `ESLintUtils.RuleCreator.withoutDocs` function to directly create a rule.

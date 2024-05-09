@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "7.7.1",
+  "version": "7.8.0",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
@@ -17,7 +17,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -48,19 +48,19 @@
   },
   "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "7.7.1",
-    "@typescript-eslint/utils": "7.7.1",
+    "@typescript-eslint/typescript-estree": "7.8.0",
+    "@typescript-eslint/utils": "7.8.0",
     "ajv": "^6.12.6",
     "lodash.merge": "4.6.2",
     "semver": "^7.6.0"
   },
   "peerDependencies": {
     "@eslint/eslintrc": ">=2",
-    "eslint": "^8.56.0"
+    "eslint": "^8.57.0"
   },
   "devDependencies": {
     "@types/lodash.merge": "4.6.9",
-    "@typescript-eslint/parser": "7.7.1",
+    "@typescript-eslint/parser": "7.8.0",
     "chai": "^4.4.1",
     "mocha": "^10.4.0",
     "sinon": "^16.1.3",
