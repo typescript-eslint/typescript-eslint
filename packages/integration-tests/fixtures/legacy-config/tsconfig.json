@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "noEmit": true,
-    "strict": true
-  },
-  "include": ["file.ts"]
-}

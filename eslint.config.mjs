@@ -95,8 +95,7 @@ export default tseslint.config(
     },
     rules: {
       // make sure we're not leveraging any deprecated APIs
-      // TODO: Bring this back in once it supports ESLint 9
-      // 'deprecation/deprecation': 'error',
+      'deprecation/deprecation': 'error',
 
       // TODO(#7130): Investigate changing these in or removing these from presets
       '@typescript-eslint/no-confusing-void-expression': 'off',
@@ -240,13 +239,11 @@ export default tseslint.config(
       // disallow non-import statements appearing before import statements
       'import/first': 'error',
       // Require a newline after the last import/require in a group
-      // TODO: Bring this back in once it supports ESLint 9
-      // 'import/newline-after-import': 'error',
+      'import/newline-after-import': 'error',
       // Forbid import of modules using absolute paths
       'import/no-absolute-path': 'error',
       // disallow AMD require/define
-      // TODO: Bring this back in once it supports ESLint 9
-      // 'import/no-amd': 'error',
+      'import/no-amd': 'error',
       // forbid default exports - we want to standardize on named exports so that imported names are consistent
       'import/no-default-export': 'error',
       // disallow imports from duplicate paths
@@ -261,8 +258,7 @@ export default tseslint.config(
         },
       ],
       // Forbid mutable exports
-      // TODO: Bring this back in once it supports ESLint 9
-      // 'import/no-mutable-exports': 'error',
+      'import/no-mutable-exports': 'error',
       // Prevent importing the default as if it were named
       'import/no-named-default': 'error',
       // Prohibit named exports
@@ -502,12 +498,8 @@ export default tseslint.config(
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     extends: [
       ...compat.config(jsxA11yPlugin.configs.recommended),
-      // TODO: Bring this back in once it supports ESLint 9
-      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
-      // ...compat.config(reactPlugin.configs.recommended),
-      // TODO: Bring this back in once it supports ESLint 9
-      // https://github.com/facebook/react/issues/28313
-      // ...compat.config(reactHooksPlugin.configs.recommended),
+      ...compat.config(reactPlugin.configs.recommended),
+      ...compat.config(reactHooksPlugin.configs.recommended),
     ],
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',

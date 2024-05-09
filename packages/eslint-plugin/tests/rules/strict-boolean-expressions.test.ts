@@ -1,5 +1,4 @@
-// TODO: Bring this back in once it supports ESLint 9
-/* (eslint-disable) deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'path';

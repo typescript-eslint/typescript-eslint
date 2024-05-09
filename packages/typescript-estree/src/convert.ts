@@ -1137,8 +1137,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment: {
-        // TODO: Bring this back in once it supports ESLint 9
-        // (eslint-disable-next-line) deprecation/deprecation
+        /// eslint-disable-next-line deprecation/deprecation
         const { questionToken, exclamationToken } = node;
 
         if (questionToken) {
@@ -1168,8 +1167,7 @@ export class Converter {
       }
 
       case SyntaxKind.ShorthandPropertyAssignment: {
-        // TODO: Bring this back in once it supports ESLint 9
-        // (eslint-disable-next-line) deprecation/deprecation
+        /// eslint-disable-next-line deprecation/deprecation
         const { modifiers, questionToken, exclamationToken } = node;
 
         if (modifiers) {
@@ -1891,8 +1889,7 @@ export class Converter {
               specifiers: [],
               importKind: 'value',
               attributes: this.convertImportAttributes(
-                // TODO: Bring this back in once it supports ESLint 9
-                // (eslint-disable-next-line) deprecation/deprecation -- TS <5.3
+                // eslint-disable-next-line deprecation/deprecation -- TS <5.3
                 node.attributes ?? node.assertClause,
               ),
             },
@@ -1973,8 +1970,7 @@ export class Converter {
                 exportKind: node.isTypeOnly ? 'type' : 'value',
                 declaration: null,
                 attributes: this.convertImportAttributes(
-                  // TODO: Bring this back in once it supports ESLint 9
-                  // (eslint-disable-next-line) deprecation/deprecation -- TS <5.3
+                  // eslint-disable-next-line deprecation/deprecation -- TS <5.3
                   node.attributes ?? node.assertClause,
                 ),
               },
@@ -1997,8 +1993,7 @@ export class Converter {
                   ? this.convertChild(node.exportClause.name)
                   : null,
               attributes: this.convertImportAttributes(
-                // TODO: Bring this back in once it supports ESLint 9
-                // (eslint-disable-next-line) deprecation/deprecation -- TS <5.3
+                // eslint-disable-next-line deprecation/deprecation -- TS <5.3
                 node.attributes ?? node.assertClause,
               ),
             },
@@ -2693,8 +2688,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
-        // TODO: Bring this back in once it supports ESLint 9
-        // (eslint-disable-next-line) deprecation/deprecation
+        /// eslint-disable-next-line deprecation/deprecation
         const { initializer } = node;
         if (initializer) {
           this.#throwError(
@@ -2743,8 +2737,7 @@ export class Converter {
       }
 
       case SyntaxKind.FunctionType: {
-        // TODO: Bring this back in once it supports ESLint 9
-        // (eslint-disable-next-line) deprecation/deprecation
+        /// eslint-disable-next-line deprecation/deprecation
         const { modifiers } = node;
         if (modifiers) {
           this.#throwError(
@@ -3221,8 +3214,7 @@ export class Converter {
         });
       }
 
-      // TODO: Bring this back in once it supports ESLint 9
-      // (eslint-disable-next-line) deprecation/deprecation -- required for backwards-compatibility
+      // eslint-disable-next-line deprecation/deprecation -- required for backwards-compatibility
       case SyntaxKind.AssertEntry:
       case SyntaxKind.ImportAttribute: {
         return this.createNode<TSESTree.ImportAttribute>(node, {

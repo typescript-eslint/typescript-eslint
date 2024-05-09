@@ -42,6 +42,5 @@ export type TypeScriptESLintRules = Record<
   RuleModule<string, unknown[]>
 >;
 declare const rules: TypeScriptESLintRules;
-// TODO: Bring this back in once it supports ESLint 9
-// (eslint-disable-next-line) import/no-default-export
+// eslint-disable-next-line import/no-default-export
 export default rules;

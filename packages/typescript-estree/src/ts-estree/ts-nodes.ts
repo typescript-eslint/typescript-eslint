@@ -24,11 +24,9 @@ export type TSNode =
   | ts.Identifier
   | ts.ImportAttribute
   | ts.ImportAttributes
-  // TODO: Bring this back in once it supports ESLint 9
-  /* (eslint-disable-next-line) deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.AssertClause
-  // TODO: Bring this back in once it supports ESLint 9
-  /* (eslint-disable-next-line) deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.AssertEntry
   | ts.PrivateIdentifier
   | ts.QualifiedName
@@ -187,11 +185,9 @@ export type TSNode =
   | ts.ExportAssignment
   | ts.SourceFile
   | ts.Bundle
-  // TODO: Bring this back in once it supports ESLint 9
-  /* (eslint-disable-next-line) deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.InputFiles
-  // TODO: Bring this back in once it supports ESLint 9
-  /* (eslint-disable-next-line) deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.UnparsedSource
   | ts.JsonMinusNumericLiteral
   | ts.TemplateLiteralTypeNode

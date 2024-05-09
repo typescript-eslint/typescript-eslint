@@ -1,3 +1,3 @@
 import { eslintIntegrationTest } from '../tools/integration-test-base';
 
-eslintIntegrationTest(__filename, '*.ts', true);
+eslintIntegrationTest(__filename, '*.ts');

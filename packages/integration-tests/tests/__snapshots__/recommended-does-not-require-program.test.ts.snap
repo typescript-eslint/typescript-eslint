@@ -16,7 +16,7 @@ exports[`recommended-does-not-require-program eslint should work successfully 1`
         "line": 1,
         "message": "'foo' is assigned a value but never used.",
         "messageId": "unusedVar",
-        "nodeType": "Identifier",
+        "nodeType": null,
         "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 2,
       },
@@ -24,7 +24,16 @@ exports[`recommended-does-not-require-program eslint should work successfully 1`
     "output": "const foo: unknown = true;
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [],
+    "usedDeprecatedRules": [
+      {
+        "replacedBy": [],
+        "ruleId": "no-extra-semi",
+      },
+      {
+        "replacedBy": [],
+        "ruleId": "no-mixed-spaces-and-tabs",
+      },
+    ],
     "warningCount": 0,
   },
 ]

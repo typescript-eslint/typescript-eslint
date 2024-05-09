@@ -13,11 +13,9 @@ export function getModifiers(
   }
 
   if (isAtLeast48) {
-    // TODO: Bring this back in once it supports ESLint 9
-    // (eslint-disable-next-line) deprecation/deprecation -- this is safe as it's guarded
+    // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
     if (includeIllegalModifiers || ts.canHaveModifiers(node)) {
-      // TODO: Bring this back in once it supports ESLint 9
-      // (eslint-disable-next-line) deprecation/deprecation -- this is safe as it's guarded
+      // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
       const modifiers = ts.getModifiers(node as ts.HasModifiers);
       return modifiers ? Array.from(modifiers) : undefined;
     }
@@ -42,11 +40,9 @@ export function getDecorators(
   }
 
   if (isAtLeast48) {
-    // TODO: Bring this back in once it supports ESLint 9
-    // (eslint-disable-next-line) deprecation/deprecation -- this is safe as it's guarded
+    // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
     if (includeIllegalDecorators || ts.canHaveDecorators(node)) {
-      // TODO: Bring this back in once it supports ESLint 9
-      // (eslint-disable-next-line) deprecation/deprecation -- this is safe as it's guarded
+      // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
       const decorators = ts.getDecorators(node as ts.HasDecorators);
       return decorators ? Array.from(decorators) : undefined;
     }
