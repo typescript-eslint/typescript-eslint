@@ -299,7 +299,7 @@ export default tseslint.config(
     extends: [tseslint.configs.disableTypeChecked],
     rules: {
       // turn off other type-aware rules
-      // 'deprecation/deprecation': 'off',
+      'deprecation/deprecation': 'off',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
 
       // turn off rules that don't apply to JS code
@@ -504,15 +504,15 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
       'import/no-default-export': 'off',
-      // 'react/jsx-no-target-blank': 'off',
-      // 'react/no-unescaped-entities': 'off',
-      // 'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      'react/jsx-no-target-blank': 'off',
+      'react/no-unescaped-entities': 'off',
+      'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
     },
-    // settings: {
-    //   react: {
-    //     version: 'detect',
-    //   },
-    // },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
   },
   {
     files: ['packages/website/src/**/*.{ts,tsx,cts,mts}'],
