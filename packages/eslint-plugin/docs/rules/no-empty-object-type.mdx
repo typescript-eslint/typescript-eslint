@@ -122,7 +122,7 @@ Examples of code for this rule with `{ allowWithName: 'Props$' }`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowInterfaces": "Props$" }' showPlaygroundButton
+```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
 interface InterfaceValue {}
 
 type TypeValue = {};
@@ -131,7 +131,7 @@ type TypeValue = {};
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "allowInterfaces": "Props$" }' showPlaygroundButton
+```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
 interface InterfaceProps {}
 
 type TypeProps = {};
