@@ -2,11 +2,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import eslintPlugin from '@typescript-eslint/eslint-plugin';
+import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type {
   ClassicConfig,
   FlatConfig,
   Linter,
-  RuleModule,
   RuleRecommendation,
 } from '@typescript-eslint/utils/ts-eslint';
 import prettier from 'prettier';
@@ -78,26 +78,26 @@ async function main(): Promise<void> {
   );
   const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
     Object.entries(eslintPlugin.rules)
-      .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
+      .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
       .map(
         ([ruleName, rule]) =>
           [
             ruleName,
-            typeof rule.meta.docs?.extendsBaseRule === 'string'
+            typeof rule.meta.docs.extendsBaseRule === 'string'
               ? rule.meta.docs.extendsBaseRule
               : ruleName,
           ] as const,
       ),
   );
 
-  type RuleEntry = [string, RuleModule<string, readonly unknown[]>];
+  type RuleEntry = [string, ESLintPluginRuleModule];
 
   const allRuleEntries: RuleEntry[] = Object.entries(eslintPlugin.rules).sort(
     (a, b) => a[0].localeCompare(b[0]),
   );
 
   type GetRuleOptions = (
-    rule: RuleModule<string, readonly unknown[]>,
+    rule: ESLintPluginRuleModule,
   ) => true | readonly unknown[] | undefined;
 
   interface ConfigRuleSettings {
@@ -123,14 +123,14 @@ async function main(): Promise<void> {
     // Explicitly exclude rules requiring type-checking
     if (
       settings.typeChecked === 'exclude' &&
-      value.meta.docs?.requiresTypeChecking === true
+      value.meta.docs.requiresTypeChecking === true
     ) {
       return config;
     }
 
     if (
       settings.typeChecked === 'include-only' &&
-      value.meta.docs?.requiresTypeChecking !== true
+      value.meta.docs.requiresTypeChecking !== true
     ) {
       return config;
     }
@@ -288,11 +288,11 @@ async function main(): Promise<void> {
     ...recommendations: (RuleRecommendation | undefined)[]
   ): RuleEntry[] {
     return allRuleEntries.filter(([, rule]) =>
-      typeof rule.meta.docs?.recommended === 'object'
+      typeof rule.meta.docs.recommended === 'object'
         ? Object.keys(rule.meta.docs.recommended).some(level =>
             recommendations.includes(level as RuleRecommendation),
           )
-        : recommendations.includes(rule.meta.docs?.recommended),
+        : recommendations.includes(rule.meta.docs.recommended),
     );
   }
 
@@ -300,7 +300,7 @@ async function main(): Promise<void> {
     level: 'recommended' | 'strict',
   ): GetRuleOptions {
     return rule =>
-      typeof rule.meta.docs?.recommended === 'object'
+      typeof rule.meta.docs.recommended === 'object'
         ? rule.meta.docs.recommended[level]
         : undefined;
   }

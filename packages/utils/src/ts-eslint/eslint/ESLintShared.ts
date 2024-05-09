@@ -27,7 +27,7 @@ export declare class ESLintBase<
 
   getRulesMetaForResults(
     results: LintResult[],
-  ): Record<string, RuleMetaData<string, readonly unknown[]>>;
+  ): Record<string, RuleMetaData<string, Record<string, unknown>>>;
 
   /**
    * This method checks if a given file is ignored by your configuration.

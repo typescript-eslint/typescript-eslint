@@ -1,7 +1,11 @@
 import { ESLintUtils } from '../../src';
 
 describe('RuleCreator', () => {
-  const createRule = ESLintUtils.RuleCreator(name => `test/${name}`);
+  interface TestDocs {
+    recommended?: 'yes';
+  }
+
+  const createRule = ESLintUtils.RuleCreator<TestDocs>(name => `test/${name}`);
 
   it('createRule should be a function', () => {
     expect(typeof createRule).toBe('function');
@@ -13,8 +17,7 @@ describe('RuleCreator', () => {
       meta: {
         docs: {
           description: 'some description',
-          recommended: 'recommended',
-          requiresTypeChecking: true,
+          recommended: 'yes',
         },
         messages: {
           foo: 'some message',
@@ -31,8 +34,7 @@ describe('RuleCreator', () => {
       docs: {
         description: 'some description',
         url: 'test/test',
-        recommended: 'recommended',
-        requiresTypeChecking: true,
+        recommended: 'yes',
       },
       messages: {
         foo: 'some message',

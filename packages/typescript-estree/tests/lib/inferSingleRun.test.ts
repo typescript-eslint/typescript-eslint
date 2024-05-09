@@ -51,23 +51,61 @@ describe('inferSingleRun', () => {
     expect(actual).toBe(true);
   });
 
-  it('returns true when run by the ESLint CLI in npm/yarn', () => {
-    process.argv = ['node', path.normalize('node_modules/.bin/eslint')];
+  it.each(['project', 'programs'])(
+    'returns false when given %j is null',
+    key => {
+      const actual = inferSingleRun({ [key]: null });
 
-    const actual = inferSingleRun({ project: true });
+      expect(actual).toBe(false);
+    },
+  );
+
+  it.each([
+    ['true', true],
+    ['false', false],
+  ])('return %s when given TSESTREE_SINGLE_RUN is "%s"', (run, expected) => {
+    process.env.TSESTREE_SINGLE_RUN = run;
+
+    const actual = inferSingleRun({
+      programs: null,
+      project: './tsconfig.json',
+    });
+
+    expect(actual).toBe(expected);
+  });
+
+  it.each(['node_modules/.bin/eslint', 'node_modules/eslint/bin/eslint.js'])(
+    'returns true when singleRun is inferred from process.argv',
+    pathName => {
+      process.argv = ['', path.normalize(pathName), ''];
+
+      const actual = inferSingleRun({
+        programs: null,
+        project: './tsconfig.json',
+      });
+
+      expect(actual).toBe(true);
+    },
+  );
+
+  it('returns true when singleRun is inferred from CI=true', () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({
+      programs: null,
+      project: './tsconfig.json',
+    });
 
     expect(actual).toBe(true);
   });
 
-  it('returns true when run by the ESLint CLI in pnpm', () => {
-    process.argv = [
-      'node',
-      path.normalize('node_modules/eslint/bin/eslint.js'),
-    ];
+  it('returns false when there is no way to infer singleRun', () => {
+    const actual = inferSingleRun({
+      programs: null,
+      project: './tsconfig.json',
+    });
 
-    const actual = inferSingleRun({ project: true });
-
-    expect(actual).toBe(true);
+    expect(actual).toBe(false);
   });
 
   it('returns false when none of the known cases are true', () => {

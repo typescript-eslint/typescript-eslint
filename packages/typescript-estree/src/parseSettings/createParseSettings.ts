@@ -113,7 +113,7 @@ export function createParseSettings(
     programs: Array.isArray(tsestreeOptions.programs)
       ? tsestreeOptions.programs
       : null,
-    projects: [],
+    projects: new Map(),
     range: tsestreeOptions.range === true,
     singleRun,
     suppressDeprecatedPropertyWarnings:
@@ -172,7 +172,7 @@ export function createParseSettings(
   // So in this specific case we default to 'none' if no value was provided
   if (
     tsestreeOptions.jsDocParsingMode == null &&
-    parseSettings.projects.length === 0 &&
+    parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
     parseSettings.EXPERIMENTAL_projectService == null
   ) {

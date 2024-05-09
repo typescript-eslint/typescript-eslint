@@ -1,6 +1,5 @@
 import type {
-  RuleMetaData,
-  RuleMetaDataDocs,
+  AnyRuleModuleWithMetaDocs,
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
 import * as fs from 'fs';
@@ -55,17 +54,9 @@ export function getUrlForRuleTest(ruleName: string): string {
   throw new Error(`Could not find test file for ${ruleName}.`);
 }
 
-export type RuleMetaDataWithDocs = RuleMetaData<string, readonly unknown[]> & {
-  docs: RuleMetaDataDocs<readonly unknown[]>;
-};
-
-export type RuleModuleWithMetaDocs = RuleModule<string, unknown[]> & {
-  meta: RuleMetaDataWithDocs;
-};
-
-export function isRuleModuleWithMetaDocs(
+export function isAnyRuleModuleWithMetaDocs(
   rule: RuleModule<string, unknown[]> | undefined,
-): rule is RuleModuleWithMetaDocs {
+): rule is AnyRuleModuleWithMetaDocs {
   return !!rule?.meta.docs;
 }
 
