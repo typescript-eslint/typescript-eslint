@@ -61,7 +61,19 @@ class Derived {}
     },
     {
       code: 'type Base = {};',
-      options: [{ allowInTypeAliasWithName: true }],
+      options: [{ allowWithName: 'Base' }],
+    },
+    {
+      code: 'type BaseProps = {};',
+      options: [{ allowWithName: 'Props$' }],
+    },
+    {
+      code: 'interface Base {}',
+      options: [{ allowWithName: 'Base' }],
+    },
+    {
+      code: 'interface BaseProps {}',
+      options: [{ allowWithName: 'Props$' }],
     },
   ],
   invalid: [
@@ -514,7 +526,33 @@ let value: unknown;
           messageId: 'noEmptyObject',
         },
       ],
-      options: [{ allowInTypeAliasWithName: true }],
+      options: [{ allowWithName: 'Base' }],
+    },
+    {
+      code: 'type Base = {};',
+      errors: [
+        {
+          column: 13,
+          line: 1,
+          endColumn: 15,
+          endLine: 1,
+          messageId: 'noEmptyObject',
+        },
+      ],
+      options: [{ allowWithName: 'Mismatch' }],
+    },
+    {
+      code: 'interface Base {}',
+      errors: [
+        {
+          column: 11,
+          line: 1,
+          endColumn: 15,
+          endLine: 1,
+          messageId: 'noEmptyInterface',
+        },
+      ],
+      options: [{ allowWithName: '.*Props$' }],
     },
   ],
 });

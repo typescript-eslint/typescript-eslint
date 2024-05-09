@@ -82,7 +82,7 @@ type TypeWith = { property: boolean };
 By default, this rule flags both interfaces and object types.
 
 :::warning
-We strongly recommend keeping both option to the default, `'never'`.
+We recommend keeping all options to the default and not allowing exceptions to this rule.
 The "empty object" type is often confusing even for experienced TypeScript developers.
 Consider using `object` or `unknown` as a type instead.
 :::
@@ -110,27 +110,31 @@ interface Derived extends Base {}
 Whether to allow empty object type literals, as one of:
 
 - `'always'`: to always allow object type literals with no fields
-- `'in-type-alias-with-name'`: to only allow object type literals as the type in a named object type alias
 - `'never'` _(default)_: to never allow object type literals with no fields
 
-Example of code for this rule with `{ allowObjectTypes: 'in-type-alias-with-name' }`:
+### `allowWithName`
+
+A stringified regular expression to allow interfaces and object type aliases with the configured name.
+This can be useful if your existing code style still includes a pattern of declaring empty types with `{}` instead of `object`.
+
+Examples of code for this rule with `{ allowWithName: 'Props$' }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowObjectTypes": "in-type-alias-with-name" }' showPlaygroundButton
-type EmptyObjectProps = {};
+```ts option='{ "allowInterfaces": "Props$" }' showPlaygroundButton
+interface InterfaceValue {}
 
-declare function takesEmptyObject(value: {}): void;
+type TypeValue = {};
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "allowObjectTypes": "in-type-alias-with-name" }' showPlaygroundButton
-type EmptyObjectProps = {} | null;
+```ts option='{ "allowInterfaces": "Props$" }' showPlaygroundButton
+interface InterfaceProps {}
 
-declare function takesEmptyObject(value: object): void;
+type TypeProps = {};
 ```
 
 </TabItem>

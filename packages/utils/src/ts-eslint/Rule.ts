@@ -579,7 +579,7 @@ type RuleListenerExitSelectors = {
 };
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface RuleListenerExtension {
   // The code path functions below were introduced in ESLint v8.7.0 but are
   // intentionally commented out because they cause unresolvable compiler

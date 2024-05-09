@@ -11,7 +11,7 @@ export type Options = [
   {
     allowInterfaces?: AllowInterfaces;
     allowObjectTypes?: AllowObjectTypes;
-    allowInTypeAliasWithName?: boolean;
+    allowWithName?: string;
   },
 ];
 
@@ -63,6 +63,9 @@ export default createRule<Options, MessageIds>({
             enum: ['always', 'in-type-alias-with-name', 'never'],
             type: 'string',
           },
+          allowWithName: {
+            type: 'string',
+          },
         },
       },
     ],
@@ -71,16 +74,20 @@ export default createRule<Options, MessageIds>({
     {
       allowInterfaces: 'never',
       allowObjectTypes: 'never',
-      allowInTypeAliasWithName: false,
     },
   ],
-  create(
-    context,
-    [{ allowInterfaces, allowInTypeAliasWithName, allowObjectTypes }],
-  ) {
+  create(context, [{ allowInterfaces, allowWithName, allowObjectTypes }]) {
+    const allowWithNameTester = allowWithName
+      ? new RegExp(allowWithName, 'u')
+      : undefined;
+
     return {
       ...(allowInterfaces !== 'always' && {
         TSInterfaceDeclaration(node): void {
+          if (allowWithNameTester?.test(node.id.name)) {
+            return;
+          }
+
           const extend = node.extends;
           if (
             node.body.body.length !== 0 ||
@@ -154,8 +161,9 @@ export default createRule<Options, MessageIds>({
           if (
             node.members.length ||
             node.parent.type === AST_NODE_TYPES.TSIntersectionType ||
-            (allowInTypeAliasWithName &&
-              node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration)
+            (allowWithNameTester &&
+              node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration &&
+              allowWithNameTester.test(node.parent.id.name))
           ) {
             return;
           }
