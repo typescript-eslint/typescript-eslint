@@ -243,10 +243,9 @@ import * as test from 'node:test';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 RuleTester.afterAll = test.afterAll;
-
+RuleTester.describe = test.describe;
 RuleTester.it = test.it;
 RuleTester.itOnly = test.it.only;
-RuleTester.describe = test.describe;
 ```
 
 Tests can then be [run from the command line](https://nodejs.org/api/test.html#running-tests-from-the-command-line) like so:
