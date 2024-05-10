@@ -29,6 +29,7 @@ import type {
   NormalizedRunTests,
   RuleTesterConfig,
   RunTests,
+  SuggestionOutput,
   TesterConfigWithDefaults,
   ValidTestCase,
 } from './types';
@@ -528,7 +529,17 @@ export class RuleTester extends TestFramework {
       config = merge(config, itemConfig);
     }
 
-    if (item.filename) {
+    if (hasOwnProperty(item, 'only')) {
+      assert.ok(
+        typeof item.only === 'boolean',
+        "Optional test case property 'only' must be a boolean",
+      );
+    }
+    if (hasOwnProperty(item, 'filename')) {
+      assert.ok(
+        typeof item.filename === 'string',
+        "Optional test case property 'filename' must be a string",
+      );
       filename = item.filename;
     }
 
@@ -825,6 +836,10 @@ export class RuleTester extends TestFramework {
         if (typeof error === 'string' || error instanceof RegExp) {
           // Just an error message.
           assertMessageMatches(message.message, error);
+          assert.ok(
+            message.suggestions === void 0,
+            `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
+          );
         } else if (typeof error === 'object' && error != null) {
           /*
            * Error object.
@@ -902,14 +917,11 @@ export class RuleTester extends TestFramework {
                 `Hydrated message "${rehydratedMessage}" does not match "${message.message}"`,
               );
             }
+          } else {
+            assert.fail(
+              "Test error must specify either a 'messageId' or 'message'.",
+            );
           }
-
-          assert.ok(
-            hasOwnProperty(error, 'data')
-              ? hasOwnProperty(error, 'messageId')
-              : true,
-            "Error must specify 'messageId' if 'data' is used.",
-          );
 
           if (error.type) {
             assert.strictEqual(
@@ -951,149 +963,162 @@ export class RuleTester extends TestFramework {
             );
           }
 
+          assert.ok(
+            !message.suggestions || hasOwnProperty(error, 'suggestions'),
+            `Error at index ${i} has suggestions. Please specify 'suggestions' property on the test error object.`,
+          );
           if (hasOwnProperty(error, 'suggestions')) {
             // Support asserting there are no suggestions
-            if (
-              !error.suggestions ||
-              (isReadonlyArray(error.suggestions) &&
-                error.suggestions.length === 0)
-            ) {
-              if (
-                Array.isArray(message.suggestions) &&
-                message.suggestions.length > 0
-              ) {
-                assert.fail(
-                  `Error should have no suggestions on error with message: "${message.message}"`,
-                );
-              }
-            } else {
-              assert(
-                Array.isArray(message.suggestions),
-                `Error should have an array of suggestions. Instead received "${String(
-                  message.suggestions,
-                )}" on error with message: "${message.message}"`,
+            const expectsSuggestions = Array.isArray(error.suggestions)
+              ? error.suggestions.length > 0
+              : Boolean(error.suggestions);
+            const hasSuggestions = message.suggestions !== void 0;
+
+            if (!hasSuggestions && expectsSuggestions) {
+              assert.ok(
+                !error.suggestions,
+                `Error should have suggestions on error with message: "${message.message}"`,
               );
-              const messageSuggestions = message.suggestions;
-              assert.strictEqual(
-                messageSuggestions.length,
-                error.suggestions.length,
-                `Error should have ${error.suggestions.length} suggestions. Instead found ${messageSuggestions.length} suggestions`,
+            } else if (hasSuggestions) {
+              assert.ok(
+                expectsSuggestions,
+                `Error should have no suggestions on error with message: "${message.message}"`,
               );
-
-              error.suggestions.forEach((expectedSuggestion, index) => {
-                assert.ok(
-                  typeof expectedSuggestion === 'object' &&
-                    expectedSuggestion != null,
-                  "Test suggestion in 'suggestions' array must be an object.",
+              if (typeof error.suggestions === 'number') {
+                assert.strictEqual(
+                  message.suggestions!.length,
+                  error.suggestions,
+                  `Error should have ${error.suggestions} suggestions. Instead found ${message.suggestions!.length} suggestions`,
                 );
-                Object.keys(expectedSuggestion).forEach(propertyName => {
-                  assert.ok(
-                    SUGGESTION_OBJECT_PARAMETERS.has(propertyName),
-                    `Invalid suggestion property name '${propertyName}'. Expected one of ${FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST}.`,
-                  );
-                });
+              } else if (Array.isArray(error.suggestions)) {
+                assert.strictEqual(
+                  message.suggestions!.length,
+                  error.suggestions.length,
+                  `Error should have ${error.suggestions.length} suggestions. Instead found ${message.suggestions!.length} suggestions`,
+                );
 
-                const actualSuggestion = messageSuggestions[index];
-                const suggestionPrefix = `Error Suggestion at index ${index} :`;
-
-                // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
-                if (hasOwnProperty(expectedSuggestion, 'desc')) {
-                  assert.ok(
-                    !hasOwnProperty(expectedSuggestion, 'data'),
-                    `${suggestionPrefix} Test should not specify both 'desc' and 'data'.`,
-                  );
-                  // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
-                  const expectedDesc = expectedSuggestion.desc as string;
-                  assert.strictEqual(
-                    actualSuggestion.desc,
-                    expectedDesc,
-                    `${suggestionPrefix} desc should be "${expectedDesc}" but got "${actualSuggestion.desc}" instead.`,
-                  );
-                }
-
-                if (hasOwnProperty(expectedSuggestion, 'messageId')) {
-                  assert.ok(
-                    ruleHasMetaMessages,
-                    `${suggestionPrefix} Test can not use 'messageId' if rule under test doesn't define 'meta.messages'.`,
-                  );
-                  assert.ok(
-                    hasOwnProperty(
-                      rule.meta.messages,
-                      expectedSuggestion.messageId,
-                    ),
-                    `${suggestionPrefix} Test has invalid messageId '${expectedSuggestion.messageId}', the rule under test allows only one of ${friendlyIDList}.`,
-                  );
-                  assert.strictEqual(
-                    actualSuggestion.messageId,
-                    expectedSuggestion.messageId,
-                    `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
-                  );
-
-                  const unsubstitutedPlaceholders =
-                    getUnsubstitutedMessagePlaceholders(
-                      actualSuggestion.desc,
-                      rule.meta.messages[expectedSuggestion.messageId],
-                      expectedSuggestion.data,
+                error.suggestions!.forEach(
+                  (expectedSuggestion: SuggestionOutput<MessageIds>, index) => {
+                    assert.ok(
+                      typeof expectedSuggestion === 'object' &&
+                        expectedSuggestion !== null,
+                      "Test suggestion in 'suggestions' array must be an object.",
                     );
+                    // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
+                    const expectedDesc = expectedSuggestion.desc as string;
+                    Object.keys(expectedSuggestion).forEach(propertyName => {
+                      assert.ok(
+                        SUGGESTION_OBJECT_PARAMETERS.has(propertyName),
+                        `Invalid suggestion property name '${propertyName}'. Expected one of ${FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST}.`,
+                      );
+                    });
 
-                  assert.ok(
-                    unsubstitutedPlaceholders.length === 0,
-                    `The message of the suggestion has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property for the suggestion in the context.report() call.`,
-                  );
+                    const actualSuggestion = message.suggestions![index];
+                    const suggestionPrefix = `Error Suggestion at index ${index}:`;
 
-                  if (hasOwnProperty(expectedSuggestion, 'data')) {
-                    const unformattedMetaMessage =
-                      rule.meta.messages[expectedSuggestion.messageId];
-                    const rehydratedDesc = interpolate(
-                      unformattedMetaMessage,
-                      expectedSuggestion.data,
+                    // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
+                    if (hasOwnProperty(expectedSuggestion, 'desc')) {
+                      assert.ok(
+                        !hasOwnProperty(expectedSuggestion, 'data'),
+                        `${suggestionPrefix} Test should not specify both 'desc' and 'data'.`,
+                      );
+                      assert.ok(
+                        !hasOwnProperty(expectedSuggestion, 'messageId'),
+                        `${suggestionPrefix} Test should not specify both 'desc' and 'messageId'.`,
+                      );
+                      assert.strictEqual(
+                        actualSuggestion.desc,
+                        expectedDesc,
+                        `${suggestionPrefix} desc should be "${expectedDesc}" but got "${actualSuggestion.desc}" instead.`,
+                      );
+                    } else if (
+                      hasOwnProperty(expectedSuggestion, 'messageId')
+                    ) {
+                      assert.ok(
+                        ruleHasMetaMessages,
+                        `${suggestionPrefix} Test can not use 'messageId' if rule under test doesn't define 'meta.messages'.`,
+                      );
+                      assert.ok(
+                        hasOwnProperty(
+                          rule.meta.messages,
+                          expectedSuggestion.messageId,
+                        ),
+                        `${suggestionPrefix} Test has invalid messageId '${expectedSuggestion.messageId}', the rule under test allows only one of ${friendlyIDList}.`,
+                      );
+                      assert.strictEqual(
+                        actualSuggestion.messageId,
+                        expectedSuggestion.messageId,
+                        `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
+                      );
+                      if (hasOwnProperty(expectedSuggestion, 'data')) {
+                        const unformattedMetaMessage =
+                          rule.meta.messages[expectedSuggestion.messageId];
+                        const rehydratedDesc = interpolate(
+                          unformattedMetaMessage,
+                          expectedSuggestion.data,
+                        );
+
+                        assert.strictEqual(
+                          actualSuggestion.desc,
+                          rehydratedDesc,
+                          `${suggestionPrefix} Hydrated test desc "${rehydratedDesc}" does not match received desc "${actualSuggestion.desc}".`,
+                        );
+                      }
+                    } else if (hasOwnProperty(expectedSuggestion, 'data')) {
+                      assert.fail(
+                        `${suggestionPrefix} Test must specify 'messageId' if 'data' is used.`,
+                      );
+                    } else {
+                      assert.fail(
+                        `${suggestionPrefix} Test must specify either 'messageId' or 'desc'.`,
+                      );
+                    }
+
+                    assert.ok(
+                      hasOwnProperty(expectedSuggestion, 'output'),
+                      `${suggestionPrefix} The "output" property is required.`,
+                    );
+                    const codeWithAppliedSuggestion =
+                      SourceCodeFixer.applyFixes(item.code, [
+                        actualSuggestion,
+                      ]).output;
+
+                    // Verify if suggestion fix makes a syntax error or not.
+                    const errorMessageInSuggestion = this.#linter
+                      .verify(
+                        codeWithAppliedSuggestion,
+                        result.config,
+                        result.filename,
+                      )
+                      .find(m => m.fatal);
+
+                    assert(
+                      !errorMessageInSuggestion,
+                      [
+                        'A fatal parsing error occurred in suggestion fix.',
+                        `Error: ${errorMessageInSuggestion?.message}`,
+                        'Suggestion output:',
+                        codeWithAppliedSuggestion,
+                      ].join('\n'),
                     );
 
                     assert.strictEqual(
-                      actualSuggestion.desc,
-                      rehydratedDesc,
-                      `${suggestionPrefix} Hydrated test desc "${rehydratedDesc}" does not match received desc "${actualSuggestion.desc}".`,
+                      codeWithAppliedSuggestion,
+                      expectedSuggestion.output,
+                      `Expected the applied suggestion fix to match the test suggestion output for suggestion at index: ${index} on error with message: "${message.message}"`,
                     );
-                  }
-                } else {
-                  assert.ok(
-                    !hasOwnProperty(expectedSuggestion, 'data'),
-                    `${suggestionPrefix} Test must specify 'messageId' if 'data' is used.`,
-                  );
-                }
-
-                if (hasOwnProperty(expectedSuggestion, 'output')) {
-                  const codeWithAppliedSuggestion = SourceCodeFixer.applyFixes(
-                    item.code,
-                    [actualSuggestion],
-                  ).output;
-
-                  // Verify if suggestion fix makes a syntax error or not.
-                  const errorMessageInSuggestion = this.#linter
-                    .verify(
-                      codeWithAppliedSuggestion,
-                      result.config,
-                      result.filename,
-                    )
-                    .find(m => m.fatal);
-
-                  assert(
-                    !errorMessageInSuggestion,
-                    [
-                      'A fatal parsing error occurred in suggestion fix.',
-                      `Error: ${errorMessageInSuggestion?.message}`,
-                      'Suggestion output:',
-                      codeWithAppliedSuggestion,
-                    ].join('\n'),
-                  );
-
-                  assert.strictEqual(
-                    codeWithAppliedSuggestion,
-                    expectedSuggestion.output,
-                    `Expected the applied suggestion fix to match the test suggestion output for suggestion at index: ${index} on error with message: "${message.message}"`,
-                  );
-                }
-              });
+                    assert.notStrictEqual(
+                      expectedSuggestion.output,
+                      item.code,
+                      `The output of a suggestion should differ from the original source code for suggestion at index: ${index} on error with message: "${message.message}"`,
+                    );
+                  },
+                );
+              } else {
+                assert.fail(
+                  "Test error object property 'suggestions' should be an array or a number",
+                );
+              }
             }
           }
         } else {
@@ -1122,6 +1147,11 @@ export class RuleTester extends TestFramework {
         result.output,
         item.code,
         "The rule fixed the code. Please add 'output' property.",
+      );
+      assert.notStrictEqual(
+        item.code,
+        item.output,
+        "Test property 'output' matches 'code'. If no autofix is expected, then omit the 'output' property or set it to null.",
       );
     }
 
