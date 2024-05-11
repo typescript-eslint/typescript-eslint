@@ -28,7 +28,7 @@ async function getPullRequest() {
 }
 
 function checkTitle(title) {
-  if (/^[a-z]+(\([a-z]+\))?!: /.test(title)) {
+  if (/^[a-z]+(\([a-z-]+\))?!: /.test(title)) {
     raiseError(
       `Do not use exclamation mark ('!') to indicate breaking change in the PR Title.`,
     );
