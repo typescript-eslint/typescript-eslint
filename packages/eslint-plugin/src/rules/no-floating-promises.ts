@@ -284,10 +284,10 @@ export default createRule<Options, MessageId>({
             : node;
         const calledByThenOrCatch =
           (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-            node.callee.property.type === 'Identifier' &&
+            node.callee.property.type === AST_NODE_TYPES.Identifier &&
             node.callee.property.name === 'catch') ||
           (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-            node.callee.property.type === 'Identifier' &&
+            node.callee.property.type === AST_NODE_TYPES.Identifier &&
             node.callee.property.name === 'then');
         if (
           !calledByThenOrCatch &&

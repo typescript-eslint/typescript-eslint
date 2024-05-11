@@ -549,7 +549,7 @@ let promise: SafeThenable<number> = Promise.resolve(5);
     {
       code: `
 class SafePromise<T> extends Promise<T> {}
-let promise: { a: SafePromise<number>} = { a: Promise.resolve(5) };
+let promise: { a: SafePromise<number> } = { a: Promise.resolve(5) };
 promise.a;
       `,
       options: [
@@ -2156,9 +2156,9 @@ arrayOrPromiseTuple;
     },
     {
       code: `
-type SafePromise = Promise<number> & { hey?: string; };
+type SafePromise = Promise<number> & { hey?: string };
 let foo: SafePromise = Promise.resolve(1);
-let bar = [ Promise.resolve(2), foo ];
+let bar = [Promise.resolve(2), foo];
 bar;
       `,
       options: [

@@ -79,10 +79,6 @@ type UnsafePromise = Promise<number> & { __linterBrands?: string };
 let promise: UnsafePromise = Promise.resolve(2);
 promise;
 ~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
-promise.then(() => {});
-~~~~~~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
-promise.catch();
-~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
 promise.finally();
 ~~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
 "
@@ -94,8 +90,7 @@ Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"fr
 
 type SafePromise = Promise<number> & { __linterBrands?: string }; // promises can be marked as safe by using branded types
 let promise: SafePromise = Promise.resolve(2);
-promise.then(() => {});
-promise.catch();
+promise;
 promise.finally();
 "
 `;
