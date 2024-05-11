@@ -34,6 +34,12 @@ while (obj) {
        ~~~ Unexpected object value in conditional. The condition is always true.
   obj = getObj();
 }
+
+// assertion functions without an \`is\` are boolean contexts.
+declare function myAssert(value: unknown): asserts value;
+let maybeString = Math.random() > 0.5 ? '' : undefined;
+myAssert(maybeString);
+         ~~~~~~~~~~~ Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.
 "
 `;
 
