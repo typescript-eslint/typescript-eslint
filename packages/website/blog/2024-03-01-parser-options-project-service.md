@@ -430,18 +430,11 @@ We'd be happy to help you try out `parserOptions.projectService`.
 ### Long Term Vision
 
 Our hope is that the Project Service API becomes the standard way to work with typed linting over the next few major versions.
-
-Our intent is to roll it out according to the following rough timeline:
-
-- **v7**: Rename `parserOptions.EXPERIMENTAL_useProjectService` to `parserOptions.projectService`
-- **v8**: Rename `parserOptions.project` to something like `parserOptions.DEPRECATED_legacyProjectProgram` and rename `parserOptions.projectService` to `parserOptions.project`
-
-Our plan is to always recommend setting `parserOptions.project` in the docs.
-What that refers to will intentionally switch from the legacy program API to the new Project Service API in v8.
-
-That timeline is a rough prediction that may change as users try out the new API.
 Our priority will be to improve the new Project Service API so that it works in all places the legacy project program behavior does.
 We won't remove the legacy project program behavior unless and until the new Project Service API is able to fully replace it.
+
+So, please, try out the new Project Service API.
+It should help make your typed linting faster and simpler to configure. 💜
 
 ## Supporting typescript-eslint
 
