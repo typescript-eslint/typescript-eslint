@@ -282,7 +282,15 @@ export default createRule<Options, MessageId>({
           node.callee.type === AST_NODE_TYPES.MemberExpression
             ? node.callee.object
             : node;
+        const calledByThenOrCatch =
+          (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+            node.callee.property.type === 'Identifier' &&
+            node.callee.property.name === 'catch') ||
+          (node.callee.type === AST_NODE_TYPES.MemberExpression &&
+            node.callee.property.type === 'Identifier' &&
+            node.callee.property.name === 'then');
         if (
+          !calledByThenOrCatch &&
           doesTypeMatchSpecifier(
             services,
             allowForKnownSafePromises,

@@ -515,7 +515,7 @@ interface SafeThenable<T> {
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: SafeThenable<number> = Promise.resolve(5);
-promise;
+0, promise;
       `,
       options: [
         {
@@ -538,7 +538,7 @@ interface SafeThenable<T> {
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: SafeThenable<number> = Promise.resolve(5);
-promise.then(() => {});
+0 ? promise : 3;
       `,
       options: [
         {
@@ -549,8 +549,8 @@ promise.then(() => {});
     {
       code: `
 class SafePromise<T> extends Promise<T> {}
-let promise: SafePromise<number> = Promise.resolve(5);
-promise.catch();
+let promise: { a: SafePromise<number>} = { a: Promise.resolve(5) };
+promise.a;
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
@@ -560,7 +560,7 @@ promise.catch();
       code: `
 class SafePromise<T> extends Promise<T> {}
 let promise: SafePromise<number> = Promise.resolve(5);
-promise.finally();
+promise;
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
@@ -570,7 +570,7 @@ promise.finally();
       code: `
 type Foo = Promise<number> & { hey?: string };
 let promise: Foo = Promise.resolve(5);
-0 ? promise.catch() : 2;
+0 || promise;
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
@@ -578,7 +578,7 @@ let promise: Foo = Promise.resolve(5);
       code: `
 type Foo = Promise<number> & { hey?: string };
 let promise: Foo = Promise.resolve(5);
-null ?? promise.catch();
+promise.finally();
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
@@ -598,7 +598,7 @@ interface SafeThenable<T> {
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-promise();
+0, promise();
       `,
       options: [
         {
@@ -621,7 +621,7 @@ interface SafeThenable<T> {
   ): SafeThenable<TResult1 | TResult2>;
 }
 let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-promise().then(() => {});
+0 ? promise() : 3;
       `,
       options: [
         {
@@ -633,7 +633,7 @@ promise().then(() => {});
       code: `
 type Foo = Promise<number> & { hey?: string };
 let promise: () => Foo = () => Promise.resolve(5);
-promise().catch();
+promise();
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
@@ -649,7 +649,7 @@ promise().finally();
       code: `
 class SafePromise<T> extends Promise<T> {}
 let promise: () => SafePromise<number> = async () => 5;
-0 ? promise().catch() : 2;
+0 || promise();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
@@ -659,7 +659,7 @@ let promise: () => SafePromise<number> = async () => 5;
       code: `
 class SafePromise<T> extends Promise<T> {}
 let promise: () => SafePromise<number> = async () => 5;
-null ?? promise().catch();
+null ?? promise();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
@@ -669,7 +669,7 @@ null ?? promise().catch();
     {
       code: `
 let promise: () => PromiseLike<number> = () => Promise.resolve(5);
-promise().then(() => {});
+promise();
       `,
       options: [
         { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
@@ -2079,19 +2079,19 @@ promise;
     },
     {
       code: `
-interface UnsafeThenable<T> {
+interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
-      | ((value: T) => TResult1 | UnsafeThenable<TResult1>)
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
       | undefined
       | null,
     onrejected?:
-      | ((reason: any) => TResult2 | UnsafeThenable<TResult2>)
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
       | undefined
       | null,
-  ): UnsafeThenable<TResult1 | TResult2>;
+  ): SafeThenable<TResult1 | TResult2>;
 }
-let promise: () => UnsafeThenable<number> = () => Promise.resolve(5);
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
 promise().then(() => {});
       `,
       options: [
@@ -2103,8 +2103,8 @@ promise().then(() => {});
     },
     {
       code: `
-class UnsafePromise<T> extends Promise<T> {}
-let promise: UnsafePromise<number> = Promise.resolve(5);
+class SafePromise<T> extends Promise<T> {}
+let promise: SafePromise<number> = Promise.resolve(5);
 promise.catch();
       `,
       options: [
@@ -2153,6 +2153,18 @@ arrayOrPromiseTuple;
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+type SafePromise = Promise<number> & { hey?: string; };
+let foo: SafePromise = Promise.resolve(1);
+let bar = [ Promise.resolve(2), foo ];
+bar;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
     },
     {
       code: `
