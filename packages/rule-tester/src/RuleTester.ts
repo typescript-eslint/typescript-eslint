@@ -38,7 +38,7 @@ import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints
 import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
-import { interpolate } from './utils/interpolate';
+import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
 import { isReadonlyArray } from './utils/isReadonlyArray';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
@@ -72,6 +72,45 @@ let defaultConfig = deepMerge(
   {},
   testerDefaultConfig,
 ) as TesterConfigWithDefaults;
+
+/**
+ * Extracts names of {{ placeholders }} from the reported message.
+ * @param message Reported message
+ * @returns Array of placeholder names
+ */
+function getMessagePlaceholders(message: string): string[] {
+  const matcher = getPlaceholderMatcher();
+
+  return Array.from(message.matchAll(matcher), ([, name]) => name.trim());
+}
+
+/**
+ * Returns the placeholders in the reported messages but
+ * only includes the placeholders available in the raw message and not in the provided data.
+ * @param message The reported message
+ * @param raw The raw message specified in the rule meta.messages
+ * @param data The passed
+ * @returns Missing placeholder names
+ */
+function getUnsubstitutedMessagePlaceholders(
+  message: string,
+  raw: string,
+  data: Record<string, unknown> = {},
+): string[] {
+  const unsubstituted = getMessagePlaceholders(message);
+
+  if (unsubstituted.length === 0) {
+    return [];
+  }
+
+  // Remove false positives by only counting placeholders in the raw message, which were not provided in the data matcher or added with a data property
+  const known = getMessagePlaceholders(raw);
+  const provided = Object.keys(data);
+
+  return unsubstituted.filter(
+    name => known.includes(name) && !provided.includes(name),
+  );
+}
 
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
@@ -146,21 +185,21 @@ export class RuleTester extends TestFramework {
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<TOptions extends Readonly<unknown[]>>(
-    item: ValidTestCase<TOptions> | string,
-  ): ValidTestCase<TOptions>;
+  static only<Options extends Readonly<unknown[]>>(
+    item: ValidTestCase<Options> | string,
+  ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
-    item: InvalidTestCase<TMessageIds, TOptions>,
-  ): InvalidTestCase<TMessageIds, TOptions>;
-  static only<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+    item: InvalidTestCase<MessageIds, Options>,
+  ): InvalidTestCase<MessageIds, Options>;
+  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
     item:
-      | InvalidTestCase<TMessageIds, TOptions>
-      | ValidTestCase<TOptions>
+      | InvalidTestCase<MessageIds, Options>
+      | ValidTestCase<Options>
       | string,
-  ): InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions> {
+  ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
     if (typeof item === 'string') {
       return { code: item, only: true };
     }
@@ -176,11 +215,11 @@ export class RuleTester extends TestFramework {
   }
 
   #normalizeTests<
-    TMessageIds extends string,
-    TOptions extends readonly unknown[],
+    MessageIds extends string,
+    Options extends readonly unknown[],
   >(
-    rawTests: RunTests<TMessageIds, TOptions>,
-  ): NormalizedRunTests<TMessageIds, TOptions> {
+    rawTests: RunTests<MessageIds, Options>,
+  ): NormalizedRunTests<MessageIds, Options> {
     /*
     Automatically add a filename to the tests to enable type-aware tests to "just work".
     This saves users having to verbosely and manually add the filename to every
@@ -205,11 +244,9 @@ export class RuleTester extends TestFramework {
       return filename;
     };
     const normalizeTest = <
-      TMessageIds extends string,
-      TOptions extends readonly unknown[],
-      T extends
-        | InvalidTestCase<TMessageIds, TOptions>
-        | ValidTestCase<TOptions>,
+      MessageIds extends string,
+      Options extends readonly unknown[],
+      T extends InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
     >(
       test: T,
     ): T => {
@@ -239,7 +276,7 @@ export class RuleTester extends TestFramework {
 
     // convenience iterator to make it easy to loop all tests without a concat
     const allTestsIterator = {
-      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void> {
+      *[Symbol.iterator](): Generator<ValidTestCase<Options>, void> {
         for (const testCase of normalizedTests.valid) {
           yield testCase;
         }
@@ -285,9 +322,7 @@ export class RuleTester extends TestFramework {
     just disappearing without a trace.
     */
     const maybeMarkAsOnly = <
-      T extends
-        | InvalidTestCase<TMessageIds, TOptions>
-        | ValidTestCase<TOptions>,
+      T extends InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
     >(
       test: T,
     ): T => {
@@ -305,10 +340,10 @@ export class RuleTester extends TestFramework {
   /**
    * Adds a new rule test to execute.
    */
-  run<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
-    rule: RuleModule<TMessageIds, TOptions>,
-    test: RunTests<TMessageIds, TOptions>,
+    rule: RuleModule<MessageIds, Options>,
+    test: RunTests<MessageIds, Options>,
   ): void {
     const constructor = this.constructor as typeof RuleTester;
 
@@ -366,7 +401,7 @@ export class RuleTester extends TestFramework {
       ruleName,
       Object.assign({}, rule, {
         // Create a wrapper rule that freezes the `context` properties.
-        create(context: RuleContext<TMessageIds, TOptions>) {
+        create(context: RuleContext<MessageIds, Options>) {
           freezeDeeply(context.options);
           freezeDeeply(context.settings);
           freezeDeeply(context.parserOptions);
@@ -381,7 +416,7 @@ export class RuleTester extends TestFramework {
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
-      test: ValidTestCase<TOptions>,
+      test: ValidTestCase<Options>,
     ): 'it' | 'itOnly' | 'itSkip' {
       if (test.skip) {
         return 'itSkip';
@@ -437,12 +472,12 @@ export class RuleTester extends TestFramework {
    * Use @private instead of #private to expose it for testing purposes
    */
   private runRuleForItem<
-    TMessageIds extends string,
-    TOptions extends readonly unknown[],
+    MessageIds extends string,
+    Options extends readonly unknown[],
   >(
     ruleName: string,
-    rule: RuleModule<TMessageIds, TOptions>,
-    item: InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions>,
+    rule: RuleModule<MessageIds, Options>,
+    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): {
     messages: Linter.LintMessage[];
     output: string;
@@ -468,6 +503,7 @@ export class RuleTester extends TestFramework {
       const itemConfig: Record<string, unknown> = { ...item };
 
       for (const parameter of RULE_TESTER_PARAMETERS) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete itemConfig[parameter];
       }
 
@@ -615,8 +651,10 @@ export class RuleTester extends TestFramework {
       messages,
       output,
       // is definitely assigned within the `rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeAST: beforeAST!,
       // is definitely assigned within the `rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
     };
   }
@@ -626,14 +664,14 @@ export class RuleTester extends TestFramework {
    * all valid cases go through this
    */
   #testValidTemplate<
-    TMessageIds extends string,
-    TOptions extends readonly unknown[],
+    MessageIds extends string,
+    Options extends readonly unknown[],
   >(
     ruleName: string,
-    rule: RuleModule<TMessageIds, TOptions>,
-    itemIn: ValidTestCase<TOptions> | string,
+    rule: RuleModule<MessageIds, Options>,
+    itemIn: ValidTestCase<Options> | string,
   ): void {
-    const item: ValidTestCase<TOptions> =
+    const item: ValidTestCase<Options> =
       typeof itemIn === 'object' ? itemIn : { code: itemIn };
 
     assert.ok(
@@ -668,12 +706,12 @@ export class RuleTester extends TestFramework {
    * all invalid cases go through this.
    */
   #testInvalidTemplate<
-    TMessageIds extends string,
-    TOptions extends readonly unknown[],
+    MessageIds extends string,
+    Options extends readonly unknown[],
   >(
     ruleName: string,
-    rule: RuleModule<TMessageIds, TOptions>,
-    item: InvalidTestCase<TMessageIds, TOptions>,
+    rule: RuleModule<MessageIds, Options>,
+    item: InvalidTestCase<MessageIds, Options>,
   ): void {
     assert.ok(
       typeof item.code === 'string',
@@ -704,6 +742,23 @@ export class RuleTester extends TestFramework {
 
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
+
+    for (const message of messages) {
+      if (hasOwnProperty(message, 'suggestions')) {
+        const seenMessageIndices = new Map<string, number>();
+
+        for (let i = 0; i < message.suggestions.length; i += 1) {
+          const suggestionMessage = message.suggestions[i].desc;
+          const previous = seenMessageIndices.get(suggestionMessage);
+
+          assert.ok(
+            !seenMessageIndices.has(suggestionMessage),
+            `Suggestion message '${suggestionMessage}' reported from suggestion ${i} was previously reported by suggestion ${previous}. Suggestion messages should be unique within an error.`,
+          );
+          seenMessageIndices.set(suggestionMessage, i);
+        }
+      }
+    }
 
     if (typeof item.errors === 'number') {
       if (item.errors === 0) {
@@ -793,6 +848,19 @@ export class RuleTester extends TestFramework {
               error.messageId,
               `messageId '${message.messageId}' does not match expected messageId '${error.messageId}'.`,
             );
+
+            const unsubstitutedPlaceholders =
+              getUnsubstitutedMessagePlaceholders(
+                message.message,
+                rule.meta.messages[message.messageId],
+                error.data,
+              );
+
+            assert.ok(
+              unsubstitutedPlaceholders.length === 0,
+              `The reported message has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property in the context.report() call.`,
+            );
+
             if (hasOwnProperty(error, 'data')) {
               /*
                *  if data was provided, then directly compare the returned message to a synthetic
@@ -938,6 +1006,19 @@ export class RuleTester extends TestFramework {
                     expectedSuggestion.messageId,
                     `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
                   );
+
+                  const unsubstitutedPlaceholders =
+                    getUnsubstitutedMessagePlaceholders(
+                      actualSuggestion.desc,
+                      rule.meta.messages[expectedSuggestion.messageId],
+                      expectedSuggestion.data,
+                    );
+
+                  assert.ok(
+                    unsubstitutedPlaceholders.length === 0,
+                    `The message of the suggestion has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property for the suggestion in the context.report() call.`,
+                  );
+
                   if (hasOwnProperty(expectedSuggestion, 'data')) {
                     const unformattedMetaMessage =
                       rule.meta.messages[expectedSuggestion.messageId];

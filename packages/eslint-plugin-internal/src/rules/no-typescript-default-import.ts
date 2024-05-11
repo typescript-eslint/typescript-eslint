@@ -34,6 +34,11 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    if (context.filename.endsWith('mts')) {
+      // mts files will import "properly" and so default import is correct
+      return {};
+    }
+
     return {
       'ImportDeclaration > ImportDefaultSpecifier'(
         node: TSESTree.ImportDefaultSpecifier,

@@ -1,18 +1,24 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// SEE https://typescript-eslint.io/linting/configs
+// SEE https://typescript-eslint.io/users/configs
 //
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
+
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
     '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/ban-ts-comment': 'error',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { minimumDescriptionLength: 10 },
+    ],
     '@typescript-eslint/ban-types': 'error',
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
+    '@typescript-eslint/no-array-delete': 'error',
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
@@ -38,8 +44,6 @@ export = {
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/no-redundant-type-constituents': 'error',
     '@typescript-eslint/no-this-alias': 'error',
-    'no-throw-literal': 'off',
-    '@typescript-eslint/no-throw-literal': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unnecessary-type-arguments': 'error',
@@ -56,19 +60,44 @@ export = {
     '@typescript-eslint/no-unused-vars': 'error',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
+    '@typescript-eslint/no-useless-template-literals': 'error',
     '@typescript-eslint/no-var-requires': 'error',
+    'no-throw-literal': 'off',
+    '@typescript-eslint/only-throw-error': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-includes': 'error',
     '@typescript-eslint/prefer-literal-enum-member': 'error',
+    'prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
-    '@typescript-eslint/restrict-plus-operands': 'error',
-    '@typescript-eslint/restrict-template-expressions': 'error',
+    '@typescript-eslint/restrict-plus-operands': [
+      'error',
+      {
+        allowAny: false,
+        allowBoolean: false,
+        allowNullish: false,
+        allowNumberAndString: false,
+        allowRegExp: false,
+      },
+    ],
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowAny: false,
+        allowBoolean: false,
+        allowNullish: false,
+        allowNumber: false,
+        allowRegExp: false,
+        allowNever: false,
+      },
+    ],
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
   },
-};
+} satisfies ClassicConfig.Config;

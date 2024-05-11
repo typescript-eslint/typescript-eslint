@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -46,6 +45,8 @@ function normalizeOptions(options: Option): NormalizedOptions {
 export default createRule<Options, MessageIds>({
   name: 'comma-dangle',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/comma-dangle'],
     type: 'layout',
     docs: {
       description: 'Require or disallow trailing commas',
@@ -95,7 +96,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['never'],
   create(context, [options]) {
     const rules = baseRule.create(context);
-    const sourceCode = getSourceCode(context);
+
     const normalizedOptions = normalizeOptions(options);
 
     const predicate = {
@@ -127,13 +128,13 @@ export default createRule<Options, MessageIds>({
 
     function getTrailingToken(node: TSESTree.Node): TSESTree.Token | null {
       const last = getLastItem(node);
-      const trailing = last && sourceCode.getTokenAfter(last);
+      const trailing = last && context.sourceCode.getTokenAfter(last);
       return trailing;
     }
 
     function isMultiline(node: TSESTree.Node): boolean {
       const last = getLastItem(node);
-      const lastToken = sourceCode.getLastToken(node);
+      const lastToken = context.sourceCode.getLastToken(node);
       return last?.loc.end.line !== lastToken?.loc.end.line;
     }
 

@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import type {
@@ -37,6 +37,8 @@ const schema = deepMerge(
 export default createRule<Options, MessageIds>({
   name: 'keyword-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/keyword-spacing'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after keywords',
@@ -50,13 +52,12 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
 
   create(context, [{ after, overrides }]) {
-    const sourceCode = getSourceCode(context);
     const baseRules = baseRule.create(context);
     return {
       ...baseRules,
       TSAsExpression(node): void {
         const asToken = nullThrows(
-          sourceCode.getTokenAfter(
+          context.sourceCode.getTokenAfter(
             node.expression,
             token => token.value === 'as',
           ),
@@ -79,8 +80,8 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.ImportDeclaration,
       ): void {
         const { type: typeOptionOverride = {} } = overrides ?? {};
-        const typeToken = sourceCode.getFirstToken(node, { skip: 1 })!;
-        const punctuatorToken = sourceCode.getTokenAfter(typeToken)!;
+        const typeToken = context.sourceCode.getFirstToken(node, { skip: 1 })!;
+        const punctuatorToken = context.sourceCode.getTokenAfter(typeToken)!;
         if (
           node.specifiers[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
         ) {

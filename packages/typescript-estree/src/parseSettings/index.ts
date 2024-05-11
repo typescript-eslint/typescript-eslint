@@ -1,6 +1,6 @@
 import type * as ts from 'typescript';
-import type * as tsserverlibrary from 'typescript/lib/tsserverlibrary';
 
+import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
@@ -9,6 +9,11 @@ type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
 
 // Workaround to support new TS version features for consumers on old TS versions
 declare module 'typescript' {
+  // Added in TypeScript 5.3
+  enum JSDocParsingMode {}
+}
+// https://github.com/typescript-eslint/typescript-eslint/issues/8172
+declare module 'typescript/lib/tsserverlibrary' {
   // Added in TypeScript 5.3
   enum JSDocParsingMode {}
 }
@@ -67,9 +72,7 @@ export interface MutableParseSettings {
   /**
    * Experimental: TypeScript server to power program creation.
    */
-  EXPERIMENTAL_projectService:
-    | tsserverlibrary.server.ProjectService
-    | undefined;
+  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
 
   /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
@@ -125,7 +128,7 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: readonly CanonicalPath[];
+  projects: ReadonlyMap<CanonicalPath, string>;
 
   /**
    * Whether to add the `range` property to AST nodes.

@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -12,6 +11,8 @@ import {
   getParserServices,
   isNullableType,
   isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -56,41 +57,9 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
-
-    /**
-     * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
-     * So, in addition, check if there are integer properties 0..n and no other numeric keys
-     */
-    function couldBeTupleType(type: ts.ObjectType): boolean {
-      const properties = type.getProperties();
-
-      if (properties.length === 0) {
-        return false;
-      }
-      let i = 0;
-
-      for (; i < properties.length; ++i) {
-        const name = properties[i].name;
-
-        if (String(i) !== name) {
-          if (i === 0) {
-            // if there are no integer properties, this is not a tuple
-            return false;
-          }
-          break;
-        }
-      }
-      for (; i < properties.length; ++i) {
-        if (String(+properties[i].name) === properties[i].name) {
-          return false; // if there are any other numeric properties, this is not a tuple
-        }
-      }
-      return true;
-    }
 
     /**
      * Returns true if there's a chance the variable has been used before a value has been assigned to it
@@ -139,6 +108,58 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isLiteralVariableDeclarationChangingTypeWithConst(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      /**
+       * If the type assertion is on a template literal WITH expressions we
+       * should keep the `const` casting
+       * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
+       */
+      if (node.expression.type === AST_NODE_TYPES.TemplateLiteral) {
+        return node.expression.expressions.length === 0;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const maybeDeclarationNode = node.parent.parent!;
+      return (
+        maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
+        maybeDeclarationNode.kind === 'const'
+      );
+    }
+
+    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
+      if (uncast === cast) {
+        return true;
+      }
+
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
+        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
+        tsutils.isCompilerOptionEnabled(
+          compilerOptions,
+          'exactOptionalPropertyTypes',
+        )
+      ) {
+        const uncastParts = tsutils
+          .unionTypeParts(uncast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        const castParts = tsutils
+          .unionTypeParts(cast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        if (uncastParts.length !== castParts.length) {
+          return false;
+        }
+
+        const uncastPartsSet = new Set(uncastParts);
+        return castParts.every(part => uncastPartsSet.has(part));
+      }
+
+      return false;
+    }
+
     return {
       TSNonNullExpression(node): void {
         if (
@@ -168,8 +189,11 @@ export default createRule<Options, MessageIds>({
 
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
-        if (!isNullableType(type)) {
-          if (isPossiblyUsedBeforeAssigned(node.expression)) {
+        if (!isNullableType(type) && !isTypeFlagSet(type, ts.TypeFlags.Void)) {
+          if (
+            node.expression.type === AST_NODE_TYPES.Identifier &&
+            isPossiblyUsedBeforeAssigned(node.expression)
+          ) {
             return;
           }
 
@@ -177,10 +201,7 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              return fixer.removeRange([
-                node.expression.range[1],
-                node.range[1],
-              ]);
+              return fixer.removeRange([node.range[1] - 1, node.range[1]]);
             },
           });
         } else {
@@ -196,6 +217,7 @@ export default createRule<Options, MessageIds>({
               ts.TypeFlags.Undefined,
             );
             const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
+            const typeIncludesVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
 
             const contextualTypeIncludesUndefined = isTypeFlagSet(
               contextualType,
@@ -204,6 +226,10 @@ export default createRule<Options, MessageIds>({
             const contextualTypeIncludesNull = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Null,
+            );
+            const contextualTypeIncludesVoid = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Void,
             );
 
             // make sure that the parent accepts the same types
@@ -214,8 +240,11 @@ export default createRule<Options, MessageIds>({
             const isValidNull = typeIncludesNull
               ? contextualTypeIncludesNull
               : true;
+            const isValidVoid = typeIncludesVoid
+              ? contextualTypeIncludesVoid
+              : true;
 
-            if (isValidUndefined && isValidNull) {
+            if (isValidUndefined && isValidNull && isValidVoid) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
@@ -235,48 +264,72 @@ export default createRule<Options, MessageIds>({
       ): void {
         if (
           options.typesToIgnore?.includes(
-            sourceCode.getText(node.typeAnnotation),
-          ) ||
-          isConstAssertion(node.typeAnnotation)
+            context.sourceCode.getText(node.typeAnnotation),
+          )
         ) {
           return;
         }
 
         const castType = services.getTypeAtLocation(node);
-
-        if (
-          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-          (tsutils.isObjectType(castType) &&
-            (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
-              couldBeTupleType(castType)))
-        ) {
-          // It's not always safe to remove a cast to a literal type or tuple
-          // type, as those types are sometimes widened without the cast.
-          return;
-        }
-
         const uncastType = services.getTypeAtLocation(node.expression);
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
-        if (uncastType === castType) {
+        const wouldSameTypeBeInferred = castType.isLiteral()
+          ? isLiteralVariableDeclarationChangingTypeWithConst(node)
+          : !isConstAssertion(node.typeAnnotation);
+
+        if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const closingAngleBracket = sourceCode.getTokenAfter(
-                  node.typeAnnotation,
+                const openingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '<',
+                  ),
+                  NullThrowsReasons.MissingToken('<', 'type annotation'),
                 );
-                return closingAngleBracket?.value === '>'
-                  ? fixer.removeRange([
-                      node.range[0],
-                      closingAngleBracket.range[1],
-                    ])
-                  : null;
+                const closingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '>',
+                  ),
+                  NullThrowsReasons.MissingToken('>', 'type annotation'),
+                );
+
+                // < ( number ) > ( 3 + 5 )
+                // ^---remove---^
+                return fixer.removeRange([
+                  openingAngleBracket.range[0],
+                  closingAngleBracket.range[1],
+                ]);
               }
-              return fixer.removeRange([
-                node.expression.range[1] + 1,
-                node.range[1],
-              ]);
+              // `as` is always present in TSAsExpression
+              const asToken = nullThrows(
+                context.sourceCode.getTokenAfter(
+                  node.expression,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Identifier &&
+                    token.value === 'as',
+                ),
+                NullThrowsReasons.MissingToken('>', 'type annotation'),
+              );
+              const tokenBeforeAs = nullThrows(
+                context.sourceCode.getTokenBefore(asToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('comment', 'as'),
+              );
+
+              // ( 3 + 5 )  as  number
+              //          ^--remove--^
+              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
             },
           });
         }

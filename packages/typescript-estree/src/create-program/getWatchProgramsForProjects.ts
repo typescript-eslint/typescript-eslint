@@ -151,7 +151,7 @@ function getWatchProgramsForProjects(
     );
   }
 
-  const currentProjectsFromSettings = new Set(parseSettings.projects);
+  const currentProjectsFromSettings = new Map(parseSettings.projects);
 
   /*
    * before we go into the process of attempting to find and update every program
@@ -198,13 +198,13 @@ function getWatchProgramsForProjects(
    * - the file is new/renamed, and the program hasn't been updated.
    */
   for (const tsconfigPath of parseSettings.projects) {
-    const existingWatch = knownWatchProgramMap.get(tsconfigPath);
+    const existingWatch = knownWatchProgramMap.get(tsconfigPath[0]);
 
     if (existingWatch) {
       const updatedProgram = maybeInvalidateProgram(
         existingWatch,
         filePath,
-        tsconfigPath,
+        tsconfigPath[0],
       );
       if (!updatedProgram) {
         continue;
@@ -215,7 +215,7 @@ function getWatchProgramsForProjects(
 
       // cache and check the file list
       const fileList = updateCachedFileList(
-        tsconfigPath,
+        tsconfigPath[0],
         updatedProgram,
         parseSettings,
       );
@@ -229,15 +229,19 @@ function getWatchProgramsForProjects(
       continue;
     }
 
-    const programWatch = createWatchProgram(tsconfigPath, parseSettings);
-    knownWatchProgramMap.set(tsconfigPath, programWatch);
+    const programWatch = createWatchProgram(tsconfigPath[1], parseSettings);
+    knownWatchProgramMap.set(tsconfigPath[0], programWatch);
 
     const program = programWatch.getProgram().getProgram();
     // sets parent pointers in source files
     program.getTypeChecker();
 
     // cache and check the file list
-    const fileList = updateCachedFileList(tsconfigPath, program, parseSettings);
+    const fileList = updateCachedFileList(
+      tsconfigPath[0],
+      program,
+      parseSettings,
+    );
     if (fileList.has(filePath)) {
       log('Found program for file. %s', filePath);
       // we can return early because we know this program contains the file
@@ -400,6 +404,7 @@ function maybeInvalidateProgram(
      * We need to make sure typescript knows this so it can update appropriately
      */
     log('tsconfig has changed - triggering program update. %s', tsconfigPath);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     fileWatchCallbackTrackingMap
       .get(tsconfigPath)!
       .forEach(cb => cb(tsconfigPath, ts.FileWatcherEventKind.Changed));
@@ -427,12 +432,12 @@ function maybeInvalidateProgram(
     current = next;
     const folderWatchCallbacks = folderWatchCallbackTrackingMap.get(current);
     if (folderWatchCallbacks) {
-      folderWatchCallbacks.forEach(cb => {
+      for (const cb of folderWatchCallbacks) {
         if (currentDir !== current) {
           cb(currentDir, ts.FileWatcherEventKind.Changed);
         }
-        cb(current!, ts.FileWatcherEventKind.Changed);
-      });
+        cb(current, ts.FileWatcherEventKind.Changed);
+      }
       hasCallback = true;
     }
 

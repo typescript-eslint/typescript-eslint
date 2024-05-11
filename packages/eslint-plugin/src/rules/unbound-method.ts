@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getFilename } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -24,51 +23,16 @@ export type Options = [Config];
 export type MessageIds = 'unbound' | 'unboundWithoutThisAnnotation';
 
 /**
- * The following is a list of exceptions to the rule
- * Generated via the following script.
- * This is statically defined to save making purposely invalid calls every lint run
- * ```
-SUPPORTED_GLOBALS.flatMap(namespace => {
-  const object = window[namespace];
-    return Object.getOwnPropertyNames(object)
-      .filter(
-        name =>
-          !name.startsWith('_') &&
-          typeof object[name] === 'function',
-      )
-      .map(name => {
-        try {
-          const x = object[name];
-          x();
-        } catch (e) {
-          if (e.message.includes("called on non-object")) {
-            return `${namespace}.${name}`;
-          }
-        }
-      });
-}).filter(Boolean);
-   * ```
+ * Static methods on these globals are either not `this`-aware or supported being
+ * called without `this`.
+ *
+ * - `Promise` is not in the list because it supports subclassing by using `this`
+ * - `Array` is in the list because although it supports subclassing, the `this`
+ *   value defaults to `Array` when unbound
+ *
+ * This is now a language-design invariant: static methods are never `this`-aware
+ * because TC39 wants to make `array.map(Class.method)` work!
  */
-const nativelyNotBoundMembers = new Set([
-  'Promise.all',
-  'Promise.race',
-  'Promise.resolve',
-  'Promise.reject',
-  'Promise.allSettled',
-  'Object.defineProperties',
-  'Object.defineProperty',
-  'Reflect.defineProperty',
-  'Reflect.deleteProperty',
-  'Reflect.get',
-  'Reflect.getOwnPropertyDescriptor',
-  'Reflect.getPrototypeOf',
-  'Reflect.has',
-  'Reflect.isExtensible',
-  'Reflect.ownKeys',
-  'Reflect.preventExtensions',
-  'Reflect.set',
-  'Reflect.setPrototypeOf',
-]);
 const SUPPORTED_GLOBALS = [
   'Number',
   'Object',
@@ -78,7 +42,6 @@ const SUPPORTED_GLOBALS = [
   'Array',
   'Proxy',
   'Date',
-  'Infinity',
   'Atomics',
   'Reflect',
   'console',
@@ -86,23 +49,23 @@ const SUPPORTED_GLOBALS = [
   'JSON',
   'Intl',
 ] as const;
-const nativelyBoundMembers = SUPPORTED_GLOBALS.map(namespace => {
-  if (!(namespace in global)) {
-    // node.js might not have namespaces like Intl depending on compilation options
-    // https://nodejs.org/api/intl.html#intl_options_for_building_node_js
-    return [];
-  }
-  const object = global[namespace];
-  return Object.getOwnPropertyNames(object)
-    .filter(
-      name =>
-        !name.startsWith('_') &&
-        typeof (object as Record<string, unknown>)[name] === 'function',
-    )
-    .map(name => `${namespace}.${name}`);
-})
-  .reduce((arr, names) => arr.concat(names), [])
-  .filter(name => !nativelyNotBoundMembers.has(name));
+const nativelyBoundMembers = new Set(
+  SUPPORTED_GLOBALS.flatMap(namespace => {
+    if (!(namespace in global)) {
+      // node.js might not have namespaces like Intl depending on compilation options
+      // https://nodejs.org/api/intl.html#intl_options_for_building_node_js
+      return [];
+    }
+    const object = global[namespace];
+    return Object.getOwnPropertyNames(object)
+      .filter(
+        name =>
+          !name.startsWith('_') &&
+          typeof (object as Record<string, unknown>)[name] === 'function',
+      )
+      .map(name => `${namespace}.${name}`);
+  }),
+);
 
 const isNotImported = (
   symbol: ts.Symbol,
@@ -167,11 +130,9 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
-    const currentSourceFile = services.program.getSourceFile(
-      getFilename(context),
-    );
+    const currentSourceFile = services.program.getSourceFile(context.filename);
 
-    function checkMethodAndReport(
+    function checkIfMethodAndReport(
       node: TSESTree.Node,
       symbol: ts.Symbol | undefined,
     ): void {
@@ -179,7 +140,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { dangerous, firstParamIsThis } = checkMethod(symbol, ignoreStatic);
+      const { dangerous, firstParamIsThis } = checkIfMethod(
+        symbol,
+        ignoreStatic,
+      );
       if (dangerous) {
         context.report({
           messageId:
@@ -201,13 +165,13 @@ export default createRule<Options, MessageIds>({
 
         if (
           objectSymbol &&
-          nativelyBoundMembers.includes(getMemberFullName(node)) &&
+          nativelyBoundMembers.has(getMemberFullName(node)) &&
           isNotImported(objectSymbol, currentSourceFile)
         ) {
           return;
         }
 
-        checkMethodAndReport(node, services.getSymbolAtLocation(node));
+        checkIfMethodAndReport(node, services.getSymbolAtLocation(node));
       },
       'VariableDeclarator, AssignmentExpression'(
         node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
@@ -232,14 +196,14 @@ export default createRule<Options, MessageIds>({
               if (
                 notImported &&
                 isIdentifier(initNode) &&
-                nativelyBoundMembers.includes(
+                nativelyBoundMembers.has(
                   `${initNode.name}.${property.key.name}`,
                 )
               ) {
                 return;
               }
 
-              checkMethodAndReport(
+              checkIfMethodAndReport(
                 property.key,
                 initTypes.getProperty(property.key.name),
               );
@@ -251,10 +215,15 @@ export default createRule<Options, MessageIds>({
   },
 });
 
-function checkMethod(
+interface CheckMethodResult {
+  dangerous: boolean;
+  firstParamIsThis?: boolean;
+}
+
+function checkIfMethod(
   symbol: ts.Symbol,
   ignoreStatic: boolean,
-): { dangerous: boolean; firstParamIsThis?: boolean } {
+): CheckMethodResult {
   const { valueDeclaration } = symbol;
   if (!valueDeclaration) {
     // working around https://github.com/microsoft/TypeScript/issues/31294
@@ -268,35 +237,54 @@ function checkMethod(
           (valueDeclaration as ts.PropertyDeclaration).initializer?.kind ===
           ts.SyntaxKind.FunctionExpression,
       };
+    case ts.SyntaxKind.PropertyAssignment: {
+      const assignee = (valueDeclaration as ts.PropertyAssignment).initializer;
+      if (assignee.kind !== ts.SyntaxKind.FunctionExpression) {
+        return {
+          dangerous: false,
+        };
+      }
+      return checkMethod(assignee as ts.FunctionExpression, ignoreStatic);
+    }
     case ts.SyntaxKind.MethodDeclaration:
     case ts.SyntaxKind.MethodSignature: {
-      const decl = valueDeclaration as
-        | ts.MethodDeclaration
-        | ts.MethodSignature;
-      const firstParam = decl.parameters.at(0);
-      const firstParamIsThis =
-        firstParam?.name.kind === ts.SyntaxKind.Identifier &&
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-        firstParam.name.escapedText === 'this';
-      const thisArgIsVoid =
-        firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
-
-      return {
-        dangerous:
-          !thisArgIsVoid &&
-          !(
-            ignoreStatic &&
-            tsutils.includesModifier(
-              getModifiers(valueDeclaration),
-              ts.SyntaxKind.StaticKeyword,
-            )
-          ),
-        firstParamIsThis,
-      };
+      return checkMethod(
+        valueDeclaration as ts.MethodDeclaration | ts.MethodSignature,
+        ignoreStatic,
+      );
     }
   }
 
   return { dangerous: false };
+}
+
+function checkMethod(
+  valueDeclaration:
+    | ts.MethodDeclaration
+    | ts.MethodSignature
+    | ts.FunctionExpression,
+  ignoreStatic: boolean,
+): CheckMethodResult {
+  const firstParam = valueDeclaration.parameters.at(0);
+  const firstParamIsThis =
+    firstParam?.name.kind === ts.SyntaxKind.Identifier &&
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+    firstParam.name.escapedText === 'this';
+  const thisArgIsVoid =
+    firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
+
+  return {
+    dangerous:
+      !thisArgIsVoid &&
+      !(
+        ignoreStatic &&
+        tsutils.includesModifier(
+          getModifiers(valueDeclaration),
+          ts.SyntaxKind.StaticKeyword,
+        )
+      ),
+    firstParamIsThis,
+  };
 }
 
 function isSafeUse(node: TSESTree.Node): boolean {

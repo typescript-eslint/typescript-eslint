@@ -6,6 +6,7 @@ import {
   getParserServices,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
+import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
 export default createRule({
   name: 'no-for-in-array',
@@ -17,7 +18,7 @@ export default createRule({
     },
     messages: {
       forInViolation:
-        'For-in loops over arrays are forbidden. Use for-of or array.forEach instead.',
+        'For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.',
     },
     schema: [],
     type: 'problem',
@@ -36,7 +37,7 @@ export default createRule({
           (type.flags & ts.TypeFlags.StringLike) !== 0
         ) {
           context.report({
-            node,
+            loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forInViolation',
           });
         }

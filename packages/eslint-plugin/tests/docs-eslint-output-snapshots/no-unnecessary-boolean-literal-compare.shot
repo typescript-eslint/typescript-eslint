@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare const someCondition: boolean;
+if (someCondition === true) {
+    ~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a boolean value to a boolean instead of using it directly.
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare const someCondition: boolean;
+if (someCondition) {
+}
+
+declare const someObjectBoolean: boolean | Record<string, unknown>;
+if (someObjectBoolean === true) {
+}
+
+declare const someStringBoolean: boolean | string;
+if (someStringBoolean === true) {
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allowComparingNullableBooleansToTrue": false }
+
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition === true) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to true instead of using it directly.
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition !== true) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to true instead of negating it.
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allowComparingNullableBooleansToTrue": false }
+
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition) {
+}
+
+declare const someNullCondition: boolean | null;
+if (!someNullCondition) {
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "allowComparingNullableBooleansToFalse": false }
+
+declare const someUndefinedCondition: boolean | undefined;
+if (someUndefinedCondition === false) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition !== false) {
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-boolean-literal-compare.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "allowComparingNullableBooleansToFalse": false }
+
+declare const someUndefinedCondition: boolean | undefined;
+if (!(someUndefinedCondition ?? true)) {
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition ?? true) {
+}
+"
+`;

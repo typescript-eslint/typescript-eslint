@@ -1,6 +1,21 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "release": {
+    "projects": ["*"],
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github",
+        "renderer": "tools/release/changelog-renderer"
+      },
+      "projectChangelogs": {
+        "renderer": "tools/release/changelog-renderer"
+      }
+    },
+    "version": {
+      "conventionalCommits": true
+    }
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
@@ -10,24 +25,17 @@
     "test": {
       "inputs": [
         "default",
+        "^production",
         "{workspaceRoot}/jest.config.js",
         "{workspaceRoot}/jest.config.base.js"
       ],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
-    "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.js",
-        "{workspaceRoot}/yarn.lock",
-        "{workspaceRoot}/.eslintignore"
-      ],
-      "cache": true
-    },
     "@nx/jest:jest": {
       "inputs": [
         "default",
+        "^production",
         "{workspaceRoot}/jest.config.js",
         "{workspaceRoot}/jest.config.base.js"
       ],
@@ -43,6 +51,19 @@
           "codeCoverage": true
         }
       }
+    },
+    "lint": {
+      "dependsOn": ["eslint-plugin:build"],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/eslint.config.js",
+        "{workspaceRoot}/eslint.config.mjs",
+        {
+          "dependentTasksOutputFiles": "**/*.js",
+          "transitive": false
+        }
+      ],
+      "cache": true
     }
   },
   "namedInputs": {
@@ -57,8 +78,15 @@
       },
       {
         "runtime": "yarn -v"
-      }
+      },
+      "{workspaceRoot}/yarn.lock"
     ],
-    "production": ["default", "!{projectRoot}/src/test-setup.[jt]s"]
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ]
   }
 }

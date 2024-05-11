@@ -430,6 +430,7 @@ We'd be happy to help you try out `parserOptions.projectService`.
 ### Long Term Vision
 
 Our hope is that the Project Service API becomes the standard way to work with typed linting over the next few major versions.
+
 Our intent is to roll it out according to the following rough timeline:
 
 - **v7**: Rename `parserOptions.EXPERIMENTAL_useProjectService` to `parserOptions.projectService`

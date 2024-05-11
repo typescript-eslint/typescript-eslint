@@ -19,7 +19,8 @@ permissions:
 jobs:
   accessibility_alt_text_bot:
     name: Check alt text is set on images
+    if: ${{ !endsWith(github.actor, '[bot]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Get action 'github/accessibility-alt-text-bot'
-        uses: github/accessibility-alt-text-bot@v1.4.0
+        uses: github/accessibility-alt-text-bot@v1.5.0

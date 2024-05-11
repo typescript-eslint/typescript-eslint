@@ -1,7 +1,350 @@
-# Change Log
+## 7.8.0 (2024-04-29)
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+### 🚀 Features
+
+- **typescript-estree:** add maximumDefaultProjectFileMatchCount and wide allowDefaultProjectForFiles glob restrictions
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- jsfm01
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.1 (2024-04-22)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **typescript-estree:** add defaultProject for project service
+
+
+### ❤️  Thank You
+
+- Dave
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- bump npm dependency ranges
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.5.0 (2024-04-01)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.4.0 (2024-03-25)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [consistent-type-imports] ignore files with decorators, experimentalDecorators, and emitDecoratorMetadata
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Brad Zacher
+- Josh Goldberg ✨
+- Kim Sang Du
+- Kirk Waiblinger
+- Marco Pasqualetti
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.1 (2024-03-18)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.0 (2024-03-18)
+
+
+### 🚀 Features
+
+- **typescript-estree:** disallow switch statements with multiple default cases
+
+
+### 🩹 Fixes
+
+- correct `engines.node` constraints in `package.json`
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix false negative for const variable declarations
+
+- **typescript-estree:** fix the issue of single run inferring in the pnpm repo
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alexu
+- Arka Pratim Chaudhuri
+- auvred
+- Derrick Isaacson
+- fnx
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Marta Cardoso
+- Michaël De Boey
+- Tristan Rasmussen
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.2.0 (2024-03-11)
+
+
+### 🚀 Features
+
+- support TS 5.4
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- auvred
+- Chris Plummer
+- Fotis Papadogeorgopoulos
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Wayne Zhang
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.1 (2024-03-04)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.1.0 (2024-02-26)
+
+
+### 🚀 Features
+
+- **typescript-estree:** add debug logs for useProgramFromProjectService
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** use simpler absolutify behavior for project service client file paths
+
+
+### ❤️  Thank You
+
+- Arka Pratim Chaudhuri
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.0.2 (2024-02-19)
+
+
+### 🩹 Fixes
+
+- fix tsconfig-less check errors, fix `@types/eslint` incompatibilities, add tests
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Gareth Jones
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.0.1 (2024-02-12)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# 7.0.0 (2024-02-12)
+
+
+### 🚀 Features
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements
+
+- add support for flat configs
+
+
+#### ⚠️  Breaking Changes
+
+- ⚠️  bump ESLint, NodeJS, and TS minimum version requirements
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kirk Waiblinger
+- StyleShit
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.21.0 (2024-02-05)
+
+
+### 🚀 Features
+
+- allow `parserOptions.project: false`
+
+- **typescript-estree:** forbid duplicated accessibility modifiers
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Kirk Waiblinger
+- Pete Gonzalez
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.20.0 (2024-01-29)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.1 (2024-01-22)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.19.0 (2024-01-15)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** add JSDocParsingMode enum merge for typescript/lib/tsserverlibrary
+
+- **typescript-estree:** disallow `using` as the variable keyword for `for..in` loops
+
+- **typescript-estree:** fix incorrect backwards-compat augmentation in TS 5.3
+
+
+### ❤️  Thank You
+
+- auvred
+- Brad Zacher
+- Josh Goldberg ✨
+- Joshua Chen
+- LJX
+- Steven
+- StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.18.1 (2024-01-08)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** fix invalid parsing error when use update expression on non-null assertion
+
+- **typescript-estree:** only create project service from env setting if project is enabled
+
+
+### ❤️  Thank You
+
+- auvred
+- James
+- Josh Goldberg ✨
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 6.18.0 (2024-01-06)
+
+
+### 🚀 Features
+
+- **typescript-estree:** throw on invalid update expressions
+
+- **typescript-estree:** throw error when CatchClause param contains initializer
+
+
+### ❤️  Thank You
+
+- auvred
+- Joshua Chen
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# [6.17.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.16.0...v6.17.0) (2024-01-01)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.16.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.15.0...v6.16.0) (2023-12-25)
+
+
+### Features
+
+* **typescript-estree:** add allowDefaultProjectForFiles project service allowlist option ([#7752](https://github.com/typescript-eslint/typescript-eslint/issues/7752)) ([7ddadda](https://github.com/typescript-eslint/typescript-eslint/commit/7ddadda10845bc53967eeec83ba6b7cdc71a079f))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.14.0...v6.15.0) (2023-12-18)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.2...v6.14.0) (2023-12-11)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
 
 ## [6.13.2](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.1...v6.13.2) (2023-12-04)
 

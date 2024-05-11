@@ -27,7 +27,7 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Require `Array#sort` calls to always provide a `compareFunction`',
+        'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`',
       requiresTypeChecking: true,
     },
     messages: {
@@ -54,7 +54,6 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Check if a given node is an array which all elements are string.
-     * @param node
      */
     function isStringArrayNode(node: TSESTree.Expression): boolean {
       const type = services.getTypeAtLocation(node);
@@ -66,23 +65,26 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function checkSortArgument(callee: TSESTree.MemberExpression): void {
+      const calleeObjType = getConstrainedTypeAtLocation(
+        services,
+        callee.object,
+      );
+
+      if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
+        return;
+      }
+
+      if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
+        context.report({ node: callee.parent, messageId: 'requireCompare' });
+      }
+    }
+
     return {
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
-        callee: TSESTree.MemberExpression,
-      ): void {
-        const calleeObjType = getConstrainedTypeAtLocation(
-          services,
-          callee.object,
-        );
-
-        if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
-          return;
-        }
-
-        if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
-          context.report({ node: callee.parent, messageId: 'requireCompare' });
-        }
-      },
+      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]":
+        checkSortArgument,
+      "CallExpression[arguments.length=0] > MemberExpression[property.name='toSorted'][computed=false]":
+        checkSortArgument,
     };
   },
 });

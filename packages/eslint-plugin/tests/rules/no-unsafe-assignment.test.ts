@@ -114,6 +114,10 @@ class Foo {
     'const x: { y: number } = { y: 1 };',
     'const x = [...[1, 2, 3]];',
     'const [{ [`x${1}`]: x }] = [{ [`x`]: 1 }] as [{ [`x`]: any }];',
+    `
+type T = [string, T[]];
+const test: T = ['string', []] as T;
+    `,
     {
       code: `
 type Props = { a: string };
@@ -153,6 +157,11 @@ declare function Foo(props: { a: string }): never;
     'const x: Set<unknown> = y as Set<any>;',
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     'const x: Map<string, string> = new Map();',
+    `
+type Foo = { bar: unknown };
+const bar: any = 1;
+const foo: Foo = { bar };
+    `,
   ],
   invalid: [
     {
@@ -368,6 +377,35 @@ function foo() {
           line: 3,
           column: 9,
           endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+type T = [string, T[]];
+const test: T = ['string', []] as any;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 3,
+          column: 7,
+          endColumn: 38,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { bar: number };
+const bar: any = 1;
+const foo: Foo = { bar };
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 4,
+          column: 20,
+          endColumn: 23,
         },
       ],
     },

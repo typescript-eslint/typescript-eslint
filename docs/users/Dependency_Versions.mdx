@@ -7,13 +7,25 @@ import packageJson from '../../package.json';
 
 ## ESLint
 
-> The version range of ESLint currently supported is `^7.0.0 || ^8.0.0`.
+<blockquote>
+  <p>
+    The version range of ESLint currently supported is{' '}
+    <code>{packageJson.devDependencies.eslint}</code>.
+  </p>
+</blockquote>
 
-We generally support at least the latest two major versions of ESLint.
+We generally support at least the latest two major versions of ESLint; though sometimes we may restrict this if the APIs change too much between major releases.
 
 ## Node
 
-This project makes an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://github.com/nodejs/release#release-schedule).
+<blockquote>
+  <p>
+    The version range of NodeJS currently supported is{' '}
+    <code>{packageJson.engines.node}</code>.
+  </p>
+</blockquote>
+
+We make an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://github.com/nodejs/release#release-schedule).
 Support for specific Current status releases are considered periodically.
 
 ## TypeScript
@@ -25,7 +37,7 @@ Support for specific Current status releases are considered periodically.
   </p>
 </blockquote>
 
-Note that we mirror [DefinitelyTyped's version support window](https://github.com/DefinitelyTyped/DefinitelyTyped/#support-window) - meaning we only support versions of TypeScript less than 2 years old.
+We mirror [DefinitelyTyped's version support window](https://github.com/DefinitelyTyped/DefinitelyTyped/#support-window) - meaning we only support versions of TypeScript less than 2 years old.
 
 You may find that our tooling works on older TypeScript versions however we provide no guarantees and **_we will not accept issues against unsupported versions_**.
 
@@ -55,4 +67,4 @@ See: [Packages > Parser > `warnOnUnsupportedTypeScriptVersion`](../packages/Pars
 
 ## Dependant Version Upgrades
 
-See [Maintenance > Dependent Version Upgrades](../maintenance/Dependency_Version_Upgrades.mdx) for maintenance steps to update these versions.
+See [Maintenance > Dependent Version Upgrades](../maintenance/pull-requests/Dependency_Version_Upgrades.mdx) for maintenance steps to update these versions.

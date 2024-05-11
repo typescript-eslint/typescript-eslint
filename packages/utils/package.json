@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "6.13.2",
+  "version": "7.8.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -37,8 +37,9 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/utils",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -66,21 +68,21 @@
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.0",
-    "@types/json-schema": "^7.0.12",
-    "@types/semver": "^7.5.0",
-    "@typescript-eslint/scope-manager": "6.13.2",
-    "@typescript-eslint/types": "6.13.2",
-    "@typescript-eslint/typescript-estree": "6.13.2",
-    "semver": "^7.5.4"
+    "@types/json-schema": "^7.0.15",
+    "@types/semver": "^7.5.8",
+    "@typescript-eslint/scope-manager": "7.8.0",
+    "@typescript-eslint/types": "7.8.0",
+    "@typescript-eslint/typescript-estree": "7.8.0",
+    "semver": "^7.6.0"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^8.56.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "6.13.2",
+    "@typescript-eslint/parser": "7.8.0",
     "downlevel-dts": "*",
     "jest": "29.7.0",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*"
   },

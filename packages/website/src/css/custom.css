@@ -95,6 +95,10 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/mastodon.svg') no-repeat;
 }
 
+.www-link::before {
+  background: url('/img/www.svg') no-repeat;
+}
+
 .stack-overflow-link::before {
   background: url('/img/stack-overflow.svg') no-repeat;
 }
@@ -190,4 +194,12 @@ h6 {
 
 [data-theme='dark'] .code-block-added-line {
   background-color: #00ff9510;
+}
+
+.markdown a {
+  text-decoration: underline;
+}
+
+.markdown a * {
+  vertical-align: baseline;
 }

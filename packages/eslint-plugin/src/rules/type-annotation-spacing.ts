@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -102,6 +101,8 @@ function getRules(
 export default createRule<Options, MessageIds>({
   name: 'type-annotation-spacing',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/type-annotation-spacing'],
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',
@@ -155,7 +156,6 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const punctuators = [':', '=>'];
-    const sourceCode = getSourceCode(context);
 
     const ruleSet = createRules(options);
 
@@ -167,9 +167,12 @@ export default createRule<Options, MessageIds>({
       typeAnnotation: TSESTree.TypeNode,
     ): void {
       const nextToken = typeAnnotation;
-      const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken)!;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const punctuatorTokenEnd = context.sourceCode.getTokenBefore(nextToken)!;
       let punctuatorTokenStart = punctuatorTokenEnd;
-      let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd)!;
+      let previousToken =
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        context.sourceCode.getTokenBefore(punctuatorTokenEnd)!;
       let type = punctuatorTokenEnd.value;
 
       if (!punctuators.includes(type)) {
@@ -180,8 +183,7 @@ export default createRule<Options, MessageIds>({
 
       if (type === ':' && previousToken.value === '?') {
         if (
-          // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
-          sourceCode.isSpaceBetweenTokens(previousToken, punctuatorTokenStart)
+          context.sourceCode.isSpaceBetween(previousToken, punctuatorTokenStart)
         ) {
           context.report({
             node: punctuatorTokenStart,
@@ -202,13 +204,15 @@ export default createRule<Options, MessageIds>({
         // shift the start to the ?
         type = '?:';
         punctuatorTokenStart = previousToken;
-        previousToken = sourceCode.getTokenBefore(previousToken)!;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        previousToken = context.sourceCode.getTokenBefore(previousToken)!;
 
         // handle the +/- modifiers for optional modification operators
         if (previousToken.value === '+' || previousToken.value === '-') {
           type = `${previousToken.value}?:`;
           punctuatorTokenStart = previousToken;
-          previousToken = sourceCode.getTokenBefore(previousToken)!;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          previousToken = context.sourceCode.getTokenBefore(previousToken)!;
         }
       }
 

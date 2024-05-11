@@ -2,7 +2,6 @@ import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -18,9 +17,19 @@ import {
 const EQ_OPERATORS = /^[=!]=/;
 const regexpp = new RegExpParser();
 
-export default createRule({
+type AllowedSingleElementEquality = 'always' | 'never';
+
+export type Options = [
+  {
+    allowSingleElementEquality?: AllowedSingleElementEquality;
+  },
+];
+
+type MessageIds = 'preferEndsWith' | 'preferStartsWith';
+
+export default createRule<Options, MessageIds>({
   name: 'prefer-string-starts-ends-with',
-  defaultOptions: [],
+  defaultOptions: [{ allowSingleElementEquality: 'never' }],
 
   meta: {
     type: 'suggestion',
@@ -34,13 +43,26 @@ export default createRule({
       preferStartsWith: "Use 'String#startsWith' method instead.",
       preferEndsWith: "Use the 'String#endsWith' method instead.",
     },
-    schema: [],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowSingleElementEquality: {
+            description:
+              'Whether to allow equality checks against the first or last element of a string.',
+            enum: ['always', 'never'],
+            type: 'string',
+          },
+        },
+        type: 'object',
+      },
+    ],
     fixable: 'code',
   },
 
-  create(context) {
-    const globalScope = getScope(context);
-    const sourceCode = getSourceCode(context);
+  create(context, [{ allowSingleElementEquality }]) {
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
+
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -78,7 +100,6 @@ export default createRule({
     /**
      * Check if a given node is a `Literal` node that is a character.
      * @param node The node to check.
-     * @param kind The method name to get a character.
      */
     function isCharacter(node: TSESTree.Node): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);
@@ -109,8 +130,8 @@ export default createRule({
      * @param node2 Another node to compare.
      */
     function isSameTokens(node1: TSESTree.Node, node2: TSESTree.Node): boolean {
-      const tokens1 = sourceCode.getTokens(node1);
-      const tokens2 = sourceCode.getTokens(node2);
+      const tokens1 = context.sourceCode.getTokens(node1);
+      const tokens2 = context.sourceCode.getTokens(node2);
 
       if (tokens1.length !== tokens2.length) {
         return false;
@@ -213,10 +234,10 @@ export default createRule({
     function getPropertyRange(
       node: TSESTree.MemberExpression,
     ): [number, number] {
-      const dotOrOpenBracket = sourceCode.getTokenAfter(
-        node.object,
-        isNotClosingParenToken,
-      )!;
+      const dotOrOpenBracket = nullThrows(
+        context.sourceCode.getTokenAfter(node.object, isNotClosingParenToken),
+        NullThrowsReasons.MissingToken('closing parenthesis', 'member'),
+      );
       return [dotOrOpenBracket.range[0], node.range[1]];
     }
 
@@ -403,8 +424,15 @@ export default createRule({
         }
 
         const isEndsWith = isLastIndexExpression(indexNode, node.object);
+        if (allowSingleElementEquality === 'always' && isEndsWith) {
+          return;
+        }
+
         const isStartsWith = !isEndsWith && isNumber(indexNode, 0);
-        if (!isStartsWith && !isEndsWith) {
+        if (
+          (allowSingleElementEquality === 'always' && isStartsWith) ||
+          (!isStartsWith && !isEndsWith)
+        ) {
           return;
         }
 

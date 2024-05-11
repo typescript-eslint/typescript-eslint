@@ -101,6 +101,30 @@ interface ParseOptions {
   suppressDeprecatedPropertyWarnings?: boolean;
 }
 
+/**
+ * Granular options to configure the project service.
+ */
+export interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default project compiler options.
+   */
+  allowDefaultProjectForFiles?: string[];
+
+  /**
+   * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   */
+  defaultProject?: string;
+
+  /**
+   * The maximum number of files {@link allowDefaultProjectForFiles} may match.
+   * Each file match slows down linting, so if you do need to use this, please
+   * file an informative issue on typescript-eslint explaining why - so we can
+   * help you avoid using it!
+   * @default 8
+   */
+  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
+}
+
 interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
@@ -114,7 +138,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
    */
-  EXPERIMENTAL_useProjectService?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
@@ -156,8 +180,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
+   *
+   * If set to `false`, `null` or `undefined` type information will not be returned.
    */
-  project?: string[] | string | true | null;
+  project?: string[] | string | boolean | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -197,6 +223,9 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
    * whether or not ESLint is being used as part of a single run.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
    */
   allowAutomaticSingleRunInference?: boolean;
 
@@ -221,30 +250,36 @@ export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
-export interface ParserWeakMap<TKey, TValueBase> {
-  get<TValue extends TValueBase>(key: TKey): TValue;
+export interface ParserWeakMap<Key, ValueBase> {
+  get<Value extends ValueBase>(key: Key): Value;
   has(key: unknown): boolean;
 }
 
 export interface ParserWeakMapESTreeToTSNode<
-  TKey extends TSESTree.Node = TSESTree.Node,
+  Key extends TSESTree.Node = TSESTree.Node,
 > {
-  get<TKeyBase extends TKey>(key: TKeyBase): TSESTreeToTSNode<TKeyBase>;
+  get<KeyBase extends Key>(key: KeyBase): TSESTreeToTSNode<KeyBase>;
   has(key: unknown): boolean;
 }
 
+export interface ParserServicesBase {
+  emitDecoratorMetadata: boolean | undefined;
+  experimentalDecorators: boolean | undefined;
+}
 export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
 }
 export interface ParserServicesWithTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }
 export interface ParserServicesWithoutTypeInformation
-  extends ParserServicesNodeMaps {
+  extends ParserServicesNodeMaps,
+    ParserServicesBase {
   program: null;
 }
 export type ParserServices =

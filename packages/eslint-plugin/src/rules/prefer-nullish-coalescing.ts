@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -10,8 +9,8 @@ import {
   getTypeFlags,
   isLogicalOrOperator,
   isNodeEqual,
-  isNullableType,
   isNullLiteral,
+  isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
@@ -126,7 +125,7 @@ export default createRule<Options, MessageIds>({
   ) {
     const parserServices = getParserServices(context);
     const compilerOptions = parserServices.program.getCompilerOptions();
-    const sourceCode = getSourceCode(context);
+
     const checker = parserServices.program.getTypeChecker();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -289,10 +288,10 @@ export default createRule<Options, MessageIds>({
                       : [node.consequent, node.alternate];
                   return fixer.replaceText(
                     node,
-                    `${sourceCode.text.slice(
+                    `${context.sourceCode.text.slice(
                       left.range[0],
                       left.range[1],
-                    )} ?? ${sourceCode.text.slice(
+                    )} ?? ${context.sourceCode.text.slice(
                       right.range[0],
                       right.range[1],
                     )}`,
@@ -309,8 +308,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
         const type = checker.getTypeAtLocation(tsNode.left);
-        const isNullish = isNullableType(type, { allowUndefined: true });
-        if (!isNullish) {
+        if (!isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)) {
           return;
         }
 
@@ -323,6 +321,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const ignorableFlags = [
           (ignorePrimitives === true || ignorePrimitives!.bigint) &&
             ts.TypeFlags.BigInt,
@@ -344,9 +344,10 @@ export default createRule<Options, MessageIds>({
         ) {
           return;
         }
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
         const barBarOperator = nullThrows(
-          sourceCode.getTokenAfter(
+          context.sourceCode.getTokenAfter(
             node.left,
             token =>
               token.type === AST_TOKEN_TYPES.Punctuator &&

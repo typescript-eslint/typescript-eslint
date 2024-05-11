@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "6.13.2",
+  "version": "7.8.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -17,8 +17,9 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || >=20.0.0"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -49,32 +51,24 @@
     "targets": {
       "copy-ast-spec": {
         "dependsOn": [
-          {
-            "target": "build",
-            "projects": "dependencies"
-          }
+          "^build"
         ],
         "outputs": [
           "{projectRoot}/src/generated"
-        ]
+        ],
+        "cache": true
       },
       "build": {
         "dependsOn": [
-          {
-            "target": "build",
-            "projects": "dependencies"
-          },
-          {
-            "target": "copy-ast-spec",
-            "projects": "self"
-          }
+          "^build",
+          "copy-ast-spec"
         ]
       }
     }
   },
   "devDependencies": {
     "downlevel-dts": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "tsx": "*",
     "typescript": "*"

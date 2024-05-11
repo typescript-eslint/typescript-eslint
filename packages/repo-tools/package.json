@@ -1,25 +1,27 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "6.13.2",
+  "version": "7.8.0",
   "private": true,
   "scripts": {
     "//": "NOTE: intentionally no build step in this package",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-contributors": "tsx ./src/generate-contributors.ts",
-    "generate-sponsors": "tsx ./src/generate-sponsors.ts",
-    "generate-lib": "tsx ./src/generate-lib.ts",
+    "apply-canary-version": "npx tsx ./src/apply-canary-version.mts",
+    "format": "npx prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "generate-configs": "npx tsx ./src/generate-configs.mts",
+    "generate-contributors": "npx tsx ./src/generate-contributors.mts",
+    "generate-sponsors": "npx tsx ./src/generate-sponsors.mts",
+    "generate-lib": "npx tsx ./src/generate-lib.mts",
     "lint": "npx nx lint",
-    "postinstall-script": "tsx ./src/postinstall.mts",
-    "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "postinstall-script": "npx tsx ./src/postinstall.mts",
+    "test": "npx jest --coverage",
+    "typecheck": "npx tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@nx/devkit": "*",
-    "@prettier/sync": "*",
     "cross-fetch": "*",
     "execa": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
+    "semver": "7.6.0",
     "tmp": "*",
     "typescript": "*"
   }

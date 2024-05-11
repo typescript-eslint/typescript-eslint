@@ -1,7 +1,6 @@
 import glob = require('glob');
 import * as path from 'path';
 
-import { getCanonicalFileName } from '../../src/create-program/shared';
 import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {
   clearParseAndGenerateServicesCalls,
@@ -15,6 +14,9 @@ const mockProgram = {
   },
   getTypeChecker(): void {
     return;
+  },
+  getCompilerOptions(): unknown {
+    return {};
   },
 };
 
@@ -91,7 +93,7 @@ const options = {
 } as const;
 
 const resolvedProject = (p: string): string =>
-  getCanonicalFileName(path.resolve(path.join(process.cwd(), FIXTURES_DIR), p));
+  path.resolve(path.join(process.cwd(), FIXTURES_DIR), p);
 
 describe('semanticInfo - singleRun', () => {
   beforeEach(() => {

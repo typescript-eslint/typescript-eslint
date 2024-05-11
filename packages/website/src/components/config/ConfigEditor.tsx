@@ -35,7 +35,9 @@ function filterConfig(
   return options
     .map(group => ({
       heading: group.heading,
-      fields: group.fields.filter(item => String(item.key).includes(filter)),
+      fields: group.fields.filter(item =>
+        String(item.key.toLowerCase()).includes(filter.toLowerCase()),
+      ),
     }))
     .filter(group => group.fields.length > 0);
 }
@@ -102,6 +104,8 @@ function ConfigEditor({
     (name: string, value: unknown): void => {
       const newConfig = { ...values };
       if (value === '' || value == null) {
+        // Filter out falsy values from the new config
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete newConfig[name];
       } else {
         newConfig[name] = value;

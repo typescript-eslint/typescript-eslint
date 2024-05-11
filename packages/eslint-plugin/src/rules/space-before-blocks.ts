@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -16,6 +15,8 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'space-before-blocks',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/space-before-blocks'],
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before blocks',
@@ -35,7 +36,6 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['always'],
   create(context, [config]) {
     const rules = baseRule.create(context);
-    const sourceCode = getSourceCode(context);
 
     let requireSpace = true;
 
@@ -48,10 +48,9 @@ export default createRule<Options, MessageIds>({
     function checkPrecedingSpace(
       node: TSESTree.Token | TSESTree.TSInterfaceBody,
     ): void {
-      const precedingToken = sourceCode.getTokenBefore(node);
+      const precedingToken = context.sourceCode.getTokenBefore(node);
       if (precedingToken && isTokenOnSameLine(precedingToken, node)) {
-        // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
-        const hasSpace = sourceCode.isSpaceBetweenTokens(
+        const hasSpace = context.sourceCode.isSpaceBetween(
           precedingToken,
           node as TSESTree.Token,
         );
@@ -80,7 +79,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkSpaceAfterEnum(node: TSESTree.TSEnumDeclaration): void {
-      const punctuator = sourceCode.getTokenAfter(node.id);
+      const punctuator = context.sourceCode.getTokenAfter(node.id);
       if (punctuator) {
         checkPrecedingSpace(punctuator);
       }

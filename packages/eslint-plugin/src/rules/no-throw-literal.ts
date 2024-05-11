@@ -5,6 +5,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isErrorLike,
   isTypeAnyType,
   isTypeUnknownType,
 } from '../util';
@@ -22,9 +23,10 @@ export default createRule<Options, MessageIds>({
   name: 'no-throw-literal',
   meta: {
     type: 'problem',
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/only-throw-error'],
     docs: {
       description: 'Disallow throwing literals as exceptions',
-      recommended: 'strict',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
@@ -55,41 +57,6 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
-
-    function isErrorLike(type: ts.Type): boolean {
-      if (type.isIntersection()) {
-        return type.types.some(isErrorLike);
-      }
-      if (type.isUnion()) {
-        return type.types.every(isErrorLike);
-      }
-
-      const symbol = type.getSymbol();
-      if (!symbol) {
-        return false;
-      }
-
-      if (symbol.getName() === 'Error') {
-        const declarations = symbol.getDeclarations() ?? [];
-        for (const declaration of declarations) {
-          const sourceFile = declaration.getSourceFile();
-          if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
-            return true;
-          }
-        }
-      }
-
-      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
-        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
-          if (isErrorLike(baseType)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
 
     function checkThrowArgument(node: TSESTree.Node): void {
       if (
@@ -114,7 +81,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isErrorLike(type)) {
+      if (isErrorLike(services.program, type)) {
         return;
       }
 

@@ -40,6 +40,11 @@ function clearProgramCache(): void {
   existingPrograms.clear();
 }
 
+const defaultProjectMatchedFiles = new Set<string>();
+function clearDefaultProjectMatchedFiles(): void {
+  defaultProjectMatchedFiles.clear();
+}
+
 /**
  * @param parseSettings Internal settings for parsing the file
  * @param hasFullTypeInformation True if the program should be attempted to be calculated from provided tsconfig files
@@ -53,6 +58,8 @@ function getProgramAndAST(
     const fromProjectService = useProgramFromProjectService(
       parseSettings.EXPERIMENTAL_projectService,
       parseSettings,
+      hasFullTypeInformation,
+      defaultProjectMatchedFiles,
     );
     if (fromProjectService) {
       return fromProjectService;
@@ -181,12 +188,12 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   if (
     parseSettings.singleRun &&
     !parseSettings.programs &&
-    parseSettings.projects.length > 0
+    parseSettings.projects.size > 0
   ) {
     parseSettings.programs = {
       *[Symbol.iterator](): Iterator<ts.Program> {
         for (const configFile of parseSettings.projects) {
-          const existingProgram = existingPrograms.get(configFile);
+          const existingProgram = existingPrograms.get(configFile[0]);
           if (existingProgram) {
             yield existingProgram;
           } else {
@@ -194,8 +201,8 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
               'Detected single-run/CLI usage, creating Program once ahead of time for project: %s',
               configFile,
             );
-            const newProgram = createProgramFromConfigFile(configFile);
-            existingPrograms.set(configFile, newProgram);
+            const newProgram = createProgramFromConfigFile(configFile[1]);
+            existingPrograms.set(configFile[0], newProgram);
             yield newProgram;
           }
         }
@@ -207,7 +214,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
    */
   const hasFullTypeInformation =
-    parseSettings.programs != null || parseSettings.projects.length > 0;
+    parseSettings.programs != null || parseSettings.projects.size > 0;
 
   if (
     typeof options.errorOnTypeScriptSyntacticAndSemanticIssues === 'boolean' &&
@@ -243,7 +250,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     options.filePath &&
     parseAndGenerateServicesCalls[options.filePath] > 1
       ? createIsolatedProgram(parseSettings)
-      : getProgramAndAST(parseSettings, hasFullTypeInformation)!;
+      : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
@@ -285,6 +292,7 @@ export {
   parse,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
+  clearDefaultProjectMatchedFiles,
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };

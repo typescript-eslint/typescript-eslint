@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // There's lots of funny stuff due to the typing of ts.Node
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
 
 import { getDecorators, getModifiers } from './getModifiers';
@@ -27,6 +26,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  isValidAssignmentTarget,
   nodeCanBeDecorated,
   nodeHasIllegalDecorators,
   nodeIsPresent,
@@ -138,8 +138,6 @@ export class Converter {
 
   /**
    * Fixes the exports of the given ts.Node
-   * @param node the ts.Node
-   * @param result result
    * @returns the ESTreeNode with fixed exports
    */
   private fixExports<
@@ -628,7 +626,6 @@ export class Converter {
   /**
    * Converts a TypeScript JSX node.tagName into an ESTree node.name
    * @param node the tagName object from a JSX ts.Node
-   * @param parent
    * @returns the converted ESTree name object
    */
   private convertJSXTagName(
@@ -750,8 +747,6 @@ export class Converter {
    * Converts a TypeScript node into an ESTree node.
    * The core of the conversion logic:
    * Identify and convert each relevant TypeScript SyntaxKind
-   * @param node the child ts.Node
-   * @param parent parentNode
    * @returns the converted ESTree node
    */
   private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
@@ -844,6 +839,17 @@ export class Converter {
         });
 
       case SyntaxKind.SwitchStatement:
+        if (
+          node.caseBlock.clauses.filter(
+            switchCase => switchCase.kind === SyntaxKind.DefaultClause,
+          ).length > 1
+        ) {
+          this.#throwError(
+            node,
+            "A 'default' clause cannot appear more than once in a 'switch' statement.",
+          );
+        }
+
         return this.createNode<TSESTree.SwitchStatement>(node, {
           type: AST_NODE_TYPES.SwitchStatement,
           discriminant: this.convertChild(node.expression),
@@ -886,6 +892,12 @@ export class Converter {
         });
 
       case SyntaxKind.CatchClause:
+        if (node.variableDeclaration?.initializer) {
+          this.#throwError(
+            node.variableDeclaration.initializer,
+            'Catch clause variable cannot have an initializer.',
+          );
+        }
         return this.createNode<TSESTree.CatchClause>(node, {
           type: AST_NODE_TYPES.CatchClause,
           param: node.variableDeclaration
@@ -927,6 +939,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
+        this.#checkForStatementDeclaration(node.initializer);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           left: this.convertPattern(node.initializer),
@@ -2021,6 +2034,12 @@ export class Converter {
          * ESTree uses UpdateExpression for ++/--
          */
         if (operator === '++' || operator === '--') {
+          if (!isValidAssignmentTarget(node.operand)) {
+            this.#throwUnlessAllowInvalidAST(
+              node.operand,
+              'Invalid left-hand side expression in unary operation',
+            );
+          }
           return this.createNode<TSESTree.UpdateExpression>(node, {
             type: AST_NODE_TYPES.UpdateExpression,
             operator,
@@ -3107,15 +3126,7 @@ export class Converter {
 
       // Tuple
       case SyntaxKind.TupleType: {
-        // In TS 4.0, the `elementTypes` property was changed to `elements`.
-        // To support both at compile time, we cast to access the newer version
-        // if the former does not exist.
-        const elementTypes =
-          'elementTypes' in node
-            ? (node as any).elementTypes.map((el: ts.Node) =>
-                this.convertChild(el),
-              )
-            : node.elements.map(el => this.convertChild(el));
+        const elementTypes = node.elements.map(el => this.convertChild(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
@@ -3406,6 +3417,27 @@ export class Converter {
         );
       }
 
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.PublicKeyword ||
+        modifier.kind === SyntaxKind.ProtectedKeyword ||
+        modifier.kind === SyntaxKind.PrivateKeyword
+      ) {
+        for (const anotherModifier of getModifiers(node) ?? []) {
+          if (
+            anotherModifier !== modifier &&
+            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
+              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
+              anotherModifier.kind === SyntaxKind.PrivateKeyword)
+          ) {
+            this.#throwError(
+              anotherModifier,
+              `Accessibility modifier already seen.`,
+            );
+          }
+        }
+      }
+
       // `checkParameter` function in `typescript`
       if (
         node.kind === SyntaxKind.Parameter &&
@@ -3497,5 +3529,15 @@ export class Converter {
     }
 
     throw createError(message, this.ast, start, end);
+  }
+  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
+    if (ts.isVariableDeclarationList(initializer)) {
+      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
+        this.#throwError(
+          initializer,
+          "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
+        );
+      }
+    }
   }
 }
