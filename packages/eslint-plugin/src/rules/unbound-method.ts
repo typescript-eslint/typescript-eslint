@@ -162,7 +162,7 @@ export default createRule<Options, MessageIds>({
       ) {
         const objectSymbol = services.getSymbolAtLocation(object);
         const notImported =
-          objectSymbol && isNotImported(objectSymbol, currentSourceFile);
+          objectSymbol != null && isNotImported(objectSymbol, currentSourceFile);
 
         if (
           notImported &&
