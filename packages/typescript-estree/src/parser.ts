@@ -87,11 +87,11 @@ function getProgramAndAST(
   );
 }
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {}) &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {});
-/* eslint-enable @typescript-eslint/ban-types */
+/* eslint-enable @typescript-eslint/no-empty-object-type */
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
