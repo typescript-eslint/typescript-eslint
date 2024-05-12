@@ -22,8 +22,9 @@ export = {
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
+    'no-unused-expressions': 'off',
+    '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
-    '@typescript-eslint/prefer-namespace-keyword': 'error',
   },
 } satisfies ClassicConfig.Config;
