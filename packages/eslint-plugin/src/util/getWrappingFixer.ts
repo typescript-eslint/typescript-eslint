@@ -118,7 +118,9 @@ function isWeakPrecedenceParent(
   node: TSESTree.Node,
   parent = node.parent,
 ): boolean {
-  if (!parent) return false;
+  if (!parent){
+    return false;
+  }
 
   if (
     parent.type === AST_NODE_TYPES.UpdateExpression ||
