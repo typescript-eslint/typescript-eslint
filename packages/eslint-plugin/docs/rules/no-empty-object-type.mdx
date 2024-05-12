@@ -33,7 +33,7 @@ If you do have a use case for an API allowing `{}`, you can always configure the
 
 Note that this rule does not report on:
 
-- `{}` as a type constituent in an intersection type (e.g. `type NonNullable<T> = T & {}`), as this can be useful in type system operations.
+- `{}` as a type constituent in an intersection type (e.g. types like TypeScript's built-in `type NonNullable<T> = T & {}`), as this can be useful in type system operations.
 - Interfaces that extend from multiple other interfaces.
 
 ## Examples
@@ -80,12 +80,6 @@ type TypeWith = { property: boolean };
 ## Options
 
 By default, this rule flags both interfaces and object types.
-
-:::warning
-We recommend keeping all options to the default and not allowing exceptions to this rule.
-The "empty object" type is often confusing even for experienced TypeScript developers.
-Consider using `object` or `unknown` as a type instead.
-:::
 
 ### `allowInterfaces`
 
