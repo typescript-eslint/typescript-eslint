@@ -8,6 +8,7 @@ import {
   getParserServices,
   getStaticStringValue,
   getWrappingCode,
+  getWrappingFixer,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
@@ -96,11 +97,11 @@ export default createRule<[], MessageId>({
             fix(fixer): TSESLint.RuleFix | null {
               const wrappingCode = getWrappingCode({
                 sourceCode: context.sourceCode,
-                node: node.expressions[0],
-                wrap: (...code: string[]) => {
-                  return code.join('');
-                },
+                replaceNode: node.expressions[0],
+                originNode:node,
+                parent:node.parent
               });
+
               return fixer.replaceText(node, wrappingCode);
             },
           });

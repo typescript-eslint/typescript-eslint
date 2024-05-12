@@ -207,7 +207,7 @@ ruleTester.run('no-useless-template-literals', rule, {
 
     {
       code: noFormat`\`\${    'a' + 'b'    }\`;`,
-      output: `('a' + 'b');`,
+      output: `'a' + 'b';`,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',

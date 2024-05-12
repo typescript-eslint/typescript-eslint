@@ -27,60 +27,67 @@ interface WrappingFixerParams {
 
 /**
  * Wraps node with some code. Adds parenthesis as necessary.
- * @returns Code which adds the specified code and parens if necessary.
- */
-export function getWrappingCode(params: WrappingFixerParams): string {
-  const { sourceCode, node, innerNode = node, wrap } = params;
-  const innerNodes = Array.isArray(innerNode) ? innerNode : [innerNode];
-
-  const innerCodes = innerNodes.map(innerNode => {
-    let code = sourceCode.getText(innerNode);
-
-    /**
-     * Wrap our node in parens to prevent the following cases:
-     * - It has a weaker precedence than the code we are wrapping it in
-     * - It's gotten mistaken as block statement instead of object expression
-     */
-    if (
-      !isStrongPrecedenceNode(innerNode) ||
-      isObjectExpressionInOneLineReturn(node, innerNode)
-    ) {
-      code = `(${code})`;
-    }
-
-    return code;
-  });
-
-  // do the wrapping
-  let code = wrap(...innerCodes);
-
-  // check the outer expression's precedence
-  if (isWeakPrecedenceParent(node)) {
-    // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
-    // let's wrap the whole expression in parens just in case
-    if (!ASTUtils.isParenthesized(node, sourceCode)) {
-      code = `(${code})`;
-    }
-  }
-
-  // check if we need to insert semicolon
-  if (/^[`([]/.exec(code) && isMissingSemicolonBefore(node, sourceCode)) {
-    code = `;${code}`;
-  }
-
-  return code;
-}
-
-/**
- * Wraps node with some code. Adds parenthesis as necessary.
  * @returns Fixer which adds the specified code and parens if necessary.
  */
 export function getWrappingFixer(
   params: WrappingFixerParams,
 ): TSESLint.ReportFixFunction {
+  const { sourceCode, node, innerNode = node, wrap } = params;
+  const innerNodes = Array.isArray(innerNode) ? innerNode : [innerNode];
+
   return (fixer): TSESLint.RuleFix => {
-    return fixer.replaceText(params.node, getWrappingCode(params));
+    const innerCodes = innerNodes.map(innerNode => {
+      let code = sourceCode.getText(innerNode);
+
+      /**
+       * Wrap our node in parens to prevent the following cases:
+       * - It has a weaker precedence than the code we are wrapping it in
+       * - It's gotten mistaken as block statement instead of object expression
+       */
+      if (
+        !isStrongPrecedenceNode(innerNode) ||
+        isObjectExpressionInOneLineReturn(node, innerNode)
+      ) {
+        code = `(${code})`;
+      }
+
+      return code;
+    });
+
+    // do the wrapping
+    let code = wrap(...innerCodes);
+
+    // check the outer expression's precedence
+    if (isWeakPrecedenceParent(node)) {
+      // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
+      // let's wrap the whole expression in parens just in case
+      if (!ASTUtils.isParenthesized(node, sourceCode)) {
+        code = `(${code})`;
+      }
+    }
+
+    // check if we need to insert semicolon
+    if (/^[`([]/.exec(code) && isMissingSemicolonBefore(node, sourceCode)) {
+      code = `;${code}`;
+    }
+
+    return fixer.replaceText(node, code);
   };
+}
+
+export function getWrappingCode(params:{
+  sourceCode: Readonly<TSESLint.SourceCode>;
+  replaceNode: TSESTree.Node;
+  originNode:TSESTree.Node;
+  parent: TSESTree.Node;
+}){
+  const { sourceCode, replaceNode, originNode, parent } = params;
+  const code = sourceCode.getText(replaceNode);
+  const isNodeNeedParen =  !isStrongPrecedenceNode(replaceNode)
+  const isParentNeedParam = isWeakPrecedenceParent(originNode, parent)
+
+  if(isNodeNeedParen && isParentNeedParam) return `(${code})`;
+  return code
 }
 
 /**
@@ -105,9 +112,8 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
 /**
  * Check if a node's parent could have different precedence if the node changes.
  */
-function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
+function isWeakPrecedenceParent(node: TSESTree.Node, parent = node.parent!): boolean {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const parent = node.parent!;
 
   if (
     parent.type === AST_NODE_TYPES.UpdateExpression ||
