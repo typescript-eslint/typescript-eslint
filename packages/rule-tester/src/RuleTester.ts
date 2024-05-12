@@ -76,7 +76,7 @@ let defaultConfig = deepMerge(
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter();
+  readonly #linter: Linter = new Linter({ configType: 'eslintrc' });
 
   /**
    * Creates a new instance of RuleTester.

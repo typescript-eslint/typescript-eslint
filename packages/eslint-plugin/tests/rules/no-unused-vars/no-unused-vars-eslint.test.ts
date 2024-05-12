@@ -16,17 +16,25 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.defineRule('use-every-a', context => {
-  /**
-   * Mark a variable as used
-   */
-  function useA(node: TSESTree.Node): void {
-    context.sourceCode.markVariableAsUsed('a', node);
-  }
-  return {
-    VariableDeclaration: useA,
-    ReturnStatement: useA,
-  };
+ruleTester.defineRule('use-every-a', {
+  create: context => {
+    /**
+     * Mark a variable as used
+     */
+    function useA(node: TSESTree.Node): void {
+      context.sourceCode.markVariableAsUsed('a', node);
+    }
+    return {
+      VariableDeclaration: useA,
+      ReturnStatement: useA,
+    };
+  },
+  defaultOptions: [],
+  meta: {
+    messages: {},
+    type: 'problem',
+    schema: [],
+  },
 });
 
 /**

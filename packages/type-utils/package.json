@@ -60,9 +60,6 @@
     "rimraf": "*",
     "typescript": "*"
   },
-  "peerDependencies": {
-    "eslint": "^8.57.0"
-  },
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true

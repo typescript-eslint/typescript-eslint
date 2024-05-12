@@ -134,6 +134,25 @@ jobs:
         run: yarn stylelint
         working-directory: packages/website
 
+  eslint_v9_tests:
+    name: Run tests on ESLint v9
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - run: yarn add eslint@9
+      - name: Run tests
+        run: yarn test
+        env:
+          CI: true
+
   integration_tests:
     name: Run integration tests on primary Node.js version
     needs: [build]

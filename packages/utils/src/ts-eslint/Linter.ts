@@ -276,7 +276,7 @@ namespace Linter {
     parserOptions?: ParserOptions;
   }
 
-  // TODO - RuleCreateFunction is no longer supported in ESLint v9
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
   export type LegacyPluginRules = Record<
     string,
     AnyRuleCreateFunction | AnyRuleModule
