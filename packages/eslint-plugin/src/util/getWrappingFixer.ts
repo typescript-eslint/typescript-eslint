@@ -118,7 +118,7 @@ function isWeakPrecedenceParent(
   node: TSESTree.Node,
   parent = node.parent,
 ): boolean {
-  if (!parent){
+  if (!parent) {
     return false;
   }
 
