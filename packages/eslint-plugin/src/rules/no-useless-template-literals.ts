@@ -98,8 +98,8 @@ export default createRule<[], MessageId>({
               const wrappingCode = getWrappingCode({
                 sourceCode: context.sourceCode,
                 replaceNode: node.expressions[0],
-                originNode:node,
-                parent:node.parent
+                originNode: node,
+                parent: node.parent,
               });
 
               return fixer.replaceText(node, wrappingCode);

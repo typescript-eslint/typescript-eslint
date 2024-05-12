@@ -75,19 +75,19 @@ export function getWrappingFixer(
   };
 }
 
-export function getWrappingCode(params:{
+export function getWrappingCode(params: {
   sourceCode: Readonly<TSESLint.SourceCode>;
   replaceNode: TSESTree.Node;
-  originNode:TSESTree.Node;
+  originNode: TSESTree.Node;
   parent: TSESTree.Node;
-}){
+}) {
   const { sourceCode, replaceNode, originNode, parent } = params;
   const code = sourceCode.getText(replaceNode);
-  const isNodeNeedParen =  !isStrongPrecedenceNode(replaceNode)
-  const isParentNeedParam = isWeakPrecedenceParent(originNode, parent)
+  const isNodeNeedParen = !isStrongPrecedenceNode(replaceNode);
+  const isParentNeedParam = isWeakPrecedenceParent(originNode, parent);
 
-  if(isNodeNeedParen && isParentNeedParam) return `(${code})`;
-  return code
+  if (isNodeNeedParen && isParentNeedParam) return `(${code})`;
+  return code;
 }
 
 /**
@@ -112,7 +112,10 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
 /**
  * Check if a node's parent could have different precedence if the node changes.
  */
-function isWeakPrecedenceParent(node: TSESTree.Node, parent = node.parent!): boolean {
+function isWeakPrecedenceParent(
+  node: TSESTree.Node,
+  parent = node.parent!,
+): boolean {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
   if (
