@@ -80,13 +80,15 @@ export function getWrappingCode(params: {
   replaceNode: TSESTree.Node;
   originNode: TSESTree.Node;
   parent: TSESTree.Node;
-}) {
+}): string {
   const { sourceCode, replaceNode, originNode, parent } = params;
   const code = sourceCode.getText(replaceNode);
   const isNodeNeedParen = !isStrongPrecedenceNode(replaceNode);
   const isParentNeedParam = isWeakPrecedenceParent(originNode, parent);
 
-  if (isNodeNeedParen && isParentNeedParam) return `(${code})`;
+  if (isNodeNeedParen && isParentNeedParam){
+    return `(${code})`;
+  }
   return code;
 }
 
@@ -114,9 +116,9 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
  */
 function isWeakPrecedenceParent(
   node: TSESTree.Node,
-  parent = node.parent!,
+  parent = node.parent,
 ): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  if(!parent) return false
 
   if (
     parent.type === AST_NODE_TYPES.UpdateExpression ||

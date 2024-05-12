@@ -8,7 +8,6 @@ import {
   getParserServices,
   getStaticStringValue,
   getWrappingCode,
-  getWrappingFixer,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
