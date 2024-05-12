@@ -86,7 +86,7 @@ export function getWrappingCode(params: {
   const isNodeNeedParen = !isStrongPrecedenceNode(replaceNode);
   const isParentNeedParam = isWeakPrecedenceParent(originNode, parent);
 
-  if (isNodeNeedParen && isParentNeedParam){
+  if (isNodeNeedParen && isParentNeedParam) {
     return `(${code})`;
   }
   return code;
@@ -118,7 +118,7 @@ function isWeakPrecedenceParent(
   node: TSESTree.Node,
   parent = node.parent,
 ): boolean {
-  if(!parent) return false
+  if (!parent) return false;
 
   if (
     parent.type === AST_NODE_TYPES.UpdateExpression ||
