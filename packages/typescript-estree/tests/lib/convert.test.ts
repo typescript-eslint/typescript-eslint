@@ -29,7 +29,7 @@ describe('convert', () => {
       function fakeUnknownKind(node: ts.Node): void {
         ts.forEachChild(node, fakeUnknownKind);
         // @ts-expect-error -- intentionally writing to a readonly field
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
         node.kind = ts.SyntaxKind.UnparsedPrologue;
       }
 
@@ -327,7 +327,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       esCallExpression.typeParameters;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -344,10 +344,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      /* eslint-disable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
       esCallExpression.typeParameters;
       esCallExpression.typeParameters;
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-enable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -360,7 +360,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       esCallExpression.typeParameters;
 
       expect(emitWarning).not.toHaveBeenCalled();
@@ -375,10 +375,10 @@ describe('convert', () => {
     it('allows writing to the deprecated aliased property as a new enumerable value', () => {
       const esCallExpression = getEsCallExpression();
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       esCallExpression.typeParameters = undefined;
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       expect(esCallExpression.typeParameters).toBeUndefined();
       expect(Object.keys(esCallExpression)).toContain('typeParameters');
     });
@@ -391,7 +391,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       tsMappedType.typeParameter;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -408,10 +408,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      /* eslint-disable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
       tsMappedType.typeParameter;
       tsMappedType.typeParameter;
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-enable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -424,7 +424,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       tsMappedType.typeParameter;
 
       expect(emitWarning).not.toHaveBeenCalled();
@@ -439,10 +439,10 @@ describe('convert', () => {
     it('allows writing to the deprecated getter property as a new enumerable value', () => {
       const tsMappedType = getTsMappedType();
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       tsMappedType.typeParameter = undefined!;
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
       expect(tsMappedType.typeParameter).toBeUndefined();
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
