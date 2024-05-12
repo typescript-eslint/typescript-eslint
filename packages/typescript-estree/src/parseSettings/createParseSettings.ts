@@ -113,7 +113,7 @@ export function createParseSettings(
           : console.log, // eslint-disable-line no-console
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
-    projects: [],
+    projects: new Map(),
     range: options.range === true,
     singleRun,
     suppressDeprecatedPropertyWarnings:
@@ -172,7 +172,7 @@ export function createParseSettings(
   // So in this specific case we default to 'none' if no value was provided
   if (
     options.jsDocParsingMode == null &&
-    parseSettings.projects.length === 0 &&
+    parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
     parseSettings.EXPERIMENTAL_projectService == null
   ) {
