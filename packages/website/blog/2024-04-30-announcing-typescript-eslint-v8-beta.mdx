@@ -172,14 +172,24 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
 Several rules were changed in significant enough ways to be considered breaking changes:
 
 - ⏳ [Rules: Deprecate prefer-ts-expect-error in favor of ban-ts-comment](https://github.com/typescript-eslint/typescript-eslint/issues/8333)
+  - If you have [`@typescript-eslint/prefer-ts-expect-error`](/rules/prefer-ts-expect-error) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/ban-ts-comment`](/rules/ban-ts-comment)
 - ⏳ [chore(eslint-plugin): deprecate no-var-requires in favor of no-require-imports](https://github.com/typescript-eslint/typescript-eslint/pull/8334)
+  - If you have [`@typescript-eslint/no-var-requires`](/rules/no-var-requires) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-require-imports`](/rules/no-require-imports)
 - [feat(eslint-plugin): deprecate no-throw-literal and add a renamed only-throw-error](https://github.com/typescript-eslint/typescript-eslint/pull/8701)
+  - If you have [`@typescript-eslint/no-throw-literal`](/rules/no-throw-literal) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/only-throw-error`](/rules/only-throw-error)
 - ⏳ [fix(eslint-plugin): [no-useless-template-literals] rename to no-useless-template-expression](https://github.com/typescript-eslint/typescript-eslint/pull/8821)
+  - Find-and-replace text from `no-useless-template-literals` to `no-useless-template-expression`
 - [feat(eslint-plugin): deprecate no-loss-of-precision extension rule](https://github.com/typescript-eslint/typescript-eslint/pull/8832)
+  - If you have [`@typescript-eslint/no-loss-of-precision`](/rules/no-loss-of-precision) manually enabled, remove that
 - [feat(eslint-plugin): remove formatting/layout rules](https://github.com/typescript-eslint/typescript-eslint/pull/8833)
+  - If you're using any of the old deprecated formatting rules, see [eslint.style](https://eslint.style) for their new equivalents
 - [feat(eslint-plugin): [prefer-nullish-coalescing] change ignoreConditionalTests default to true](https://github.com/typescript-eslint/typescript-eslint/pull/8872)
+  - If you want to have the rule check conditional tests, set its [`ignoreConditionalTests` option](/rules/prefer-nullish-coalescing/#ignoreconditionaltests) to `false` in your ESLint config
 - [feat(eslint-plugin): [no-unused-vars] align catch behavior to ESLint 9](https://github.com/typescript-eslint/typescript-eslint/pull/8971)
-- ⏳ [feat(eslint-plugin): split no-empty-object-type rule out from ban-types rule](https://github.com/typescript-eslint/typescript-eslint/pull/8977)
+  - If you want [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars) to ignore caught errors, enable its `caughtErrors` option to `'none'` in your ESLint config
+- ⏳ [feat(eslint-plugin): split no-empty-object-type out from ban-types and no-empty-interface](https://github.com/typescript-eslint/typescript-eslint/pull/8977)
+  - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban the `{}` or `object` type; use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type)
+  - If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type)
 
 ### Tooling Breaking Changes
 
@@ -188,7 +198,7 @@ Several rules were changed in significant enough ways to be considered breaking 
   - This will cause any `parserOptions.project` globs to match dot (`.`) directories.
     If you don't want to match them then use a more specific set of globs, or switch to `parserOptions.projectService`.
 - [feat(typescript-estree): remove slow deprecated and isolated programs](https://github.com/typescript-eslint/typescript-eslint/pull/8834)
-  - If you were still using `parserOptions.DEPRECATED__createDefaultProgram`, switch to `parserOptions.projectService` or `parserOptions.project`.
+  - If you were still using `parserOptions.DEPRECATED__createDefaultProgram`, switch to `parserOptions.projectService` _(recommended)_ or `parserOptions.project`.
 - [feat(typescript-estree): rename automaticSingleRunInference to disallowAutomaticSingleRunInference](https://github.com/typescript-eslint/typescript-eslint/pull/8922)
   - We've updated the default to be an opt-out - meaning you no longer need to enable it:
     ```js
@@ -220,6 +230,7 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
 
 - ⏳ [Enhancement: add strict parent types for nodes that have well-defined parents](https://github.com/typescript-eslint/typescript-eslint/issues/6225)
 - [feat(typescript-estree): split TSMappedType typeParameter into constraint and key](https://github.com/typescript-eslint/typescript-eslint/pull/7065)
+  - If your code handles mapped types, change from `node.typeParameter.constraint` to `node.constraint` and from `node.typeParameter.name` to `node.key`
 - ⏳ [feat(ast-spec): remove deprecated type params](https://github.com/typescript-eslint/typescript-eslint/pull/8933)
 
 ### ⏳ Custom Rule `meta.docs` Types
