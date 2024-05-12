@@ -71,7 +71,6 @@ export = {
     '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
-    '@typescript-eslint/prefer-ts-expect-error': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/restrict-plus-operands': [
