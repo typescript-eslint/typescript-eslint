@@ -19,6 +19,7 @@ export default createRule<Options, MessageIds>({
       description: 'Disallow the declaration of empty interfaces',
     },
     deprecated: true,
+    replacedBy: ['@typescript-eslint/no-empty-object-type'],
     fixable: 'code',
     hasSuggestions: true,
     messages: {
