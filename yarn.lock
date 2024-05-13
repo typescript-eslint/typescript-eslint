@@ -19141,10 +19141,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:*, tmp@npm:^0.2.3, tmp@npm:~0.2.1":
-  version: 0.2.3
-  resolution: "tmp@npm:0.2.3"
-  checksum: 73b5c96b6e52da7e104d9d44afb5d106bb1e16d9fa7d00dbeb9e6522e61b571fbdb165c756c62164be9a3bbe192b9b268c236d370a2a0955c7689cd2ae377b95
+"tmp@npm:0.2.2":
+  version: 0.2.2
+  resolution: "tmp@npm:0.2.2"
+  dependencies:
+    rimraf: ^5.0.5
+  checksum: 7d00f417c21a4478611c8d2e0a939b7f242929f13b8f5d2edfc627afe5877720692fb45563ce3c81de54a009f2205f6b1ad02314b6e683aebf2e40b9b9430132
   languageName: node
   linkType: hard
 
