@@ -530,23 +530,23 @@ describe("RuleTester", () => {
     });
 
     it("should not throw an error when the error is a string and the suggestion fixer is failing", () => {
-      ruleTester.run("no-var", require("./fixtures/suggestions").withFailingFixer, {
-        valid: [],
-        invalid: [
-          { code: "foo", errors: ["some message"] }
-        ]
-      });
+        ruleTester.run("no-var", require("./fixtures/suggestions").withFailingFixer, {
+            valid: [],
+            invalid: [
+                { code: "foo", errors: ["some message"] }
+            ]
+        });
     });
 
     it("throws an error when the error is a string and the suggestion fixer provides a fix", () => {
-      assert.throws(() => {
-        ruleTester.run("no-var", require("./fixtures/suggestions").basic, {
-          valid: [],
-          invalid: [
-            { code: "foo", errors: ["Avoid using identifiers named 'foo'."] }
-          ]
-        });
-      }, "Error at index 0 has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.");
+        assert.throws(() => {
+            ruleTester.run("no-var", require("./fixtures/suggestions").basic, {
+                valid: [],
+                invalid: [
+                    { code: "foo", errors: ["Avoid using identifiers named 'foo'."] }
+                ]
+            });
+        }, "Error at index 0 has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.");
     });
 
     it("should throw an error when the error is an object with an unknown property name", () => {
@@ -699,14 +699,14 @@ describe("RuleTester", () => {
     });
 
     it("should throw an error when the expected output is not null and the output does not differ from the code", () => {
-      assert.throws(() => {
-        ruleTester.run("no-var", require("./fixtures/no-eval"), {
-          valid: [],
-          invalid: [
-            { code: "eval('')", output: "eval('')", errors: 1 }
-          ]
-        });
-      }, "Test property 'output' matches 'code'. If no autofix is expected, then omit the 'output' property or set it to null.");
+        assert.throws(() => {
+            ruleTester.run("no-var", require("./fixtures/no-eval"), {
+                valid: [],
+                invalid: [
+                    { code: "eval('')", output: "eval('')", errors: 1 }
+                ]
+            });
+        }, "Test property 'output' matches 'code'. If no autofix is expected, then omit the 'output' property or set it to null.");
     });
 
     it("should throw an error when the expected output isn't specified and problems produce output", () => {
@@ -1732,60 +1732,60 @@ describe("RuleTester", () => {
     });
 
     it("should throw if the message has a single unsubstituted placeholder when data is not specified", () => {
-      assert.throws(() => {
-        ruleTester.run("foo", require("./fixtures/messageId").withMissingData, {
-          valid: [],
-          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
-        });
-      }, "The reported message has an unsubstituted placeholder 'name'. Please provide the missing value via the 'data' property in the context.report() call.");
+        assert.throws(() => {
+            ruleTester.run("foo", require("./fixtures/messageId").withMissingData, {
+                valid: [],
+                invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+            });
+        }, "The reported message has an unsubstituted placeholder 'name'. Please provide the missing value via the 'data' property in the context.report() call.");
     });
 
     it("should throw if the message has a single unsubstituted placeholders when data is specified", () => {
-      assert.throws(() => {
-        ruleTester.run("foo", require("./fixtures/messageId").withMissingData, {
-          valid: [],
-          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo", data: { name: "name" } }] }]
-        });
-      }, "Hydrated message \"Avoid using variables named 'name'.\" does not match \"Avoid using variables named '{{ name }}'.");
+        assert.throws(() => {
+            ruleTester.run("foo", require("./fixtures/messageId").withMissingData, {
+                valid: [],
+                invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo", data: { name: "name" } }] }]
+            });
+        }, "Hydrated message \"Avoid using variables named 'name'.\" does not match \"Avoid using variables named '{{ name }}'.");
     });
 
     it("should throw if the message has multiple unsubstituted placeholders when data is not specified", () => {
-      assert.throws(() => {
-        ruleTester.run("foo", require("./fixtures/messageId").withMultipleMissingDataProperties, {
-          valid: [],
-          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
-        });
-      }, "The reported message has unsubstituted placeholders: 'type', 'name'. Please provide the missing values via the 'data' property in the context.report() call.");
+        assert.throws(() => {
+            ruleTester.run("foo", require("./fixtures/messageId").withMultipleMissingDataProperties, {
+                valid: [],
+                invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+            });
+        }, "The reported message has unsubstituted placeholders: 'type', 'name'. Please provide the missing values via the 'data' property in the context.report() call.");
     });
 
     it("should not throw if the data in the message contains placeholders not present in the raw message", () => {
-      ruleTester.run("foo", require("./fixtures/messageId").withPlaceholdersInData, {
-        valid: [],
-        invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
-      });
+        ruleTester.run("foo", require("./fixtures/messageId").withPlaceholdersInData, {
+            valid: [],
+            invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+        });
     });
 
     it("should throw if the data in the message contains the same placeholder and data is not specified", () => {
-      assert.throws(() => {
-        ruleTester.run("foo", require("./fixtures/messageId").withSamePlaceholdersInData, {
-          valid: [],
-          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
-        });
-      }, "The reported message has an unsubstituted placeholder 'name'. Please provide the missing value via the 'data' property in the context.report() call.");
+        assert.throws(() => {
+            ruleTester.run("foo", require("./fixtures/messageId").withSamePlaceholdersInData, {
+                valid: [],
+                invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+            });
+        }, "The reported message has an unsubstituted placeholder 'name'. Please provide the missing value via the 'data' property in the context.report() call.");
     });
 
     it("should not throw if the data in the message contains the same placeholder and data is specified", () => {
-      ruleTester.run("foo", require("./fixtures/messageId").withSamePlaceholdersInData, {
-        valid: [],
-        invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo", data: { name: "{{ name }}" } }] }]
-      });
+        ruleTester.run("foo", require("./fixtures/messageId").withSamePlaceholdersInData, {
+            valid: [],
+            invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo", data: { name: "{{ name }}" } }] }]
+        });
     });
 
     it("should not throw an error for specifying non-string data values", () => {
-      ruleTester.run("foo", require("./fixtures/messageId").withNonStringData, {
-        valid: [],
-        invalid: [{ code: "0", errors: [{ messageId: "avoid", data: { value: 0 } }] }]
-      });
+        ruleTester.run("foo", require("./fixtures/messageId").withNonStringData, {
+            valid: [],
+            invalid: [{ code: "0", errors: [{ messageId: "avoid", data: { value: 0 } }] }]
+        });
     });
 
     // messageId/message misconfiguration cases
@@ -1981,89 +1981,89 @@ describe("RuleTester", () => {
         });
 
         it("should fail with a single missing data placeholder when data is not specified", () => {
-          assert.throws(() => {
-            ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMissingPlaceholderData, {
-              valid: [],
-              invalid: [{
-                code: "var foo;",
-                errors: [{
-                  messageId: "avoidFoo",
-                  suggestions: [{
-                    messageId: "renameFoo",
-                    output: "var bar;"
-                  }]
-                }]
-              }]
-            });
-          }, "The message of the suggestion has an unsubstituted placeholder 'newName'. Please provide the missing value via the 'data' property for the suggestion in the context.report() call.");
+            assert.throws(() => {
+                ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMissingPlaceholderData, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            messageId: "avoidFoo",
+                            suggestions: [{
+                                messageId: "renameFoo",
+                                output: "var bar;"
+                            }]
+                        }]
+                    }]
+                });
+            }, "The message of the suggestion has an unsubstituted placeholder 'newName'. Please provide the missing value via the 'data' property for the suggestion in the context.report() call.");
         });
 
         it("should fail with a single missing data placeholder when data is specified", () => {
-          assert.throws(() => {
-            ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMissingPlaceholderData, {
-              valid: [],
-              invalid: [{
-                code: "var foo;",
-                errors: [{
-                  messageId: "avoidFoo",
-                  suggestions: [{
-                    messageId: "renameFoo",
-                    data: { other: "name" },
-                    output: "var bar;"
-                  }]
-                }]
-              }]
-            });
-          }, "The message of the suggestion has an unsubstituted placeholder 'newName'. Please provide the missing value via the 'data' property for the suggestion in the context.report() call.");
+            assert.throws(() => {
+                ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMissingPlaceholderData, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            messageId: "avoidFoo",
+                            suggestions: [{
+                                messageId: "renameFoo",
+                                data: { other: "name" },
+                                output: "var bar;"
+                            }]
+                        }]
+                    }]
+                });
+            }, "The message of the suggestion has an unsubstituted placeholder 'newName'. Please provide the missing value via the 'data' property for the suggestion in the context.report() call.");
         });
 
         it("should fail with multiple missing data placeholders when data is not specified", () => {
-          assert.throws(() => {
-            ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMultipleMissingPlaceholderDataProperties, {
-              valid: [],
-              invalid: [{
-                code: "var foo;",
-                errors: [{
-                  messageId: "avoidFoo",
-                  suggestions: [{
-                    messageId: "rename",
-                    output: "var bar;"
-                  }]
-                }]
-              }]
-            });
-          }, "The message of the suggestion has unsubstituted placeholders: 'currentName', 'newName'. Please provide the missing values via the 'data' property for the suggestion in the context.report() call.");
+            assert.throws(() => {
+                ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMultipleMissingPlaceholderDataProperties, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            messageId: "avoidFoo",
+                            suggestions: [{
+                                messageId: "rename",
+                                output: "var bar;"
+                            }]
+                        }]
+                    }]
+                });
+            }, "The message of the suggestion has unsubstituted placeholders: 'currentName', 'newName'. Please provide the missing values via the 'data' property for the suggestion in the context.report() call.");
         });
 
 
         it("should fail when tested using empty suggestion test objects even if the array length is correct", () => {
-          assert.throw(() => {
-            ruleTester.run("suggestions-messageIds", require("./fixtures/suggestions").withMessageIds, {
-              valid: [],
-              invalid: [{
-                code: "var foo;",
-                errors: [{
-                  messageId: "avoidFoo",
-                  suggestions: [{}, {}]
-                }]
-              }]
-            });
-          }, "Error Suggestion at index 0: Test must specify either 'messageId' or 'desc'");
+            assert.throw(() => {
+                ruleTester.run("suggestions-messageIds", require("./fixtures/suggestions").withMessageIds, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            messageId: "avoidFoo",
+                            suggestions: [{}, {}]
+                        }]
+                    }]
+                });
+            }, "Error Suggestion at index 0: Test must specify either 'messageId' or 'desc'");
         });
 
         it("should fail when tested using non-empty suggestion test objects without an output property", () => {
-          assert.throw(() => {
-            ruleTester.run("suggestions-messageIds", require("./fixtures/suggestions").withMessageIds, {
-              valid: [],
-              invalid: [{
-                code: "var foo;",
-                errors: [{
-                  messageId: "avoidFoo",
-                  suggestions: [{ messageId: "renameFoo" }, {}]
-                }]
-              }]
-            });
-          }, 'Error Suggestion at index 0: The "output" property is required.');
+            assert.throw(() => {
+                ruleTester.run("suggestions-messageIds", require("./fixtures/suggestions").withMessageIds, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            messageId: "avoidFoo",
+                            suggestions: [{ messageId: "renameFoo" }, {}]
+                        }]
+                    }]
+                });
+            }, 'Error Suggestion at index 0: The "output" property is required.');
         });
 
         it("should support explicitly expecting no suggestions", () => {
@@ -2116,16 +2116,16 @@ describe("RuleTester", () => {
         });
 
         it("should support specifying only the amount of suggestions", () => {
-          ruleTester.run("suggestions-basic", require("./fixtures/suggestions").basic, {
-            valid: [],
-            invalid: [{
-              code: "var foo;",
-              errors: [{
-                message: "Avoid using identifiers named 'foo'.",
-                suggestions: 1
-              }]
-            }]
-          });
+            ruleTester.run("suggestions-basic", require("./fixtures/suggestions").basic, {
+                valid: [],
+                invalid: [{
+                    code: "var foo;",
+                    errors: [{
+                        message: "Avoid using identifiers named 'foo'.",
+                        suggestions: 1
+                    }]
+                }]
+            });
         });
 
         it("should fail when there are a different number of suggestions", () => {
@@ -2428,21 +2428,21 @@ describe("RuleTester", () => {
         });
 
         it("should throw if the resulting suggestion output is the same as the original source code", () => {
-          assert.throws(() => {
-            ruleTester.run("suggestions-basic", require("./fixtures/suggestions").withFixerWithoutChanges, {
-              valid: [],
-              invalid: [{
-                code: "var foo;",
-                errors: [{
-                  message: "Avoid using identifiers named 'foo'.",
-                  suggestions: [{
-                    desc: "Rename identifier 'foo' to 'bar'",
-                    output: "var foo;"
-                  }]
-                }]
-              }]
-            });
-          }, "The output of a suggestion should differ from the original source code for suggestion at index: 0 on error with message: \"Avoid using identifiers named 'foo'.\"");
+            assert.throws(() => {
+                ruleTester.run("suggestions-basic", require("./fixtures/suggestions").withFixerWithoutChanges, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            message: "Avoid using identifiers named 'foo'.",
+                            suggestions: [{
+                                desc: "Rename identifier 'foo' to 'bar'",
+                                output: "var foo;"
+                            }]
+                        }]
+                    }]
+                });
+            }, "The output of a suggestion should differ from the original source code for suggestion at index: 0 on error with message: \"Avoid using identifiers named 'foo'.\"");
         });
 
         it("should fail when specified suggestion isn't an object", () => {
@@ -2519,37 +2519,37 @@ describe("RuleTester", () => {
         });
 
         it("should fail if a rule produces two suggestions with the same description", () => {
-          assert.throws(() => {
-              ruleTester.run("suggestions-with-duplicate-descriptions", require("../../fixtures/testers/rule-tester/suggestions").withDuplicateDescriptions, {
-                  valid: [],
-                  invalid: [
-                      { code: "var foo = bar;", errors: 1 }
-                  ]
-              });
-          }, "Suggestion message 'Rename 'foo' to 'bar'' reported from suggestion 1 was previously reported by suggestion 0. Suggestion messages should be unique within an error.");
-      });
+            assert.throws(() => {
+                ruleTester.run("suggestions-with-duplicate-descriptions", require("../../fixtures/testers/rule-tester/suggestions").withDuplicateDescriptions, {
+                    valid: [],
+                    invalid: [
+                        { code: "var foo = bar;", errors: 1 }
+                    ]
+                });
+            }, "Suggestion message 'Rename 'foo' to 'bar'' reported from suggestion 1 was previously reported by suggestion 0. Suggestion messages should be unique within an error.");
+        });
 
-      it("should fail if a rule produces two suggestions with the same messageId without data", () => {
-          assert.throws(() => {
-              ruleTester.run("suggestions-with-duplicate-messageids-no-data", require("../../fixtures/testers/rule-tester/suggestions").withDuplicateMessageIdsNoData, {
-                  valid: [],
-                  invalid: [
-                      { code: "var foo = bar;", errors: 1 }
-                  ]
-              });
-          }, "Suggestion message 'Rename identifier' reported from suggestion 1 was previously reported by suggestion 0. Suggestion messages should be unique within an error.");
-      });
+        it("should fail if a rule produces two suggestions with the same messageId without data", () => {
+            assert.throws(() => {
+                ruleTester.run("suggestions-with-duplicate-messageids-no-data", require("../../fixtures/testers/rule-tester/suggestions").withDuplicateMessageIdsNoData, {
+                    valid: [],
+                    invalid: [
+                        { code: "var foo = bar;", errors: 1 }
+                    ]
+                });
+            }, "Suggestion message 'Rename identifier' reported from suggestion 1 was previously reported by suggestion 0. Suggestion messages should be unique within an error.");
+        });
 
-      it("should fail if a rule produces two suggestions with the same messageId with data", () => {
-          assert.throws(() => {
-              ruleTester.run("suggestions-with-duplicate-messageids-with-data", require("../../fixtures/testers/rule-tester/suggestions").withDuplicateMessageIdsWithData, {
-                  valid: [],
-                  invalid: [
-                      { code: "var foo = bar;", errors: 1 }
-                  ]
-              });
-          }, "Suggestion message 'Rename identifier 'foo' to 'bar'' reported from suggestion 1 was previously reported by suggestion 0. Suggestion messages should be unique within an error.");
-      });
+        it("should fail if a rule produces two suggestions with the same messageId with data", () => {
+            assert.throws(() => {
+                ruleTester.run("suggestions-with-duplicate-messageids-with-data", require("../../fixtures/testers/rule-tester/suggestions").withDuplicateMessageIdsWithData, {
+                    valid: [],
+                    invalid: [
+                        { code: "var foo = bar;", errors: 1 }
+                    ]
+                });
+            }, "Suggestion message 'Rename identifier 'foo' to 'bar'' reported from suggestion 1 was previously reported by suggestion 0. Suggestion messages should be unique within an error.");
+        });
 
         it("should throw an error if a rule that doesn't have `meta.hasSuggestions` enabled produces suggestions", () => {
             assert.throws(() => {
@@ -3061,40 +3061,40 @@ describe("RuleTester", () => {
     });
 
     describe("type checking", () => {
-      it('should throw if "only" property is not a boolean', () => {
+        it('should throw if "only" property is not a boolean', () => {
 
-        // "only" has to be falsy as itOnly is not mocked for all test cases
-        assert.throws(() => {
-          ruleTester.run("foo", require("./fixtures/no-var"), {
-            valid: [{ code: "foo", only: "" }],
-            invalid: []
-          });
-        }, /Optional test case property 'only' must be a boolean/u);
+            // "only" has to be falsy as itOnly is not mocked for all test cases
+            assert.throws(() => {
+                ruleTester.run("foo", require("./fixtures/no-var"), {
+                    valid: [{ code: "foo", only: "" }],
+                    invalid: []
+                });
+            }, /Optional test case property 'only' must be a boolean/u);
 
-        assert.throws(() => {
-          ruleTester.run("foo", require("./fixtures/no-var"), {
-            valid: [],
-            invalid: [{ code: "foo", only: 0, errors: 1 }]
-          });
-        }, /Optional test case property 'only' must be a boolean/u);
-      });
+            assert.throws(() => {
+                ruleTester.run("foo", require("./fixtures/no-var"), {
+                    valid: [],
+                    invalid: [{ code: "foo", only: 0, errors: 1 }]
+                });
+            }, /Optional test case property 'only' must be a boolean/u);
+        });
 
-      it('should throw if "filename" property is not a string', () => {
-        assert.throws(() => {
-          ruleTester.run("foo", require("./fixtures/no-var"), {
-            valid: [{ code: "foo", filename: false }],
-            invalid: []
+        it('should throw if "filename" property is not a string', () => {
+            assert.throws(() => {
+                ruleTester.run("foo", require("./fixtures/no-var"), {
+                    valid: [{ code: "foo", filename: false }],
+                    invalid: []
 
-          });
-        }, /Optional test case property 'filename' must be a string/u);
+                });
+            }, /Optional test case property 'filename' must be a string/u);
 
-        assert.throws(() => {
-          ruleTester.run("foo", require("./fixtures/no-var"), {
-            valid: ["foo"],
-            invalid: [{ code: "foo", errors: 1, filename: 0 }]
-          });
-        }, /Optional test case property 'filename' must be a string/u);
-      });
+            assert.throws(() => {
+                ruleTester.run("foo", require("./fixtures/no-var"), {
+                    valid: ["foo"],
+                    invalid: [{ code: "foo", errors: 1, filename: 0 }]
+                });
+            }, /Optional test case property 'filename' must be a string/u);
+        });
     });
 
     describe("sanitize test cases", () => {
