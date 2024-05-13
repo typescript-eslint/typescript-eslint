@@ -94,7 +94,7 @@ function baseTests(
   tsConfigExcludeBar: Record<string, unknown>,
   tsConfigIncludeAll: Record<string, unknown>,
 ): void {
-  // The experimental project server creates a default project for files
+  // The project service creates a default project for files
   if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true') {
     return;
   }
