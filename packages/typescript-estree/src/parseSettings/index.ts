@@ -119,7 +119,7 @@ export interface MutableParseSettings {
   projects: ReadonlyMap<CanonicalPath, string>;
 
   /**
-   * Experimental: TypeScript server to power program creation.
+   * TypeScript server to power program creation.
    */
   projectService: ProjectServiceSettings | undefined;
 
