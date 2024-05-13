@@ -217,6 +217,7 @@ export default createRule<Options, MessageIds>({
           ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             missingBranchName!
           : checker.typeToString(missingBranchType);
+        let caseTestForErrorMessage = caseTest;
 
         if (
           symbolName &&
@@ -224,18 +225,16 @@ export default createRule<Options, MessageIds>({
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
           const escapedBranchName = missingBranchName
-            .replace(/'/g, "\\'")
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '\\r');
+            .replaceAll("'", "\\'")
+            .replaceAll('\n', '\\n')
+            .replaceAll('\r', '\\r');
 
           caseTest = `${symbolName}['${escapedBranchName}']`;
+          caseTestForErrorMessage = `${symbolName}[\\'${escapedBranchName}\\']`;
         }
 
-        const errorMessage = `Not implemented yet: ${caseTest} case`;
-        const escapedErrorMessage = errorMessage.replace(/'/g, "\\'");
-
         missingCases.push(
-          `case ${caseTest}: { throw new Error('${escapedErrorMessage}') }`,
+          `case ${caseTest}: { throw new Error('Not implemented yet: ${caseTestForErrorMessage} case') }`,
         );
       }
 
@@ -305,9 +304,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
-          data: {
-            missingBranches: 'default',
-          },
+          data: { missingBranches: 'default' },
           suggest: [
             {
               messageId: 'addMissingCases',
