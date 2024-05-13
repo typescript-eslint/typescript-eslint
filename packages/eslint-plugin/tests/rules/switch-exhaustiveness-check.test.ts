@@ -1999,7 +1999,7 @@ switch (value) {
 
         switch (a) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\'a\\\\' \`b\` "c"\\'] case') }
+        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\'a\\' \`b\` "c"\\'] case') }
         }
       `,
             },
