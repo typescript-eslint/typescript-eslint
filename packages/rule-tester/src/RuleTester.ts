@@ -1021,6 +1021,18 @@ export class RuleTester extends TestFramework {
                     const actualSuggestion = messageSuggestions[index];
                     const suggestionPrefix = `Error Suggestion at index ${index}:`;
 
+                    const unsubstitutedPlaceholders =
+                      getUnsubstitutedMessagePlaceholders(
+                        actualSuggestion.desc,
+                        rule.meta.messages[expectedSuggestion.messageId],
+                        expectedSuggestion.data,
+                      );
+
+                    assert.ok(
+                      unsubstitutedPlaceholders.length === 0,
+                      `The message of the suggestion has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property for the suggestion in the context.report() call.`,
+                    );
+
                     // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
                     if (hasOwnProperty(expectedSuggestion, 'desc')) {
                       assert.ok(
