@@ -1009,8 +1009,6 @@ export class RuleTester extends TestFramework {
                         expectedSuggestion != null,
                       "Test suggestion in 'suggestions' array must be an object.",
                     );
-                    // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
-                    const expectedDesc = expectedSuggestion.desc as string;
                     Object.keys(expectedSuggestion).forEach(propertyName => {
                       assert.ok(
                         SUGGESTION_OBJECT_PARAMETERS.has(propertyName),
@@ -1035,6 +1033,9 @@ export class RuleTester extends TestFramework {
 
                     // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
                     if (hasOwnProperty(expectedSuggestion, 'desc')) {
+                      // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
+                      const expectedDesc = expectedSuggestion.desc as string;
+
                       assert.ok(
                         !hasOwnProperty(expectedSuggestion, 'data'),
                         `${suggestionPrefix} Test should not specify both 'desc' and 'data'.`,
