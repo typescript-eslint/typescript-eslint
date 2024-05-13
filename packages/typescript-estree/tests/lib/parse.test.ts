@@ -166,12 +166,12 @@ describe('parseAndGenerateServices', () => {
 
   describe('isolated parsing', () => {
     const config: TSESTreeOptions = {
-      EXPERIMENTAL_useProjectService: false,
       comment: true,
       disallowAutomaticSingleRunInference: true,
-      tokens: true,
-      range: true,
       loc: true,
+      projectService: false,
+      range: true,
+      tokens: true,
     };
     const testParse = ({
       ext,
@@ -341,7 +341,7 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
       const code = 'var a = true';
@@ -482,7 +482,7 @@ describe('parseAndGenerateServices', () => {
     });
 
     describe('invalid project error messages', () => {
-      if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+      if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
         it('throws when none of multiple projects include the file', () => {
           const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
           const code = 'var a = true';
@@ -508,7 +508,7 @@ describe('parseAndGenerateServices', () => {
 
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
             - <tsconfigRootDir>/tsconfig.json
             - <tsconfigRootDir>/tsconfig.extra.json
             However, none of those TSConfigs include this file. Either:
@@ -567,7 +567,7 @@ describe('parseAndGenerateServices', () => {
       );
     });
 
-    if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
       it('should turn on typescript debugger', () => {
         expect(() =>
           parser.parseAndGenerateServices('const x = 1;', {
@@ -588,7 +588,7 @@ describe('parseAndGenerateServices', () => {
     }
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('projectFolderIgnoreList', () => {
       beforeEach(() => {
         parser.clearCaches();

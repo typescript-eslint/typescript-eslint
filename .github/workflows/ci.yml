@@ -265,7 +265,7 @@ jobs:
         run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
   upload_coverage:
     name: Upload Codecov Coverage
