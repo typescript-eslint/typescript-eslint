@@ -5836,7 +5836,7 @@ __metadata:
     prettier: 3.2.5
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
-    tmp: ^0.2.3
+    tmp: ^0.2.1
     tsx: "*"
     typescript: ">=4.7.4 <5.5.0"
     typescript-eslint: "workspace:^"
@@ -17696,7 +17696,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^3.0.2":
+"rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
   version: 3.0.2
   resolution: "rimraf@npm:3.0.2"
   dependencies:
@@ -19141,12 +19141,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:0.2.2":
-  version: 0.2.2
-  resolution: "tmp@npm:0.2.2"
+"tmp@npm:0.2.1":
+  version: 0.2.1
+  resolution: "tmp@npm:0.2.1"
   dependencies:
-    rimraf: ^5.0.5
-  checksum: 7d00f417c21a4478611c8d2e0a939b7f242929f13b8f5d2edfc627afe5877720692fb45563ce3c81de54a009f2205f6b1ad02314b6e683aebf2e40b9b9430132
+    rimraf: ^3.0.0
+  checksum: 8b1214654182575124498c87ca986ac53dc76ff36e8f0e0b67139a8d221eaecfdec108c0e6ec54d76f49f1f72ab9325500b246f562b926f85bcdfca8bf35df9e
   languageName: node
   linkType: hard
 
