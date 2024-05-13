@@ -973,6 +973,9 @@ export class RuleTester extends TestFramework {
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
             const hasSuggestions = message.suggestions !== void 0;
+            // @ts-expect-error -- we purposely don't verify for undefined
+            const messageSuggestions: Linter.LintSuggestion[] =
+              message.suggestions;
 
             if (!hasSuggestions && expectsSuggestions) {
               assert.ok(
@@ -986,22 +989,24 @@ export class RuleTester extends TestFramework {
               );
               if (typeof error.suggestions === 'number') {
                 assert.strictEqual(
-                  message.suggestions!.length,
+                  messageSuggestions.length,
                   error.suggestions,
-                  `Error should have ${error.suggestions} suggestions. Instead found ${message.suggestions!.length} suggestions`,
+                  // It is possible that error.suggestions is a number
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  `Error should have ${error.suggestions} suggestions. Instead found ${messageSuggestions.length} suggestions`,
                 );
               } else if (Array.isArray(error.suggestions)) {
                 assert.strictEqual(
-                  message.suggestions!.length,
+                  messageSuggestions.length,
                   error.suggestions.length,
-                  `Error should have ${error.suggestions.length} suggestions. Instead found ${message.suggestions!.length} suggestions`,
+                  `Error should have ${error.suggestions.length} suggestions. Instead found ${messageSuggestions.length} suggestions`,
                 );
 
-                error.suggestions!.forEach(
+                error.suggestions.forEach(
                   (expectedSuggestion: SuggestionOutput<MessageIds>, index) => {
                     assert.ok(
                       typeof expectedSuggestion === 'object' &&
-                        expectedSuggestion !== null,
+                        expectedSuggestion != null,
                       "Test suggestion in 'suggestions' array must be an object.",
                     );
                     // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
@@ -1013,7 +1018,7 @@ export class RuleTester extends TestFramework {
                       );
                     });
 
-                    const actualSuggestion = message.suggestions![index];
+                    const actualSuggestion = messageSuggestions[index];
                     const suggestionPrefix = `Error Suggestion at index ${index}:`;
 
                     // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
