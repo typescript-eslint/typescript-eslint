@@ -473,7 +473,7 @@ describe("RuleTester", () => {
                     "bar = baz;"
                 ],
                 invalid: [
-                  { code: "var foo = bar; var baz = quux", errors: [{ message: "Bad var.", type: "VariableDeclaration" }, null] }
+                    { code: "var foo = bar; var baz = quux", errors: [{ message: "Bad var.", type: "VariableDeclaration" }, null] }
                 ]
             });
         }, /Error should be a string, object, or RegExp/u);
