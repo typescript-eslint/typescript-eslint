@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "7.8.0",
+  "version": "7.9.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
@@ -46,19 +46,20 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "eslint": "^8.56.0"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "7.8.0",
-    "@typescript-eslint/types": "7.8.0",
-    "@typescript-eslint/typescript-estree": "7.8.0",
-    "@typescript-eslint/visitor-keys": "7.8.0",
+    "@typescript-eslint/scope-manager": "7.9.0",
+    "@typescript-eslint/types": "7.9.0",
+    "@typescript-eslint/typescript-estree": "7.9.0",
+    "@typescript-eslint/visitor-keys": "7.9.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "@types/glob": "*",
     "downlevel-dts": "*",
     "glob": "*",

@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "7.8.0",
+  "version": "7.9.0",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
@@ -49,17 +49,18 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage --passWithNoTests",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "eslint": "^8.56.0"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "7.8.0",
-    "@typescript-eslint/parser": "7.8.0",
-    "@typescript-eslint/utils": "7.8.0"
+    "@typescript-eslint/eslint-plugin": "7.9.0",
+    "@typescript-eslint/parser": "7.9.0",
+    "@typescript-eslint/utils": "7.9.0"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "downlevel-dts": "*",
     "jest": "29.7.0",
     "prettier": "^3.2.5",
