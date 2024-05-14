@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "7.8.0",
+  "version": "7.9.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -43,16 +43,17 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "7.8.0",
-    "@typescript-eslint/utils": "7.8.0",
+    "@typescript-eslint/typescript-estree": "7.9.0",
+    "@typescript-eslint/utils": "7.9.0",
     "debug": "^4.3.4",
     "ts-api-utils": "^1.3.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "7.8.0",
+    "@jest/types": "29.6.3",
+    "@typescript-eslint/parser": "7.9.0",
     "ajv": "^6.12.6",
     "downlevel-dts": "*",
     "jest": "29.7.0",
