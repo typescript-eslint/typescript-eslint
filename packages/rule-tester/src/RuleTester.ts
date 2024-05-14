@@ -1060,7 +1060,7 @@ export class RuleTester extends TestFramework {
                     !errorMessageInSuggestion,
                     [
                       'A fatal parsing error occurred in suggestion fix.',
-                      `Error: ${errorMessageInSuggestion && errorMessageInSuggestion.message}`,
+                      `Error: ${errorMessageInSuggestion?.message}`,
                       'Suggestion output:',
                       codeWithAppliedSuggestion,
                     ].join('\n'),
