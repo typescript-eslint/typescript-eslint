@@ -83,7 +83,9 @@ export function useProgramFromProjectService(
     return undefined;
   }
 
-  defaultProjectMatchedFiles.add(filePathAbsolute);
+  if (!opened.configFileName) {
+    defaultProjectMatchedFiles.add(filePathAbsolute);
+  }
   if (defaultProjectMatchedFiles.size > maximumDefaultProjectFileMatchCount) {
     throw new Error(
       `Too many files (>${maximumDefaultProjectFileMatchCount}) have matched the default project.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}
