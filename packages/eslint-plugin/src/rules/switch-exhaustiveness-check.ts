@@ -217,7 +217,6 @@ export default createRule<Options, MessageIds>({
           ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             missingBranchName!
           : checker.typeToString(missingBranchType);
-        let caseTestForErrorMessage = caseTest;
 
         if (
           symbolName &&
@@ -230,11 +229,12 @@ export default createRule<Options, MessageIds>({
             .replaceAll('\r', '\\r');
 
           caseTest = `${symbolName}['${escapedBranchName}']`;
-          caseTestForErrorMessage = `${symbolName}[\\'${escapedBranchName}\\']`;
         }
 
         missingCases.push(
-          `case ${caseTest}: { throw new Error('Not implemented yet: ${caseTestForErrorMessage} case') }`,
+          `case ${caseTest}: { throw new Error('Not implemented yet: ${caseTest
+            .replaceAll('\\', '\\\\')
+            .replaceAll("'", "\\'")} case') }`,
         );
       }
 

@@ -1964,7 +1964,7 @@ switch (value) {
 
         switch (a) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\n\\n          new-line\\'] case') }
+        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\\\n\\\\n          new-line\\'] case') }
         }
       `,
             },
@@ -1999,7 +1999,7 @@ switch (value) {
 
         switch (a) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\'a\\' \`b\` "c"\\'] case') }
+        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\\\'a\\\\\\' \`b\` "c"\\'] case') }
         }
       `,
             },
