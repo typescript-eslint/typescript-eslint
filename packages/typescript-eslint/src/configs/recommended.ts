@@ -20,7 +20,6 @@ export default (
     name: 'typescript-eslint/recommended',
     rules: {
       '@typescript-eslint/ban-ts-comment': 'error',
-      '@typescript-eslint/ban-types': 'error',
       'no-array-constructor': 'off',
       '@typescript-eslint/no-array-constructor': 'error',
       '@typescript-eslint/no-duplicate-enum-values': 'error',
@@ -35,6 +34,7 @@ export default (
       '@typescript-eslint/no-unsafe-declaration-merging': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-uppercase-wrapper-types': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',

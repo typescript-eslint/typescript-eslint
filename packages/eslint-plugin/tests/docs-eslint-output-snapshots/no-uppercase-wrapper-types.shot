@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-uppercase-wrapper-types.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+let myBigInt: BigInt;
+              ~~~~~~ Prefer using the primitive \`bigint\` as a type name, rather than the class wrapper \`BigInt\`.
+let myBoolean: Boolean;
+               ~~~~~~~ Prefer using the primitive \`boolean\` as a type name, rather than the class wrapper \`Boolean\`.
+let myNumber: Number;
+              ~~~~~~ Prefer using the primitive \`number\` as a type name, rather than the class wrapper \`Number\`.
+let myObject: Object;
+              ~~~~~~ Prefer using the primitive \`object\` as a type name, rather than the class wrapper \`Object\`.
+let myString: String;
+              ~~~~~~ Prefer using the primitive \`string\` as a type name, rather than the class wrapper \`String\`.
+let mySymbol: Symbol;
+              ~~~~~~ Prefer using the primitive \`symbol\` as a type name, rather than the class wrapper \`Symbol\`.
+
+let myFunction: Function;
+                ~~~~~~~~ The \`Function\` type accepts any function-like value.
+                         It provides no type safety when calling the function, which can be a common source of bugs.
+                         It also accepts things like class declarations, which will throw at runtime as they will not be called with \`new\`.
+                         If you are expecting the function to accept certain arguments, you should explicitly define the function shape.
+myFunction = () => {};
+"
+`;
+
+exports[`Validating rule docs no-uppercase-wrapper-types.mdx code examples ESLint output 2`] = `
+"Correct
+
+let myBigint: bigint;
+let myBoolean: boolean;
+let myNumber: number;
+let myObject: object;
+let myString: string;
+let mySymbol: symbol;
+
+let myFunction: () => void;
+myFunction = () => {};
+"
+`;

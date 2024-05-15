@@ -15,6 +15,16 @@ It's often a good idea to ban certain types to help with consistency and safety.
 This rule bans specific types and can suggest alternatives.
 Note that it does not ban the corresponding runtime objects from being used.
 
+:::danger Deprecated
+This rule is deprecated and now split across several rules:
+
+- [`no-empty-object-type`](./no-empty-object-type): banning the built-in `{}` type in confusing locations
+- [`no-restricted-types`](./no-restricted-types.mdx): allowing banning a configurable list of type names
+- [`no-uppercase-wrapper-types`](./no-uppercase-wrapper-types.mdx): banning built-in class wrappers such as `Number`
+
+This deprecated rule will be removed in a future major version of typescript-eslint.
+:::
+
 ## Examples
 
 Examples of code with the default options:
@@ -131,3 +141,5 @@ You might consider using [ESLint disable comments](https://eslint.org/docs/lates
 ## Related To
 
 - [`no-empty-object-type`](./no-empty-object-type.mdx)
+- [`no-restricted-types`](./no-restricted-types.mdx)
+- [`no-uppercase-wrapper-types`](./no-uppercase-wrapper-types.mdx)

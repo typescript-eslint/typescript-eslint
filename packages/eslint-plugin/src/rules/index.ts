@@ -62,6 +62,7 @@ import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
+import noRestrictedTypes from './no-restricted-types';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
@@ -82,6 +83,7 @@ import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
+import noUppercaseWrapperTypes from './no-uppercase-wrapper-types';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
@@ -187,6 +189,7 @@ export default {
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
+  'no-restricted-types': noRestrictedTypes,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
@@ -207,6 +210,7 @@ export default {
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
+  'no-uppercase-wrapper-types': noUppercaseWrapperTypes,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
