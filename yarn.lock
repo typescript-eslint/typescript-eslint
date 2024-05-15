@@ -5526,7 +5526,7 @@ __metadata:
     typescript: "*"
     unist-util-visit: ^5.0.0
   peerDependencies:
-    "@typescript-eslint/parser": ^8.0.0
+    "@typescript-eslint/parser": ^8.0.0 || ^8.0.0-alpha.0
     eslint: ^8.57.0 || ^9.0.0
   peerDependenciesMeta:
     typescript:
