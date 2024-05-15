@@ -33,7 +33,7 @@ function createSerializer<Constructor extends ConstructorSignature>(
     ): string {
       const id = thing.$id != null ? `$${thing.$id}` : '';
       // If `type` is a base class, we should print out the name of the subclass
-      // eslint-disable-next-line @typescript-eslint/ban-types
+      // eslint-disable-next-line @typescript-eslint/no-uppercase-wrapper-types
       const constructorName = (Object.getPrototypeOf(thing) as Object)
         .constructor.name;
 

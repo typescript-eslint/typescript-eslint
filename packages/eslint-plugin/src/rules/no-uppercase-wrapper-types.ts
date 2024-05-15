@@ -1,14 +1,16 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 const classNames = new Set([
   'BigInt',
+  // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
   'Boolean',
   'Function',
   'Number',
   'Object',
+  // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
   'String',
   'Symbol',
 ]);
@@ -58,7 +60,7 @@ export default createRule({
       context.report({
         data: { typeName, preferred },
         fix: includeFix
-          ? fixer => fixer.replaceText(node, preferred)
+          ? (fixer): TSESLint.RuleFix => fixer.replaceText(node, preferred)
           : undefined,
         messageId: 'bannedClassType',
         node,

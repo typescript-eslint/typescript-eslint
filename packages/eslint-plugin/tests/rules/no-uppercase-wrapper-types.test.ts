@@ -1,4 +1,5 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-uppercase-wrapper-types';
 
