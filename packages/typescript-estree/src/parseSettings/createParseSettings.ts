@@ -86,8 +86,6 @@ export function createParseSettings(
             jsDocParsingMode,
           ))
         : undefined,
-    EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
-      tsestreeOptions.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:
       Array.isArray(tsestreeOptions.extraFileExtensions) &&
       tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')

@@ -62,7 +62,6 @@ interface ParserOptions {
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
   EXPERIMENTAL_useProjectService?: boolean; // purposely undocumented for now
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
   jsDocParsingMode?: JSDocParsingMode;
