@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "7.8.0",
+  "version": "7.9.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
@@ -44,13 +44,14 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "7.8.0",
+    "@typescript-eslint/types": "7.9.0",
     "eslint-visitor-keys": "^3.4.3"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "@types/eslint-visitor-keys": "*",
     "downlevel-dts": "*",
     "jest": "29.7.0",

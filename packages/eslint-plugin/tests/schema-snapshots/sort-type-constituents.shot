@@ -8,6 +8,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
+      "caseSensitive": {
+        "description": "Whether to sort using case sensitive sorting.",
+        "type": "boolean"
+      },
       "checkIntersections": {
         "description": "Whether to check intersection types.",
         "type": "boolean"
@@ -47,6 +51,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to sort using case sensitive sorting. */
+    caseSensitive?: boolean;
     /** Whether to check intersection types. */
     checkIntersections?: boolean;
     /** Whether to check union types. */

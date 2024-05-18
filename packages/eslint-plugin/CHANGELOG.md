@@ -1,3 +1,19 @@
+## 7.9.0 (2024-05-13)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [explicit-function-return-types] fix false positive on default parameters
+
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Sheetal Nandi
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.8.0 (2024-04-29)
 
 

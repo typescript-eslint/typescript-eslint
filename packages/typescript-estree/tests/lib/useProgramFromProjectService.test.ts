@@ -220,4 +220,29 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
     expect(actual).toBe(program);
   });
+
+  it('returns a created program when hasFullTypeInformation is disabled, the file is in the project service, the service has a matching program, and no out-of-project files are allowed', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProjectForFiles: [],
+        maximumDefaultProjectFileMatchCount: 0,
+        service,
+      }),
+      mockParseSettings,
+      false,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
+  });
 });
