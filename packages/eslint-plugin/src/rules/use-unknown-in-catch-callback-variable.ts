@@ -69,22 +69,25 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function isPromiseCatchAccess(node: TSESTree.Expression): boolean {
-      if (
-        !(
-          node.type === AST_NODE_TYPES.MemberExpression &&
-          isStaticMemberAccessOfValue(node, 'catch')
-        )
-      ) {
+    function getArgIndexToCheck(node: TSESTree.Expression): number | false {
+      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+      const argIndexToCheck = ['catch', 'then'].findIndex(method =>
+        isStaticMemberAccessOfValue(node, method),
+      );
+      if (argIndexToCheck === -1) {
         return false;
       }
 
       const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      return tsutils.isThenableType(
-        checker,
-        tsNode,
-        checker.getTypeAtLocation(objectTsNode),
+      return (
+        tsutils.isThenableType(
+          checker,
+          tsNode,
+          checker.getTypeAtLocation(objectTsNode),
+        ) && argIndexToCheck
       );
     }
 
@@ -146,13 +149,16 @@ export default createRule<[], MessageIds>({
       // like that, but there's no need, since this is all invalid use of `.catch`
       // anyway at the end of the day. Instead, we'll just check whether any of the
       // possible args types would violate the rule on its own.
-      return argumentsList.some(argument => shouldFlagArgument(argument));
+      return argumentsList.some(shouldFlagArgument);
+    }
+
+    function getSpreadArgsType({ argument }: TSESTree.SpreadElement): ts.Type {
+      const spreadArgs = services.esTreeNodeToTSNodeMap.get(argument);
+      return checker.getTypeAtLocation(spreadArgs);
     }
 
     function shouldFlagSingleSpreadArg(node: TSESTree.SpreadElement): boolean {
-      const spreadArgs = services.esTreeNodeToTSNodeMap.get(node.argument);
-
-      const spreadArgsType = checker.getTypeAtLocation(spreadArgs);
+      const spreadArgsType = getSpreadArgsType(node);
 
       if (checker.isArrayType(spreadArgsType)) {
         const arrayType = checker.getTypeArguments(spreadArgsType)[0];
@@ -290,11 +296,27 @@ export default createRule<[], MessageIds>({
 
     return {
       CallExpression(node): void {
-        if (node.arguments.length === 0 || !isPromiseCatchAccess(node.callee)) {
+        if (node.arguments.length === 0) {
+          return;
+        }
+        const argIndexToCheck = getArgIndexToCheck(node.callee);
+        if (argIndexToCheck === false) {
           return;
         }
 
         const firstArgument = node.arguments[0];
+        const argToCheck = node.arguments[argIndexToCheck];
+        // If we are checking a .then() call, we need to check the second argument.
+        // But if the first argument is a
+        if (
+          argIndexToCheck &&
+          firstArgument.type === AST_NODE_TYPES.SpreadElement
+        ) {
+          const spreadArgsType = getSpreadArgsType(firstArgument);
+          if (checker.isTupleType(spreadArgsType)) {
+            spreadArgsType.target;
+          }
+        }
 
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
