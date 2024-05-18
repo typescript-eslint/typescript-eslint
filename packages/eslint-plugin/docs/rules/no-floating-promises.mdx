@@ -17,6 +17,7 @@ Valid ways of handling a Promise-valued statement include:
 
 - `await`ing it
 - `return`ing it
+- `void`ing it
 - Calling its `.then()` with two arguments
 - Calling its `.catch()` with one argument
 
@@ -63,6 +64,9 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
+
+void returnsPromise();
+
 returnsPromise().then(
   () => {},
   () => {},
@@ -82,7 +86,7 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 
 ### `ignoreVoid`
 
-This allows you to stop the rule reporting promises consumed with void operator.
+This option, which is `true` by default, allows you to stop the rule reporting promises consumed with void operator.
 This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:

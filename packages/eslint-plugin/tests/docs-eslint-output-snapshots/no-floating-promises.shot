@@ -33,6 +33,9 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
+
+void returnsPromise();
+
 returnsPromise().then(
   () => {},
   () => {},
