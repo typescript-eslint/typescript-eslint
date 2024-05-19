@@ -341,6 +341,16 @@ ruleTester.run('require-types-exports', rule, {
 
       export default value;
     `,
+
+    `
+      export enum Fruit {
+        Apple,
+        Banana,
+        Cherry,
+      }
+
+      export function f(a: Fruit): void {}
+    `,
   ],
 
   invalid: [

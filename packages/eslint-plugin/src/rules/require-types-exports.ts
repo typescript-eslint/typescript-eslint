@@ -24,9 +24,9 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
+      description: 'Require exporting types that are used in exported entities',
       recommended: 'strict',
       requiresTypeChecking: true,
-      description: 'Require exporting types that are used in exported entities',
     },
     messages: {
       requireTypeExport: 'Expected type "{{ name }}" to be exported',
@@ -57,7 +57,10 @@ export default createRule<[], MessageIds>({
     }
 
     function collectExportedTypes(
-      node: TSESTree.TSTypeAliasDeclaration | TSESTree.TSInterfaceDeclaration,
+      node:
+        | TSESTree.TSTypeAliasDeclaration
+        | TSESTree.TSInterfaceDeclaration
+        | TSESTree.TSEnumDeclaration,
     ): void {
       externalizedTypes.add(node.id.name);
     }
@@ -214,7 +217,7 @@ export default createRule<[], MessageIds>({
       'ImportDeclaration ImportSpecifier, ImportSpecifier':
         collectImportedTypes,
 
-      'ExportNamedDeclaration TSTypeAliasDeclaration, ExportNamedDeclaration TSInterfaceDeclaration':
+      'ExportNamedDeclaration TSTypeAliasDeclaration, ExportNamedDeclaration TSInterfaceDeclaration, ExportNamedDeclaration TSEnumDeclaration':
         collectExportedTypes,
 
       'ExportNamedDeclaration[declaration.type="FunctionDeclaration"]':
