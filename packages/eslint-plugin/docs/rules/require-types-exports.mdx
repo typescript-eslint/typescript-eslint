@@ -2,6 +2,9 @@
 description: 'Require exporting types that are used in exported entities.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/require-types-exports** for documentation.
@@ -15,9 +18,8 @@ in order to extract the types from your code.
 
 ## Examples
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 type Arg = string;
@@ -43,7 +45,8 @@ enum Color {
 export declare function getRandomColor(): Color;
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 export type Arg = string;
@@ -69,7 +72,8 @@ export enum Color {
 export declare function getRandomColor(): Color;
 ```
 
-<!--/tabs-->
+</TabItem>
+</Tabs>
 
 ## When Not To Use It
 
