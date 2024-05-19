@@ -153,6 +153,7 @@ export default (
       '@typescript-eslint/require-array-sort-compare': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',
+      '@typescript-eslint/require-types-exports': 'error',
       '@typescript-eslint/restrict-plus-operands': 'error',
       '@typescript-eslint/restrict-template-expressions': 'error',
       'no-return-await': 'off',

@@ -43,6 +43,7 @@ export = {
     '@typescript-eslint/prefer-return-this-type': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
+    '@typescript-eslint/require-types-exports': 'error',
     '@typescript-eslint/restrict-plus-operands': [
       'error',
       {

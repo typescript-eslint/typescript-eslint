@@ -83,6 +83,7 @@ export default (
       '@typescript-eslint/prefer-ts-expect-error': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',
+      '@typescript-eslint/require-types-exports': 'error',
       '@typescript-eslint/restrict-plus-operands': [
         'error',
         {
