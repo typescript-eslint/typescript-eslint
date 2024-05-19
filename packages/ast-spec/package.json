@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "7.7.1",
+  "version": "7.9.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -37,7 +37,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "funding": {
     "type": "opencollective",
@@ -47,12 +47,11 @@
     "@babel/code-frame": "*",
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
-    "@babel/parser": "*",
+    "@jest/types": "29.6.3",
     "@microsoft/api-extractor": "^7.43.0",
     "glob": "*",
     "jest": "29.7.0",
     "jest-diff": "^29.7.0",
-    "jest-snapshot": "^29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
     "prettier": "^3.2.5",
