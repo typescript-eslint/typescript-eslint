@@ -2,6 +2,9 @@
 description: 'Disallow using the spread operator when it might cause unexpected behavior.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
@@ -10,9 +13,8 @@ The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Re
 
 ## Examples
 
-<!--tabs-->
-
-### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
 declare const userName: string;
@@ -31,7 +33,8 @@ declare function getObj(): { a: 1; b: 2 };
 const getObjSpread = { ...getObj };
 ```
 
-### ✅ Correct
+</TabItem>
+<TabItem value="✅ Correct">
 
 ```ts
 declare const userName: string;
@@ -50,7 +53,8 @@ declare function getObj(): { a: 1; b: 2 };
 const getObjSpread = { ...getObj() };
 ```
 
-<!--/tabs-->
+</TabItem>
+</Tabs>
 
 ## Options
 
@@ -58,9 +62,8 @@ const getObjSpread = { ...getObj() };
 
 By default, this rule disallows using the spread operator on instances of classes:
 
-<!--tabs-->
-
-#### ❌ Incorrect
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "allowClassInstances": false }'
 class User {
@@ -76,7 +79,8 @@ const user = new User('John');
 const userSpread = { ...user };
 ```
 
-<!--/tabs-->
+</TabItem>
+</Tabs>
 
 If you want to allow this behavior, you can configure the rule with `"allowClassInstances": true`:
 

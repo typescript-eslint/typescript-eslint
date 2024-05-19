@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare const userName: string;
+const chars = [...userName];
+               ~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
+
+declare const arr: number[];
+const arrSpread = { ...arr };
+                    ~~~~~~ Using the spread operator on \`Array\` in an object can cause unexpected behavior.
+
+declare const set: Set<number>;
+const setSpread = { ...set };
+                    ~~~~~~ Using the spread operator on \`Iterable\` in an object can cause unexpected behavior.
+
+declare const map: Map<string, number>;
+const mapSpread = { ...map };
+                    ~~~~~~ Using the spread operator on \`Iterable\` in an object can cause unexpected behavior.
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj };
+                       ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare const userName: string;
+const chars = userName.split('');
+
+declare const arr: number[];
+const arrSpread = [...arr];
+
+declare const set: Set<number>;
+const setSpread = [...set];
+
+declare const map: Map<string, number>;
+const mapSpread = [...map];
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj() };
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allowClassInstances": false }
+
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const user = new User('John');
+
+const userSpread = { ...user };
+                     ~~~~~~~ Using the spread operator on class instances without \`[Symbol.iterator]\` can cause unexpected behavior.
+"
+`;
