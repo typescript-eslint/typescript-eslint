@@ -91,18 +91,6 @@ export default createRule<Options, MessageIds>({
     function checkObjectSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (isArray(type, checker)) {
-        context.report({
-          node,
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Array',
-          },
-        });
-
-        return;
-      }
-
       if (isPromise(services.program, type)) {
         context.report({
           node,
@@ -162,14 +150,6 @@ export default createRule<Options, MessageIds>({
   },
 });
 
-function isArray(type: ts.Type, checker: ts.TypeChecker): boolean {
-  if (type.isUnion() || type.isIntersection()) {
-    return type.types.some(t => isArray(t, checker));
-  }
-
-  return checker.isArrayType(type) || checker.isTupleType(type);
-}
-
 function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
   return tsutils
     .typeParts(type)
@@ -179,23 +159,31 @@ function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
 }
 
 function isString(type: ts.Type): boolean {
-  return tsutils
-    .typeParts(type)
-    .some(t => !!isTypeFlagSet(t, ts.TypeFlags.StringLike));
+  return isTypeRecurser(type, t => isTypeFlagSet(t, ts.TypeFlags.StringLike));
 }
 
 function isFunctionWithoutProps(type: ts.Type): boolean {
-  return tsutils
-    .typeParts(type)
-    .some(
-      t => t.getCallSignatures().length > 0 && t.getProperties().length === 0,
-    );
+  return isTypeRecurser(
+    type,
+    t => t.getCallSignatures().length > 0 && t.getProperties().length === 0,
+  );
 }
 
 function isPromise(program: ts.Program, type: ts.Type): boolean {
-  return tsutils.typeParts(type).some(t => isPromiseLike(program, t));
+  return isTypeRecurser(type, t => isPromiseLike(program, t));
 }
 
 function isClassInstance(type: ts.Type): boolean {
-  return tsutils.typeParts(type).some(t => t.isClassOrInterface());
+  return isTypeRecurser(type, t => t.isClassOrInterface());
+}
+
+function isTypeRecurser(
+  type: ts.Type,
+  predicate: (t: ts.Type) => boolean,
+): boolean {
+  if (type.isUnion() || type.isIntersection()) {
+    return type.types.some(t => isTypeRecurser(t, predicate));
+  }
+
+  return predicate(type);
 }

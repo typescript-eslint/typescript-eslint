@@ -378,6 +378,21 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        declare const test: number | (boolean | (string & { __brand: true }));
+        const a = [...test];
+      `,
+      errors: [
+        {
+          messageId: 'noStringSpreadInArray',
+          line: 3,
+          column: 20,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
         declare function getString(): string;
         const a = [...getString()];
       `,
@@ -427,7 +442,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 1,
           column: 13,
@@ -445,7 +460,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -463,7 +478,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -481,7 +496,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -499,7 +514,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -517,7 +532,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -535,7 +550,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -553,7 +568,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
@@ -571,7 +586,7 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noSpreadInObject',
           data: {
-            type: 'Array',
+            type: 'Iterable',
           },
           line: 3,
           column: 21,
