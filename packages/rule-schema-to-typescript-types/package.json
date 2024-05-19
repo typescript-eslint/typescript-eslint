@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "7.7.1",
+  "version": "7.9.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -31,13 +31,16 @@
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
     "test": "npx jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "7.7.1",
-    "@typescript-eslint/utils": "7.7.1",
+    "@typescript-eslint/type-utils": "7.9.0",
+    "@typescript-eslint/utils": "7.9.0",
     "natural-compare": "^1.4.0",
     "prettier": "^3.2.5"
+  },
+  "devDependencies": {
+    "@jest/types": "29.6.3"
   },
   "funding": {
     "type": "opencollective",
