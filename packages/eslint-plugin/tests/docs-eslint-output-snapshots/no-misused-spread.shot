@@ -9,7 +9,7 @@ const chars = [...userName];
 
 declare const arr: number[];
 const arrSpread = { ...arr };
-                    ~~~~~~ Using the spread operator on \`Array\` in an object can cause unexpected behavior.
+                    ~~~~~~ Using the spread operator on \`Iterable\` in an object can cause unexpected behavior.
 
 declare const set: Set<number>;
 const setSpread = { ...set };
