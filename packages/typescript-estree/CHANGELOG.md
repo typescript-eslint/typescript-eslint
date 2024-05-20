@@ -1,3 +1,20 @@
+## 7.10.0 (2024-05-20)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** don't add in-project files to defaultProjectMatchedFiles
+
+
+### ❤️  Thank You
+
+- auvred
+- Emanuel Hoogeveen
+- jsfm01
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.9.0 (2024-05-13)
 
 
