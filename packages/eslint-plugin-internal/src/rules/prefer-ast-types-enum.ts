@@ -53,15 +53,15 @@ export default createRule({
 
         const value = node.value;
 
-        if (Object.prototype.hasOwnProperty.call(AST_NODE_TYPES, value)) {
+        if (Object.hasOwn(AST_NODE_TYPES, value)) {
           report('AST_NODE_TYPES', node);
         }
 
-        if (Object.prototype.hasOwnProperty.call(AST_TOKEN_TYPES, value)) {
+        if (Object.hasOwn(AST_TOKEN_TYPES, value)) {
           report('AST_TOKEN_TYPES', node);
         }
 
-        if (Object.prototype.hasOwnProperty.call(DefinitionType, value)) {
+        if (Object.hasOwn(DefinitionType, value)) {
           report('DefinitionType', node);
         }
       },
