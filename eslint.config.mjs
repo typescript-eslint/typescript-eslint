@@ -18,6 +18,7 @@ import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import { fixupPluginRules } from '@eslint/compat';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const compat = new FlatCompat({ baseDirectory: __dirname });
@@ -29,10 +30,13 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      ['deprecation']: deprecationPlugin,
+      // https://github.com/gund/eslint-plugin-deprecation/issues/85
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
+      ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      ['import']: importPlugin,
+      // https://github.com/import-js/eslint-plugin-import/issues/2948
+      ['import']: fixupPluginRules(importPlugin),
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
