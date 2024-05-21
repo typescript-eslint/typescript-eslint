@@ -3307,6 +3307,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@eslint/compat@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@eslint/compat@npm:1.0.1"
+  checksum: 98d31eae0ab2a1c781790b184f2be7dd92565ac9bf3c08fe788b3a79b9ff36e196f76e80fdfde57c4d96cab8ed98cf468ca9175d60e40b9aea423d15b8b00692
+  languageName: node
+  linkType: hard
+
 "@eslint/eslintrc@npm:^2.1.4":
   version: 2.1.4
   resolution: "@eslint/eslintrc@npm:2.1.4"
@@ -5812,6 +5819,7 @@ __metadata:
     "@babel/eslint-parser": ^7.24.1
     "@babel/parser": ^7.24.4
     "@babel/types": ^7.24.0
+    "@eslint/compat": ^1.0.1
     "@eslint/eslintrc": ^2.1.4
     "@eslint/js": ^8.57.0
     "@jest/types": 29.6.3
