@@ -31,9 +31,7 @@ function createResolve(
   join: string,
 ): esbuild.OnResolveResult {
   const resolvedPackage = requireResolved(targetPath + '/package.json');
-  return {
-    path: path.join(resolvedPackage, '../src/', join),
-  };
+  return { path: path.join(resolvedPackage, '../src/', join) };
 }
 
 async function buildPackage(name: string, file: string): Promise<void> {
@@ -42,9 +40,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
   const rulesPath = path.join(eslintRoot, '../lib/rules/index.js');
 
   await esbuild.build({
-    entryPoints: {
-      [name]: requireResolved(file),
-    },
+    entryPoints: { [name]: requireResolved(file) },
     format: 'cjs',
     platform: 'browser',
     bundle: true,
@@ -75,16 +71,21 @@ async function buildPackage(name: string, file: string): Promise<void> {
       'define.amd': 'false',
       global: 'window',
     },
-    alias: {
-      util: requireResolved('./src/mock/util.js'),
-      assert: requireResolved('./src/mock/assert.js'),
-      path: requireResolved('./src/mock/path.js'),
-      typescript: requireResolved('./src/mock/typescript.js'),
-      'typescript/lib/tsserverlibrary': requireResolved(
-        './src/mock/typescript.js',
-      ),
-      'lru-cache': requireResolved('./src/mock/lru-cache.js'),
-    },
+    alias: Object.fromEntries(
+      [
+        // built-in Node packages
+        ...['util', 'assert', 'path'].flatMap(from => [from, `node:${from}`]),
+        // other NPM packages
+        'typescript',
+        'typescript/lib/tsserverlibrary',
+        'lru-cache',
+      ].map(from => [
+        from,
+        requireResolved(
+          `./src/mock/${from.split(`/`)[0].split(`:`).at(-1)}.js`,
+        ),
+      ]),
+    ),
     plugins: [
       {
         name: 'replace-plugin',
