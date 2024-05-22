@@ -1,4 +1,5 @@
 import debug from 'debug';
+import path from 'path';
 import * as ts from 'typescript';
 
 import type { ProjectServiceSettings } from '../create-program/createProjectService';
@@ -46,6 +47,13 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const passedLoggerFn = typeof options.loggerFn === 'function';
+  const filePath = ensureAbsolutePath(
+    typeof options.filePath === 'string' && options.filePath !== '<input>'
+      ? options.filePath
+      : getFileName(options.jsx),
+    tsconfigRootDir,
+  );
+  const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   const jsDocParsingMode = ((): ts.JSDocParsingMode => {
     switch (options.jsDocParsingMode) {
       case 'all':
@@ -96,12 +104,13 @@ export function createParseSettings(
       options.extraFileExtensions.every(ext => typeof ext === 'string')
         ? options.extraFileExtensions
         : [],
-    filePath: ensureAbsolutePath(
-      typeof options.filePath === 'string' && options.filePath !== '<input>'
-        ? options.filePath
-        : getFileName(options.jsx),
-      tsconfigRootDir,
-    ),
+    filePath: filePath,
+    setExternalModuleIndicator:
+      extension === ts.Extension.Mjs || extension === ts.Extension.Mts
+        ? (file): void => {
+            file.externalModuleIndicator = true;
+          }
+        : undefined,
     jsDocParsingMode,
     jsx: options.jsx === true,
     loc: options.loc === true,
