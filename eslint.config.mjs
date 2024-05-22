@@ -40,6 +40,7 @@ export default tseslint.config(
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
+      // https://github.com/facebook/react/issues/28313
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
