@@ -18,7 +18,7 @@ import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import { fixupPluginRules } from '@eslint/compat';
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const compat = new FlatCompat({ baseDirectory: __dirname });
@@ -40,7 +40,7 @@ export default tseslint.config(
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
-      ['react-hooks']: reactHooksPlugin,
+      ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
@@ -503,8 +503,8 @@ export default tseslint.config(
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     extends: [
       ...compat.config(jsxA11yPlugin.configs.recommended),
-      ...compat.config(reactPlugin.configs.recommended),
-      ...compat.config(reactHooksPlugin.configs.recommended),
+      ...fixupConfigRules(compat.config(reactPlugin.configs.recommended)),
+      ...fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
