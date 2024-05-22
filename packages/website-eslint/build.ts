@@ -82,7 +82,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
       ].map(from => [
         from,
         requireResolved(
-          `./src/mock/${from.split(`/`)[0].split(`:`).at(-1)}.js`,
+          `./src/mock/${from.split('/')[0].split(':').at(-1)}.js`,
         ),
       ]),
     ),
