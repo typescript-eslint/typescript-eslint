@@ -41,7 +41,8 @@ export default tseslint.config(
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
       ['react-hooks']: reactHooksPlugin,
-      ['react']: reactPlugin,
+      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
+      ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
     },
