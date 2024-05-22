@@ -1,6 +1,5 @@
 import debug from 'debug';
-import path from 'path';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
@@ -126,28 +125,11 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   return ast;
 }
 
-function isESM<T extends TSESTreeOptions = TSESTreeOptions>(
-  options: T | undefined,
-): boolean {
-  const extension = path
-    .extname(options?.filePath ?? '')
-    .toLowerCase() as ts.Extension;
-
-  return extension === ts.Extension.Mjs || extension === ts.Extension.Mts;
-}
-
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   code: ts.SourceFile | string,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
-  /**
-   * Ensure that `mjs`/`mts` files are always treated as ESM
-   */
-  if (typeof code === 'string' && isESM(options)) {
-    code += '\n' + 'export {}';
-  }
-
   /**
    * Reset the parse configuration
    */
