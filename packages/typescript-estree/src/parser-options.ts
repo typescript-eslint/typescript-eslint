@@ -106,7 +106,8 @@ interface ParseOptions {
  */
 export interface ProjectServiceOptions {
   /**
-   * Globs of files to allow running with the default project compiler options.
+   * Globs of files to allow running with the default project compiler options
+   * despite not being matched by the project service.
    */
   allowDefaultProject?: string[];
 
