@@ -234,7 +234,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [],
+        allowDefaultProject: [],
         maximumDefaultProjectFileMatchCount: 0,
         service,
       }),
