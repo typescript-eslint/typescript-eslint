@@ -106,9 +106,10 @@ interface ParseOptions {
  */
 export interface ProjectServiceOptions {
   /**
-   * Globs of files to allow running with the default project compiler options.
+   * Globs of files to allow running with the default project compiler options
+   * despite not being matched by the project service.
    */
-  allowDefaultProjectForFiles?: string[];
+  allowDefaultProject?: string[];
 
   /**
    * Path to a TSConfig to use instead of TypeScript's default project configuration.
@@ -116,7 +117,7 @@ export interface ProjectServiceOptions {
   defaultProject?: string;
 
   /**
-   * The maximum number of files {@link allowDefaultProjectForFiles} may match.
+   * The maximum number of files {@link allowDefaultProject} may match.
    * Each file match slows down linting, so if you do need to use this, please
    * file an informative issue on typescript-eslint explaining why - so we can
    * help you avoid using it!
@@ -172,15 +173,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
-   * Whether to create a shared TypeScript server to power program creation.
-   *
-   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
-   */
-  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
-
-  /**
-   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
-   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *
@@ -220,6 +212,8 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * If this is provided, type information will be returned.
    *
    * If set to `false`, `null` or `undefined` type information will not be returned.
+   *
+   * Note that {@link projectService} is now preferred.
    */
   project?: string[] | string | boolean | null;
 
@@ -231,6 +225,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * By default, this is set to ["**\/node_modules/**"]
    */
   projectFolderIgnoreList?: string[];
+
+  /**
+   * Whether to create a shared TypeScript project service to power program creation.
+   */
+  projectService?: boolean | ProjectServiceOptions;
 
   /**
    * The absolute path to the root directory for all provided `project`s.

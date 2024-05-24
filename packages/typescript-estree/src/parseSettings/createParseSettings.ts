@@ -76,16 +76,6 @@ export function createParseSettings(
           : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: tsestreeOptions.errorOnUnknownASTType === true,
-    EXPERIMENTAL_projectService:
-      tsestreeOptions.EXPERIMENTAL_useProjectService ||
-      (tsestreeOptions.project &&
-        tsestreeOptions.EXPERIMENTAL_useProjectService !== false &&
-        process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true')
-        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
-            tsestreeOptions.EXPERIMENTAL_useProjectService,
-            jsDocParsingMode,
-          ))
-        : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       tsestreeOptions.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:
@@ -114,6 +104,16 @@ export function createParseSettings(
       ? tsestreeOptions.programs
       : null,
     projects: new Map(),
+    projectService:
+      tsestreeOptions.projectService ||
+      (tsestreeOptions.project &&
+        tsestreeOptions.projectService !== false &&
+        process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true')
+        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
+            tsestreeOptions.projectService,
+            jsDocParsingMode,
+          ))
+        : undefined,
     range: tsestreeOptions.range === true,
     singleRun,
     suppressDeprecatedPropertyWarnings:
@@ -158,7 +158,7 @@ export function createParseSettings(
   }
 
   // Providing a program or project service overrides project resolution
-  if (!parseSettings.programs && !parseSettings.EXPERIMENTAL_projectService) {
+  if (!parseSettings.programs && !parseSettings.projectService) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: tsestreeOptions.cacheLifetime,
       project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
@@ -174,7 +174,7 @@ export function createParseSettings(
     tsestreeOptions.jsDocParsingMode == null &&
     parseSettings.projects.size === 0 &&
     parseSettings.programs == null &&
-    parseSettings.EXPERIMENTAL_projectService == null
+    parseSettings.projectService == null
   ) {
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }

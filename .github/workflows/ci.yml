@@ -240,8 +240,8 @@ jobs:
           # Sadly 1 day is the minimum
           retention-days: 1
 
-  unit_tests_tsserver:
-    name: Run Unit Tests with Experimental TSServer
+  unit_tests_project_service:
+    name: Run Unit Tests with Project Service
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -265,7 +265,7 @@ jobs:
         run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
   upload_coverage:
     name: Upload Codecov Coverage

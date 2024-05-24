@@ -17,22 +17,17 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
 }));
 
 describe('createProjectService', () => {
-  it('sets allowDefaultProjectForFiles when options.allowDefaultProjectForFiles is defined', () => {
-    const allowDefaultProjectForFiles = ['./*.js'];
-    const settings = createProjectService(
-      { allowDefaultProjectForFiles },
-      undefined,
-    );
+  it('sets allowDefaultProject when options.allowDefaultProject is defined', () => {
+    const allowDefaultProject = ['./*.js'];
+    const settings = createProjectService({ allowDefaultProject }, undefined);
 
-    expect(settings.allowDefaultProjectForFiles).toBe(
-      allowDefaultProjectForFiles,
-    );
+    expect(settings.allowDefaultProject).toBe(allowDefaultProject);
   });
 
-  it('does not set allowDefaultProjectForFiles when options.allowDefaultProjectForFiles is not defined', () => {
+  it('does not set allowDefaultProject when options.allowDefaultProject is not defined', () => {
     const settings = createProjectService(undefined, undefined);
 
-    expect(settings.allowDefaultProjectForFiles).toBeUndefined();
+    expect(settings.allowDefaultProject).toBeUndefined();
   });
 
   it('throws an error when options.defaultProject is set and readConfigFile returns an error', () => {
@@ -52,7 +47,7 @@ describe('createProjectService', () => {
     expect(() =>
       createProjectService(
         {
-          allowDefaultProjectForFiles: ['file.js'],
+          allowDefaultProject: ['file.js'],
           defaultProject: './tsconfig.json',
         },
         undefined,
@@ -70,7 +65,7 @@ describe('createProjectService', () => {
     expect(() =>
       createProjectService(
         {
-          allowDefaultProjectForFiles: ['file.js'],
+          allowDefaultProject: ['file.js'],
           defaultProject: './tsconfig.json',
         },
         undefined,
@@ -84,7 +79,7 @@ describe('createProjectService', () => {
 
     const { service } = createProjectService(
       {
-        allowDefaultProjectForFiles: ['file.js'],
+        allowDefaultProject: ['file.js'],
         defaultProject: './tsconfig.json',
       },
       undefined,

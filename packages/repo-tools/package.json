@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "7.9.0",
+  "version": "7.10.0",
   "private": true,
   "//": "NOTE: intentionally no build step in this package",
   "scripts": {
@@ -18,11 +18,11 @@
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@nx/devkit": "*",
-    "@typescript-eslint/eslint-plugin": "7.9.0",
-    "@typescript-eslint/scope-manager": "7.9.0",
-    "@typescript-eslint/types": "7.9.0",
-    "@typescript-eslint/typescript-estree": "7.9.0",
-    "@typescript-eslint/utils": "7.9.0",
+    "@typescript-eslint/eslint-plugin": "7.10.0",
+    "@typescript-eslint/scope-manager": "7.10.0",
+    "@typescript-eslint/types": "7.10.0",
+    "@typescript-eslint/typescript-estree": "7.10.0",
+    "@typescript-eslint/utils": "7.10.0",
     "cross-fetch": "*",
     "execa": "*",
     "prettier": "^3.2.5",
