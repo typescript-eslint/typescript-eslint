@@ -274,7 +274,7 @@ See [feat(utils): allow specifying additional rule meta.docs in RuleCreator](htt
 ### Support for multi-pass fixes in `RuleTester`
 
 The `RuleTester` provided by `@typescript-eslint/rule-tester` is a fork of ESLint's `RuleTester`.
-One limitation of the original `RuleTester` is that it is not possible to verify that test cases requiring multiple fixes to be applied provide correct fixes.
+One limitation of the original `RuleTester` is that it is not possible to verify the individual applied fixes when a rule provides multiple rounds of fixes.
 [The original `RuleTester` applies only the first fix](https://eslint.org/docs/latest/integrate/nodejs-api#testing-fixes) when there is conflict between two fixes.
 
 In typescript-eslint v8, `RuleTester` tries to apply all possible fixes for each test case.
