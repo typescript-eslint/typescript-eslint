@@ -33,10 +33,7 @@ export default createRule({
     },
   ],
   create(context, [{ allowBitwiseExpressions }]) {
-    function isIdentifierWithName(
-      node: TSESTree.Node,
-      name: string,
-    ): node is TSESTree.Identifier {
+    function isIdentifierWithName(node: TSESTree.Node, name: string): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;
     }
 
