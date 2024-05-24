@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 The JavaScript language includes a set of primitives such as `boolean` and `number`s.
 JavaScript also contains a "wrapper" class object for each of those primitives, such as [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) and [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number).
-TypeScript represents the primitive in lower-case types and the wrapper classes with upper-case
+TypeScript represents the primitive in lower-case types and instances of the wrapper classes with upper-case.
 
 Using the primitives like `0` instead of class constructors like `Number(0)` is generally considered a JavaScript best practice.
 As a result, using the lower-case primitive type names like `number` instead of class names like `Number` is generally considered a TypeScript best practice.
@@ -56,7 +56,7 @@ myFunction = () => {};
 
 ## When Not To Use It
 
-If your project is a rare one that intentionally deals with the class equivalents of primitives, it might not be worthwhile this rule.
+If your project is a rare one that intentionally deals with the class equivalents of primitives, it might not be worthwhile to use this rule.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
