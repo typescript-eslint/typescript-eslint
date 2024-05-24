@@ -21,7 +21,6 @@ export = {
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
-    '@typescript-eslint/no-empty-interface': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',

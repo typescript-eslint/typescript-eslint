@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from '@docusaurus/Link';
-import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import React from 'react';
 
 import {
@@ -25,16 +25,16 @@ type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
   [K in Key]-?: NonNullable<Base[Key]>;
 };
 
-type RecommendedRuleMetaDataDocs<Options extends readonly unknown[]> =
-  MakeRequired<RuleMetaDataDocs<Options>, 'recommended'>;
+type RecommendedRuleMetaDataDocs = MakeRequired<
+  ESLintPluginDocs,
+  'recommended'
+>;
 
 const isRecommendedDocs = (
-  docs: RuleMetaDataDocs<unknown[]>,
-): docs is RecommendedRuleMetaDataDocs<unknown[]> => !!docs.recommended;
+  docs: ESLintPluginDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
 
-const getRecommendation = (
-  docs: RecommendedRuleMetaDataDocs<unknown[]>,
-): string[] => {
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
   const recommended = docs.recommended;
   const recommendation =
     recommendations[

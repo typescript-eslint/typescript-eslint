@@ -35,11 +35,15 @@ This is likely not portable. A type annotation is necessary. ts(2742)
 ```
 */
 
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type { RuleModuleWithMetaDocs } from '@typescript-eslint/utils/ts-eslint';
+
+import type { ESLintPluginDocs, ESLintPluginRuleModule } from './src/util';
+
+export { ESLintPluginDocs, ESLintPluginRuleModule };
 
 export type TypeScriptESLintRules = Record<
   string,
-  RuleModule<string, unknown[]>
+  RuleModuleWithMetaDocs<string, unknown[], ESLintPluginDocs>
 >;
 declare const rules: TypeScriptESLintRules;
 // eslint-disable-next-line import/no-default-export

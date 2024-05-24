@@ -4,7 +4,10 @@ import tmp from 'tmp';
 
 import { clearCaches } from '../../src/clear-caches';
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
-import { parseAndGenerateServices } from '../../src/parser';
+import {
+  clearDefaultProjectMatchedFiles,
+  parseAndGenerateServices,
+} from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -19,6 +22,9 @@ const CONTENTS = {
 const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
+  // reset project tracking
+  clearDefaultProjectMatchedFiles();
+
   // stop watching the files and folders
   clearWatchCaches();
 
@@ -71,6 +77,7 @@ function parseFile(
   ignoreTsconfigRootDir?: boolean,
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
+    disallowAutomaticSingleRunInference: true,
     project: './tsconfig.json',
     tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
     filePath: relative
