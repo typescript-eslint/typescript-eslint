@@ -9,12 +9,13 @@ let myBoolean: Boolean;
                ~~~~~~~ Prefer using the primitive \`boolean\` as a type name, rather than the class wrapper \`Boolean\`.
 let myNumber: Number;
               ~~~~~~ Prefer using the primitive \`number\` as a type name, rather than the class wrapper \`Number\`.
-let myObject: Object;
-              ~~~~~~ Prefer using the primitive \`object\` as a type name, rather than the class wrapper \`Object\`.
 let myString: String;
               ~~~~~~ Prefer using the primitive \`string\` as a type name, rather than the class wrapper \`String\`.
 let mySymbol: Symbol;
               ~~~~~~ Prefer using the primitive \`symbol\` as a type name, rather than the class wrapper \`Symbol\`.
+
+let myObject: Object = 'allowed by TypeScript';
+              ~~~~~~ Prefer using the primitive \`object\` as a type name, rather than the class wrapper \`Object\`.
 
 let myFunction: Function;
                 ~~~~~~~~ The \`Function\` type accepts any function-like value.
@@ -34,6 +35,8 @@ let myNumber: number;
 let myObject: object;
 let myString: string;
 let mySymbol: symbol;
+
+let myObject: object = "Type 'string' is not assignable to type 'object'.";
 
 let myFunction: () => void;
 myFunction = () => {};
