@@ -1,3 +1,25 @@
+## 7.10.0 (2024-05-20)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [sort-type-constituents] support case sensitive sorting ([#8760](https://github.com/typescript-eslint/typescript-eslint/pull/8760))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-regexp-exec] fix heuristic to check whether regex may contain global flag ([#8764](https://github.com/typescript-eslint/typescript-eslint/pull/8764))
+- **typescript-estree:** don't add in-project files to defaultProjectMatchedFiles ([#9097](https://github.com/typescript-eslint/typescript-eslint/pull/9097))
+- **utils:** remove function form type from flat config `files` and `ignores` ([#9111](https://github.com/typescript-eslint/typescript-eslint/pull/9111))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Emanuel Hoogeveen @ehoogeveen-medweb
+- jsfm01 @jsfm01
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.9.0 (2024-05-13)
 
 
