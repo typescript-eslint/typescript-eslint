@@ -271,6 +271,44 @@ createRule({
 
 See [feat(utils): allow specifying additional rule meta.docs in RuleCreator](https://github.com/typescript-eslint/typescript-eslint/pull/9025) for more details.
 
+### Support for multi-pass fixes in `RuleTester`
+
+The `RuleTester` provided by `@typescript-eslint/rule-tester` is a fork of ESLint's `RuleTester`.
+One limitation of the original `RuleTester` is that it is not possible to verify that test cases requiring multiple fixes to be applied provide correct fixes.
+[The original `RuleTester` applies only the first fix](https://eslint.org/docs/latest/integrate/nodejs-api#testing-fixes) when there is conflict between two fixes.
+
+In typescript-eslint v8, `RuleTester` tries to apply all possible fixes for each test case.
+
+If your rule tests had some test cases that required multi-pass fixes, you will see some test failures.
+To fix these failures, provide an array of strings for `output` which specifies the output after each fix pass.
+
+```ts
+import { RuleTester } from '@typescript-eslint/rule-tester';
+import rule from '../src/rules/my-rule.ts';
+
+const ruleTester = new RuleTester();
+
+ruleTester.run('my-rule', rule, {
+  valid: [
+    /* ... */
+  ],
+  invalid: [
+    {
+      code: 'const a = 1;',
+      // Remove the line with string form of `output`
+      output: 'const b = 1;',
+      // Add the line with array form of `output`
+      output: ['const b = 1;', 'const c = 1;'],
+      errors: [
+        /* ... */
+      ],
+    },
+  ],
+});
+```
+
+See [[rule-tester] support multipass fixes](https://github.com/typescript-eslint/typescript-eslint/issues/8554) for more details.
+
 ### Other Developer-Facing Breaking Changes
 
 - ⏳ [Repo: Rule [options] parameter should be non-nullable if defaultOptions exists](https://github.com/typescript-eslint/typescript-eslint/issues/5439)
