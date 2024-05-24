@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lint-task: ['lint', 'typecheck']
+        lint-task: ['lint', 'typecheck', 'knip']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
