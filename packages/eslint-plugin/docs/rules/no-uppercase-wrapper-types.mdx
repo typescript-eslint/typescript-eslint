@@ -16,7 +16,8 @@ TypeScript represents the primitive in lower-case types and instances of the wra
 Using the primitives like `0` instead of class constructors like `Number(0)` is generally considered a JavaScript best practice.
 As a result, using the lower-case primitive type names like `number` instead of class names like `Number` is generally considered a TypeScript best practice.
 
-Similarly, TypeScript's `Function` type allows any function-like value.
+Similarly, TypeScript's `Function` type refers to objects created with the `Function` constructor, i.e. `new Function("eval'd code with implicit args")`.
+`Function` allows being called with any number of arguments and returns type `any`.
 It's generally better to specify function parameter and return types with function type syntax.
 
 Examples of code for this rule:
@@ -28,9 +29,10 @@ Examples of code for this rule:
 let myBigInt: BigInt;
 let myBoolean: Boolean;
 let myNumber: Number;
-let myObject: Object;
 let myString: String;
 let mySymbol: Symbol;
+
+let myObject: Object = 'allowed by TypeScript';
 
 let myFunction: Function;
 myFunction = () => {};
@@ -47,6 +49,8 @@ let myObject: object;
 let myString: string;
 let mySymbol: symbol;
 
+let myObject: object = "Type 'string' is not assignable to type 'object'.";
+
 let myFunction: () => void;
 myFunction = () => {};
 ```
@@ -61,6 +65,7 @@ You might consider using [ESLint disable comments](https://eslint.org/docs/lates
 
 ## Further Reading
 
+- [MDN documentation on primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)
 - [MDN documentation on `string` primitives and `String` objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects)
 
 ## Related To
