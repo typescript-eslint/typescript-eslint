@@ -137,7 +137,7 @@ describe('semanticInfo - singleRun', () => {
     process.env.CI = originalEnvCI;
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it('should lazily create the required program out of the provided "parserOptions.project" one time when TSESTREE_SINGLE_RUN=true', () => {
       /**
        * Single run because of explicit environment variable TSESTREE_SINGLE_RUN

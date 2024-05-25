@@ -17,7 +17,7 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 export type TypeScriptProjectService = ts.server.ProjectService;
 
 export interface ProjectServiceSettings {
-  allowDefaultProjectForFiles: string[] | undefined;
+  allowDefaultProject: string[] | undefined;
   maximumDefaultProjectFileMatchCount: number;
   service: TypeScriptProjectService;
 }
@@ -104,7 +104,7 @@ export function createProjectService(
   }
 
   return {
-    allowDefaultProjectForFiles: options.allowDefaultProjectForFiles,
+    allowDefaultProject: options.allowDefaultProject,
     maximumDefaultProjectFileMatchCount:
       options.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
       DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD,
