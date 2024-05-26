@@ -38,7 +38,7 @@ import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints
 import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
-import { interpolate } from './utils/interpolate';
+import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
 import { isReadonlyArray } from './utils/isReadonlyArray';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
@@ -73,10 +73,49 @@ let defaultConfig = deepMerge(
   testerDefaultConfig,
 ) as TesterConfigWithDefaults;
 
+/**
+ * Extracts names of {{ placeholders }} from the reported message.
+ * @param message Reported message
+ * @returns Array of placeholder names
+ */
+function getMessagePlaceholders(message: string): string[] {
+  const matcher = getPlaceholderMatcher();
+
+  return Array.from(message.matchAll(matcher), ([, name]) => name.trim());
+}
+
+/**
+ * Returns the placeholders in the reported messages but
+ * only includes the placeholders available in the raw message and not in the provided data.
+ * @param message The reported message
+ * @param raw The raw message specified in the rule meta.messages
+ * @param data The passed
+ * @returns Missing placeholder names
+ */
+function getUnsubstitutedMessagePlaceholders(
+  message: string,
+  raw: string,
+  data: Record<string, unknown> = {},
+): string[] {
+  const unsubstituted = getMessagePlaceholders(message);
+
+  if (unsubstituted.length === 0) {
+    return [];
+  }
+
+  // Remove false positives by only counting placeholders in the raw message, which were not provided in the data matcher or added with a data property
+  const known = getMessagePlaceholders(raw);
+  const provided = Object.keys(data);
+
+  return unsubstituted.filter(
+    name => known.includes(name) && !provided.includes(name),
+  );
+}
+
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter();
+  readonly #linter: Linter = new Linter({ configType: 'eslintrc' });
 
   /**
    * Creates a new instance of RuleTester.
@@ -215,13 +254,16 @@ export class RuleTester extends TestFramework {
       if (test.parser === TYPESCRIPT_ESLINT_PARSER) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
-      if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
-      }
-      return test;
+      return {
+        ...test,
+        filename: test.filename || getFilename(test.parserOptions),
+        parserOptions: {
+          // Re-running simulates --fix mode, which implies an isolated program
+          // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+          disallowAutomaticSingleRunInference: true,
+          ...test.parserOptions,
+        },
+      };
     };
 
     const normalizedTests = {
@@ -442,14 +484,13 @@ export class RuleTester extends TestFramework {
     item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): {
     messages: Linter.LintMessage[];
-    output: string;
+    outputs: string[];
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
   } {
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
     let code;
     let filename;
-    let output;
     let beforeAST: TSESTree.Program;
     let afterAST: TSESTree.Program;
 
@@ -572,29 +613,47 @@ export class RuleTester extends TestFramework {
     // Verify the code.
     // @ts-expect-error -- we don't define deprecated members on our types
     const { getComments } = SourceCode.prototype as { getComments: unknown };
-    let messages;
 
-    try {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getCommentsDeprecation;
-      messages = this.#linter.verify(code, config, filename);
-    } finally {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getComments;
-    }
+    let initialMessages: Linter.LintMessage[] | null = null;
+    let messages: Linter.LintMessage[] | null = null;
+    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let passNumber = 0;
+    const outputs: string[] = [];
 
-    const fatalErrorMessage = messages.find(m => m.fatal);
+    do {
+      passNumber++;
 
-    assert(
-      !fatalErrorMessage,
-      `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
-    );
+      try {
+        // @ts-expect-error -- we don't define deprecated members on our types
+        SourceCode.prototype.getComments = getCommentsDeprecation;
+        messages = this.#linter.verify(code, config, filename);
+        if (!initialMessages) {
+          initialMessages = messages;
+        }
+      } finally {
+        // @ts-expect-error -- we don't define deprecated members on our types
+        SourceCode.prototype.getComments = getComments;
+      }
+      if (messages.length === 0) {
+        break;
+      }
 
-    // Verify if autofix makes a syntax error or not.
-    if (messages.some(m => m.fix)) {
-      output = SourceCodeFixer.applyFixes(code, messages).output;
+      const fatalErrorMessage = messages.find(m => m.fatal);
+      assert(
+        !fatalErrorMessage,
+        `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
+      );
+
+      fixedResult = SourceCodeFixer.applyFixes(code, messages);
+      if (fixedResult.output === code) {
+        break;
+      }
+      code = fixedResult.output;
+      outputs.push(code);
+
+      // Verify if autofix makes a syntax error or not.
       const errorMessageInFix = this.#linter
-        .verify(output, config, filename)
+        .verify(fixedResult.output, config, filename)
         .find(m => m.fatal);
 
       assert(
@@ -603,16 +662,14 @@ export class RuleTester extends TestFramework {
           'A fatal parsing error occurred in autofix.',
           `Error: ${errorMessageInFix?.message}`,
           'Autofix output:',
-          output,
+          fixedResult.output,
         ].join('\n'),
       );
-    } else {
-      output = code;
-    }
+    } while (fixedResult.fixed && passNumber < 10);
 
     return {
-      messages,
-      output,
+      messages: initialMessages,
+      outputs,
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeAST: beforeAST!,
@@ -706,6 +763,23 @@ export class RuleTester extends TestFramework {
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
 
+    for (const message of messages) {
+      if (hasOwnProperty(message, 'suggestions')) {
+        const seenMessageIndices = new Map<string, number>();
+
+        for (let i = 0; i < message.suggestions.length; i += 1) {
+          const suggestionMessage = message.suggestions[i].desc;
+          const previous = seenMessageIndices.get(suggestionMessage);
+
+          assert.ok(
+            !seenMessageIndices.has(suggestionMessage),
+            `Suggestion message '${suggestionMessage}' reported from suggestion ${i} was previously reported by suggestion ${previous}. Suggestion messages should be unique within an error.`,
+          );
+          seenMessageIndices.set(suggestionMessage, i);
+        }
+      }
+    }
+
     if (typeof item.errors === 'number') {
       if (item.errors === 0) {
         assert.fail("Invalid cases must have 'error' value greater than 0");
@@ -794,6 +868,19 @@ export class RuleTester extends TestFramework {
               error.messageId,
               `messageId '${message.messageId}' does not match expected messageId '${error.messageId}'.`,
             );
+
+            const unsubstitutedPlaceholders =
+              getUnsubstitutedMessagePlaceholders(
+                message.message,
+                rule.meta.messages[message.messageId],
+                error.data,
+              );
+
+            assert.ok(
+              unsubstitutedPlaceholders.length === 0,
+              `The reported message has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property in the context.report() call.`,
+            );
+
             if (hasOwnProperty(error, 'data')) {
               /*
                *  if data was provided, then directly compare the returned message to a synthetic
@@ -939,6 +1026,19 @@ export class RuleTester extends TestFramework {
                     expectedSuggestion.messageId,
                     `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
                   );
+
+                  const unsubstitutedPlaceholders =
+                    getUnsubstitutedMessagePlaceholders(
+                      actualSuggestion.desc,
+                      rule.meta.messages[expectedSuggestion.messageId],
+                      expectedSuggestion.data,
+                    );
+
+                  assert.ok(
+                    unsubstitutedPlaceholders.length === 0,
+                    `The message of the suggestion has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property for the suggestion in the context.report() call.`,
+                  );
+
                   if (hasOwnProperty(expectedSuggestion, 'data')) {
                     const unformattedMetaMessage =
                       rule.meta.messages[expectedSuggestion.messageId];
@@ -988,20 +1088,43 @@ export class RuleTester extends TestFramework {
 
     if (hasOwnProperty(item, 'output')) {
       if (item.output == null) {
+        if (result.outputs.length) {
+          assert.strictEqual(
+            result.outputs[0],
+            item.code,
+            'Expected no autofixes to be suggested.',
+          );
+        }
+      } else if (typeof item.output === 'string') {
+        assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
         assert.strictEqual(
-          result.output,
-          item.code,
-          'Expected no autofixes to be suggested',
+          result.outputs[0],
+          item.output,
+          'Output is incorrect.',
         );
+        if (result.outputs.length) {
+          assert.deepStrictEqual(
+            result.outputs,
+            [item.output],
+            'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
+          );
+        }
       } else {
-        assert.strictEqual(result.output, item.output, 'Output is incorrect.');
+        assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
+        assert.deepStrictEqual(
+          result.outputs,
+          item.output,
+          'Outputs do not match.',
+        );
       }
     } else {
-      assert.strictEqual(
-        result.output,
-        item.code,
-        "The rule fixed the code. Please add 'output' property.",
-      );
+      if (result.outputs.length) {
+        assert.strictEqual(
+          result.outputs[0],
+          item.code,
+          "The rule fixed the code. Please add 'output' property.",
+        );
+      }
     }
 
     assertASTDidntChange(result.beforeAST, result.afterAST);

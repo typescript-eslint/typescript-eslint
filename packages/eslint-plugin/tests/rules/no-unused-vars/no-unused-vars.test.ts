@@ -14,15 +14,23 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
-  EXPERIMENTAL_useProjectService: false,
-  tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
 };
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
-ruleTester.defineRule('collect-unused-vars', context => {
-  collectUnusedVariables(context);
-  return {};
+ruleTester.defineRule('collect-unused-vars', {
+  create(context) {
+    collectUnusedVariables(context);
+    return {};
+  },
+  defaultOptions: [],
+  meta: {
+    messages: {},
+    type: 'problem',
+    schema: [],
+  },
 });
 
 ruleTester.run('no-unused-vars', rule, {
@@ -1140,7 +1148,9 @@ export class Foo {}
             additional: '',
           },
           line: 2,
+          endLine: 2,
           column: 10,
+          endColumn: 31,
         },
       ],
     },
@@ -1744,6 +1754,8 @@ declare module 'foo' {
           messageId: 'unusedVar',
           line: 3,
           column: 8,
+          endLine: 3,
+          endColumn: 12,
           data: {
             varName: 'Test',
             action: 'defined',
@@ -1840,6 +1852,8 @@ x = foo(x);
           messageId: 'unusedVar',
           line: 3,
           column: 1,
+          endLine: 3,
+          endColumn: 2,
           data: {
             varName: 'x',
             action: 'assigned a value',
@@ -1947,6 +1961,25 @@ export namespace Bar {
             action: 'defined',
             additional: '',
           },
+        },
+      ],
+    },
+    {
+      code: `
+const foo: number = 1;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 7,
+          endLine: 2,
+          endColumn: 10,
         },
       ],
     },

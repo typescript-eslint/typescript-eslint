@@ -12,7 +12,7 @@ import { insertSpecialCaseOptions } from './insertions/insertSpecialCaseOptions'
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 import {
-  isRuleModuleWithMetaDocs,
+  isAnyRuleModuleWithMetaDocs,
   isVFileWithStem,
   nodeIsParent,
 } from './utils';
@@ -24,7 +24,7 @@ export const generatedRuleDocs: Plugin = () => {
     }
 
     const rule = pluginRules[file.stem];
-    if (!isRuleModuleWithMetaDocs(rule)) {
+    if (!isAnyRuleModuleWithMetaDocs(rule)) {
       return;
     }
 

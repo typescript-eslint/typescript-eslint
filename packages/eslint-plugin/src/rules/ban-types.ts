@@ -73,7 +73,10 @@ const defaultTypes: Types = {
     message: 'Use bigint instead',
     fixWith: 'bigint',
   },
-
+  Object: {
+    message: 'Use object instead',
+    fixWith: 'object',
+  },
   Function: {
     message: [
       'The `Function` type accepts any function-like value.',
@@ -81,32 +84,6 @@ const defaultTypes: Types = {
       'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
       'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
     ].join('\n'),
-  },
-
-  // object typing
-  Object: {
-    message: [
-      'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
-      '- If you want a type meaning "any object", you probably want `object` instead.',
-      '- If you want a type meaning "any value", you probably want `unknown` instead.',
-      '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
-    ].join('\n'),
-    suggest: ['object', 'unknown', 'NonNullable<unknown>'],
-  },
-  '{}': {
-    message: [
-      '`{}` actually means "any non-nullish value".',
-      '- If you want a type meaning "any object", you probably want `object` instead.',
-      '- If you want a type meaning "any value", you probably want `unknown` instead.',
-      '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
-      '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
-    ].join('\n'),
-    suggest: [
-      'object',
-      'unknown',
-      'Record<string, never>',
-      'NonNullable<unknown>',
-    ],
   },
 };
 

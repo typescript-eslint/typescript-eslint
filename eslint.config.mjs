@@ -76,12 +76,6 @@ export default tseslint.config(
         ...globals.node,
       },
       parserOptions: {
-        allowAutomaticSingleRunInference: true,
-        cacheLifetime: {
-          // we pretty well never create/change tsconfig structure - so no need to ever evict the cache
-          // in the rare case that we do - just need to manually restart their IDE.
-          glob: 'Infinity',
-        },
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -519,6 +513,7 @@ export default tseslint.config(
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      'react/prop-types': 'off',
     },
     settings: {
       react: {

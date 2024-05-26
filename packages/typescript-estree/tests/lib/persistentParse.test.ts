@@ -4,7 +4,10 @@ import tmp from 'tmp';
 
 import { clearCaches } from '../../src/clear-caches';
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
-import { parseAndGenerateServices } from '../../src/parser';
+import {
+  clearDefaultProjectMatchedFiles,
+  parseAndGenerateServices,
+} from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -19,6 +22,9 @@ const CONTENTS = {
 const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
+  // reset project tracking
+  clearDefaultProjectMatchedFiles();
+
   // stop watching the files and folders
   clearWatchCaches();
 
@@ -71,6 +77,7 @@ function parseFile(
   ignoreTsconfigRootDir?: boolean,
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
+    disallowAutomaticSingleRunInference: true,
     project: './tsconfig.json',
     tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
     filePath: relative
@@ -87,8 +94,8 @@ function baseTests(
   tsConfigExcludeBar: Record<string, unknown>,
   tsConfigIncludeAll: Record<string, unknown>,
 ): void {
-  // The experimental project server creates a default project for files
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+  // The project service creates a default project for files
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true') {
     return;
   }
 
@@ -265,7 +272,7 @@ describe('persistent parse', () => {
   If there is no includes, then typescript will ask for a slightly different set of watchers.
   */
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('tsconfig with no includes / files', () => {
       const tsConfigExcludeBar = {
         exclude: ['./src/bar.ts'],

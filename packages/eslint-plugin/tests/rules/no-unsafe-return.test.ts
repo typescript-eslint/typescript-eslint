@@ -6,8 +6,8 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
     project: './tsconfig.noImplicitThis.json',
+    projectService: false,
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -45,6 +45,14 @@ function foo() {
 function foo(): any {
   return {} as any;
 }
+    `,
+    `
+declare function foo(arg: () => any): void;
+foo((): any => 'foo' as any);
+    `,
+    `
+declare function foo(arg: null | (() => any)): void;
+foo((): any => 'foo' as any);
     `,
     // explicit any array return type is allowed, if you want to be unsafe like that
     `
@@ -405,6 +413,20 @@ function bar() {
           line: 7,
           column: 16,
           endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: null | (() => any)): void;
+foo(() => 'foo' as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 11,
+          endColumn: 23,
         },
       ],
     },

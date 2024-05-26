@@ -24,7 +24,7 @@ exports.astConverter = astConverter;
 exports.esquery = esquery;
 
 exports.createLinter = function () {
-  const linter = new Linter();
+  const linter = new Linter({ configType: 'eslintrc' });
   for (const name in plugin.rules) {
     linter.defineRule(`@typescript-eslint/${name}`, plugin.rules[name]);
   }

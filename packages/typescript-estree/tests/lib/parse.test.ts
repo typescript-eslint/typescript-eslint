@@ -166,11 +166,12 @@ describe('parseAndGenerateServices', () => {
 
   describe('isolated parsing', () => {
     const config: TSESTreeOptions = {
-      EXPERIMENTAL_useProjectService: false,
       comment: true,
-      tokens: true,
-      range: true,
+      disallowAutomaticSingleRunInference: true,
       loc: true,
+      projectService: false,
+      range: true,
+      tokens: true,
     };
     const testParse = ({
       ext,
@@ -340,12 +341,13 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
+        disallowAutomaticSingleRunInference: true,
         tokens: true,
         range: true,
         loc: true,
@@ -480,12 +482,13 @@ describe('parseAndGenerateServices', () => {
     });
 
     describe('invalid project error messages', () => {
-      if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+      if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
         it('throws when none of multiple projects include the file', () => {
           const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
           const code = 'var a = true';
           const config: TSESTreeOptions = {
             comment: true,
+            disallowAutomaticSingleRunInference: true,
             tokens: true,
             range: true,
             loc: true,
@@ -530,6 +533,7 @@ describe('parseAndGenerateServices', () => {
     it("shouldn't turn on debugger if no options were provided", () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: [],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).not.toHaveBeenCalled();
     });
@@ -537,6 +541,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('eslint:*,-eslint:code-path');
@@ -545,6 +550,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('typescript-eslint:*');
@@ -553,6 +559,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on both eslint and typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint', 'eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith(
@@ -560,11 +567,12 @@ describe('parseAndGenerateServices', () => {
       );
     });
 
-    if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
       it('should turn on typescript debugger', () => {
         expect(() =>
           parser.parseAndGenerateServices('const x = 1;', {
             debugLevel: ['typescript'],
+            disallowAutomaticSingleRunInference: true,
             filePath: './path-that-doesnt-exist.ts',
             project: ['./tsconfig-that-doesnt-exist.json'],
           }),
@@ -580,7 +588,7 @@ describe('parseAndGenerateServices', () => {
     }
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('projectFolderIgnoreList', () => {
       beforeEach(() => {
         parser.clearCaches();
@@ -590,6 +598,7 @@ describe('parseAndGenerateServices', () => {
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
+        disallowAutomaticSingleRunInference: true,
         tokens: true,
         range: true,
         loc: true,
@@ -631,6 +640,7 @@ describe('parseAndGenerateServices', () => {
             cacheLifetime: {
               glob: lifetime,
             },
+            disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
             tsconfigRootDir: FIXTURES_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],

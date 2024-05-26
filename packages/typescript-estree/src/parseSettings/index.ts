@@ -63,11 +63,6 @@ export interface MutableParseSettings {
   errorOnUnknownASTType: boolean;
 
   /**
-   * Experimental: TypeScript server to power program creation.
-   */
-  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
-
-  /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
    *
    * @remarks
@@ -121,7 +116,12 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: readonly CanonicalPath[];
+  projects: ReadonlyMap<CanonicalPath, string>;
+
+  /**
+   * TypeScript server to power program creation.
+   */
+  projectService: ProjectServiceSettings | undefined;
 
   /**
    * Whether to add the `range` property to AST nodes.

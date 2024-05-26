@@ -19,6 +19,7 @@ describe('isUnsafeAssignment', () => {
     checker: ts.TypeChecker;
   } {
     const { ast, services } = parseForESLint(code, {
+      disallowAutomaticSingleRunInference: true,
       project: './tsconfig.json',
       filePath: path.join(rootDir, 'file.ts'),
       tsconfigRootDir: rootDir,

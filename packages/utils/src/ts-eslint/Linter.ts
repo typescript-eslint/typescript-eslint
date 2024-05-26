@@ -114,11 +114,18 @@ declare class LinterBase {
 namespace Linter {
   export interface LinterOptions {
     /**
+     * Which config format to use.
+     * @default 'flat'
+     */
+    configType?: ConfigTypeSpecifier;
+
+    /**
      * path to a directory that should be considered as the current working directory.
      */
     cwd?: string;
   }
 
+  export type ConfigTypeSpecifier = 'eslintrc' | 'flat';
   export type EnvironmentConfig = SharedConfig.EnvironmentConfig;
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
   export type GlobalVariableOption = SharedConfig.GlobalVariableOption;
@@ -269,7 +276,7 @@ namespace Linter {
     parserOptions?: ParserOptions;
   }
 
-  // TODO - RuleCreateFunction is no longer supported in ESLint v9
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
   export type LegacyPluginRules = Record<
     string,
     AnyRuleCreateFunction | AnyRuleModule

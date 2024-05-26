@@ -1,7 +1,6 @@
 import * as glob from 'glob';
 import * as path from 'path';
 
-import { getCanonicalFileName } from '../../src/create-program/shared';
 import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {
   clearParseAndGenerateServicesCalls,
@@ -94,7 +93,7 @@ const options = {
 } as const;
 
 const resolvedProject = (p: string): string =>
-  getCanonicalFileName(path.resolve(path.join(process.cwd(), FIXTURES_DIR), p));
+  path.resolve(path.join(process.cwd(), FIXTURES_DIR), p);
 
 describe('semanticInfo - singleRun', () => {
   beforeEach(() => {
@@ -138,7 +137,7 @@ describe('semanticInfo - singleRun', () => {
     process.env.CI = originalEnvCI;
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it('should lazily create the required program out of the provided "parserOptions.project" one time when TSESTREE_SINGLE_RUN=true', () => {
       /**
        * Single run because of explicit environment variable TSESTREE_SINGLE_RUN

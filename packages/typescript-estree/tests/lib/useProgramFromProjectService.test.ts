@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'path';
 
-import type { TypeScriptProjectService } from '../../src/create-program/createProjectService';
+import type {
+  ProjectServiceSettings,
+  TypeScriptProjectService,
+} from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
 
@@ -42,14 +45,27 @@ const mockParseSettings = {
   filePath: 'path/PascalCaseDirectory/camelCaseFile.ts',
 } as ParseSettings;
 
+const createProjectServiceSettings = <
+  T extends Partial<ProjectServiceSettings>,
+>(
+  settings: T,
+) => ({
+  maximumDefaultProjectFileMatchCount: 8,
+  ...settings,
+});
+
 describe('useProgramFromProjectService', () => {
   it('passes an absolute, case-matching file path to service.openClientFile', () => {
     const { service } = createMockProjectService();
 
     useProgramFromProjectService(
-      { allowDefaultProjectForFiles: undefined, service },
+      createProjectServiceSettings({
+        allowDefaultProject: undefined,
+        service,
+      }),
       mockParseSettings,
       false,
+      new Set(),
     );
 
     expect(service.openClientFile).toHaveBeenCalledWith(
@@ -60,7 +76,7 @@ describe('useProgramFromProjectService', () => {
     );
   });
 
-  it('throws an error when hasFullTypeInformation is enabled and the file is both in the project service and allowDefaultProjectForFiles', () => {
+  it('throws an error when hasFullTypeInformation is enabled and the file is both in the project service and allowDefaultProject', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({
@@ -69,54 +85,153 @@ describe('useProgramFromProjectService', () => {
 
     expect(() =>
       useProgramFromProjectService(
-        { allowDefaultProjectForFiles: [mockParseSettings.filePath], service },
+        {
+          allowDefaultProject: [mockParseSettings.filePath],
+          maximumDefaultProjectFileMatchCount: 8,
+          service,
+        },
         mockParseSettings,
         true,
+        new Set(),
       ),
     ).toThrow(
-      `${mockParseSettings.filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
+      `${mockParseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
     );
   });
 
-  it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProjectForFiles', () => {
+  it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProject', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({});
 
     expect(() =>
       useProgramFromProjectService(
-        { allowDefaultProjectForFiles: [], service },
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          service,
+        }),
         mockParseSettings,
         true,
+        new Set(),
       ),
     ).toThrow(
-      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
+      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
   });
 
-  it('returns undefined when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProjectForFiles, and the service does not have a matching program', () => {
+  it('throws an error when called more than the maximum allowed file count', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          maximumDefaultProjectFileMatchCount: 2,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(['a', 'b']),
+      ),
+    ).toThrow(`Too many files (>2) have matched the default project.
+
+Having many files run with the default project is known to cause performance issues and slow down linting.
+
+See https://typescript-eslint.io/troubleshooting/#allowDefaultProject-glob-too-wide
+
+Matching files:
+- a
+- b
+- ${path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts')}
+
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+`);
+  });
+
+  it('truncates the files printed by the maximum allowed files error when they exceed the print limit', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          maximumDefaultProjectFileMatchCount: 2,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(Array.from({ length: 100 }, (_, i) => String(i))),
+      ),
+    ).toThrow(`Too many files (>2) have matched the default project.
+
+Having many files run with the default project is known to cause performance issues and slow down linting.
+
+See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
+
+Matching files:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+- 19
+...and 81 more files
+
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+`);
+  });
+
+  it('returns undefined when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service does not have a matching program', () => {
     const { service } = createMockProjectService();
 
-    mockGetProgram.mockReturnValue(undefined);
+    mockGetProgram.mockReturnValueOnce(undefined);
 
     service.openClientFile.mockReturnValueOnce({
       configFileName: 'tsconfig.json',
     });
 
     const actual = useProgramFromProjectService(
-      { allowDefaultProjectForFiles: [mockParseSettings.filePath], service },
+      createProjectServiceSettings({
+        allowDefaultProject: [mockParseSettings.filePath],
+        service,
+      }),
       mockParseSettings,
       false,
+      new Set(),
     );
 
     expect(actual).toBeUndefined();
   });
 
-  it('returns a created program when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProjectForFiles, and the service has a matching program', () => {
+  it('returns a created program when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
-    mockGetProgram.mockReturnValue(program);
+    mockGetProgram.mockReturnValueOnce(program);
 
     service.openClientFile.mockReturnValueOnce({
       configFileName: 'tsconfig.json',
@@ -124,27 +239,60 @@ describe('useProgramFromProjectService', () => {
     mockCreateProjectProgram.mockReturnValueOnce(program);
 
     const actual = useProgramFromProjectService(
-      { allowDefaultProjectForFiles: [mockParseSettings.filePath], service },
+      createProjectServiceSettings({
+        allowDefaultProject: [mockParseSettings.filePath],
+        service,
+      }),
       mockParseSettings,
       false,
+      new Set(),
     );
 
     expect(actual).toBe(program);
   });
 
-  it('returns a created program when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProjectForFiles, and the service has a matching program', () => {
+  it('returns a created program when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
-    mockGetProgram.mockReturnValue(program);
+    mockGetProgram.mockReturnValueOnce(program);
 
     service.openClientFile.mockReturnValueOnce({});
     mockCreateProjectProgram.mockReturnValueOnce(program);
 
     const actual = useProgramFromProjectService(
-      { allowDefaultProjectForFiles: [], service },
+      createProjectServiceSettings({
+        allowDefaultProject: [],
+        service,
+      }),
       mockParseSettings,
       false,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
+  });
+
+  it('returns a created program when hasFullTypeInformation is disabled, the file is in the project service, the service has a matching program, and no out-of-project files are allowed', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: [],
+        maximumDefaultProjectFileMatchCount: 0,
+        service,
+      }),
+      mockParseSettings,
+      false,
+      new Set(),
     );
 
     expect(actual).toBe(program);

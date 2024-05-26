@@ -106,30 +106,69 @@ interface ParseOptions {
  */
 export interface ProjectServiceOptions {
   /**
-   * Globs of files to allow running with the default project compiler options.
+   * Globs of files to allow running with the default project compiler options
+   * despite not being matched by the project service.
    */
-  allowDefaultProjectForFiles?: string[];
+  allowDefaultProject?: string[];
 
   /**
    * Path to a TSConfig to use instead of TypeScript's default project configuration.
    */
   defaultProject?: string;
+
+  /**
+   * The maximum number of files {@link allowDefaultProject} may match.
+   * Each file match slows down linting, so if you do need to use this, please
+   * file an informative issue on typescript-eslint explaining why - so we can
+   * help you avoid using it!
+   * @default 8
+   */
+  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `disallowAutomaticSingleRunInference = false` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: CacheDurationSeconds;
+  };
+
+  /**
+   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
+   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
+   * on a file in an IDE).
+   *
+   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
+   * is important because there is significant overhead to managing the so called Watch Programs
+   * needed for the long-running use-case.
+   *
+   * By default, we will use common heuristics to infer whether ESLint is being
+   * used as part of a single run. This option disables those heuristics, and
+   * therefore the performance optimizations gained by them.
+   *
+   * In other words, typescript-eslint is faster by default, and this option
+   * disables an automatic performance optimization.
+   *
+   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
+   * environment variable to `"false"` or `"true"`.
+   * Otherwise, the default value is `false`.
+   */
+  disallowAutomaticSingleRunInference?: boolean;
+
+  /**
    * Causes the parser to error if the TypeScript compiler returns any unexpected syntax/semantic errors.
    */
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
-
-  /**
-   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
-   *
-   * Whether to create a shared TypeScript server to power program creation.
-   *
-   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
-   */
-  EXPERIMENTAL_useProjectService?: boolean | ProjectServiceOptions;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
@@ -173,6 +212,8 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * If this is provided, type information will be returned.
    *
    * If set to `false`, `null` or `undefined` type information will not be returned.
+   *
+   * Note that {@link projectService} is now preferred.
    */
   project?: string[] | string | boolean | null;
 
@@ -186,6 +227,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   projectFolderIgnoreList?: string[];
 
   /**
+   * Whether to create a shared TypeScript project service to power program creation.
+   */
+  projectService?: boolean | ProjectServiceOptions;
+
+  /**
    * The absolute path to the root directory for all provided `project`s.
    */
   tsconfigRootDir?: string;
@@ -196,39 +242,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * All linted files must be part of the provided program(s).
    */
   programs?: ts.Program[] | null;
-
-  /**
-   * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
-   * such as an ESLint CLI invocation, and long-running sessions (such as continuous feedback
-   * on a file in an IDE).
-   *
-   * When typescript-eslint handles TypeScript Program management behind the scenes, this distinction
-   * is important because there is significant overhead to managing the so called Watch Programs
-   * needed for the long-running use-case.
-   *
-   * When allowAutomaticSingleRunInference is enabled, we will use common heuristics to infer
-   * whether or not ESLint is being used as part of a single run.
-   *
-   * This setting's default value can be specified by setting a `TSESTREE_SINGLE_RUN`
-   * environment variable to `"false"` or `"true"`.
-   */
-  allowAutomaticSingleRunInference?: boolean;
-
-  /**
-   * Granular control of the expiry lifetime of our internal caches.
-   * You can specify the number of seconds as an integer number, or the string
-   * 'Infinity' if you never want the cache to expire.
-   *
-   * By default cache entries will be evicted after 30 seconds, or will persist
-   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
-   * infers that it is a single run.
-   */
-  cacheLifetime?: {
-    /**
-     * Glob resolution for `parserOptions.project` values.
-     */
-    glob?: CacheDurationSeconds;
-  };
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;

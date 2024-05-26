@@ -24,28 +24,9 @@ const func: Function = () => 1;
 
 // use safer object types
 const lowerObj: Object = {};
-                ~~~~~~ Don't use \`Object\` as a type. The \`Object\` type actually means "any non-nullish value", so it is marginally better than \`unknown\`.
-                       - If you want a type meaning "any object", you probably want \`object\` instead.
-                       - If you want a type meaning "any value", you probably want \`unknown\` instead.
-                       - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
+                ~~~~~~ Don't use \`Object\` as a type. Use object instead
 const capitalObj: Object = { a: 'string' };
-                  ~~~~~~ Don't use \`Object\` as a type. The \`Object\` type actually means "any non-nullish value", so it is marginally better than \`unknown\`.
-                         - If you want a type meaning "any object", you probably want \`object\` instead.
-                         - If you want a type meaning "any value", you probably want \`unknown\` instead.
-                         - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
-
-const curly1: {} = 1;
-              ~~ Don't use \`{}\` as a type. \`{}\` actually means "any non-nullish value".
-                 - If you want a type meaning "any object", you probably want \`object\` instead.
-                 - If you want a type meaning "any value", you probably want \`unknown\` instead.
-                 - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
-                 - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
-const curly2: {} = { a: 'string' };
-              ~~ Don't use \`{}\` as a type. \`{}\` actually means "any non-nullish value".
-                 - If you want a type meaning "any object", you probably want \`object\` instead.
-                 - If you want a type meaning "any value", you probably want \`unknown\` instead.
-                 - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
-                 - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
+                  ~~~~~~ Don't use \`Object\` as a type. Use object instead
 "
 `;
 
@@ -65,8 +46,5 @@ const func: () => number = () => 1;
 // use safer object types
 const lowerObj: object = {};
 const capitalObj: { a: string } = { a: 'string' };
-
-const curly1: number = 1;
-const curly2: Record<'a', string> = { a: 'string' };
 "
 `;

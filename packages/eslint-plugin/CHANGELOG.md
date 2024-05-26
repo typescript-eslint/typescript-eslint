@@ -1,3 +1,67 @@
+## 7.10.0 (2024-05-20)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [sort-type-constituents] support case sensitive sorting
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-regexp-exec] fix heuristic to check whether regex may contain global flag
+
+
+### ❤️  Thank You
+
+- auvred
+- Emanuel Hoogeveen
+- jsfm01
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.9.0 (2024-05-13)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [explicit-function-return-types] fix false positive on default parameters
+
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Sheetal Nandi
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.8.0 (2024-04-29)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-argument] handle  tagged templates
+
+- **eslint-plugin:** [prefer-optional-chain] suggests optional chaining during strict null equality check
+
+- **eslint-plugin:** [consistent-type-assertions] handle tagged templates
+
+- **eslint-plugin:** [no-unsafe-return] handle union types
+
+- **eslint-plugin:** [no-unused-vars] clear error report range
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- jsfm01
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.7.1 (2024-04-22)
 
 

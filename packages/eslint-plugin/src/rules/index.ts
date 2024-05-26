@@ -36,6 +36,7 @@ import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
+import noEmptyObjectType from './no-empty-object-type';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraneousClass from './no-extraneous-class';
@@ -160,6 +161,7 @@ export default {
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
+  'no-empty-object-type': noEmptyObjectType,
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extraneous-class': noExtraneousClass,
