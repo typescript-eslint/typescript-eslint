@@ -14,7 +14,7 @@ const log = debug(
 
 export function useProgramFromProjectService(
   {
-    allowDefaultProjectForFiles,
+    allowDefaultProject,
     maximumDefaultProjectFileMatchCount,
     service,
   }: ProjectServiceSettings,
@@ -43,11 +43,11 @@ export function useProgramFromProjectService(
   if (hasFullTypeInformation) {
     log(
       'Project service type information enabled; checking for file path match on: %o',
-      allowDefaultProjectForFiles,
+      allowDefaultProject,
     );
     const isDefaultProjectAllowedPath = filePathMatchedBy(
       parseSettings.filePath,
-      allowDefaultProjectForFiles,
+      allowDefaultProject,
     );
 
     log(
@@ -59,12 +59,12 @@ export function useProgramFromProjectService(
     if (opened.configFileName) {
       if (isDefaultProjectAllowedPath) {
         throw new Error(
-          `${parseSettings.filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
+          `${parseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
         );
       }
     } else if (!isDefaultProjectAllowedPath) {
       throw new Error(
-        `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
+        `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
       );
     }
   }
@@ -83,16 +83,24 @@ export function useProgramFromProjectService(
     return undefined;
   }
 
-  defaultProjectMatchedFiles.add(filePathAbsolute);
+  if (!opened.configFileName) {
+    defaultProjectMatchedFiles.add(filePathAbsolute);
+  }
   if (defaultProjectMatchedFiles.size > maximumDefaultProjectFileMatchCount) {
+    const filePrintLimit = 20;
+    const filesToPrint = Array.from(defaultProjectMatchedFiles).slice(
+      0,
+      filePrintLimit,
+    );
+    const truncatedFileCount =
+      defaultProjectMatchedFiles.size - filesToPrint.length;
+
     throw new Error(
       `Too many files (>${maximumDefaultProjectFileMatchCount}) have matched the default project.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}
 Matching files:
-${Array.from(defaultProjectMatchedFiles)
-  .map(file => `- ${file}`)
-  .join('\n')}
-
-If you absolutely need more files included, set parserOptions.EXPERIMENTAL_useProjectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+${filesToPrint.map(file => `- ${file}`).join('\n')}
+${truncatedFileCount ? `...and ${truncatedFileCount} more files\n` : ''}
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `,
     );
   }
@@ -110,9 +118,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
 function filePathMatchedBy(
   filePath: string,
-  allowDefaultProjectForFiles: string[] | undefined,
+  allowDefaultProject: string[] | undefined,
 ): boolean {
-  return !!allowDefaultProjectForFiles?.some(pattern =>
-    minimatch(filePath, pattern),
-  );
+  return !!allowDefaultProject?.some(pattern => minimatch(filePath, pattern));
 }
