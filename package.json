@@ -138,7 +138,7 @@
     "jest-util": "^29",
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
-    "tmp": "0.2.1",
+    "tmp": "0.2.3",
     "tsx": "^4.7.2",
     "typescript": "5.4.5",
     "@nx/eslint@17.3.1": "patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch"
