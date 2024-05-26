@@ -9695,14 +9695,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-eslint-plugin@npm:^5.5.0":
-  version: 5.5.0
-  resolution: "eslint-plugin-eslint-plugin@npm:5.5.0"
+  version: 5.5.1
+  resolution: "eslint-plugin-eslint-plugin@npm:5.5.1"
   dependencies:
     eslint-utils: ^3.0.0
     estraverse: ^5.3.0
   peerDependencies:
     eslint: ">=7.0.0"
-  checksum: 8b803a2ab180a0e6e5ec755b6129504d78ac46cc69347ed6fc1d0a4da22e8161a897310ea6e74835220066e0d5bb4bf91230c9c387f2c0b8d99d86f641eb3870
+  checksum: 0f0fcab3ba73d57f07d69852287563e4f7d00382f4e722011a99f58117d3f20b8fcb9dd1edc2f32ef539749b8372a2492087219f27c8a8c00e77e328b2ce8fb6
   languageName: node
   linkType: hard
 
