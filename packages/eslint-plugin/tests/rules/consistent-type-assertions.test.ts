@@ -815,6 +815,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     }),
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
+      output: null,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
