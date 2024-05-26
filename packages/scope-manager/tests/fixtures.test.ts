@@ -1,6 +1,5 @@
 import fs from 'fs';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import glob = require('glob');
+import * as glob from 'glob';
 import makeDir from 'make-dir';
 import path from 'path';
 
