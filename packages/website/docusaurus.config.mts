@@ -161,7 +161,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             className: 'bug-report-link image-link social-link-icon',
           },
           {
-            label: 'OpenCollective',
+            label: 'Open Collective',
             href: 'https://opencollective.com/typescript-eslint/contribute',
             className: 'open-collective-link image-link social-link-icon',
           },
