@@ -87,13 +87,19 @@ export function useProgramFromProjectService(
     defaultProjectMatchedFiles.add(filePathAbsolute);
   }
   if (defaultProjectMatchedFiles.size > maximumDefaultProjectFileMatchCount) {
+    const filePrintLimit = 20;
+    const filesToPrint = Array.from(defaultProjectMatchedFiles).slice(
+      0,
+      filePrintLimit,
+    );
+    const truncatedFileCount =
+      defaultProjectMatchedFiles.size - filesToPrint.length;
+
     throw new Error(
       `Too many files (>${maximumDefaultProjectFileMatchCount}) have matched the default project.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}
 Matching files:
-${Array.from(defaultProjectMatchedFiles)
-  .map(file => `- ${file}`)
-  .join('\n')}
-
+${filesToPrint.map(file => `- ${file}`).join('\n')}
+${truncatedFileCount ? `...and ${truncatedFileCount} more files\n` : ''}
 If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `,
     );

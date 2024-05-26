@@ -153,6 +153,58 @@ If you absolutely need more files included, set parserOptions.projectService.max
 `);
   });
 
+  it('truncates the files printed by the maximum allowed files error when they exceed the print limit', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          maximumDefaultProjectFileMatchCount: 2,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(Array.from({ length: 100 }, (_, i) => String(i))),
+      ),
+    ).toThrow(`Too many files (>2) have matched the default project.
+
+Having many files run with the default project is known to cause performance issues and slow down linting.
+
+See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
+
+Matching files:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+- 19
+...and 81 more files
+
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+`);
+  });
+
   it('returns undefined when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service does not have a matching program', () => {
     const { service } = createMockProjectService();
 
