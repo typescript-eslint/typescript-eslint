@@ -1,5 +1,6 @@
-module.exports = {
-  root: true,
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config({
   parser: '@typescript-eslint/parser',
   env: {
     es6: true,
@@ -27,4 +28,4 @@ module.exports = {
       },
     },
   ],
-};
+});
