@@ -10,6 +10,7 @@ import {
   isAwaitKeyword,
   isTypeAnyType,
   isTypeUnknownType,
+  nullThrows,
 } from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
@@ -133,20 +134,22 @@ export default createRule({
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
-          let block: 'try' | 'catch' | 'finally';
+          let block: 'try' | 'catch' | 'finally' | undefined;
           if (child === ancestor.tryBlock) {
             block = 'try';
           } else if (child === ancestor.catchClause) {
             block = 'catch';
           } else if (child === ancestor.finallyBlock) {
             block = 'finally';
-          } else {
-            throw new Error(
-              'Child of a try statement must be a try block, catch clause, or finally block',
-            );
           }
 
-          return { tryStatement: ancestor, block };
+          return {
+            tryStatement: ancestor,
+            block: nullThrows(
+              block,
+              'Child of a try statement must be a try block, catch clause, or finally block',
+            ),
+          };
         }
         child = ancestor;
         ancestor = ancestor.parent;
