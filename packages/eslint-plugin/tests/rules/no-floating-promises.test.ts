@@ -2154,6 +2154,7 @@ arrayOrPromiseTuple;
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
     },
+    // an array, which contains elements of `Promise` type and a branded promise type, its type will be reduced to `Promise`, see - https://github.com/typescript-eslint/typescript-eslint/pull/8502#issuecomment-2105734406
     {
       code: `
 type SafePromise = Promise<number> & { hey?: string };
