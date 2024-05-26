@@ -50,7 +50,7 @@ export default (
       '@typescript-eslint/no-unsafe-return': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
-      '@typescript-eslint/no-uppercase-wrapper-types': 'error',
+      '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       'require-await': 'off',

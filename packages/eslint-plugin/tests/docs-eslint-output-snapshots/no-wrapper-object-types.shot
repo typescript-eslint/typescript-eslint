@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-uppercase-wrapper-types.mdx code examples ESLint output 1`] = `
+exports[`Validating rule docs no-wrapper-object-types.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 let myBigInt: BigInt;
@@ -26,7 +26,7 @@ myFunction = () => {};
 "
 `;
 
-exports[`Validating rule docs no-uppercase-wrapper-types.mdx code examples ESLint output 2`] = `
+exports[`Validating rule docs no-wrapper-object-types.mdx code examples ESLint output 2`] = `
 "Correct
 
 let myBigint: bigint;

@@ -113,7 +113,7 @@ export default createRule<Options, MessageIds>({
     replacedBy: [
       '@typescript-eslint/no-empty-object-type',
       '@typescript-eslint/no-restricted-types',
-      '@typescript-eslint/no-uppercase-wrapper-types',
+      '@typescript-eslint/no-wrapper-object-types',
     ],
     hasSuggestions: true,
     messages: {

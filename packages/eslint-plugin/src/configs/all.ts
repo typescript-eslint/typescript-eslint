@@ -106,7 +106,7 @@ export = {
     '@typescript-eslint/no-unused-expressions': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-uppercase-wrapper-types': 'error',
+    '@typescript-eslint/no-wrapper-object-types': 'error',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': 'error',
     'no-useless-constructor': 'off',

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-uppercase-wrapper-types 1`] = `
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-wrapper-object-types 1`] = `
 "
 # SCHEMA:
 

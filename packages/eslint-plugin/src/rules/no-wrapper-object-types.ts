@@ -16,7 +16,7 @@ const classNames = new Set([
 ]);
 
 export default createRule({
-  name: 'no-uppercase-wrapper-types',
+  name: 'no-wrapper-object-types',
   meta: {
     type: 'problem',
     docs: {

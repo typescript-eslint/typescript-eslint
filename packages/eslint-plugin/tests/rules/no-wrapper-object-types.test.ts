@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-uppercase-wrapper-types';
+import rule from '../../src/rules/no-wrapper-object-types';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('no-uppercase-wrapper-types', rule, {
+ruleTester.run('no-wrapper-object-types', rule, {
   valid: [
     'let value: NumberLike;',
     'let value: Other;',
