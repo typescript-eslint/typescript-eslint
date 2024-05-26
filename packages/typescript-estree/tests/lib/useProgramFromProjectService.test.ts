@@ -60,7 +60,7 @@ describe('useProgramFromProjectService', () => {
 
     useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: undefined,
+        allowDefaultProject: undefined,
         service,
       }),
       mockParseSettings,
@@ -76,7 +76,7 @@ describe('useProgramFromProjectService', () => {
     );
   });
 
-  it('throws an error when hasFullTypeInformation is enabled and the file is both in the project service and allowDefaultProjectForFiles', () => {
+  it('throws an error when hasFullTypeInformation is enabled and the file is both in the project service and allowDefaultProject', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({
@@ -86,7 +86,7 @@ describe('useProgramFromProjectService', () => {
     expect(() =>
       useProgramFromProjectService(
         {
-          allowDefaultProjectForFiles: [mockParseSettings.filePath],
+          allowDefaultProject: [mockParseSettings.filePath],
           maximumDefaultProjectFileMatchCount: 8,
           service,
         },
@@ -95,11 +95,11 @@ describe('useProgramFromProjectService', () => {
         new Set(),
       ),
     ).toThrow(
-      `${mockParseSettings.filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
+      `${mockParseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
     );
   });
 
-  it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProjectForFiles', () => {
+  it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProject', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({});
@@ -107,7 +107,7 @@ describe('useProgramFromProjectService', () => {
     expect(() =>
       useProgramFromProjectService(
         createProjectServiceSettings({
-          allowDefaultProjectForFiles: [],
+          allowDefaultProject: [],
           service,
         }),
         mockParseSettings,
@@ -115,7 +115,7 @@ describe('useProgramFromProjectService', () => {
         new Set(),
       ),
     ).toThrow(
-      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
+      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
   });
 
@@ -130,7 +130,7 @@ describe('useProgramFromProjectService', () => {
     expect(() =>
       useProgramFromProjectService(
         createProjectServiceSettings({
-          allowDefaultProjectForFiles: [mockParseSettings.filePath],
+          allowDefaultProject: [mockParseSettings.filePath],
           maximumDefaultProjectFileMatchCount: 2,
           service,
         }),
@@ -142,18 +142,70 @@ describe('useProgramFromProjectService', () => {
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowdefaultprojectforfiles-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/#allowDefaultProject-glob-too-wide
 
 Matching files:
 - a
 - b
 - ${path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts')}
 
-If you absolutely need more files included, set parserOptions.EXPERIMENTAL_useProjectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `);
   });
 
-  it('returns undefined when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProjectForFiles, and the service does not have a matching program', () => {
+  it('truncates the files printed by the maximum allowed files error when they exceed the print limit', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          maximumDefaultProjectFileMatchCount: 2,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(Array.from({ length: 100 }, (_, i) => String(i))),
+      ),
+    ).toThrow(`Too many files (>2) have matched the default project.
+
+Having many files run with the default project is known to cause performance issues and slow down linting.
+
+See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
+
+Matching files:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+- 19
+...and 81 more files
+
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+`);
+  });
+
+  it('returns undefined when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service does not have a matching program', () => {
     const { service } = createMockProjectService();
 
     mockGetProgram.mockReturnValueOnce(undefined);
@@ -164,7 +216,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [mockParseSettings.filePath],
+        allowDefaultProject: [mockParseSettings.filePath],
         service,
       }),
       mockParseSettings,
@@ -175,7 +227,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
     expect(actual).toBeUndefined();
   });
 
-  it('returns a created program when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProjectForFiles, and the service has a matching program', () => {
+  it('returns a created program when hasFullTypeInformation is disabled, the file is both in the project service and allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
@@ -188,7 +240,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [mockParseSettings.filePath],
+        allowDefaultProject: [mockParseSettings.filePath],
         service,
       }),
       mockParseSettings,
@@ -199,7 +251,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
     expect(actual).toBe(program);
   });
 
-  it('returns a created program when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProjectForFiles, and the service has a matching program', () => {
+  it('returns a created program when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
@@ -210,7 +262,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [],
+        allowDefaultProject: [],
         service,
       }),
       mockParseSettings,
@@ -234,7 +286,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
     const actual = useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [],
+        allowDefaultProject: [],
         maximumDefaultProjectFileMatchCount: 0,
         service,
       }),

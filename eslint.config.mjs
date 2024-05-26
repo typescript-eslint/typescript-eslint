@@ -507,6 +507,7 @@ export default tseslint.config(
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      'react/prop-types': 'off',
     },
     settings: {
       react: {

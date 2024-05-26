@@ -63,11 +63,6 @@ export interface MutableParseSettings {
   errorOnUnknownASTType: boolean;
 
   /**
-   * Experimental: TypeScript server to power program creation.
-   */
-  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
-
-  /**
    * Any non-standard file extensions which will be parsed.
    */
   extraFileExtensions: string[];
@@ -113,6 +108,11 @@ export interface MutableParseSettings {
    * Normalized paths to provided project paths.
    */
   projects: ReadonlyMap<CanonicalPath, string>;
+
+  /**
+   * TypeScript server to power program creation.
+   */
+  projectService: ProjectServiceSettings | undefined;
 
   /**
    * Whether to add the `range` property to AST nodes.
