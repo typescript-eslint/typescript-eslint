@@ -83,7 +83,7 @@ import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
-import noUppercaseWrapperTypes from './no-wrapper-object-types';
+import noWrapperObjectTypes from './no-wrapper-object-types';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
@@ -210,7 +210,7 @@ export default {
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
-  'no-wrapper-object-types': noUppercaseWrapperTypes,
+  'no-wrapper-object-types': noWrapperObjectTypes,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
