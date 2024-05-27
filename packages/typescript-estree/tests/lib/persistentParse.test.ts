@@ -65,7 +65,9 @@ function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
   fs.mkdirSync(path.join(tmpDir.name, 'src'));
   fs.mkdirSync(path.join(tmpDir.name, 'src', 'baz'));
   writeFile(tmpDir.name, 'foo');
-  writeBar && writeFile(tmpDir.name, 'bar');
+  if (writeBar) {
+    writeFile(tmpDir.name, 'bar');
+  }
 
   return tmpDir.name;
 }

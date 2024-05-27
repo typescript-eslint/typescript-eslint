@@ -64,7 +64,6 @@ import noRestrictedImports from './no-restricted-imports';
 import noRestrictedTypes from './no-restricted-types';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
-import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
@@ -190,7 +189,6 @@ export default {
   'no-restricted-types': noRestrictedTypes,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
-  'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,

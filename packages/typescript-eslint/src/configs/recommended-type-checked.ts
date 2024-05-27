@@ -21,6 +21,7 @@ export default (
     rules: {
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/ban-ts-comment': 'error',
+      '@typescript-eslint/ban-types': 'error',
       'no-array-constructor': 'off',
       '@typescript-eslint/no-array-constructor': 'error',
       '@typescript-eslint/no-base-to-string': 'error',
@@ -51,7 +52,6 @@ export default (
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-var-requires': 'error',
-      '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',

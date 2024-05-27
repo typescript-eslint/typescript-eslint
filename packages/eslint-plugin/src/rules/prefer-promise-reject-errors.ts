@@ -26,7 +26,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require using Error objects as Promise rejection reasons',
-      recommended: 'strict',
+      recommended: 'recommended',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
