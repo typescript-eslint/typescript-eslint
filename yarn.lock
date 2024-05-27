@@ -3919,15 +3919,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:18.2.3":
-  version: 18.2.3
-  resolution: "@nrwl/devkit@npm:18.2.3"
-  dependencies:
-    "@nx/devkit": 18.2.3
-  checksum: d2f7796a29096caed2bf5df53038f56ea6091aae80f4bf1cd333fe9746aea467e3971fea3cbd190605fb20083b3e2a33dd89c644cfbe08d45cc662c8abf631c7
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:18.3.5":
   version: 18.3.5
   resolution: "@nrwl/devkit@npm:18.3.5"
@@ -3976,25 +3967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:18.2.3":
-  version: 18.2.3
-  resolution: "@nx/devkit@npm:18.2.3"
-  dependencies:
-    "@nrwl/devkit": 18.2.3
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: ^7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-    yargs-parser: 21.1.1
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: 04bd11e4cae5ed89d66613417e5113092a174da4cf5dd9bc331cf2c2bcb521ec11aa4672788328d1be8968386c2ad1dc9f079dae278326683197eba2e5f133f8
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:18.3.5":
+"@nx/devkit@npm:*, @nx/devkit@npm:18.3.5":
   version: 18.3.5
   resolution: "@nx/devkit@npm:18.3.5"
   dependencies:
@@ -15202,10 +15175,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:~0.47.0":
-  version: 0.47.0
-  resolution: "monaco-editor@npm:0.47.0"
-  checksum: a1c5fe6a0d71214aa2fd4fd635f89a7df6ad599e4e01492a268eb70a456e7a29dfa301324e00b577eaf9fa69813b8a28924980ab8457d89faf14d13fcbbc2d6e
+"monaco-editor@npm:~0.48.0":
+  version: 0.48.0
+  resolution: "monaco-editor@npm:0.48.0"
+  checksum: 611eaded772935a8b7491325672a165efcb5fde69da4fabd822eae799765655fb55b4ef0fac411103a49c65679c597da82177e06f6f466b001af6117e8107e28
   languageName: node
   linkType: hard
 
@@ -20327,7 +20300,7 @@ __metadata:
     lz-string: ^1.5.0
     make-dir: "*"
     mdast-util-mdx: ^3.0.0
-    monaco-editor: ~0.47.0
+    monaco-editor: ~0.48.0
     prettier: ^3.2.5
     prism-react-renderer: ^1.3.5
     raw-loader: ^4.0.2
