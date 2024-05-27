@@ -16,13 +16,18 @@ This rule bans specific types and can suggest alternatives.
 Note that it does not ban the corresponding runtime objects from being used.
 
 :::danger Deprecated
-This rule is deprecated and now split across several rules:
+The old `ban-types` rule encompassed multiple areas of functionality, and so has been split into several rules.
 
-- [`no-empty-object-type`](./no-empty-object-type): banning the built-in `{}` type in confusing locations
-- [`no-restricted-types`](./no-restricted-types.mdx): allowing banning a configurable list of type names
-- [`no-wrapper-object-types`](./no-wrapper-object-types.mdx): banning built-in class wrappers such as `Number`
+**[`no-restricted-types`](./no-restricted-types.mdx)** is the new rule for banning a configurable list of type names.
+It has no options enabled by default.
 
-This deprecated rule will be removed in a future major version of typescript-eslint.
+The default options from `ban-types` are now covered by:
+
+- **[`no-empty-object-type`](./no-empty-object-type)**: banning the built-in `{}` type in confusing locations
+- **[`no-wrapper-object-types`](./no-wrapper-object-types.mdx)**: banning built-in class wrappers such as `Number`
+
+`ban-types` itself is removed in typescript-eslint v8.
+See [Announcing typescript-eslint v8 Beta](/announcing-typescript-eslint-v8-beta) for more details.
 :::
 
 ## Examples
