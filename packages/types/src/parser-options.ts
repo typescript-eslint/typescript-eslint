@@ -61,14 +61,13 @@ interface ParserOptions {
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
-  EXPERIMENTAL_useProjectService?: boolean; // purposely undocumented for now
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
   jsDocParsingMode?: JSDocParsingMode;
   programs?: Program[] | null;
   project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: string[];
+  projectService?: boolean;
   range?: boolean;
   sourceType?: SourceType | undefined;
   tokens?: boolean;

@@ -12,8 +12,6 @@ export const defaultParseSettings: ParseSettings = {
   debugLevel: new Set(),
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   errorOnUnknownASTType: false,
-  EXPERIMENTAL_projectService: undefined,
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',
   // JSDocParsingMode was added in TS 5.3.
@@ -25,6 +23,7 @@ export const defaultParseSettings: ParseSettings = {
   preserveNodeMaps: true,
   programs: null,
   projects: new Map(),
+  projectService: undefined,
   range: true,
   singleRun: false,
   suppressDeprecatedPropertyWarnings: false,

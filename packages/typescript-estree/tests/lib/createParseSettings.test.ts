@@ -7,47 +7,47 @@ jest.mock('../../src/create-program/createProjectService', () => ({
 }));
 
 describe('createParseSettings', () => {
-  describe('EXPERIMENTAL_projectService', () => {
-    it('is created when options.EXPERIMENTAL_useProjectService is enabled', () => {
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER = 'false';
+  describe('projectService', () => {
+    it('is created when options.projectService is enabled', () => {
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'false';
 
       const parseSettings = createParseSettings('', {
-        EXPERIMENTAL_useProjectService: true,
+        projectService: true,
       });
 
-      expect(parseSettings.EXPERIMENTAL_projectService).toBe(projectService);
+      expect(parseSettings.projectService).toBe(projectService);
     });
 
-    it('is created when options.EXPERIMENTAL_useProjectService is undefined, options.project is true, and process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER is true', () => {
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER = 'true';
+    it('is created when options.projectService is undefined, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
 
       const parseSettings = createParseSettings('', {
-        EXPERIMENTAL_useProjectService: undefined,
+        projectService: undefined,
         project: true,
       });
 
-      expect(parseSettings.EXPERIMENTAL_projectService).toBe(projectService);
+      expect(parseSettings.projectService).toBe(projectService);
     });
 
-    it('is not created when options.EXPERIMENTAL_useProjectService is undefined, options.project is falsy, and process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER is true', () => {
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER = 'true';
+    it('is not created when options.projectService is undefined, options.project is falsy, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
 
       const parseSettings = createParseSettings('', {
-        EXPERIMENTAL_useProjectService: undefined,
+        projectService: undefined,
       });
 
-      expect(parseSettings.EXPERIMENTAL_projectService).toBeUndefined();
+      expect(parseSettings.projectService).toBeUndefined();
     });
 
-    it('is not created when options.EXPERIMENTAL_useProjectService is false, options.project is true, and process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER is true', () => {
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER = 'true';
+    it('is not created when options.projectService is false, options.project is true, and process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE is true', () => {
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
 
       const parseSettings = createParseSettings('', {
-        EXPERIMENTAL_useProjectService: false,
+        projectService: false,
         project: true,
       });
 
-      expect(parseSettings.EXPERIMENTAL_projectService).toBeUndefined();
+      expect(parseSettings.projectService).toBeUndefined();
     });
   });
 

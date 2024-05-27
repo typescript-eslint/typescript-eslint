@@ -53,9 +53,9 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
-  if (parseSettings.EXPERIMENTAL_projectService) {
+  if (parseSettings.projectService) {
     const fromProjectService = useProgramFromProjectService(
-      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings.projectService,
       parseSettings,
       hasFullTypeInformation,
       defaultProjectMatchedFiles,

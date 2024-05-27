@@ -100,7 +100,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
   return output.join('\n').trim() + '\n';
 }
 
-const linter = new Linter();
+const linter = new Linter({ configType: 'eslintrc' });
 linter.defineParser('@typescript-eslint/parser', tseslintParser);
 
 const eslintOutputSnapshotFolder = path.resolve(
