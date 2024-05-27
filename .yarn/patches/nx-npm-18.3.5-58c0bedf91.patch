@@ -1,0 +1,30 @@
+diff --git a/src/command-line/release/changelog.js b/src/command-line/release/changelog.js
+index f997f4c45e841bcdce86c9ffc6e776c08ccdbb60..ed9cbdcfa0913b1a4662eb35bd98526e1e863869 100644
+--- a/src/command-line/release/changelog.js
++++ b/src/command-line/release/changelog.js
+@@ -364,15 +364,20 @@ function resolveChangelogRenderer(changelogRendererPath) {
+     const interpolatedChangelogRendererPath = (0, utils_1.interpolate)(changelogRendererPath, {
+         workspaceRoot: workspace_root_1.workspaceRoot,
+     });
++    const path = require("node:path");
++    const joinedChangelogRendererPath = path.join(
++      workspace_root_1.workspaceRoot,
++      interpolatedChangelogRendererPath
++    );
+     // Try and load the provided (or default) changelog renderer
+     let changelogRenderer;
+     let cleanupTranspiler = () => { };
+     try {
+-        const rootTsconfigPath = (0, typescript_1.getRootTsConfigPath)();
+-        if (rootTsconfigPath) {
+-            cleanupTranspiler = (0, register_1.registerTsProject)(rootTsconfigPath);
+-        }
+-        const r = require(interpolatedChangelogRendererPath);
++        // const rootTsconfigPath = (0, typescript_1.getRootTsConfigPath)();
++        // if (rootTsconfigPath) {
++        //     cleanupTranspiler = (0, register_1.registerTsProject)(rootTsconfigPath);
++        // }
++        const r = require(joinedChangelogRendererPath);
+         changelogRenderer = r.default || r;
+     }
+     catch {
