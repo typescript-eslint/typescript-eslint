@@ -65,6 +65,8 @@ export default (
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
       '@typescript-eslint/no-unsafe-unary-minus': 'error',
+      'no-unused-expressions': 'off',
+      '@typescript-eslint/no-unused-expressions': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
       'no-useless-constructor': 'off',

@@ -24,8 +24,6 @@ export = {
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
-    'no-unused-expressions': 'off',
-    '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
     '@typescript-eslint/prefer-find': 'error',
     '@typescript-eslint/prefer-for-of': 'error',

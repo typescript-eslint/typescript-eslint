@@ -24,6 +24,8 @@ export = {
     '@typescript-eslint/no-this-alias': 'error',
     '@typescript-eslint/no-unnecessary-type-constraint': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+    'no-unused-expressions': 'off',
+    '@typescript-eslint/no-unused-expressions': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-var-requires': 'error',
