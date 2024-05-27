@@ -336,10 +336,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      /* eslint-disable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
       esTsEnumDeclaration.members;
       esTsEnumDeclaration.members;
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-enable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -400,10 +400,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      /* eslint-disable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
       tsMappedType.typeParameter;
       tsMappedType.typeParameter;
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-enable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
