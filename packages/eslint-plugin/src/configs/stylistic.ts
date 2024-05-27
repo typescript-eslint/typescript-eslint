@@ -24,6 +24,5 @@ export = {
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
-    '@typescript-eslint/prefer-namespace-keyword': 'error',
   },
 } satisfies ClassicConfig.Config;
