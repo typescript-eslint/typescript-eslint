@@ -1,6 +1,6 @@
 /* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageIds,
@@ -42,8 +42,8 @@ const x = !'string' as A;
 const x = (a as A) + b;
 const x = (a as A) + (b);
 const x = new Generic<string>() as Foo;
-const x = new (Generic<string> as Foo)();
-const x = new (Generic<string> as Foo)('string');
+const x = new ((Generic<string>) as Foo)();
+const x = new ((Generic<string>) as Foo)('string');
 const x = () => ({ bar: 5 } as Foo);
 const x = () => ({ bar: 5 } as Foo);
 const x = () => (bar as Foo);
@@ -815,6 +815,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     }),
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
+      output: null,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -828,6 +829,127 @@ ruleTester.run('consistent-type-assertions', rule, {
       errors: [
         {
           messageId: 'never',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const a = <any>(b, c);',
+      output: `const a = (b, c) as any;`,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const f = <any>(() => {});',
+      output: 'const f = (() => {}) as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const f = <any>function () {};',
+      output: 'const f = function () {} as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const f = <any>(async () => {});',
+      output: 'const f = (async () => {}) as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      // prettier wants to remove the parens around the yield expression,
+      // but they're required.
+      code: noFormat`
+function* g() {
+  const y = <any>(yield a);
+}
+      `,
+      output: `
+function* g() {
+  const y = (yield a) as any;
+}
+      `,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: number, y: number;
+const bs = <any>(x <<= y);
+      `,
+      output: `
+declare let x: number, y: number;
+const bs = (x <<= y) as any;
+      `,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: 'const ternary = <any>(true ? x : y);',
+      output: 'const ternary = (true ? x : y) as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
           line: 1,
         },
       ],

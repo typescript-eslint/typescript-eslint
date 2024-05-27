@@ -1,9 +1,9 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "7.8.0",
+  "version": "7.10.0",
   "private": true,
+  "//": "NOTE: intentionally no build step in this package",
   "scripts": {
-    "//": "NOTE: intentionally no build step in this package",
     "apply-canary-version": "npx tsx ./src/apply-canary-version.mts",
     "format": "npx prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-configs": "npx tsx ./src/generate-configs.mts",
@@ -13,16 +13,21 @@
     "lint": "npx nx lint",
     "postinstall-script": "npx tsx ./src/postinstall.mts",
     "test": "npx jest --coverage",
-    "typecheck": "npx tsc -p tsconfig.json --noEmit"
+    "typecheck": "npx tsc --noEmit"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "@nx/devkit": "*",
+    "@typescript-eslint/eslint-plugin": "7.10.0",
+    "@typescript-eslint/scope-manager": "7.10.0",
+    "@typescript-eslint/types": "7.10.0",
+    "@typescript-eslint/typescript-estree": "7.10.0",
+    "@typescript-eslint/utils": "7.10.0",
     "cross-fetch": "*",
     "execa": "*",
     "prettier": "^3.2.5",
     "rimraf": "*",
-    "semver": "7.6.0",
-    "tmp": "*",
+    "semver": "7.6.2",
     "typescript": "*"
   }
 }
