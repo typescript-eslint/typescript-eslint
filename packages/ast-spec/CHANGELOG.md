@@ -1,3 +1,20 @@
+## 7.11.0 (2024-05-27)
+
+
+### 🩹 Fixes
+
+- **ast-spec:** add `EmptyStatement` to `Statement`
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Dom Armstrong
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.10.0 (2024-05-20)
 
 This was a version bump only for ast-spec to align it with other projects, there were no code changes.

@@ -1,3 +1,25 @@
+## 7.11.0 (2024-05-27)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** deprecate prefer-ts-expect-error in favor of ban-ts-comment ([#9081](https://github.com/typescript-eslint/typescript-eslint/pull/9081))
+
+### 🩹 Fixes
+
+- **ast-spec:** add `EmptyStatement` to `Statement` ([#8892](https://github.com/typescript-eslint/typescript-eslint/pull/8892))
+- **eslint-plugin:** [consistent-type-assertions] prevent syntax errors on arrow functions ([#8826](https://github.com/typescript-eslint/typescript-eslint/pull/8826))
+- **typescript-estree:** truncate number of files printed by the maximum file error ([#9127](https://github.com/typescript-eslint/typescript-eslint/pull/9127))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Dom Armstrong @domarmstrong
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.10.0 (2024-05-20)
 
 

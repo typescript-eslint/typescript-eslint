@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-tester",
-  "version": "7.10.0",
+  "version": "7.11.0",
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
@@ -48,8 +48,8 @@
   },
   "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "7.10.0",
-    "@typescript-eslint/utils": "7.10.0",
+    "@typescript-eslint/typescript-estree": "7.11.0",
+    "@typescript-eslint/utils": "7.11.0",
     "ajv": "^6.12.6",
     "lodash.merge": "4.6.2",
     "semver": "^7.6.0"
@@ -61,7 +61,7 @@
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@types/lodash.merge": "4.6.9",
-    "@typescript-eslint/parser": "7.10.0",
+    "@typescript-eslint/parser": "7.11.0",
     "chai": "^4.4.1",
     "eslint-visitor-keys": "^4.0.0",
     "espree": "^10.0.1",
