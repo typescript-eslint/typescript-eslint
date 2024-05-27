@@ -7,6 +7,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticStringValue,
+  getWrappingCode,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
@@ -92,21 +93,15 @@ export default createRule<[], MessageId>({
           context.report({
             node: node.expressions[0],
             messageId: 'noUselessTemplateLiteral',
-            fix(fixer): TSESLint.RuleFix[] {
-              const [prevQuasi, nextQuasi] = node.quasis;
+            fix(fixer): TSESLint.RuleFix | null {
+              const wrappingCode = getWrappingCode({
+                sourceCode: context.sourceCode,
+                replaceNode: node.expressions[0],
+                originNode: node,
+                parent: node.parent,
+              });
 
-              // Remove the quasis and backticks.
-              return [
-                fixer.removeRange([
-                  prevQuasi.range[1] - 3,
-                  node.expressions[0].range[0],
-                ]),
-
-                fixer.removeRange([
-                  node.expressions[0].range[1],
-                  nextQuasi.range[0] + 2,
-                ]),
-              ];
+              return fixer.replaceText(node, wrappingCode);
             },
           });
 

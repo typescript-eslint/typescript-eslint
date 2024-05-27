@@ -75,6 +75,23 @@ export function getWrappingFixer(
   };
 }
 
+export function getWrappingCode(params: {
+  sourceCode: Readonly<TSESLint.SourceCode>;
+  replaceNode: TSESTree.Node;
+  originNode: TSESTree.Node;
+  parent: TSESTree.Node;
+}): string {
+  const { sourceCode, replaceNode, originNode, parent } = params;
+  const code = sourceCode.getText(replaceNode);
+  const isNodeNeedParen = !isStrongPrecedenceNode(replaceNode);
+  const isParentNeedParam = isWeakPrecedenceParent(originNode, parent);
+
+  if (isNodeNeedParen && isParentNeedParam) {
+    return `(${code})`;
+  }
+  return code;
+}
+
 /**
  * Check if a node will always have the same precedence if it's parent changes.
  */
@@ -97,9 +114,13 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
 /**
  * Check if a node's parent could have different precedence if the node changes.
  */
-function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const parent = node.parent!;
+function isWeakPrecedenceParent(
+  node: TSESTree.Node,
+  parent = node.parent,
+): boolean {
+  if (!parent) {
+    return false;
+  }
 
   if (
     parent.type === AST_NODE_TYPES.UpdateExpression ||
