@@ -19,14 +19,6 @@ const COMPLICATED_RULE_OPTIONS = new Set([
   'naming-convention',
 ]);
 
-/**
- * Rules that do funky things with their defaults and require special code
- * rather than just JSON.stringify-ing their defaults blob
- */
-const SPECIAL_CASE_DEFAULTS = new Map([
-  ['ban-types', '[{ /* See below for default options */ }]'],
-]);
-
 const PRETTIER_CONFIG_PATH = path.resolve(
   __dirname,
   '..',
@@ -189,10 +181,7 @@ function linkToConfigs(configs: string[]): mdast.Node[] {
 }
 
 function getRuleDefaultOptions(page: RuleDocsPage): string {
-  const defaults =
-    SPECIAL_CASE_DEFAULTS.get(page.file.stem) ??
-    JSON.stringify(page.rule.defaultOptions);
-
+  const defaults = JSON.stringify(page.rule.defaultOptions);
   const recommended = page.rule.meta.docs.recommended;
 
   return typeof recommended === 'object'

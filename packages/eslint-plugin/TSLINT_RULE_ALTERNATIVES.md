@@ -15,32 +15,32 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 
 ### TypeScript-specific
 
-| TSLint rule                       |     | ESLint rule                                          |
-| --------------------------------- | :-: | ---------------------------------------------------- |
-| [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]  |
-| [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-comment`]                |
-| [`ban-types`]                     | 🌓  | [`@typescript-eslint/ban-types`]<sup>[1]</sup>       |
-| [`invalid-void`]                  | ✅  | [`@typescript-eslint/no-invalid-void-type`]          |
-| [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
-| [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]               |
-| [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]               |
-| [`no-empty-interface`]            | ✅  | [`@typescript-eslint/no-empty-object-type`]          |
-| [`no-import-side-effect`]         | 🔌  | [`import/no-unassigned-import`]                      |
-| [`no-inferrable-types`]           | ✅  | [`@typescript-eslint/no-inferrable-types`]           |
-| [`no-internal-module`]            | ✅  | [`@typescript-eslint/prefer-namespace-keyword`]      |
-| [`no-magic-numbers`]              | ✅  | [`@typescript-eslint/no-magic-numbers`]              |
-| [`no-namespace`]                  | ✅  | [`@typescript-eslint/no-namespace`]                  |
-| [`no-non-null-assertion`]         | ✅  | [`@typescript-eslint/no-non-null-assertion`]         |
-| [`no-parameter-reassignment`]     | ✅  | [`no-param-reassign`][no-param-reassign]             |
-| [`no-reference`]                  | ✅  | [`@typescript-eslint/triple-slash-reference`]        |
-| [`no-unnecessary-type-assertion`] | ✅  | [`@typescript-eslint/no-unnecessary-type-assertion`] |
-| [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]               |
-| [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]              |
-| [`prefer-for-of`]                 | ✅  | [`@typescript-eslint/prefer-for-of`]                 |
-| [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]        |
-| [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]       |
-| [`typedef`]                       | ✅  | [`@typescript-eslint/typedef`]                       |
-| [`unified-signatures`]            | ✅  | [`@typescript-eslint/unified-signatures`]            |
+| TSLint rule                       |     | ESLint rule                                              |
+| --------------------------------- | :-: | -------------------------------------------------------- |
+| [`adjacent-overload-signatures`]  | ✅  | [`@typescript-eslint/adjacent-overload-signatures`]      |
+| [`ban-ts-ignore`]                 | ✅  | [`@typescript-eslint/ban-ts-comment`]                    |
+| [`ban-types`]                     | 🌓  | [`@typescript-eslint/no-restricted-types`]<sup>[1]</sup> |
+| [`invalid-void`]                  | ✅  | [`@typescript-eslint/no-invalid-void-type`]              |
+| [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`]     |
+| [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]                   |
+| [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]                   |
+| [`no-empty-interface`]            | ✅  | [`@typescript-eslint/no-empty-object-type`]              |
+| [`no-import-side-effect`]         | 🔌  | [`import/no-unassigned-import`]                          |
+| [`no-inferrable-types`]           | ✅  | [`@typescript-eslint/no-inferrable-types`]               |
+| [`no-internal-module`]            | ✅  | [`@typescript-eslint/prefer-namespace-keyword`]          |
+| [`no-magic-numbers`]              | ✅  | [`@typescript-eslint/no-magic-numbers`]                  |
+| [`no-namespace`]                  | ✅  | [`@typescript-eslint/no-namespace`]                      |
+| [`no-non-null-assertion`]         | ✅  | [`@typescript-eslint/no-non-null-assertion`]             |
+| [`no-parameter-reassignment`]     | ✅  | [`no-param-reassign`][no-param-reassign]                 |
+| [`no-reference`]                  | ✅  | [`@typescript-eslint/triple-slash-reference`]            |
+| [`no-unnecessary-type-assertion`] | ✅  | [`@typescript-eslint/no-unnecessary-type-assertion`]     |
+| [`no-var-requires`]               | ✅  | [`@typescript-eslint/no-var-requires`]                   |
+| [`only-arrow-functions`]          | 🔌  | [`prefer-arrow/prefer-arrow-functions`]                  |
+| [`prefer-for-of`]                 | ✅  | [`@typescript-eslint/prefer-for-of`]                     |
+| [`promise-function-async`]        | ✅  | [`@typescript-eslint/promise-function-async`]            |
+| [`typedef-whitespace`]            | ✅  | [`@typescript-eslint/type-annotation-spacing`]           |
+| [`typedef`]                       | ✅  | [`@typescript-eslint/typedef`]                           |
+| [`unified-signatures`]            | ✅  | [`@typescript-eslint/unified-signatures`]                |
 
 <sup>[1]</sup> The ESLint rule only supports exact string matching, rather than regular expressions<br>
 
@@ -595,7 +595,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 
 [`@typescript-eslint/adjacent-overload-signatures`]: https://typescript-eslint.io/rules/adjacent-overload-signatures
 [`@typescript-eslint/await-thenable`]: https://typescript-eslint.io/rules/await-thenable
-[`@typescript-eslint/ban-types`]: https://typescript-eslint.io/rules/ban-types
+[`@typescript-eslint/no-restricted-types`]: https://typescript-eslint.io/rules/no-restricted-types
 [`@typescript-eslint/ban-ts-comment`]: https://typescript-eslint.io/rules/ban-ts-comment
 [`@typescript-eslint/class-methods-use-this`]: https://typescript-eslint.io/rules/class-methods-use-this
 [`@typescript-eslint/consistent-type-assertions`]: https://typescript-eslint.io/rules/consistent-type-assertions

@@ -8,7 +8,6 @@ import { insertFormattingNotice } from './insertions/insertFormattingNotice';
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
-import { insertSpecialCaseOptions } from './insertions/insertSpecialCaseOptions';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 import {
@@ -38,7 +37,6 @@ export const generatedRuleDocs: Plugin = () => {
       ? insertBaseRuleReferences(page)
       : await insertNewRuleReferences(page);
 
-    insertSpecialCaseOptions(page);
     insertWhenNotToUseIt(page);
     insertResources(page);
     addESLintHashToCodeBlocksMeta(page, eslintrc);

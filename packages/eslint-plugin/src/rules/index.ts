@@ -5,7 +5,6 @@ import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
-import banTypes from './ban-types';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import classMethodsUseThis from './class-methods-use-this';
 import consistentGenericConstructors from './consistent-generic-constructors';
@@ -83,12 +82,12 @@ import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
-import noWrapperObjectTypes from './no-wrapper-object-types';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
+import noWrapperObjectTypes from './no-wrapper-object-types';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import onlyThrowError from './only-throw-error';
 import parameterProperties from './parameter-properties';
@@ -132,7 +131,6 @@ export default {
   'await-thenable': awaitThenable,
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
-  'ban-types': banTypes,
   'class-literal-property-style': classLiteralPropertyStyle,
   'class-methods-use-this': classMethodsUseThis,
   'consistent-generic-constructors': consistentGenericConstructors,
@@ -210,12 +208,12 @@ export default {
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
-  'no-wrapper-object-types': noWrapperObjectTypes,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
   'no-useless-template-literals': noUselessTemplateLiterals,
   'no-var-requires': noVarRequires,
+  'no-wrapper-object-types': noWrapperObjectTypes,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'only-throw-error': onlyThrowError,
   'parameter-properties': parameterProperties,

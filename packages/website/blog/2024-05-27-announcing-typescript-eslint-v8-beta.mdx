@@ -187,9 +187,38 @@ Several rules are changed in significant enough ways to be considered breaking c
   - If you want to have the rule check conditional tests, set its [`ignoreConditionalTests` option](/rules/prefer-nullish-coalescing/#ignoreconditionaltests) to `false` in your ESLint config
 - [feat(eslint-plugin): [no-unused-vars] align catch behavior to ESLint 9](https://github.com/typescript-eslint/typescript-eslint/pull/8971)
   - If you want [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars) to ignore caught errors, enable its `caughtErrors` option to `'none'` in your ESLint config
+
+#### Replacement of `ban-types`
+
+[`@typescript-eslint/ban-types`](/rules/ban-types) has long been one of the more controversial rules in typescript-eslint.
+It served two purposes:
+
+- Allowing users to ban a configurable list of types from being used in type annotations
+- Banning confusing or dangerous built-in types such as `Function` and `Number`
+
+Notably, `ban-types` banned the built-in `{}` ("empty object") type in TypeScript.
+The `{}` type is a common source of confusion for TypeScript developers because it matches _any non-nullable_ object, including primitives like `""`.
+Banning `{}` in `ban-types` was helpful to prevent developers from accidentally using it instead of a more safe type such as `object`.
+On the other hand, there are legitimate uses for `{}`, and banning it by default was harmful in those cases.
+
+typescript-eslint v8 deletes the `ban-types` rule and replaces it with several more targeted rules:
+
+- [`no-restricted-types`](/rules/no-restricted-types) is the new rule for banning a configurable list of type names.
+  It has no options enabled by default.
+- [`no-empty-object-type`](/rules/no-empty-object-type) bans the built-in `{}` type in confusing locations.
+- [`no-wrapper-object-types`](/rules/no-wrapper-object-types) bans built-in class wrappers such as `Number`.
+
+If you were manually configuring `ban-types` options:
+
+- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
+- If you were disabling the ban on `{}`, consider enabling `no-empty-object-type`, as it allows some cases of `{}` that were previously banned.
+
+For more details, see the issues and pull requests that split apart the `ban-types` rule:
+
+- [Enhancement: [ban-types] Split the {} ban into a separate, better-phrased rule](https://github.com/typescript-eslint/typescript-eslint/issues/8700)
 - [feat(eslint-plugin): split no-empty-object-type out from ban-types and no-empty-interface](https://github.com/typescript-eslint/typescript-eslint/pull/8977)
-  - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban the `{}` or `object` types; use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type)
-  - If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type)
+- [Enhancement: [ban-types] Split into default-less no-restricted-types and more targeted type ban rule(s)](https://github.com/typescript-eslint/typescript-eslint/issues/8978)
+- [feat(eslint-plugin): replace ban-types with no-restricted-types, no-wrapper-object-types rules](https://github.com/typescript-eslint/typescript-eslint/pull/9102)
 
 ### Tooling Breaking Changes
 
