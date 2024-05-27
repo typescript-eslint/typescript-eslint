@@ -499,7 +499,9 @@ export default createRule<Options, MessageIds>({
       parent: ScopeNode,
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): void {
-      currentScope && scopes.push(currentScope);
+      if (currentScope) {
+        scopes.push(currentScope);
+      }
       currentScope = {
         overloads: new Map<string, OverloadNode[]>(),
         parent,
