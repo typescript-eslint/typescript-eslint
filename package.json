@@ -141,7 +141,6 @@
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
     "typescript": "5.4.5",
-    "@nx/eslint@17.3.1": "patch:@nx/eslint@npm%3A17.3.1#./.yarn/patches/@nx-eslint-npm-17.3.1-a2f85d8c50.patch",
     "nx@18.3.5": "patch:nx@npm%3A18.3.5#./.yarn/patches/nx-npm-18.3.5-58c0bedf91.patch"
   },
   "packageManager": "yarn@3.8.2"
