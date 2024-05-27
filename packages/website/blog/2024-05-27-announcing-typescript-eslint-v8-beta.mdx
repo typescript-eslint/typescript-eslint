@@ -171,7 +171,7 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
 
 Several rules are changed in significant enough ways to be considered breaking changes:
 
-- ⏳ [Rules: Deprecate prefer-ts-expect-error in favor of ban-ts-comment](https://github.com/typescript-eslint/typescript-eslint/issues/8333)
+- [Rules: Deprecate prefer-ts-expect-error in favor of ban-ts-comment](https://github.com/typescript-eslint/typescript-eslint/issues/8333)
   - If you have [`@typescript-eslint/prefer-ts-expect-error`](/rules/prefer-ts-expect-error) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/ban-ts-comment`](/rules/ban-ts-comment)
 - ⏳ [chore(eslint-plugin): deprecate no-var-requires in favor of no-require-imports](https://github.com/typescript-eslint/typescript-eslint/pull/8334)
   - If you have [`@typescript-eslint/no-var-requires`](/rules/no-var-requires) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-require-imports`](/rules/no-require-imports)
@@ -190,6 +190,8 @@ Several rules are changed in significant enough ways to be considered breaking c
 - [feat(eslint-plugin): split no-empty-object-type out from ban-types and no-empty-interface](https://github.com/typescript-eslint/typescript-eslint/pull/8977)
   - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban the `{}` or `object` types; use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type)
   - If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type)
+- ⏳ [Enhancement: [ban-types] Split into default-less no-restricted-types and more targeted type ban rule(s)](https://github.com/typescript-eslint/typescript-eslint/issues/8978)
+  - [#9102](https://github.com/typescript-eslint/typescript-eslint/pull/9102) is still in review; we'll update this post when the migration path is settled
 
 ### Tooling Breaking Changes
 
@@ -213,6 +215,8 @@ Several rules are changed in significant enough ways to be considered breaking c
   - ESLint support range was changed from `^8.56.0` to `^8.57.0`
   - Node.js support range was changed from `^18.18.0 || >=20.0.0` to `^18.18.0 || ^20.9.0 || >=21.1.0`
   - TypeScript support range was changed from `>=4.7.4 <5.5.0` to `>=4.8.4 <5.5.0`
+- [Parser: remove EXPERIMENTAL_useSourceOfProjectReferenceRedirect in favor of project service](https://github.com/typescript-eslint/typescript-eslint/issues/9088)
+  - We now recommend using the new [`parserOptions.projectService`](#project-service) instead
 
 ## Developer-Facing Changes
 
