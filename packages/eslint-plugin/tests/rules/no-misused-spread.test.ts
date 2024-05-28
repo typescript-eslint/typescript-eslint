@@ -162,6 +162,14 @@ ruleTester.run('no-misused-spread', rule, {
       const o = { ...promiseLike };
     `,
 
+    `
+      interface A {}
+
+      declare const a: A;
+
+      const o = { ...a };
+    `,
+
     // This case is being flagged by TS already, but since we check in the code
     // for `Iterable`s, it catches string as well, so this test exists to ensure
     // we don't flag it.

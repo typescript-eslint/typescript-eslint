@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -257,7 +256,12 @@ function isPromise(program: ts.Program, type: ts.Type): boolean {
 }
 
 function isClassInstance(type: ts.Type): boolean {
-  return isTypeRecurser(type, t => t.isClassOrInterface());
+  return isTypeRecurser(type, t => {
+    return (
+      t.isClassOrInterface() &&
+      tsutils.isSymbolFlagSet(t.symbol, ts.SymbolFlags.Value)
+    );
+  });
 }
 
 function isClassDeclaration(type: ts.Type): boolean {
