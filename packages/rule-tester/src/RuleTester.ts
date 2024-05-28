@@ -254,10 +254,7 @@ export class RuleTester extends TestFramework {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
       if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
+        return { ...test, filename: getFilename(test.parserOptions) };
       }
       return test;
     };
@@ -483,6 +480,8 @@ export class RuleTester extends TestFramework {
     output: string;
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
+    config: RuleTesterConfig;
+    filename?: string;
   } {
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
     let code;
@@ -656,6 +655,8 @@ export class RuleTester extends TestFramework {
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
+      config,
+      filename,
     };
   }
 
@@ -1045,6 +1046,25 @@ export class RuleTester extends TestFramework {
                     item.code,
                     [actualSuggestion],
                   ).output;
+
+                  // Verify if suggestion fix makes a syntax error or not.
+                  const errorMessageInSuggestion = this.#linter
+                    .verify(
+                      codeWithAppliedSuggestion,
+                      result.config,
+                      result.filename,
+                    )
+                    .find(m => m.fatal);
+
+                  assert(
+                    !errorMessageInSuggestion,
+                    [
+                      'A fatal parsing error occurred in suggestion fix.',
+                      `Error: ${errorMessageInSuggestion?.message}`,
+                      'Suggestion output:',
+                      codeWithAppliedSuggestion,
+                    ].join('\n'),
+                  );
 
                   assert.strictEqual(
                     codeWithAppliedSuggestion,
