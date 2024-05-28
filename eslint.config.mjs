@@ -201,6 +201,7 @@ export default tseslint.config(
         { commentPattern: '.*intentional fallthrough.*' },
       ],
       'one-var': ['error', 'never'],
+      'prefer-object-has-own': 'error',
 
       //
       // eslint-plugin-eslint-comment

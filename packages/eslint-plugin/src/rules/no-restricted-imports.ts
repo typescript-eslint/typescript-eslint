@@ -172,13 +172,13 @@ const schema: JSONSchema4AnyOfSchema = {
 function isObjectOfPaths(
   obj: unknown,
 ): obj is { paths: ArrayOfStringOrObject } {
-  return Object.prototype.hasOwnProperty.call(obj, 'paths');
+  return !!obj && Object.hasOwn(obj, 'paths');
 }
 
 function isObjectOfPatterns(
   obj: unknown,
 ): obj is { patterns: ArrayOfStringOrObjectPatterns } {
-  return Object.prototype.hasOwnProperty.call(obj, 'patterns');
+  return !!obj && Object.hasOwn(obj, 'patterns');
 }
 
 function isOptionsArrayOfStringOrObject(
