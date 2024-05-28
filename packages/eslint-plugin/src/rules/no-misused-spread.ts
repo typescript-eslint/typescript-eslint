@@ -7,6 +7,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isBuiltinSymbolLike,
   isPromiseLike,
   isTypeFlagSet,
 } from '../util';
@@ -15,6 +16,7 @@ type Options = [
   {
     allowStrings?: boolean;
     allowFunctions?: boolean;
+    allowMaps?: boolean;
     allowIterables?: boolean;
     allowClassInstances?: boolean;
     allowClassDeclarations?: boolean;
@@ -25,6 +27,7 @@ type MessageIds =
   | 'noStringSpreadInArray'
   | 'noSpreadInObject'
   | 'noFunctionSpreadInObject'
+  | 'noMapSpreadInObject'
   | 'noClassInstanceSpreadInObject'
   | 'noClassDeclarationSpreadInObject';
 
@@ -48,6 +51,9 @@ export default createRule<Options, MessageIds>({
       noFunctionSpreadInObject:
         'Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?',
 
+      noMapSpreadInObject:
+        'Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use `Object.fromEntries(map)` instead?',
+
       noClassInstanceSpreadInObject:
         'Using the spread operator on class instances will lose their class prototype.',
 
@@ -66,6 +72,11 @@ export default createRule<Options, MessageIds>({
           allowFunctions: {
             description:
               'Whether to allow spreading functions without properties in objects. Defaults to false.',
+            type: 'boolean',
+          },
+          allowMaps: {
+            description:
+              'Whether to allow spreading maps in objects. Defaults to false.',
             type: 'boolean',
           },
           allowIterables: {
@@ -93,6 +104,7 @@ export default createRule<Options, MessageIds>({
     {
       allowStrings: false,
       allowFunctions: false,
+      allowMaps: false,
       allowIterables: false,
       allowClassInstances: false,
       allowClassDeclarations: false,
@@ -141,10 +153,20 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (!options.allowMaps && isMap(services.program, type)) {
+        context.report({
+          node,
+          messageId: 'noMapSpreadInObject',
+        });
+
+        return;
+      }
+
       if (
         !options.allowIterables &&
         isIterable(type, checker) &&
-        !isString(type)
+        !isString(type) &&
+        !isMap(services.program, type)
       ) {
         context.report({
           node,
@@ -211,6 +233,15 @@ function isPromise(program: ts.Program, type: ts.Type): boolean {
 
 function isClassInstance(type: ts.Type): boolean {
   return isTypeRecurser(type, t => t.isClassOrInterface());
+}
+
+function isMap(program: ts.Program, type: ts.Type): boolean {
+  return isTypeRecurser(
+    type,
+    t =>
+      isBuiltinSymbolLike(program, t, 'Map') ||
+      isBuiltinSymbolLike(program, t, 'ReadonlyMap'),
+  );
 }
 
 function isTypeRecurser(

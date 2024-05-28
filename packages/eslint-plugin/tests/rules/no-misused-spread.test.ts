@@ -186,6 +186,18 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
+      options: [{ allowMaps: true }],
+      code: noFormat`
+        const o = {
+          ...new Map([
+            ['test-1', 1],
+            ['test-2', 2],
+          ]),
+        };
+      `,
+    },
+
+    {
       options: [{ allowIterables: true }],
       code: noFormat`
         const iterator = {
@@ -642,10 +654,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 3,
           column: 11,
           endLine: 6,
@@ -665,10 +674,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 7,
           column: 21,
           endColumn: 27,
@@ -683,10 +689,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 3,
           column: 21,
           endColumn: 27,
@@ -701,10 +704,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 3,
           column: 21,
           endColumn: 27,
@@ -719,10 +719,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 3,
           column: 21,
           endColumn: 27,
@@ -737,10 +734,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 3,
           column: 21,
           endColumn: 32,
@@ -755,10 +749,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noMapSpreadInObject',
           line: 3,
           column: 21,
           endColumn: 25,
