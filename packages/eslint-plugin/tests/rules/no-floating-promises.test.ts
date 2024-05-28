@@ -714,6 +714,29 @@ declare const myTag: (strings: TemplateStringsArray) => string;
 myTag\`abc\`;
       `,
     },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+promise().then(() => {});
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
   ],
 
   invalid: [
@@ -2069,30 +2092,6 @@ interface UnsafeThenable<T> {
 }
 let promise: UnsafeThenable<number> = Promise.resolve(5);
 promise;
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-        },
-      ],
-      errors: [{ line: 15, messageId: 'floatingVoid' }],
-    },
-    {
-      code: `
-interface SafeThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
-  ): SafeThenable<TResult1 | TResult2>;
-}
-let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-promise().then(() => {});
       `,
       options: [
         {

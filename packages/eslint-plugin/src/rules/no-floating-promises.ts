@@ -1,13 +1,8 @@
-import type {
-  ParserServicesWithTypeInformation,
-  TSESLint,
-  TSESTree,
-} from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getOperatorPrecedence,
@@ -16,6 +11,7 @@ import {
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
   typeMatchesSpecifier,
+  TypeOrValueSpecifier,
 } from '../util';
 
 type Options = [
@@ -267,9 +263,7 @@ export default createRule<Options, MessageId>({
       // Check the type. At this point it can't be unhandled if it isn't a promise
       // or array thereof.
 
-      if (
-        isPromiseArray(services, allowForKnownSafePromises, checker, tsNode)
-      ) {
+      if (isPromiseArray(checker, tsNode)) {
         return { isUnhandled: true, promiseArray: true };
       }
 
@@ -278,28 +272,6 @@ export default createRule<Options, MessageId>({
       }
 
       if (node.type === AST_NODE_TYPES.CallExpression) {
-        const member =
-          node.callee.type === AST_NODE_TYPES.MemberExpression
-            ? node.callee.object
-            : node;
-        const calledByThenOrCatch =
-          (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-            node.callee.property.type === AST_NODE_TYPES.Identifier &&
-            node.callee.property.name === 'catch') ||
-          (node.callee.type === AST_NODE_TYPES.MemberExpression &&
-            node.callee.property.type === AST_NODE_TYPES.Identifier &&
-            node.callee.property.name === 'then');
-        if (
-          !calledByThenOrCatch &&
-          doesTypeMatchSpecifier(
-            services,
-            allowForKnownSafePromises,
-            services.getTypeAtLocation(member),
-          )
-        ) {
-          return { isUnhandled: false };
-        }
-
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 
@@ -329,15 +301,6 @@ export default createRule<Options, MessageId>({
         // All other cases are unhandled.
         return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
-        if (
-          doesTypeMatchSpecifier(
-            services,
-            allowForKnownSafePromises,
-            services.getTypeAtLocation(node),
-          )
-        ) {
-          return { isUnhandled: false };
-        }
         return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
@@ -352,15 +315,6 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.Identifier ||
         node.type === AST_NODE_TYPES.NewExpression
       ) {
-        if (
-          doesTypeMatchSpecifier(
-            services,
-            allowForKnownSafePromises,
-            services.getTypeAtLocation(node),
-          )
-        ) {
-          return { isUnhandled: false };
-        }
         // If it is just a property access chain or a `new` call (e.g. `foo.bar` or
         // `new Promise()`), the promise is not handled because it doesn't have the
         // necessary then/catch call at the end of the chain.
@@ -378,89 +332,73 @@ export default createRule<Options, MessageId>({
       // we just can't tell.
       return { isUnhandled: false };
     }
-  },
-});
 
-function doesTypeMatchSpecifier(
-  services: ParserServicesWithTypeInformation,
-  options: TypeOrValueSpecifier[],
-  type: ts.Type,
-): boolean {
-  return options.some(specifier =>
-    typeMatchesSpecifier(type, specifier, services.program),
-  );
-}
+    function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
+      const type = checker.getTypeAtLocation(node);
+      for (const ty of tsutils
+        .unionTypeParts(type)
+        .map(t => checker.getApparentType(t))) {
+        if (checker.isArrayType(ty)) {
+          const arrayType = checker.getTypeArguments(ty)[0];
+          if (isPromiseLike(checker, node, arrayType)) {
+            return true;
+          }
+        }
 
-function isPromiseArray(
-  services: ParserServicesWithTypeInformation,
-  options: TypeOrValueSpecifier[],
-  checker: ts.TypeChecker,
-  node: ts.Node,
-): boolean {
-  const type = checker.getTypeAtLocation(node);
-  for (const ty of tsutils
-    .unionTypeParts(type)
-    .map(t => checker.getApparentType(t))) {
-    if (checker.isArrayType(ty)) {
-      const arrayType = checker.getTypeArguments(ty)[0];
+        if (checker.isTupleType(ty)) {
+          for (const tupleElementType of checker.getTypeArguments(ty)) {
+            if (isPromiseLike(checker, node, tupleElementType)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+
+    // Modified from tsutils.isThenable() to only consider thenables which can be
+    // rejected/caught via a second parameter. Original source (MIT licensed):
+    //
+    //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
+    function isPromiseLike(
+      checker: ts.TypeChecker,
+      node: ts.Node,
+      type?: ts.Type,
+    ): boolean {
+      type ??= checker.getTypeAtLocation(node);
+
+      // Ignore anything specified by `allowForKnownSafePromises` option.
       if (
-        options.length > 0 &&
-        tsutils
-          .unionTypeParts(arrayType)
-          .some(type => doesTypeMatchSpecifier(services, options, type))
+        allowForKnownSafePromises.some(allowedType =>
+          typeMatchesSpecifier(type, allowedType, services.program),
+        )
       ) {
         return false;
       }
-      if (isPromiseLike(checker, node, arrayType)) {
-        return true;
-      }
-    }
 
-    if (checker.isTupleType(ty)) {
-      for (const tupleElementType of checker.getTypeArguments(ty)) {
-        if (doesTypeMatchSpecifier(services, options, tupleElementType)) {
-          return false;
+      for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
+        const then = ty.getProperty('then');
+        if (then === undefined) {
+          continue;
         }
-        if (isPromiseLike(checker, node, tupleElementType)) {
+
+        const thenType = checker.getTypeOfSymbolAtLocation(then, node);
+        if (
+          hasMatchingSignature(
+            thenType,
+            signature =>
+              signature.parameters.length >= 2 &&
+              isFunctionParam(checker, signature.parameters[0], node) &&
+              isFunctionParam(checker, signature.parameters[1], node),
+          )
+        ) {
           return true;
         }
       }
+      return false;
     }
-  }
-  return false;
-}
-
-// Modified from tsutils.isThenable() to only consider thenables which can be
-// rejected/caught via a second parameter. Original source (MIT licensed):
-//
-//   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
-function isPromiseLike(
-  checker: ts.TypeChecker,
-  node: ts.Node,
-  type?: ts.Type,
-): boolean {
-  type ??= checker.getTypeAtLocation(node);
-  for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
-    const then = ty.getProperty('then');
-    if (then === undefined) {
-      continue;
-    }
-
-    const thenType = checker.getTypeOfSymbolAtLocation(then, node);
-    if (
-      hasMatchingSignature(
-        thenType,
-        signature =>
-          signature.parameters.length >= 2 &&
-          isFunctionParam(checker, signature.parameters[0], node) &&
-          isFunctionParam(checker, signature.parameters[1], node),
-      )
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
+  },
+});
 
 function hasMatchingSignature(
   type: ts.Type,
