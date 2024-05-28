@@ -124,11 +124,6 @@ export interface ProjectServiceOptions {
    * @default 8
    */
   maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
-
-  /**
-   * Additional file extensions which should be considered in the TypeScript Program compilation.
-   */
-  extraFileExtensions?: string[];
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
