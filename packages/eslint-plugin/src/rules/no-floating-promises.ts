@@ -263,11 +263,11 @@ export default createRule<Options, MessageId>({
       // Check the type. At this point it can't be unhandled if it isn't a promise
       // or array thereof.
 
-      if (isPromiseArray(checker, tsNode)) {
+      if (isPromiseArray(tsNode)) {
         return { isUnhandled: true, promiseArray: true };
       }
 
-      if (!isPromiseLike(checker, tsNode)) {
+      if (!isPromiseLike(tsNode)) {
         return { isUnhandled: false };
       }
 
@@ -333,21 +333,21 @@ export default createRule<Options, MessageId>({
       return { isUnhandled: false };
     }
 
-    function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
+    function isPromiseArray(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
       for (const ty of tsutils
         .unionTypeParts(type)
         .map(t => checker.getApparentType(t))) {
         if (checker.isArrayType(ty)) {
           const arrayType = checker.getTypeArguments(ty)[0];
-          if (isPromiseLike(checker, node, arrayType)) {
+          if (isPromiseLike(node, arrayType)) {
             return true;
           }
         }
 
         if (checker.isTupleType(ty)) {
           for (const tupleElementType of checker.getTypeArguments(ty)) {
-            if (isPromiseLike(checker, node, tupleElementType)) {
+            if (isPromiseLike(node, tupleElementType)) {
               return true;
             }
           }
@@ -360,11 +360,7 @@ export default createRule<Options, MessageId>({
     // rejected/caught via a second parameter. Original source (MIT licensed):
     //
     //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
-    function isPromiseLike(
-      checker: ts.TypeChecker,
-      node: ts.Node,
-      type?: ts.Type,
-    ): boolean {
+    function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
       type ??= checker.getTypeAtLocation(node);
 
       // Ignore anything specified by `allowForKnownSafePromises` option.
