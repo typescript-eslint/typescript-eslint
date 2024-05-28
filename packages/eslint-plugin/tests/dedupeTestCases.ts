@@ -7,7 +7,7 @@ export const dedupeTestCases = <T>(...caseArrays: (readonly T[])[]): T[] => {
   );
   if (cases.length === dedupedCases.length) {
     throw new Error(
-      `\`dedupeTestCases\` is not necessary — no duplicate test cases detected!`,
+      '`dedupeTestCases` is not necessary — no duplicate test cases detected!',
     );
   }
   return dedupedCases;
