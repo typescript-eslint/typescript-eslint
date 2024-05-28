@@ -14,8 +14,8 @@ The default options from `ban-types` are now covered by:
 See [Announcing typescript-eslint v8 Beta](/announcing-typescript-eslint-v8-beta) for more details.
 :::
 
-<!-- This doc file has been left on purpose because `camelcase` is a core ESLint
-rule. This exists to help direct people to the replacement rule.
+<!-- This doc file has been left on purpose because `ban-types` is a well-known
+rule. This exists to help direct people to the replacement rules.
 
 Note that there is no actual way to get to this page in the normal navigation,
 so end-users will only be able to get to this page from the search bar. -->
