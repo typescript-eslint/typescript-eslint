@@ -16,6 +16,7 @@ type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const schema = Object.values(
   deepMerge(
+    // eslint-disable-next-line @typescript-eslint/no-misused-spread
     { ...baseRule.meta.schema },
     {
       1: {
