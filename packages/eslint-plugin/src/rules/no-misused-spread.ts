@@ -86,12 +86,12 @@ export default createRule<Options, MessageIds>({
           },
           allowClassInstances: {
             description:
-              'Whether to allow spreading class instances in objects.',
+              'Whether to allow spreading class instances in objects. Defaults to false.',
             type: 'boolean',
           },
           allowClassDeclarations: {
             description:
-              'Whether to allow spreading class declarations in objects.',
+              'Whether to allow spreading class declarations in objects. Defaults to false.',
             type: 'boolean',
           },
         },
