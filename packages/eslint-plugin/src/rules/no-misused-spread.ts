@@ -15,6 +15,7 @@ import {
 type Options = [
   {
     allowStrings?: boolean;
+    allowPromises?: boolean;
     allowFunctions?: boolean;
     allowMaps?: boolean;
     allowIterables?: boolean;
@@ -25,7 +26,8 @@ type Options = [
 
 type MessageIds =
   | 'noStringSpreadInArray'
-  | 'noSpreadInObject'
+  | 'noPromiseSpreadInObject'
+  | 'noIterableSpreadInObject'
   | 'noFunctionSpreadInObject'
   | 'noMapSpreadInObject'
   | 'noArraySpreadInObject'
@@ -46,8 +48,11 @@ export default createRule<Options, MessageIds>({
       noStringSpreadInArray:
         "Using the spread operator on a string can cause unexpected behavior. Prefer `String.split('')` instead.",
 
-      noSpreadInObject:
-        'Using the spread operator on `{{type}}` in an object can cause unexpected behavior.',
+      noPromiseSpreadInObject:
+        'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
+
+      noIterableSpreadInObject:
+        'Using the spread operator on an Iterable in an object can cause unexpected behavior.',
 
       noFunctionSpreadInObject:
         'Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?',
@@ -71,6 +76,11 @@ export default createRule<Options, MessageIds>({
           allowStrings: {
             description:
               'Whether to allow spreading strings in arrays. Defaults to false.',
+            type: 'boolean',
+          },
+          allowPromises: {
+            description:
+              'Whether to allow spreading promises in objects. Defaults to false.',
             type: 'boolean',
           },
           allowFunctions: {
@@ -107,6 +117,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowStrings: false,
+      allowPromises: false,
       allowFunctions: false,
       allowMaps: false,
       allowIterables: false,
@@ -135,14 +146,10 @@ export default createRule<Options, MessageIds>({
     function checkObjectSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      // TODO: Remove?
-      if (isPromise(services.program, type)) {
+      if (!options.allowPromises && isPromise(services.program, type)) {
         context.report({
           node,
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Promise',
-          },
+          messageId: 'noPromiseSpreadInObject',
         });
 
         return;
@@ -183,10 +190,7 @@ export default createRule<Options, MessageIds>({
       ) {
         context.report({
           node,
-          messageId: 'noSpreadInObject',
-          data: {
-            type: 'Iterable',
-          },
+          messageId: 'noIterableSpreadInObject',
         });
 
         return;
