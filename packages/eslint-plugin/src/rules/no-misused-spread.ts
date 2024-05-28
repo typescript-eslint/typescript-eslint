@@ -28,6 +28,7 @@ type MessageIds =
   | 'noSpreadInObject'
   | 'noFunctionSpreadInObject'
   | 'noMapSpreadInObject'
+  | 'noArraySpreadInObject'
   | 'noClassInstanceSpreadInObject'
   | 'noClassDeclarationSpreadInObject';
 
@@ -53,6 +54,9 @@ export default createRule<Options, MessageIds>({
 
       noMapSpreadInObject:
         'Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use `Object.fromEntries(map)` instead?',
+
+      noArraySpreadInObject:
+        'Using the spread operator on an array in an object will result in a list of indices.',
 
       noClassInstanceSpreadInObject:
         'Using the spread operator on class instances will lose their class prototype.',
@@ -162,6 +166,15 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (isArray(checker, type)) {
+        context.report({
+          node,
+          messageId: 'noArraySpreadInObject',
+        });
+
+        return;
+      }
+
       if (
         !options.allowIterables &&
         isIterable(type, checker) &&
@@ -214,6 +227,13 @@ function isIterable(type: ts.Type, checker: ts.TypeChecker): boolean {
     .some(
       t => !!tsutils.getWellKnownSymbolPropertyOfType(t, 'iterator', checker),
     );
+}
+
+function isArray(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return isTypeRecurser(
+    type,
+    t => checker.isArrayType(t) || checker.isTupleType(t),
+  );
 }
 
 function isString(type: ts.Type): boolean {
