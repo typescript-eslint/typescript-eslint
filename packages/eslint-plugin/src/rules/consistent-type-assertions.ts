@@ -5,6 +5,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getOperatorPrecedence,
+  getOperatorPrecedenceForNode,
   getParserServices,
   isClosingParenToken,
   isOpeningParenToken,
@@ -150,10 +151,6 @@ export default createRule<Options, MessageIds>({
                   node as TSESTree.TSTypeAssertion,
                 );
 
-                /**
-                 * AsExpression has lower precedence than TypeAssertionExpression,
-                 * so we don't need to wrap expression and typeAnnotation in parens.
-                 */
                 const expressionCode = context.sourceCode.getText(
                   node.expression,
                 );
@@ -176,7 +173,17 @@ export default createRule<Options, MessageIds>({
                     : undefined,
                 );
 
-                const text = `${expressionCode} as ${typeAnnotationCode}`;
+                const expressionPrecedence = getOperatorPrecedenceForNode(
+                  node.expression,
+                );
+
+                const expressionCodeWrapped = getWrappedCode(
+                  expressionCode,
+                  expressionPrecedence,
+                  asPrecedence,
+                );
+
+                const text = `${expressionCodeWrapped} as ${typeAnnotationCode}`;
                 return fixer.replaceText(
                   node,
                   isParenthesized(node, context.sourceCode)
