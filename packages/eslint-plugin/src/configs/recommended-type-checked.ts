@@ -47,7 +47,6 @@ export = {
     '@typescript-eslint/no-unused-expressions': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-useless-template-literals': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/only-throw-error': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
