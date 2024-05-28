@@ -352,7 +352,6 @@ describe('parseAndGenerateServices', () => {
         range: true,
         loc: true,
         tsconfigRootDir: PROJECT_DIR,
-        project: './tsconfig.json',
       };
       const testParse =
         (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
@@ -362,12 +361,13 @@ describe('parseAndGenerateServices', () => {
               ...config,
               extraFileExtensions,
               filePath: join(PROJECT_DIR, filePath),
+              project: './tsconfig.json',
             });
           } catch (error) {
             alignErrorPath(error as Error);
           }
         };
-      const testParseExperimentalProjectService =
+      const testExtraFileExtensions =
         (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
         (): void => {
           const result = parser.parseAndGenerateServices(code, {
@@ -499,14 +499,12 @@ describe('parseAndGenerateServices', () => {
       describe('"parserOptions.extraFileExtensions" is non-empty and EXPERIMENTAL_useProjectService is true', () => {
         describe('the extension matches', () => {
           it('the file is included', () => {
-            expect(
-              testParseExperimentalProjectService('other/included.vue'),
-            ).not.toThrow();
+            expect(testExtraFileExtensions('other/included.vue')).not.toThrow();
           });
 
           it("the file isn't included", () => {
             expect(
-              testParseExperimentalProjectService('other/notIncluded.vue'),
+              testExtraFileExtensions('other/notIncluded.vue'),
             ).toThrowErrorMatchingInlineSnapshot(
               `"No config file found, using inferred project"`,
             );
@@ -514,7 +512,7 @@ describe('parseAndGenerateServices', () => {
 
           it('duplicate extension', () => {
             expect(
-              testParseExperimentalProjectService('ts/notIncluded.ts', ['.ts']),
+              testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
             ).toThrowErrorMatchingInlineSnapshot(
               `"No config file found, using inferred project"`,
             );
@@ -523,10 +521,9 @@ describe('parseAndGenerateServices', () => {
 
         it('invalid extension', () => {
           expect(
-            testParseExperimentalProjectService(
-              'other/unknownFileType.unknown',
-              ['unknown'],
-            ),
+            testExtraFileExtensions('other/unknownFileType.unknown', [
+              'unknown',
+            ]),
           ).toThrowErrorMatchingInlineSnapshot(
             `"No config file found, using inferred project"`,
           );
@@ -534,9 +531,7 @@ describe('parseAndGenerateServices', () => {
 
         it('the extension does not match', () => {
           expect(
-            testParseExperimentalProjectService(
-              'other/unknownFileType.unknown',
-            ),
+            testExtraFileExtensions('other/unknownFileType.unknown'),
           ).toThrowErrorMatchingInlineSnapshot(
             `"No config file found, using inferred project"`,
           );
@@ -571,7 +566,7 @@ describe('parseAndGenerateServices', () => {
 
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
             - <tsconfigRootDir>/tsconfig.json
             - <tsconfigRootDir>/tsconfig.extra.json
             However, none of those TSConfigs include this file. Either:
