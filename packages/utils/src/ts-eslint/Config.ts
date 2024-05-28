@@ -232,16 +232,6 @@ export namespace FlatConfig {
     sourceType?: SourceType;
   }
 
-  // The function form is undocumented but allowed:
-  // https://github.com/eslint/eslint/issues/18118
-  //
-  // We have to support it as well because the DefinitelyTyped configs define it
-  // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e26919eb3426f5ba85fed394c90c39efb217037a/types/eslint/index.d.ts#L1208-L1223
-  //
-  // If we don't then users can't use shareable configs defined using the DT types
-  // https://github.com/typescript-eslint/typescript-eslint/issues/8467
-  export type FileSpec = string | ((filePath: string) => boolean);
-
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
@@ -254,15 +244,15 @@ export namespace FlatConfig {
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
-      | FileSpec
+      | string
       // yes, a single layer of array nesting is supported
-      | FileSpec[]
+      | string[]
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
      * If not specified, the configuration object applies to all files matched by files.
      */
-    ignores?: FileSpec[];
+    ignores?: string[];
     /**
      * An object containing settings related to how JavaScript is configured for linting.
      */

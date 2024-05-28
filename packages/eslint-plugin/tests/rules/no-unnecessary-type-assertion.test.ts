@@ -153,6 +153,10 @@ class Foo {
   prop: number = x!;
 }
     `,
+    `
+      declare const y: number | null;
+      console.log(y!);
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/529
     `
 declare function foo(str?: string): void;
@@ -288,14 +292,15 @@ function bar(items: string[]) {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-const myString = 'foo';
+let myString = 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-const myString = 'foo';
+let myString = 'foo';
 const templateLiteral = <const>\`\${myString}-somethingElse\`;
     `,
+    'let a = `a` as const;',
     {
       code: `
 declare const foo: {
@@ -524,6 +529,17 @@ bar + 1;
           line: 4,
         },
       ],
+    },
+    {
+      code: `
+        declare const y: number;
+        console.log(y!);
+      `,
+      output: `
+        declare const y: number;
+        console.log(y);
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
     },
     {
       code: `
