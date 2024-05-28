@@ -13,7 +13,11 @@ import {
 
 type Options = [
   {
-    allowClassInstances: boolean;
+    allowStrings?: boolean;
+    allowFunctions?: boolean;
+    allowIterables?: boolean;
+    allowClassInstances?: boolean;
+    allowClassDeclarations?: boolean;
   },
 ];
 
@@ -45,7 +49,7 @@ export default createRule<Options, MessageIds>({
         'Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?',
 
       noClassInstanceSpreadInObject:
-        'Using the spread operator on class instances without `[Symbol.iterator]` can cause unexpected behavior.',
+        'Using the spread operator on class instances will lose their class prototype.',
 
       noClassDeclarationSpreadInObject:
         'Using the spread operator on class declarations can cause unexpected behavior. Did you forget to instantiate the class?',
@@ -54,9 +58,29 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
+          allowStrings: {
+            description:
+              'Whether to allow spreading strings in arrays. Defaults to false.',
+            type: 'boolean',
+          },
+          allowFunctions: {
+            description:
+              'Whether to allow spreading functions without properties in objects. Defaults to false.',
+            type: 'boolean',
+          },
+          allowIterables: {
+            description:
+              'Whether to allow spreading iterables in objects. Defaults to false.',
+            type: 'boolean',
+          },
           allowClassInstances: {
             description:
               'Whether to allow spreading class instances in objects.',
+            type: 'boolean',
+          },
+          allowClassDeclarations: {
+            description:
+              'Whether to allow spreading class declarations in objects.',
             type: 'boolean',
           },
         },
@@ -67,7 +91,11 @@ export default createRule<Options, MessageIds>({
 
   defaultOptions: [
     {
+      allowStrings: false,
+      allowFunctions: false,
+      allowIterables: false,
       allowClassInstances: false,
+      allowClassDeclarations: false,
     },
   ],
 
@@ -78,7 +106,7 @@ export default createRule<Options, MessageIds>({
     function checkArraySpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (isString(type)) {
+      if (!options.allowStrings && isString(type)) {
         context.report({
           node,
           messageId: 'noStringSpreadInArray',
@@ -91,6 +119,7 @@ export default createRule<Options, MessageIds>({
     function checkObjectSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
+      // TODO: Remove?
       if (isPromise(services.program, type)) {
         context.report({
           node,
@@ -103,7 +132,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isFunctionWithoutProps(type)) {
+      if (!options.allowFunctions && isFunctionWithoutProps(type)) {
         context.report({
           node,
           messageId: 'noFunctionSpreadInObject',
@@ -112,7 +141,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isIterable(type, checker) && !isString(type)) {
+      if (
+        !options.allowIterables &&
+        isIterable(type, checker) &&
+        !isString(type)
+      ) {
         context.report({
           node,
           messageId: 'noSpreadInObject',
@@ -133,7 +166,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (node.argument.type === AST_NODE_TYPES.ClassExpression) {
+      if (
+        !options.allowClassDeclarations &&
+        node.argument.type === AST_NODE_TYPES.ClassExpression
+      ) {
         context.report({
           node,
           messageId: 'noClassDeclarationSpreadInObject',
@@ -181,7 +217,7 @@ function isTypeRecurser(
   type: ts.Type,
   predicate: (t: ts.Type) => boolean,
 ): boolean {
-  if (type.isUnion() || type.isIntersection()) {
+  if (type.isUnionOrIntersection()) {
     return type.types.some(t => isTypeRecurser(t, predicate));
   }
 

@@ -170,17 +170,31 @@ ruleTester.run('no-misused-spread', rule, {
     `,
 
     {
-      options: [{ allowClassInstances: true }],
-      code: `
-        class A {
-          a = 1;
-          public b = 2;
-          private c = 3;
-          protected d = 4;
-          static e = 5;
-        }
+      options: [{ allowStrings: true }],
+      code: noFormat`
+        const a = [ ...'test' ]
+      `,
+    },
 
-        const o = { ...new A() };
+    {
+      options: [{ allowFunctions: true }],
+      code: noFormat`
+        function f() {}
+
+        const a = { ...f };
+      `,
+    },
+
+    {
+      options: [{ allowIterables: true }],
+      code: noFormat`
+        const iterator = {
+          *[Symbol.iterator]() {
+            yield 'test';
+          },
+        };
+
+        const a = { ...iterator };
       `,
     },
 
@@ -198,92 +212,9 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowClassInstances: true }],
-      code: `
-        class A {
-          a = 1;
-        }
-
-        declare const a: A;
-
-        const o = { ...a };
-      `,
-    },
-
-    {
-      options: [{ allowClassInstances: true }],
-      code: `
-        class A {
-          a = 1;
-        }
-
-        class B extends A {}
-
-        const o = { ...new B() };
-      `,
-    },
-
-    {
-      options: [{ allowClassInstances: true }],
-      code: `
-        class A {
-          a = 1;
-        }
-
-        declare const a: A | { b: string };
-
-        const o = { ...a };
-      `,
-    },
-
-    {
-      options: [{ allowClassInstances: true }],
-      code: `
-        class A {
-          a = 1;
-        }
-
-        declare const a: A & { b: string };
-
-        const o = { ...a };
-      `,
-    },
-
-    `
-      class A {
-        [Symbol.iterator]() {
-          return {
-            next() {
-              return { done: true, value: undefined };
-            },
-          };
-        }
-      }
-
-      const a = [...new A()];
-    `,
-
-    {
-      options: [{ allowClassInstances: true }],
-      code: `
-        class A {
-          [Symbol.iterator]() {
-            return {
-              next() {
-                return { done: true, value: undefined };
-              },
-            };
-          }
-        }
-
-        const a = [...new A()];
-      `,
-    },
-
-    {
-      options: [{ allowClassInstances: true }],
+      options: [{ allowClassDeclarations: true }],
       code: noFormat`
-        const a = { ...new (class A { static value = 1; })() };
+        const a = { ...(class A { static value = 1 }) }
       `,
     },
   ],
