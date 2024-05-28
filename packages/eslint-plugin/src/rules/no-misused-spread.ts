@@ -52,7 +52,7 @@ export default createRule<Options, MessageIds>({
         'Using the spread operator on class instances will lose their class prototype.',
 
       noClassDeclarationSpreadInObject:
-        'Using the spread operator on class declarations can cause unexpected behavior. Did you forget to instantiate the class?',
+        'Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.',
     },
     schema: [
       {
