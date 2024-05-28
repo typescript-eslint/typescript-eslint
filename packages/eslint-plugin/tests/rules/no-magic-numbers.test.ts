@@ -117,6 +117,104 @@ type Foo = {
       `,
       options: [{ ignoreTypeIndexes: true }],
     },
+    {
+      code: `
+type Foo =
+  | 1
+  | -2
+  | 3n
+  | -4n
+  | 5.6
+  | -7.8
+  | 0x0a
+  | -0xbc
+  | 1e2
+  | -3e4
+  | 5e-6
+  | -7e-8
+  | 1.1e2
+  | -3.1e4
+  | 5.1e-6
+  | -7.1e-8;
+      `,
+      options: [
+        {
+          ignore: [
+            1,
+            -2,
+            '3n',
+            '-4n',
+            5.6,
+            -7.8,
+            0x0a,
+            -0xbc,
+            1e2,
+            -3e4,
+            5e-6,
+            -7e-8,
+            1.1e2,
+            -3.1e4,
+            5.1e-6,
+            -7.1e-8,
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: 1;
+}
+      `,
+      options: [{ ignoreNumericLiteralTypes: true, ignore: [1] }],
+    },
+    {
+      code: `
+enum foo {
+  SECOND = 1000,
+  NUM = '0123456789',
+  NEG = -1,
+  POS = +2,
+}
+      `,
+      options: [{ ignoreEnums: false, ignore: [1000, -1, 2] }],
+    },
+    {
+      code: `
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 3;
+  static readonly D = 4;
+  readonly E = -5;
+  readonly F = +6;
+  private readonly G = 100n;
+  private static readonly H = -2000n;
+}
+      `,
+      options: [
+        {
+          ignoreReadonlyClassProperties: false,
+          ignore: [1, 2, 3, 4, -5, 6, '100n', '-2000n'],
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[0];',
+      options: [{ ignoreTypeIndexes: false, ignore: [0] }],
+    },
+    {
+      code: `
+type Other = {
+  [0]: 3;
+};
+
+type Foo = {
+  [K in keyof Other]: \`\${K & number}\`;
+};
+      `,
+      options: [{ ignoreTypeIndexes: true, ignore: [0, 3] }],
+    },
   ],
 
   invalid: [
@@ -596,6 +694,364 @@ type Foo = {
           },
           line: 3,
           column: 21,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo =
+  | 1
+  | -2
+  | 3n
+  | -4n
+  | 5.6
+  | -7.8
+  | 0x0a
+  | -0xbc
+  | 1e2
+  | -3e4
+  | 5e-6
+  | -7e-8
+  | 1.1e2
+  | -3.1e4
+  | 5.1e-6
+  | -7.1e-8;
+      `,
+      options: [
+        {
+          ignore: [
+            -1,
+            2,
+            '-3n',
+            '4n',
+            -5.6,
+            7.8,
+            -0x0a,
+            0xbc,
+            -1e2,
+            3e4,
+            -5e-6,
+            7e-8,
+            -1.1e2,
+            3.1e4,
+            -5.1e-6,
+            7.1e-8,
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 3,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-2',
+          },
+          line: 4,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '3n',
+          },
+          line: 5,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-4n',
+          },
+          line: 6,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '5.6',
+          },
+          line: 7,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-7.8',
+          },
+          line: 8,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '0x0a',
+          },
+          line: 9,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-0xbc',
+          },
+          line: 10,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1e2',
+          },
+          line: 11,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-3e4',
+          },
+          line: 12,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '5e-6',
+          },
+          line: 13,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-7e-8',
+          },
+          line: 14,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1.1e2',
+          },
+          line: 15,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-3.1e4',
+          },
+          line: 16,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '5.1e-6',
+          },
+          line: 17,
+          column: 5,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-7.1e-8',
+          },
+          line: 18,
+          column: 5,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: 1;
+}
+      `,
+      options: [{ ignoreNumericLiteralTypes: true, ignore: [-1] }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 3,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+enum foo {
+  SECOND = 1000,
+  NUM = '0123456789',
+  NEG = -1,
+  POS = +2,
+}
+      `,
+      options: [{ ignoreEnums: false, ignore: [-1000, 1, -2] }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1000',
+          },
+          line: 3,
+          column: 12,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-1',
+          },
+          line: 5,
+          column: 9,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '2',
+          },
+          line: 6,
+          column: 10,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 3;
+  static readonly D = 4;
+  readonly E = -5;
+  readonly F = +6;
+  private readonly G = 100n;
+  private static readonly H = -2000n;
+}
+      `,
+      options: [
+        {
+          ignoreReadonlyClassProperties: false,
+          ignore: [-1, -2, -3, -4, 5, -6, '-100n', '2000n'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 3,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '2',
+          },
+          line: 4,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '3',
+          },
+          line: 5,
+          column: 30,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '4',
+          },
+          line: 6,
+          column: 23,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-5',
+          },
+          line: 7,
+          column: 16,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '6',
+          },
+          line: 8,
+          column: 17,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '100n',
+          },
+          line: 9,
+          column: 24,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '-2000n',
+          },
+          line: 10,
+          column: 31,
+        },
+      ],
+    },
+    {
+      code: 'type Foo = Bar[1];',
+      options: [{ ignoreTypeIndexes: false, ignore: [-1] }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 1,
+          column: 16,
+        },
+      ],
+    },
+    {
+      code: `
+type Other = {
+  [1]: 3;
+};
+
+type Foo = {
+  [K in keyof Other]: \`\${K & number}\`;
+};
+      `,
+      options: [{ ignoreTypeIndexes: true, ignore: [-1, -3] }],
+      errors: [
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '1',
+          },
+          line: 3,
+          column: 4,
+        },
+        {
+          messageId: 'noMagic',
+          data: {
+            raw: '3',
+          },
+          line: 3,
+          column: 8,
         },
       ],
     },
