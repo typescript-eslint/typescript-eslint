@@ -26,7 +26,7 @@ export default createRule({
     fixable: 'code',
     messages: {
       bannedClassType:
-        'Prefer using the primitive `{{preferred}}` as a type name, rather than the class wrapper `{{typeName}}`.',
+        'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
       bannedFunctionType: [
         'The `Function` type accepts any function-like value.',
         'It provides no type safety when calling the function, which can be a common source of bugs.',
