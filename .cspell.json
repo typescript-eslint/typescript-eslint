@@ -49,6 +49,7 @@
   "words": [
     "Airbnb",
     "Airbnb's",
+    "allowdefaultprojectforfiles",
     "ambiently",
     "Armano",
     "astexplorer",
@@ -89,6 +90,7 @@
     "falsiness",
     "globby",
     "IDE's",
+    "ignoreconditionaltests",
     "IIFE",
     "IIFEs",
     "jameshenry",
@@ -98,6 +100,7 @@
     "lzstring",
     "markdownlint",
     "metastring",
+    "multipass",
     "necroing",
     "nocheck",
     "noninteractive",
@@ -150,6 +153,7 @@
     "unoptimized",
     "unprefixed",
     "upsert",
+    "useprojectservice",
     "Waiblinger",
     "warnonunsupportedtypescriptversion",
     "Zacher"

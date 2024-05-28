@@ -1,6 +1,6 @@
 /* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageIds,
@@ -26,7 +26,8 @@ const x = new (<Foo>Generic<string>)();
 const x = new (<Foo>Generic<string>)('string');
 const x = () => <Foo>{ bar: 5 };
 const x = () => <Foo>({ bar: 5 });
-const x = () => <Foo>bar;`;
+const x = () => <Foo>bar;
+const x = <Foo>bar<string>\`\${"baz"}\`;`;
 
 const ANGLE_BRACKET_TESTS = `${ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE}
 const x = <const>{ key: 'value' };
@@ -41,11 +42,12 @@ const x = !'string' as A;
 const x = (a as A) + b;
 const x = (a as A) + (b);
 const x = new Generic<string>() as Foo;
-const x = new (Generic<string> as Foo)();
-const x = new (Generic<string> as Foo)('string');
+const x = new ((Generic<string>) as Foo)();
+const x = new ((Generic<string>) as Foo)('string');
 const x = () => ({ bar: 5 } as Foo);
 const x = () => ({ bar: 5 } as Foo);
-const x = () => (bar as Foo);`;
+const x = () => (bar as Foo);
+const x = bar<string>\`\${"baz"}\` as Foo;`;
 
 const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
 const x = { key: 'value' } as const;
@@ -69,6 +71,7 @@ function b(x = {} as Foo.Bar) {}
 function c(x = {} as Foo) {}
 print?.({ bar: 5 } as Foo)
 print?.call({ bar: 5 } as Foo)
+print\`\${{ bar: 5 } as Foo}\`
 `;
 const OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS = `
 print(<Foo>{ bar: 5 })
@@ -76,6 +79,7 @@ new print(<Foo>{ bar: 5 })
 function foo() { throw <Foo>{ bar: 5 } }
 print?.(<Foo>{ bar: 5 })
 print?.call(<Foo>{ bar: 5 })
+print\`\${<Foo>{ bar: 5 }}\`
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
@@ -230,6 +234,10 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'angle-bracket',
           line: 15,
         },
+        {
+          messageId: 'angle-bracket',
+          line: 16,
+        },
       ],
     }),
     ...batchedSingleLineTests<MessageIds, Options>({
@@ -296,6 +304,10 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'as',
           line: 15,
         },
+        {
+          messageId: 'as',
+          line: 16,
+        },
       ],
       output: AS_TESTS,
     }),
@@ -359,6 +371,10 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'never',
           line: 14,
         },
+        {
+          messageId: 'never',
+          line: 15,
+        },
       ],
     }),
     ...batchedSingleLineTests<MessageIds, Options>({
@@ -420,6 +436,10 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'never',
           line: 14,
+        },
+        {
+          messageId: 'never',
+          line: 15,
         },
       ],
     }),
@@ -660,6 +680,17 @@ ruleTester.run('consistent-type-assertions', rule, {
             },
           ],
         },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 12,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: `print\`\${{ bar: 5 } satisfies Foo}\``,
+            },
+          ],
+        },
       ],
     }),
     ...batchedSingleLineTests<MessageIds, Options>({
@@ -769,10 +800,22 @@ ruleTester.run('consistent-type-assertions', rule, {
             },
           ],
         },
+        {
+          messageId: 'unexpectedObjectTypeAssertion',
+          line: 10,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: `print\`\${{ bar: 5 } satisfies Foo}\``,
+            },
+          ],
+        },
       ],
     }),
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
+      output: null,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -786,6 +829,127 @@ ruleTester.run('consistent-type-assertions', rule, {
       errors: [
         {
           messageId: 'never',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const a = <any>(b, c);',
+      output: `const a = (b, c) as any;`,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const f = <any>(() => {});',
+      output: 'const f = (() => {}) as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const f = <any>function () {};',
+      output: 'const f = function () {} as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      code: 'const f = <any>(async () => {});',
+      output: 'const f = (async () => {}) as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 1,
+        },
+      ],
+    },
+    {
+      // prettier wants to remove the parens around the yield expression,
+      // but they're required.
+      code: noFormat`
+function* g() {
+  const y = <any>(yield a);
+}
+      `,
+      output: `
+function* g() {
+  const y = (yield a) as any;
+}
+      `,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: number, y: number;
+const bs = <any>(x <<= y);
+      `,
+      output: `
+declare let x: number, y: number;
+const bs = (x <<= y) as any;
+      `,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: 'const ternary = <any>(true ? x : y);',
+      output: 'const ternary = (true ? x : y) as any;',
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
           line: 1,
         },
       ],
