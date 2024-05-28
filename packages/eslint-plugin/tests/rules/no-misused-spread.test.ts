@@ -233,8 +233,12 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       options: [{ allowClassDeclarations: true }],
-      code: noFormat`
-        const a = { ...(class A { static value = 1 }) }
+      code: `
+        const a = {
+          ...class A {
+            static value = 1;
+          },
+        };
       `,
     },
   ],
@@ -1186,6 +1190,54 @@ ruleTester.run('no-misused-spread', rule, {
         {
           messageId: 'noClassInstanceSpreadInObject',
           line: 8,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        class A {}
+
+        const o = { ...A };
+      `,
+      errors: [
+        {
+          messageId: 'noClassDeclarationSpreadInObject',
+          line: 4,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        const A = class {};
+
+        const o = { ...A };
+      `,
+      errors: [
+        {
+          messageId: 'noClassDeclarationSpreadInObject',
+          line: 4,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        const A = Set<number>;
+
+        const o = { ...A };
+      `,
+      errors: [
+        {
+          messageId: 'noClassDeclarationSpreadInObject',
+          line: 4,
           column: 21,
           endColumn: 25,
         },

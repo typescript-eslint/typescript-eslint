@@ -207,7 +207,8 @@ export default createRule<Options, MessageIds>({
 
       if (
         !options.allowClassDeclarations &&
-        node.argument.type === AST_NODE_TYPES.ClassExpression
+        isClassDeclaration(type) &&
+        !isClassInstance(type)
       ) {
         context.report({
           node,
@@ -257,6 +258,24 @@ function isPromise(program: ts.Program, type: ts.Type): boolean {
 
 function isClassInstance(type: ts.Type): boolean {
   return isTypeRecurser(type, t => t.isClassOrInterface());
+}
+
+function isClassDeclaration(type: ts.Type): boolean {
+  return isTypeRecurser(type, t => {
+    if (
+      tsutils.isObjectType(t) &&
+      tsutils.isObjectFlagSet(t, ts.ObjectFlags.InstantiationExpressionType)
+    ) {
+      return true;
+    }
+
+    const kind = t.getSymbol()?.valueDeclaration?.kind;
+
+    return (
+      kind === ts.SyntaxKind.ClassDeclaration ||
+      kind === ts.SyntaxKind.ClassExpression
+    );
+  });
 }
 
 function isMap(program: ts.Program, type: ts.Type): boolean {
