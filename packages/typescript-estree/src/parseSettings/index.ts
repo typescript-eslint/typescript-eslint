@@ -63,15 +63,6 @@ export interface MutableParseSettings {
   errorOnUnknownASTType: boolean;
 
   /**
-   * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
-   *
-   * @remarks
-   * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
-   * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
-   */
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
-
-  /**
    * Any non-standard file extensions which will be parsed.
    */
   extraFileExtensions: string[];

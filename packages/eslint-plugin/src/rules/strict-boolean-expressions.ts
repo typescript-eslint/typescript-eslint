@@ -848,9 +848,9 @@ export default createRule<Options, MessageId>({
       // If incoming type is boolean, there will be two type objects with
       // intrinsicName set "true" and "false" each because of ts-api-utils.unionTypeParts()
       if (booleans.length === 1) {
-        tsutils.isTrueLiteralType(booleans[0])
-          ? variantTypes.add('truthy boolean')
-          : variantTypes.add('boolean');
+        variantTypes.add(
+          tsutils.isTrueLiteralType(booleans[0]) ? 'truthy boolean' : 'boolean',
+        );
       } else if (booleans.length === 2) {
         variantTypes.add('boolean');
       }

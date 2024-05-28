@@ -4,7 +4,7 @@ export const DEFAULT_PROJECT_FILES_ERROR_EXPLANATION = `
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowDefaultProject-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
 `;
 
 export function validateDefaultProjectForFilesGlob(

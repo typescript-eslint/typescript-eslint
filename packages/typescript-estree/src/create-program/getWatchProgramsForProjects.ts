@@ -111,14 +111,10 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
 function updateCachedFileList(
   tsconfigPath: CanonicalPath,
   program: ts.Program,
-  parseSettings: ParseSettings,
 ): Set<CanonicalPath> {
-  const fileList =
-    parseSettings.EXPERIMENTAL_useSourceOfProjectReferenceRedirect
-      ? new Set(
-          program.getSourceFiles().map(sf => getCanonicalFileName(sf.fileName)),
-        )
-      : new Set(program.getRootFileNames().map(f => getCanonicalFileName(f)));
+  const fileList = new Set(
+    program.getRootFileNames().map(f => getCanonicalFileName(f)),
+  );
   programFileListCache.set(tsconfigPath, fileList);
   return fileList;
 }
@@ -170,11 +166,7 @@ function getWatchProgramsForProjects(
     let updatedProgram: ts.Program | null = null;
     if (!fileList) {
       updatedProgram = existingWatch.getProgram().getProgram();
-      fileList = updateCachedFileList(
-        tsconfigPath,
-        updatedProgram,
-        parseSettings,
-      );
+      fileList = updateCachedFileList(tsconfigPath, updatedProgram);
     }
 
     if (fileList.has(filePath)) {
@@ -214,11 +206,7 @@ function getWatchProgramsForProjects(
       updatedProgram.getTypeChecker();
 
       // cache and check the file list
-      const fileList = updateCachedFileList(
-        tsconfigPath[0],
-        updatedProgram,
-        parseSettings,
-      );
+      const fileList = updateCachedFileList(tsconfigPath[0], updatedProgram);
       if (fileList.has(filePath)) {
         log('Found updated program for file. %s', filePath);
         // we can return early because we know this program contains the file
@@ -237,11 +225,7 @@ function getWatchProgramsForProjects(
     program.getTypeChecker();
 
     // cache and check the file list
-    const fileList = updateCachedFileList(
-      tsconfigPath[0],
-      program,
-      parseSettings,
-    );
+    const fileList = updateCachedFileList(tsconfigPath[0], program);
     if (fileList.has(filePath)) {
       log('Found program for file. %s', filePath);
       // we can return early because we know this program contains the file
@@ -351,13 +335,6 @@ function createWatchProgram(
     }),
   );
   watchCompilerHost.trace = log;
-
-  /**
-   * TODO: this needs refinement and development, but we're allowing users to opt-in to this for now for testing and feedback.
-   * See https://github.com/typescript-eslint/typescript-eslint/issues/2094
-   */
-  watchCompilerHost.useSourceOfProjectReferenceRedirect = (): boolean =>
-    parseSettings.EXPERIMENTAL_useSourceOfProjectReferenceRedirect;
 
   // Since we don't want to asynchronously update program we want to disable timeout methods
   // So any changes in the program will be delayed and updated when getProgram is called on watch

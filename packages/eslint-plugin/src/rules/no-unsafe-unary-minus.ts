@@ -12,6 +12,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Require unary negation to take a number',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
