@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-useless-template-expression.mdx code examples ESLint output 1`] = `
+exports[`Validating rule docs no-unnecessary-template-expression.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 // Static values can be incorporated into the surrounding template.
@@ -32,7 +32,7 @@ const wrappedIntersection = \`\${intersectionWithString}\`;
 "
 `;
 
-exports[`Validating rule docs no-useless-template-expression.mdx code examples ESLint output 2`] = `
+exports[`Validating rule docs no-unnecessary-template-expression.mdx code examples ESLint output 2`] = `
 "Correct
 
 // Static values can be incorporated into the surrounding template.

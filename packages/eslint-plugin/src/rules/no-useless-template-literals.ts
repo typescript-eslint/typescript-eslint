@@ -11,7 +11,7 @@ import {
   isUndefinedIdentifier,
 } from '../util';
 
-type MessageId = 'noUselessTemplateExpression';
+type MessageId = 'noUnnecessaryTemplateExpression';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',
@@ -23,12 +23,12 @@ export default createRule<[], MessageId>({
       requiresTypeChecking: true,
     },
     messages: {
-      noUselessTemplateExpression:
+      noUnnecessaryTemplateExpression:
         'Template literal expression is unnecessary and can be simplified.',
     },
     schema: [],
     deprecated: true,
-    replacedBy: ['@typescript-eslint/no-useless-template-expression'],
+    replacedBy: ['@typescript-eslint/no-unnecessary-template-expression'],
   },
   defaultOptions: [],
   create(context) {
@@ -92,7 +92,7 @@ export default createRule<[], MessageId>({
         if (hasSingleStringVariable) {
           context.report({
             node: node.expressions[0],
-            messageId: 'noUselessTemplateExpression',
+            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               const [prevQuasi, nextQuasi] = node.quasis;
 
@@ -126,7 +126,7 @@ export default createRule<[], MessageId>({
         fixableExpressions.forEach(expression => {
           context.report({
             node: expression,
-            messageId: 'noUselessTemplateExpression',
+            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               const index = node.expressions.indexOf(expression);
               const prevQuasi = node.quasis[index];
