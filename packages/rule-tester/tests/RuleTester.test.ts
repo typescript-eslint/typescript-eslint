@@ -191,10 +191,16 @@ describe('RuleTester', () => {
           {
             "code": "string based valid test",
             "filename": "/some/path/that/totally/exists/file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
           {
             "code": "object based valid test",
             "filename": "/some/path/that/totally/exists/file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
           {
             "code": "explicit filename shouldn't be overwritten",
@@ -204,6 +210,7 @@ describe('RuleTester', () => {
             "code": "jsx should have the correct filename",
             "filename": "/some/path/that/totally/exists/react.tsx",
             "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
               "ecmaFeatures": {
                 "jsx": true,
               },
@@ -213,7 +220,8 @@ describe('RuleTester', () => {
             "code": "type-aware parser options should override the constructor config",
             "filename": "/set/in/the/test/file.ts",
             "parserOptions": {
-              "EXPERIMENTAL_useProjectService": false,
+              "projectService": false,
+              "disallowAutomaticSingleRunInference": true,
               "project": "tsconfig.test-specific.json",
               "tsconfigRootDir": "/set/in/the/test/",
             },
@@ -226,6 +234,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "/some/path/that/totally/exists/file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
         ]
       `);
@@ -266,11 +277,15 @@ describe('RuleTester', () => {
           {
             "code": "normal",
             "filename": "/some/path/that/totally/exists/set-in-constructor.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
           {
             "code": "jsx",
             "filename": "/some/path/that/totally/exists/react-set-in-constructor.tsx",
             "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
               "ecmaFeatures": {
                 "jsx": true,
               },
@@ -462,6 +477,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -470,6 +488,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10.0",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -478,6 +499,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10.0.0",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -491,6 +515,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -504,6 +531,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -517,6 +547,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
         ]
@@ -592,6 +625,9 @@ describe('RuleTester', () => {
               },
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -602,6 +638,9 @@ describe('RuleTester', () => {
               },
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -617,6 +656,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -632,6 +674,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -650,6 +695,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
         ]
@@ -703,17 +751,26 @@ describe('RuleTester', () => {
           {
             "code": "string based is always run",
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
             "code": "no constraints is always run",
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
             "code": "empty object is always run",
             "dependencyConstraints": {},
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -722,6 +779,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -732,6 +792,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -743,6 +806,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -756,6 +822,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
         ]
