@@ -495,7 +495,7 @@ describe('parseAndGenerateServices', () => {
         });
       });
 
-      describe('"parserOptions.extraFileExtensions" is non-empty and EXPERIMENTAL_useProjectService is true', () => {
+      describe('"parserOptions.extraFileExtensions" is non-empty and projectService is true', () => {
         describe('the extension matches', () => {
           it('the file is included', () => {
             expect(testExtraFileExtensions('other/included.vue')).not.toThrow();
