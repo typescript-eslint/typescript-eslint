@@ -12,4 +12,4 @@ inputs:
 
 runs:
   using: node20
-  main: index.js
+  main: ../../../node_modules/@typescript-eslint/repo-tools/actions/wait-for-netlify.js
