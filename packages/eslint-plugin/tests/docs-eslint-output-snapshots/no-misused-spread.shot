@@ -9,15 +9,15 @@ const chars = [...userName];
 
 declare const arr: number[];
 const arrSpread = { ...arr };
-                    ~~~~~~ Using the spread operator on \`Iterable\` in an object can cause unexpected behavior.
+                    ~~~~~~ Using the spread operator on an array in an object will result in a list of indices.
 
 declare const set: Set<number>;
 const setSpread = { ...set };
-                    ~~~~~~ Using the spread operator on \`Iterable\` in an object can cause unexpected behavior.
+                    ~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
 
 declare const map: Map<string, number>;
 const mapSpread = { ...map };
-                    ~~~~~~ Using the spread operator on \`Iterable\` in an object can cause unexpected behavior.
+                    ~~~~~~ Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use \`Object.fromEntries(map)\` instead?
 
 declare function getObj(): { a: 1; b: 2 };
 const getObjSpread = { ...getObj };
@@ -38,7 +38,7 @@ declare const set: Set<number>;
 const setSpread = [...set];
 
 declare const map: Map<string, number>;
-const mapSpread = [...map];
+const mapObject = Object.fromEntries(map);
 
 declare function getObj(): { a: 1; b: 2 };
 const getObjSpread = { ...getObj() };
@@ -47,7 +47,35 @@ const getObjSpread = { ...getObj() };
 
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
 "Incorrect
-Options: { "allowClassInstances": false }
+
+const fruit = 'Apple';
+const chars = [...fruit];
+               ~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
+"Incorrect
+
+declare function doWork();
+
+const spread = { ...doWork };
+                 ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 5`] = `
+"Incorrect
+
+const set = new Set([1, 2, 3]);
+
+const spread = { ...set };
+                 ~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 6`] = `
+"Incorrect
 
 class User {
   name: string;
@@ -59,7 +87,23 @@ class User {
 
 const user = new User('John');
 
-const userSpread = { ...user };
-                     ~~~~~~~ Using the spread operator on class instances without \`[Symbol.iterator]\` can cause unexpected behavior.
+const spread = { ...user };
+                 ~~~~~~~ Using the spread operator on class instances will lose their class prototype.
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 7`] = `
+"Incorrect
+
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const spread = { ...User };
+                 ~~~~~~~ Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.
 "
 `;

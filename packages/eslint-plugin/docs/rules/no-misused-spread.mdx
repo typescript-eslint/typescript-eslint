@@ -47,7 +47,7 @@ declare const set: Set<number>;
 const setSpread = [...set];
 
 declare const map: Map<string, number>;
-const mapSpread = [...map];
+const mapObject = Object.fromEntries(map);
 
 declare function getObj(): { a: 1; b: 2 };
 const getObjSpread = { ...getObj() };
@@ -58,6 +58,92 @@ const getObjSpread = { ...getObj() };
 
 ## Options
 
+### `allowStrings`
+
+By default, this rule disallows using the spread operator on strings inside arrays:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const fruit = 'Apple';
+const chars = [...fruit];
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowStrings": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowStrings": true
+    }
+  ]
+}
+```
+
+### `allowFunctions`
+
+By default, this rule disallows using the spread operator on functions without additional properties:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare function doWork();
+
+const spread = { ...doWork };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowFunctions": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowFunctions": true
+    }
+  ]
+}
+```
+
+### `allowIterables`
+
+By default, this rule disallows using the spread operator on iterables:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const set = new Set([1, 2, 3]);
+
+const spread = { ...set };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowIterables": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowIterables": true
+    }
+  ]
+}
+```
+
 ### `allowClassInstances`
 
 By default, this rule disallows using the spread operator on instances of classes:
@@ -65,7 +151,7 @@ By default, this rule disallows using the spread operator on instances of classe
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowClassInstances": false }'
+```ts
 class User {
   name: string;
 
@@ -76,7 +162,7 @@ class User {
 
 const user = new User('John');
 
-const userSpread = { ...user };
+const spread = { ...user };
 ```
 
 </TabItem>
@@ -90,6 +176,41 @@ If you want to allow this behavior, you can configure the rule with `"allowClass
     "error",
     {
       "allowClassInstances": true
+    }
+  ]
+}
+```
+
+### `allowClassDeclarations`
+
+By default, this rule disallows using the spread operator on class declarations:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const spread = { ...User };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowClassDeclarations": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowClassDeclarations": true
     }
   ]
 }
