@@ -368,7 +368,7 @@ describe('parseAndGenerateServices', () => {
           }
         };
       const testExtraFileExtensions =
-        (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
+        (filePath: string, extraFileExtensions: string[]) =>
         (): void => {
           const result = parser.parseAndGenerateServices(code, {
             ...config,
