@@ -5860,7 +5860,7 @@ __metadata:
     knip: ^5.9.4
     lint-staged: ^15.2.2
     make-dir: ^4.0.0
-    markdownlint-cli: ^0.40.0
+    markdownlint-cli: ^0.41.0
     ncp: ^2.0.0
     netlify: ^13.1.14
     nx: 18.3.5
@@ -7923,13 +7923,6 @@ __metadata:
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 0f82321821fc27b83bd409510bb9deeebcfa799ff0bf5d102128b500b7af22872c0c92cb6a0ebc5a4cf19c6b550fba9cedfa7329d18c6442a625f851377bacf0
-  languageName: node
-  linkType: hard
-
-"commander@npm:~12.0.0":
-  version: 12.0.0
-  resolution: "commander@npm:12.0.0"
-  checksum: bce9e243dc008baba6b8d923f95b251ad115e6e7551a15838d7568abebcca0fc832da1800cf37caf37852f35ce4b7fb794ba7a4824b88c5adb1395f9268642df
   languageName: node
   linkType: hard
 
@@ -11049,7 +11042,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:*, glob@npm:^10.3.12, glob@npm:^10.3.7":
+"glob@npm:*, glob@npm:^10.3.12, glob@npm:^10.3.7, glob@npm:~10.4.1":
   version: 10.4.1
   resolution: "glob@npm:10.4.1"
   dependencies:
@@ -11100,21 +11093,6 @@ __metadata:
     minipass: ^4.2.4
     path-scurry: ^1.6.1
   checksum: 94b093adbc591bc36b582f77927d1fb0dbf3ccc231828512b017601408be98d1fe798fc8c0b19c6f2d1a7660339c3502ce698de475e9d938ccbb69b47b647c84
-  languageName: node
-  linkType: hard
-
-"glob@npm:~10.3.12":
-  version: 10.3.16
-  resolution: "glob@npm:10.3.16"
-  dependencies:
-    foreground-child: ^3.1.0
-    jackspeak: ^3.1.2
-    minimatch: ^9.0.1
-    minipass: ^7.0.4
-    path-scurry: ^1.11.0
-  bin:
-    glob: dist/esm/bin.mjs
-  checksum: 3cc49a0700fde72a1669ed587d167bb6921e23cd43fa3f03729794df6719a4188e0a5f3520a6d27b7762bd6b634a275fa6f400298b1559633d2e51bab8096c2e
   languageName: node
   linkType: hard
 
@@ -13993,13 +13971,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdownlint-cli@npm:^0.40.0":
-  version: 0.40.0
-  resolution: "markdownlint-cli@npm:0.40.0"
+"markdownlint-cli@npm:^0.41.0":
+  version: 0.41.0
+  resolution: "markdownlint-cli@npm:0.41.0"
   dependencies:
-    commander: ~12.0.0
+    commander: ~12.1.0
     get-stdin: ~9.0.0
-    glob: ~10.3.12
+    glob: ~10.4.1
     ignore: ~5.3.1
     js-yaml: ^4.1.0
     jsonc-parser: ~3.2.1
@@ -14007,10 +13985,10 @@ __metadata:
     markdownlint: ~0.34.0
     minimatch: ~9.0.4
     run-con: ~1.3.2
-    toml: ~3.0.0
+    smol-toml: ~1.2.0
   bin:
     markdownlint: markdownlint.js
-  checksum: d9e6744898853d201fbfe56c1918453bf0ec7792849d16302fbdf6b761d29b448c1ca7a3138c53009cce7b4d7d301f09879455549976580ea90687afebdad67d
+  checksum: e49b9c884fb3fc0b7ac48b54b32af5870ef09b25e192b7df722415c7ac6579e6662c07a51795f40ad04829d555eaa001debdbc3d7fca47634d2bc3c2a1694d1c
   languageName: node
   linkType: hard
 
@@ -15036,7 +15014,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.1, minimatch@npm:^9.0.4, minimatch@npm:~9.0.4":
+"minimatch@npm:^9.0.4, minimatch@npm:~9.0.4":
   version: 9.0.4
   resolution: "minimatch@npm:9.0.4"
   dependencies:
@@ -15135,7 +15113,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.4, minipass@npm:^7.1.2":
+"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.1.2":
   version: 7.1.2
   resolution: "minipass@npm:7.1.2"
   checksum: 2bfd325b95c555f2b4d2814d49325691c7bee937d753814861b0b49d5edcda55cbbf22b6b6a60bb91eddac8668771f03c5ff647dcd9d0f798e9548b9cdc46ee3
@@ -16181,7 +16159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-scurry@npm:^1.11.0, path-scurry@npm:^1.11.1, path-scurry@npm:^1.6.1":
+"path-scurry@npm:^1.11.1, path-scurry@npm:^1.6.1":
   version: 1.11.1
   resolution: "path-scurry@npm:1.11.1"
   dependencies:
@@ -18462,6 +18440,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"smol-toml@npm:~1.2.0":
+  version: 1.2.0
+  resolution: "smol-toml@npm:1.2.0"
+  checksum: d98809da87d94ecd8813ffb3b3f01c199a2916c287c81cf0bdc75d4f762c3b1734d15a90e1226036acc0b11a89beb092ab98e8a4c0ec0f2a688d87dff71f8be6
+  languageName: node
+  linkType: hard
+
 "snake-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "snake-case@npm:3.0.4"
@@ -19376,13 +19361,6 @@ __metadata:
   version: 1.0.1
   resolution: "toidentifier@npm:1.0.1"
   checksum: 952c29e2a85d7123239b5cfdd889a0dde47ab0497f0913d70588f19c53f7e0b5327c95f4651e413c74b785147f9637b17410ac8c846d5d4a20a5a33eb6dc3a45
-  languageName: node
-  linkType: hard
-
-"toml@npm:~3.0.0":
-  version: 3.0.0
-  resolution: "toml@npm:3.0.0"
-  checksum: 5d7f1d8413ad7780e9bdecce8ea4c3f5130dd53b0a4f2e90b93340979a137739879d7b9ce2ce05c938b8cc828897fe9e95085197342a1377dd8850bf5125f15f
   languageName: node
   linkType: hard
 
