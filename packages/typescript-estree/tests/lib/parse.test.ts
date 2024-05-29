@@ -368,8 +368,7 @@ describe('parseAndGenerateServices', () => {
           }
         };
       const testExtraFileExtensions =
-        (filePath: string, extraFileExtensions: string[]) =>
-        (): void => {
+        (filePath: string, extraFileExtensions: string[]) => (): void => {
           const result = parser.parseAndGenerateServices(code, {
             ...config,
             extraFileExtensions,
@@ -498,12 +497,14 @@ describe('parseAndGenerateServices', () => {
       describe('"parserOptions.extraFileExtensions" is non-empty and projectService is true', () => {
         describe('the extension matches', () => {
           it('the file is included', () => {
-            expect(testExtraFileExtensions('other/included.vue')).not.toThrow();
+            expect(
+              testExtraFileExtensions('other/included.vue', ['.vue']),
+            ).not.toThrow();
           });
 
           it("the file isn't included", () => {
             expect(
-              testExtraFileExtensions('other/notIncluded.vue'),
+              testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
             ).toThrowErrorMatchingInlineSnapshot(
               `"No config file found, using inferred project"`,
             );
@@ -530,7 +531,7 @@ describe('parseAndGenerateServices', () => {
 
         it('the extension does not match', () => {
           expect(
-            testExtraFileExtensions('other/unknownFileType.unknown'),
+            testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
           ).toThrowErrorMatchingInlineSnapshot(
             `"No config file found, using inferred project"`,
           );
@@ -565,7 +566,7 @@ describe('parseAndGenerateServices', () => {
 
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
             - <tsconfigRootDir>/tsconfig.json
             - <tsconfigRootDir>/tsconfig.extra.json
             However, none of those TSConfigs include this file. Either:
