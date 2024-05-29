@@ -307,7 +307,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [mockParseSettings.filePath],
+        allowDefaultProject: [mockParseSettings.filePath],
         service,
       }),
       mockParseSettings,
@@ -323,7 +323,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
     useProgramFromProjectService(
       createProjectServiceSettings({
-        allowDefaultProjectForFiles: [mockParseSettings.filePath],
+        allowDefaultProject: [mockParseSettings.filePath],
         service,
       }),
       {

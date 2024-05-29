@@ -374,8 +374,7 @@ describe('parseAndGenerateServices', () => {
             ...config,
             extraFileExtensions,
             filePath: join(PROJECT_DIR, filePath),
-            project: true,
-            EXPERIMENTAL_useProjectService: true,
+            projectService: true,
           });
           const compilerOptions = result.services.program?.getCompilerOptions();
 
