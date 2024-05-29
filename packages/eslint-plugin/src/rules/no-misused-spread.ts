@@ -14,9 +14,7 @@ import {
 type Options = [
   {
     allowStrings?: boolean;
-    allowPromises?: boolean;
     allowFunctions?: boolean;
-    allowMaps?: boolean;
     allowIterables?: boolean;
     allowClassInstances?: boolean;
     allowClassDeclarations?: boolean;
@@ -77,19 +75,9 @@ export default createRule<Options, MessageIds>({
               'Whether to allow spreading strings in arrays. Defaults to false.',
             type: 'boolean',
           },
-          allowPromises: {
-            description:
-              'Whether to allow spreading promises in objects. Defaults to false.',
-            type: 'boolean',
-          },
           allowFunctions: {
             description:
               'Whether to allow spreading functions without properties in objects. Defaults to false.',
-            type: 'boolean',
-          },
-          allowMaps: {
-            description:
-              'Whether to allow spreading maps in objects. Defaults to false.',
             type: 'boolean',
           },
           allowIterables: {
@@ -116,9 +104,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowStrings: false,
-      allowPromises: false,
       allowFunctions: false,
-      allowMaps: false,
       allowIterables: false,
       allowClassInstances: false,
       allowClassDeclarations: false,
@@ -145,7 +131,7 @@ export default createRule<Options, MessageIds>({
     function checkObjectSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (!options.allowPromises && isPromise(services.program, type)) {
+      if (isPromise(services.program, type)) {
         context.report({
           node,
           messageId: 'noPromiseSpreadInObject',
@@ -163,7 +149,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (!options.allowMaps && isMap(services.program, type)) {
+      if (isMap(services.program, type)) {
         context.report({
           node,
           messageId: 'noMapSpreadInObject',

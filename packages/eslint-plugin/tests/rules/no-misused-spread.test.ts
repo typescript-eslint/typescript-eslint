@@ -185,31 +185,11 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowPromises: true }],
-      code: `
-        const promise = new Promise(() => {});
-        const o = { ...promise };
-      `,
-    },
-
-    {
       options: [{ allowFunctions: true }],
       code: `
         function f() {}
 
         const a = { ...f };
-      `,
-    },
-
-    {
-      options: [{ allowMaps: true }],
-      code: `
-        const o = {
-          ...new Map([
-            ['test-1', 1],
-            ['test-2', 2],
-          ]),
-        };
       `,
     },
 
