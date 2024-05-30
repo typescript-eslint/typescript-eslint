@@ -172,7 +172,6 @@ describe('RuleTester', () => {
           {
             code: 'type-aware parser options should override the constructor config',
             parserOptions: {
-              projectService: false,
               project: 'tsconfig.test-specific.json',
               tsconfigRootDir: '/set/in/the/test/',
             },
@@ -222,7 +221,6 @@ describe('RuleTester', () => {
             "parserOptions": {
               "disallowAutomaticSingleRunInference": true,
               "project": "tsconfig.test-specific.json",
-              "projectService": false,
               "tsconfigRootDir": "/set/in/the/test/",
             },
           },
