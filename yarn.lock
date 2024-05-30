@@ -14054,8 +14054,8 @@ __metadata:
   linkType: hard
 
 "mdast-util-from-markdown@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "mdast-util-from-markdown@npm:2.0.0"
+  version: 2.0.1
+  resolution: "mdast-util-from-markdown@npm:2.0.1"
   dependencies:
     "@types/mdast": ^4.0.0
     "@types/unist": ^3.0.0
@@ -14069,7 +14069,7 @@ __metadata:
     micromark-util-symbol: ^2.0.0
     micromark-util-types: ^2.0.0
     unist-util-stringify-position: ^4.0.0
-  checksum: 4e8d8a46b4b588486c41b80c39da333a91593bc8d60cd7421c6cd3c22003b8e5a62478292fb7bc97b9255b6301a2250cca32340ef43c309156e215453c5b92be
+  checksum: 2e50be71272a1503558c599cd5766cf2743935a021f82e32bc2ae5da44f6c7dcabb9da3a6eee76ede0ec8ad2b122d1192f4fe89890aac90c76463f049f8a835d
   languageName: node
   linkType: hard
 
