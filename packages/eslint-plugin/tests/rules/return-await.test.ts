@@ -337,6 +337,7 @@ async function test() {
   return await fn();
 }
       `,
+      output: null,
       errors: [
         {
           line: 4,
@@ -362,6 +363,7 @@ async function test() {
   return await fn();
 }
       `,
+      output: null,
       errors: [
         {
           line: 4,

@@ -215,6 +215,7 @@ async function main(): Promise<void> {
     ];
     const flatExtends: string[] = [];
     const flatConfig: FlatConfig.Config = {
+      name: `typescript-eslint/${name}`,
       rules: config.rules,
     };
     if (config.extends) {

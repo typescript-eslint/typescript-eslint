@@ -12,10 +12,23 @@
   --ifm-button-border-color: var(--ifm-color-emphasis-200);
 
   font-size: 0.75rem;
+  display: flex;
 }
 
 .tabStyle svg {
   margin-left: 0.3rem;
+}
+
+.tabErrors {
+  background-color: #fb575b;
+  border-radius: 20px;
+  color: white;
+  height: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0.3rem;
+  padding: 0 5px;
 }
 
 .tabStyle:hover {

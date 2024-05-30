@@ -310,6 +310,7 @@ interface Foo {
   (arg: this): void;
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'unexpectedThisOnFunctionOnlyInterface',
@@ -326,6 +327,7 @@ interface Foo {
   (arg: number): this | undefined;
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'unexpectedThisOnFunctionOnlyInterface',

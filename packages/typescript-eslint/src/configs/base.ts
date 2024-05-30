@@ -4,6 +4,7 @@ export default (
   plugin: FlatConfig.Plugin,
   parser: FlatConfig.Parser,
 ): FlatConfig.Config => ({
+  name: 'typescript-eslint/base',
   languageOptions: {
     parser,
     sourceType: 'module',

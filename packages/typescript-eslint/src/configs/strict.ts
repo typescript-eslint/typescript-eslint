@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/strict',
     rules: {
       '@typescript-eslint/ban-ts-comment': [
         'error',
@@ -48,7 +49,6 @@ export default (
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/prefer-as-const': 'error',
       '@typescript-eslint/prefer-literal-enum-member': 'error',
-      '@typescript-eslint/prefer-ts-expect-error': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
       '@typescript-eslint/unified-signatures': 'error',
     },

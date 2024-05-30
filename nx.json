@@ -58,7 +58,6 @@
         "default",
         "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/yarn.lock",
         {
           "dependentTasksOutputFiles": "**/*.js",
           "transitive": false
@@ -79,7 +78,8 @@
       },
       {
         "runtime": "yarn -v"
-      }
+      },
+      "{workspaceRoot}/yarn.lock"
     ],
     "production": [
       "default",

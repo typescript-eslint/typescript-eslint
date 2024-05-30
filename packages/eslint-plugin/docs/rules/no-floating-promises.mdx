@@ -17,13 +17,14 @@ Valid ways of handling a Promise-valued statement include:
 
 - `await`ing it
 - `return`ing it
+- `void`ing it
 - Calling its `.then()` with two arguments
 - Calling its `.catch()` with one argument
 
 This rule also reports when an Array containing Promises is created and not properly handled. The main way to resolve this is by using one of the Promise concurrency methods to create a single Promise, then handling that according to the procedure above. These methods include:
 
-- `Promise.all()`,
-- `Promise.allSettled()`,
+- `Promise.all()`
+- `Promise.allSettled()`
 - `Promise.any()`
 - `Promise.race()`
 
@@ -63,6 +64,9 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
+
+void returnsPromise();
+
 returnsPromise().then(
   () => {},
   () => {},
@@ -82,7 +86,7 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 
 ### `ignoreVoid`
 
-This allows you to stop the rule reporting promises consumed with void operator.
+This option, which is `true` by default, allows you to stop the rule reporting promises consumed with void operator.
 This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
@@ -100,7 +104,7 @@ With this option set to `true`, and if you are using `no-void`, you should turn 
 
 ### `ignoreIIFE`
 
-This allows you to skip checking of async IIFEs (Immediately Invoked function Expressions).
+This allows you to skip checking of async IIFEs (Immediately Invoked Function Expressions).
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
