@@ -142,7 +142,7 @@ interface Foo {
 
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-This option takes an array of type specifiers to consider safe.
+This option takes an array of type specifiers to ignore.
 Each item in the array must have one of the following forms:
 
 - A type defined in a file (`{ from: "file", name: "Foo", path: "src/foo-file.ts" }` with `path` being an optional path relative to the project root directory)
