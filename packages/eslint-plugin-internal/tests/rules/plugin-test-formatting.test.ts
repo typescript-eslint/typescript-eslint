@@ -206,16 +206,18 @@ const test = [
     },
     {
       code: wrap`'for (const x of y) {}'`,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`for (const x of y) {
-}\`,
-    },
-  ],
-});
-  `,
+      output: [
+        wrap`\`for (const x of y) {
+}\``,
+        wrap`\`
+for (const x of y) {
+}
+\``,
+        wrap`\`
+for (const x of y) {
+}
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'invalidFormatting',
@@ -225,16 +227,18 @@ ruleTester.run({
     {
       code: wrap`'for (const x of \`asdf\`) {}'`,
       // make sure it escapes the backticks
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`for (const x of \\\`asdf\\\`) {
-}\`,
-    },
-  ],
-});
-  `,
+      output: [
+        wrap`\`for (const x of \\\`asdf\\\`) {
+}\``,
+        wrap`\`
+for (const x of \\\`asdf\\\`) {
+}
+\``,
+        wrap`\`
+for (const x of \\\`asdf\\\`) {
+}
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'invalidFormatting',
@@ -254,15 +258,7 @@ ruleTester.run({
     },
     {
       code: wrap`\`const a = '1'\``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: "const a = '1'",
-    },
-  ],
-});
-  `,
+      output: [wrap`"const a = '1'"`, wrap`"const a = '1';"`],
       errors: [
         {
           messageId: 'singleLineQuotes',
@@ -271,15 +267,7 @@ ruleTester.run({
     },
     {
       code: wrap`\`const a = "1";\``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: 'const a = "1";',
-    },
-  ],
-});
-  `,
+      output: [wrap`'const a = "1";'`, wrap`"const a = '1';"`],
       errors: [
         {
           messageId: 'singleLineQuotes',
@@ -290,17 +278,14 @@ ruleTester.run({
     {
       code: wrap`\`const a = "1";
 ${PARENT_INDENT}\``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
+      output: [
+        wrap`\`
 const a = "1";
-      \`,
-    },
-  ],
-});
-  `,
+${PARENT_INDENT}\``,
+        wrap`\`
+const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralEmptyEnds',
@@ -310,17 +295,17 @@ const a = "1";
     {
       code: wrap`\`
 ${CODE_INDENT}const a = "1";\``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = "1";
-\`,
-    },
-  ],
-});
-  `,
+      output: [
+        wrap`\`
+${CODE_INDENT}const a = "1";
+\``,
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralEmptyEnds',
@@ -330,18 +315,20 @@ ruleTester.run({
     {
       code: wrap`\`const a = "1";
 ${CODE_INDENT}const b = "2";\``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
+      output: [
+        wrap`\`
 const a = "1";
-        const b = "2";
-\`,
-    },
-  ],
-});
-  `,
+${CODE_INDENT}const b = "2";
+\``,
+        wrap`\`
+const a = "1";
+${CODE_INDENT}const b = "2";
+${PARENT_INDENT}\``,
+        wrap`\`
+const a = '1';
+const b = '2';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralEmptyEnds',
@@ -353,17 +340,14 @@ const a = "1";
       code: wrap`\`
 ${CODE_INDENT}const a = "1";
 \``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = "1";
-      \`,
-    },
-  ],
-});
-  `,
+      output: [
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralLastLineIndent',
@@ -374,17 +358,14 @@ ruleTester.run({
       code: wrap`\`
 ${CODE_INDENT}const a = "1";
                       \``,
-      output: `
-ruleTester.run({
-  valid: [
-    {
-      code: \`
-        const a = "1";
-      \`,
-    },
-  ],
-});
-  `,
+      output: [
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralLastLineIndent',
@@ -555,7 +536,8 @@ ruleTester.run({
   ],
 });
       `,
-      output: `
+      output: [
+        `
 ruleTester.run({
   valid: [
     {
@@ -589,6 +571,75 @@ foo
   ],
 });
       `,
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+});
+      `,
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo;
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo;
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+});
+      `,
+      ],
       errors: [
         {
           messageId: 'singleLineQuotes',
