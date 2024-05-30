@@ -10,6 +10,7 @@ import {
   NullThrowsReasons,
   typeIsOrHasBaseType,
 } from '../util';
+import { getMemberHeadLoc } from '../util/getMemberHeadLoc';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -172,52 +173,6 @@ export default createRule<Options, MessageIds>({
      * out in front of the key, and the key itself, but not anything afterwards,
      * i.e. parens, type annotations, method bodies, or `?`.
      */
-    function getReportLoc(
-      node:
-        | TSESTree.MethodDefinition
-        | TSESTree.TSAbstractMethodDefinition
-        | TSESTree.PropertyDefinition
-        | TSESTree.TSAbstractPropertyDefinition,
-    ): TSESTree.SourceLocation {
-      let start: TSESTree.Position;
-
-      if (node.decorators.length === 0) {
-        start = node.loc.start;
-      } else {
-        const lastDecorator = node.decorators[node.decorators.length - 1];
-        const nextToken = nullThrows(
-          context.sourceCode.getTokenAfter(lastDecorator),
-          NullThrowsReasons.MissingToken('token', 'last decorator'),
-        );
-        start = nextToken.loc.start;
-      }
-
-      let end: TSESTree.Position;
-
-      if (!node.computed) {
-        end = node.key.loc.end;
-      } else {
-        const closingBracket = nullThrows(
-          context.sourceCode.getTokenAfter(
-            node.key,
-            token => token.value === ']',
-          ),
-          NullThrowsReasons.MissingToken(']', node.type),
-        );
-        end = closingBracket.loc.end;
-      }
-
-      return {
-        start: structuredClone(start),
-        end: structuredClone(end),
-      };
-    }
-
-    /**
-     * For missing readonly modifiers, we want to report any keywords
-     * out in front of the key, and the key itself, but not anything afterwards,
-     * i.e. parens, type annotations, method bodies, or `?`.
-     */
     function getReportLocForParameterProperty(
       node: TSESTree.TSParameterProperty,
       nodeName: string,
@@ -277,7 +232,7 @@ export default createRule<Options, MessageIds>({
               case AST_NODE_TYPES.MethodDefinition:
               case AST_NODE_TYPES.PropertyDefinition:
               case AST_NODE_TYPES.TSAbstractMethodDefinition:
-                return { loc: getReportLoc(esNode) };
+                return { loc: getMemberHeadLoc(context.sourceCode, esNode) };
               case AST_NODE_TYPES.TSParameterProperty:
                 return {
                   loc: getReportLocForParameterProperty(
