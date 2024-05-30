@@ -115,7 +115,9 @@ function getUnsubstitutedMessagePlaceholders(
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter();
+  // `configType` is hardcoded to eslintrc until switch to flat config is complete
+  // We should look to support both eslintrc and flat config for consumers of RuleTester.
+  readonly #linter: Linter = new Linter({ configType: 'eslintrc' });
 
   /**
    * Creates a new instance of RuleTester.
