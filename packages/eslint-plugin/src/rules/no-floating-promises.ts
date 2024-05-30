@@ -3,6 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getOperatorPrecedence,
@@ -11,7 +12,6 @@ import {
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
   typeMatchesSpecifier,
-  TypeOrValueSpecifier,
 } from '../util';
 
 type Options = [
