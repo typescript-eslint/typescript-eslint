@@ -3791,28 +3791,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/api-extractor-model@npm:7.28.19":
-  version: 7.28.19
-  resolution: "@microsoft/api-extractor-model@npm:7.28.19"
+"@microsoft/api-extractor-model@npm:7.29.2":
+  version: 7.29.2
+  resolution: "@microsoft/api-extractor-model@npm:7.29.2"
   dependencies:
-    "@microsoft/tsdoc": 0.14.2
-    "@microsoft/tsdoc-config": ~0.16.1
-    "@rushstack/node-core-library": 5.1.0
-  checksum: b0d4e4c9bbee33ebda8067afdcbd623734613803f1b4de49e92ebc1c02edaa1da651665a98ff9f50193c113f5252ba53f35f3a998a03c9390b86e17e79c1af5c
+    "@microsoft/tsdoc": ~0.15.0
+    "@microsoft/tsdoc-config": ~0.17.0
+    "@rushstack/node-core-library": 5.4.1
+  checksum: 71809004996b532f02f57b3d1191adeb08fa961d1f916ebbdc6eca2c29756278b2d08c40904d8e8e700af91699b36a062fba082ee61c72209c9a6e9b4aa3c9e9
   languageName: node
   linkType: hard
 
 "@microsoft/api-extractor@npm:^7.43.0":
-  version: 7.44.1
-  resolution: "@microsoft/api-extractor@npm:7.44.1"
+  version: 7.46.2
+  resolution: "@microsoft/api-extractor@npm:7.46.2"
   dependencies:
-    "@microsoft/api-extractor-model": 7.28.19
-    "@microsoft/tsdoc": 0.14.2
-    "@microsoft/tsdoc-config": ~0.16.1
-    "@rushstack/node-core-library": 5.1.0
+    "@microsoft/api-extractor-model": 7.29.2
+    "@microsoft/tsdoc": ~0.15.0
+    "@microsoft/tsdoc-config": ~0.17.0
+    "@rushstack/node-core-library": 5.4.1
     "@rushstack/rig-package": 0.5.2
-    "@rushstack/terminal": 0.12.0
-    "@rushstack/ts-command-line": 4.21.2
+    "@rushstack/terminal": 0.13.0
+    "@rushstack/ts-command-line": 4.22.0
     lodash: ~4.17.15
     minimatch: ~3.0.3
     resolve: ~1.22.1
@@ -3821,33 +3821,26 @@ __metadata:
     typescript: 5.4.2
   bin:
     api-extractor: bin/api-extractor
-  checksum: 7a6bf79fb2b2ae47f516c542324213192136be19e0b8199bb3bc6642f8d80b1a3410542c17c90cf4fa5a1308ef1517a9ebb54e9ffdad08c66f02b6ca4e16bb35
+  checksum: 4a6e7fc5bed393f74b91e8e4c064ab04cbbebc34bfe769dcb118761a2539152136977085f60bd4ce439948cd4ccc368dc3b9039cc6363acc786007dc2c190293
   languageName: node
   linkType: hard
 
-"@microsoft/tsdoc-config@npm:~0.16.1":
-  version: 0.16.1
-  resolution: "@microsoft/tsdoc-config@npm:0.16.1"
+"@microsoft/tsdoc-config@npm:~0.17.0":
+  version: 0.17.0
+  resolution: "@microsoft/tsdoc-config@npm:0.17.0"
   dependencies:
-    "@microsoft/tsdoc": 0.14.1
-    ajv: ~6.12.6
+    "@microsoft/tsdoc": 0.15.0
+    ajv: ~8.12.0
     jju: ~1.4.0
-    resolve: ~1.19.0
-  checksum: 2b2121803caf6584fe0264ad16f8fa10de68438c0b82bd25f918606052af5312050f38b6abd4bcf3d40f120713aab144762a7a280fa22dd12e5571cd08e348e1
+    resolve: ~1.22.2
+  checksum: dd2de8247d0fc29608da83edf4ab73a21370f6ce10d089853303e91b135fdb1436ccec3bd1024f235dd3180dfe5dae7342989eadd03af55cf06f0e974e5fc213
   languageName: node
   linkType: hard
 
-"@microsoft/tsdoc@npm:0.14.1":
-  version: 0.14.1
-  resolution: "@microsoft/tsdoc@npm:0.14.1"
-  checksum: e4ad038ccff2cd96e0d53ee42e2136f0f5a925b16cfda14261f1c2eb55ba0088a0e3b08ff819b476ddc69b2242a391925fab7f6ae2afabb19b96f87e19c114fc
-  languageName: node
-  linkType: hard
-
-"@microsoft/tsdoc@npm:0.14.2":
-  version: 0.14.2
-  resolution: "@microsoft/tsdoc@npm:0.14.2"
-  checksum: b167c89e916ba73ee20b9c9d5dba6aa3a0de25ed3d50050e8a344dca7cd43cb2e1059bd515c820369b6e708901dd3fda476a42bc643ca74a35671ce77f724a3a
+"@microsoft/tsdoc@npm:0.15.0, @microsoft/tsdoc@npm:~0.15.0":
+  version: 0.15.0
+  resolution: "@microsoft/tsdoc@npm:0.15.0"
+  checksum: 3f693cff07b220b68563e3f86e9f94a9c8d0791a7446f76149c7d62ae5ed5cb4578bb48b9b5f9baa3dd9a9f77be81903c74654a41e0ca4ecf78936654952a8d4
   languageName: node
   linkType: hard
 
@@ -4402,9 +4395,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rushstack/node-core-library@npm:5.1.0":
-  version: 5.1.0
-  resolution: "@rushstack/node-core-library@npm:5.1.0"
+"@rushstack/node-core-library@npm:5.4.1":
+  version: 5.4.1
+  resolution: "@rushstack/node-core-library@npm:5.4.1"
   dependencies:
     ajv: ~8.13.0
     ajv-draft-04: ~1.0.0
@@ -4419,7 +4412,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: 14b257f5fc438822555743a1dcc4bfaa45bac1ba701b117ce2cd2d6742b367261b1d2ab578b3378f20881dd9b781f51e4d7e3b5c5ee52a60e75949a0f4f55d74
+  checksum: 1316dcec7056a8c16a967284c82f09f6e55bd77c8944a5c10576d2c8e41708f6b43194d853a2f84a769d843acd84346b616e792a1c9bc2cad59c608f1601335e
   languageName: node
   linkType: hard
 
@@ -4433,30 +4426,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rushstack/terminal@npm:0.12.0":
-  version: 0.12.0
-  resolution: "@rushstack/terminal@npm:0.12.0"
+"@rushstack/terminal@npm:0.13.0":
+  version: 0.13.0
+  resolution: "@rushstack/terminal@npm:0.13.0"
   dependencies:
-    "@rushstack/node-core-library": 5.1.0
+    "@rushstack/node-core-library": 5.4.1
     supports-color: ~8.1.1
   peerDependencies:
     "@types/node": "*"
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: 3d334eaaa77617d50bee3ab31f1ebc824381c5538391d2269a00ce7987c1f00fecc66c921f6db373839b22a4b847c8fc5ff295f8e03546863ac01ae20aea8643
+  checksum: d2a90806e2f72ff8bf1522d8ab54b39ab8829f00b2b7f2e3edda4828dc70003ccd8cbda3dc25ad9275c8173286e61ccf46be0a8e9e56a7ee1f0557f6ef8eeefc
   languageName: node
   linkType: hard
 
-"@rushstack/ts-command-line@npm:4.21.2":
-  version: 4.21.2
-  resolution: "@rushstack/ts-command-line@npm:4.21.2"
+"@rushstack/ts-command-line@npm:4.22.0":
+  version: 4.22.0
+  resolution: "@rushstack/ts-command-line@npm:4.22.0"
   dependencies:
-    "@rushstack/terminal": 0.12.0
+    "@rushstack/terminal": 0.13.0
     "@types/argparse": 1.0.38
     argparse: ~1.0.9
     string-argv: ~0.3.1
-  checksum: 5d824353e48a9d8a2fcf36aeb2d7dc4406d21669670a8a27b01528dbfe0330e0ad97e55f0d984099cce4de000e82caac599bf9eb419227b353ca8aea03e5ba23
+  checksum: fd51fe8ac7f2e8066b5cd7071f4031e79dc59074ec4a0354ebc248f4b5c9c5e42ad5b39d929c8cddb2fe5e27948ca50ae982e046c62729f642049ce2e2333594
   languageName: node
   linkType: hard
 
@@ -6392,7 +6385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^6.12.2, ajv@npm:^6.12.4, ajv@npm:^6.12.5, ajv@npm:^6.12.6, ajv@npm:~6.12.6":
+"ajv@npm:^6.12.2, ajv@npm:^6.12.4, ajv@npm:^6.12.5, ajv@npm:^6.12.6":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
@@ -6413,6 +6406,18 @@ __metadata:
     require-from-string: ^2.0.2
     uri-js: ^4.4.1
   checksum: 6de82d0b2073e645ca3300561356ddda0234f39b35d2125a8700b650509b296f41c00ab69f53178bbe25ad688bd6ac3747ab44101f2f4bd245952e8fd6ccc3c1
+  languageName: node
+  linkType: hard
+
+"ajv@npm:~8.12.0":
+  version: 8.12.0
+  resolution: "ajv@npm:8.12.0"
+  dependencies:
+    fast-deep-equal: ^3.1.1
+    json-schema-traverse: ^1.0.0
+    require-from-string: ^2.0.2
+    uri-js: ^4.2.2
+  checksum: 4dc13714e316e67537c8b31bc063f99a1d9d9a497eb4bbd55191ac0dcd5e4985bbb71570352ad6f1e76684fb6d790928f96ba3b2d4fd6e10024be9612fe3f001
   languageName: node
   linkType: hard
 
@@ -12174,7 +12179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.1.0, is-core-module@npm:^2.13.0, is-core-module@npm:^2.13.1":
+"is-core-module@npm:^2.13.0, is-core-module@npm:^2.13.1":
   version: 2.13.1
   resolution: "is-core-module@npm:2.13.1"
   dependencies:
@@ -16152,7 +16157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-parse@npm:^1.0.6, path-parse@npm:^1.0.7":
+"path-parse@npm:^1.0.7":
   version: 1.0.7
   resolution: "path-parse@npm:1.0.7"
   checksum: 49abf3d81115642938a8700ec580da6e830dde670be21893c62f4e10bd7dd4c3742ddc603fe24f898cba7eb0c6bc1777f8d9ac14185d34540c6d4d80cd9cae8a
@@ -17700,7 +17705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:1.22.8, resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.4, resolve@npm:~1.22.1":
+"resolve@npm:1.22.8, resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.4, resolve@npm:~1.22.1, resolve@npm:~1.22.2":
   version: 1.22.8
   resolution: "resolve@npm:1.22.8"
   dependencies:
@@ -17726,17 +17731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:~1.19.0":
-  version: 1.19.0
-  resolution: "resolve@npm:1.19.0"
-  dependencies:
-    is-core-module: ^2.1.0
-    path-parse: ^1.0.6
-  checksum: a05b356e47b85ad3613d9e2a39a824f3c27f4fcad9c9ff6c7cc71a2e314c5904a90ab37481ad0069d03cab9eaaac6eb68aca1bc3355fdb05f1045cd50e2aacea
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@1.22.8#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.4#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.1#~builtin<compat/resolve>":
+"resolve@patch:resolve@1.22.8#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.4#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.2#~builtin<compat/resolve>":
   version: 1.22.8
   resolution: "resolve@patch:resolve@npm%3A1.22.8#~builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
   dependencies:
@@ -17759,16 +17754,6 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: 064d09c1808d0c51b3d90b5d27e198e6d0c5dad0eb57065fd40803d6a20553e5398b07f76739d69cbabc12547058bec6b32106ea66622375fb0d7e8fca6a846c
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@~1.19.0#~builtin<compat/resolve>":
-  version: 1.19.0
-  resolution: "resolve@patch:resolve@npm%3A1.19.0#~builtin<compat/resolve>::version=1.19.0&hash=c3c19d"
-  dependencies:
-    is-core-module: ^2.1.0
-    path-parse: ^1.0.6
-  checksum: 2443b94d347e6946c87c85faf13071f605e609e0b54784829b0ed2b917d050bfc1cbaf4ecc6453f224cfa7d0c5dcd97cbb273454cd210bee68e4af15c1a5abc9
   languageName: node
   linkType: hard
 
