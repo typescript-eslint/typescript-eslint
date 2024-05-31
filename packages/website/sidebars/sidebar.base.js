@@ -51,7 +51,7 @@ module.exports = {
             'troubleshooting/typed-linting/monorepos',
             'troubleshooting/typed-linting/performance',
           ],
-          label: 'Type Information',
+          label: 'Typed Linting',
           link: {
             id: 'troubleshooting/typed-linting',
             type: 'doc',
