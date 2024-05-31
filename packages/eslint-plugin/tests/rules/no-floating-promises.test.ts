@@ -499,7 +499,6 @@ void promiseArray;
 ['I', 'am', 'just', 'an', 'array'];
       `,
     },
-    // type annotations on variables containing promises
     {
       code: `
 interface SafeThenable<T> {
@@ -582,7 +581,6 @@ promise.finally();
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
-    // type annotations on promise returning functions (or async functions)
     {
       code: `
 interface SafeThenable<T> {
@@ -665,7 +663,6 @@ null ?? promise();
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
     },
-    // type from es5.d.ts using `allowForKnownSafePromises`
     {
       code: `
 let promise: () => PromiseLike<number> = () => Promise.resolve(5);
@@ -675,7 +672,6 @@ promise();
         { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
       ],
     },
-    // promises in array using `allowForKnownSafePromises`
     {
       code: `
 type Foo<T> = Promise<T> & { hey?: string };
@@ -2153,7 +2149,8 @@ arrayOrPromiseTuple;
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
     },
-    // an array, which contains elements of `Promise` type and a branded promise type, its type will be reduced to `Promise`, see - https://github.com/typescript-eslint/typescript-eslint/pull/8502#issuecomment-2105734406
+    // an array containing elements of `Promise` type and a branded Promise type will be treated as just an ordinary `Promise`.
+    // see https://github.com/typescript-eslint/typescript-eslint/pull/8502#issuecomment-2105734406
     {
       code: `
 type SafePromise = Promise<number> & { hey?: string };
