@@ -20,7 +20,7 @@ As a result, using the lowercase type names like `number` instead of the upperca
 
 TypeScript's `Function` type suffers from the same issue of structural typing.
 In addition, `Function` allows being called with any number of arguments and returns type `any`, while in reality, it may be a class which is never callable, or it may be a plain object that happens to possess all properties of the `Function` class!
-It's generally better to specify function parameters and return types with the function type syntax. If you want a generic "callable" type, use `(...args: never) => unknown`.
+It's generally better to specify function parameters and return types with the function type syntax.
 
 Examples of code for this rule:
 
