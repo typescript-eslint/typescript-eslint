@@ -204,7 +204,6 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'type Foo = Promise<number> & {hey?: string}; let foo: Foo = Promise.resolve(5); type Test = typeof foo;',
-        // type.getSymbol() doesn't work here, .aliasSymbol does
         { from: 'file', name: 'Foo' },
       ],
       [
