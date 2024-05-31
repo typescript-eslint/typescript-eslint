@@ -1,6 +1,6 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-useless-template-literals';
+import rule from '../../src/rules/no-useless-template-expression';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
@@ -13,7 +13,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-useless-template-literals', rule, {
+ruleTester.run('no-useless-template-expression', rule, {
   valid: [
     "const string = 'a';",
     'const string = `a`;',

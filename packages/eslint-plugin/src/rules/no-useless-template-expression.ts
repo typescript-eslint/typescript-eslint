@@ -14,12 +14,13 @@ import {
 type MessageId = 'noUselessTemplateExpression';
 
 export default createRule<[], MessageId>({
-  name: 'no-useless-template-literals',
+  name: 'no-useless-template-expression',
   meta: {
     fixable: 'code',
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary template expressions',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
@@ -27,8 +28,6 @@ export default createRule<[], MessageId>({
         'Template literal expression is unnecessary and can be simplified.',
     },
     schema: [],
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/no-useless-template-expression'],
   },
   defaultOptions: [],
   create(context) {
