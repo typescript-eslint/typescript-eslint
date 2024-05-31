@@ -38,7 +38,7 @@ import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints
 import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
-import { interpolate } from './utils/interpolate';
+import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
 import { isReadonlyArray } from './utils/isReadonlyArray';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
@@ -72,6 +72,45 @@ let defaultConfig = deepMerge(
   {},
   testerDefaultConfig,
 ) as TesterConfigWithDefaults;
+
+/**
+ * Extracts names of {{ placeholders }} from the reported message.
+ * @param message Reported message
+ * @returns Array of placeholder names
+ */
+function getMessagePlaceholders(message: string): string[] {
+  const matcher = getPlaceholderMatcher();
+
+  return Array.from(message.matchAll(matcher), ([, name]) => name.trim());
+}
+
+/**
+ * Returns the placeholders in the reported messages but
+ * only includes the placeholders available in the raw message and not in the provided data.
+ * @param message The reported message
+ * @param raw The raw message specified in the rule meta.messages
+ * @param data The passed
+ * @returns Missing placeholder names
+ */
+function getUnsubstitutedMessagePlaceholders(
+  message: string,
+  raw: string,
+  data: Record<string, unknown> = {},
+): string[] {
+  const unsubstituted = getMessagePlaceholders(message);
+
+  if (unsubstituted.length === 0) {
+    return [];
+  }
+
+  // Remove false positives by only counting placeholders in the raw message, which were not provided in the data matcher or added with a data property
+  const known = getMessagePlaceholders(raw);
+  const provided = Object.keys(data);
+
+  return unsubstituted.filter(
+    name => known.includes(name) && !provided.includes(name),
+  );
+}
 
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
@@ -215,10 +254,7 @@ export class RuleTester extends TestFramework {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
       if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
+        return { ...test, filename: getFilename(test.parserOptions) };
       }
       return test;
     };
@@ -444,6 +480,8 @@ export class RuleTester extends TestFramework {
     output: string;
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
+    config: RuleTesterConfig;
+    filename?: string;
   } {
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
     let code;
@@ -617,6 +655,8 @@ export class RuleTester extends TestFramework {
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
+      config,
+      filename,
     };
   }
 
@@ -809,6 +849,19 @@ export class RuleTester extends TestFramework {
               error.messageId,
               `messageId '${message.messageId}' does not match expected messageId '${error.messageId}'.`,
             );
+
+            const unsubstitutedPlaceholders =
+              getUnsubstitutedMessagePlaceholders(
+                message.message,
+                rule.meta.messages[message.messageId],
+                error.data,
+              );
+
+            assert.ok(
+              unsubstitutedPlaceholders.length === 0,
+              `The reported message has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property in the context.report() call.`,
+            );
+
             if (hasOwnProperty(error, 'data')) {
               /*
                *  if data was provided, then directly compare the returned message to a synthetic
@@ -954,6 +1007,19 @@ export class RuleTester extends TestFramework {
                     expectedSuggestion.messageId,
                     `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
                   );
+
+                  const unsubstitutedPlaceholders =
+                    getUnsubstitutedMessagePlaceholders(
+                      actualSuggestion.desc,
+                      rule.meta.messages[expectedSuggestion.messageId],
+                      expectedSuggestion.data,
+                    );
+
+                  assert.ok(
+                    unsubstitutedPlaceholders.length === 0,
+                    `The message of the suggestion has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property for the suggestion in the context.report() call.`,
+                  );
+
                   if (hasOwnProperty(expectedSuggestion, 'data')) {
                     const unformattedMetaMessage =
                       rule.meta.messages[expectedSuggestion.messageId];
@@ -980,6 +1046,25 @@ export class RuleTester extends TestFramework {
                     item.code,
                     [actualSuggestion],
                   ).output;
+
+                  // Verify if suggestion fix makes a syntax error or not.
+                  const errorMessageInSuggestion = this.#linter
+                    .verify(
+                      codeWithAppliedSuggestion,
+                      result.config,
+                      result.filename,
+                    )
+                    .find(m => m.fatal);
+
+                  assert(
+                    !errorMessageInSuggestion,
+                    [
+                      'A fatal parsing error occurred in suggestion fix.',
+                      `Error: ${errorMessageInSuggestion?.message}`,
+                      'Suggestion output:',
+                      codeWithAppliedSuggestion,
+                    ].join('\n'),
+                  );
 
                   assert.strictEqual(
                     codeWithAppliedSuggestion,
