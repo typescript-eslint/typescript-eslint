@@ -3,4 +3,4 @@ description: Validate breaking change PR title and description
 
 runs:
   using: node20
-  main: ../../../node_modules/@typescript-eslint/repo-tools/breaking-pr-check-action.js
+  main: ../../../node_modules/@typescript-eslint/repo-tools/breaking-pr-check-action.mjs
