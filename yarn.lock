@@ -5224,6 +5224,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/json-stable-stringify-without-jsonify@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@types/json-stable-stringify-without-jsonify@npm:1.0.2"
+  checksum: b8822ef38b1e845cca8151ef2baf5c99bc935364e94317b91eb1ffabb9280a0debd791b3b450f99e15bd121c0ecbecae926095b9f6b169e95a4659b4eb59f90f
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -5687,6 +5694,7 @@ __metadata:
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@jest/types": 29.6.3
+    "@types/json-stable-stringify-without-jsonify": ^1.0.2
     "@types/lodash.merge": 4.6.9
     "@typescript-eslint/parser": 7.11.0
     "@typescript-eslint/typescript-estree": 7.11.0
@@ -5696,6 +5704,7 @@ __metadata:
     eslint-visitor-keys: ^4.0.0
     espree: ^10.0.1
     esprima: ^4.0.1
+    json-stable-stringify-without-jsonify: ^1.0.1
     lodash.merge: 4.6.2
     mocha: ^10.4.0
     semver: ^7.6.0
