@@ -6,21 +6,30 @@ ScopeManager {
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
       defs: [
-        ClassNameDefinition$1 {
-          name: Identifier<"Foo">,
-          node: ClassDeclaration$1,
+        TypeDefinition$1 {
+          name: Identifier<"Bar">,
+          node: TSTypeAliasDeclaration$1,
         },
       ],
-      name: "Foo",
-      references: [],
-      isValueVariable: true,
+      name: "Bar",
+      references: [
+        Reference$1 {
+          identifier: Identifier<"Bar">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
       defs: [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
-          node: ClassDeclaration$1,
+          node: ClassDeclaration$2,
         },
       ],
       name: "Foo",
@@ -28,34 +37,60 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
+    Variable$4 {
+      defs: [
+        ClassNameDefinition$3 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "Foo",
+      references: [
+        Reference$2 {
+          identifier: Identifier<"Foo">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
   ],
   scopes: [
     GlobalScope$1 {
-      block: Program$2,
+      block: Program$3,
       isStrict: false,
       references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
-        "Foo" => Variable$2,
+        "Bar" => Variable$2,
+        "Foo" => Variable$3,
       },
       type: "global",
       upper: null,
       variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
+        Variable$3,
       ],
     },
     ClassScope$2 {
-      block: ClassDeclaration$1,
+      block: ClassDeclaration$2,
       isStrict: true,
-      references: [],
+      references: [
+        Reference$1,
+        Reference$2,
+      ],
       set: Map {
-        "Foo" => Variable$3,
+        "Foo" => Variable$4,
       },
       type: "class",
       upper: GlobalScope$1,
       variables: [
-        Variable$3,
+        Variable$4,
       ],
     },
   ],
