@@ -12,7 +12,7 @@ export interface ImportDeclaration extends BaseNode {
    * ```
    * import * from 'mod' assert { type: 'json' };
    * ```
-   * @deprecated -- Replaced with {@link `attributes`}.
+   * @deprecated Replaced with {@link `attributes`}.
    */
   assertions: ImportAttribute[];
   /**
@@ -41,5 +41,6 @@ export interface ImportDeclaration extends BaseNode {
    * import 'mod';
    * ```
    */
+  // TODO: we should have a way to differentiate between these two cases
   specifiers: ImportClause[];
 }
