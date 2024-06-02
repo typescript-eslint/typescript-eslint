@@ -69,7 +69,7 @@ export default (
       '@typescript-eslint/no-unused-vars': 'error',
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
-      '@typescript-eslint/no-useless-template-expression': 'error',
+      '@typescript-eslint/no-unnecessary-template-expression': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/only-throw-error': 'error',
