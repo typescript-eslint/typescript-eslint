@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import { SymbolFlags } from 'typescript';
 
 import {
@@ -75,7 +74,6 @@ export default createRule<Options, MessageIds>({
   ],
 
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
-    const sourceCode = getSourceCode(context);
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
 
@@ -181,7 +179,11 @@ export default createRule<Options, MessageIds>({
                 node: report.node,
                 messageId: 'typeOverValue',
                 *fix(fixer) {
-                  yield* fixExportInsertType(fixer, sourceCode, report.node);
+                  yield* fixExportInsertType(
+                    fixer,
+                    context.sourceCode,
+                    report.node,
+                  );
                 },
               });
               continue;
@@ -203,7 +205,11 @@ export default createRule<Options, MessageIds>({
                   if (fixMixedExportsWithInlineTypeSpecifier) {
                     yield* fixAddTypeSpecifierToNamedExports(fixer, report);
                   } else {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                    yield* fixSeparateNamedExports(
+                      fixer,
+                      context.sourceCode,
+                      report,
+                    );
                   }
                 },
               });
@@ -218,7 +224,11 @@ export default createRule<Options, MessageIds>({
                   if (fixMixedExportsWithInlineTypeSpecifier) {
                     yield* fixAddTypeSpecifierToNamedExports(fixer, report);
                   } else {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                    yield* fixSeparateNamedExports(
+                      fixer,
+                      context.sourceCode,
+                      report,
+                    );
                   }
                 },
               });

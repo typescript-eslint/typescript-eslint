@@ -1,4 +1,5 @@
 import type * as mdast from 'mdast';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 import { getUrlForRuleTest, sourceUrlPrefix } from '../utils';
@@ -68,36 +69,29 @@ export function insertResources(page: RuleDocsPage): void {
   // Also add a notice about coming from ESLint core for extension rules
   if (page.rule.meta.docs.extendsBaseRule) {
     page.spliceChildren(page.children.length, 0, {
-      children: [
+      attributes: [
         {
-          type: 'jsx',
-          value: '<sup>',
-        },
-        {
-          type: 'text',
-          value: 'Taken with ❤️ ',
-        },
-        {
-          type: 'link',
-          title: null,
-          url: `https://github.com/eslint/eslint/blob/main/docs/src/rules/${
+          type: 'mdxJsxAttribute',
+          name: 'baseRule',
+          value:
             page.rule.meta.docs.extendsBaseRule === true
               ? page.file.stem
-              : page.rule.meta.docs.extendsBaseRule
-          }.md`,
-          children: [
-            {
-              type: 'text',
-              value: 'from ESLint core',
-            },
-          ],
-        },
-        {
-          type: 'jsx',
-          value: '</sup>',
+              : page.rule.meta.docs.extendsBaseRule,
         },
       ],
-      type: 'paragraph',
-    } as mdast.Paragraph);
+      children: [
+        {
+          children: [
+            {
+              value: 'Try this rule in the playground ↗',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      name: 'BaseRuleReference',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement);
   }
 }

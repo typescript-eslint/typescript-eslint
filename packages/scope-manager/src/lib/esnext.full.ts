@@ -5,6 +5,7 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { dom } from './dom';
+import { dom_asynciterable } from './dom.asynciterable';
 import { dom_iterable } from './dom.iterable';
 import { esnext } from './esnext';
 import { scripthost } from './scripthost';
@@ -16,4 +17,5 @@ export const esnext_full = {
   ...webworker_importscripts,
   ...scripthost,
   ...dom_iterable,
+  ...dom_asynciterable,
 } as Record<string, ImplicitLibVariableOptions>;

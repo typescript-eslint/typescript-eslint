@@ -2088,7 +2088,7 @@ ruleTester.run('naming-convention', rule, {
         {
           messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Accessor',
+            type: 'Classic Accessor',
             name: 'someGetterOverride',
             formats: 'snake_case',
           },
@@ -2096,7 +2096,7 @@ ruleTester.run('naming-convention', rule, {
         {
           messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Accessor',
+            type: 'Classic Accessor',
             name: 'someSetterOverride',
             formats: 'snake_case',
           },

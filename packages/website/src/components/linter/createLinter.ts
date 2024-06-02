@@ -163,9 +163,19 @@ export function createLinter(
     }
   };
 
+  const triggerLintAll = (): void => {
+    system.searchFiles('/input.*').forEach(triggerLint);
+  };
+
   system.watchFile('/input.*', triggerLint);
-  system.watchFile('/.eslintrc', applyEslintConfig);
-  system.watchFile('/tsconfig.json', applyTSConfig);
+  system.watchFile('/.eslintrc', filename => {
+    applyEslintConfig(filename);
+    triggerLintAll();
+  });
+  system.watchFile('/tsconfig.json', filename => {
+    applyTSConfig(filename);
+    triggerLintAll();
+  });
 
   applyEslintConfig('/.eslintrc');
   applyTSConfig('/tsconfig.json');

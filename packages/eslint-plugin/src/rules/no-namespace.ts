@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getFilename } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
@@ -50,8 +49,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
-    const filename = getFilename(context);
-
     function isDeclaration(node: TSESTree.Node): boolean {
       if (node.type === AST_NODE_TYPES.TSModuleDeclaration && node.declare) {
         return true;
@@ -66,7 +63,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         if (
           node.parent.type === AST_NODE_TYPES.TSModuleDeclaration ||
-          (allowDefinitionFiles && isDefinitionFile(filename)) ||
+          (allowDefinitionFiles && isDefinitionFile(context.filename)) ||
           (allowDeclarations && isDeclaration(node))
         ) {
           return;

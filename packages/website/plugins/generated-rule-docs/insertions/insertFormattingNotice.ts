@@ -1,4 +1,4 @@
-import type * as unist from 'unist';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 
@@ -12,20 +12,89 @@ export function insertFormattingNotice(page: RuleDocsPage): void {
 
   const url =
     replacement &&
-    `https://eslint.style/rules/ts/${replacement.replace('@stylistic/', '')}`;
+    `https://eslint.style/rules/${replacement.replace('@stylistic/', '')}`;
 
   page.spliceChildren(0, 0, {
-    value: `
-<admonition title="Deprecated" type="warning">
-Formatting rules now live in <a href="https://eslint.style">eslint-stylistic</a>. ${
-      url
-        ? ` <a href="${url}">${replacement}</a> is the replacement for this rule. `
-        : ''
-    }
-<br />
-See <a href="/blog/deprecating-formatting-rules">Deprecating Formatting Rules</a> for more information.
-</admonition>
-`,
-    type: 'jsx',
-  } as unist.Node);
+    children: [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'text',
+            value: 'Formatting rules now live in ',
+          },
+          {
+            type: 'link',
+            title: null,
+            url: 'https://eslint.style',
+            children: [
+              {
+                type: 'text',
+                value: 'eslint-stylistic',
+              },
+            ],
+          },
+          {
+            type: 'text',
+            value: '. ',
+          },
+          ...(url
+            ? [
+                {
+                  type: 'link',
+                  title: null,
+                  url,
+                  children: [
+                    {
+                      type: 'text',
+                      value: replacement,
+                    },
+                  ],
+                },
+                {
+                  type: 'text',
+                  value: ' is the replacement for this rule. ',
+                },
+              ]
+            : []),
+          {
+            type: 'break',
+          },
+          {
+            type: 'text',
+            value: 'See ',
+          },
+          {
+            type: 'link',
+            title: null,
+            url: '/blog/deprecating-formatting-rules',
+            children: [
+              {
+                type: 'text',
+                value: 'Deprecating Formatting Rules',
+              },
+            ],
+          },
+          {
+            type: 'text',
+            value: ' for more information.',
+          },
+        ],
+      },
+    ],
+    attributes: [
+      {
+        type: 'mdxJsxAttribute',
+        name: 'title',
+        value: 'Deprecated',
+      },
+      {
+        type: 'mdxJsxAttribute',
+        name: 'type',
+        value: 'danger',
+      },
+    ],
+    name: 'Admonition',
+    type: 'mdxJsxFlowElement',
+  } as MdxJsxFlowElement);
 }

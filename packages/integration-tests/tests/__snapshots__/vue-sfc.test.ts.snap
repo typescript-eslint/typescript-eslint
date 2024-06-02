@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`vue-sfc should lint successfully 1`] = `
+exports[`vue-sfc eslint should work successfully 1`] = `
 [
   {
     "errorCount": 1,

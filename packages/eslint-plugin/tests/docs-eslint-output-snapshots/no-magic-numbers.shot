@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 1`] = `
+"Options: { "ignoreEnums": false }
+
+enum foo {
+  SECOND = 1000,
+           ~~~~ No magic number: 1000.
+}
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 2`] = `
+"Options: { "ignoreEnums": true }
+
+enum foo {
+  SECOND = 1000,
+}
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 3`] = `
+"Options: { "ignoreNumericLiteralTypes": false }
+
+type SmallPrimes = 2 | 3 | 5 | 7 | 11;
+                   ~ No magic number: 2.
+                       ~ No magic number: 3.
+                           ~ No magic number: 5.
+                               ~ No magic number: 7.
+                                   ~~ No magic number: 11.
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 4`] = `
+"Options: { "ignoreNumericLiteralTypes": true }
+
+type SmallPrimes = 2 | 3 | 5 | 7 | 11;
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 5`] = `
+"Options: { "ignoreReadonlyClassProperties": false }
+
+class Foo {
+  readonly A = 1;
+               ~ No magic number: 1.
+  readonly B = 2;
+               ~ No magic number: 2.
+  public static readonly C = 1;
+                             ~ No magic number: 1.
+  static readonly D = 1;
+                      ~ No magic number: 1.
+}
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 6`] = `
+"Options: { "ignoreReadonlyClassProperties": true }
+
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 7`] = `
+"Options: { "ignoreTypeIndexes": false }
+
+type Foo = Bar[0];
+               ~ No magic number: 0.
+type Baz = Parameters<Foo>[2];
+                           ~ No magic number: 2.
+"
+`;
+
+exports[`Validating rule docs no-magic-numbers.mdx code examples ESLint output 8`] = `
+"Options: { "ignoreTypeIndexes": true }
+
+type Foo = Bar[0];
+type Baz = Parameters<Foo>[2];
+"
+`;

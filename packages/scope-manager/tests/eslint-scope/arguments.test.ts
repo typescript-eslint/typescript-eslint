@@ -3,7 +3,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('arguments', () => {
   it('arguments are correctly materialized', () => {

@@ -3,10 +3,8 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import path from 'path';
 import type * as ts from 'typescript';
 
-import {
-  isTypeReadonly,
-  type ReadonlynessOptions,
-} from '../src/isTypeReadonly';
+import type { ReadonlynessOptions } from '../src/isTypeReadonly';
+import { isTypeReadonly } from '../src/isTypeReadonly';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe('isTypeReadonly', () => {

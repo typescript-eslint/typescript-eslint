@@ -504,6 +504,18 @@ void promiseArray;
 ['I', 'am', 'just', 'an', 'array'];
       `,
     },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
+myTag\`abc\`.catch(() => {});
+      `,
+    },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => string;
+myTag\`abc\`;
+      `,
+    },
   ],
 
   invalid: [
@@ -593,6 +605,43 @@ doSomething();
         },
       ],
     },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
+myTag\`abc\`;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
+myTag\`abc\`.then(() => {});
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
+myTag\`abc\`.finally(() => {});
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+
     {
       options: [{ ignoreVoid: true }],
       code: `

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { getSpecificNode, parseAndAnalyze } from '../util';
+import { getSpecificNode, parseAndAnalyze } from '../test-utils';
 
 describe('referencing a type - positive', () => {
   it('records a reference when a type is referenced from a type', () => {

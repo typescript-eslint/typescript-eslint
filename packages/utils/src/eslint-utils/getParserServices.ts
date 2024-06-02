@@ -17,20 +17,20 @@ const ERROR_MESSAGE_UNKNOWN_PARSER =
  * This **_will_** throw if it is not available.
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): ParserServicesWithTypeInformation;
 /**
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: false,
 ): ParserServicesWithTypeInformation;
 /**
@@ -38,10 +38,10 @@ function getParserServices<
  * This **_will not_** throw if it is not available.
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: true,
 ): ParserServices;
 /**
@@ -49,10 +49,10 @@ function getParserServices<
  * This may or may not throw if it is not available, depending on if `allowWithoutFullTypeInformation` is `true`
  */
 function getParserServices<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
   allowWithoutFullTypeInformation: boolean,
 ): ParserServices;
 
@@ -71,10 +71,8 @@ function getParserServices(
   // This check allows us to handle bad user setups whilst providing a nice user-facing
   // error message explaining the problem.
   if (
-    // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-    context.parserServices?.esTreeNodeToTSNodeMap == null ||
-    // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unnecessary-condition -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-    context.parserServices.tsNodeToESTreeNodeMap == null
+    context.sourceCode.parserServices?.esTreeNodeToTSNodeMap == null ||
+    context.sourceCode.parserServices.tsNodeToESTreeNodeMap == null
   ) {
     throwError(context.parserPath);
   }
@@ -82,27 +80,25 @@ function getParserServices(
   // if a rule requires full type information, then hard fail if it doesn't exist
   // this forces the user to supply parserOptions.project
   if (
-    // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-    context.parserServices.program == null &&
+    context.sourceCode.parserServices.program == null &&
     !allowWithoutFullTypeInformation
   ) {
     throwError(context.parserPath);
   }
 
-  // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
-  return context.parserServices;
+  return context.sourceCode.parserServices as ParserServices;
 }
 /* eslint-enable @typescript-eslint/unified-signatures */
 
 function throwError(parserPath: string): never {
-  throw new Error(
-    parserPathSeemsToBeTSESLint(parserPath)
-      ? ERROR_MESSAGE_REQUIRES_PARSER_SERVICES
-      : [
-          ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
-          ERROR_MESSAGE_UNKNOWN_PARSER,
-        ].join('\n'),
-  );
+  const messages = [
+    ERROR_MESSAGE_REQUIRES_PARSER_SERVICES,
+    `Parser: ${parserPath}`,
+  ];
+  if (!parserPathSeemsToBeTSESLint(parserPath)) {
+    messages.push(ERROR_MESSAGE_UNKNOWN_PARSER);
+  }
+  throw new Error(messages.join('\n'));
 }
 
 export { getParserServices };

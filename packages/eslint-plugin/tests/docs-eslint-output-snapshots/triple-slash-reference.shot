@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 1`] = `
+"Incorrect
+Options: { "lib": "never" }
+
+/// <reference lib="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+globalThis.value;
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 2`] = `
+"Correct
+Options: { "lib": "never" }
+
+import { value } from 'code';
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "path": "never" }
+
+/// <reference path="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+globalThis.value;
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "path": "never" }
+
+import { value } from 'code';
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "types": "never" }
+
+/// <reference types="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+globalThis.value;
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "types": "never" }
+
+import { value } from 'code';
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 7`] = `
+"Incorrect
+Options: { "types": "prefer-import" }
+
+/// <reference types="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use \`import\` style instead.
+
+import { valueA } from 'code';
+
+globalThis.valueB;
+"
+`;
+
+exports[`Validating rule docs triple-slash-reference.mdx code examples ESLint output 8`] = `
+"Correct
+Options: { "types": "prefer-import" }
+
+import { valueA, valueB } from 'code';
+"
+`;

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-non-null-assertion.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+interface Example {
+  property?: string;
+}
+
+declare const example: Example;
+const includesBaz = example.property!.includes('baz');
+                    ~~~~~~~~~~~~~~~~~ Forbidden non-null assertion.
+"
+`;
+
+exports[`Validating rule docs no-non-null-assertion.mdx code examples ESLint output 2`] = `
+"Correct
+
+interface Example {
+  property?: string;
+}
+
+declare const example: Example;
+const includesBaz = example.property?.includes('baz') ?? false;
+"
+`;

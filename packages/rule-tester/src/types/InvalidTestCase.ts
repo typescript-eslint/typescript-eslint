@@ -4,11 +4,11 @@ import type { ReportDescriptorMessageData } from '@typescript-eslint/utils/ts-es
 import type { DependencyConstraint } from './DependencyConstraint';
 import type { ValidTestCase } from './ValidTestCase';
 
-export interface SuggestionOutput<TMessageIds extends string> {
+export interface SuggestionOutput<MessageIds extends string> {
   /**
    * Reported message ID.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId: MessageIds;
   /**
    * The data used to fill the message template.
    */
@@ -23,7 +23,7 @@ export interface SuggestionOutput<TMessageIds extends string> {
   // readonly desc?: string;
 }
 
-export interface TestCaseError<TMessageIds extends string> {
+export interface TestCaseError<MessageIds extends string> {
   /**
    * The 1-based column number of the reported start location.
    */
@@ -47,11 +47,11 @@ export interface TestCaseError<TMessageIds extends string> {
   /**
    * Reported message ID.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId: MessageIds;
   /**
    * Reported suggestions.
    */
-  readonly suggestions?: readonly SuggestionOutput<TMessageIds>[] | null;
+  readonly suggestions?: readonly SuggestionOutput<MessageIds>[] | null;
   /**
    * The type of the reported AST node.
    */
@@ -62,13 +62,13 @@ export interface TestCaseError<TMessageIds extends string> {
 }
 
 export interface InvalidTestCase<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
-> extends ValidTestCase<TOptions> {
+  MessageIds extends string,
+  Options extends Readonly<unknown[]>,
+> extends ValidTestCase<Options> {
   /**
    * Expected errors.
    */
-  readonly errors: readonly TestCaseError<TMessageIds>[];
+  readonly errors: readonly TestCaseError<MessageIds>[];
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */

@@ -56,6 +56,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
     const tabsDefault = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       code: editor.getModel()!,
       tsconfig: monaco.editor.createModel(
         tsconfig,
@@ -75,6 +76,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   });
 
   const updateMarkers = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const model = editor.getModel()!;
     const markers = monaco.editor.getModelMarkers({
       resource: model.uri,
@@ -123,24 +125,24 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = webLinter.onLint((uri, messages) => {
+      const model = monaco.editor.getModel(monaco.Uri.file(uri));
+      if (!model) {
+        return;
+      }
       const diagnostics = parseLintResults(messages, codeActions, ruleId =>
         monaco.Uri.parse(webLinter.rules.get(ruleId)?.url ?? ''),
       );
-      monaco.editor.setModelMarkers(
-        monaco.editor.getModel(monaco.Uri.file(uri))!,
-        'eslint',
-        diagnostics,
-      );
+      monaco.editor.setModelMarkers(model, 'eslint', diagnostics);
       updateMarkers();
     });
-    return () => disposable();
+    return (): void => disposable();
   }, [webLinter, monaco, codeActions, updateMarkers]);
 
   useEffect(() => {
     const disposable = webLinter.onParse((uri, model) => {
       onASTChange(model);
     });
-    return () => disposable();
+    return (): void => disposable();
   }, [webLinter, onASTChange]);
 
   useEffect(() => {
@@ -176,7 +178,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       'typescript',
       createProvideCodeActions(codeActions),
     );
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [codeActions, monaco]);
 
   useEffect(() => {
@@ -189,7 +191,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }
     });
-    return () => disposable.dispose();
+    return (): void => {
+      disposable.dispose();
+    };
   }, [editor, tabs.eslintrc]);
 
   useEffect(() => {
@@ -202,7 +206,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }, 150),
     );
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [onSelect, editor, tabs.code]);
 
   useEffect(() => {
@@ -225,7 +229,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       },
     });
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [editor, monaco, webLinter]);
 
   useEffect(() => {
@@ -241,7 +245,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       }),
     ];
 
-    return () => {
+    return (): void => {
       closable.forEach(c => c.close());
     };
   }, [system, onChange]);
@@ -253,14 +257,14 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         system.writeFile(model.uri.path, model.getValue());
       }
     });
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [editor, system]);
 
   useEffect(() => {
     const disposable = monaco.editor.onDidChangeMarkers(() => {
       updateMarkers();
     });
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [monaco.editor, updateMarkers]);
 
   const resize = useMemo(() => {

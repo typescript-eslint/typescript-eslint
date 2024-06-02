@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+// Can be replaced with the constant equivalents, such as container.aaa
+delete container['aaa'];
+                 ~~~~~ Do not delete dynamically computed property keys.
+delete container['Infinity'];
+                 ~~~~~~~~~~ Do not delete dynamically computed property keys.
+
+// Dynamic, difficult-to-reason-about lookups
+const name = 'name';
+delete container[name];
+                 ~~~~ Do not delete dynamically computed property keys.
+delete container[name.toUpperCase()];
+                 ~~~~~~~~~~~~~~~~~~ Do not delete dynamically computed property keys.
+"
+`;
+
+exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 2`] = `
+"Correct
+
+const container: { [i: string]: number } = {
+  /* ... */
+};
+
+// Constant runtime lookups by string index
+delete container.aaa;
+
+// Constants that must be accessed by []
+delete container[7];
+delete container['-Infinity'];
+"
+`;

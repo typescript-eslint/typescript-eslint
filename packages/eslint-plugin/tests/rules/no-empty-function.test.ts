@@ -79,9 +79,6 @@ class Foo extends Base {
   override foo() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
       options: [{ allow: ['overrideMethods'] }],
     },
   ],
@@ -194,9 +191,6 @@ class Foo extends Base {
   override foo() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
       errors: [
         {
           messageId: 'unexpected',

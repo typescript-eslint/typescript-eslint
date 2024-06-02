@@ -55,8 +55,8 @@ export function getUrlForRuleTest(ruleName: string): string {
   throw new Error(`Could not find test file for ${ruleName}.`);
 }
 
-export type RuleMetaDataWithDocs = RuleMetaData<string> & {
-  docs: RuleMetaDataDocs;
+export type RuleMetaDataWithDocs = RuleMetaData<string, readonly unknown[]> & {
+  docs: RuleMetaDataDocs<readonly unknown[]>;
 };
 
 export type RuleModuleWithMetaDocs = RuleModule<string, unknown[]> & {

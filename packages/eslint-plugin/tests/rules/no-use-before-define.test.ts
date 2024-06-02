@@ -529,6 +529,52 @@ class A {
   }
 }
     `,
+    {
+      code: `
+const obj = {
+  foo: 'foo-value',
+  bar: 'bar-value',
+} satisfies {
+  [key in 'foo' | 'bar']: \`\${key}-value\`;
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+const obj = {
+  foo: 'foo-value',
+  bar: 'bar-value',
+} as {
+  [key in 'foo' | 'bar']: \`\${key}-value\`;
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+const obj = {
+  foo: {
+    foo: 'foo',
+  } as {
+    [key in 'foo' | 'bar']: key;
+  },
+};
+      `,
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+const foo = {
+  bar: 'bar',
+} satisfies {
+  bar: typeof baz;
+};
+
+const baz = '';
+      `,
+      options: [{ ignoreTypeReferences: true }],
+    },
   ],
   invalid: [
     {
@@ -1100,6 +1146,25 @@ const Foo = {
         {
           messageId: 'noUseBeforeDefine',
           data: { name: 'Foo' },
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  bar: 'bar',
+} satisfies {
+  bar: typeof baz;
+};
+
+const baz = '';
+      `,
+      options: [{ ignoreTypeReferences: false }],
+      errors: [
+        {
+          messageId: 'noUseBeforeDefine',
+          data: { name: 'baz' },
           type: AST_NODE_TYPES.Identifier,
         },
       ],

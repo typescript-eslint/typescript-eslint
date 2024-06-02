@@ -4,7 +4,7 @@ import {
   expectToBeFunctionScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 new.target', () => {
   it('should not make references of new.target', () => {

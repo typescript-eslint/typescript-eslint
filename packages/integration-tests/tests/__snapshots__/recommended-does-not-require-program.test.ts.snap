@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`recommended-does-not-require-program should lint successfully 1`] = `
+exports[`recommended-does-not-require-program eslint should work successfully 1`] = `
 [
   {
     "errorCount": 1,
@@ -11,12 +11,12 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
     "messages": [
       {
         "column": 7,
-        "endColumn": 19,
+        "endColumn": 10,
         "endLine": 1,
         "line": 1,
         "message": "'foo' is assigned a value but never used.",
         "messageId": "unusedVar",
-        "nodeType": "Identifier",
+        "nodeType": null,
         "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 2,
       },

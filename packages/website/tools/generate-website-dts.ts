@@ -102,7 +102,7 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

@@ -3,8 +3,8 @@ import glob = require('glob');
 import makeDir from 'make-dir';
 import path from 'path';
 
-import type { AnalyzeOptions } from './util';
-import { parseAndAnalyze } from './util';
+import type { AnalyzeOptions } from './test-utils';
+import { parseAndAnalyze } from './test-utils';
 
 // Assign a segment set to this variable to limit the test to only this segment
 // This is super helpful if you need to debug why a specific fixture isn't producing the correct output
@@ -47,7 +47,6 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   ['jsxPragma', ['string']],
   ['jsxFragmentName', ['string']],
   ['sourceType', ['string', new Set(['module', 'script'])]],
-  ['emitDecoratorMetadata', ['boolean']],
 ]);
 
 function nestDescribe(

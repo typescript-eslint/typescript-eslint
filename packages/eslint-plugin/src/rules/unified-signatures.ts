@@ -1,9 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type { Equal } from '../util';
-import { arraysAreEqual, createRule } from '../util';
+import { arraysAreEqual, createRule, nullThrows } from '../util';
 
 interface Failure {
   unify: Unify;
@@ -100,8 +99,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreDifferentlyNamedParameters }]) {
-    const sourceCode = getSourceCode(context);
-
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -135,8 +132,12 @@ export default createRule<Options, MessageIds>({
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: sourceCode.getText(typeAnnotation0?.typeAnnotation),
-                type2: sourceCode.getText(typeAnnotation1?.typeAnnotation),
+                type1: context.sourceCode.getText(
+                  typeAnnotation0?.typeAnnotation,
+                ),
+                type2: context.sourceCode.getText(
+                  typeAnnotation1?.typeAnnotation,
+                ),
               },
               node: p1,
             });
@@ -369,7 +370,7 @@ export default createRule<Options, MessageIds>({
         }
 
         return typeContainsTypeParameter(
-          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ||
+          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ??
             (type as TSESTree.TSArrayType).elementType,
         );
       }
@@ -443,8 +444,8 @@ export default createRule<Options, MessageIds>({
         a === b ||
         (a !== undefined &&
           b !== undefined &&
-          sourceCode.getText(a.typeAnnotation) ===
-            sourceCode.getText(b.typeAnnotation))
+          context.sourceCode.getText(a.typeAnnotation) ===
+            context.sourceCode.getText(b.typeAnnotation))
       );
     }
 
@@ -507,9 +508,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkScope(): void {
+      const scope = nullThrows(
+        currentScope,
+        'checkScope() called without a current scope',
+      );
       const failures = checkOverloads(
-        Array.from(currentScope!.overloads.values()),
-        currentScope!.typeParameters,
+        Array.from(scope.overloads.values()),
+        scope.typeParameters,
       );
       addFailures(failures);
       currentScope = scopes.pop();
@@ -523,7 +528,7 @@ export default createRule<Options, MessageIds>({
       key ??= getOverloadKey(signature);
       if (
         currentScope &&
-        (containingNode || signature).parent === currentScope.parent
+        (containingNode ?? signature).parent === currentScope.parent
       ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {

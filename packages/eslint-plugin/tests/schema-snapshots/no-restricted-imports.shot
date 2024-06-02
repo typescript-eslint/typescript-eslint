@@ -110,6 +110,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                         "type": "array",
                         "uniqueItems": true
                       },
+                      "importNamePattern": {
+                        "type": "string"
+                      },
                       "importNames": {
                         "items": {
                           "type": "string"
@@ -173,6 +176,7 @@ type Options =
               allowTypeImports?: boolean;
               caseSensitive?: boolean;
               group: [string, ...string[]];
+              importNamePattern?: string;
               importNames?: [string, ...string[]];
               message?: string;
             }[]

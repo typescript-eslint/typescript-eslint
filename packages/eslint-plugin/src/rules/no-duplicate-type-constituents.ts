@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { Type } from 'typescript';
 
 import { createRule, getParserServices } from '../util';
@@ -153,18 +152,17 @@ export default createRule<Options, MessageIds>({
       },
       parentNode: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const sourceCode = getSourceCode(context);
-      const beforeTokens = sourceCode.getTokensBefore(
+      const beforeTokens = context.sourceCode.getTokensBefore(
         duplicateConstituent.duplicated,
         { filter: token => token.value === '|' || token.value === '&' },
       );
       const beforeUnionOrIntersectionToken =
         beforeTokens[beforeTokens.length - 1];
-      const bracketBeforeTokens = sourceCode.getTokensBetween(
+      const bracketBeforeTokens = context.sourceCode.getTokensBetween(
         beforeUnionOrIntersectionToken,
         duplicateConstituent.duplicated,
       );
-      const bracketAfterTokens = sourceCode.getTokensAfter(
+      const bracketAfterTokens = context.sourceCode.getTokensAfter(
         duplicateConstituent.duplicated,
         { count: bracketBeforeTokens.length },
       );
@@ -181,7 +179,9 @@ export default createRule<Options, MessageIds>({
             parentNode.type === AST_NODE_TYPES.TSIntersectionType
               ? 'Intersection'
               : 'Union',
-          previous: sourceCode.getText(duplicateConstituent.duplicatePrevious),
+          previous: context.sourceCode.getText(
+            duplicateConstituent.duplicatePrevious,
+          ),
         },
         messageId: 'duplicate',
         node: duplicateConstituent.duplicated,

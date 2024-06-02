@@ -190,6 +190,7 @@ function returnsAny(): any {
   return 0;
 }
       `,
+      output: null,
       options: [
         {
           allowAny: false,
@@ -207,6 +208,7 @@ function returnsUnknown(): unknown {
   return 0;
 }
       `,
+      output: null,
       options: [
         {
           allowAny: false,

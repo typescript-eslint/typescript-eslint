@@ -10,37 +10,40 @@ import { applyDefault } from './applyDefault';
 export type { RuleListener, RuleModule };
 
 // we automatically add the url
-export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
-export type NamedCreateRuleMeta<TMessageIds extends string> = Omit<
-  RuleMetaData<TMessageIds>,
-  'docs'
-> & {
-  docs: NamedCreateRuleMetaDocs;
+export type NamedCreateRuleMetaDocs<Options extends readonly unknown[]> = Omit<
+  RuleMetaDataDocs<Options>,
+  'url'
+>;
+export type NamedCreateRuleMeta<
+  MessageIds extends string,
+  Options extends readonly unknown[],
+> = Omit<RuleMetaData<MessageIds, Options>, 'docs'> & {
+  docs: NamedCreateRuleMetaDocs<Options>;
 };
 
 export interface RuleCreateAndOptions<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
+  Options extends readonly unknown[],
+  MessageIds extends string,
 > {
   create: (
-    context: Readonly<RuleContext<TMessageIds, TOptions>>,
-    optionsWithDefault: Readonly<TOptions>,
+    context: Readonly<RuleContext<MessageIds, Options>>,
+    optionsWithDefault: Readonly<Options>,
   ) => RuleListener;
-  defaultOptions: Readonly<TOptions>;
+  defaultOptions: Readonly<Options>;
 }
 
 export interface RuleWithMeta<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
-> extends RuleCreateAndOptions<TOptions, TMessageIds> {
-  meta: RuleMetaData<TMessageIds>;
+  Options extends readonly unknown[],
+  MessageIds extends string,
+> extends RuleCreateAndOptions<Options, MessageIds> {
+  meta: RuleMetaData<MessageIds, Options>;
 }
 
 export interface RuleWithMetaAndName<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
-> extends RuleCreateAndOptions<TOptions, TMessageIds> {
-  meta: NamedCreateRuleMeta<TMessageIds>;
+  Options extends readonly unknown[],
+  MessageIds extends string,
+> extends RuleCreateAndOptions<Options, MessageIds> {
+  meta: NamedCreateRuleMeta<MessageIds, Options>;
   name: string;
 }
 
@@ -54,17 +57,17 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createNamedRule<
-    TOptions extends readonly unknown[],
-    TMessageIds extends string,
+    Options extends readonly unknown[],
+    MessageIds extends string,
   >({
     name,
     meta,
     ...rule
-  }: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>): RuleModule<
-    TMessageIds,
-    TOptions
+  }: Readonly<RuleWithMetaAndName<Options, MessageIds>>): RuleModule<
+    MessageIds,
+    Options
   > {
-    return createRule<TOptions, TMessageIds>({
+    return createRule<Options, MessageIds>({
       meta: {
         ...meta,
         docs: {
@@ -84,20 +87,18 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
  * @remarks It is generally better to provide a docs URL function to RuleCreator.
  */
 function createRule<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
+  Options extends readonly unknown[],
+  MessageIds extends string,
 >({
   create,
   defaultOptions,
   meta,
-}: Readonly<RuleWithMeta<TOptions, TMessageIds>>): RuleModule<
-  TMessageIds,
-  TOptions
+}: Readonly<RuleWithMeta<Options, MessageIds>>): RuleModule<
+  MessageIds,
+  Options
 > {
   return {
-    create(
-      context: Readonly<RuleContext<TMessageIds, TOptions>>,
-    ): RuleListener {
+    create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
     },

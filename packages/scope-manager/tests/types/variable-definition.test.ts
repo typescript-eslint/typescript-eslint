@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { getSpecificNode, parseAndAnalyze } from '../util';
+import { getSpecificNode, parseAndAnalyze } from '../test-utils';
 
 describe('variable definition', () => {
   it('defines a variable for a type declaration', () => {

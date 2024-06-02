@@ -1,5 +1,5 @@
 import type * as mdast from 'mdast';
-import type * as unist from 'unist';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 import { convertToPlaygroundHash, getEslintrcString } from '../utils';
@@ -59,9 +59,27 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
       )};`,
     } as mdast.Code,
     {
-      value: `<try-in-playground eslintrcHash="${eslintrcHash}">Try this rule in the playground ↗</try-in-playground>`,
-      type: 'jsx',
-    } as unist.Node,
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'eslintrcHash',
+          value: eslintrcHash,
+        },
+      ],
+      children: [
+        {
+          children: [
+            {
+              value: 'Try this rule in the playground ↗',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      name: 'TryInPlayground',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
   );
 
   return eslintrc;

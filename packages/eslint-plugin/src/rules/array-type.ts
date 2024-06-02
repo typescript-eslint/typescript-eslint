@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isParenthesized } from '../util';
 
@@ -135,8 +134,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
-
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
 
@@ -145,7 +142,7 @@ export default createRule<Options, MessageIds>({
      */
     function getMessageType(node: TSESTree.Node): string {
       if (isSimpleType(node)) {
-        return sourceCode.getText(node);
+        return context.sourceCode.getText(node);
       }
       return 'T';
     }
@@ -254,7 +251,7 @@ export default createRule<Options, MessageIds>({
         const parentParens =
           readonlyPrefix &&
           node.parent.type === AST_NODE_TYPES.TSArrayType &&
-          !isParenthesized(node.parent.elementType, sourceCode);
+          !isParenthesized(node.parent.elementType, context.sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''

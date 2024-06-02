@@ -1,5 +1,4 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -24,14 +23,12 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
-
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
       const { members } = node;
 
       members.forEach((member, index) => {
         if (member.initializer == null) {
-          const name = sourceCode.getText(member);
+          const name = context.sourceCode.getText(member);
           context.report({
             node: member,
             messageId: 'defineInitializer',

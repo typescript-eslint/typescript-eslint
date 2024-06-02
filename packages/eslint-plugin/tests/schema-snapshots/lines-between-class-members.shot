@@ -6,7 +6,38 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "enum": ["always", "never"]
+    "anyOf": [
+      {
+        "additionalProperties": false,
+        "properties": {
+          "enforce": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "blankLine": {
+                  "enum": ["always", "never"]
+                },
+                "next": {
+                  "enum": ["*", "field", "method"]
+                },
+                "prev": {
+                  "enum": ["*", "field", "method"]
+                }
+              },
+              "required": ["blankLine", "prev", "next"],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": ["enforce"],
+        "type": "object"
+      },
+      {
+        "enum": ["always", "never"]
+      }
+    ]
   },
   {
     "additionalProperties": false,
@@ -28,7 +59,24 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  'always' | 'never',
+  (
+    | 'always'
+    | 'never'
+    | {
+        enforce: [
+          {
+            blankLine: 'always' | 'never';
+            next: '*' | 'field' | 'method';
+            prev: '*' | 'field' | 'method';
+          },
+          ...{
+            blankLine: 'always' | 'never';
+            next: '*' | 'field' | 'method';
+            prev: '*' | 'field' | 'method';
+          }[],
+        ];
+      }
+  ),
   {
     exceptAfterOverload?: boolean;
     exceptAfterSingleLine?: boolean;

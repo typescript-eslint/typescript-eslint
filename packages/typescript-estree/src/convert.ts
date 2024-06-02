@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // There's lots of funny stuff due to the typing of ts.Node
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
 
 import { getDecorators, getModifiers } from './getModifiers';
@@ -139,8 +138,6 @@ export class Converter {
 
   /**
    * Fixes the exports of the given ts.Node
-   * @param node the ts.Node
-   * @param result result
    * @returns the ESTreeNode with fixed exports
    */
   private fixExports<
@@ -750,8 +747,6 @@ export class Converter {
    * Converts a TypeScript node into an ESTree node.
    * The core of the conversion logic:
    * Identify and convert each relevant TypeScript SyntaxKind
-   * @param node the child ts.Node
-   * @param parent parentNode
    * @returns the converted ESTree node
    */
   private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
@@ -844,6 +839,17 @@ export class Converter {
         });
 
       case SyntaxKind.SwitchStatement:
+        if (
+          node.caseBlock.clauses.filter(
+            switchCase => switchCase.kind === SyntaxKind.DefaultClause,
+          ).length > 1
+        ) {
+          this.#throwError(
+            node,
+            "A 'default' clause cannot appear more than once in a 'switch' statement.",
+          );
+        }
+
         return this.createNode<TSESTree.SwitchStatement>(node, {
           type: AST_NODE_TYPES.SwitchStatement,
           discriminant: this.convertChild(node.expression),
@@ -3120,15 +3126,7 @@ export class Converter {
 
       // Tuple
       case SyntaxKind.TupleType: {
-        // In TS 4.0, the `elementTypes` property was changed to `elements`.
-        // To support both at compile time, we cast to access the newer version
-        // if the former does not exist.
-        const elementTypes =
-          'elementTypes' in node
-            ? (node as any).elementTypes.map((el: ts.Node) =>
-                this.convertChild(el),
-              )
-            : node.elements.map(el => this.convertChild(el));
+        const elementTypes = node.elements.map(el => this.convertChild(el));
 
         return this.createNode<TSESTree.TSTupleType>(node, {
           type: AST_NODE_TYPES.TSTupleType,
@@ -3417,6 +3415,27 @@ export class Converter {
             modifier.kind,
           )}' modifier cannot appear on a parameter.`,
         );
+      }
+
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.PublicKeyword ||
+        modifier.kind === SyntaxKind.ProtectedKeyword ||
+        modifier.kind === SyntaxKind.PrivateKeyword
+      ) {
+        for (const anotherModifier of getModifiers(node) ?? []) {
+          if (
+            anotherModifier !== modifier &&
+            (anotherModifier.kind === SyntaxKind.PublicKeyword ||
+              anotherModifier.kind === SyntaxKind.ProtectedKeyword ||
+              anotherModifier.kind === SyntaxKind.PrivateKeyword)
+          ) {
+            this.#throwError(
+              anotherModifier,
+              `Accessibility modifier already seen.`,
+            );
+          }
+        }
       }
 
       // `checkParameter` function in `typescript`

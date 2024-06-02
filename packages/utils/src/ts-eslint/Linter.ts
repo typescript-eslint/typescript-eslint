@@ -5,14 +5,20 @@ import { Linter as ESLintLinter } from 'eslint';
 import type { ClassicConfig, FlatConfig, SharedConfig } from './Config';
 import type { Parser } from './Parser';
 import type { Processor as ProcessorType } from './Processor';
-import type { RuleCreateFunction, RuleFix, RuleModule } from './Rule';
+import type {
+  AnyRuleCreateFunction,
+  AnyRuleModule,
+  RuleCreateFunction,
+  RuleFix,
+  RuleModule,
+} from './Rule';
 import type { SourceCode } from './SourceCode';
 
 export type MinimalRuleModule<
-  TMessageIds extends string = string,
-  TOptions extends readonly unknown[] = [],
-> = Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>> &
-  Pick<RuleModule<TMessageIds, TOptions>, 'create'>;
+  MessageIds extends string = string,
+  Options extends readonly unknown[] = [],
+> = Partial<Omit<RuleModule<MessageIds, Options>, 'create'>> &
+  Pick<RuleModule<MessageIds, Options>, 'create'>;
 
 declare class LinterBase {
   /**
@@ -26,27 +32,27 @@ declare class LinterBase {
    * @param parserId Name of the parser
    * @param parserModule The parser object
    */
-  defineParser(parserId: string, parserModule: Parser.ParserModule): void;
+  defineParser(parserId: string, parserModule: Parser.LooseParserModule): void;
 
   /**
    * Defines a new linting rule.
    * @param ruleId A unique rule identifier
    * @param ruleModule Function from context to object mapping AST node types to event handlers
    */
-  defineRule<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  defineRule<MessageIds extends string, Options extends readonly unknown[]>(
     ruleId: string,
-    ruleModule: MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction,
+    ruleModule: MinimalRuleModule<MessageIds, Options> | RuleCreateFunction,
   ): void;
 
   /**
    * Defines many new linting rules.
    * @param rulesToDefine map from unique rule identifier to rule
    */
-  defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  defineRules<MessageIds extends string, Options extends readonly unknown[]>(
     rulesToDefine: Record<
       string,
-      | MinimalRuleModule<TMessageIds, TOptions>
-      | RuleCreateFunction<TMessageIds, TOptions>
+      | MinimalRuleModule<MessageIds, Options>
+      | RuleCreateFunction<MessageIds, Options>
     >,
   ): void;
 
@@ -118,6 +124,7 @@ namespace Linter {
   export type GlobalVariableOption = SharedConfig.GlobalVariableOption;
   export type GlobalVariableOptionBase = SharedConfig.GlobalVariableOptionBase;
   export type ParserOptions = SharedConfig.ParserOptions;
+  export type PluginMeta = SharedConfig.PluginMeta;
   export type RuleEntry = SharedConfig.RuleEntry;
   export type RuleLevel = SharedConfig.RuleLevel;
   export type RuleLevelAndOptions = SharedConfig.RuleLevelAndOptions;
@@ -243,7 +250,7 @@ namespace Linter {
   }
 
   /** @deprecated use Parser.ParserModule */
-  export type ParserModule = Parser.ParserModule;
+  export type ParserModule = Parser.LooseParserModule;
 
   /** @deprecated use Parser.ParseResult */
   export type ESLintParseResult = Parser.ParseResult;
@@ -262,6 +269,13 @@ namespace Linter {
     parserOptions?: ParserOptions;
   }
 
+  // TODO - RuleCreateFunction is no longer supported in ESLint v9
+  export type LegacyPluginRules = Record<
+    string,
+    AnyRuleCreateFunction | AnyRuleModule
+  >;
+  export type PluginRules = Record<string, AnyRuleModule>;
+
   export interface Plugin {
     /**
      * The definition of plugin configs.
@@ -272,13 +286,17 @@ namespace Linter {
      */
     environments?: Record<string, Environment>;
     /**
+     * Metadata about your plugin for easier debugging and more effective caching of plugins.
+     */
+    meta?: PluginMeta;
+    /**
      * The definition of plugin processors.
      */
     processors?: Record<string, ProcessorType.ProcessorModule>;
     /**
      * The definition of plugin rules.
      */
-    rules?: Record<string, RuleCreateFunction | RuleModule<string, unknown[]>>;
+    rules?: LegacyPluginRules;
   }
 }
 

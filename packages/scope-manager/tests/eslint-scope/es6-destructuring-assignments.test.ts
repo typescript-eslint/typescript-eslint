@@ -7,7 +7,7 @@ import {
   expectToBeParameterDefinition,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 destructuring assignments', () => {
   it('Pattern in var in ForInStatement', () => {

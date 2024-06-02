@@ -11,7 +11,7 @@ import {
   isUndefinedIdentifier,
 } from '../util';
 
-type MessageId = 'noUselessTemplateLiteral';
+type MessageId = 'noUnnecessaryTemplateExpression';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',
@@ -19,15 +19,16 @@ export default createRule<[], MessageId>({
     fixable: 'code',
     type: 'suggestion',
     docs: {
-      description: 'Disallow unnecessary template literals',
-      recommended: 'strict',
+      description: 'Disallow unnecessary template expressions',
       requiresTypeChecking: true,
     },
     messages: {
-      noUselessTemplateLiteral:
+      noUnnecessaryTemplateExpression:
         'Template literal expression is unnecessary and can be simplified.',
     },
     schema: [],
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/no-unnecessary-template-expression'],
   },
   defaultOptions: [],
   create(context) {
@@ -53,6 +54,28 @@ export default createRule<[], MessageId>({
       return isString(type);
     }
 
+    function isLiteral(expression: TSESTree.Expression): boolean {
+      return expression.type === AST_NODE_TYPES.Literal;
+    }
+
+    function isTemplateLiteral(expression: TSESTree.Expression): boolean {
+      return expression.type === AST_NODE_TYPES.TemplateLiteral;
+    }
+
+    function isInfinityIdentifier(expression: TSESTree.Expression): boolean {
+      return (
+        expression.type === AST_NODE_TYPES.Identifier &&
+        expression.name === 'Infinity'
+      );
+    }
+
+    function isNaNIdentifier(expression: TSESTree.Expression): boolean {
+      return (
+        expression.type === AST_NODE_TYPES.Identifier &&
+        expression.name === 'NaN'
+      );
+    }
+
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
@@ -69,7 +92,7 @@ export default createRule<[], MessageId>({
         if (hasSingleStringVariable) {
           context.report({
             node: node.expressions[0],
-            messageId: 'noUselessTemplateLiteral',
+            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               const [prevQuasi, nextQuasi] = node.quasis;
 
@@ -91,16 +114,19 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const literalsOrUndefinedExpressions = node.expressions.filter(
-          (expression): expression is TSESTree.Literal | TSESTree.Identifier =>
-            expression.type === AST_NODE_TYPES.Literal ||
-            isUndefinedIdentifier(expression),
+        const fixableExpressions = node.expressions.filter(
+          expression =>
+            isLiteral(expression) ||
+            isTemplateLiteral(expression) ||
+            isUndefinedIdentifier(expression) ||
+            isInfinityIdentifier(expression) ||
+            isNaNIdentifier(expression),
         );
 
-        literalsOrUndefinedExpressions.forEach(expression => {
+        fixableExpressions.forEach(expression => {
           context.report({
             node: expression,
-            messageId: 'noUselessTemplateLiteral',
+            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               const index = node.expressions.indexOf(expression);
               const prevQuasi = node.quasis[index];
@@ -125,6 +151,19 @@ export default createRule<[], MessageId>({
                 const escapedValue = stringValue.replace(/([`$\\])/g, '\\$1');
 
                 fixes.push(fixer.replaceText(expression, escapedValue));
+              } else if (isTemplateLiteral(expression)) {
+                // Note that some template literals get handled in the previous branch too.
+                // Remove the beginning and trailing backtick characters.
+                fixes.push(
+                  fixer.removeRange([
+                    expression.range[0],
+                    expression.range[0] + 1,
+                  ]),
+                  fixer.removeRange([
+                    expression.range[1] - 1,
+                    expression.range[1],
+                  ]),
+                );
               }
 
               return fixes;

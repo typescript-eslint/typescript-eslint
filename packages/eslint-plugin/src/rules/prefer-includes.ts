@@ -2,7 +2,6 @@ import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -33,7 +32,7 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = getScope(context);
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 

@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const self = this;
+      ~~~~ Unexpected aliasing of 'this' to local variable.
+
+setTimeout(function () {
+  self.doWork();
+});
+"
+`;
+
+exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 2`] = `
+"Correct
+
+setTimeout(() => {
+  this.doWork();
+});
+"
+`;
+
+exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    const { props, state } = this;
+          ~~~~~~~~~~~~~~~~ Unexpected aliasing of members of 'this' to local variables.
+
+    console.log(props);
+    console.log(state);
+  }
+}
+"
+`;
+
+exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    console.log(this.props);
+    console.log(this.state);
+  }
+}
+"
+`;
+
+exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "allowedNames": ["self"] }
+
+class Example {
+  method() {
+    const that = this;
+          ~~~~ Unexpected aliasing of 'this' to local variable.
+  }
+}
+"
+`;
+
+exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "allowedNames": ["self"] }
+
+class Example {
+  method() {
+    const self = this;
+  }
+}
+"
+`;

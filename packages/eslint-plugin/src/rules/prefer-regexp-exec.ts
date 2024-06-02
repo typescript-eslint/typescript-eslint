@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-literal-enum-member */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -39,10 +38,9 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = getScope(context);
+    const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
 
     /**
      * Check if a given node type is a string.
@@ -74,22 +72,29 @@ export default createRule({
       return result;
     }
 
-    function isLikelyToContainGlobalFlag(
+    /**
+     * Returns true if and only if we have syntactic proof that the /g flag is
+     * absent. Returns false in all other cases (i.e. it still might or might
+     * not contain the global flag).
+     */
+    function definitelyDoesNotContainGlobalFlag(
       node: TSESTree.CallExpressionArgument,
     ): boolean {
       if (
-        node.type === AST_NODE_TYPES.CallExpression ||
-        node.type === AST_NODE_TYPES.NewExpression
+        (node.type === AST_NODE_TYPES.CallExpression ||
+          node.type === AST_NODE_TYPES.NewExpression) &&
+        node.callee.type === AST_NODE_TYPES.Identifier &&
+        node.callee.name === 'RegExp'
       ) {
         const flags = node.arguments.at(1);
-        return !!(
+        return !(
           flags?.type === AST_NODE_TYPES.Literal &&
           typeof flags.value === 'string' &&
           flags.value.includes('g')
         );
       }
 
-      return node.type === AST_NODE_TYPES.Identifier;
+      return false;
     }
 
     return {
@@ -107,7 +112,8 @@ export default createRule({
 
         // Don't report regular expressions with global flag.
         if (
-          (!argumentValue && isLikelyToContainGlobalFlag(argumentNode)) ||
+          (!argumentValue &&
+            !definitelyDoesNotContainGlobalFlag(argumentNode)) ||
           (argumentValue &&
             argumentValue.value instanceof RegExp &&
             argumentValue.value.flags.includes('g'))
@@ -129,7 +135,7 @@ export default createRule({
             node: memberNode.property,
             messageId: 'regExpExecOverStringMatch',
             fix: getWrappingFixer({
-              sourceCode,
+              sourceCode: context.sourceCode,
               node: callNode,
               innerNode: [objectNode],
               wrap: objectCode => `${regExp.toString()}.exec(${objectCode})`,
@@ -147,7 +153,7 @@ export default createRule({
               node: memberNode.property,
               messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                sourceCode,
+                sourceCode: context.sourceCode,
                 node: callNode,
                 innerNode: [objectNode, argumentNode],
                 wrap: (objectCode, argumentCode) =>
@@ -160,7 +166,7 @@ export default createRule({
               node: memberNode.property,
               messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                sourceCode,
+                sourceCode: context.sourceCode,
                 node: callNode,
                 innerNode: [objectNode, argumentNode],
                 wrap: (objectCode, argumentCode) =>

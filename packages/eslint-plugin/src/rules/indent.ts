@@ -7,7 +7,6 @@
 
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -381,8 +380,8 @@ export default createRule<Options, MessageIds>({
       },
 
       TSMappedType(node: TSESTree.TSMappedType) {
-        const sourceCode = getSourceCode(context);
-        const squareBracketStart = sourceCode.getTokenBefore(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const squareBracketStart = context.sourceCode.getTokenBefore(
           node.typeParameter,
         )!;
 

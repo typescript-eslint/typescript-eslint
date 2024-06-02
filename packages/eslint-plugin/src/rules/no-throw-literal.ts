@@ -23,9 +23,10 @@ export default createRule<Options, MessageIds>({
   name: 'no-throw-literal',
   meta: {
     type: 'problem',
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/only-throw-error'],
     docs: {
       description: 'Disallow throwing literals as exceptions',
-      recommended: 'strict',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },

@@ -2,7 +2,6 @@ type ObjectLike<T = unknown> = Record<string, T>;
 
 /**
  * Check if the variable contains an object strictly rejecting arrays
- * @param obj an object
  * @returns `true` if obj is an object
  */
 function isObjectNotArray<T extends ObjectLike>(obj: unknown): obj is T {

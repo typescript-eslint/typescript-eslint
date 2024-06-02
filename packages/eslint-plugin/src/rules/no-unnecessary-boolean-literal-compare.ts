@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -80,7 +79,6 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const services = getParserServices(context);
-    const sourceCode = getSourceCode(context);
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -232,7 +230,7 @@ export default createRule<Options, MessageIds>({
 
             yield fixer.replaceText(
               mutatedNode,
-              sourceCode.getText(comparison.expression),
+              context.sourceCode.getText(comparison.expression),
             );
 
             // if `isUnaryNegation === literalBooleanInComparison === !negated` is true - negate the expression

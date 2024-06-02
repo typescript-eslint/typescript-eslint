@@ -131,6 +131,30 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allowArray
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [];
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [];
+        const msg = \`arg = \${arg || 'default'}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [];
+        function test<T extends string[]>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
     // allowAny
     {
       options: [{ allowAny: true }],
@@ -343,6 +367,20 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     {
       code: `
+        const msg = \`arg = \${[, 2]}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '(number | undefined)[]' },
+          line: 2,
+          column: 30,
+        },
+      ],
+      options: [{ allowNullish: false, allowArray: true }],
+    },
+    {
+      code: `
         declare const arg: number;
         const msg = \`arg = \${arg}\`;
       `,
@@ -369,11 +407,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           column: 30,
         },
       ],
-      options: [
-        {
-          allowBoolean: false,
-        },
-      ],
+      options: [{ allowBoolean: false }],
     },
     {
       options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
@@ -424,11 +458,6 @@ ruleTester.run('restrict-template-expressions', rule, {
           return \`arg = \${arg}\`;
         }
       `,
-      dependencyConstraints: {
-        // TS 4.5 improved type printing to print the type T as `T`
-        // before that it was printed as `any`
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'invalidType',

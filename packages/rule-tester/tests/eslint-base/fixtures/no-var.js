@@ -8,8 +8,6 @@ module.exports = {
         schema: []
     },
     create(context) {
-        var sourceCode = context.getSourceCode();
-
         return {
             "VariableDeclaration": function(node) {
                 if (node.kind === "var") {
@@ -18,7 +16,7 @@ module.exports = {
                         loc: sourceCode.getFirstToken(node).loc,
                         message: "Bad var.",
                         fix: function(fixer) {
-                            return fixer.remove(sourceCode.getFirstToken(node));
+                            return fixer.remove(context.sourceCode.getFirstToken(node));
                         }
                     })
                 }

@@ -83,7 +83,6 @@ type DeclarationKind = TSESTree.VariableDeclaration['kind'];
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
- * @returns is assignment
  */
 function isAssignmentOperator(
   operator: ts.BinaryOperatorToken,
@@ -188,7 +187,6 @@ export function isComment(node: ts.Node): boolean {
 /**
  * Returns true if the given ts.Node is a JSDoc comment
  * @param node the TypeScript node
- * @returns is JSDoc comment
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet

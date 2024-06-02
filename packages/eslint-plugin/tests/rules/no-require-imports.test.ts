@@ -32,6 +32,10 @@ require('remark-preset-prettier');
       options: [{ allow: ['/package\\.json$'] }],
     },
     {
+      code: 'const pkg = require(`./package.json`);',
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
       code: "const pkg = require('../packages/package.json');",
       options: [{ allow: ['/package\\.json$'] }],
     },
@@ -45,6 +49,10 @@ require('remark-preset-prettier');
     },
     {
       code: "import pkg = require('some-package');",
+      options: [{ allow: ['^some-package$'] }],
+    },
+    {
+      code: 'import pkg = require(`some-package`);',
       options: [{ allow: ['^some-package$'] }],
     },
   ],
@@ -157,6 +165,17 @@ var lib5 = require?.('lib5'),
       ],
     },
     {
+      code: 'const pkg = require(`./package.jsonc`);',
+      options: [{ allow: ['/package\\.json$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
       code: "import pkg = require('./package.json');",
       errors: [
         {
@@ -179,6 +198,17 @@ var lib5 = require?.('lib5'),
     },
     {
       code: "import pkg = require('./package.json');",
+      options: [{ allow: ['^some-package$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 14,
+          messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
+      code: 'import pkg = require(`./package.json`);',
       options: [{ allow: ['^some-package$'] }],
       errors: [
         {

@@ -1,4 +1,4 @@
-import { getRealVariables, parseAndAnalyze } from '../util';
+import { getRealVariables, parseAndAnalyze } from '../test-utils';
 
 function forEach<T extends string>(
   obj: Record<T, string>,

@@ -537,9 +537,6 @@ type Foo = {
   [K in keyof Other]: \`\${K & number}\`;
 };
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
       options: [{ ignoreTypeIndexes: true }],
       errors: [
         {

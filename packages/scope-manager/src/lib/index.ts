@@ -6,6 +6,7 @@
 import { decorators } from './decorators';
 import { decorators_legacy } from './decorators.legacy';
 import { dom } from './dom';
+import { dom_asynciterable } from './dom.asynciterable';
 import { dom_iterable } from './dom.iterable';
 import { es5 } from './es5';
 import { es6 } from './es6';
@@ -23,6 +24,7 @@ import { es2015_symbol_wellknown } from './es2015.symbol.wellknown';
 import { es2016 } from './es2016';
 import { es2016_array_include } from './es2016.array.include';
 import { es2016_full } from './es2016.full';
+import { es2016_intl } from './es2016.intl';
 import { es2017 } from './es2017';
 import { es2017_date } from './es2017.date';
 import { es2017_full } from './es2017.full';
@@ -83,6 +85,7 @@ import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
 import { esnext_full } from './esnext.full';
 import { esnext_intl } from './esnext.intl';
+import { esnext_object } from './esnext.object';
 import { esnext_promise } from './esnext.promise';
 import { esnext_string } from './esnext.string';
 import { esnext_symbol } from './esnext.symbol';
@@ -90,6 +93,7 @@ import { esnext_weakref } from './esnext.weakref';
 import { lib as libBase } from './lib';
 import { scripthost } from './scripthost';
 import { webworker } from './webworker';
+import { webworker_asynciterable } from './webworker.asynciterable';
 import { webworker_importscripts } from './webworker.importscripts';
 import { webworker_iterable } from './webworker.iterable';
 
@@ -109,9 +113,11 @@ const lib = {
   esnext,
   dom,
   'dom.iterable': dom_iterable,
+  'dom.asynciterable': dom_asynciterable,
   webworker,
   'webworker.importscripts': webworker_importscripts,
   'webworker.iterable': webworker_iterable,
+  'webworker.asynciterable': webworker_asynciterable,
   scripthost,
   'es2015.core': es2015_core,
   'es2015.collection': es2015_collection,
@@ -123,6 +129,7 @@ const lib = {
   'es2015.symbol': es2015_symbol,
   'es2015.symbol.wellknown': es2015_symbol_wellknown,
   'es2016.array.include': es2016_array_include,
+  'es2016.intl': es2016_intl,
   'es2017.date': es2017_date,
   'es2017.object': es2017_object,
   'es2017.sharedmemory': es2017_sharedmemory,
@@ -171,6 +178,7 @@ const lib = {
   'esnext.promise': esnext_promise,
   'esnext.weakref': esnext_weakref,
   'esnext.decorators': esnext_decorators,
+  'esnext.object': esnext_object,
   decorators,
   'decorators.legacy': decorators_legacy,
   'es2016.full': es2016_full,

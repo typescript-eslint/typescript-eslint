@@ -1,9 +1,7 @@
-declare global {
-  declare const process: {
-    env: {
-      TS_VERSION: string;
-      ESLINT_VERSION: string;
-      TS_ESLINT_VERSION: string;
-    };
-  };
+declare namespace NodeJS {
+  export interface ProcessEnv {
+    ESLINT_VERSION: string;
+    TS_ESLINT_VERSION: string;
+    TS_VERSION: string;
+  }
 }

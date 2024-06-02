@@ -500,9 +500,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [
         {
           default: {
@@ -542,6 +539,20 @@ interface Foo {
         },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -588,6 +599,20 @@ type Foo = {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'call',
@@ -627,6 +652,20 @@ class Foo {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
@@ -658,6 +697,20 @@ const foo = class Foo {
         },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {

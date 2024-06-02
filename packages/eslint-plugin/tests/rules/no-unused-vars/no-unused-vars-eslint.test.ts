@@ -3,8 +3,7 @@
 // License      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 import rule from '../../../src/rules/no-unused-vars';
@@ -21,9 +20,8 @@ ruleTester.defineRule('use-every-a', context => {
   /**
    * Mark a variable as used
    */
-  function useA(): void {
-    // eslint-disable-next-line deprecation/deprecation
-    context.markVariableAsUsed('a');
+  function useA(node: TSESTree.Node): void {
+    context.sourceCode.markVariableAsUsed('a', node);
   }
   return {
     VariableDeclaration: useA,
@@ -41,7 +39,6 @@ ruleTester.defineRule('use-every-a', context => {
 function definedError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'unusedVar',
@@ -50,7 +47,6 @@ function definedError(
       action: 'defined',
       additional,
     },
-    type,
   };
 }
 
@@ -64,7 +60,6 @@ function definedError(
 function assignedError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'unusedVar',
@@ -73,7 +68,6 @@ function assignedError(
       action: 'assigned a value',
       additional,
     },
-    type,
   };
 }
 
@@ -1233,7 +1227,7 @@ function f() {
     },
     {
       code: '/*global a */',
-      errors: [definedError('a', '', AST_NODE_TYPES.Program)],
+      errors: [definedError('a', '')],
     },
     {
       code: `
@@ -1342,7 +1336,6 @@ function foo() {
           messageId: 'unusedVar',
           data: { varName: 'foo', action: 'defined', additional: '' },
           line: 2,
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },

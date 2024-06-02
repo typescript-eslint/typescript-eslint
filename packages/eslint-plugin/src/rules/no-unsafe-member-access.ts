@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -45,7 +44,6 @@ export default createRule({
       compilerOptions,
       'noImplicitThis',
     );
-    const sourceCode = getSourceCode(context);
 
     const stateCache = new Map<TSESTree.Node, State>();
 
@@ -70,7 +68,7 @@ export default createRule({
       stateCache.set(node, state);
 
       if (state === State.Unsafe) {
-        const propertyName = sourceCode.getText(node.property);
+        const propertyName = context.sourceCode.getText(node.property);
 
         let messageId: 'unsafeMemberExpression' | 'unsafeThisMemberExpression' =
           'unsafeMemberExpression';
@@ -123,7 +121,7 @@ export default createRule({
         const type = services.getTypeAtLocation(node);
 
         if (isTypeAnyType(type)) {
-          const propertyName = sourceCode.getText(node);
+          const propertyName = context.sourceCode.getText(node);
           context.report({
             node,
             messageId: 'unsafeComputedMemberAccess',

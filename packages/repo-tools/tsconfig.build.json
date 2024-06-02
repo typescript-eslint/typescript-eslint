@@ -1,6 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    // repo tools are executed with tsx
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "composite": true,
     "outDir": "./dist",
     "rootDir": "./src",

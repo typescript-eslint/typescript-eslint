@@ -23,11 +23,11 @@ function createDefaultProgram(
     parseSettings.filePath || 'unnamed file',
   );
 
-  if (parseSettings.projects.length !== 1) {
+  if (parseSettings.projects.size !== 1) {
     return undefined;
   }
 
-  const tsconfigPath = parseSettings.projects[0];
+  const tsconfigPath = Array.from(parseSettings.projects.values())[0];
 
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,

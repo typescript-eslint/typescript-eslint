@@ -4,7 +4,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 block scope', () => {
   it('let is materialized in ES6 block scope#1', () => {

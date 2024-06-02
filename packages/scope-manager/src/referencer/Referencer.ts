@@ -29,7 +29,6 @@ interface ReferencerOptions extends VisitorOptions {
   jsxPragma: string | null;
   jsxFragmentName: string | null;
   lib: Lib[];
-  emitDecoratorMetadata: boolean;
 }
 
 // Referencing variables and creating bindings.
@@ -39,7 +38,6 @@ class Referencer extends Visitor {
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
   #lib: Lib[];
-  readonly #emitDecoratorMetadata: boolean;
   public readonly scopeManager: ScopeManager;
 
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
@@ -48,7 +46,6 @@ class Referencer extends Visitor {
     this.#jsxPragma = options.jsxPragma;
     this.#jsxFragmentName = options.jsxFragmentName;
     this.#lib = options.lib;
-    this.#emitDecoratorMetadata = options.emitDecoratorMetadata;
   }
 
   public currentScope(): Scope;
@@ -152,7 +149,7 @@ class Referencer extends Visitor {
   protected visitClass(
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   ): void {
-    ClassVisitor.visit(this, node, this.#emitDecoratorMetadata);
+    ClassVisitor.visit(this, node);
   }
 
   protected visitForIn(
@@ -440,6 +437,19 @@ class Referencer extends Visitor {
       ExportVisitor.visit(this, node);
     } else {
       this.visit(node.declaration);
+    }
+  }
+
+  protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
+    if (node.expression.type === AST_NODE_TYPES.Identifier) {
+      // this is a special case - you can `export = T` where `T` is a type OR a
+      // value however `T[U]` is illegal when `T` is a type and `T.U` is illegal
+      // when `T.U` is a type
+      // i.e. if the expression is JUST an Identifier - it could be either ref
+      // kind; otherwise the standard rules apply
+      this.currentScope().referenceDualValueType(node.expression);
+    } else {
+      this.visit(node.expression);
     }
   }
 

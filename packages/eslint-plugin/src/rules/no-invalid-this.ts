@@ -61,13 +61,9 @@ export default createRule<Options, MessageIds>({
               param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
           ),
         );
-        // baseRule's work
-        rules.FunctionDeclaration?.(node);
       },
-      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void {
+      'FunctionDeclaration:exit'(): void {
         thisIsValidStack.pop();
-        // baseRule's work
-        rules['FunctionDeclaration:exit']?.(node);
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
         thisIsValidStack.push(
@@ -76,13 +72,9 @@ export default createRule<Options, MessageIds>({
               param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
           ),
         );
-        // baseRule's work
-        rules.FunctionExpression?.(node);
       },
-      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void {
+      'FunctionExpression:exit'(): void {
         thisIsValidStack.pop();
-        // baseRule's work
-        rules['FunctionExpression:exit']?.(node);
       },
       ThisExpression(node: TSESTree.ThisExpression): void {
         const thisIsValidHere = thisIsValidStack[thisIsValidStack.length - 1];

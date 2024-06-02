@@ -79,9 +79,10 @@ export function parseMarkers(
         message: item.message,
         isPreferred: item.isPreferred,
         fix(): void {
-          editor.executeEdits('eslint', [
-            createEditOperation(editor.getModel()!, item),
-          ]);
+          const model = editor.getModel();
+          if (model) {
+            editor.executeEdits('eslint', [createEditOperation(model, item)]);
+          }
         },
       })) ?? [];
 
@@ -93,13 +94,11 @@ export function parseMarkers(
           : marker.owner;
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!result[group]) {
-      result[group] = {
-        group: group,
-        uri: code.target,
-        items: [],
-      };
-    }
+    result[group] ||= {
+      group: group,
+      uri: code.target,
+      items: [],
+    };
 
     result[group].items.push({
       message:
@@ -177,4 +176,9 @@ export function parseLintResults(
   }
 
   return markers;
+}
+
+export function getPathRegExp(path: string): RegExp {
+  const escapedPath = path.replace(/\./g, '\\.').replace(/\*/g, '[^/]+');
+  return new RegExp(`^${escapedPath}$`, '');
 }

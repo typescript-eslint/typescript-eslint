@@ -33,6 +33,8 @@ export const dom_iterable = {
   HTMLFormElement: TYPE,
   HTMLSelectElement: TYPE,
   Headers: TYPE,
+  Highlight: TYPE,
+  HighlightRegistry: TYPE,
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
   MIDIInputMap: TYPE,

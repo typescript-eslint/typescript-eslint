@@ -39,6 +39,24 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
     '[1, 2, 3].reduce((sum, num) => sum + num, 0);',
     '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
     '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
+    `
+      declare const tuple: [number, number, number];
+      tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
+    `,
+    `
+      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
+      declare const tuple: [number, number, number] | Reducer;
+      tuple.reduce(a => {
+        return a.concat(1);
+      }, [] as number[]);
+    `,
+    `
+      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
+      declare const arrayOrReducer: number[] & Reducer;
+      arrayOrReducer.reduce(a => {
+        return a.concat(1);
+      }, [] as number[]);
+    `,
   ],
   invalid: [
     {
@@ -202,6 +220,57 @@ function f<T, U extends T[]>(a: U) {
         {
           messageId: 'preferTypeParameter',
           column: 29,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare const tuple: [number, number, number];
+tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
+      `,
+      output: `
+declare const tuple: [number, number, number];
+tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 41,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare const tupleOrArray: [number, number, number] | number[];
+tupleOrArray.reduce((a, s) => a.concat(s * 2), [] as number[]);
+      `,
+      output: `
+declare const tupleOrArray: [number, number, number] | number[];
+tupleOrArray.reduce<number[]>((a, s) => a.concat(s * 2), []);
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 48,
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+declare const tuple: [number, number, number] & number[];
+tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
+      `,
+      output: `
+declare const tuple: [number, number, number] & number[];
+tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
+      `,
+      errors: [
+        {
+          messageId: 'preferTypeParameter',
+          column: 41,
           line: 3,
         },
       ],

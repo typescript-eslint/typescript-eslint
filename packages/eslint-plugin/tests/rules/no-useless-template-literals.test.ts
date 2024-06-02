@@ -131,6 +131,10 @@ ruleTester.run('no-useless-template-literals', rule, {
     noFormat`
       \`with windows \r new line\`;
     `,
+
+    `
+\`not a useless \${String.raw\`nested interpolation \${a}\`}\`;
+    `,
   ],
 
   invalid: [
@@ -139,7 +143,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`1`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 5,
@@ -151,7 +155,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`1`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 6,
@@ -163,7 +167,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`/a/`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
@@ -176,7 +180,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`1`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -186,7 +190,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: `'a';`,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -196,7 +200,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: `"a";`,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -206,7 +210,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: `'a' + 'b';`,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -216,7 +220,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`true`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 8,
@@ -229,7 +233,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`true`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -239,7 +243,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`null`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 8,
@@ -252,7 +256,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`null`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -262,7 +266,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`undefined`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 13,
@@ -275,7 +279,33 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`undefined`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+    },
+
+    {
+      code: '`${Infinity}`;',
+      output: '`Infinity`;',
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 1,
+          column: 4,
+          endColumn: 12,
+        },
+      ],
+    },
+
+    {
+      code: '`${NaN}`;',
+      output: '`NaN`;',
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 1,
+          column: 4,
+          endColumn: 7,
         },
       ],
     },
@@ -285,13 +315,13 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`a b`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
         },
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 11,
           endColumn: 14,
@@ -304,10 +334,10 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`a b`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -323,7 +353,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 17,
           endColumn: 20,
@@ -332,14 +362,92 @@ ruleTester.run('no-useless-template-literals', rule, {
     },
 
     {
-      code: "`a${'b'}`;",
-      output: '`ab`;',
+      code: "`use${'less'}`;",
+      output: '`useless`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
-          column: 5,
-          endColumn: 8,
+        },
+      ],
+    },
+
+    {
+      code: '`use${`less`}`;',
+      output: '`useless`;',
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 1,
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const nested: string, interpolation: string;
+\`use\${\`less\${nested}\${interpolation}\`}\`;
+      `,
+      output: `
+declare const nested: string, interpolation: string;
+\`useless\${nested}\${interpolation}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+    },
+
+    {
+      code: noFormat`
+\`u\${
+  // hopefully this comment is not needed.
+  'se'
+
+}\${
+  \`le\${  \`ss\`  }\`
+}\`;
+      `,
+      output: `
+\`use\${
+  \`less\`
+}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 4,
+        },
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 7,
+          column: 3,
+          endLine: 7,
+        },
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 7,
+          column: 10,
+          endLine: 7,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+\`use\${
+  \`less\`
+}\`;
+      `,
+      output: `
+\`useless\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 3,
+          column: 3,
+          endColumn: 9,
         },
       ],
     },
@@ -349,13 +457,13 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`1 + 1 = 2`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 13,
         },
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 17,
           endColumn: 18,
@@ -368,13 +476,13 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`a true`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
         },
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 11,
           endColumn: 15,
@@ -393,7 +501,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 12,
           endColumn: 18,
@@ -412,7 +520,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -422,7 +530,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: "String(Symbol.for('test'));",
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 30,
@@ -441,7 +549,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 12,
           endColumn: 24,
@@ -462,7 +570,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 14,
           endColumn: 17,
@@ -475,7 +583,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: "'`';",
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -485,7 +593,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`back\\`tick`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -495,7 +603,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`dollar\\${\\`this is test\\`}sign`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -505,7 +613,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -515,7 +623,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`some \\\\\\${test} string`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -525,7 +633,7 @@ ruleTester.run('no-useless-template-literals', rule, {
       output: '`some \\\\\\` string`;',
       errors: [
         {
-          messageId: 'noUselessTemplateLiteral',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
