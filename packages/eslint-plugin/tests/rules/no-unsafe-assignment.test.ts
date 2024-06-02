@@ -182,35 +182,35 @@ const x = 1 as any,
     },
     {
       code: `
-      class Foo {
-        constructor(private a = 1 as any) {}
-      }
+class Foo {
+ constructor(private a = 1 as any) {}
+}
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
     {
       code: `
-      class Foo {
-        private a = 1 as any;
-      }
+class Foo {
+ private a = 1 as any;
+}
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
     {
       code: `
-       const [x] = spooky;
+  const [x] = spooky;
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
     {
       code: `
-       const [[[x]]] = [spooky];
+const [[[x]]] = [spooky];
       `,
       errors: [{ messageId: 'unsafeArrayPatternFromTuple' }],
     },
     {
       code: `
-       const {x: {y: z}} = {x: spooky};
+const {x: {y: z}} = {x: spooky};
       `,
       errors: [
         {
@@ -225,9 +225,9 @@ const x = 1 as any,
     },
     {
       code: `
-      let value: number;
+let value: number;
 
-      value = spooky;
+value = spooky;
       `,
       errors: [
         {
