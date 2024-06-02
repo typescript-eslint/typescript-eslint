@@ -1869,5 +1869,62 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      code: `
+        type T1 = number;
+
+        interface T2 {
+          key: number;
+        }
+
+        type T3 = boolean;
+
+        export const value:
+          | {
+              a: T1;
+              b: {
+                c: T2;
+              };
+            }
+          | T3[] = {
+          a: 1,
+          b: {
+            c: {
+              key: 1,
+            },
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 12,
+          column: 18,
+          endColumn: 20,
+          data: {
+            name: 'T1',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 14,
+          column: 20,
+          endColumn: 22,
+          data: {
+            name: 'T2',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 17,
+          column: 13,
+          endColumn: 15,
+          data: {
+            name: 'T3',
+          },
+        },
+      ],
+    },
   ],
 });

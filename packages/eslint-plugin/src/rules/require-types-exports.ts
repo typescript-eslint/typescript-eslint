@@ -144,11 +144,27 @@ export default createRule<[], MessageIds>({
       node: TSESTree.LetOrConstOrVarDeclarator,
     ): void {
       typeReferences.forEach(r => {
-        // TODO: Probably not the best way to do it...
-        if (isLocationOverlapping(r.identifier.loc, node.loc)) {
+        if (isAncestorNode(node, r.identifier.parent)) {
           checkTypeNode(r.identifier.parent);
         }
       });
+    }
+
+    function isAncestorNode(
+      ancestor: TSESTree.Node,
+      node: TSESTree.Node,
+    ): boolean {
+      let parent = node.parent;
+
+      while (parent) {
+        if (parent === ancestor) {
+          return true;
+        }
+
+        parent = parent.parent;
+      }
+
+      return false;
     }
 
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
@@ -183,34 +199,6 @@ export default createRule<[], MessageIds>({
       }
 
       return '';
-    }
-
-    function isLocationOverlapping(
-      location: TSESTree.Node['loc'],
-      container: TSESTree.Node['loc'],
-    ): boolean {
-      if (
-        location.start.line < container.start.line ||
-        location.end.line > container.end.line
-      ) {
-        return false;
-      }
-
-      if (
-        location.start.line === container.start.line &&
-        location.start.column < container.start.column
-      ) {
-        return false;
-      }
-
-      if (
-        location.end.line === container.end.line &&
-        location.end.column > container.end.column
-      ) {
-        return false;
-      }
-
-      return true;
     }
 
     return {
