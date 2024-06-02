@@ -348,6 +348,16 @@ const bar = foo.a as string | undefined | bigint;
       `,
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
+    {
+      code: `
+if (Math.random()) {
+  {
+    var x = 1;
+  }
+}
+x!;
+      `,
+    },
   ],
 
   invalid: [
@@ -1075,6 +1085,22 @@ const bar = foo.a;
         },
       ],
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+var x = 1;
+x!;
+      `,
+      output: `
+var x = 1;
+x;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
     },
   ],
 });
