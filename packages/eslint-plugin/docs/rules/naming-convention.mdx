@@ -583,6 +583,22 @@ This allows you to emulate the old `interface-name-prefix` rule.
 }
 ```
 
+### Enforce that function names are either in camelCase or PascalCase
+
+Function names are typically camelCase, but UI library components (especially JSX, such as React and Solid) use PascalCase to distinguish them from intrinsic elements. If you are writing function components, consider allowing both camelCase and PascalCase for functions.
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "function",
+      "format": ["camelCase", "PascalCase"]
+    }
+  ]
+}
+```
+
 ### Enforce that variable and function names are in camelCase
 
 This allows you to lint multiple type with same pattern.
