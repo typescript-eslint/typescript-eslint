@@ -118,47 +118,68 @@ type Foo = {
       options: [{ ignoreTypeIndexes: true }],
     },
     {
-      code: `
-type Foo =
-  | 1
-  | -2
-  | 3n
-  | -4n
-  | 5.6
-  | -7.8
-  | 0x0a
-  | -0xbc
-  | 1e2
-  | -3e4
-  | 5e-6
-  | -7e-8
-  | 1.1e2
-  | -3.1e4
-  | 5.1e-6
-  | -7.1e-8;
-      `,
-      options: [
-        {
-          ignore: [
-            1,
-            -2,
-            '3n',
-            '-4n',
-            5.6,
-            -7.8,
-            0x0a,
-            -0xbc,
-            1e2,
-            -3e4,
-            5e-6,
-            -7e-8,
-            1.1e2,
-            -3.1e4,
-            5.1e-6,
-            -7.1e-8,
-          ],
-        },
-      ],
+      code: 'type Foo = 1;',
+      options: [{ ignore: [1] }],
+    },
+    {
+      code: 'type Foo = -2;',
+      options: [{ ignore: [-2] }],
+    },
+    {
+      code: 'type Foo = 3n;',
+      options: [{ ignore: ['3n'] }],
+    },
+    {
+      code: 'type Foo = -4n;',
+      options: [{ ignore: ['-4n'] }],
+    },
+    {
+      code: 'type Foo = 5.6;',
+      options: [{ ignore: [5.6] }],
+    },
+    {
+      code: 'type Foo = -7.8;',
+      options: [{ ignore: [-7.8] }],
+    },
+    {
+      code: 'type Foo = 0x0a;',
+      options: [{ ignore: [0x0a] }],
+    },
+    {
+      code: 'type Foo = -0xbc;',
+      options: [{ ignore: [-0xbc] }],
+    },
+    {
+      code: 'type Foo = 1e2;',
+      options: [{ ignore: [1e2] }],
+    },
+    {
+      code: 'type Foo = -3e4;',
+      options: [{ ignore: [-3e4] }],
+    },
+    {
+      code: 'type Foo = 5e-6;',
+      options: [{ ignore: [5e-6] }],
+    },
+    {
+      code: 'type Foo = -7e-8;',
+      options: [{ ignore: [-7e-8] }],
+    },
+    {
+      code: 'type Foo = 1.1e2;',
+      options: [{ ignore: [1.1e2] }],
+    },
+    {
+      code: 'type Foo = -3.1e4;',
+      options: [{ ignore: [-3.1e4] }],
+    },
+    {
+      code: 'type Foo = 5.1e-6;',
+      options: [{ ignore: [5.1e-6] }],
+    },
+    {
+      code: 'type Foo = -7.1e-8;',
+      options: [{ ignore: [-7.1e-8] }],
     },
     {
       code: `
