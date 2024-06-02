@@ -31,15 +31,17 @@ module.exports = {
       collapsible: false,
       items: [
         {
-          collapsed: false,
-          collapsible: false,
+          collapsed: true,
+          collapsible: true,
           items: [
-            'troubleshooting/faqs/formatting',
-            'troubleshooting/faqs/tslint',
+            'troubleshooting/faqs/eslint',
+            'troubleshooting/faqs/frameworks',
+            'troubleshooting/faqs/javascript',
+            'troubleshooting/faqs/typescript',
           ],
           label: 'FAQs',
           link: {
-            id: 'troubleshooting/faqs',
+            id: 'troubleshooting/faqs/index',
             type: 'doc',
           },
           type: 'category',
@@ -53,18 +55,13 @@ module.exports = {
           ],
           label: 'Typed Linting',
           link: {
-            id: 'troubleshooting/typed-linting',
+            id: 'troubleshooting/typed-linting/index',
             type: 'doc',
           },
           type: 'category',
         },
-        'troubleshooting/working-with-javascript',
       ],
       label: 'Troubleshooting',
-      link: {
-        id: 'troubleshooting/faqs',
-        type: 'doc',
-      },
       type: 'category',
     },
     {
@@ -74,10 +71,12 @@ module.exports = {
         'users/dependency-versions',
         'users/releases',
         'users/versioning',
+        'users/what-about-formatting',
+        'users/what-about-tslint',
       ],
       label: 'Users',
       link: {
-        id: 'users',
+        id: 'users/index',
         type: 'doc',
       },
       type: 'category',

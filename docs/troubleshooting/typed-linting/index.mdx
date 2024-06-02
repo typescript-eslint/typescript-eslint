@@ -1,5 +1,5 @@
 ---
-id: typed-linting
+id: index
 title: Typed Linting
 slug: /troubleshooting/typed-linting
 ---
@@ -18,8 +18,8 @@ These errors are caused by an ESLint config requesting type information be gener
 - If you **do not** want to lint the file:
   - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
-  - If you **do not** want to lint the file with [type-aware linting](../getting-started/Typed_Linting.mdx):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) with our [`disable-type-checked`](../users/Shared_Configurations.mdx#disable-type-checked) config to disable type checking for just that type of file.
+  - If you **do not** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) with our [`disable-type-checked`](../../users/Shared_Configurations.mdx#disable-type-checked) config to disable type checking for just that type of file.
     <Tabs groupId="eslint-config">
       <TabItem value="Flat Config">
 
@@ -53,7 +53,7 @@ These errors are caused by an ESLint config requesting type information be gener
       </TabItem>
     </Tabs>
     - Alternatively to disable type checking for files manually, you can set `parserOptions: { project: false }` to an override for the files you wish to exclude.
-  - If you **do** want to lint the file with [type-aware linting](../getting-started/Typed_Linting.mdx):
+  - If you **do** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
     - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
       - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
@@ -81,7 +81,7 @@ For example, many projects have files like:
 
 In that case, viewing the file in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
 
-See our docs on [type aware linting](../getting-started/Typed_Linting.mdx) for more information.
+See our docs on [type aware linting](../../getting-started/Typed_Linting.mdx) for more information.
 
 ## I get errors telling me "The file must be included in at least one of the projects provided"
 
@@ -92,7 +92,7 @@ Update to the latest version to see a more informative version of this error mes
 
 First make sure you've read the docs and understand ESLint configuration files:
 
-- [Read our getting started guide](../getting-started/Quickstart.mdx) to ensure your config is properly setup to start configuring our rules.
+- [Read our getting started guide](../../getting-started/Quickstart.mdx) to ensure your config is properly setup to start configuring our rules.
 - [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
 
 Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
@@ -152,7 +152,7 @@ module.exports = {
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
 
-These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProjectForFiles` with an excessively wide glob.
+These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProjectForFiles` with an excessively wide glob.
 `allowDefaultProjectForFiles` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
 
 To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
@@ -205,6 +205,6 @@ If the IDE provides different type information from typescript-eslint's report, 
 
 ## Are TypeScript project references supported?
 
-Yes, but only with [`EXPERIMENTAL_useProjectService`](../packages/Parser.mdx#experimental_useprojectservice).
+Yes, but only with [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice).
 
 See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.

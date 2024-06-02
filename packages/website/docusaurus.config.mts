@@ -293,11 +293,11 @@ const redirects: PluginRedirectOptions = {
     },
     {
       from: '/troubleshooting/formatting',
-      to: '/troubleshooting/faqs/formatting',
+      to: '/users/what-about-formatting',
     },
     {
       from: '/troubleshooting/tslint',
-      to: '/troubleshooting/faqs/tslint',
+      to: '/users/what-about-tslint',
     },
     {
       from: '/troubleshooting/performance-troubleshooting',
