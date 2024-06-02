@@ -363,6 +363,22 @@ ruleTester.run('require-types-exports', rule, {
         return arg;
       }
     `,
+
+    `
+      export class Wrapper {
+        work(other: this) {}
+      }
+    `,
+
+    `
+      export namespace A {
+        export type B = number;
+      }
+
+      export function a(arg: A.B) {
+        return arg;
+      }
+    `,
   ],
 
   invalid: [
@@ -1795,6 +1811,29 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 24,
           data: {
             name: 'Arg2',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        export namespace A {
+          type B = number;
+        }
+
+        export function a(arg: A.B) {
+          return arg;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 32,
+          endColumn: 35,
+          data: {
+            name: 'A.B',
           },
         },
       ],

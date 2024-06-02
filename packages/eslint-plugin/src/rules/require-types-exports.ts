@@ -174,10 +174,11 @@ export default createRule<[], MessageIds>({
     }
 
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
-      const name = getTypeName(node);
+      const name = getTypeName(node.typeName);
 
-      if (!name) {
-        // TODO: Report the whole function? Is this case even possible?
+      // Using `this` type is allowed since it's necessarily exported
+      // if it's used in an exported entity.
+      if (name === 'this') {
         return;
       }
 
@@ -206,12 +207,17 @@ export default createRule<[], MessageIds>({
       reportedTypes.add(name);
     }
 
-    function getTypeName(typeReference: TSESTree.TSTypeReference): string {
-      if (typeReference.typeName.type === AST_NODE_TYPES.Identifier) {
-        return typeReference.typeName.name;
-      }
+    function getTypeName(typeName: TSESTree.EntityName): string {
+      switch (typeName.type) {
+        case AST_NODE_TYPES.Identifier:
+          return typeName.name;
 
-      return '';
+        case AST_NODE_TYPES.TSQualifiedName:
+          return getTypeName(typeName.left) + '.' + typeName.right.name;
+
+        case AST_NODE_TYPES.ThisExpression:
+          return 'this';
+      }
     }
 
     return {
