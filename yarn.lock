@@ -10515,6 +10515,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"file-entry-cache@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "file-entry-cache@npm:9.0.0"
+  dependencies:
+    flat-cache: ^5.0.0
+  checksum: 850ab258497cfad2aff166319068101202d6969415227a425b9de9acdb152dc33506c7208906289a6dcb2a7f9390601f4b80ccf6353510c58710b75d5a02df6e
+  languageName: node
+  linkType: hard
+
 "file-loader@npm:^6.2.0":
   version: 6.2.0
   resolution: "file-loader@npm:6.2.0"
@@ -10658,6 +10667,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flat-cache@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "flat-cache@npm:5.0.0"
+  dependencies:
+    flatted: ^3.3.1
+    keyv: ^4.5.4
+  checksum: a7d03de79b603f5621009f75d84d2c5cd8fb762911df93c0ed16cd1cd4f7b8d2357d4aaed8806b5943ce71ebcd4fc4998faf061f33879c56c5294b3f5c3698ef
+  languageName: node
+  linkType: hard
+
 "flat@npm:^5.0.2":
   version: 5.0.2
   resolution: "flat@npm:5.0.2"
@@ -10667,10 +10686,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flatted@npm:^3.2.9":
-  version: 3.2.9
-  resolution: "flatted@npm:3.2.9"
-  checksum: f14167fbe26a9d20f6fca8d998e8f1f41df72c8e81f9f2c9d61ed2bea058248f5e1cbd05e7f88c0e5087a6a0b822a1e5e2b446e879f3cfbe0b07ba2d7f80b026
+"flatted@npm:^3.2.9, flatted@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "flatted@npm:3.3.1"
+  checksum: 85ae7181650bb728c221e7644cbc9f4bf28bc556f2fc89bb21266962bdf0ce1029cc7acc44bb646cd469d9baac7c317f64e841c4c4c00516afa97320cdac7f94
   languageName: node
   linkType: hard
 
@@ -19010,8 +19029,8 @@ __metadata:
   linkType: hard
 
 "stylelint@npm:^16.3.1":
-  version: 16.6.0
-  resolution: "stylelint@npm:16.6.0"
+  version: 16.6.1
+  resolution: "stylelint@npm:16.6.1"
   dependencies:
     "@csstools/css-parser-algorithms": ^2.6.3
     "@csstools/css-tokenizer": ^2.3.1
@@ -19026,7 +19045,7 @@ __metadata:
     debug: ^4.3.4
     fast-glob: ^3.3.2
     fastest-levenshtein: ^1.0.16
-    file-entry-cache: ^8.0.0
+    file-entry-cache: ^9.0.0
     global-modules: ^2.0.0
     globby: ^11.1.0
     globjoin: ^0.1.4
@@ -19037,7 +19056,7 @@ __metadata:
     known-css-properties: ^0.31.0
     mathml-tag-names: ^2.1.3
     meow: ^13.2.0
-    micromatch: ^4.0.5
+    micromatch: ^4.0.7
     normalize-path: ^3.0.0
     picocolors: ^1.0.1
     postcss: ^8.4.38
@@ -19054,7 +19073,7 @@ __metadata:
     write-file-atomic: ^5.0.1
   bin:
     stylelint: bin/stylelint.mjs
-  checksum: 3a99a3e7497951f9f6c10d2dc39937c55ed2a54a95a4acece4d1274af49ac8ab5b4cf4f5dcdca02717b578b96f21b5d5a74e0f806ee22de2823535396501c41a
+  checksum: eae2d11e1b7c1d0b8e242e2ce5f6098cdc303b0210b676dd2692c68c9c9458938e8a7e29af22f8f3f0907874456191c293e6677b55bdeb8eb8c6e5a9e6e34491
   languageName: node
   linkType: hard
 
