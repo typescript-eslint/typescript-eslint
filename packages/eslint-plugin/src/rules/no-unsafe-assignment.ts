@@ -38,7 +38,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
+      anyAssignment: 'Unsafe assignment of an {{sender}} typed value.',
       anyAssignmentThis: [
         'Unsafe assignment of an {{sender}}  value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -306,7 +306,7 @@ export default createRule({
         messageId: 'unsafeAssignment',
         data: {
           sender: '`' + checker.typeToString(sender) + '`',
-          receiver:'`' + checker.typeToString(receiver) + '`',
+          receiver: '`' + checker.typeToString(receiver) + '`',
         },
       });
       return true;

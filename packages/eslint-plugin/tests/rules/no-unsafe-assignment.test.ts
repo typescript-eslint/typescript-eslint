@@ -177,9 +177,9 @@ const x = 1 as any,
     },
     {
       code: `
-class Foo {
-  constructor(private a = 1 as any) {}
-}
+      class Foo {
+        constructor(private a = 1 as any) {}
+      }
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
@@ -205,10 +205,12 @@ class Foo {
     },
     {
       code: `
-       const {x: {y}} = {x: {spooky}};
+       const {x: {y: z}} = {x: spooky};
       `,
-      only: true,
-      errors: [{ messageId: 'unsafeArrayPatternFromTuple' }],
+      errors: [
+        { messageId: 'unsafeArrayPatternFromTuple' },
+        { messageId: 'anyAssignment' },
+      ],
     },
     {
       code: `
