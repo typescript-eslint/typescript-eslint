@@ -14,6 +14,7 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 type TypeReference = Reference & {
+  isTypeReference: true;
   identifier: {
     parent: TSESTree.TSTypeReference;
   };
@@ -44,7 +45,9 @@ export default createRule<[], MessageIds>({
       scope.references.forEach(r => {
         if (
           r.resolved?.isTypeVariable &&
-          r.identifier.parent.type === AST_NODE_TYPES.TSTypeReference
+          r.identifier.type === AST_NODE_TYPES.Identifier &&
+          r.identifier.parent.type === AST_NODE_TYPES.TSTypeReference &&
+          r.isTypeReference
         ) {
           typeReferences.add(r as TypeReference);
         }
