@@ -85,7 +85,6 @@ import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noUselessTemplateExpression from './no-useless-template-expression';
-import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import onlyThrowError from './only-throw-error';
@@ -210,7 +209,6 @@ export default {
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
   'no-useless-template-expression': noUselessTemplateExpression,
-  'no-useless-template-literals': noUselessTemplateLiterals,
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'only-throw-error': onlyThrowError,
