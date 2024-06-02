@@ -4,25 +4,18 @@ exports[`Validating rule docs no-wrapper-object-types.mdx code examples ESLint o
 "Incorrect
 
 let myBigInt: BigInt;
-              ~~~~~~ Prefer using the primitive \`bigint\` as a type name, rather than the class wrapper \`BigInt\`.
+              ~~~~~~ Prefer using the primitive \`bigint\` as a type name, rather than the upper-cased \`BigInt\`.
 let myBoolean: Boolean;
-               ~~~~~~~ Prefer using the primitive \`boolean\` as a type name, rather than the class wrapper \`Boolean\`.
+               ~~~~~~~ Prefer using the primitive \`boolean\` as a type name, rather than the upper-cased \`Boolean\`.
 let myNumber: Number;
-              ~~~~~~ Prefer using the primitive \`number\` as a type name, rather than the class wrapper \`Number\`.
+              ~~~~~~ Prefer using the primitive \`number\` as a type name, rather than the upper-cased \`Number\`.
 let myString: String;
-              ~~~~~~ Prefer using the primitive \`string\` as a type name, rather than the class wrapper \`String\`.
+              ~~~~~~ Prefer using the primitive \`string\` as a type name, rather than the upper-cased \`String\`.
 let mySymbol: Symbol;
-              ~~~~~~ Prefer using the primitive \`symbol\` as a type name, rather than the class wrapper \`Symbol\`.
+              ~~~~~~ Prefer using the primitive \`symbol\` as a type name, rather than the upper-cased \`Symbol\`.
 
 let myObject: Object = 'allowed by TypeScript';
-              ~~~~~~ Prefer using the primitive \`object\` as a type name, rather than the class wrapper \`Object\`.
-
-let myFunction: Function;
-                ~~~~~~~~ The \`Function\` type accepts any function-like value.
-                         It provides no type safety when calling the function, which can be a common source of bugs.
-                         It also accepts things like class declarations, which will throw at runtime as they will not be called with \`new\`.
-                         If you are expecting the function to accept certain arguments, you should explicitly define the function shape.
-myFunction = () => {};
+              ~~~~~~ Prefer using the primitive \`object\` as a type name, rather than the upper-cased \`Object\`.
 "
 `;
 
@@ -32,13 +25,9 @@ exports[`Validating rule docs no-wrapper-object-types.mdx code examples ESLint o
 let myBigint: bigint;
 let myBoolean: boolean;
 let myNumber: number;
-let myObject: object;
 let myString: string;
 let mySymbol: symbol;
 
 let myObject: object = "Type 'string' is not assignable to type 'object'.";
-
-let myFunction: () => void;
-myFunction = () => {};
 "
 `;

@@ -125,13 +125,20 @@ ruleTester.run('no-wrapper-object-types', rule, {
       ],
     },
     {
-      code: 'let value: Function;',
-      output: null,
+      code: 'let value: Number | Symbol;',
+      output: 'let value: number | symbol;',
       errors: [
         {
-          messageId: 'bannedFunctionType',
+          data: { typeName: 'Number', preferred: 'number' },
+          messageId: 'bannedClassType',
           line: 1,
           column: 12,
+        },
+        {
+          data: { typeName: 'Symbol', preferred: 'symbol' },
+          messageId: 'bannedClassType',
+          line: 1,
+          column: 21,
         },
       ],
     },

@@ -7,8 +7,9 @@ It has no options enabled by default.
 
 The default options from `ban-types` are now covered by:
 
-- **[`no-empty-object-type`](./no-empty-object-type)**: banning the built-in `{}` type in confusing locations
-- **[`no-wrapper-object-types`](./no-wrapper-object-types.mdx)**: banning built-in class wrappers such as `Number`
+- **[`no-empty-object-type`](./no-empty-object-type.mdx)**: banning the built-in `{}` type in confusing locations
+- **[`no-unsafe-function-type`](./no-unsafe-function-type.mdx)**: banning the built-in `Function`
+- **[`no-wrapper-object-types`](./no-wrapper-object-types.mdx)**: banning `Object` and built-in class wrappers such as `Number`
 
 `ban-types` itself is removed in typescript-eslint v8.
 See [Announcing typescript-eslint v8 Beta](/announcing-typescript-eslint-v8-beta) for more details.

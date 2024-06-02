@@ -7,7 +7,6 @@ const classNames = new Set([
   'BigInt',
   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
   'Boolean',
-  'Function',
   'Number',
   'Object',
   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
@@ -27,12 +26,6 @@ export default createRule({
     messages: {
       bannedClassType:
         'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
-      bannedFunctionType: [
-        'The `Function` type accepts any function-like value.',
-        'It provides no type safety when calling the function, which can be a common source of bugs.',
-        'It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.',
-        'If you are expecting the function to accept certain arguments, you should explicitly define the function shape.',
-      ].join('\n'),
     },
     schema: [],
   },
@@ -44,14 +37,6 @@ export default createRule({
     ): void {
       const typeName = node.type === AST_NODE_TYPES.Identifier && node.name;
       if (!typeName || !classNames.has(typeName)) {
-        return;
-      }
-
-      if (typeName === 'Function') {
-        context.report({
-          node,
-          messageId: 'bannedFunctionType',
-        });
         return;
       }
 

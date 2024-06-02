@@ -18,10 +18,6 @@ Using the primitives like `0` instead of object wrappers like `new Number(0)` is
 JavaScript programs typically work with the real number primitives, rather than objects that "look like" numbers.
 As a result, using the lowercase type names like `number` instead of the uppercase names like `Number` helps make your code behave more reliably.
 
-TypeScript's `Function` type suffers from the same issue of structural typing.
-In addition, `Function` allows being called with any number of arguments and returns type `any`, while in reality, it may be a class which is never callable, or it may be a plain object that happens to possess all properties of the `Function` class!
-It's generally better to specify function parameters and return types with the function type syntax.
-
 Examples of code for this rule:
 
 <Tabs>
@@ -35,9 +31,6 @@ let myString: String;
 let mySymbol: Symbol;
 
 let myObject: Object = 'allowed by TypeScript';
-
-let myFunction: Function;
-myFunction = () => {};
 ```
 
 </TabItem>
@@ -51,9 +44,6 @@ let myString: string;
 let mySymbol: symbol;
 
 let myObject: object = "Type 'string' is not assignable to type 'object'.";
-
-let myFunction: () => void;
-myFunction = () => {};
 ```
 
 </TabItem>

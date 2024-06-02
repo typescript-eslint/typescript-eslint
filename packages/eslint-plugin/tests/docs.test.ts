@@ -155,6 +155,7 @@ describe('Validating rule docs', () => {
     'TEMPLATE.md',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
+    'ban-types.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
     ...oldStylisticRules,
