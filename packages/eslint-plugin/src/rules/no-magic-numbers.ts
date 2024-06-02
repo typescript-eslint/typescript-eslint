@@ -80,7 +80,7 @@ export default createRule<Options, MessageIds>({
         let isAllowed: boolean | undefined;
 
         // Check if the node is ignored
-        if (ignored.has(normalizeLiteralValue(node))) {
+        if (ignored.has(normalizeLiteralValue(node, node.value))) {
           isAllowed = true;
         }
         // Check if the node is a TypeScript enum declaration
@@ -154,20 +154,22 @@ function normalizeIgnoreValue(
 /**
  * Converts the node to its numeric value, handling prefixed numbers (-1 / +1)
  * @param node the node to normalize.
+ * @param value the node's value.
  */
 function normalizeLiteralValue(
   node: TSESTree.BigIntLiteral | TSESTree.NumberLiteral,
+  value: number | bigint,
 ): bigint | number {
   if (
     node.parent.type === AST_NODE_TYPES.UnaryExpression &&
     ['-', '+'].includes(node.parent.operator)
   ) {
     if (node.parent.operator === '-') {
-      return -(node.value ?? BigInt(node.raw));
+      return -value;
     }
   }
 
-  return node.value ?? BigInt(node.raw);
+  return value;
 }
 
 /**
