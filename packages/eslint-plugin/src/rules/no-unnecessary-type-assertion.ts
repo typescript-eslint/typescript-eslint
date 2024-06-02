@@ -14,6 +14,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import type { Scope } from '@typescript-eslint/scope-manager';
 
 type Options = [
   {
@@ -79,29 +80,50 @@ export default createRule<Options, MessageIds>({
         ) &&
         // ignore class properties as they are compile time guarded
         // also ignore function arguments as they can't be used before defined
-        ts.isVariableDeclaration(declaration) &&
-        // is it `const x!: number`
-        declaration.initializer === undefined &&
-        declaration.exclamationToken === undefined &&
-        declaration.type !== undefined
+        ts.isVariableDeclaration(declaration)
       ) {
-        // check if the defined variable type has changed since assignment
-        const declarationType = checker.getTypeFromTypeNode(declaration.type);
-        const type = getConstrainedTypeAtLocation(services, node);
         if (
-          declarationType === type &&
-          // `declare`s are never narrowed, so never skip them
-          !(
-            services.tsNodeToESTreeNodeMap.get(declaration)
-              .parent as TSESTree.VariableDeclaration
-          ).declare
+          ts.isVariableDeclarationList(declaration.parent) &&
+          // var
+          declaration.parent.flags === ts.NodeFlags.None
         ) {
-          // possibly used before assigned, so just skip it
-          // better to false negative and skip it, than false positive and fix to compile erroring code
-          //
-          // no better way to figure this out right now
-          // https://github.com/Microsoft/TypeScript/issues/31124
-          return true;
+          const declaratorNode = services.tsNodeToESTreeNodeMap.get(
+            declaration,
+          ) as TSESTree.VariableDeclarator;
+          const scope = context.sourceCode.getScope(node);
+          const declaratorScope = context.sourceCode.getScope(declaratorNode);
+          let parentScope: Scope | null = declaratorScope;
+          while ((parentScope = parentScope.upper)) {
+            if (parentScope === scope) {
+              return true;
+            }
+          }
+        }
+
+        if (
+          // is it `const x!: number`
+          declaration.initializer === undefined &&
+          declaration.exclamationToken === undefined &&
+          declaration.type !== undefined
+        ) {
+          // check if the defined variable type has changed since assignment
+          const declarationType = checker.getTypeFromTypeNode(declaration.type);
+          const type = getConstrainedTypeAtLocation(services, node);
+          if (
+            declarationType === type &&
+            // `declare`s are never narrowed, so never skip them
+            !(
+              services.tsNodeToESTreeNodeMap.get(declaration)
+                .parent as TSESTree.VariableDeclaration
+            ).declare
+          ) {
+            // possibly used before assigned, so just skip it
+            // better to false negative and skip it, than false positive and fix to compile erroring code
+            //
+            // no better way to figure this out right now
+            // https://github.com/Microsoft/TypeScript/issues/31124
+            return true;
+          }
         }
       }
       return false;
