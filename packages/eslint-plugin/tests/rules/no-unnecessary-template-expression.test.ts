@@ -1,6 +1,6 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-useless-template-expression';
+import rule from '../../src/rules/no-unnecessary-template-expression';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
@@ -13,7 +13,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-useless-template-expression', rule, {
+ruleTester.run('no-unnecessary-template-expression', rule, {
   valid: [
     "const string = 'a';",
     'const string = `a`;',
@@ -143,7 +143,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`1`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 5,
@@ -155,7 +155,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`1`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 6,
@@ -167,7 +167,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`/a/`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
@@ -180,7 +180,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`1`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -190,7 +190,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: `'a';`,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -200,7 +200,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: `"a";`,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -210,7 +210,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: `'a' + 'b';`,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -220,7 +220,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`true`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 8,
@@ -233,7 +233,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`true`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -243,7 +243,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`null`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 8,
@@ -256,7 +256,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`null`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -266,7 +266,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`undefined`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 13,
@@ -279,7 +279,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`undefined`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -289,7 +289,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`Infinity`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 12,
@@ -302,7 +302,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`NaN`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
@@ -315,13 +315,13 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`a b`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
         },
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 11,
           endColumn: 14,
@@ -334,10 +334,10 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`a b`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -353,7 +353,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 17,
           endColumn: 20,
@@ -366,7 +366,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`useless`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
         },
       ],
@@ -377,7 +377,7 @@ ruleTester.run('no-useless-template-expression', rule, {
       output: '`useless`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
         },
       ],
@@ -394,7 +394,7 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -421,17 +421,17 @@ declare const nested: string, interpolation: string;
       ],
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 4,
         },
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 7,
           column: 3,
           endLine: 7,
         },
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 7,
           column: 10,
           endLine: 7,
@@ -449,7 +449,7 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 3,
           endColumn: 9,
@@ -462,13 +462,13 @@ declare const nested: string, interpolation: string;
       output: '`1 + 1 = 2`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 13,
         },
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 17,
           endColumn: 18,
@@ -481,13 +481,13 @@ declare const nested: string, interpolation: string;
       output: '`a true`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 7,
         },
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 11,
           endColumn: 15,
@@ -506,7 +506,7 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 12,
           endColumn: 18,
@@ -525,7 +525,7 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -535,7 +535,7 @@ declare const nested: string, interpolation: string;
       output: "String(Symbol.for('test'));",
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 1,
           column: 4,
           endColumn: 30,
@@ -554,7 +554,7 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 12,
           endColumn: 24,
@@ -575,7 +575,7 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
           line: 3,
           column: 14,
           endColumn: 17,
@@ -588,7 +588,7 @@ declare const nested: string, interpolation: string;
       output: "'`';",
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -598,7 +598,7 @@ declare const nested: string, interpolation: string;
       output: '`back\\`tick`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -608,7 +608,7 @@ declare const nested: string, interpolation: string;
       output: '`dollar\\${\\`this is test\\`}sign`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -618,7 +618,7 @@ declare const nested: string, interpolation: string;
       output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -628,7 +628,7 @@ declare const nested: string, interpolation: string;
       output: '`some \\\\\\${test} string`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
@@ -638,7 +638,7 @@ declare const nested: string, interpolation: string;
       output: '`some \\\\\\` string`;',
       errors: [
         {
-          messageId: 'noUselessTemplateExpression',
+          messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
