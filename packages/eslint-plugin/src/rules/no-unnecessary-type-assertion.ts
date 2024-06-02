@@ -1,3 +1,4 @@
+import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -14,7 +15,6 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
-import type { Scope } from '@typescript-eslint/scope-manager';
 
 type Options = [
   {
@@ -87,9 +87,8 @@ export default createRule<Options, MessageIds>({
           // var
           declaration.parent.flags === ts.NodeFlags.None
         ) {
-          const declaratorNode = services.tsNodeToESTreeNodeMap.get(
-            declaration,
-          ) as TSESTree.VariableDeclarator;
+          const declaratorNode =
+            services.tsNodeToESTreeNodeMap.get(declaration);
           const scope = context.sourceCode.getScope(node);
           const declaratorScope = context.sourceCode.getScope(declaratorNode);
           let parentScope: Scope | null = declaratorScope;

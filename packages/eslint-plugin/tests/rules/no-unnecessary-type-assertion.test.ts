@@ -350,7 +350,7 @@ const bar = foo.a as string | undefined | bigint;
       code: `
 if (Math.random()) {
   {
-      var x = 1;
+    var x = 1;
   }
 }
 x!;
