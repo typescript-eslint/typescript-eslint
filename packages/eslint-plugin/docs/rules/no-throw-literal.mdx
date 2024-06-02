@@ -16,10 +16,10 @@ This rule restricts what can be thrown as an exception.
 
 :::warning
 This rule is being renamed to [`only-throw-error`](./only-throw-error.mdx).
-When it was first created, it only prevented literals from being thrown (hence the name), but it has now been expanded to only allow expressions which have a possibility of being an `Error` object.
-With the `allowThrowingAny` and `allowThrowingUnknown` options, it can be configured to only allow throwing values which are guaranteed to be an instance of `Error`.
+The current name, `no-throw-literal`, will be removed in a future major version of typescript-eslint.
 
-The current name `no-throw-literal` will be removed in a future major version of typescript-eslint.
+When it was first created, this rule only prevented literals from being thrown (hence the name), but it has now been expanded to only allow expressions which have a possibility of being an `Error` object.
+With the `allowThrowingAny` and `allowThrowingUnknown` options, it can be configured to only allow throwing values which are guaranteed to be an instance of `Error`.
 :::
 
 {/* Intentionally Omitted: When Not To Use It */}

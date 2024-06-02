@@ -1686,6 +1686,63 @@ describe("RuleTester", () => {
         }, "Hydrated message \"Avoid using variables named 'notFoo'.\" does not match \"Avoid using variables named 'foo'.\"");
     });
 
+    it("should throw if the message has a single unsubstituted placeholder when data is not specified", () => {
+      assert.throws(() => {
+        ruleTester.run("foo", require("./fixtures/messageId").withMissingData, {
+          valid: [],
+          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+        });
+      }, "The reported message has an unsubstituted placeholder 'name'. Please provide the missing value via the 'data' property in the context.report() call.");
+    });
+
+    it("should throw if the message has a single unsubstituted placeholders when data is specified", () => {
+      assert.throws(() => {
+        ruleTester.run("foo", require("./fixtures/messageId").withMissingData, {
+          valid: [],
+          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo", data: { name: "name" } }] }]
+        });
+      }, "Hydrated message \"Avoid using variables named 'name'.\" does not match \"Avoid using variables named '{{ name }}'.");
+    });
+
+    it("should throw if the message has multiple unsubstituted placeholders when data is not specified", () => {
+      assert.throws(() => {
+        ruleTester.run("foo", require("./fixtures/messageId").withMultipleMissingDataProperties, {
+          valid: [],
+          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+        });
+      }, "The reported message has unsubstituted placeholders: 'type', 'name'. Please provide the missing values via the 'data' property in the context.report() call.");
+    });
+
+    it("should not throw if the data in the message contains placeholders not present in the raw message", () => {
+      ruleTester.run("foo", require("./fixtures/messageId").withPlaceholdersInData, {
+        valid: [],
+        invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+      });
+    });
+
+    it("should throw if the data in the message contains the same placeholder and data is not specified", () => {
+      assert.throws(() => {
+        ruleTester.run("foo", require("./fixtures/messageId").withSamePlaceholdersInData, {
+          valid: [],
+          invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo" }] }]
+        });
+      }, "The reported message has an unsubstituted placeholder 'name'. Please provide the missing value via the 'data' property in the context.report() call.");
+    });
+
+    it("should not throw if the data in the message contains the same placeholder and data is specified", () => {
+      ruleTester.run("foo", require("./fixtures/messageId").withSamePlaceholdersInData, {
+        valid: [],
+        invalid: [{ code: "foo", errors: [{ messageId: "avoidFoo", data: { name: "{{ name }}" } }] }]
+      });
+    });
+
+    it("should not throw an error for specifying non-string data values", () => {
+      ruleTester.run("foo", require("./fixtures/messageId").withNonStringData, {
+        valid: [],
+        invalid: [{ code: "0", errors: [{ messageId: "avoid", data: { value: 0 } }] }]
+      });
+    });
+
     // messageId/message misconfiguration cases
     it("should throw if user tests for both message and messageId", () => {
         assert.throws(() => {
@@ -1854,6 +1911,61 @@ describe("RuleTester", () => {
             });
         });
 
+        it("should fail with a single missing data placeholder when data is not specified", () => {
+          assert.throws(() => {
+            ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMissingPlaceholderData, {
+              valid: [],
+              invalid: [{
+                code: "var foo;",
+                errors: [{
+                  messageId: "avoidFoo",
+                  suggestions: [{
+                    messageId: "renameFoo",
+                    output: "var bar;"
+                  }]
+                }]
+              }]
+            });
+          }, "The message of the suggestion has an unsubstituted placeholder 'newName'. Please provide the missing value via the 'data' property for the suggestion in the context.report() call.");
+        });
+
+        it("should fail with a single missing data placeholder when data is specified", () => {
+          assert.throws(() => {
+            ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMissingPlaceholderData, {
+              valid: [],
+              invalid: [{
+                code: "var foo;",
+                errors: [{
+                  messageId: "avoidFoo",
+                  suggestions: [{
+                    messageId: "renameFoo",
+                    data: { other: "name" },
+                    output: "var bar;"
+                  }]
+                }]
+              }]
+            });
+          }, "The message of the suggestion has an unsubstituted placeholder 'newName'. Please provide the missing value via the 'data' property for the suggestion in the context.report() call.");
+        });
+
+        it("should fail with multiple missing data placeholders when data is not specified", () => {
+          assert.throws(() => {
+            ruleTester.run("suggestions-messageIds", require("../../fixtures/testers/rule-tester/suggestions").withMultipleMissingPlaceholderDataProperties, {
+              valid: [],
+              invalid: [{
+                code: "var foo;",
+                errors: [{
+                  messageId: "avoidFoo",
+                  suggestions: [{
+                    messageId: "rename",
+                    output: "var bar;"
+                  }]
+                }]
+              }]
+            });
+          }, "The message of the suggestion has unsubstituted placeholders: 'currentName', 'newName'. Please provide the missing values via the 'data' property for the suggestion in the context.report() call.");
+        });
+
 
         it("should pass when tested using empty suggestion test objects if the array length is correct", () => {
             ruleTester.run("suggestions-messageIds", require("./fixtures/suggestions").withMessageIds, {
@@ -1931,6 +2043,48 @@ describe("RuleTester", () => {
                     }]
                 });
             }, "Error should have 2 suggestions. Instead found 1 suggestions");
+        });
+
+        it("should throw if suggestion fix made a syntax error.", () => {
+            assert.throw(() => {
+                ruleTester.run(
+                    "foo",
+                    {
+                        meta: { hasSuggestions: true },
+                        create(context) {
+                            return {
+                                Identifier(node) {
+                                    context.report({
+                                        node,
+                                        message: "make a syntax error",
+                                        suggest: [
+                                            {
+                                                desc: "make a syntax error",
+                                                fix(fixer) {
+                                                    return fixer.replaceText(node, "one two");
+                                                }
+                                            }
+                                        ]
+                                    });
+                                }
+                            };
+                        }
+                    },
+                    {
+                        valid: [""],
+                        invalid: [{
+                            code: "one()",
+                            errors: [{
+                                message: "make a syntax error",
+                                suggestions: [{
+                                    desc: "make a syntax error",
+                                    output: "one two()"
+                                }]
+                            }]
+                        }]
+                    }
+                );
+            }, /A fatal parsing error occurred in suggestion fix\.\nError: .+\nSuggestion output:\n.+/u);
         });
 
         it("should throw if the suggestion description doesn't match", () => {
@@ -2907,6 +3061,301 @@ describe("RuleTester", () => {
             ]);
         });
 
+    });
+
+    describe("duplicate test cases", () => {
+        describe("valid test cases", () => {
+            it("throws with duplicate string test cases", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: {},
+                        create() {
+                            return {};
+                        }
+                    }, {
+                        valid: ["foo", "foo"],
+                        invalid: []
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("throws with duplicate object test cases", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: {},
+                        create() {
+                            return {};
+                        }
+                    }, {
+                        valid: [{ code: "foo" }, { code: "foo" }],
+                        invalid: []
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("throws with string and object test cases", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: {},
+                        create() {
+                            return {};
+                        }
+                    }, {
+                        valid: ["foo", { code: "foo" }],
+                        invalid: []
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("ignores the name property", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: {},
+                        create() {
+                            return {};
+                        }
+                    }, {
+                        valid: [{ code: "foo" }, { name: "bar", code: "foo" }],
+                        invalid: []
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("does not ignore top level test case properties nested in other test case properties", () => {
+                ruleTester.run("foo", {
+                    meta: { schema: [{ type: "object" }] },
+                    create() {
+                        return {};
+                    }
+                }, {
+                    valid: [{ options: [{ name: "foo" }], name: "foo", code: "same" }, { options: [{ name: "bar" }], name: "bar", code: "same" }],
+                    invalid: []
+                });
+            });
+
+            it("does not throw an error for defining the same test case in different run calls", () => {
+                const rule = {
+                    meta: {},
+                    create() {
+                        return {};
+                    }
+                };
+
+                ruleTester.run("foo", rule, {
+                    valid: ["foo"],
+                    invalid: []
+                });
+
+                ruleTester.run("foo", rule, {
+                    valid: ["foo"],
+                    invalid: []
+                });
+            });
+        });
+
+        describe("invalid test cases", () => {
+            it("throws with duplicate object test cases", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: {},
+                        create(context) {
+                            return {
+                                VariableDeclaration(node) {
+                                    context.report(node, "foo bar");
+                                }
+                            };
+                        }
+                    }, {
+                        valid: ["foo"],
+                        invalid: [
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }] },
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }] }
+                        ]
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("throws with duplicate object test cases when options is a primitive", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: { schema: false },
+                        create(context) {
+                            return {
+                                VariableDeclaration(node) {
+                                    context.report(node, "foo bar");
+                                }
+                            };
+                        }
+                    }, {
+                        valid: ["foo"],
+                        invalid: [
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }], options: ["abc"] },
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }], options: ["abc"] }
+                        ]
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("throws with duplicate object test cases when options is a nested serializable object", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: { schema: false },
+                        create(context) {
+                            return {
+                                VariableDeclaration(node) {
+                                    context.report(node, "foo bar");
+                                }
+                            };
+                        }
+                    }, {
+                        valid: ["foo"],
+                        invalid: [
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }], options: [{ foo: [{ a: true, b: [1, 2, 3] }] }] },
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }], options: [{ foo: [{ a: true, b: [1, 2, 3] }] }] }
+                        ]
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("throws with duplicate object test cases even when property order differs", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: {},
+                        create(context) {
+                            return {
+                                VariableDeclaration(node) {
+                                    context.report(node, "foo bar");
+                                }
+                            };
+                        }
+                    }, {
+                        valid: ["foo"],
+                        invalid: [
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }] },
+                            { errors: [{ message: "foo bar" }], code: "const x = 123;" }
+                        ]
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("ignores duplicate test case when non-serializable property present (settings)", () => {
+                ruleTester.run("foo", {
+                    meta: {},
+                    create(context) {
+                        return {
+                            VariableDeclaration(node) {
+                                context.report(node, "foo bar");
+                            }
+                        };
+                    }
+                }, {
+                    valid: ["foo"],
+                    invalid: [
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], settings: { foo: /abc/u } },
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], settings: { foo: /abc/u } }
+                    ]
+                });
+            });
+
+            it("ignores duplicate test case when non-serializable property present (languageOptions.parserOptions)", () => {
+                ruleTester.run("foo", {
+                    meta: {},
+                    create(context) {
+                        return {
+                            VariableDeclaration(node) {
+                                context.report(node, "foo bar");
+                            }
+                        };
+                    }
+                }, {
+                    valid: ["foo"],
+                    invalid: [
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], languageOptions: { parserOptions: { foo: /abc/u } } },
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], languageOptions: { parserOptions: { foo: /abc/u } } }
+                    ]
+                });
+            });
+
+            it("ignores duplicate test case when non-serializable property present (plugins)", () => {
+                ruleTester.run("foo", {
+                    meta: {},
+                    create(context) {
+                        return {
+                            VariableDeclaration(node) {
+                                context.report(node, "foo bar");
+                            }
+                        };
+                    }
+                }, {
+                    valid: ["foo"],
+                    invalid: [
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], plugins: { foo: /abc/u } },
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], plugins: { foo: /abc/u } }
+                    ]
+                });
+            });
+
+            it("ignores duplicate test case when non-serializable property present (options)", () => {
+                ruleTester.run("foo", {
+                    meta: { schema: false },
+                    create(context) {
+                        return {
+                            VariableDeclaration(node) {
+                                context.report(node, "foo bar");
+                            }
+                        };
+                    }
+                }, {
+                    valid: ["foo"],
+                    invalid: [
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], options: [{ foo: /abc/u }] },
+                        { code: "const x = 123;", errors: [{ message: "foo bar" }], options: [{ foo: /abc/u }] }
+                    ]
+                });
+            });
+
+            it("detects duplicate test cases even if the error matchers differ", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: { schema: false },
+                        create(context) {
+                            return {
+                                VariableDeclaration(node) {
+                                    context.report(node, "foo bar");
+                                }
+                            };
+                        }
+                    }, {
+                        valid: [],
+                        invalid: [
+                            { code: "const x = 123;", errors: [{ message: "foo bar" }] },
+                            { code: "const x = 123;", errors: 1 }
+                        ]
+                    });
+                }, "detected duplicate test case");
+            });
+
+            it("detects duplicate test cases even if the presence of the output property differs", () => {
+                assert.throws(() => {
+                    ruleTester.run("foo", {
+                        meta: { schema: false },
+                        create(context) {
+                            return {
+                                VariableDeclaration(node) {
+                                    context.report(node, "foo bar");
+                                }
+                            };
+                        }
+                    }, {
+                        valid: [],
+                        invalid: [
+                            { code: "const x = 123;", errors: 1 },
+                            { code: "const x = 123;", errors: 1, output: null }
+                        ]
+                    });
+                }, "detected duplicate test case");
+            });
+        });
     });
 
 });

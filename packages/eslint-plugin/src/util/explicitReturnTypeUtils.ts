@@ -87,9 +87,19 @@ function isTypedParent(
   return (
     isTypeAssertion(parent) ||
     isVariableDeclaratorWithTypeAnnotation(parent) ||
+    isDefaultFunctionParameterWithTypeAnnotation(parent) ||
     isPropertyDefinitionWithTypeAnnotation(parent) ||
     isFunctionArgument(parent, callee) ||
     isTypedJSX(parent)
+  );
+}
+
+function isDefaultFunctionParameterWithTypeAnnotation(
+  node: TSESTree.Node,
+): boolean {
+  return (
+    node.type === AST_NODE_TYPES.AssignmentPattern &&
+    node.left.typeAnnotation != null
   );
 }
 

@@ -80,9 +80,7 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
 }
 
 function parseOptions(context: Context): ParsedOptions {
-  const normalizedOptions = context.options
-    .map(opt => normalizeOption(opt))
-    .reduce((acc, val) => acc.concat(val), []);
+  const normalizedOptions = context.options.flatMap(normalizeOption);
 
   const result = getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);

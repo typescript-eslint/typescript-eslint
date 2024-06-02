@@ -85,6 +85,23 @@ type T4 =
 
 exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 3`] = `
 "Incorrect
+Options: { "caseSensitive": true }
+
+type T = 'DeletedAt' | 'DeleteForever';
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Union type T constituents must be sorted.
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "caseSensitive": true }
+
+type T = 'DeleteForever' | 'DeletedAt';
+"
+`;
+
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 5`] = `
+"Incorrect
 Options: { "checkIntersections": true }
 
 type ExampleIntersection = B & A;
@@ -92,7 +109,7 @@ type ExampleIntersection = B & A;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 4`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "checkIntersections": true }
 
@@ -100,7 +117,7 @@ type ExampleIntersection = A & B;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 5`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 7`] = `
 "Incorrect
 Options: { "checkUnions": true }
 
@@ -109,7 +126,7 @@ type ExampleUnion = B | A;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 6`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 8`] = `
 "Correct
 Options: { "checkUnions": true }
 
@@ -117,7 +134,7 @@ type ExampleUnion = A | B;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 9`] = `
 "Incorrect
 Options: { "groupOrder": ["literal", "nullish" ]}
 
@@ -126,7 +143,7 @@ type ExampleGroup = null | 123;
 "
 `;
 
-exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs sort-type-constituents.mdx code examples ESLint output 10`] = `
 "Correct
 Options: { "groupOrder": ["literal", "nullish" ]}
 

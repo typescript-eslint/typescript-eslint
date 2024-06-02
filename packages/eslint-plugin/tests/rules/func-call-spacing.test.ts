@@ -9,9 +9,7 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import type { MessageIds, Options } from '../../src/rules/func-call-spacing';
 import rule from '../../src/rules/func-call-spacing';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
 
 ruleTester.run('func-call-spacing', rule, {
   valid: [
@@ -69,7 +67,7 @@ ruleTester.run('func-call-spacing', rule, {
       'f?.b<a>(b, b)',
       'f?.b?.<a>(b, b)',
       '(function<T>() {}?.<a>())',
-      '((function<T>() {})<a>())',
+      '((function<T>() {})?.<a>())',
       '( f )?.<a>( 0 )',
       '( (f) )?.<a>( (0) )',
       '( f()() )?.<a>(0)',
@@ -133,64 +131,29 @@ ruleTester.run('func-call-spacing', rule, {
   invalid: [
     // "never"
     ...[
-      {
-        code: 'f ();',
-        output: 'f();',
-      },
-      {
-        code: 'f (a, b);',
-        output: 'f(a, b);',
-      },
+      { code: 'f ();', output: 'f();' },
+      { code: 'f (a, b);', output: 'f(a, b);' },
       {
         code: 'f.b ();',
         output: 'f.b();',
-        errors: [
-          {
-            messageId: 'unexpectedWhitespace' as const,
-            column: 3,
-          },
-        ],
+        errors: [{ messageId: 'unexpectedWhitespace' as const, column: 3 }],
       },
       {
         code: 'f.b().c ();',
         output: 'f.b().c();',
-        errors: [
-          {
-            messageId: 'unexpectedWhitespace' as const,
-            column: 7,
-          },
-        ],
+        errors: [{ messageId: 'unexpectedWhitespace' as const, column: 7 }],
       },
-      {
-        code: 'f() ()',
-        output: 'f()()',
-      },
-      {
-        code: '(function() {} ())',
-        output: '(function() {}())',
-      },
-      {
-        code: 'var f = new Foo ()',
-        output: 'var f = new Foo()',
-      },
-      {
-        code: 'f ( (0) )',
-        output: 'f( (0) )',
-      },
-      {
-        code: 'f(0) (1)',
-        output: 'f(0)(1)',
-      },
+      { code: 'f() ()', output: 'f()()' },
+      { code: '(function() {} ())', output: '(function() {}())' },
+      { code: 'var f = new Foo ()', output: 'var f = new Foo()' },
+      { code: 'f ( (0) )', output: 'f( (0) )' },
+      { code: 'f(0) (1)', output: 'f(0)(1)' },
       {
         code: 'f ();\n t   ();',
         output: 'f();\n t();',
         errors: [
-          {
-            messageId: 'unexpectedWhitespace' as const,
-          },
-          {
-            messageId: 'unexpectedWhitespace' as const,
-          },
+          { messageId: 'unexpectedWhitespace' as const },
+          { messageId: 'unexpectedWhitespace' as const },
         ],
       },
 
@@ -207,11 +170,7 @@ this.decrement(request)
         `,
         output: null, // no change
         errors: [
-          {
-            messageId: 'unexpectedWhitespace' as const,
-            line: 3,
-            column: 23,
-          },
+          { messageId: 'unexpectedWhitespace' as const, line: 3, column: 23 },
         ],
       },
       {
@@ -221,11 +180,7 @@ var a = foo
       `,
         output: null, // no change
         errors: [
-          {
-            messageId: 'unexpectedWhitespace' as const,
-            line: 2,
-            column: 9,
-          },
+          { messageId: 'unexpectedWhitespace' as const, line: 2, column: 9 },
         ],
       },
       {
@@ -235,11 +190,7 @@ var a = foo
         `,
         output: null, // no change
         errors: [
-          {
-            messageId: 'unexpectedWhitespace' as const,
-            line: 2,
-            column: 9,
-          },
+          { messageId: 'unexpectedWhitespace' as const, line: 2, column: 9 },
         ],
       },
       {
@@ -260,149 +211,72 @@ var a = foo
       },
     ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(code => ({
       options: ['never'],
-      errors: [
-        {
-          messageId: 'unexpectedWhitespace',
-        },
-      ],
+      errors: [{ messageId: 'unexpectedWhitespace' }],
       ...code,
     })),
 
     // "always"
     ...[
-      {
-        code: 'f();',
-        output: 'f ();',
-      },
-      {
-        code: 'f(a, b);',
-        output: 'f (a, b);',
-      },
-      {
-        code: 'f() ()',
-        output: 'f () ()',
-      },
-      {
-        code: 'var f = new Foo()',
-        output: 'var f = new Foo ()',
-      },
-      {
-        code: 'f( (0) )',
-        output: 'f ( (0) )',
-      },
-      {
-        code: 'f(0) (1)',
-        output: 'f (0) (1)',
-      },
+      { code: 'f();', output: 'f ();' },
+      { code: 'f(a, b);', output: 'f (a, b);' },
+      { code: 'f() ()', output: 'f () ()' },
+      { code: 'var f = new Foo()', output: 'var f = new Foo ()' },
+      { code: 'f( (0) )', output: 'f ( (0) )' },
+      { code: 'f(0) (1)', output: 'f (0) (1)' },
     ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(code => ({
       options: ['always'],
-      errors: [
-        {
-          messageId: 'missing',
-        },
-      ],
+      errors: [{ messageId: 'missing' }],
       ...code,
     })),
     ...[
-      {
-        code: 'f\n();',
-        output: 'f ();',
-      },
-      {
-        code: 'f\n(a, b);',
-        output: 'f (a, b);',
-      },
+      { code: 'f\n();', output: 'f ();' },
+      { code: 'f\n(a, b);', output: 'f (a, b);' },
       {
         code: 'f.b();',
         output: 'f.b ();',
-        errors: [
-          {
-            messageId: 'missing' as const,
-            column: 3,
-          },
-        ],
+        errors: [{ messageId: 'missing' as const, column: 3 }],
       },
-      {
-        code: 'f.b\n();',
-        output: 'f.b ();',
-      },
+      { code: 'f.b\n();', output: 'f.b ();' },
       {
         code: 'f.b().c ();',
         output: 'f.b ().c ();',
-        errors: [
-          {
-            messageId: 'missing' as const,
-            column: 3,
-          },
-        ],
+        errors: [{ messageId: 'missing' as const, column: 3 }],
       },
-      {
-        code: 'f.b\n().c ();',
-        output: 'f.b ().c ();',
-      },
-      {
-        code: 'f\n() ()',
-        output: 'f () ()',
-      },
+      { code: 'f.b\n().c ();', output: 'f.b ().c ();' },
+      { code: 'f\n() ()', output: 'f () ()' },
       {
         code: 'f\n()()',
         output: 'f () ()',
         errors: [
-          {
-            messageId: 'unexpectedNewline' as const,
-          },
-          {
-            messageId: 'missing' as const,
-          },
+          { messageId: 'unexpectedNewline' as const },
+          { messageId: 'missing' as const },
         ],
       },
       {
         code: '(function() {}())',
         output: '(function() {} ())',
-        errors: [
-          {
-            messageId: 'missing' as const,
-          },
-        ],
+        errors: [{ messageId: 'missing' as const }],
       },
       {
         code: 'f();\n t();',
         output: 'f ();\n t ();',
         errors: [
-          {
-            messageId: 'missing' as const,
-          },
-          {
-            messageId: 'missing' as const,
-          },
+          { messageId: 'missing' as const },
+          { messageId: 'missing' as const },
         ],
       },
-      {
-        code: 'f\r();',
-        output: 'f ();',
-      },
+      { code: 'f\r();', output: 'f ();' },
       {
         code: 'f\u2028();',
         output: 'f ();',
-        errors: [
-          {
-            messageId: 'unexpectedNewline' as const,
-          },
-        ],
+        errors: [{ messageId: 'unexpectedNewline' as const }],
       },
       {
         code: 'f\u2029();',
         output: 'f ();',
-        errors: [
-          {
-            messageId: 'unexpectedNewline' as const,
-          },
-        ],
+        errors: [{ messageId: 'unexpectedNewline' as const }],
       },
-      {
-        code: 'f\r\n();',
-        output: 'f ();',
-      },
+      { code: 'f\r\n();', output: 'f ();' },
     ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(code => ({
       options: ['always'],
       errors: [
@@ -418,67 +292,30 @@ var a = foo
 
     // "always", "allowNewlines": true
     ...[
-      {
-        code: 'f();',
-        output: 'f ();',
-      },
-      {
-        code: 'f(a, b);',
-        output: 'f (a, b);',
-      },
+      { code: 'f();', output: 'f ();' },
+      { code: 'f(a, b);', output: 'f (a, b);' },
       {
         code: 'f.b();',
         output: 'f.b ();',
-        errors: [
-          {
-            messageId: 'missing' as const,
-            column: 3,
-          },
-        ],
+        errors: [{ messageId: 'missing' as const, column: 3 }],
       },
-      {
-        code: 'f.b().c ();',
-        output: 'f.b ().c ();',
-      },
-      {
-        code: 'f() ()',
-        output: 'f () ()',
-      },
-      {
-        code: '(function() {}())',
-        output: '(function() {} ())',
-      },
-      {
-        code: 'var f = new Foo()',
-        output: 'var f = new Foo ()',
-      },
-      {
-        code: 'f( (0) )',
-        output: 'f ( (0) )',
-      },
-      {
-        code: 'f(0) (1)',
-        output: 'f (0) (1)',
-      },
+      { code: 'f.b().c ();', output: 'f.b ().c ();' },
+      { code: 'f() ()', output: 'f () ()' },
+      { code: '(function() {}())', output: '(function() {} ())' },
+      { code: 'var f = new Foo()', output: 'var f = new Foo ()' },
+      { code: 'f( (0) )', output: 'f ( (0) )' },
+      { code: 'f(0) (1)', output: 'f (0) (1)' },
       {
         code: 'f();\n t();',
         output: 'f ();\n t ();',
         errors: [
-          {
-            messageId: 'missing' as const,
-          },
-          {
-            messageId: 'missing' as const,
-          },
+          { messageId: 'missing' as const },
+          { messageId: 'missing' as const },
         ],
       },
     ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(code => ({
       options: ['always', { allowNewlines: true }],
-      errors: [
-        {
-          messageId: 'missing',
-        },
-      ],
+      errors: [{ messageId: 'missing' }],
       ...code,
     })),
 
@@ -494,33 +331,21 @@ var a = foo
       acc.push(
         {
           options: ['always', { allowNewlines: true }],
-          errors: [
-            {
-              messageId: 'unexpectedWhitespace',
-            },
-          ],
+          errors: [{ messageId: 'unexpectedWhitespace' }],
           code,
           // apply no fixers to it
           output: null,
         },
         {
           options: ['always'],
-          errors: [
-            {
-              messageId: 'unexpectedWhitespace',
-            },
-          ],
+          errors: [{ messageId: 'unexpectedWhitespace' }],
           code,
           // apply no fixers to it
           output: null,
         },
         {
           options: ['never'],
-          errors: [
-            {
-              messageId: 'unexpectedWhitespace',
-            },
-          ],
+          errors: [{ messageId: 'unexpectedWhitespace' }],
           code,
           // apply no fixers to it
           output: null,
