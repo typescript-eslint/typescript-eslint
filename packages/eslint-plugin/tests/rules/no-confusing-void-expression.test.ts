@@ -262,7 +262,7 @@ const funcExpr: Foo = function () {
     {
       code: `
 type Foo = () => void;
-const funcExpr: Foo = () => {
+const test: Foo = () => {
   return console.log();
 };
       `,
@@ -271,7 +271,7 @@ const funcExpr: Foo = () => {
     {
       code: `
 type Foo = () => void;
-const x = (() => console.log()) as Foo;
+const test = (() => console.log()) as Foo;
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
@@ -280,7 +280,7 @@ const x = (() => console.log()) as Foo;
 type Foo = {
   foo: () => void;
 };
-const q = {
+const test = {
   foo: () => console.log(),
 } as Foo;
       `,
@@ -291,7 +291,7 @@ const q = {
 type Foo = {
   foo: () => void;
 };
-const x: Foo = {
+const test: Foo = {
   foo: () => console.log(),
 };
       `,
@@ -299,7 +299,7 @@ const x: Foo = {
     },
     {
       code: `
-const q = {
+const test = {
   foo: () => console.log(),
 } as {
   foo: () => void;
@@ -309,7 +309,7 @@ const q = {
     },
     {
       code: `
-const x: {
+const test: {
   foo: () => void;
 } = {
   foo: () => console.log(),
@@ -322,7 +322,7 @@ const x: {
 type Foo = {
   foo: { bar: () => void };
 };
-const q = {
+const test = {
   foo: { bar: () => console.log() },
 } as Foo;
       `,
@@ -333,7 +333,7 @@ const q = {
 type Foo = {
   foo: { bar: () => void };
 };
-const x: Foo = {
+const test: Foo = {
   foo: { bar: () => console.log() },
 };
       `,
@@ -406,28 +406,28 @@ const x: HigherOrderType = () => () =>
     },
     {
       code: `
-function test1(): void;
-function test1(arg: string): any;
-function test1(arg?: string): any | void {
+function test(): void;
+function test(arg: string): any;
+function test(arg?: string): any | void {
   if (arg) {
     return arg;
   }
 
-  return console.log(); // not reported - ok
+  return console.log();
 }
       `,
       options: [{ ignoreVoidInVoid: true }],
     },
     {
       code: `
-function test2(arg: string): any;
-function test2(): void;
-function test2(arg?: string): any | void {
+function test(arg: string): any;
+function test(): void;
+function test(arg?: string): any | void {
   if (arg) {
     return arg;
   }
 
-  return console.log(); // reported - bug
+  return console.log();
 }
       `,
       options: [{ ignoreVoidInVoid: true }],
@@ -1102,6 +1102,78 @@ type Foo = unknown;
       output: `
 type Foo = unknown;
 (): Foo => { console.log(); };
+      `,
+    },
+    {
+      code: `
+      type HigherOrderType = () => any;
+      (): HigherOrderType => () => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 36,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+      type HigherOrderType = () => any;
+      (): HigherOrderType => () => { console.log(); };
+      `,
+    },
+    {
+      code: `
+      type HigherOrderType = () => unknown;
+      (): HigherOrderType => () => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 36,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+      type HigherOrderType = () => unknown;
+      (): HigherOrderType => () => { console.log(); };
+      `,
+    },
+    {
+      code: `
+      type HigherOrderType = () => any;
+      const x: HigherOrderType = () => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 40,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+      type HigherOrderType = () => any;
+      const x: HigherOrderType = () => { console.log(); };
+      `,
+    },
+    {
+      code: `
+      type HigherOrderType = () => unknown;
+      const x: HigherOrderType = () => console.log();
+      `,
+      options: [{ ignoreVoidInVoid: true }],
+      errors: [
+        {
+          line: 3,
+          column: 40,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+      type HigherOrderType = () => unknown;
+      const x: HigherOrderType = () => { console.log(); };
       `,
     },
   ],
