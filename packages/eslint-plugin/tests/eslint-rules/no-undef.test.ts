@@ -401,5 +401,35 @@ function Foo() {}
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  [x: Bar]: string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Bar',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [x: string]: Bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Bar',
+          },
+        },
+      ],
+    },
   ],
 });
