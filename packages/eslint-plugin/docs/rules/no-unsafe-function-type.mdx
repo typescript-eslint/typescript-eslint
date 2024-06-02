@@ -13,6 +13,11 @@ TypeScript's built-in `Function` type allows being called with any number of arg
 `Function` also allows classes or plain objects object that happens to possess all properties of the `Function` class.
 It's generally better to specify function parameters and return types with the function type syntax.
 
+"Catch-all" function types include:
+
+- `() => void`: a function that has no parameters and whose return is ignored
+- `(...args: never) => unknown`: a "top type" for functions that can be assigned any function type, but can't be called
+
 Examples of code for this rule:
 
 <Tabs>
