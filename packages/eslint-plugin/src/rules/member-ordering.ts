@@ -380,9 +380,8 @@ function getNodeType(node: Member): MemberKind | null {
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
-      return node.kind;
     case AST_NODE_TYPES.TSMethodSignature:
-      return 'method';
+      return node.kind;
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return 'call-signature';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
