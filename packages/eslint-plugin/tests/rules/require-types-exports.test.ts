@@ -351,6 +351,18 @@ ruleTester.run('require-types-exports', rule, {
 
       export function f(a: Fruit): void {}
     `,
+
+    `
+      export function f(arg: Record<PropertyKey, Promise<string>>) {
+        return arg;
+      }
+    `,
+
+    `
+      export function f<T extends Record<PropertyKey, Promise<string>>>(arg: T) {
+        return arg;
+      }
+    `,
   ],
 
   invalid: [

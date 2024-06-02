@@ -3,7 +3,11 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isSymbolFromDefaultLibrary,
+} from '../util';
 
 type MessageIds = 'requireTypeExport';
 
@@ -35,6 +39,8 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    const services = getParserServices(context);
+
     const typeReferences = new Set<TypeReference>();
     const externalizedTypes = new Set<string>();
     const reportedTypes = new Set<string>();
@@ -179,6 +185,13 @@ export default createRule<[], MessageIds>({
       const isReported = reportedTypes.has(name);
 
       if (isExternalized || isReported) {
+        return;
+      }
+
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const type = services.program.getTypeChecker().getTypeAtLocation(tsNode);
+
+      if (isSymbolFromDefaultLibrary(services.program, type.getSymbol())) {
         return;
       }
 
