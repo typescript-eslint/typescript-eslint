@@ -11,7 +11,6 @@ import {
   getThisExpression,
   isTypeAnyArrayType,
   isTypeAnyType,
-  isTypeErrorType,
   isTypeUnknownType,
   isUnsafeAssignment,
   nullThrows,
