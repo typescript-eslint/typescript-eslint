@@ -213,8 +213,14 @@ const x = 1 as any,
        const {x: {y: z}} = {x: spooky};
       `,
       errors: [
-        { messageId: 'unsafeArrayPatternFromTuple' },
-        { messageId: 'anyAssignment' },
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          data: { sender: 'error', receiver: 'error' },
+        },
+        {
+          messageId: 'anyAssignment',
+          data: { sender: 'error', receiver: 'error' },
+        },
       ],
     },
     {

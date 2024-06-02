@@ -38,18 +38,18 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an {{sender}} typed value.',
+      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
       anyAssignmentThis: [
-        'Unsafe assignment of an {{sender}}  value. `this` is typed as `any`.',
+        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
       unsafeArrayPattern:
         'Unsafe array destructuring of an {{sender}} array value.',
       unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an {{sender}}  value.',
+        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an {{sender}}  value in an array.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
     },
     schema: [],
   },
