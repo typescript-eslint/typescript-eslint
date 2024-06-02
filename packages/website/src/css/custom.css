@@ -203,3 +203,7 @@ h6 {
 .markdown a * {
   vertical-align: baseline;
 }
+
+td > p:last-child {
+  margin-bottom: 0;
+}
