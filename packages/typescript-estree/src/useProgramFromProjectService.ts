@@ -1,6 +1,7 @@
 import debug from 'debug';
 import { minimatch } from 'minimatch';
 import path from 'path';
+import { ScriptKind } from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
@@ -30,6 +31,16 @@ export function useProgramFromProjectService(
     parseSettings.filePath,
     filePathAbsolute,
   );
+
+  if (parseSettings.extraFileExtensions.length) {
+    service.setHostConfiguration({
+      extraFileExtensions: parseSettings.extraFileExtensions.map(extension => ({
+        extension,
+        isMixedContent: false,
+        scriptKind: ScriptKind.Deferred,
+      })),
+    });
+  }
 
   const opened = service.openClientFile(
     filePathAbsolute,

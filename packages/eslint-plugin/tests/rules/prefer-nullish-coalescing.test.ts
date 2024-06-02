@@ -132,10 +132,6 @@ x === null ? x : y;
 declare const x: string | null | unknown;
 x === null ? x : y;
       `,
-      `
-declare const x: string | undefined;
-x === null ? x : y;
-      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -366,7 +362,7 @@ undefined !== x ? x : y;
       `,
       `
 declare const x: string | undefined;
-undefined === x ? y : x;
+x === undefined ? y : x;
       `,
       `
 declare const x: string | undefined;
@@ -382,7 +378,7 @@ null !== x ? x : y;
       `,
       `
 declare const x: string | null;
-null === x ? y : x;
+x === null ? y : x;
       `,
       `
 declare const x: string | null;

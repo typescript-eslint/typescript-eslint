@@ -1,6 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/prefer-optional-chain';
+import { dedupeTestCases } from '../../dedupeTestCases';
 import { getFixturesRootDir } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
@@ -67,10 +68,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 16,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'foo?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: 'foo?.bar;' },
             ],
           },
         ],
@@ -83,10 +81,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 18,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'foo?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: 'foo?.bar;' },
             ],
           },
         ],
@@ -163,10 +158,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 21,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'foo.bar?.[baz];',
-              },
+              { messageId: 'optionalChainSuggest', output: 'foo.bar?.[baz];' },
             ],
           },
         ],
@@ -316,10 +308,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 16,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'foo?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: 'foo?.bar;' },
             ],
           },
         ],
@@ -332,10 +321,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 18,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'foo?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: 'foo?.bar;' },
             ],
           },
         ],
@@ -412,10 +398,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 21,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'foo.bar?.[baz];',
-              },
+              { messageId: 'optionalChainSuggest', output: 'foo.bar?.[baz];' },
             ],
           },
         ],
@@ -549,10 +532,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 18,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: '(a > b)?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: '(a > b)?.bar;' },
             ],
           },
         ],
@@ -629,10 +609,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 21,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: '(a << b)?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: '(a << b)?.bar;' },
             ],
           },
         ],
@@ -645,10 +622,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 23,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: '(foo ** 2)?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: '(foo ** 2)?.bar;' },
             ],
           },
         ],
@@ -661,10 +635,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 21,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: '(foo ** 2)?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: '(foo ** 2)?.bar;' },
             ],
           },
         ],
@@ -677,10 +648,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 18,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: '(foo++)?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: '(foo++)?.bar;' },
             ],
           },
         ],
@@ -693,10 +661,7 @@ describe('|| {}', () => {
             column: 1,
             endColumn: 17,
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: '(+foo)?.bar;',
-              },
+              { messageId: 'optionalChainSuggest', output: '(+foo)?.bar;' },
             ],
           },
         ],
@@ -707,10 +672,7 @@ describe('|| {}', () => {
           {
             messageId: 'preferOptionalChain',
             suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: 'this?.foo;',
-              },
+              { messageId: 'optionalChainSuggest', output: 'this?.foo;' },
             ],
           },
         ],
@@ -881,66 +843,42 @@ describe('hand-crafted cases', () => {
           declare const x: any;
           x && x.length;
         `,
-        options: [
-          {
-            checkAny: false,
-          },
-        ],
+        options: [{ checkAny: false }],
       },
       {
         code: `
           declare const x: bigint;
           x && x.length;
         `,
-        options: [
-          {
-            checkBigInt: false,
-          },
-        ],
+        options: [{ checkBigInt: false }],
       },
       {
         code: `
           declare const x: boolean;
           x && x.length;
         `,
-        options: [
-          {
-            checkBoolean: false,
-          },
-        ],
+        options: [{ checkBoolean: false }],
       },
       {
         code: `
           declare const x: number;
           x && x.length;
         `,
-        options: [
-          {
-            checkNumber: false,
-          },
-        ],
+        options: [{ checkNumber: false }],
       },
       {
         code: `
           declare const x: string;
           x && x.length;
         `,
-        options: [
-          {
-            checkString: false,
-          },
-        ],
+        options: [{ checkString: false }],
       },
       {
         code: `
           declare const x: unknown;
           x && x.length;
         `,
-        options: [
-          {
-            checkUnknown: false,
-          },
-        ],
+        options: [{ checkUnknown: false }],
       },
       '(x = {}) && (x.y = true) != null && x.y.toString();',
       "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
@@ -988,14 +926,8 @@ describe('hand-crafted cases', () => {
         code: noFormat`foo && foo.bar && foo.bar.baz || baz && baz.bar && baz.bar.foo`,
         output: 'foo?.bar?.baz || baz?.bar?.foo',
         errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
+          { messageId: 'preferOptionalChain', suggestions: null },
+          { messageId: 'preferOptionalChain', suggestions: null },
         ],
       },
       // case with inconsistent checks should "break" the chain
@@ -1003,12 +935,7 @@ describe('hand-crafted cases', () => {
         code: 'foo && foo.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
         output:
           'foo?.bar != null && foo.bar.baz !== undefined && foo.bar.baz.buzz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1022,141 +949,72 @@ describe('hand-crafted cases', () => {
             foo.bar.baz.qux !== undefined &&
             foo.bar.baz.qux.buzz;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // ensure essential whitespace isn't removed
       {
         code: 'foo && foo.bar(baz => <This Requires Spaces />);',
         output: 'foo?.bar(baz => <This Requires Spaces />);',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        parserOptions: { ecmaFeatures: { jsx: true } },
         filename: 'react.tsx',
       },
       {
         code: 'foo && foo.bar(baz => typeof baz);',
         output: 'foo?.bar(baz => typeof baz);',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: "foo && foo['some long string'] && foo['some long string'].baz;",
         output: "foo?.['some long string']?.baz;",
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo[`some long string`] && foo[`some long string`].baz;',
         output: 'foo?.[`some long string`]?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo[`some ${long} string`] && foo[`some ${long} string`].baz;',
         output: 'foo?.[`some ${long} string`]?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // complex computed properties should be handled correctly
       {
         code: 'foo && foo[bar as string] && foo[bar as string].baz;',
         output: 'foo?.[bar as string]?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo[1 + 2] && foo[1 + 2].baz;',
         output: 'foo?.[1 + 2]?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo[typeof bar] && foo[typeof bar].baz;',
         output: 'foo?.[typeof bar]?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo.bar(a) && foo.bar(a, b).baz;',
         output: 'foo?.bar(a) && foo.bar(a, b).baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo() && foo()(bar);',
         output: 'foo()?.(bar);',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // type parameters are considered
       {
         code: 'foo && foo<string>() && foo<string>().bar;',
         output: 'foo?.<string>()?.bar;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo<string>() && foo<string, number>().bar;',
         output: 'foo?.<string>() && foo<string, number>().bar;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // should preserve comments in a call expression
       {
@@ -1170,76 +1028,41 @@ describe('hand-crafted cases', () => {
             // comment2
             b, );
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // ensure binary expressions that are the last expression do not get removed
       // these get autofixers because the trailing binary means the type doesn't matter
       {
         code: 'foo && foo.bar != null;',
         output: 'foo?.bar != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo.bar != undefined;',
         output: 'foo?.bar != undefined;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo.bar != null && baz;',
         output: 'foo?.bar != null && baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // case with this keyword at the start of expression
       {
         code: 'this.bar && this.bar.baz;',
         output: 'this.bar?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // other weird cases
       {
         code: 'foo && foo?.();',
         output: 'foo?.();',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo.bar && foo.bar?.();',
         output: 'foo.bar?.();',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo && foo.bar(baz => <This Requires Spaces />);',
@@ -1252,77 +1075,42 @@ describe('hand-crafted cases', () => {
             suggestions: null,
           },
         ],
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
+        parserOptions: { ecmaFeatures: { jsx: true } },
         filename: 'react.tsx',
       },
       // case with this keyword at the start of expression
       {
         code: '!this.bar || !this.bar.baz;',
         output: '!this.bar?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!a.b || !a.b();',
         output: '!a.b?.();',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!foo.bar || !foo.bar.baz;',
         output: '!foo.bar?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!foo[bar] || !foo[bar]?.[baz];',
         output: '!foo[bar]?.[baz];',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!foo || !foo?.bar.baz;',
         output: '!foo?.bar.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // two  errors
       {
         code: '(!foo || !foo.bar || !foo.bar.baz) && (!baz || !baz.bar || !baz.bar.foo);',
         output: '(!foo?.bar?.baz) && (!baz?.bar?.foo);',
         errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
+          { messageId: 'preferOptionalChain', suggestions: null },
+          { messageId: 'preferOptionalChain', suggestions: null },
         ],
       },
       {
@@ -1355,73 +1143,38 @@ describe('hand-crafted cases', () => {
       {
         code: 'import.meta && import.meta?.baz;',
         output: 'import.meta?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!import.meta || !import.meta?.baz;',
         output: '!import.meta?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'import.meta && import.meta?.() && import.meta?.().baz;',
         output: 'import.meta?.()?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // non-null expressions
       {
         code: '!foo() || !foo().bar;',
         output: '!foo()?.bar;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!foo!.bar || !foo!.bar.baz;',
         output: '!foo!.bar?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!foo!.bar!.baz || !foo!.bar!.baz!.paz;',
         output: '!foo!.bar!.baz?.paz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: '!foo.bar!.baz || !foo.bar!.baz!.paz;',
         output: '!foo.bar!.baz?.paz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1447,12 +1200,7 @@ describe('hand-crafted cases', () => {
       {
         code: 'foo != null && foo.bar != null;',
         output: 'foo?.bar != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1484,124 +1232,67 @@ describe('hand-crafted cases', () => {
           declare const foo: { bar: string | null } | null;
           foo?.bar != null;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // https://github.com/typescript-eslint/typescript-eslint/issues/6332
       {
         code: 'unrelated != null && foo != null && foo.bar != null;',
         output: 'unrelated != null && foo?.bar != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'unrelated1 != null && unrelated2 != null && foo != null && foo.bar != null;',
         output: 'unrelated1 != null && unrelated2 != null && foo?.bar != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // https://github.com/typescript-eslint/typescript-eslint/issues/1461
       {
         code: 'foo1 != null && foo1.bar != null && foo2 != null && foo2.bar != null;',
         output: 'foo1?.bar != null && foo2?.bar != null;',
         errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
+          { messageId: 'preferOptionalChain', suggestions: null },
+          { messageId: 'preferOptionalChain', suggestions: null },
         ],
       },
       {
         code: 'foo && foo.a && bar && bar.a;',
         output: 'foo?.a && bar?.a;',
         errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
+          { messageId: 'preferOptionalChain', suggestions: null },
+          { messageId: 'preferOptionalChain', suggestions: null },
         ],
       },
       // randomly placed optional chain tokens are ignored
       {
         code: 'foo.bar.baz != null && foo?.bar?.baz.bam != null;',
         output: 'foo.bar.baz?.bam != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo?.bar.baz != null && foo.bar?.baz.bam != null;',
         output: 'foo?.bar.baz?.bam != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo?.bar?.baz != null && foo.bar.baz.bam != null;',
         output: 'foo?.bar?.baz?.bam != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // randomly placed non-null assertions are retained as long as they're in an earlier operand
       {
         code: 'foo.bar.baz != null && foo!.bar!.baz.bam != null;',
         output: 'foo.bar.baz?.bam != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo!.bar.baz != null && foo.bar!.baz.bam != null;',
         output: 'foo!.bar.baz?.bam != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: 'foo!.bar!.baz != null && foo.bar.baz.bam != null;',
         output: 'foo!.bar!.baz?.bam != null;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // mixed binary checks are followed and flagged
       {
@@ -1621,12 +1312,7 @@ describe('hand-crafted cases', () => {
         output: `
           a?.b?.c?.d?.e?.f?.g?.h;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1645,12 +1331,7 @@ describe('hand-crafted cases', () => {
         output: `
           !a?.b?.c?.d?.e?.f?.g?.h;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1669,23 +1350,13 @@ describe('hand-crafted cases', () => {
         output: `
           !a?.b?.c?.d?.e?.f?.g?.h;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // yoda checks are flagged
       {
         code: 'undefined !== foo && null !== foo && null != foo.bar && foo.bar.baz;',
         output: 'foo?.bar?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1697,12 +1368,7 @@ describe('hand-crafted cases', () => {
         output: `
           foo?.bar?.baz;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1714,12 +1380,7 @@ describe('hand-crafted cases', () => {
         output: `
           null != foo?.bar?.baz;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // We should retain the split strict equals check if it's the last operand
       {
@@ -1830,12 +1491,7 @@ describe('hand-crafted cases', () => {
           undefined !== foo?.bar?.baz &&
             null !== foo.bar.baz;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1849,23 +1505,13 @@ describe('hand-crafted cases', () => {
           foo?.bar?.baz !== undefined &&
             foo.bar.baz !== null;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // await
       {
         code: '(await foo).bar && (await foo).bar.baz;',
         output: '(await foo).bar?.baz;',
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       // TODO - should we handle this case and expand the range, or should we leave this as is?
       {
@@ -1885,12 +1531,7 @@ describe('hand-crafted cases', () => {
           a?.b?.c?.d?.e?.f?.g == null ||
             a.b.c.d.e.f.g.h;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
 
       {
@@ -1902,12 +1543,7 @@ describe('hand-crafted cases', () => {
           declare const foo: { bar: number } | null | undefined;
           foo?.bar != null;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1918,12 +1554,7 @@ describe('hand-crafted cases', () => {
           declare const foo: { bar: number } | undefined;
           typeof foo?.bar !== 'undefined';
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -1934,12 +1565,7 @@ describe('hand-crafted cases', () => {
           declare const foo: { bar: number } | undefined;
           'undefined' !== typeof foo?.bar;
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
 
       // requireNullish
@@ -2116,12 +1742,7 @@ describe('hand-crafted cases', () => {
               true,
           },
         ],
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
       },
       {
         code: `
@@ -2180,11 +1801,7 @@ describe('hand-crafted cases', () => {
             globalThis?.Array();
           }
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain' }],
       },
       {
         code: `
@@ -2215,9 +1832,7 @@ describe('base cases', () => {
       ruleTester.run('prefer-optional-chain', rule, {
         valid: [],
         invalid: [
-          ...BaseCases({
-            operator: '&&',
-          }),
+          ...BaseCases({ operator: '&&' }),
           // it should ignore parts of the expression that aren't part of the expression chain
           ...BaseCases({
             operator: '&&',
@@ -2401,24 +2016,25 @@ describe('base cases', () => {
   describe('should ignore spacing sanity checks', () => {
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
-      invalid: [
+      // One base case does not match the mutator, so we have to dedupe it
+      invalid: dedupeTestCases(
         // it should ignore whitespace in the expressions
-        ...BaseCases({
+        BaseCases({
           operator: '&&',
           mutateCode: c => c.replace(/\./g, '.      '),
           // note - the rule will use raw text for computed expressions - so we
           //        need to ensure that the spacing for the computed member
           //        expressions is retained for correct fixer matching
           mutateOutput: c =>
-            c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.      ')),
+            c.replace(/(\[.+])/g, m => m.replace(/\./g, '.      ')),
         }),
-        ...BaseCases({
+        BaseCases({
           operator: '&&',
           mutateCode: c => c.replace(/\./g, '.\n'),
           mutateOutput: c =>
-            c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.\n')),
+            c.replace(/(\[.+])/g, m => m.replace(/\./g, '.\n')),
         }),
-      ],
+      ),
     });
   });
 });

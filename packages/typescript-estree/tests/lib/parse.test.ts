@@ -352,7 +352,6 @@ describe('parseAndGenerateServices', () => {
         range: true,
         loc: true,
         tsconfigRootDir: PROJECT_DIR,
-        project: './tsconfig.json',
       };
       const testParse =
         (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
@@ -362,9 +361,24 @@ describe('parseAndGenerateServices', () => {
               ...config,
               extraFileExtensions,
               filePath: join(PROJECT_DIR, filePath),
+              project: './tsconfig.json',
             });
           } catch (error) {
             alignErrorPath(error as Error);
+          }
+        };
+      const testExtraFileExtensions =
+        (filePath: string, extraFileExtensions: string[]) => (): void => {
+          const result = parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+            projectService: true,
+          });
+          const compilerOptions = result.services.program?.getCompilerOptions();
+
+          if (!compilerOptions?.configFilePath) {
+            throw new Error('No config file found, using inferred project');
           }
         };
 
@@ -477,6 +491,50 @@ describe('parseAndGenerateServices', () => {
             "ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
             The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
           `);
+        });
+      });
+
+      describe('"parserOptions.extraFileExtensions" is non-empty and projectService is true', () => {
+        describe('the extension matches', () => {
+          it('the file is included', () => {
+            expect(
+              testExtraFileExtensions('other/included.vue', ['.vue']),
+            ).not.toThrow();
+          });
+
+          it("the file isn't included", () => {
+            expect(
+              testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
+            ).toThrowErrorMatchingInlineSnapshot(
+              `"No config file found, using inferred project"`,
+            );
+          });
+
+          it('duplicate extension', () => {
+            expect(
+              testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
+            ).toThrowErrorMatchingInlineSnapshot(
+              `"No config file found, using inferred project"`,
+            );
+          });
+        });
+
+        it('invalid extension', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', [
+              'unknown',
+            ]),
+          ).toThrowErrorMatchingInlineSnapshot(
+            `"No config file found, using inferred project"`,
+          );
+        });
+
+        it('the extension does not match', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
+          ).toThrowErrorMatchingInlineSnapshot(
+            `"No config file found, using inferred project"`,
+          );
         });
       });
     });
