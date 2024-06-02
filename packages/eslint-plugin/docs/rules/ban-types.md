@@ -12,7 +12,7 @@ The default options from `ban-types` are now covered by:
 - **[`no-wrapper-object-types`](./no-wrapper-object-types.mdx)**: banning `Object` and built-in class wrappers such as `Number`
 
 `ban-types` itself is removed in typescript-eslint v8.
-See [Announcing typescript-eslint v8 Beta](/announcing-typescript-eslint-v8-beta) for more details.
+See [Announcing typescript-eslint v8 Beta](/blog/announcing-typescript-eslint-v8-beta) for more details.
 :::
 
 <!-- This doc file has been left on purpose because `ban-types` is a well-known
