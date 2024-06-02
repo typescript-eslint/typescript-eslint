@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -321,7 +321,9 @@ export default createRule({
           ComparisonType.None;
     }
 
-    function createDataFromSenderType(senderType: ts.Type) {
+    function createDataFromSenderType(
+      senderType: ts.Type,
+    ): Readonly<Record<string, unknown>> | undefined {
       return {
         sender: tsutils.isIntrinsicErrorType(senderType)
           ? 'error typed'
