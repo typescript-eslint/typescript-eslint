@@ -323,7 +323,9 @@ export default createRule({
 
     function createDataFromSenderType(senderType: ts.Type) {
       return {
-        sender: tsutils.isIntrinsicErrorType(senderType) ? 'error' : '`any`',
+        sender: tsutils.isIntrinsicErrorType(senderType)
+          ? 'error typed'
+          : '`any`',
       };
     }
 

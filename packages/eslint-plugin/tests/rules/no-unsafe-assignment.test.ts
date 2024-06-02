@@ -215,11 +215,11 @@ const x = 1 as any,
       errors: [
         {
           messageId: 'unsafeArrayPatternFromTuple',
-          data: { sender: 'error', receiver: 'error' },
+          data: { sender: 'error typed', receiver: 'error typed' },
         },
         {
           messageId: 'anyAssignment',
-          data: { sender: 'error', receiver: 'error' },
+          data: { sender: 'error typed', receiver: 'error typed' },
         },
       ],
     },
@@ -233,7 +233,7 @@ const x = 1 as any,
         {
           messageId: 'anyAssignment',
           data: {
-            sender: 'error',
+            sender: 'error typed',
           },
         },
       ],
