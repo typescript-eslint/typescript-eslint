@@ -89,6 +89,10 @@ declare const a: { data?: unknown };
 
 const x = a.data!;
     `,
+    `
+declare function foo(arg?: number): number | void;
+const bar: number = foo()!;
+    `,
     {
       code: `
 type Foo = number;
@@ -148,6 +152,10 @@ const x: number | null = null;
 class Foo {
   prop: number = x!;
 }
+    `,
+    `
+      declare const y: number | null;
+      console.log(y!);
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/529
     `
@@ -284,14 +292,15 @@ function bar(items: string[]) {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-const myString = 'foo';
+let myString = 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-const myString = 'foo';
+let myString = 'foo';
 const templateLiteral = <const>\`\${myString}-somethingElse\`;
     `,
+    'let a = `a` as const;',
     {
       code: `
 declare const foo: {
@@ -523,6 +532,17 @@ bar + 1;
     },
     {
       code: `
+        declare const y: number;
+        console.log(y!);
+      `,
+      output: `
+        declare const y: number;
+        console.log(y);
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+    },
+    {
+      code: `
 function foo<T extends string>(bar: T) {
   return bar!;
 }
@@ -687,6 +707,24 @@ y = 0;
         {
           messageId: 'contextuallyUnnecessary',
           line: 5,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg?: number): number | void;
+const bar: number | void = foo()!;
+      `,
+      output: `
+declare function foo(arg?: number): number | void;
+const bar: number | void = foo();
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+          line: 3,
+          column: 28,
+          endColumn: 34,
         },
       ],
     },
