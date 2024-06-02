@@ -21,7 +21,7 @@ We'll keep these deprecated rules available until our next major version.
 ## Context: Formatting Rules
 
 The ESLint blog post thoroughly explains the history and tradeoffs of formatting rules.
-See also [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies/#what-are-the-changes) and our _[What About Formatting?](/troubleshooting/formatting)_ docs.
+See also [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies/#what-are-the-changes) and our _[What About Formatting?](/users/what-about-formatting)_ docs.
 The performance downsides of formatting rules are heightened when [linting with type information](/getting-started/typed-linting).
 
 ## Timelines

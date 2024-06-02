@@ -273,7 +273,7 @@ const redirects: PluginRedirectOptions = {
     },
     {
       from: '/linting/troubleshooting/formatting',
-      to: '/troubleshooting/faqs/formatting',
+      to: '/users/what-about-formatting',
     },
     {
       from: '/linting/troubleshooting/typed-linting/Performance-troubleshooting',
@@ -281,7 +281,7 @@ const redirects: PluginRedirectOptions = {
     },
     {
       from: '/linting/troubleshooting/tslint',
-      to: '/troubleshooting/faqs/tslint',
+      to: '/users/what-about-tslint',
     },
     {
       from: '/linting/typed-linting',
@@ -305,10 +305,6 @@ const redirects: PluginRedirectOptions = {
     },
     {
       from: '/linting/troubleshooting/typed-linting/Monorepos',
-      to: '/troubleshooting/typed-linting/monorepos',
-    },
-    {
-      from: '/troubleshooting/typed-linting/Monorepos',
       to: '/troubleshooting/typed-linting/monorepos',
     },
   ],

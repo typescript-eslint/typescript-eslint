@@ -61,7 +61,7 @@ module.exports = {
           type: 'category',
         },
       ],
-      label: 'Troubleshooting',
+      label: 'Troubleshooting & FAQs',
       type: 'category',
     },
     {
