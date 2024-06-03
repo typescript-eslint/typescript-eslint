@@ -1,15 +1,16 @@
+import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
 import type { HeadingName } from './RuleDocsPage';
 import { requiredHeadingNames, RuleDocsPage } from './RuleDocsPage';
-import type { RuleModuleWithMetaDocs, VFileWithStem } from './utils';
+import type { VFileWithStem } from './utils';
 import { findH2Index } from './utils';
 
 export function createRuleDocsPage(
   children: unist.Node[],
   file: Readonly<VFileWithStem>,
-  rule: Readonly<RuleModuleWithMetaDocs>,
+  rule: Readonly<ESLintPluginRuleModule>,
 ): RuleDocsPage {
   const headingIndices = requiredHeadingNames.map(headingName =>
     findH2Index(children, headingName),

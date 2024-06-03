@@ -28,16 +28,15 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
 function createProjectProgram(
   parseSettings: ParseSettings,
   programsForProjects: readonly ts.Program[],
-): ASTAndDefiniteProgram | undefined {
+): ASTAndDefiniteProgram {
   log('Creating project program for: %s', parseSettings.filePath);
 
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
     getAstFromProgram(currentProgram, parseSettings.filePath),
   );
 
-  // The file was either matched within the tsconfig, or we allow creating a default program
-  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-  if (astAndProgram || parseSettings.DEPRECATED__createDefaultProgram) {
+  // The file was matched within the tsconfig
+  if (astAndProgram) {
     return astAndProgram;
   }
 

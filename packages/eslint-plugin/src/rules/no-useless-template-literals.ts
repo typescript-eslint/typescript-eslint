@@ -19,7 +19,7 @@ export default createRule<[], MessageId>({
     fixable: 'code',
     type: 'suggestion',
     docs: {
-      description: 'Disallow unnecessary template expressions',
+      description: 'Disallow unnecessary template literals',
       requiresTypeChecking: true,
     },
     messages: {

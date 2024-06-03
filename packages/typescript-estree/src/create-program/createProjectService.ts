@@ -17,7 +17,7 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 export type TypeScriptProjectService = ts.server.ProjectService;
 
 export interface ProjectServiceSettings {
-  allowDefaultProjectForFiles: string[] | undefined;
+  allowDefaultProject: string[] | undefined;
   maximumDefaultProjectFileMatchCount: number;
   service: TypeScriptProjectService;
 }
@@ -31,6 +31,7 @@ export function createProjectService(
 
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
   // TODO: see getWatchProgramsForProjects
@@ -104,7 +105,7 @@ export function createProjectService(
   }
 
   return {
-    allowDefaultProjectForFiles: options.allowDefaultProjectForFiles,
+    allowDefaultProject: options.allowDefaultProject,
     maximumDefaultProjectFileMatchCount:
       options.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
       DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD,

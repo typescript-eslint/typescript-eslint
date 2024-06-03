@@ -14,15 +14,23 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
-  EXPERIMENTAL_useProjectService: false,
-  tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
 };
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
-ruleTester.defineRule('collect-unused-vars', context => {
-  collectUnusedVariables(context);
-  return {};
+ruleTester.defineRule('collect-unused-vars', {
+  create(context) {
+    collectUnusedVariables(context);
+    return {};
+  },
+  defaultOptions: [],
+  meta: {
+    messages: {},
+    type: 'problem',
+    schema: [],
+  },
 });
 
 ruleTester.run('no-unused-vars', rule, {

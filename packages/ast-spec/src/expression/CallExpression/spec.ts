@@ -9,9 +9,5 @@ export interface CallExpression extends BaseNode {
   callee: LeftHandSideExpression;
   arguments: CallExpressionArgument[];
   typeArguments: TSTypeParameterInstantiation | undefined;
-
-  /** @deprecated Use {@link `typeArguments`} instead. */
-  typeParameters: TSTypeParameterInstantiation | undefined;
-
   optional: boolean;
 }

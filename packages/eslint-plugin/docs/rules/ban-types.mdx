@@ -36,9 +36,6 @@ const func: Function = () => 1;
 // use safer object types
 const lowerObj: Object = {};
 const capitalObj: Object = { a: 'string' };
-
-const curly1: {} = 1;
-const curly2: {} = { a: 'string' };
 ```
 
 </TabItem>
@@ -58,9 +55,6 @@ const func: () => number = () => 1;
 // use safer object types
 const lowerObj: object = {};
 const capitalObj: { a: string } = { a: 'string' };
-
-const curly1: number = 1;
-const curly2: Record<'a', string> = { a: 'string' };
 ```
 
 </TabItem>
@@ -70,13 +64,10 @@ const curly2: Record<'a', string> = { a: 'string' };
 
 The default options provide a set of "best practices", intended to provide safety and standardization in your codebase:
 
-- Don't use the upper-case primitive types, you should use the lower-case types for consistency.
+- Don't use the upper-case primitive types or `Object`, you should use the lower-case types for consistency.
 - Avoid the `Function` type, as it provides little safety for the following reasons:
   - It provides no type safety when calling the value, which means it's easy to provide the wrong arguments.
   - It accepts class declarations, which will fail when called, as they are called without the `new` keyword.
-- Avoid the `Object` and `{}` types, as they mean "any non-nullish value".
-  - This is a point of confusion for many developers, who think it means "any object type".
-  - See [this comment for more information](https://github.com/typescript-eslint/typescript-eslint/issues/2063#issuecomment-675156492).
 
 <details>
 <summary>Default Options</summary>
@@ -136,3 +127,7 @@ Example configuration:
 
 If your project is a rare one that intentionally deals with the class equivalents of primitives, it might not be worthwhile to enable the default `ban-types` options.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+## Related To
+
+- [`no-empty-object-type`](./no-empty-object-type.mdx)

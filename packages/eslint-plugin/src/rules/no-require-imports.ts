@@ -5,7 +5,8 @@ import * as util from '../util';
 
 type Options = [
   {
-    allow: string[];
+    allow?: string[];
+    allowAsImport?: boolean;
   },
 ];
 type MessageIds = 'noRequireImports';
@@ -16,6 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow invocation of `require()`',
+      recommended: 'recommended',
     },
     schema: [
       {
@@ -26,6 +28,10 @@ export default util.createRule<Options, MessageIds>({
             items: { type: 'string' },
             description: 'Patterns of import paths to allow requiring from.',
           },
+          allowAsImport: {
+            type: 'boolean',
+            description: 'Allows `require` statements in import declarations.',
+          },
         },
         additionalProperties: false,
       },
@@ -34,13 +40,14 @@ export default util.createRule<Options, MessageIds>({
       noRequireImports: 'A `require()` style import is forbidden.',
     },
   },
-  defaultOptions: [{ allow: [] }],
+  defaultOptions: [{ allow: [], allowAsImport: false }],
   create(context, options) {
-    const allowPatterns = options[0].allow.map(
+    const allowAsImport = options[0].allowAsImport;
+    const allowPatterns = options[0].allow?.map(
       pattern => new RegExp(pattern, 'u'),
     );
-    function isImportPathAllowed(importPath: string): boolean {
-      return allowPatterns.some(pattern => importPath.match(pattern));
+    function isImportPathAllowed(importPath: string): boolean | undefined {
+      return allowPatterns?.some(pattern => importPath.match(pattern));
     }
     function isStringOrTemplateLiteral(node: TSESTree.Node): boolean {
       return (
@@ -64,7 +71,6 @@ export default util.createRule<Options, MessageIds>({
           context.sourceCode.getScope(node),
           'require',
         );
-
         // ignore non-global require usage as it's something user-land custom instead
         // of the commonjs standard
         if (!variable?.identifiers.length) {
@@ -80,6 +86,12 @@ export default util.createRule<Options, MessageIds>({
           if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
             return;
           }
+        }
+        if (
+          allowAsImport &&
+          node.parent.type === AST_NODE_TYPES.TSImportEqualsDeclaration
+        ) {
+          return;
         }
         context.report({
           node,

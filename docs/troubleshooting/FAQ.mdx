@@ -32,20 +32,20 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 > We release a new version our tooling every week.
 > _Please_ ensure that you [check our the latest list of "extension" rules](/rules/#extension-rules) **_before_** filing an issue.
 
-<HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
+<HiddenHeading id="allowDefaultProject-glob-too-wide" />
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
 
-These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProjectForFiles` with an excessively wide glob.
-`allowDefaultProjectForFiles` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
+These errors are caused by using the [`projectService`](../packages/Parser.mdx#projectService) `allowDefaultProject` with an excessively wide glob.
+`allowDefaultProject` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
 
-To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
+To resolve this error, narrow the glob(s) used for `allowDefaultProject` to include fewer files.
 For example:
 
 ```diff title="eslint.config.js"
 parserOptions: {
-  EXPERIMENTAL_useProjectService: {
-    allowDefaultProjectForFiles: [
+  projectService: {
+    allowDefaultProject: [
 -      "**/*.js",
 +      "./*.js"
     ]
@@ -533,6 +533,6 @@ If you think you're having issues with performance, see our [Performance Trouble
 
 ## Are TypeScript project references supported?
 
-Yes, but only with [`EXPERIMENTAL_useProjectService`](../packages/Parser.mdx#experimental_useprojectservice).
+Yes, but only with [`projectService`](../packages/Parser.mdx#projectService).
 
 See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.

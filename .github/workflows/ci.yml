@@ -134,6 +134,25 @@ jobs:
         run: yarn stylelint
         working-directory: packages/website
 
+  eslint_v9_tests:
+    name: Run tests on ESLint v9
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - run: yarn add eslint@9
+      - name: Run tests
+        run: yarn test
+        env:
+          CI: true
+
   integration_tests:
     name: Run integration tests on primary Node.js version
     needs: [build]
@@ -148,7 +167,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      - name: Run integrations tests
+      - name: Run integration tests
         run: yarn test-integration
         env:
           CI: true
@@ -221,8 +240,8 @@ jobs:
           # Sadly 1 day is the minimum
           retention-days: 1
 
-  unit_tests_tsserver:
-    name: Run Unit Tests with Experimental TSServer
+  unit_tests_project_service:
+    name: Run Unit Tests with Project Service
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -246,7 +265,7 @@ jobs:
         run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
   upload_coverage:
     name: Upload Codecov Coverage

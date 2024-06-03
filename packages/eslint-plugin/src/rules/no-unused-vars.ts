@@ -104,7 +104,7 @@ export default createRule<Options, MessageIds>({
         vars: 'all',
         args: 'after-used',
         ignoreRestSiblings: false,
-        caughtErrors: 'none',
+        caughtErrors: 'all',
       };
 
       if (typeof firstOption === 'string') {
@@ -245,9 +245,7 @@ export default createRule<Options, MessageIds>({
           ) {
             continue;
           }
-        }
-
-        if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
+        } else if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
           // if "args" option is "none", skip any parameter
           if (options.args === 'none') {
             continue;
