@@ -963,19 +963,39 @@ export class Converter {
 
       case SyntaxKind.FunctionDeclaration: {
         const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
+        const isAsync = hasModifier(SyntaxKind.AsyncKeyword, node);
+        const isGenerator = !!node.asteriskToken;
+        if (isDeclare) {
+          if (node.body) {
+            this.#throwError(
+              node,
+              'An implementation cannot be declared in ambient contexts.',
+            );
+          } else if (isAsync) {
+            this.#throwError(
+              node,
+              "'async' modifier cannot be used in an ambient context.",
+            );
+          } else if (isGenerator) {
+            this.#throwError(
+              node,
+              'Generators are not allowed in an ambient context.',
+            );
+          }
+        }
 
         const result = this.createNode<
           TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction
         >(node, {
-          type:
-            isDeclare || !node.body
-              ? AST_NODE_TYPES.TSDeclareFunction
-              : AST_NODE_TYPES.FunctionDeclaration,
-          async: hasModifier(SyntaxKind.AsyncKeyword, node),
+          // declare implies no body due to the invariant above
+          type: !node.body
+            ? AST_NODE_TYPES.TSDeclareFunction
+            : AST_NODE_TYPES.FunctionDeclaration,
+          async: isAsync,
           body: this.convertChild(node.body) || undefined,
           declare: isDeclare,
           expression: false,
-          generator: !!node.asteriskToken,
+          generator: isGenerator,
           id: this.convertChild(node.name),
           params: this.convertParameters(node.parameters),
           returnType: node.type && this.convertTypeAnnotation(node.type, node),
