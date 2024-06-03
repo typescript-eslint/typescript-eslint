@@ -35,6 +35,13 @@
     "website": "https://cybozu.co.jp/"
   },
   {
+    "id": "Canva",
+    "image": "https://images.opencollective.com/canvaofficial/7217c4d/logo.png",
+    "name": "Canva",
+    "totalDonations": 300000,
+    "website": "https://www.canva.com"
+  },
+  {
     "id": "Codecademy",
     "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
     "name": "Codecademy",

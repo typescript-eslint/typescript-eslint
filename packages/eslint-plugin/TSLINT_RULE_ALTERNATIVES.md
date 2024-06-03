@@ -85,7 +85,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                                  |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                                    |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                            |
-| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                                                                   |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-literal`]                                                                 |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                       |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                        |
 | [`no-tautology-expression`]          | 🛑  | N/A                                                                                                       |
@@ -622,7 +622,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare
 [`@typescript-eslint/no-misused-new`]: https://typescript-eslint.io/rules/no-misused-new
 [`@typescript-eslint/no-this-alias`]: https://typescript-eslint.io/rules/no-this-alias
-[`@typescript-eslint/no-throw-literal`]: https://typescript-eslint.io/rules/no-throw-literal
+[`@typescript-eslint/only-throw-literal`]: https://typescript-eslint.io/rules/only-throw-literal
 [`@typescript-eslint/no-extraneous-class`]: https://typescript-eslint.io/rules/no-extraneous-class
 [`@typescript-eslint/no-unused-vars`]: https://typescript-eslint.io/rules/no-unused-vars
 [`@typescript-eslint/no-use-before-define`]: https://typescript-eslint.io/rules/no-use-before-define

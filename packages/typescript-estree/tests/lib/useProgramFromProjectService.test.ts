@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'path';
+import { ScriptKind } from 'typescript';
 
 import type {
   ProjectServiceSettings,
@@ -22,6 +23,7 @@ const currentDirectory = '/repos/repo';
 
 function createMockProjectService() {
   const openClientFile = jest.fn();
+  const setHostConfiguration = jest.fn();
   const service = {
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
@@ -33,6 +35,7 @@ function createMockProjectService() {
       getCurrentDirectory: () => currentDirectory,
     },
     openClientFile,
+    setHostConfiguration,
   };
 
   return {
@@ -43,6 +46,7 @@ function createMockProjectService() {
 
 const mockParseSettings = {
   filePath: 'path/PascalCaseDirectory/camelCaseFile.ts',
+  extraFileExtensions: [] as readonly string[],
 } as ParseSettings;
 
 const createProjectServiceSettings = <
@@ -142,12 +146,64 @@ describe('useProgramFromProjectService', () => {
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowDefaultProject-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
 
 Matching files:
 - a
 - b
 - ${path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts')}
+
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+`);
+  });
+
+  it('truncates the files printed by the maximum allowed files error when they exceed the print limit', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    service.openClientFile.mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          maximumDefaultProjectFileMatchCount: 2,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(Array.from({ length: 100 }, (_, i) => String(i))),
+      ),
+    ).toThrow(`Too many files (>2) have matched the default project.
+
+Having many files run with the default project is known to cause performance issues and slow down linting.
+
+See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
+
+Matching files:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+- 19
+...and 81 more files
 
 If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `);
@@ -244,5 +300,48 @@ If you absolutely need more files included, set parserOptions.projectService.max
     );
 
     expect(actual).toBe(program);
+  });
+
+  it('does not call setHostConfiguration if extraFileExtensions are not provided', () => {
+    const { service } = createMockProjectService();
+
+    useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: [mockParseSettings.filePath],
+        service,
+      }),
+      mockParseSettings,
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).not.toHaveBeenCalled();
+  });
+
+  it('calls setHostConfiguration on the service to use extraFileExtensions when it is provided', () => {
+    const { service } = createMockProjectService();
+
+    useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: [mockParseSettings.filePath],
+        service,
+      }),
+      {
+        ...mockParseSettings,
+        extraFileExtensions: ['.vue'],
+      },
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      extraFileExtensions: [
+        {
+          extension: '.vue',
+          isMixedContent: false,
+          scriptKind: ScriptKind.Deferred,
+        },
+      ],
+    });
   });
 });

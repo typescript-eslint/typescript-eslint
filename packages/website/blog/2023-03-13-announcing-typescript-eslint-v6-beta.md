@@ -1,6 +1,6 @@
 ---
 authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+  - image_url: /img/team/joshuakgoldberg.jpg
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
@@ -377,6 +377,6 @@ See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslin
 
 ## Supporting typescript-eslint
 
-If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
+If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
 We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
 Thanks! 💖

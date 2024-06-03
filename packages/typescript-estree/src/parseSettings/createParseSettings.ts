@@ -76,8 +76,6 @@ export function createParseSettings(
           : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: tsestreeOptions.errorOnUnknownASTType === true,
-    EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
-      tsestreeOptions.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:
       Array.isArray(tsestreeOptions.extraFileExtensions) &&
       tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')

@@ -30,8 +30,6 @@ export default {
 
         // imported in eslint.config.js
         '@typescript-eslint/utils',
-        // imported in eslint.config.mjs
-        '@typescript-eslint/eslint-plugin-internal',
       ],
       entry: ['tools/release/changelog-renderer.js'],
       ignoreBinaries: [

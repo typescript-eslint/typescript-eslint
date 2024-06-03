@@ -131,6 +131,7 @@ describe('RuleTester', () => {
       outputs: [testCase.code],
       afterAST: EMPTY_PROGRAM,
       beforeAST: EMPTY_PROGRAM,
+      config: { parser: '' },
     };
   });
 
@@ -172,7 +173,6 @@ describe('RuleTester', () => {
             code: 'type-aware parser options should override the constructor config',
             parserOptions: {
               project: 'tsconfig.test-specific.json',
-              projectService: false,
               tsconfigRootDir: '/set/in/the/test/',
             },
           },
@@ -204,9 +204,6 @@ describe('RuleTester', () => {
           {
             "code": "explicit filename shouldn't be overwritten",
             "filename": "/set/in/the/test.ts",
-            "parserOptions": {
-              "disallowAutomaticSingleRunInference": true,
-            },
           },
           {
             "code": "jsx should have the correct filename",
@@ -224,7 +221,6 @@ describe('RuleTester', () => {
             "parserOptions": {
               "disallowAutomaticSingleRunInference": true,
               "project": "tsconfig.test-specific.json",
-              "projectService": false,
               "tsconfigRootDir": "/set/in/the/test/",
             },
           },

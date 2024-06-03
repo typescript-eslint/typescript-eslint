@@ -168,6 +168,12 @@ export default tseslint.config(
           ignorePrimitives: true,
         },
       ],
+      '@typescript-eslint/no-require-imports': [
+        'error',
+        {
+          allow: ['/package\\.json$'],
+        },
+      ],
 
       //
       // Internal repo rules
@@ -201,6 +207,7 @@ export default tseslint.config(
         { commentPattern: '.*intentional fallthrough.*' },
       ],
       'one-var': ['error', 'never'],
+      'prefer-object-has-own': 'error',
 
       //
       // eslint-plugin-eslint-comment
