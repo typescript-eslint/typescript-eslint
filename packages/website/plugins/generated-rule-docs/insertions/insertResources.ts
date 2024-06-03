@@ -1,8 +1,8 @@
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
+import { getUrlForRuleTest, sourceUrlPrefix } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { getUrlForRuleTest, sourceUrlPrefix } from '../utils';
 
 export function insertResources(page: RuleDocsPage): void {
   // Add a link to view the rule's source and test code
