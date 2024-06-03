@@ -31,5 +31,5 @@ export interface TSDeclareFunctionNoDeclare extends TSDeclareFunctionBase {
 }
 
 export type TSDeclareFunction =
-  | TSDeclareFunctionWithDeclare
-  | TSDeclareFunctionNoDeclare;
+  | TSDeclareFunctionNoDeclare
+  | TSDeclareFunctionWithDeclare;
