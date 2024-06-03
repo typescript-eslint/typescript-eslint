@@ -3532,7 +3532,33 @@ promise;
           allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
         },
       ],
-      errors: [{ line: 15, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 15,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+interface UnsafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | UnsafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | UnsafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): UnsafeThenable<TResult1 | TResult2>;
+}
+let promise: UnsafeThenable<number> = Promise.resolve(5);
+void promise;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3543,7 +3569,22 @@ promise.catch();
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+class SafePromise<T> extends Promise<T> {}
+let promise: SafePromise<number> = Promise.resolve(5);
+void promise.catch();
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3554,7 +3595,22 @@ promise().finally();
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+class UnsafePromise<T> extends Promise<T> {}
+let promise: () => UnsafePromise<number> = async () => 5;
+void promise().finally();
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3565,7 +3621,22 @@ let promise: UnsafePromise = Promise.resolve(5);
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+type UnsafePromise = Promise<number> & { hey?: string };
+let promise: UnsafePromise = Promise.resolve(5);
+void (0 ? promise.catch() : 2);
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3576,7 +3647,22 @@ null ?? promise().catch();
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+type UnsafePromise = Promise<number> & { hey?: string };
+let promise: () => UnsafePromise = async () => 5;
+void (null ?? promise().catch());
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3617,7 +3703,22 @@ declare const myTag: (strings: TemplateStringsArray) => SafePromise;
 myTag\`abc\`;
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+type SafePromise = Promise<number> & { __linterBrands?: string };
+declare const myTag: (strings: TemplateStringsArray) => SafePromise;
+void myTag\`abc\`;
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
