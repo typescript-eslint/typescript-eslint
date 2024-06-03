@@ -41,7 +41,6 @@ import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
-import { isReadonlyArray } from './utils/isReadonlyArray';
 import { isSerializable } from './utils/serialization';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
