@@ -41,6 +41,5 @@ export interface ImportDeclaration extends BaseNode {
    * import 'mod';
    * ```
    */
-  // TODO: we should have a way to differentiate between these two cases
   specifiers: ImportClause[];
 }
