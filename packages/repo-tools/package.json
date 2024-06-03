@@ -20,6 +20,7 @@
     "@actions/github": "^6.0.0",
     "@jest/types": "29.6.3",
     "@nx/devkit": "*",
+    "@types/yargs": "^17.0.32",
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/scope-manager": "7.11.0",
     "@typescript-eslint/types": "7.11.0",
@@ -30,6 +31,7 @@
     "prettier": "^3.2.5",
     "rimraf": "*",
     "semver": "7.6.2",
-    "typescript": "*"
+    "typescript": "*",
+    "yargs": "^17.7.2"
   }
 }

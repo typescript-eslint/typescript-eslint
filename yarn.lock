@@ -5041,9 +5041,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint-scope@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+"@types/eslint-scope@link:./packages/repo-tools/src/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "@types/eslint-scope@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  resolution: "@types/eslint-scope@link:./packages/repo-tools/src/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
   languageName: node
   linkType: soft
 
@@ -5065,9 +5065,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+"@types/estree@link:./packages/repo-tools/src/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "@types/estree@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  resolution: "@types/estree@link:./packages/repo-tools/src/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
   languageName: node
   linkType: soft
 
@@ -5658,6 +5658,7 @@ __metadata:
     "@actions/github": ^6.0.0
     "@jest/types": 29.6.3
     "@nx/devkit": "*"
+    "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": 7.11.0
     "@typescript-eslint/scope-manager": 7.11.0
     "@typescript-eslint/types": 7.11.0
@@ -5669,6 +5670,7 @@ __metadata:
     rimraf: "*"
     semver: 7.6.2
     typescript: "*"
+    yargs: ^17.7.2
   languageName: unknown
   linkType: soft
 
@@ -5828,7 +5830,6 @@ __metadata:
     "@types/node": ^20.12.5
     "@types/semver": ^7.5.8
     "@types/tmp": ^0.2.6
-    "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin-internal": "workspace:^"
     console-fail-test: ^0.2.3
     cross-fetch: ^4.0.0
@@ -5865,7 +5866,6 @@ __metadata:
     tsx: "*"
     typescript: ">=4.7.4 <5.5.0"
     typescript-eslint: "workspace:^"
-    yargs: 17.7.2
   languageName: unknown
   linkType: soft
 
@@ -20869,7 +20869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:17.7.2, yargs@npm:^17.3.1, yargs@npm:^17.6.2":
+"yargs@npm:^17.3.1, yargs@npm:^17.6.2, yargs@npm:^17.7.2":
   version: 17.7.2
   resolution: "yargs@npm:17.7.2"
   dependencies:

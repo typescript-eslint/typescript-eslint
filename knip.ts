@@ -58,6 +58,7 @@ export default {
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
     },
+    'packages/repo-tools/src/dummypkg': {},
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
     },
@@ -121,6 +122,5 @@ export default {
         'src/mock/util.js',
       ],
     },
-    'tools/dummypkg': {},
   },
 } satisfies KnipConfig;
