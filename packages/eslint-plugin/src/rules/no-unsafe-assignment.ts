@@ -89,7 +89,7 @@ export default createRule({
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
-          data: createDataFromSenderType(senderType),
+          data: createData(senderType),
         });
         return false;
       }
@@ -128,7 +128,7 @@ export default createRule({
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
-            data: createDataFromSenderType(senderType),
+            data: createData(senderType),
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -215,7 +215,7 @@ export default createRule({
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
-            data: createDataFromSenderType(senderType),
+            data: createData(senderType),
           });
           didReport = true;
         } else if (
@@ -279,7 +279,7 @@ export default createRule({
         context.report({
           node: reportingNode,
           messageId,
-          data: createDataFromSenderType(senderType),
+          data: createData(senderType),
         });
 
         return true;
@@ -303,10 +303,7 @@ export default createRule({
       context.report({
         node: reportingNode,
         messageId: 'unsafeAssignment',
-        data: {
-          sender: '`' + checker.typeToString(sender) + '`',
-          receiver: '`' + checker.typeToString(receiver) + '`',
-        },
+        data: createData(sender, receiver),
       });
       return true;
     }
@@ -321,14 +318,22 @@ export default createRule({
           ComparisonType.None;
     }
 
-    function createDataFromSenderType(
+    function createData(
       senderType: ts.Type,
+      receiverType?: ts.Type,
     ): Readonly<Record<string, unknown>> | undefined {
-      return {
-        sender: tsutils.isIntrinsicErrorType(senderType)
-          ? 'error typed'
-          : '`any`',
-      };
+      if (receiverType) {
+        return {
+          sender: '`' + checker.typeToString(senderType) + '`',
+          receiver: '`' + checker.typeToString(receiverType) + '`',
+        };
+      } else {
+        return {
+          sender: tsutils.isIntrinsicErrorType(senderType)
+            ? 'error typed'
+            : '`any`',
+        };
+      }
     }
 
     return {
@@ -399,7 +404,7 @@ export default createRule({
           context.report({
             node: node,
             messageId: 'unsafeArraySpread',
-            data: createDataFromSenderType(restType),
+            data: createData(restType),
           });
         }
       },

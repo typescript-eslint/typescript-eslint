@@ -200,13 +200,23 @@ class Foo {
       code: `
 const [x] = spooky;
       `,
-      errors: [{ messageId: 'anyAssignment' }],
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
     },
     {
       code: `
 const [[[x]]] = [spooky];
       `,
-      errors: [{ messageId: 'unsafeArrayPatternFromTuple' }],
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
     },
     {
       code: `
