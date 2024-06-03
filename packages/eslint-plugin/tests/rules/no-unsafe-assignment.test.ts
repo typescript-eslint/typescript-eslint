@@ -210,7 +210,9 @@ const [[[x]]] = [spooky];
     },
     {
       code: `
-const {x: {y: z}} = {x: spooky};
+const {
+  x: { y: z },
+} = { x: spooky };
       `,
       errors: [
         {
