@@ -31,7 +31,7 @@ export default {
         // imported in eslint.config.js
         '@typescript-eslint/utils',
       ],
-      entry: ['tools/release/changelog-renderer.js'],
+      entry: ['packages/repo-tools/src/release/changelog-renderer.js'],
       ignoreBinaries: [
         // https://github.com/webpro/knip/issues/433
         'stylelint',
