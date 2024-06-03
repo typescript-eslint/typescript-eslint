@@ -62,10 +62,7 @@ export default createRule({
         node: TSESTree.TSExternalModuleReference,
       ): void {
         const parent = node.parent as TSESTree.TSImportEqualsDeclaration;
-        if (
-          node.expression.type === AST_NODE_TYPES.Literal &&
-          node.expression.value === 'typescript'
-        ) {
+        if (node.expression.value === 'typescript') {
           context.report({
             node,
             messageId: 'noTSDefaultImport',
