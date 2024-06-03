@@ -211,6 +211,7 @@ ruleTester.run('prefer-includes', rule, {
           a?.indexOf(b) === -1;
         }
       `,
+      output: null,
       errors: [{ messageId: 'preferIncludes' }],
     },
     {
@@ -219,6 +220,7 @@ ruleTester.run('prefer-includes', rule, {
           a?.indexOf(b) !== -1;
         }
       `,
+      output: null,
       errors: [{ messageId: 'preferIncludes' }],
     },
 

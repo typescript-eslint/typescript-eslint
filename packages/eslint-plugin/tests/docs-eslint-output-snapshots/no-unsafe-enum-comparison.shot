@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unsafe-enum-comparison.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+enum Fruit {
+  Apple,
+}
+
+declare let fruit: Fruit;
+
+fruit === 0;
+~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
+"
+`;
+
+exports[`Validating rule docs no-unsafe-enum-comparison.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare let vegetable: Vegetable;
+
+vegetable === 'asparagus';
+~~~~~~~~~~~~~~~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
+"
+`;
+
+exports[`Validating rule docs no-unsafe-enum-comparison.mdx code examples ESLint output 3`] = `
+"Correct
+
+enum Fruit {
+  Apple,
+}
+
+declare let fruit: Fruit;
+
+fruit === Fruit.Apple;
+"
+`;
+
+exports[`Validating rule docs no-unsafe-enum-comparison.mdx code examples ESLint output 4`] = `
+"Correct
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare let vegetable: Vegetable;
+
+vegetable === Vegetable.Asparagus;
+"
+`;

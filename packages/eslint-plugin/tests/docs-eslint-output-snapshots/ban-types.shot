@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs ban-types.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+// use lower-case primitives for consistency
+const str: String = 'foo';
+           ~~~~~~ Don't use \`String\` as a type. Use string instead
+const bool: Boolean = true;
+            ~~~~~~~ Don't use \`Boolean\` as a type. Use boolean instead
+const num: Number = 1;
+           ~~~~~~ Don't use \`Number\` as a type. Use number instead
+const symb: Symbol = Symbol('foo');
+            ~~~~~~ Don't use \`Symbol\` as a type. Use symbol instead
+const bigInt: BigInt = 1n;
+              ~~~~~~ Don't use \`BigInt\` as a type. Use bigint instead
+
+// use a proper function type
+const func: Function = () => 1;
+            ~~~~~~~~ Don't use \`Function\` as a type. The \`Function\` type accepts any function-like value.
+                     It provides no type safety when calling the function, which can be a common source of bugs.
+                     It also accepts things like class declarations, which will throw at runtime as they will not be called with \`new\`.
+                     If you are expecting the function to accept certain arguments, you should explicitly define the function shape.
+
+// use safer object types
+const lowerObj: Object = {};
+                ~~~~~~ Don't use \`Object\` as a type. The \`Object\` type actually means "any non-nullish value", so it is marginally better than \`unknown\`.
+                       - If you want a type meaning "any object", you probably want \`object\` instead.
+                       - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                       - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
+const capitalObj: Object = { a: 'string' };
+                  ~~~~~~ Don't use \`Object\` as a type. The \`Object\` type actually means "any non-nullish value", so it is marginally better than \`unknown\`.
+                         - If you want a type meaning "any object", you probably want \`object\` instead.
+                         - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                         - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
+
+const curly1: {} = 1;
+              ~~ Don't use \`{}\` as a type. \`{}\` actually means "any non-nullish value".
+                 - If you want a type meaning "any object", you probably want \`object\` instead.
+                 - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                 - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
+                 - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
+const curly2: {} = { a: 'string' };
+              ~~ Don't use \`{}\` as a type. \`{}\` actually means "any non-nullish value".
+                 - If you want a type meaning "any object", you probably want \`object\` instead.
+                 - If you want a type meaning "any value", you probably want \`unknown\` instead.
+                 - If you want a type meaning "empty object", you probably want \`Record<string, never>\` instead.
+                 - If you really want a type meaning "any non-nullish value", you probably want \`NonNullable<unknown>\` instead.
+"
+`;
+
+exports[`Validating rule docs ban-types.mdx code examples ESLint output 2`] = `
+"Correct
+
+// use lower-case primitives for consistency
+const str: string = 'foo';
+const bool: boolean = true;
+const num: number = 1;
+const symb: symbol = Symbol('foo');
+const bigInt: bigint = 1n;
+
+// use a proper function type
+const func: () => number = () => 1;
+
+// use safer object types
+const lowerObj: object = {};
+const capitalObj: { a: string } = { a: 'string' };
+
+const curly1: number = 1;
+const curly2: Record<'a', string> = { a: 'string' };
+"
+`;

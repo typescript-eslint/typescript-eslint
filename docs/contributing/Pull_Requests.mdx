@@ -10,7 +10,7 @@ Fantastic!
 
 Please do:
 
-- Only send pull requests that resolve [open issues marked as `accepting prs`](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+is%3Aopen+label%3A%22accepting+prs%22)
+- Only send pull requests that resolve [open, unassigned issues marked as `accepting prs`](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+is%3Aopen+label%3A%22accepting+prs%22+no%3Aassignee)
   - One exception: extremely minor documentation typos
 - Fill out the pull request template in full
 - Validate your changes per [Development > Validating Changes](./Local_Development.mdx#validating-changes) before un-[drafting your PR](https://github.blog/2019-02-14-introducing-draft-pull-requests)
@@ -51,7 +51,7 @@ Within the body of your PR, make sure you reference the issue that you have work
 
 Must be one of the following:
 
-<!-- Keep this synchronized with /.github/workflows/semantic-pr-titles.yml -->
+{/* Keep this synchronized with /.github/workflows/semantic-pr-titles.yml */}
 
 - `docs` - if you only change documentation, and not shipped code
 - `feat` - for any new functionality additions

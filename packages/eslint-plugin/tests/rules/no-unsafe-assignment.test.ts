@@ -157,6 +157,11 @@ declare function Foo(props: { a: string }): never;
     'const x: Set<unknown> = y as Set<any>;',
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     'const x: Map<string, string> = new Map();',
+    `
+type Foo = { bar: unknown };
+const bar: any = 1;
+const foo: Foo = { bar };
+    `,
   ],
   invalid: [
     {
@@ -386,6 +391,21 @@ const test: T = ['string', []] as any;
           line: 3,
           column: 7,
           endColumn: 38,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { bar: number };
+const bar: any = 1;
+const foo: Foo = { bar };
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 4,
+          column: 20,
+          endColumn: 23,
         },
       ],
     },

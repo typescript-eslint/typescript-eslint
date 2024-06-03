@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const foo: { bar: number } | null = null;
+const bar = foo!!!.bar;
+            ~~~~~ Forbidden extra non-null assertion.
+            ~~~~ Forbidden extra non-null assertion.
+"
+`;
+
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+function foo(bar: number | undefined) {
+  const bar: number = bar!!!;
+                      ~~~~~ Forbidden extra non-null assertion.
+                      ~~~~ Forbidden extra non-null assertion.
+}
+"
+`;
+
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+function foo(bar?: { n: number }) {
+  return bar!?.n;
+         ~~~~ Forbidden extra non-null assertion.
+}
+"
+`;
+
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 4`] = `
+"Correct
+
+const foo: { bar: number } | null = null;
+const bar = foo!.bar;
+"
+`;
+
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 5`] = `
+"Correct
+
+function foo(bar: number | undefined) {
+  const bar: number = bar!;
+}
+"
+`;
+
+exports[`Validating rule docs no-extra-non-null-assertion.mdx code examples ESLint output 6`] = `
+"Correct
+
+function foo(bar?: { n: number }) {
+  return bar?.n;
+}
+"
+`;

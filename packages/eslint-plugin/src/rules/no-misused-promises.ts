@@ -3,7 +3,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isRestParameterDeclaration,
+} from '../util';
 
 type Options = [
   {
@@ -549,7 +553,7 @@ function voidFunctionArguments(
 
         // If this is a array 'rest' parameter, check all of the argument indices
         // from the current argument to the end.
-        if (decl && ts.isParameter(decl) && decl.dotDotDotToken) {
+        if (decl && isRestParameterDeclaration(decl)) {
           if (checker.isArrayType(type)) {
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest

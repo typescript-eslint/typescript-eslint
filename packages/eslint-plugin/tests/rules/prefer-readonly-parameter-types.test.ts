@@ -7,6 +7,7 @@ import type {
   InferOptionsTypeFromRule,
 } from '../../src/util';
 import { readonlynessOptionsDefaults } from '../../src/util';
+import { dedupeTestCases } from '../dedupeTestCases';
 import { getFixturesRootDir } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -256,11 +257,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: true,
-        },
-      ],
+      options: [{ checkParameterProperties: true }],
     },
     {
       code: `
@@ -273,11 +270,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: false,
-        },
-      ],
+      options: [{ checkParameterProperties: false }],
     },
 
     // type functions
@@ -482,22 +475,25 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
   ],
   invalid: [
     // arrays
-    ...arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
-      const type = baseType
-        .replace(/readonly /g, '')
-        .replace(/Readonly<(.+?)>/g, '$1')
-        .replace(/ReadonlyArray/g, 'Array');
-      return {
-        code: `function foo(arg: ${type}) {}`,
-        errors: [
-          {
-            messageId: 'shouldBeReadonly',
-            column: 14,
-            endColumn: 19 + type.length,
-          },
-        ],
-      };
-    }),
+    // Removing readonly causes duplicates
+    ...dedupeTestCases(
+      arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
+        const type = baseType
+          .replace(/readonly /g, '')
+          .replace(/Readonly<(.+?)>/g, '$1')
+          .replace(/ReadonlyArray/g, 'Array');
+        return {
+          code: `function foo(arg: ${type}) {}`,
+          errors: [
+            {
+              messageId: 'shouldBeReadonly',
+              column: 14,
+              endColumn: 19 + type.length,
+            },
+          ],
+        };
+      }),
+    ),
     // nested arrays
     {
       code: 'function foo(arg: readonly string[][]) {}',
@@ -648,11 +644,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: true,
-        },
-      ],
+      options: [{ checkParameterProperties: true }],
       errors: [
         {
           messageId: 'shouldBeReadonly',
@@ -696,11 +688,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: false,
-        },
-      ],
+      options: [{ checkParameterProperties: false }],
       errors: [
         {
           messageId: 'shouldBeReadonly',

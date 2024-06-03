@@ -9,4 +9,7 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 export default (
   _plugin: FlatConfig.Plugin,
   _parser: FlatConfig.Parser,
-): FlatConfig.Config => config('minimatch');
+): FlatConfig.Config => ({
+  ...config('minimatch'),
+  name: 'typescript-eslint/eslint-recommended',
+});

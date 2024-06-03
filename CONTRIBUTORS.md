@@ -90,6 +90,7 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/pablobirukov"><img src="https://avatars.githubusercontent.com/u/1861546?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pavel Birukov </b></sub></a></td>
     <td align="center"><a href="https://github.com/mightyiam"><img src="https://avatars.githubusercontent.com/u/635591?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Shahar "Dawn" Or</b></sub></a></td>
     <td align="center"><a href="https://github.com/kirkwaiblinger"><img src="https://avatars.githubusercontent.com/u/53019676?v=4&size=100" width="100px;" alt=""/><br /><sub><b>kirkwaiblinger</b></sub></a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->

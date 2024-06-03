@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/recommended-type-checked-only',
     rules: {
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-base-to-string': 'error',

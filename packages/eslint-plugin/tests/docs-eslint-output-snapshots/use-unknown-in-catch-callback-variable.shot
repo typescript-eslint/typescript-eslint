@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs use-unknown-in-catch-callback-variable.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+Promise.reject(new Error('I will reject!')).catch(err => {
+                                                  ~~~ Prefer the safe \`: unknown\` for a catch callback variable.
+  console.log(err);
+});
+
+Promise.reject(new Error('I will reject!')).catch((err: any) => {
+                                                   ~~~~~~~~ Prefer the safe \`: unknown\` for a catch callback variable.
+  console.log(err);
+});
+
+Promise.reject(new Error('I will reject!')).catch((err: Error) => {
+                                                   ~~~~~~~~~~ Prefer the safe \`: unknown\` for a catch callback variable.
+  console.log(err);
+});
+"
+`;
+
+exports[`Validating rule docs use-unknown-in-catch-callback-variable.mdx code examples ESLint output 2`] = `
+"Correct
+
+Promise.reject(new Error('I will reject!')).catch((err: unknown) => {
+  console.log(err);
+});
+"
+`;

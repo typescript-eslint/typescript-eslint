@@ -1,0 +1,458 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 2`] = `
+"Correct
+
+class Foo {
+  constructor(name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "allow": ["readonly"] }
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "allow": ["readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(readonly name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "allow": ["private"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "allow": ["private"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 7`] = `
+"Incorrect
+Options: { "allow": ["protected"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 8`] = `
+"Correct
+Options: { "allow": ["protected"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 9`] = `
+"Incorrect
+Options: { "allow": ["public"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 10`] = `
+"Correct
+Options: { "allow": ["public"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 11`] = `
+"Incorrect
+Options: { "allow": ["private readonly"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 12`] = `
+"Correct
+Options: { "allow": ["private readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 13`] = `
+"Incorrect
+Options: { "allow": ["protected readonly"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 14`] = `
+"Correct
+Options: { "allow": ["protected readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 15`] = `
+"Incorrect
+Options: { "allow": ["public readonly"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 16`] = `
+"Correct
+Options: { "allow": ["public readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 17`] = `
+"Incorrect
+Options: { "prefer": "parameter-property" }
+
+class Foo {
+  private name: string;
+  ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  public readonly name: string;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  constructor(name: string) {
+    this.name = name;
+  }
+  name: string;
+  ~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+}
+"
+`;
+
+exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 18`] = `
+"Correct
+Options: { "prefer": "parameter-property" }
+
+class Foo {
+  private differentName: string;
+  constructor(name: string) {
+    this.differentName = name;
+  }
+}
+
+class Foo {
+  private differentType: number | undefined;
+  constructor(differentType: number) {
+    this.differentType = differentType;
+  }
+}
+
+class Foo {
+  protected logicInConstructor: string;
+  constructor(logicInConstructor: string) {
+    console.log('Hello, world!');
+    this.logicInConstructor = logicInConstructor;
+  }
+}
+"
+`;

@@ -78,6 +78,7 @@ export function createParser(
       });
 
       const checker = program.getTypeChecker();
+      const compilerOptions = program.getCompilerOptions();
 
       onUpdate(filePath, {
         storedAST: converted.estree,
@@ -90,6 +91,9 @@ export function createParser(
         ast: converted.estree,
         services: {
           program,
+          emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
+          experimentalDecorators:
+            compilerOptions.experimentalDecorators ?? false,
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
           getSymbolAtLocation: node =>

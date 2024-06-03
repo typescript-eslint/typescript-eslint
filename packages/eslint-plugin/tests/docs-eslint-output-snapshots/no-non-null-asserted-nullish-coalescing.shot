@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-non-null-asserted-nullish-coalescing.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+foo! ?? bar;
+~~~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
+foo.bazz! ?? bar;
+~~~~~~~~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
+foo!.bazz! ?? bar;
+~~~~~~~~~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
+foo()! ?? bar;
+~~~~~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
+
+let x!: string;
+x! ?? '';
+~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
+
+let x: string;
+x = foo();
+x! ?? '';
+~~ The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.
+"
+`;
+
+exports[`Validating rule docs no-non-null-asserted-nullish-coalescing.mdx code examples ESLint output 2`] = `
+"Correct
+
+foo ?? bar;
+foo ?? bar!;
+foo!.bazz ?? bar;
+foo!.bazz ?? bar!;
+foo() ?? bar;
+
+// This is considered correct code because there's no way for the user to satisfy it.
+let x: string;
+x! ?? '';
+"
+`;

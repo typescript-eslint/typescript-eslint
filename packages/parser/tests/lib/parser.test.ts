@@ -48,12 +48,42 @@ describe('parser', () => {
     });
   });
 
+  it('parseAndGenerateServices() should be called with options.errorOnTypeScriptSyntacticAndSemanticIssues overriden to false', () => {
+    const code = 'const valid = true;';
+    const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
+    const config: ParserOptions = {
+      loc: false,
+      comment: false,
+      range: false,
+      tokens: false,
+      sourceType: 'module' as const,
+      ecmaFeatures: {
+        globalReturn: false,
+        jsx: false,
+      },
+      // ts-estree specific
+      filePath: './isolated-file.src.ts',
+      project: 'tsconfig.json',
+      errorOnTypeScriptSyntacticAndSemanticIssues: true,
+      tsconfigRootDir: path.resolve(__dirname, '../fixtures/services'),
+      extraFileExtensions: ['.foo'],
+    };
+    parseForESLint(code, config);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenLastCalledWith(code, {
+      jsx: false,
+      ...config,
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+    });
+  });
+
   it('`warnOnUnsupportedTypeScriptVersion: false` should set `loggerFn: false` on typescript-estree', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
     parseForESLint(code, { warnOnUnsupportedTypeScriptVersion: true });
     expect(spy).toHaveBeenCalledWith(code, {
       ecmaFeatures: {},
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
       jsx: false,
       sourceType: 'script',
       warnOnUnsupportedTypeScriptVersion: true,
@@ -64,6 +94,7 @@ describe('parser', () => {
       ecmaFeatures: {},
       jsx: false,
       sourceType: 'script',
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
       loggerFn: false,
       warnOnUnsupportedTypeScriptVersion: false,
     });

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+[1, 2, 3].reduce((arr, num) => arr.concat(num * 2), [] as number[]);
+                                                    ~~~~~~~~~~~~~~ Unnecessary cast: Array#reduce accepts a type parameter for the default value.
+
+['a', 'b'].reduce(
+  (accum, name) => ({
+    ...accum,
+    [name]: true,
+  }),
+  {} as Record<string, boolean>,
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unnecessary cast: Array#reduce accepts a type parameter for the default value.
+);
+"
+`;
+
+exports[`Validating rule docs prefer-reduce-type-parameter.mdx code examples ESLint output 2`] = `
+"Correct
+
+[1, 2, 3].reduce<number[]>((arr, num) => arr.concat(num * 2), []);
+
+['a', 'b'].reduce<Record<string, boolean>>(
+  (accum, name) => ({
+    ...accum,
+    [name]: true,
+  }),
+  {},
+);
+"
+`;

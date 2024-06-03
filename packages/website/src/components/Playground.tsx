@@ -156,6 +156,11 @@ function Playground(): React.JSX.Element {
               tabs={detailTabs}
               active={state.showAST ?? false}
               change={showAST => setState({ showAST })}
+              additionalTabsInfo={{
+                Errors:
+                  markers?.reduce((prev, cur) => prev + cur.items.length, 0) ||
+                  0,
+              }}
             />
             {state.showAST === 'es' && (
               <ESQueryFilter
