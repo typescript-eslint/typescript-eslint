@@ -82,6 +82,7 @@ import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryParameterPropertyAssignment from './no-unnecessary-parameter-property-assignment';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
+import noUnnecessaryTemplateExpression from './no-unnecessary-template-expression';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
@@ -229,6 +230,7 @@ export default {
   'no-unnecessary-parameter-property-assignment':
     noUnnecessaryParameterPropertyAssignment,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
+  'no-unnecessary-template-expression': noUnnecessaryTemplateExpression,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,

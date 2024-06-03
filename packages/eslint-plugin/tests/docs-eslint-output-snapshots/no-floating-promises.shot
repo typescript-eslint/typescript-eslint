@@ -33,6 +33,9 @@ await promise;
 async function returnsPromise() {
   return 'value';
 }
+
+void returnsPromise();
+
 returnsPromise().then(
   () => {},
   () => {},
@@ -68,5 +71,40 @@ await (async function () {
 (async function () {
   await res(1);
 })();
+"
+`;
+
+exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+
+let promise: Promise<number> = Promise.resolve(2);
+promise;
+~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+
+function returnsPromise(): Promise<number> {
+  return Promise.resolve(42);
+}
+
+returnsPromise();
+~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the \`void\` operator.
+"
+`;
+
+exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 6`] = `
+"Correct
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+
+// promises can be marked as safe by using branded types
+type SafePromise = Promise<number> & { __linterBrands?: string };
+
+let promise: SafePromise = Promise.resolve(2);
+promise;
+
+function returnsSafePromise(): SafePromise {
+  return Promise.resolve(42);
+}
+
+returnsSafePromise();
 "
 `;

@@ -95,10 +95,20 @@ function getGroup(node: TSESTree.TypeNode): Group {
   }
 }
 
+function caseSensitiveSort(a: string, b: string): number {
+  if (a < b) {
+    return -1;
+  } else if (a > b) {
+    return 1;
+  }
+  return 0;
+}
+
 export type Options = [
   {
     checkIntersections?: boolean;
     checkUnions?: boolean;
+    caseSensitive?: boolean;
     groupOrder?: string[];
   },
 ];
@@ -132,6 +142,10 @@ export default createRule<Options, MessageIds>({
             description: 'Whether to check union types.',
             type: 'boolean',
           },
+          caseSensitive: {
+            description: 'Whether to sort using case sensitive sorting.',
+            type: 'boolean',
+          },
           groupOrder: {
             description: 'Ordering of the groups.',
             type: 'array',
@@ -148,6 +162,7 @@ export default createRule<Options, MessageIds>({
     {
       checkIntersections: true,
       checkUnions: true,
+      caseSensitive: false,
       groupOrder: [
         Group.named,
         Group.keyword,
@@ -164,7 +179,10 @@ export default createRule<Options, MessageIds>({
       ],
     },
   ],
-  create(context, [{ checkIntersections, checkUnions, groupOrder }]) {
+  create(
+    context,
+    [{ checkIntersections, checkUnions, caseSensitive, groupOrder }],
+  ) {
     const collator = new Intl.Collator('en', {
       sensitivity: 'base',
       numeric: true,
@@ -184,6 +202,10 @@ export default createRule<Options, MessageIds>({
       const expectedOrder = [...sourceOrder].sort((a, b) => {
         if (a.group !== b.group) {
           return a.group - b.group;
+        }
+
+        if (caseSensitive) {
+          return caseSensitiveSort(a.text, b.text);
         }
 
         return (

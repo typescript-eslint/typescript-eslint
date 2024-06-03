@@ -104,7 +104,7 @@ export default createRule({
       // If there is an explicit type annotation *and* that type matches the actual
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
-        for (const signature of functionType.getCallSignatures()) {
+        for (const signature of tsutils.getCallSignaturesOfType(functionType)) {
           if (
             returnNodeType === signature.getReturnType() ||
             isTypeFlagSet(

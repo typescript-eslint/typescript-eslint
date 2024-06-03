@@ -106,9 +106,23 @@ interface ParseOptions {
  */
 export interface ProjectServiceOptions {
   /**
-   * Globs of files to allow running with the default inferred project settings.
+   * Globs of files to allow running with the default project compiler options.
    */
   allowDefaultProjectForFiles?: string[];
+
+  /**
+   * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   */
+  defaultProject?: string;
+
+  /**
+   * The maximum number of files {@link allowDefaultProjectForFiles} may match.
+   * Each file match slows down linting, so if you do need to use this, please
+   * file an informative issue on typescript-eslint explaining why - so we can
+   * help you avoid using it!
+   * @default 8
+   */
+  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
