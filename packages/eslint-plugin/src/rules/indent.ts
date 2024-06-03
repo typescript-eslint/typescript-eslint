@@ -285,7 +285,6 @@ export default createRule<Options, MessageIds>({
                 callee: {
                   type: AST_NODE_TYPES.Identifier,
                   name: 'require',
-                  typeAnnotation: undefined,
                   range: [
                     moduleReference.range[0],
                     moduleReference.range[0] + 'require'.length,
@@ -307,7 +306,7 @@ export default createRule<Options, MessageIds>({
                 range: moduleReference.range,
                 loc: moduleReference.loc,
               },
-            } as TSESTree.ConstDeclaratorWithInit,
+            } as TSESTree.VariableDeclarator,
           ],
           declare: false,
 
