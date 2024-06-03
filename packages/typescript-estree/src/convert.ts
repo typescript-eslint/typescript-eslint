@@ -990,15 +990,34 @@ export class Converter {
       }
 
       case SyntaxKind.VariableDeclaration: {
+        const definite = !!node.exclamationToken;
+        const init = this.convertChild(node.initializer);
+        const id = this.convertBindingNameWithTypeAnnotation(
+          node.name,
+          node.type,
+          node,
+        );
+        if (definite) {
+          if (init) {
+            this.#throwError(
+              node,
+              'Declarations with initializers cannot also have definite assignment assertions.',
+            );
+          } else if (
+            id.type !== AST_NODE_TYPES.Identifier ||
+            !id.typeAnnotation
+          ) {
+            this.#throwError(
+              node,
+              'Declarations with definite assignment assertions must also have type annotations.',
+            );
+          }
+        }
         return this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
-          definite: !!node.exclamationToken,
-          id: this.convertBindingNameWithTypeAnnotation(
-            node.name,
-            node.type,
-            node,
-          ),
-          init: this.convertChild(node.initializer),
+          definite,
+          id,
+          init,
         });
       }
 
@@ -1034,6 +1053,41 @@ export class Converter {
             }
           });
         }
+        // Definite assignment only allowed for non-declare let and var
+        if (
+          result.declare ||
+          ['using', 'await using', 'const'].includes(result.kind)
+        ) {
+          node.declarationList.declarations.forEach((declaration, i) => {
+            if (result.declarations[i].definite) {
+              this.#throwError(
+                declaration,
+                `A definite assignment assertion '!' is not permitted in this context.`,
+              );
+            }
+          });
+        }
+        if (result.declare) {
+          node.declarationList.declarations.forEach((declaration, i) => {
+            if (
+              result.declarations[i].init &&
+              (['let', 'var'].includes(result.kind) ||
+                result.declarations[i].id.typeAnnotation)
+            ) {
+              this.#throwError(
+                declaration,
+                `Initializers are not permitted in ambient contexts.`,
+              );
+            }
+          });
+          // Theoretically, only certain initializers are allowed for declare const,
+          // (TS1254: A 'const' initializer in an ambient context must be a string
+          // or numeric literal or literal enum reference.) but we just allow
+          // all expressions
+        }
+        // Note! No-declare does not mean the variable is not ambient, because
+        // it can be further nested in other declare contexts. Therefore we cannot
+        // check for const initializers.
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
