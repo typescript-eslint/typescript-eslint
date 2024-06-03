@@ -3107,6 +3107,9 @@ export class Converter {
         );
       }
       case SyntaxKind.ExternalModuleReference: {
+        if (node.expression.kind !== SyntaxKind.StringLiteral) {
+          this.#throwError(node.expression, 'String literal expected.');
+        }
         return this.createNode<TSESTree.TSExternalModuleReference>(node, {
           type: AST_NODE_TYPES.TSExternalModuleReference,
           expression: this.convertChild(node.expression),

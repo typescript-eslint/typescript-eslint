@@ -11,7 +11,6 @@ exports[`AST Fixtures List fixtures with Error differences 1`] = `
     "declaration/TSDeclareFunction/fixtures/_error_/async/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/declare-with-body/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/missing-type-param/fixture.ts",
-    "declaration/TSImportEqualsDeclaration/fixtures/_error_/external-module-ref-non-string/fixture.ts",
     "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",
     "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-extends/fixture.ts",
     "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
