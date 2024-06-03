@@ -52,6 +52,15 @@ function Playground(): React.JSX.Element {
     [],
   );
 
+  const onLoaded = useCallback(
+    (ruleNames: RuleDetails[], tsVersions: readonly string[]) => {
+      setRuleNames(ruleNames);
+      setTSVersion(tsVersions);
+      setIsLoading(false);
+    },
+    [],
+  );
+
   const ActiveVisualEditor =
     !isLoading &&
     {
@@ -59,6 +68,14 @@ function Playground(): React.JSX.Element {
       eslintrc: visualEslintRc && ConfigEslint,
       tsconfig: visualTSConfig && ConfigTypeScript,
     }[activeTab];
+
+  const onVisualEditor = useCallback((tab: TabType) => {
+    if (tab === 'tsconfig') {
+      setVisualTSConfig(val => !val);
+    } else if (tab === 'eslintrc') {
+      setVisualEslintRc(val => !val);
+    }
+  }, []);
 
   useEffect(() => {
     if (windowSize === 'mobile') {
@@ -105,13 +122,7 @@ function Playground(): React.JSX.Element {
             active={activeTab}
             change={setTab}
             showVisualEditor={activeTab !== 'code'}
-            showModal={useCallback(tab => {
-              if (tab === 'tsconfig') {
-                setVisualTSConfig(val => !val);
-              } else if (tab === 'eslintrc') {
-                setVisualEslintRc(val => !val);
-              }
-            }, [])}
+            showModal={onVisualEditor}
           />
           {ActiveVisualEditor && (
             <ActiveVisualEditor
@@ -137,11 +148,7 @@ function Playground(): React.JSX.Element {
             onMarkersChange={setMarkers}
             selectedRange={selectedRange}
             onChange={setState}
-            onLoaded={useCallback((ruleNames, tsVersions) => {
-              setRuleNames(ruleNames);
-              setTSVersion(tsVersions);
-              setIsLoading(false);
-            }, [])}
+            onLoaded={onLoaded}
             onSelect={setPosition}
           />
         </Panel>
