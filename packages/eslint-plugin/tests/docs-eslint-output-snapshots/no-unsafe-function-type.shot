@@ -16,7 +16,7 @@ stringToNumber = (text: string) => text.length;
 let identity: Function;
               ~~~~~~~~ The \`Function\` type accepts any function-like value.
                        Prefer explicitly defining any function parameters and return type.
-identity = (value) => value;
+identity = value => value;
 "
 `;
 
@@ -27,9 +27,9 @@ let noParametersOrReturn: () => void;
 noParametersOrReturn = () => {};
 
 let stringToNumber: (text: string) => number;
-stringToNumber = (text) => text.length;
+stringToNumber = text => text.length;
 
 let identity: <T>(value: T) => T;
-identity = (value) => value;
+identity = value => value;
 "
 `;
