@@ -183,7 +183,7 @@ const x = 1 as any,
     {
       code: `
 class Foo {
- constructor(private a = 1 as any) {}
+  constructor(private a = 1 as any) {}
 }
       `,
       errors: [{ messageId: 'anyAssignment' }],
@@ -191,14 +191,14 @@ class Foo {
     {
       code: `
 class Foo {
- private a = 1 as any;
+  private a = 1 as any;
 }
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
     {
       code: `
-  const [x] = spooky;
+const [x] = spooky;
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
