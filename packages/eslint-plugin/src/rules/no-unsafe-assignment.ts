@@ -327,13 +327,12 @@ export default createRule({
           sender: '`' + checker.typeToString(senderType) + '`',
           receiver: '`' + checker.typeToString(receiverType) + '`',
         };
-      } else {
-        return {
-          sender: tsutils.isIntrinsicErrorType(senderType)
-            ? 'error typed'
-            : '`any`',
-        };
       }
+      return {
+        sender: tsutils.isIntrinsicErrorType(senderType)
+          ? 'error typed'
+          : '`any`',
+      };
     }
 
     return {
