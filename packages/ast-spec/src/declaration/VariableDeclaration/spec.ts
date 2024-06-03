@@ -2,19 +2,15 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type {
   LetOrConstOrVarDeclarator,
-  DeclareLetOrVarDeclarator,
-  LetOrVarDeclaratorDefiniteAssignment,
-  LetOrConstOrVarDeclaratorNoDefiniteAssignment,
-  ConstDeclaratorWithInit,
   UsingInForOfDeclarator,
   UsingInNomalConextDeclarator,
 } from '../../special/VariableDeclarator/spec';
 
-export interface LetOrConstOrVarDeclarationBase extends BaseNode {
+export interface LetOrConstOrVarDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
-   * Always non-empty.
+   * Note that there may be 0 declarations (i.e. `const;`).
    * ```
    * let x;
    * let y, z;
@@ -40,65 +36,18 @@ export interface LetOrConstOrVarDeclarationBase extends BaseNode {
   kind: 'const' | 'let' | 'var';
 }
 
-export interface LetOrVarDeclaredDeclaration
-  extends LetOrConstOrVarDeclarationBase {
-  kind: 'let' | 'var';
-  declare: true;
-  /**
-   * In a `declare let` declaration, the declarators must not have definite assignment
-   * assertions or initializers.
-   * ```
-   * declare let x: number;
-   * declare let y, z;
-   * ```
-   */
-  declarations: DeclareLetOrVarDeclarator[];
-}
-
-export interface LetOrVarNonDeclaredDeclaration
-  extends LetOrConstOrVarDeclarationBase {
-  kind: 'let' | 'var';
-  declare: false;
-  /**
-   * In a `let`/`var` declaration, the declarators may have definite assignment
-   * assertions or initializers, but not both.
-   */
-  declarations: (
-    | LetOrVarDeclaratorDefiniteAssignment
-    | LetOrConstOrVarDeclaratorNoDefiniteAssignment
-  )[];
-}
-
-export interface ConstDeclaredDeclaration
-  extends LetOrConstOrVarDeclarationBase {
-  kind: 'const';
-  declare: true;
-  /**
-   * In a `declare const` declaration, the declarators may have initializers, but
-   * not definite assignment assertions. Each declarator cannot have both an
-   * initializer and a type annotation.
-   */
-  declarations: LetOrConstOrVarDeclaratorNoDefiniteAssignment[];
-}
-
-export interface ConstNonDeclaredDeclaration
-  extends LetOrConstOrVarDeclarationBase {
-  kind: 'const';
-  declare: false;
-  /**
-   * In a `const` declaration, the declarators must have initializers.
-   */
-  declarations: ConstDeclaratorWithInit[];
-}
-
-export type LetOrConstOrVarDeclaration =
-  | LetOrVarDeclaredDeclaration
-  | LetOrVarNonDeclaredDeclaration
-  | ConstDeclaredDeclaration
-  | ConstNonDeclaredDeclaration;
-
-interface UsingDeclarationBase extends BaseNode {
+export interface UsingInNormalContextDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
+  /**
+   * The variables declared by this declaration.
+   * Note that there may be 0 declarations (i.e. `const;`).
+   * ```
+   * using x = 1;
+   * using y =1, z = 2;
+   * ```
+   */
+  // TODO(#1852) - this should be guaranteed to have at least 1 element in it.
+  declarations: UsingInNomalConextDeclarator[];
   /**
    * This value will always be `false`
    * because 'declare' modifier cannot appear on a 'using' declaration.
@@ -114,28 +63,30 @@ interface UsingDeclarationBase extends BaseNode {
   kind: 'await using' | 'using';
 }
 
-export interface UsingInNormalContextDeclaration extends UsingDeclarationBase {
+export interface UsingInForOfDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
-   * Always non-empty.
+   * Note that there may be 0 declarations (i.e. `const;`).
    * ```
-   * using x = 1;
-   * using y = 1, z = 2;
+   * for(using x of y){}
    * ```
    */
-  // TODO(#1852) - this should be guaranteed to have at least 1 element in it.
-  declarations: UsingInNomalConextDeclarator[];
-}
-
-export interface UsingInForOfDeclaration extends UsingDeclarationBase {
+  // TODO - this should be guaranteed to have 1 element in it.
+  declarations: UsingInForOfDeclarator[];
   /**
-   * The variables declared by this declaration.
-   * Always has exactly one element.
+   * This value will always be `false`
+   * because 'declare' modifier cannot appear on a 'using' declaration.
+   */
+  declare: false;
+  /**
+   * The keyword used to declare the variable(s)
    * ```
-   * for (using x of y) {}
+   * for(using x of y){}
+   * for(await using x of y){}
    * ```
    */
-  declarations: [UsingInForOfDeclarator];
+  kind: 'await using' | 'using';
 }
 
 export type UsingDeclaration =
