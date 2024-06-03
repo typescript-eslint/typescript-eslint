@@ -13,6 +13,7 @@
     "eslint.config.mjs",
     "jest.config.base.js",
     "jest.config.js",
-    "jest.preset.js"
+    "jest.preset.js",
+    "knip.ts"
   ]
 }
