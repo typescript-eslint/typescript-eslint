@@ -700,6 +700,24 @@ myTag\`abc\`;
     },
     {
       code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafePromiseReturns: [
+            {
+              from: 'file',
+              name: 'it',
+              path: 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
 myTag\`abc\`.catch(() => {});
       `,
@@ -2180,6 +2198,25 @@ myTag\`abc\`;
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
       errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+        declare function unsafe(...args: unknown[]): Promise<void>;
+
+        unsafe('...', () => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      options: [
+        {
+          allowForKnownSafePromiseReturns: [
+            {
+              from: 'file',
+              name: 'it',
+              path: 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
     },
   ],
 });

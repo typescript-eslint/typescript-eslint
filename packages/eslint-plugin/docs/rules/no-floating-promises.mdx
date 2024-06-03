@@ -176,6 +176,44 @@ returnsSafePromise();
 </TabItem>
 </Tabs>
 
+### `allowForKnownSafePromiseReturns`
+
+This option allows marking specific functions as "safe" to be called to create floating Promises.
+For example, you may need to do this in the case of libraries whose APIs may be called without handling the resultant Promises.
+
+This option takes the same array format as [`allowForKnownSafePromises`](#allowForKnownSafePromises).
+
+Examples of code for this rule with:
+
+```json
+{
+  "allowForKnownSafePromiseReturns": [
+    { "from": "file", "name": "safe", "path": "input.ts" }
+  ]
+}
+```
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{"allowForKnownSafePromiseReturns":[{"from":"file","name":"safe","path":"input.ts"}]}'
+declare function unsafe(...args: unknown[]): Promise<void>;
+
+unsafe('...', () => {});
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{"allowForKnownSafePromiseReturns":[{"from":"file","name":"safe","path":"input.ts"}]}'
+declare function safe(...args: unknown[]): Promise<void>;
+
+safe('...', () => {});
+```
+
+</TabItem>
+</Tabs>
+
 ## When Not To Use It
 
 This rule can be difficult to enable on large existing projects that set up many floating Promises.

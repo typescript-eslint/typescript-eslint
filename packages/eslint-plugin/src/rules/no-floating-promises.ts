@@ -19,6 +19,7 @@ type Options = [
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
+    allowForKnownSafePromiseReturns?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -85,6 +86,8 @@ export default createRule<Options, MessageId>({
             type: 'boolean',
           },
           allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafePromiseReturns:
+            readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -96,6 +99,7 @@ export default createRule<Options, MessageId>({
       ignoreVoid: true,
       ignoreIIFE: false,
       allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      allowForKnownSafePromiseReturns: readonlynessOptionsDefaults.allow,
     },
   ],
 
@@ -103,8 +107,11 @@ export default createRule<Options, MessageId>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     // TODO: #5439
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const allowForKnownSafePromises = options.allowForKnownSafePromises!;
+    const allowForKnownSafePromiseReturns =
+      options.allowForKnownSafePromiseReturns!;
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
     return {
       ExpressionStatement(node): void {
@@ -116,6 +123,10 @@ export default createRule<Options, MessageId>({
 
         if (expression.type === AST_NODE_TYPES.ChainExpression) {
           expression = expression.expression;
+        }
+
+        if (isKnownSafePromiseReturn(expression)) {
+          return;
         }
 
         const { isUnhandled, nonFunctionHandler, promiseArray } =
@@ -196,6 +207,18 @@ export default createRule<Options, MessageId>({
         }
       },
     };
+
+    function isKnownSafePromiseReturn(node: TSESTree.Node): boolean {
+      if (node.type !== AST_NODE_TYPES.CallExpression) {
+        return false;
+      }
+
+      const type = services.getTypeAtLocation(node.callee);
+
+      return allowForKnownSafePromiseReturns.some(allowedType =>
+        typeMatchesSpecifier(type, allowedType, services.program),
+      );
+    }
 
     function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
       const operator = ts.isBinaryExpression(node)
