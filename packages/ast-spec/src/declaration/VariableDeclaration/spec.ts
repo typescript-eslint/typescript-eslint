@@ -2,11 +2,11 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type {
   LetOrConstOrVarDeclarator,
-  VariableDeclaratorNoInit,
-  VariableDeclaratorMaybeInit,
-  VariableDeclaratorDefiniteAssignment,
   UsingInForOfDeclarator,
   UsingInNomalContextDeclarator,
+  VariableDeclaratorDefiniteAssignment,
+  VariableDeclaratorMaybeInit,
+  VariableDeclaratorNoInit,
 } from '../../special/VariableDeclarator/spec';
 
 export interface LetOrConstOrVarDeclarationBase extends BaseNode {
@@ -82,9 +82,9 @@ export interface ConstDeclaration extends LetOrConstOrVarDeclarationBase {
 }
 
 export type LetOrConstOrVarDeclaration =
+  | ConstDeclaration
   | LetOrVarDeclaredDeclaration
-  | LetOrVarNonDeclaredDeclaration
-  | ConstDeclaration;
+  | LetOrVarNonDeclaredDeclaration;
 
 interface UsingDeclarationBase extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
