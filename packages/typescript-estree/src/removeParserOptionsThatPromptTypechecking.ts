@@ -1,4 +1,4 @@
-import { TSESTreeOptions } from './parser-options';
+import type { TSESTreeOptions } from './parser-options';
 
 /**
  * Removes options that prompt the parser to parse the project with type
