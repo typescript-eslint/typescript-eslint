@@ -487,11 +487,6 @@ void promiseArray;
       `,
     },
     {
-      code: `
-[Promise.reject(), Promise.reject()].then(() => {});
-      `,
-    },
-    {
       // Expressions aren't checked by this rule, so this just becomes an array
       // of number | undefined, which is fine regardless of the ignoreVoid setting.
       code: `
@@ -506,6 +501,205 @@ void promiseArray;
     },
     {
       code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: SafeThenable<number> = Promise.resolve(5);
+0, promise;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: SafeThenable<number> = Promise.resolve(5);
+0 ? promise : 3;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: { a: SafePromise<number> } = { a: Promise.resolve(5) };
+promise.a;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: SafePromise<number> = Promise.resolve(5);
+promise;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: Foo = Promise.resolve(5);
+0 || promise;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: Foo = Promise.resolve(5);
+promise.finally();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+0, promise();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+0 ? promise() : 3;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: () => Foo = () => Promise.resolve(5);
+promise();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: () => Foo = async () => 5;
+promise().finally();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: () => SafePromise<number> = async () => 5;
+0 || promise();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: () => SafePromise<number> = async () => 5;
+null ?? promise();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+let promise: () => PromiseLike<number> = () => Promise.resolve(5);
+promise();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
+      ],
+    },
+    {
+      code: `
+type Foo<T> = Promise<T> & { hey?: string };
+declare const arrayOrPromiseTuple: Foo<unknown>[];
+arrayOrPromiseTuple;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo<T> = Promise<T> & { hey?: string };
+declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
+arrayOrPromiseTuple;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type SafePromise = Promise<number> & { __linterBrands?: string };
+declare const myTag: (strings: TemplateStringsArray) => SafePromise;
+myTag\`abc\`;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
 declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
 myTag\`abc\`.catch(() => {});
       `,
@@ -515,6 +709,29 @@ myTag\`abc\`.catch(() => {});
 declare const myTag: (strings: TemplateStringsArray) => string;
 myTag\`abc\`;
       `,
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+promise().then(() => {});
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
     },
   ],
 
@@ -1854,6 +2071,115 @@ cursed();
         okArrayOrPromiseArray;
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+interface UnsafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | UnsafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | UnsafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): UnsafeThenable<TResult1 | TResult2>;
+}
+let promise: UnsafeThenable<number> = Promise.resolve(5);
+promise;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+      errors: [{ line: 15, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: SafePromise<number> = Promise.resolve(5);
+promise.catch();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+class UnsafePromise<T> extends Promise<T> {}
+let promise: () => UnsafePromise<number> = async () => 5;
+promise().finally();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type UnsafePromise = Promise<number> & { hey?: string };
+let promise: UnsafePromise = Promise.resolve(5);
+0 ? promise.catch() : 2;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type UnsafePromise = Promise<number> & { hey?: string };
+let promise: () => UnsafePromise = async () => 5;
+null ?? promise().catch();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+type Foo<T> = Promise<T> & { hey?: string };
+declare const arrayOrPromiseTuple: Foo<unknown>[];
+arrayOrPromiseTuple;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
+      errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    // an array containing elements of `Promise` type and a branded Promise type will be treated as just an ordinary `Promise`.
+    // see https://github.com/typescript-eslint/typescript-eslint/pull/8502#issuecomment-2105734406
+    {
+      code: `
+type SafePromise = Promise<number> & { hey?: string };
+let foo: SafePromise = Promise.resolve(1);
+let bar = [Promise.resolve(2), foo];
+bar;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+type Foo<T> = Promise<T> & { hey?: string };
+declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
+arrayOrPromiseTuple;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
+      errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+type SafePromise = Promise<number> & { __linterBrands?: string };
+declare const myTag: (strings: TemplateStringsArray) => SafePromise;
+myTag\`abc\`;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
     },
   ],
 });
