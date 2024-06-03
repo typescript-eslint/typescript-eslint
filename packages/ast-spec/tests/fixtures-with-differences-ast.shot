@@ -132,6 +132,7 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "element/AccessorProperty/fixtures/no-annotation-with-value/fixture.ts",
   "element/AccessorProperty/fixtures/with-annotation-no-value/fixture.ts",
   "element/AccessorProperty/fixtures/with-annotation-with-value/fixture.ts",
+  "expression/BinaryExpression/fixtures/private-lhs-in/fixture.ts",
   "expression/TSSatisfiesExpression/fixtures/arrow-func-with-parentheses/fixture.ts",
   "expression/TSSatisfiesExpression/fixtures/chained-satisfies/fixture.ts",
   "expression/TSSatisfiesExpression/fixtures/conditional-no-parentheses/fixture.ts",

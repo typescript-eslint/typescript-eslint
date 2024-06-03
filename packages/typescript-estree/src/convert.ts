@@ -2089,6 +2089,20 @@ export class Converter {
       // Binary Operations
 
       case SyntaxKind.BinaryExpression: {
+        if (
+          node.operatorToken.kind !== SyntaxKind.InKeyword &&
+          node.left.kind === SyntaxKind.PrivateIdentifier
+        ) {
+          this.#throwError(
+            node.left,
+            "Private identifiers are only allowed on the left-hand-side of an 'in' expression.",
+          );
+        } else if (node.right.kind === SyntaxKind.PrivateIdentifier) {
+          this.#throwError(
+            node.right,
+            "Private identifiers are only allowed on the left-hand-side of an 'in' expression.",
+          );
+        }
         // TypeScript uses BinaryExpression for sequences as well
         if (isComma(node.operatorToken)) {
           const result = this.createNode<TSESTree.SequenceExpression>(node, {

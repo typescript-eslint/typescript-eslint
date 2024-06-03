@@ -7,9 +7,18 @@ import type { BinaryOperatorToText } from './BinaryOperatorToText';
 
 export * from './BinaryOperatorToText';
 
-export interface BinaryExpression extends BaseNode {
+export interface PrivateInExpression extends BaseNode {
   type: AST_NODE_TYPES.BinaryExpression;
-  operator: ValueOf<BinaryOperatorToText>;
-  left: Expression | PrivateIdentifier;
+  operator: 'in';
+  left: PrivateIdentifier;
   right: Expression;
 }
+
+export interface SymmetricBinaryExpression extends BaseNode {
+  type: AST_NODE_TYPES.BinaryExpression;
+  operator: ValueOf<BinaryOperatorToText>;
+  left: Expression;
+  right: Expression;
+}
+
+export type BinaryExpression = SymmetricBinaryExpression | PrivateInExpression;

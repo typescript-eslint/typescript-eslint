@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression SequenceExpression _error_ private-id-rhs Error Alignment 1`] = `"Both errored"`;
