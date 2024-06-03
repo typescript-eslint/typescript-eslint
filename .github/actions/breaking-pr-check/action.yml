@@ -2,5 +2,7 @@ name: Validate Breaking Change PR
 description: Validate breaking change PR title and description
 
 runs:
-  using: node20
-  main: ../../../node_modules/@typescript-eslint/repo-tools/breaking-pr-check-action.mjs
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: npx tsx ../../../packages/repo-tools/src/breaking-pr-action-check.mts
