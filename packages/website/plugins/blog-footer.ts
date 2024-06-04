@@ -5,7 +5,10 @@ import { nodeIsParent } from './utils/nodes';
 
 export const blogFooter: Plugin = () => {
   return (root, file) => {
-    if (!nodeIsParent(root)) {
+    if (
+      !nodeIsParent(root) ||
+      !(file.value as string).includes('<!--truncate-->')
+    ) {
       return;
     }
 
