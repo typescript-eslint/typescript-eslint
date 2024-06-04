@@ -156,23 +156,6 @@ export default createRule<[], MessageIds>({
       });
     }
 
-    function isAncestorNode(
-      ancestor: TSESTree.Node,
-      node: TSESTree.Node,
-    ): boolean {
-      let parent = node.parent;
-
-      while (parent) {
-        if (parent === ancestor) {
-          return true;
-        }
-
-        parent = parent.parent;
-      }
-
-      return false;
-    }
-
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
       const name = getTypeName(node.typeName);
 
@@ -207,19 +190,6 @@ export default createRule<[], MessageIds>({
       reportedTypes.add(name);
     }
 
-    function getTypeName(typeName: TSESTree.EntityName): string {
-      switch (typeName.type) {
-        case AST_NODE_TYPES.Identifier:
-          return typeName.name;
-
-        case AST_NODE_TYPES.TSQualifiedName:
-          return getTypeName(typeName.left) + '.' + typeName.right.name;
-
-        case AST_NODE_TYPES.ThisExpression:
-          return 'this';
-      }
-    }
-
     return {
       Program: collectTypeReferences,
 
@@ -249,3 +219,30 @@ export default createRule<[], MessageIds>({
     };
   },
 });
+
+function getTypeName(typeName: TSESTree.EntityName): string {
+  switch (typeName.type) {
+    case AST_NODE_TYPES.Identifier:
+      return typeName.name;
+
+    case AST_NODE_TYPES.TSQualifiedName:
+      return getTypeName(typeName.left) + '.' + typeName.right.name;
+
+    case AST_NODE_TYPES.ThisExpression:
+      return 'this';
+  }
+}
+
+function isAncestorNode(ancestor: TSESTree.Node, node: TSESTree.Node): boolean {
+  let parent = node.parent;
+
+  while (parent) {
+    if (parent === ancestor) {
+      return true;
+    }
+
+    parent = parent.parent;
+  }
+
+  return false;
+}
