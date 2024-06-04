@@ -137,6 +137,7 @@ describe('Validating rule docs', () => {
 
   const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
 
+  // TODO: whittle this list down to as few as possible
   const rulesWithComplexOptionHeadings = new Set([
     'ban-ts-comment',
     'ban-types',
