@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration _error_ declare-var-id-definite-type-init TSESTree - Error 1`] = `
+"TSError
+> 1 | declare var foo!: any = 1;
+    |             ^^^^^^^^^^^^^ Declarations with initializers cannot also have definite assignment assertions.
+  2 |"
+`;

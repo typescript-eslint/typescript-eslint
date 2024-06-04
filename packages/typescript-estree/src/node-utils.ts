@@ -937,6 +937,7 @@ export function isValidAssignmentTarget(node: ts.Node): boolean {
     case SyntaxKind.TypeAssertionExpression:
     case SyntaxKind.AsExpression:
     case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.ExpressionWithTypeArguments:
     case SyntaxKind.NonNullExpression:
       return isValidAssignmentTarget(
         (
@@ -944,6 +945,7 @@ export function isValidAssignmentTarget(node: ts.Node): boolean {
             | ts.ParenthesizedExpression
             | ts.AssertionExpression
             | ts.SatisfiesExpression
+            | ts.ExpressionWithTypeArguments
             | ts.NonNullExpression
         ).expression,
       );

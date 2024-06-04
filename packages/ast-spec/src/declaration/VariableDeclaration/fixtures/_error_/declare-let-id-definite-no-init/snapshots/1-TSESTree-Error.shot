@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration _error_ declare-let-id-definite-no-init TSESTree - Error 1`] = `
+"TSError
+> 1 | declare let foo!;
+    |             ^^^^ Declarations with definite assignment assertions must also have type annotations.
+  2 |"
+`;
