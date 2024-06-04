@@ -157,6 +157,7 @@ describe('Validating rule docs', () => {
     // comments in the files for more information.
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'no-useless-template-literals.mdx',
     ...oldStylisticRules,
   ]);
 
