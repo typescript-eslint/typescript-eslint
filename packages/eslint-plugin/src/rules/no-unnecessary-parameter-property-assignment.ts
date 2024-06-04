@@ -28,14 +28,27 @@ export default createRule<[], MessageIds>({
   create(context) {
     const reportInfoStack: {
       assignedBeforeUnnecessary: Set<string>;
-      assignedBeforeCtor: Set<string>;
+      assignedBeforeConstructor: Set<string>;
       unnecessaryAssigments: {
         name: string;
         node: TSESTree.AssignmentExpression;
       }[];
     }[] = [];
 
-    function getPropertyName(node: TSESTree.MemberExpression): string | null {
+    function isThisMemberExpression(
+      node: TSESTree.Node,
+    ): node is TSESTree.MemberExpression {
+      return (
+        node.type === AST_NODE_TYPES.MemberExpression &&
+        node.object.type === AST_NODE_TYPES.ThisExpression
+      );
+    }
+
+    function getPropertyName(node: TSESTree.Node): string | null {
+      if (!isThisMemberExpression(node)) {
+        return null;
+      }
+
       if (node.property.type === AST_NODE_TYPES.Identifier) {
         return node.property.name;
       }
@@ -45,7 +58,7 @@ export default createRule<[], MessageIds>({
       return null;
     }
 
-    function findFunction(
+    function findParentFunction(
       node: TSESTree.Node | undefined,
     ):
       | TSESTree.FunctionExpression
@@ -60,25 +73,16 @@ export default createRule<[], MessageIds>({
       ) {
         return node;
       }
-      return findFunction(node.parent);
+      return findParentFunction(node.parent);
     }
 
-    function isThisMemberExpression(
-      node: TSESTree.Node,
-    ): node is TSESTree.MemberExpression {
-      return (
-        node.type === AST_NODE_TYPES.MemberExpression &&
-        node.object.type === AST_NODE_TYPES.ThisExpression
-      );
-    }
-
-    function findPropertyDefinition(
+    function findParentPropertyDefinition(
       node: TSESTree.Node | undefined,
     ): TSESTree.PropertyDefinition | undefined {
       if (!node || node.type === AST_NODE_TYPES.PropertyDefinition) {
         return node;
       }
-      return findPropertyDefinition(node.parent);
+      return findParentPropertyDefinition(node.parent);
     }
 
     function isConstructorFunctionExpression(
@@ -126,21 +130,28 @@ export default createRule<[], MessageIds>({
       return null;
     }
 
+    function isArrowIIFE(node: TSESTree.Node): boolean {
+      return (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        node.parent.type === AST_NODE_TYPES.CallExpression
+      );
+    }
+
     return {
       ClassBody(): void {
         reportInfoStack.push({
           unnecessaryAssigments: [],
           assignedBeforeUnnecessary: new Set(),
-          assignedBeforeCtor: new Set(),
+          assignedBeforeConstructor: new Set(),
         });
       },
       'ClassBody:exit'(): void {
-        const { unnecessaryAssigments, assignedBeforeCtor } = nullThrows(
+        const { unnecessaryAssigments, assignedBeforeConstructor } = nullThrows(
           reportInfoStack.pop(),
           'The top stack should exist',
         );
         unnecessaryAssigments.forEach(({ name, node }) => {
-          if (assignedBeforeCtor.has(name)) {
+          if (assignedBeforeConstructor.has(name)) {
             return;
           }
           context.report({
@@ -152,52 +163,43 @@ export default createRule<[], MessageIds>({
       'PropertyDefinition AssignmentExpression'(
         node: TSESTree.AssignmentExpression,
       ): void {
-        if (!isThisMemberExpression(node.left)) {
-          return;
-        }
-
         const name = getPropertyName(node.left);
 
         if (!name) {
           return;
         }
 
-        const functionNode = findFunction(node);
+        const functionNode = findParentFunction(node);
         if (functionNode) {
-          const isArrowIIFE =
-            functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-            functionNode.parent.type === AST_NODE_TYPES.CallExpression;
-
           if (
             !(
-              isArrowIIFE &&
-              findPropertyDefinition(node)?.value === functionNode.parent
+              isArrowIIFE(functionNode) &&
+              findParentPropertyDefinition(node)?.value === functionNode.parent
             )
           ) {
             return;
           }
         }
 
-        const { assignedBeforeCtor } = nullThrows(
-          reportInfoStack.at(reportInfoStack.length - 1),
+        const { assignedBeforeConstructor } = nullThrows(
+          reportInfoStack.at(-1),
           'The top stack should exist',
         );
-        assignedBeforeCtor.add(name);
+        assignedBeforeConstructor.add(name);
       },
       "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
         node: TSESTree.AssignmentExpression,
       ): void {
-        if (!isThisMemberExpression(node.left)) {
-          return;
-        }
-
         const leftName = getPropertyName(node.left);
 
         if (!leftName) {
           return;
         }
 
-        const functionNode = findFunction(node);
+        let functionNode = findParentFunction(node);
+        if (functionNode && isArrowIIFE(functionNode)) {
+          functionNode = findParentFunction(functionNode.parent);
+        }
 
         if (!isConstructorFunctionExpression(functionNode)) {
           return;
@@ -215,25 +217,19 @@ export default createRule<[], MessageIds>({
 
         const rightId = getIdentifier(node.right);
 
-        if (
-          !rightId ||
-          leftName !== rightId.name ||
-          !isReferenceFromParameter(rightId)
-        ) {
+        if (leftName !== rightId?.name || !isReferenceFromParameter(rightId)) {
           return;
         }
 
-        const hasParameterPropety = functionNode.params.some(param =>
+        const hasParameterProperty = functionNode.params.some(param =>
           isParameterPropertyWithName(param, rightId.name),
         );
 
-        if (hasParameterPropety) {
-          if (!assignedBeforeUnnecessary.has(leftName)) {
-            unnecessaryAssigments.push({
-              name: leftName,
-              node,
-            });
-          }
+        if (hasParameterProperty && !assignedBeforeUnnecessary.has(leftName)) {
+          unnecessaryAssigments.push({
+            name: leftName,
+            node,
+          });
         }
       },
     };

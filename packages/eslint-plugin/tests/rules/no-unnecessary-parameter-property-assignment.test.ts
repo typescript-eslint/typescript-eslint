@@ -446,5 +446,41 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    {
+      this.foo = foo;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          column: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    (() => {
+      this.foo = foo;
+    })();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          column: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
   ],
 });
