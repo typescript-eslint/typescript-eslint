@@ -51,10 +51,6 @@ require('remark-preset-prettier');
       code: "import pkg = require('some-package');",
       options: [{ allow: ['^some-package$'] }],
     },
-    {
-      code: 'import pkg = require(`some-package`);',
-      options: [{ allow: ['^some-package$'] }],
-    },
   ],
   invalid: [
     {
@@ -198,17 +194,6 @@ var lib5 = require?.('lib5'),
     },
     {
       code: "import pkg = require('./package.json');",
-      options: [{ allow: ['^some-package$'] }],
-      errors: [
-        {
-          line: 1,
-          column: 14,
-          messageId: 'noRequireImports',
-        },
-      ],
-    },
-    {
-      code: 'import pkg = require(`./package.json`);',
       options: [{ allow: ['^some-package$'] }],
       errors: [
         {

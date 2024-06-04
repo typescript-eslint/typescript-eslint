@@ -62,7 +62,7 @@ export const useSandboxServices = (
               wrappingIndent: 'same',
               hover: { above: false },
             },
-            acquireTypes: false,
+            acquireTypes: true,
             compilerOptions:
               compilerOptions as Monaco.languages.typescript.CompilerOptions,
             domID: editorEmbedId,

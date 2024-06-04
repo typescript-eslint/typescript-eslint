@@ -290,6 +290,10 @@ const redirects: PluginRedirectOptions = {
       from: '/linting/typed-linting/monorepos',
       to: '/getting-started/typed-linting/monorepos',
     },
+    {
+      from: '/maintenance/issues/rule-deprecations',
+      to: '/maintenance/issues/rule-deprecations-and-deletions',
+    },
   ],
 };
 

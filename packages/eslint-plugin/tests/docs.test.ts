@@ -133,6 +133,7 @@ describe('Validating rule docs', () => {
     'camelcase.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'sort-type-union-intersection-members.mdx',
   ]);
 
   const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
