@@ -8,12 +8,16 @@ import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import fs from 'fs';
 import { marked } from 'marked';
 import type * as mdast from 'mdast';
-import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
-import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
-import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
+import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode':
+  'import' };
+import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode':
+  'import' };
+import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode':
+  'import' };
 import path from 'path';
 import { titleCase } from 'title-case';
-import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
+import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode':
+  'import' };
 
 import rules from '../src/rules';
 import { areOptionsValid } from './areOptionsValid';
