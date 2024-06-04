@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction async-overload TSESTree - Tokens 1`] = `
+[
+  Identifier {
+    type: "Identifier",
+    value: "async",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "function",
+
+    range: [6, 14],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 14, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [15, 18],
+    loc: {
+      start: { column: 15, line: 1 },
+      end: { column: 18, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [19, 20],
+    loc: {
+      start: { column: 19, line: 1 },
+      end: { column: 20, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [20, 21],
+    loc: {
+      start: { column: 20, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "any",
+
+    range: [22, 25],
+    loc: {
+      start: { column: 22, line: 1 },
+      end: { column: 25, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [25, 26],
+    loc: {
+      start: { column: 25, line: 1 },
+      end: { column: 26, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "async",
+
+    range: [27, 32],
+    loc: {
+      start: { column: 0, line: 2 },
+      end: { column: 5, line: 2 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "function",
+
+    range: [33, 41],
+    loc: {
+      start: { column: 6, line: 2 },
+      end: { column: 14, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [42, 45],
+    loc: {
+      start: { column: 15, line: 2 },
+      end: { column: 18, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [45, 46],
+    loc: {
+      start: { column: 18, line: 2 },
+      end: { column: 19, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [46, 47],
+    loc: {
+      start: { column: 19, line: 2 },
+      end: { column: 20, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [47, 48],
+    loc: {
+      start: { column: 20, line: 2 },
+      end: { column: 21, line: 2 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "any",
+
+    range: [49, 52],
+    loc: {
+      start: { column: 22, line: 2 },
+      end: { column: 25, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [53, 54],
+    loc: {
+      start: { column: 26, line: 2 },
+      end: { column: 27, line: 2 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [54, 55],
+    loc: {
+      start: { column: 27, line: 2 },
+      end: { column: 28, line: 2 },
+    },
+  },
+]
+`;
