@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ external-module-ref-non-string-3 TSESTree - Error 1`] = `
+"TSError
+> 1 | import F = require(\`1\`);
+    |                    ^^^ String literal expected.
+  2 |"
+`;
