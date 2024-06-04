@@ -710,7 +710,10 @@ myTag\`abc\`;
             {
               from: 'file',
               name: 'it',
-              path: 'tests/fixtures/file.ts',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
             },
           ],
         },
