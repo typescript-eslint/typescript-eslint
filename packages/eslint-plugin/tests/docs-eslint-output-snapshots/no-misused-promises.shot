@@ -60,8 +60,7 @@ new Promise(async (resolve, reject) => {
 });
 ~
 
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', async () => {
+document.addEventListener('click', async () => {
   synchronousCall();
   await doSomething();
   otherSynchronousCall();
@@ -95,8 +94,7 @@ new Promise((resolve, reject) => {
 });
 
 // Name the async wrapper to call it later
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', () => {
+document.addEventListener('click', () => {
   const handler = async () => {
     await doSomething();
     otherSynchronousCall();
