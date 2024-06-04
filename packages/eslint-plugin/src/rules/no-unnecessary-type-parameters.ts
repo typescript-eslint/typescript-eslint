@@ -110,15 +110,16 @@ function isTypeParameterRepeatedInAST(
 
     // If the type parameter is being used as a type argument, then we
     // know the type parameter is being reused and can't be reported.
-    if (
-      reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference &&
-      reference.identifier.parent.parent.type ===
-        AST_NODE_TYPES.TSTypeParameterInstantiation &&
-      reference.identifier.parent.parent.params.includes(
-        reference.identifier.parent,
-      )
-    ) {
-      return true;
+    if (reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference) {
+      const grandparent = skipConstituentsUpward(
+        reference.identifier.parent.parent,
+      );
+      if (
+        grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
+        grandparent.params.includes(reference.identifier.parent)
+      ) {
+        return true;
+      }
     }
 
     total += 1;
@@ -129,6 +130,16 @@ function isTypeParameterRepeatedInAST(
   }
 
   return false;
+}
+
+function skipConstituentsUpward(node: TSESTree.Node): TSESTree.Node {
+  switch (node.type) {
+    case AST_NODE_TYPES.TSIntersectionType:
+    case AST_NODE_TYPES.TSUnionType:
+      return skipConstituentsUpward(node.parent);
+    default:
+      return node;
+  }
 }
 
 /**
