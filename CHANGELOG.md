@@ -1,3 +1,36 @@
+## 7.12.0 (2024-06-03)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-useless-template-literals] rename to `no-useless-template-expression` (deprecate `no-useless-template-literals`) ([#8821](https://github.com/typescript-eslint/typescript-eslint/pull/8821))
+- **eslint-plugin:** [no-floating-promises] add option 'allowForKnownSafePromises' ([#9186](https://github.com/typescript-eslint/typescript-eslint/pull/9186))
+- **rule-tester:** check for parsing errors in suggestion fixes ([#9052](https://github.com/typescript-eslint/typescript-eslint/pull/9052))
+- **rule-tester:** port `checkDuplicateTestCases` from ESLint ([#9026](https://github.com/typescript-eslint/typescript-eslint/pull/9026))
+
+### 🩹 Fixes
+
+- no-useless-template-expression -> no-unnecessary-template-expression ([#9174](https://github.com/typescript-eslint/typescript-eslint/pull/9174))
+- **eslint-plugin:** [no-unnecessary-type-assertion] combine template literal check with `const` variable check ([#8820](https://github.com/typescript-eslint/typescript-eslint/pull/8820))
+- **eslint-plugin:** [dot-notation] fix false positive when accessing private/protected property with optional chaining ([#8851](https://github.com/typescript-eslint/typescript-eslint/pull/8851))
+- **eslint-plugin:** [explicit-member-accessibility] refine report locations ([#8869](https://github.com/typescript-eslint/typescript-eslint/pull/8869))
+- **eslint-plugin:** [no-unnecessary-type-assertion] declares are always defined, so always check `declare`s ([#8901](https://github.com/typescript-eslint/typescript-eslint/pull/8901))
+- **eslint-plugin:** [prefer-literal-enum-member] allow using member it self on allowBitwiseExpressions ([#9114](https://github.com/typescript-eslint/typescript-eslint/pull/9114))
+- **eslint-plugin:** [return-await] clean up in-try-catch detection and make autofixes safe ([#9031](https://github.com/typescript-eslint/typescript-eslint/pull/9031))
+- **eslint-plugin:** [member-ordering] also TSMethodSignature can be get/set ([#9193](https://github.com/typescript-eslint/typescript-eslint/pull/9193))
+- **types:** correct typing ParserOptions ([#9202](https://github.com/typescript-eslint/typescript-eslint/pull/9202))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Han Yeong-woo @nix6839
+- Joshua Chen
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.11.0 (2024-05-27)
 
 
