@@ -358,13 +358,10 @@ module.exports = {
 
 ### `withoutProjectParserOptions(parserOptions)`
 
-Removes options that prompt the parser to parse the project with type
-information. In other words, you can use this if you are invoking the parser
-directly, to ensure that one file will be parsed in isolation, which is much,
-much faster.
+Removes options that prompt the parser to parse the project with type information.
+In other words, you can use this if you are invoking the parser directly, to ensure that one file will be parsed in isolation, which is much faster.
 
-This is useful in cases where you invoke the parser directly, such as in an
-ESLint plugin context.
+This is useful in cases where you invoke the parser directly, such as in an ESLint plugin context.
 
 ```ts
 declare function withoutProjectParserOptions(
