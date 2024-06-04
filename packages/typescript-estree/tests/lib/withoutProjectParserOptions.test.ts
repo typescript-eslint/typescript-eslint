@@ -7,7 +7,7 @@ describe('withoutProjectParserOptions', () => {
       EXPERIMENTAL_useProjectService: true,
       project: true,
     });
-    expect(without).toBe({
+    expect(without).toEqual({
       comment: true,
     });
   });
