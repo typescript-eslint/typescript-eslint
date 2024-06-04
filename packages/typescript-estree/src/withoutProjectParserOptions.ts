@@ -11,6 +11,7 @@ import type { TSESTreeOptions } from './parser-options';
 export function withoutProjectParserOptions(
   opts: TSESTreeOptions,
 ): TSESTreeOptions {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- The variables are meant to be omitted
   const { EXPERIMENTAL_useProjectService, project, ...rest } = opts;
 
   return rest;
