@@ -3,13 +3,13 @@ import type { BaseNode } from '../../base/BaseNode';
 import type {
   LetOrConstOrVarDeclarator,
   UsingInForOfDeclarator,
-  UsingInNomalContextDeclarator,
+  UsingInNormalContextDeclarator,
   VariableDeclaratorDefiniteAssignment,
   VariableDeclaratorMaybeInit,
   VariableDeclaratorNoInit,
 } from '../../special/VariableDeclarator/spec';
 
-export interface LetOrConstOrVarDeclarationBase extends BaseNode {
+interface LetOrConstOrVarDeclarationBase extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
@@ -19,7 +19,6 @@ export interface LetOrConstOrVarDeclarationBase extends BaseNode {
    * let y, z;
    * ```
    */
-  // TODO(#1852) - this should be guaranteed to have at least 1 element in it.
   declarations: LetOrConstOrVarDeclarator[];
   /**
    * Whether the declaration is `declare`d
@@ -112,8 +111,7 @@ export interface UsingInNormalContextDeclaration extends UsingDeclarationBase {
    * using y = 1, z = 2;
    * ```
    */
-  // TODO(#1852) - this should be guaranteed to have at least 1 element in it.
-  declarations: UsingInNomalContextDeclarator[];
+  declarations: UsingInNormalContextDeclarator[];
 }
 
 export interface UsingInForOfDeclaration extends UsingDeclarationBase {

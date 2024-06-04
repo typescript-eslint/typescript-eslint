@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures statement ForOfStatement using-decralation Babel - AST 1`] = `
+exports[`AST Fixtures statement ForOfStatement using-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [
@@ -22,9 +22,12 @@ Program {
         declarations: [
           VariableDeclarator {
             type: "VariableDeclarator",
+            definite: false,
             id: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "a",
+              optional: false,
 
               range: [17, 18],
               loc: {
@@ -41,6 +44,7 @@ Program {
             },
           },
         ],
+        declare: false,
         kind: "await using",
 
         range: [5, 18],
@@ -51,7 +55,9 @@ Program {
       },
       right: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "b",
+        optional: false,
 
         range: [22, 23],
         loc: {

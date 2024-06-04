@@ -1,0 +1,313 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ForOfStatement expr-init Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ForOfStatement {
+      type: "ForOfStatement",
+      await: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [21, 23],
+        loc: {
+          start: { column: 21, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+      left: ObjectPattern {
+        type: "ObjectPattern",
+        properties: [
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "x",
+
+              range: [7, 8],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 8, line: 1 },
+              },
+            },
+            kind: "init",
+            method: false,
+            shorthand: true,
+            value: Identifier {
+              type: "Identifier",
+              name: "x",
+
+              range: [7, 8],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 8, line: 1 },
+              },
+            },
+
+            range: [7, 8],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 8, line: 1 },
+            },
+          },
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "y",
+
+              range: [10, 11],
+              loc: {
+                start: { column: 10, line: 1 },
+                end: { column: 11, line: 1 },
+              },
+            },
+            kind: "init",
+            method: false,
+            shorthand: true,
+            value: Identifier {
+              type: "Identifier",
+              name: "y",
+
+              range: [10, 11],
+              loc: {
+                start: { column: 10, line: 1 },
+                end: { column: 11, line: 1 },
+              },
+            },
+
+            range: [10, 11],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+        ],
+
+        range: [5, 13],
+        loc: {
+          start: { column: 5, line: 1 },
+          end: { column: 13, line: 1 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [17, 19],
+        loc: {
+          start: { column: 17, line: 1 },
+          end: { column: 19, line: 1 },
+        },
+      },
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 23, line: 1 },
+      },
+    },
+    ForOfStatement {
+      type: "ForOfStatement",
+      await: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [43, 45],
+        loc: {
+          start: { column: 19, line: 2 },
+          end: { column: 21, line: 2 },
+        },
+      },
+      left: ArrayPattern {
+        type: "ArrayPattern",
+        elements: [
+          Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [30, 31],
+            loc: {
+              start: { column: 6, line: 2 },
+              end: { column: 7, line: 2 },
+            },
+          },
+          Identifier {
+            type: "Identifier",
+            name: "y",
+
+            range: [33, 34],
+            loc: {
+              start: { column: 9, line: 2 },
+              end: { column: 10, line: 2 },
+            },
+          },
+        ],
+
+        range: [29, 35],
+        loc: {
+          start: { column: 5, line: 2 },
+          end: { column: 11, line: 2 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [39, 41],
+        loc: {
+          start: { column: 15, line: 2 },
+          end: { column: 17, line: 2 },
+        },
+      },
+
+      range: [24, 45],
+      loc: {
+        start: { column: 0, line: 2 },
+        end: { column: 21, line: 2 },
+      },
+    },
+    ForOfStatement {
+      type: "ForOfStatement",
+      await: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [62, 64],
+        loc: {
+          start: { column: 16, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+      left: MemberExpression {
+        type: "MemberExpression",
+        computed: false,
+        object: Identifier {
+          type: "Identifier",
+          name: "x",
+
+          range: [51, 52],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 6, line: 3 },
+          },
+        },
+        optional: false,
+        property: Identifier {
+          type: "Identifier",
+          name: "y",
+
+          range: [53, 54],
+          loc: {
+            start: { column: 7, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+
+        range: [51, 54],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [58, 60],
+        loc: {
+          start: { column: 12, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+
+      range: [46, 64],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 18, line: 3 },
+      },
+    },
+    ForOfStatement {
+      type: "ForOfStatement",
+      await: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [86, 88],
+        loc: {
+          start: { column: 21, line: 4 },
+          end: { column: 23, line: 4 },
+        },
+      },
+      left: TSAsExpression {
+        type: "TSAsExpression",
+        expression: Identifier {
+          type: "Identifier",
+          name: "x",
+
+          range: [71, 72],
+          loc: {
+            start: { column: 6, line: 4 },
+            end: { column: 7, line: 4 },
+          },
+        },
+        typeAnnotation: TSTypeReference {
+          type: "TSTypeReference",
+          typeName: Identifier {
+            type: "Identifier",
+            name: "T",
+
+            range: [76, 77],
+            loc: {
+              start: { column: 11, line: 4 },
+              end: { column: 12, line: 4 },
+            },
+          },
+
+          range: [76, 77],
+          loc: {
+            start: { column: 11, line: 4 },
+            end: { column: 12, line: 4 },
+          },
+        },
+
+        range: [71, 77],
+        loc: {
+          start: { column: 6, line: 4 },
+          end: { column: 12, line: 4 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [82, 84],
+        loc: {
+          start: { column: 17, line: 4 },
+          end: { column: 19, line: 4 },
+        },
+      },
+
+      range: [65, 88],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 23, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 89],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

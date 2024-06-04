@@ -49,7 +49,7 @@ export type LetOrConstOrVarDeclarator =
   | VariableDeclaratorMaybeInit
   | VariableDeclaratorNoInit;
 
-export interface UsingInNomalContextDeclarator extends VariableDeclaratorBase {
+export interface UsingInNormalContextDeclarator extends VariableDeclaratorBase {
   id: Identifier;
   init: Expression;
   definite: false;
@@ -63,6 +63,6 @@ export interface UsingInForOfDeclarator extends VariableDeclaratorBase {
 
 export type UsingDeclarator =
   | UsingInForOfDeclarator
-  | UsingInNomalContextDeclarator;
+  | UsingInNormalContextDeclarator;
 
 export type VariableDeclarator = LetOrConstOrVarDeclarator | UsingDeclarator;

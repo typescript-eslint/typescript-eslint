@@ -503,6 +503,8 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/method-const-modifiers/fixture.ts",
-  "statement/ForOfStatement/fixtures/using-decralation/fixture.ts",
+  "statement/ForInStatement/fixtures/expr-init/fixture.ts",
+  "statement/ForOfStatement/fixtures/expr-init/fixture.ts",
+  "statement/ForOfStatement/fixtures/using-declaration/fixture.ts",
 ]
 `;

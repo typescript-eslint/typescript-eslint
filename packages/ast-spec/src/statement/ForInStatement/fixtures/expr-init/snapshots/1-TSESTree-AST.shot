@@ -1,0 +1,335 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ForInStatement expr-init TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [150, 152],
+        loc: {
+          start: { column: 21, line: 3 },
+          end: { column: 23, line: 3 },
+        },
+      },
+      left: ObjectPattern {
+        type: "ObjectPattern",
+        decorators: [],
+        optional: false,
+        properties: [
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "x",
+              optional: false,
+
+              range: [136, 137],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+            kind: "init",
+            method: false,
+            optional: false,
+            shorthand: true,
+            value: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "x",
+              optional: false,
+
+              range: [136, 137],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+
+            range: [136, 137],
+            loc: {
+              start: { column: 7, line: 3 },
+              end: { column: 8, line: 3 },
+            },
+          },
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "y",
+              optional: false,
+
+              range: [139, 140],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+            kind: "init",
+            method: false,
+            optional: false,
+            shorthand: true,
+            value: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "y",
+              optional: false,
+
+              range: [139, 140],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+
+            range: [139, 140],
+            loc: {
+              start: { column: 10, line: 3 },
+              end: { column: 11, line: 3 },
+            },
+          },
+        ],
+
+        range: [134, 142],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [146, 148],
+        loc: {
+          start: { column: 17, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [129, 152],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 23, line: 3 },
+      },
+    },
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [172, 174],
+        loc: {
+          start: { column: 19, line: 4 },
+          end: { column: 21, line: 4 },
+        },
+      },
+      left: ArrayPattern {
+        type: "ArrayPattern",
+        decorators: [],
+        elements: [
+          Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "x",
+            optional: false,
+
+            range: [159, 160],
+            loc: {
+              start: { column: 6, line: 4 },
+              end: { column: 7, line: 4 },
+            },
+          },
+          Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "y",
+            optional: false,
+
+            range: [162, 163],
+            loc: {
+              start: { column: 9, line: 4 },
+              end: { column: 10, line: 4 },
+            },
+          },
+        ],
+        optional: false,
+
+        range: [158, 164],
+        loc: {
+          start: { column: 5, line: 4 },
+          end: { column: 11, line: 4 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [168, 170],
+        loc: {
+          start: { column: 15, line: 4 },
+          end: { column: 17, line: 4 },
+        },
+      },
+
+      range: [153, 174],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 21, line: 4 },
+      },
+    },
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [191, 193],
+        loc: {
+          start: { column: 16, line: 5 },
+          end: { column: 18, line: 5 },
+        },
+      },
+      left: MemberExpression {
+        type: "MemberExpression",
+        computed: false,
+        object: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "x",
+          optional: false,
+
+          range: [180, 181],
+          loc: {
+            start: { column: 5, line: 5 },
+            end: { column: 6, line: 5 },
+          },
+        },
+        optional: false,
+        property: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "y",
+          optional: false,
+
+          range: [182, 183],
+          loc: {
+            start: { column: 7, line: 5 },
+            end: { column: 8, line: 5 },
+          },
+        },
+
+        range: [180, 183],
+        loc: {
+          start: { column: 5, line: 5 },
+          end: { column: 8, line: 5 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [187, 189],
+        loc: {
+          start: { column: 12, line: 5 },
+          end: { column: 14, line: 5 },
+        },
+      },
+
+      range: [175, 193],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 18, line: 5 },
+      },
+    },
+    ForInStatement {
+      type: "ForInStatement",
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [215, 217],
+        loc: {
+          start: { column: 21, line: 6 },
+          end: { column: 23, line: 6 },
+        },
+      },
+      left: TSAsExpression {
+        type: "TSAsExpression",
+        expression: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "x",
+          optional: false,
+
+          range: [200, 201],
+          loc: {
+            start: { column: 6, line: 6 },
+            end: { column: 7, line: 6 },
+          },
+        },
+        typeAnnotation: TSTypeReference {
+          type: "TSTypeReference",
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "T",
+            optional: false,
+
+            range: [205, 206],
+            loc: {
+              start: { column: 11, line: 6 },
+              end: { column: 12, line: 6 },
+            },
+          },
+
+          range: [205, 206],
+          loc: {
+            start: { column: 11, line: 6 },
+            end: { column: 12, line: 6 },
+          },
+        },
+
+        range: [200, 206],
+        loc: {
+          start: { column: 6, line: 6 },
+          end: { column: 12, line: 6 },
+        },
+      },
+      right: ArrayExpression {
+        type: "ArrayExpression",
+        elements: [],
+
+        range: [211, 213],
+        loc: {
+          start: { column: 17, line: 6 },
+          end: { column: 19, line: 6 },
+        },
+      },
+
+      range: [194, 217],
+      loc: {
+        start: { column: 0, line: 6 },
+        end: { column: 23, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [129, 218],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;
