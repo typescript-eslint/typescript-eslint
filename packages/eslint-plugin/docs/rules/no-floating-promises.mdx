@@ -89,7 +89,7 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 A ["Thenable"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) value is an object which has a `then` method, such as a `Promise`.
 Other Thenables include TypeScript's built-in `PromiseLike` interface and any custom object that happens to have a `.then()`.
 
-The `checkAllThenable` option triggers `no-floating-promises` to also consider all values that happen to be Thenable, not just Promises.
+The `checkAllThenable` option triggers `no-floating-promises` to also consider all values that happen to be Thenables with `.then()` two parameters, not just Promises.
 This can be useful if your code works with older `Promise` polyfills instead of the native `Promise` class.
 
 <Tabs>
