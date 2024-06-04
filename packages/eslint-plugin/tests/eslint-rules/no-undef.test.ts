@@ -259,6 +259,11 @@ const obj = {
   },
 };
     `,
+    `
+class Foo {
+  [x: string]: any;
+}
+    `,
   ],
   invalid: [
     {
@@ -393,6 +398,36 @@ function Foo() {}
           },
           line: 3,
           column: 7,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [x: Bar]: string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Bar',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [x: string]: Bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Bar',
+          },
         },
       ],
     },
