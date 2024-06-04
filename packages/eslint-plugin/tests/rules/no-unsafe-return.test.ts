@@ -139,7 +139,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -154,7 +154,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -169,7 +169,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -180,7 +180,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -195,7 +195,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -210,7 +210,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -225,7 +225,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -240,7 +240,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -255,7 +255,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -266,7 +266,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -427,6 +427,29 @@ foo(() => 'foo' as any);
           line: 3,
           column: 11,
           endColumn: 23,
+          data:{
+            type:'`any`'
+          }
+        },
+      ],
+    },
+    {
+      code: `
+      let value: NotKnown;
+
+      function example() {
+        return value;
+      }
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 5,
+          column: 9,
+          endColumn: 22,
+          data:{
+            type:"error"
+          }
         },
       ],
     },
