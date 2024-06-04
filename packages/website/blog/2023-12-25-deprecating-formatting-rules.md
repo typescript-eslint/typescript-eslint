@@ -32,6 +32,9 @@ Per semantic versioning, formatting-related rules will remain available for all 
 
 **Our next major version, v7, will remove all deprecated rules.**
 
+> Note that the [`stylistic` configurations](/users/configs#stylistic) are not deprecated or recommended-against.
+> We'll continue to include those configs and their rules to help enforce TypeScript-related stylistic consistency for the forseeable future.
+
 ## Upgrading to ESLint Stylistic
 
 Although you can continue to use formatting rules in typescript-eslint for now, we don't plan on adding any new features or fixes to the rules.
