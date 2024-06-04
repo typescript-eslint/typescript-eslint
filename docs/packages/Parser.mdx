@@ -355,3 +355,34 @@ module.exports = {
   },
 };
 ```
+
+### `withoutProjectParserOptions(parserOptions)`
+
+Removes options that prompt the parser to parse the project with type
+information. In other words, you can use this if you are invoking the parser
+directly, to ensure that one file will be parsed in isolation, which is much,
+much faster.
+
+This is useful in cases where you invoke the parser directly, such as in an
+ESLint plugin context.
+
+```ts
+declare function withoutProjectParserOptions(
+  options: TSESTreeOptions,
+): TSESTreeOptions;
+```
+
+Example usage:
+
+```js title=".eslintrc.js"
+const parser = require('@typescript-eslint/parser');
+
+function parse(path, content, context) {
+  const contextParserOptions = context.languageOptions?.parserOptions ?? {};
+  const parserOptions =
+    parser.withoutProjectParserOptions(contextParserOptions);
+
+  // Do something with the cleaned-up options eventually, such as invoking the parser
+  parser.parseForESLint(content, parserOptions);
+}
+```
