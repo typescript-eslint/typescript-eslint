@@ -9,6 +9,7 @@ import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-se
 import type { Config } from '@docusaurus/types';
 
 import { version } from './package.json';
+import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -19,6 +20,8 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
+    // Allow Docusaurus TOC remark plugin to pick up the injected H2
+    beforeDefaultRemarkPlugins: [blogFooter],
     remarkPlugins,
   },
   docs: {

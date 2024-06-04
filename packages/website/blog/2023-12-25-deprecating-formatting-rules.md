@@ -62,9 +62,3 @@ The equivalent stylistic rules for deprecated typescript-eslint rules are summar
 | [`@typescript-eslint/space-before-function-paren`](/rules/space-before-function-paren)         | [`@stylistic/space-before-function-paren`](https://eslint.style/rules/ts/space-before-function-paren)         |
 | [`@typescript-eslint/space-infix-ops`](/rules/space-infix-ops)                                 | [`@stylistic/space-infix-ops`](https://eslint.style/rules/ts/space-infix-ops)                                 |
 | [`@typescript-eslint/type-annotation-spacing`](/rules/type-annotation-spacing)                 | [`@stylistic/type-annotation-spacing`](https://eslint.style/rules/ts/type-annotation-spacing)                 |
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖
