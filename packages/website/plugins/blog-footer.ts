@@ -24,7 +24,7 @@ export const blogFooter: Plugin = () => {
         {
           type: 'text',
           value:
-            'If you enjoyed this blog post and/or use typescript-eslint, please consider',
+            'If you enjoyed this blog post and/or use typescript-eslint, please consider ',
         },
         {
           children: [

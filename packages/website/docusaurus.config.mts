@@ -20,6 +20,7 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
+    // Allow Docusaurus TOC remark plugin to pick up the injected H2
     beforeDefaultRemarkPlugins: [blogFooter],
     remarkPlugins,
   },
