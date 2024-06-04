@@ -96,10 +96,10 @@ exports[`AST Fixtures statement ForOfStatement using-declaration TSESTree - Toke
     type: "Punctuator",
     value: "}",
 
-    range: [26, 27],
+    range: [27, 28],
     loc: {
-      start: { column: 26, line: 1 },
-      end: { column: 27, line: 1 },
+      start: { column: 0, line: 2 },
+      end: { column: 1, line: 2 },
     },
   },
 ]

@@ -126,147 +126,17 @@ exports[`AST Fixtures statement ForInStatement expr-init TSESTree - Tokens 1`] =
     type: "Punctuator",
     value: "}",
 
-    range: [151, 152],
-    loc: {
-      start: { column: 22, line: 3 },
-      end: { column: 23, line: 3 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "for",
-
-    range: [153, 156],
+    range: [152, 153],
     loc: {
       start: { column: 0, line: 4 },
-      end: { column: 3, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "(",
-
-    range: [157, 158],
-    loc: {
-      start: { column: 4, line: 4 },
-      end: { column: 5, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "[",
-
-    range: [158, 159],
-    loc: {
-      start: { column: 5, line: 4 },
-      end: { column: 6, line: 4 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "x",
-
-    range: [159, 160],
-    loc: {
-      start: { column: 6, line: 4 },
-      end: { column: 7, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ",",
-
-    range: [160, 161],
-    loc: {
-      start: { column: 7, line: 4 },
-      end: { column: 8, line: 4 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "y",
-
-    range: [162, 163],
-    loc: {
-      start: { column: 9, line: 4 },
-      end: { column: 10, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "]",
-
-    range: [163, 164],
-    loc: {
-      start: { column: 10, line: 4 },
-      end: { column: 11, line: 4 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "in",
-
-    range: [165, 167],
-    loc: {
-      start: { column: 12, line: 4 },
-      end: { column: 14, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "[",
-
-    range: [168, 169],
-    loc: {
-      start: { column: 15, line: 4 },
-      end: { column: 16, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "]",
-
-    range: [169, 170],
-    loc: {
-      start: { column: 16, line: 4 },
-      end: { column: 17, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ")",
-
-    range: [170, 171],
-    loc: {
-      start: { column: 17, line: 4 },
-      end: { column: 18, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "{",
-
-    range: [172, 173],
-    loc: {
-      start: { column: 19, line: 4 },
-      end: { column: 20, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "}",
-
-    range: [173, 174],
-    loc: {
-      start: { column: 20, line: 4 },
-      end: { column: 21, line: 4 },
+      end: { column: 1, line: 4 },
     },
   },
   Keyword {
     type: "Keyword",
     value: "for",
 
-    range: [175, 178],
+    range: [154, 157],
     loc: {
       start: { column: 0, line: 5 },
       end: { column: 3, line: 5 },
@@ -276,87 +146,87 @@ exports[`AST Fixtures statement ForInStatement expr-init TSESTree - Tokens 1`] =
     type: "Punctuator",
     value: "(",
 
-    range: [179, 180],
+    range: [158, 159],
     loc: {
       start: { column: 4, line: 5 },
       end: { column: 5, line: 5 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "x",
-
-    range: [180, 181],
-    loc: {
-      start: { column: 5, line: 5 },
-      end: { column: 6, line: 5 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ".",
-
-    range: [181, 182],
-    loc: {
-      start: { column: 6, line: 5 },
-      end: { column: 7, line: 5 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "y",
-
-    range: [182, 183],
-    loc: {
-      start: { column: 7, line: 5 },
-      end: { column: 8, line: 5 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "in",
-
-    range: [184, 186],
-    loc: {
-      start: { column: 9, line: 5 },
-      end: { column: 11, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "[",
 
-    range: [187, 188],
+    range: [159, 160],
     loc: {
-      start: { column: 12, line: 5 },
-      end: { column: 13, line: 5 },
+      start: { column: 5, line: 5 },
+      end: { column: 6, line: 5 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "x",
+
+    range: [160, 161],
+    loc: {
+      start: { column: 6, line: 5 },
+      end: { column: 7, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [161, 162],
+    loc: {
+      start: { column: 7, line: 5 },
+      end: { column: 8, line: 5 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "y",
+
+    range: [163, 164],
+    loc: {
+      start: { column: 9, line: 5 },
+      end: { column: 10, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "]",
 
-    range: [188, 189],
+    range: [164, 165],
     loc: {
-      start: { column: 13, line: 5 },
+      start: { column: 10, line: 5 },
+      end: { column: 11, line: 5 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "in",
+
+    range: [166, 168],
+    loc: {
+      start: { column: 12, line: 5 },
       end: { column: 14, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
-    value: ")",
+    value: "[",
 
-    range: [189, 190],
+    range: [169, 170],
     loc: {
-      start: { column: 14, line: 5 },
-      end: { column: 15, line: 5 },
+      start: { column: 15, line: 5 },
+      end: { column: 16, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
-    value: "{",
+    value: "]",
 
-    range: [191, 192],
+    range: [170, 171],
     loc: {
       start: { column: 16, line: 5 },
       end: { column: 17, line: 5 },
@@ -364,142 +234,252 @@ exports[`AST Fixtures statement ForInStatement expr-init TSESTree - Tokens 1`] =
   },
   Punctuator {
     type: "Punctuator",
-    value: "}",
+    value: ")",
 
-    range: [192, 193],
+    range: [171, 172],
     loc: {
       start: { column: 17, line: 5 },
       end: { column: 18, line: 5 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "for",
-
-    range: [194, 197],
-    loc: {
-      start: { column: 0, line: 6 },
-      end: { column: 3, line: 6 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "(",
-
-    range: [198, 199],
-    loc: {
-      start: { column: 4, line: 6 },
-      end: { column: 5, line: 6 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "(",
-
-    range: [199, 200],
-    loc: {
-      start: { column: 5, line: 6 },
-      end: { column: 6, line: 6 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "x",
-
-    range: [200, 201],
-    loc: {
-      start: { column: 6, line: 6 },
-      end: { column: 7, line: 6 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "as",
-
-    range: [202, 204],
-    loc: {
-      start: { column: 8, line: 6 },
-      end: { column: 10, line: 6 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "T",
-
-    range: [205, 206],
-    loc: {
-      start: { column: 11, line: 6 },
-      end: { column: 12, line: 6 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ")",
-
-    range: [206, 207],
-    loc: {
-      start: { column: 12, line: 6 },
-      end: { column: 13, line: 6 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "in",
-
-    range: [208, 210],
-    loc: {
-      start: { column: 14, line: 6 },
-      end: { column: 16, line: 6 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "[",
-
-    range: [211, 212],
-    loc: {
-      start: { column: 17, line: 6 },
-      end: { column: 18, line: 6 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "]",
-
-    range: [212, 213],
-    loc: {
-      start: { column: 18, line: 6 },
-      end: { column: 19, line: 6 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ")",
-
-    range: [213, 214],
-    loc: {
-      start: { column: 19, line: 6 },
-      end: { column: 20, line: 6 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [215, 216],
+    range: [173, 174],
     loc: {
-      start: { column: 21, line: 6 },
-      end: { column: 22, line: 6 },
+      start: { column: 19, line: 5 },
+      end: { column: 20, line: 5 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
+    range: [175, 176],
+    loc: {
+      start: { column: 0, line: 6 },
+      end: { column: 1, line: 6 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "for",
+
+    range: [177, 180],
+    loc: {
+      start: { column: 0, line: 7 },
+      end: { column: 3, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [181, 182],
+    loc: {
+      start: { column: 4, line: 7 },
+      end: { column: 5, line: 7 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "x",
+
+    range: [182, 183],
+    loc: {
+      start: { column: 5, line: 7 },
+      end: { column: 6, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ".",
+
+    range: [183, 184],
+    loc: {
+      start: { column: 6, line: 7 },
+      end: { column: 7, line: 7 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "y",
+
+    range: [184, 185],
+    loc: {
+      start: { column: 7, line: 7 },
+      end: { column: 8, line: 7 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "in",
+
+    range: [186, 188],
+    loc: {
+      start: { column: 9, line: 7 },
+      end: { column: 11, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "[",
+
+    range: [189, 190],
+    loc: {
+      start: { column: 12, line: 7 },
+      end: { column: 13, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "]",
+
+    range: [190, 191],
+    loc: {
+      start: { column: 13, line: 7 },
+      end: { column: 14, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [191, 192],
+    loc: {
+      start: { column: 14, line: 7 },
+      end: { column: 15, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [193, 194],
+    loc: {
+      start: { column: 16, line: 7 },
+      end: { column: 17, line: 7 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [195, 196],
+    loc: {
+      start: { column: 0, line: 8 },
+      end: { column: 1, line: 8 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "for",
+
+    range: [197, 200],
+    loc: {
+      start: { column: 0, line: 9 },
+      end: { column: 3, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [201, 202],
+    loc: {
+      start: { column: 4, line: 9 },
+      end: { column: 5, line: 9 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "x",
+
+    range: [202, 203],
+    loc: {
+      start: { column: 5, line: 9 },
+      end: { column: 6, line: 9 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "as",
+
+    range: [204, 206],
+    loc: {
+      start: { column: 7, line: 9 },
+      end: { column: 9, line: 9 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [207, 208],
+    loc: {
+      start: { column: 10, line: 9 },
+      end: { column: 11, line: 9 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "in",
+
+    range: [209, 211],
+    loc: {
+      start: { column: 12, line: 9 },
+      end: { column: 14, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "[",
+
+    range: [212, 213],
+    loc: {
+      start: { column: 15, line: 9 },
+      end: { column: 16, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "]",
+
+    range: [213, 214],
+    loc: {
+      start: { column: 16, line: 9 },
+      end: { column: 17, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [214, 215],
+    loc: {
+      start: { column: 17, line: 9 },
+      end: { column: 18, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
     range: [216, 217],
     loc: {
-      start: { column: 22, line: 6 },
-      end: { column: 23, line: 6 },
+      start: { column: 19, line: 9 },
+      end: { column: 20, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [218, 219],
+    loc: {
+      start: { column: 0, line: 10 },
+      end: { column: 1, line: 10 },
     },
   },
 ]

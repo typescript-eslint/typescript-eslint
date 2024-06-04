@@ -11,10 +11,10 @@ Program {
         type: "BlockStatement",
         body: [],
 
-        range: [21, 23],
+        range: [21, 24],
         loc: {
           start: { column: 21, line: 1 },
-          end: { column: 23, line: 1 },
+          end: { column: 1, line: 2 },
         },
       },
       left: ObjectPattern {
@@ -105,10 +105,10 @@ Program {
         },
       },
 
-      range: [0, 23],
+      range: [0, 24],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 23, line: 1 },
+        end: { column: 1, line: 2 },
       },
     },
     ForOfStatement {
@@ -118,10 +118,10 @@ Program {
         type: "BlockStatement",
         body: [],
 
-        range: [43, 45],
+        range: [44, 47],
         loc: {
-          start: { column: 19, line: 2 },
-          end: { column: 21, line: 2 },
+          start: { column: 19, line: 3 },
+          end: { column: 1, line: 4 },
         },
       },
       left: ArrayPattern {
@@ -131,45 +131,45 @@ Program {
             type: "Identifier",
             name: "x",
 
-            range: [30, 31],
+            range: [31, 32],
             loc: {
-              start: { column: 6, line: 2 },
-              end: { column: 7, line: 2 },
+              start: { column: 6, line: 3 },
+              end: { column: 7, line: 3 },
             },
           },
           Identifier {
             type: "Identifier",
             name: "y",
 
-            range: [33, 34],
+            range: [34, 35],
             loc: {
-              start: { column: 9, line: 2 },
-              end: { column: 10, line: 2 },
+              start: { column: 9, line: 3 },
+              end: { column: 10, line: 3 },
             },
           },
         ],
 
-        range: [29, 35],
+        range: [30, 36],
         loc: {
-          start: { column: 5, line: 2 },
-          end: { column: 11, line: 2 },
+          start: { column: 5, line: 3 },
+          end: { column: 11, line: 3 },
         },
       },
       right: ArrayExpression {
         type: "ArrayExpression",
         elements: [],
 
-        range: [39, 41],
+        range: [40, 42],
         loc: {
-          start: { column: 15, line: 2 },
-          end: { column: 17, line: 2 },
+          start: { column: 15, line: 3 },
+          end: { column: 17, line: 3 },
         },
       },
 
-      range: [24, 45],
+      range: [25, 47],
       loc: {
-        start: { column: 0, line: 2 },
-        end: { column: 21, line: 2 },
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 4 },
       },
     },
     ForOfStatement {
@@ -179,10 +179,10 @@ Program {
         type: "BlockStatement",
         body: [],
 
-        range: [62, 64],
+        range: [64, 67],
         loc: {
-          start: { column: 16, line: 3 },
-          end: { column: 18, line: 3 },
+          start: { column: 16, line: 5 },
+          end: { column: 1, line: 6 },
         },
       },
       left: MemberExpression {
@@ -192,10 +192,10 @@ Program {
           type: "Identifier",
           name: "x",
 
-          range: [51, 52],
+          range: [53, 54],
           loc: {
-            start: { column: 5, line: 3 },
-            end: { column: 6, line: 3 },
+            start: { column: 5, line: 5 },
+            end: { column: 6, line: 5 },
           },
         },
         optional: false,
@@ -203,34 +203,34 @@ Program {
           type: "Identifier",
           name: "y",
 
-          range: [53, 54],
+          range: [55, 56],
           loc: {
-            start: { column: 7, line: 3 },
-            end: { column: 8, line: 3 },
+            start: { column: 7, line: 5 },
+            end: { column: 8, line: 5 },
           },
         },
 
-        range: [51, 54],
+        range: [53, 56],
         loc: {
-          start: { column: 5, line: 3 },
-          end: { column: 8, line: 3 },
+          start: { column: 5, line: 5 },
+          end: { column: 8, line: 5 },
         },
       },
       right: ArrayExpression {
         type: "ArrayExpression",
         elements: [],
 
-        range: [58, 60],
+        range: [60, 62],
         loc: {
-          start: { column: 12, line: 3 },
-          end: { column: 14, line: 3 },
+          start: { column: 12, line: 5 },
+          end: { column: 14, line: 5 },
         },
       },
 
-      range: [46, 64],
+      range: [48, 67],
       loc: {
-        start: { column: 0, line: 3 },
-        end: { column: 18, line: 3 },
+        start: { column: 0, line: 5 },
+        end: { column: 1, line: 6 },
       },
     },
     ForOfStatement {
@@ -240,10 +240,10 @@ Program {
         type: "BlockStatement",
         body: [],
 
-        range: [86, 88],
+        range: [87, 90],
         loc: {
-          start: { column: 21, line: 4 },
-          end: { column: 23, line: 4 },
+          start: { column: 19, line: 7 },
+          end: { column: 1, line: 8 },
         },
       },
       left: TSAsExpression {
@@ -252,10 +252,10 @@ Program {
           type: "Identifier",
           name: "x",
 
-          range: [71, 72],
+          range: [73, 74],
           loc: {
-            start: { column: 6, line: 4 },
-            end: { column: 7, line: 4 },
+            start: { column: 5, line: 7 },
+            end: { column: 6, line: 7 },
           },
         },
         typeAnnotation: TSTypeReference {
@@ -264,50 +264,50 @@ Program {
             type: "Identifier",
             name: "T",
 
-            range: [76, 77],
+            range: [78, 79],
             loc: {
-              start: { column: 11, line: 4 },
-              end: { column: 12, line: 4 },
+              start: { column: 10, line: 7 },
+              end: { column: 11, line: 7 },
             },
           },
 
-          range: [76, 77],
+          range: [78, 79],
           loc: {
-            start: { column: 11, line: 4 },
-            end: { column: 12, line: 4 },
+            start: { column: 10, line: 7 },
+            end: { column: 11, line: 7 },
           },
         },
 
-        range: [71, 77],
+        range: [73, 79],
         loc: {
-          start: { column: 6, line: 4 },
-          end: { column: 12, line: 4 },
+          start: { column: 5, line: 7 },
+          end: { column: 11, line: 7 },
         },
       },
       right: ArrayExpression {
         type: "ArrayExpression",
         elements: [],
 
-        range: [82, 84],
+        range: [83, 85],
         loc: {
-          start: { column: 17, line: 4 },
-          end: { column: 19, line: 4 },
+          start: { column: 15, line: 7 },
+          end: { column: 17, line: 7 },
         },
       },
 
-      range: [65, 88],
+      range: [68, 90],
       loc: {
-        start: { column: 0, line: 4 },
-        end: { column: 23, line: 4 },
+        start: { column: 0, line: 7 },
+        end: { column: 1, line: 8 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 89],
+  range: [0, 91],
   loc: {
     start: { column: 0, line: 1 },
-    end: { column: 0, line: 5 },
+    end: { column: 0, line: 9 },
   },
 }
 `;
