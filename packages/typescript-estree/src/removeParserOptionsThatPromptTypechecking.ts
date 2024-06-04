@@ -8,7 +8,7 @@ import type { TSESTreeOptions } from './parser-options';
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/8428
  */
-export function removeParserOptionsThatPromptTypechecking(
+export function withoutProjectParserOptions(
   opts: TSESTreeOptions,
 ): TSESTreeOptions {
   const { EXPERIMENTAL_useProjectService, project, ...rest } = opts;
