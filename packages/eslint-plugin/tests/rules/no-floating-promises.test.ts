@@ -733,6 +733,41 @@ promise().then(() => {});
         },
       ],
     },
+    {
+      code: `
+interface SafePromise<T> extends Promise<T> {
+  brand: 'safe';
+}
+
+declare const createSafePromise: () => SafePromise<string>;
+createSafePromise();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }],
+          checkThenables: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const createPromise: () => PromiseLike<number>;
+createPromise();
+      `,
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+      `,
+      options: [{ checkThenables: false }],
+    },
   ],
 
   invalid: [
@@ -2180,6 +2215,27 @@ myTag\`abc\`;
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
       errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+declare const createPromise: () => PromiseLike<number>;
+createPromise();
+      `,
+      errors: [{ line: 3, messageId: 'floatingVoid' }],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+      `,
+      errors: [{ line: 8, messageId: 'floatingVoid' }],
+      options: [{ checkThenables: true }],
     },
   ],
 });
