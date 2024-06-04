@@ -369,7 +369,7 @@ export default createRule<Options, MessageId>({
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
       type ??= checker.getTypeAtLocation(node);
 
-      // The highest priority it so allow anything allowlisted
+      // The highest priority is to allow anything allowlisted
       if (
         allowForKnownSafePromises.some(allowedType =>
           typeMatchesSpecifier(type, allowedType, services.program),
