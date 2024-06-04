@@ -14,6 +14,12 @@ interface TSDeclareFunctionBase extends FunctionBase {
   expression: false;
 }
 
+/**
+ * Function declaration with the `declare` keyword:
+ * ```
+ * declare function foo(): void;
+ * ```
+ */
 export interface TSDeclareFunctionWithDeclare extends TSDeclareFunctionBase {
   /**
    * TS1040: 'async' modifier cannot be used in an ambient context.
@@ -26,8 +32,22 @@ export interface TSDeclareFunctionWithDeclare extends TSDeclareFunctionBase {
   generator: false;
 }
 
+/**
+ * Function declaration without the `declare` keyword:
+ * ```
+ * function foo(): void;
+ * ```
+ * This can either be an overload signature or a declaration in an ambient context
+ * (e.g. `declare module`)
+ */
+
 export interface TSDeclareFunctionNoDeclare extends TSDeclareFunctionBase {
   declare: false;
+  /**
+   * - TS1221: Generators are not allowed in an ambient context.
+   * - TS1222: An overload signature cannot be declared as a generator.
+   */
+  generator: false;
 }
 
 export type TSDeclareFunction =

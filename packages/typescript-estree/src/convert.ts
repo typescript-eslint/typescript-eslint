@@ -982,6 +982,13 @@ export class Converter {
               'Generators are not allowed in an ambient context.',
             );
           }
+        } else {
+          if (!node.body && isGenerator) {
+            this.#throwError(
+              node,
+              'A function signature cannot be declared as a generator.',
+            );
+          }
         }
 
         const result = this.createNode<
