@@ -1,20 +1,14 @@
 import { withoutProjectParserOptions } from '../../src';
 
 describe('withoutProjectParserOptions', () => {
-  it('removes all project parser options', () => {
+  it('removes only project parser options', () => {
     const without = withoutProjectParserOptions({
+      comment: true,
       EXPERIMENTAL_useProjectService: true,
       project: true,
     });
-    expect(without.EXPERIMENTAL_useProjectService).toBeUndefined();
-    expect(without.project).toBeUndefined();
-  });
-  it('leaves other parser options intact', () => {
-    const without = withoutProjectParserOptions({
-      EXPERIMENTAL_useProjectService: true,
-      project: true,
+    expect(without).toBe({
       comment: true,
     });
-    expect(without.comment).toEqual(true);
   });
 });
