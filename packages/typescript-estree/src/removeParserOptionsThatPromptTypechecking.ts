@@ -11,8 +11,7 @@ import type { TSESTreeOptions } from './parser-options';
 export function removeParserOptionsThatPromptTypechecking(
   opts: TSESTreeOptions,
 ): TSESTreeOptions {
-  delete opts.EXPERIMENTAL_useProjectService;
-  delete opts.project;
+  const { EXPERIMENTAL_useProjectService, project, ...rest } = opts;
 
-  return opts;
+  return rest;
 }
