@@ -3,6 +3,9 @@ id: parser
 sidebar_label: parser
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `@typescript-eslint/parser`
 
 <PackageLink packageName="parser" scope="@typescript-eslint" />
@@ -312,7 +315,27 @@ An experimental alternative to `parserOptions.project`.
 This directs the parser to use a more seamless TypeScript API to generate type information for rules.
 It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 
-```js
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import tseslint from 'typescript-eslint';
+
+export default [
+  {
+    languageOptions: {
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: true,
+      },
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -320,6 +343,9 @@ module.exports = {
   },
 };
 ```
+
+</TabItem>
+</Tabs>
 
 This option should bring two main benefits:
 
@@ -348,6 +374,24 @@ declare function createProgram(
 
 Example usage:
 
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import * as parser from '@typescript-eslint/parser';
+
+export default [
+  {
+    parserOptions: {
+      programs: [parser.createProgram('tsconfig.json')],
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
 ```js title=".eslintrc.js"
 const parser = require('@typescript-eslint/parser');
 
@@ -357,3 +401,6 @@ module.exports = {
   },
 };
 ```
+
+</TabItem>
+</Tabs>
