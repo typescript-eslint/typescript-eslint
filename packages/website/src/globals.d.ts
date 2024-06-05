@@ -22,5 +22,6 @@ declare global {
     require: WindowRequire;
     esquery: typeof esquery;
     system: unknown;
+    visitorKeys: Record<string, readonly string[] | undefined>;
   }
 }

@@ -50,6 +50,7 @@ declare module 'eslint/lib/rules/arrow-parens' {
         requireForBlockBody?: boolean;
       }?,
     ],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -67,6 +68,7 @@ declare module 'eslint/lib/rules/consistent-return' {
         treatUndefinedAsUnspecified?: boolean;
       }?,
     ],
+    unknown,
     {
       ReturnStatement(node: TSESTree.ReturnStatement): void;
       'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void;
@@ -92,6 +94,7 @@ declare module 'eslint/lib/rules/camelcase' {
         genericType?: 'always' | 'never';
       },
     ],
+    unknown,
     {
       Identifier(node: TSESTree.Identifier): void;
     }
@@ -107,6 +110,7 @@ declare module 'eslint/lib/rules/max-params' {
       | { max: number; countVoidThis?: boolean }
       | { maximum: number; countVoidThis?: boolean }
     )[],
+    unknown,
     {
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
       FunctionExpression(node: TSESTree.FunctionExpression): void;
@@ -122,6 +126,7 @@ declare module 'eslint/lib/rules/no-dupe-class-members' {
   const rule: TSESLint.RuleModule<
     'unexpected',
     [],
+    unknown,
     {
       Program(): void;
       ClassBody(): void;
@@ -140,6 +145,7 @@ declare module 'eslint/lib/rules/no-dupe-args' {
   const rule: TSESLint.RuleModule<
     'unexpected',
     [],
+    unknown,
     {
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
       FunctionExpression(node: TSESTree.FunctionExpression): void;
@@ -158,6 +164,7 @@ declare module 'eslint/lib/rules/no-empty-function' {
         allow?: string[];
       },
     ],
+    unknown,
     {
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
       FunctionExpression(node: TSESTree.FunctionExpression): void;
@@ -176,6 +183,7 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
     | 'globalVariableLeak'
     | 'redeclarationOfReadonlyGlobal',
     [],
+    unknown,
     {
       Program(node: TSESTree.Program): void;
     }
@@ -189,6 +197,7 @@ declare module 'eslint/lib/rules/no-loop-func' {
   const rule: TSESLint.RuleModule<
     'unsafeRefs',
     [],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
       FunctionExpression(node: TSESTree.FunctionExpression): void;
@@ -215,6 +224,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
         ignoreTypeIndexes?: boolean;
       },
     ],
+    unknown,
     {
       Literal(node: TSESTree.Literal): void;
     }
@@ -232,6 +242,7 @@ declare module 'eslint/lib/rules/no-redeclare' {
         builtinGlobals?: boolean;
       }?,
     ],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -251,6 +262,7 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
           message?: string;
         }
     )[],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -271,6 +283,7 @@ declare module 'eslint/lib/rules/no-shadow' {
         ignoreOnInitialization?: boolean;
       },
     ],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -288,6 +301,7 @@ declare module 'eslint/lib/rules/no-undef' {
         typeof?: boolean;
       },
     ],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -314,6 +328,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
           destructuredArrayIgnorePattern?: string;
         },
     ],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -333,6 +348,7 @@ declare module 'eslint/lib/rules/no-unused-expressions' {
         allowTaggedTemplates?: boolean;
       },
     ],
+    unknown,
     {
       ExpressionStatement(node: TSESTree.ExpressionStatement): void;
     }
@@ -353,6 +369,7 @@ declare module 'eslint/lib/rules/no-use-before-define' {
           variables?: boolean;
         }
     )[],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -375,6 +392,7 @@ declare module 'eslint/lib/rules/strict' {
     | 'unnecessaryInClasses'
     | 'wrap',
     ['function' | 'global' | 'never' | 'safe'],
+    unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -388,6 +406,7 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   const rule: TSESLint.RuleModule<
     'noUselessConstructor',
     [],
+    unknown,
     {
       MethodDefinition(node: TSESTree.MethodDefinition): void;
     }
@@ -406,6 +425,7 @@ declare module 'eslint/lib/rules/init-declarations' {
         ignoreForLoopInit?: boolean;
       }?,
     ],
+    unknown,
     {
       'VariableDeclaration:exit'(node: TSESTree.VariableDeclaration): void;
     }
@@ -423,6 +443,7 @@ declare module 'eslint/lib/rules/no-invalid-this' {
         capIsConstructor?: boolean;
       }?,
     ],
+    unknown,
     {
       // Common
       ThisExpression(node: TSESTree.ThisExpression): void;
@@ -444,6 +465,7 @@ declare module 'eslint/lib/rules/dot-notation' {
         allowIndexSignaturePropertyAccess?: boolean;
       },
     ],
+    unknown,
     {
       MemberExpression(node: TSESTree.MemberExpression): void;
     }
@@ -457,6 +479,7 @@ declare module 'eslint/lib/rules/no-loss-of-precision' {
   const rule: TSESLint.RuleModule<
     'noLossOfPrecision',
     [],
+    unknown,
     {
       Literal(node: TSESTree.Literal): void;
     }
@@ -475,6 +498,7 @@ declare module 'eslint/lib/rules/prefer-const' {
         ignoreReadBeforeAssign?: boolean;
       },
     ],
+    unknown,
     {
       'Program:exit'(node: TSESTree.Program): void;
       VariableDeclaration(node: TSESTree.VariableDeclaration): void;
@@ -502,6 +526,7 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
   const rule: TSESLint.RuleModule<
     'preferDestructuring',
     [Option0, Option1?],
+    unknown,
     {
       VariableDeclarator(node: TSESTree.VariableDeclarator): void;
       AssignmentExpression(node: TSESTree.AssignmentExpression): void;
@@ -556,6 +581,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
     | 'patterns'
     | 'patternWithCustomMessage',
     rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
+    unknown,
     rule.RuleListener
   >;
   export = rule;

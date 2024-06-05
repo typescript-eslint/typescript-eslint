@@ -131,6 +131,7 @@ describe('TypeOrValueSpecifier', () => {
     ): void {
       const rootDir = path.join(__dirname, 'fixtures');
       const { ast, services } = parseForESLint(code, {
+        disallowAutomaticSingleRunInference: true,
         project: './tsconfig.json',
         filePath: path.join(rootDir, 'file.ts'),
         tsconfigRootDir: rootDir,
@@ -201,6 +202,10 @@ describe('TypeOrValueSpecifier', () => {
       [
         'type Foo = {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+      ],
+      [
+        'type Foo = Promise<number> & {hey?: string}; let foo: Foo = Promise.resolve(5); type Test = typeof foo;',
+        { from: 'file', name: 'Foo' },
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',

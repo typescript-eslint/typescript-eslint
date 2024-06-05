@@ -1,12 +1,10 @@
-import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ESLintPluginRuleModule,
+  TypeScriptESLintRules,
+} from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { fetch } from 'cross-fetch';
 // markdown-table is ESM, hence this file needs to be `.mts`
 import { markdownTable } from 'markdown-table';
-
-type RuleModuleWithDocs = RuleModule<string, unknown[]> & {
-  meta: { docs: object };
-};
 
 async function main(): Promise<void> {
   const rulesImport = await import('../src/rules/index.js');
@@ -18,7 +16,7 @@ async function main(): Promise<void> {
   */
   const rules = rulesImport.default as unknown as Record<
     string,
-    RuleModuleWithDocs
+    ESLintPluginRuleModule
   >;
 
   // Annotate which rules are new since the last version

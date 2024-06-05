@@ -34,7 +34,7 @@ function interpolateCode(
 function getActualRecommended({
   docs,
 }: RulesMeta[number]): RuleRecommendation | undefined {
-  const recommended = docs?.recommended;
+  const recommended = docs.recommended;
   return typeof recommended === 'object' ? 'recommended' : recommended;
 }
 
@@ -43,7 +43,7 @@ function RuleRow({
 }: {
   rule: RulesMeta[number];
 }): React.JSX.Element | null {
-  if (!rule.docs?.url) {
+  if (!rule.docs.url) {
     return null;
   }
   const { fixable, hasSuggestions, deprecated } = rule;
@@ -181,8 +181,8 @@ export default function RulesTable(): React.JSX.Element {
           match(filters.stylistic, actualRecommended === 'stylistic'),
           match(filters.fixable, !!r.fixable),
           match(filters.suggestions, !!r.hasSuggestions),
-          match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
-          match(filters.extension, !!r.docs?.extendsBaseRule),
+          match(filters.typeInformation, !!r.docs.requiresTypeChecking),
+          match(filters.extension, !!r.docs.extendsBaseRule),
           match(filters.deprecated, !!r.deprecated),
         ].filter((o): o is boolean => o !== undefined);
         return opinions.every(o => o);

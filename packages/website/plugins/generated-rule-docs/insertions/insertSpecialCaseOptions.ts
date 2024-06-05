@@ -22,12 +22,12 @@ export function insertSpecialCaseOptions(page: RuleDocsPage): void {
     throw new Error('Could not find default injection site in ban-types');
   }
 
-  const defaultOptions = fs
-    .readFileSync(
+  const defaultOptions = /^const defaultTypes.+?^\};$/msu.exec(
+    fs.readFileSync(
       path.join(eslintPluginDirectory, 'src/rules/ban-types.ts'),
       'utf8',
-    )
-    .match(/^const defaultTypes.+?^\};$/msu)?.[0];
+    ),
+  )?.[0];
 
   if (!defaultOptions) {
     throw new Error('Could not find default options for ban-types');

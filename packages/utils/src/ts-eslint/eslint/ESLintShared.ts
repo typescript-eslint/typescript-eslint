@@ -27,7 +27,7 @@ export declare class ESLintBase<
 
   getRulesMetaForResults(
     results: LintResult[],
-  ): Record<string, RuleMetaData<string, readonly unknown[]>>;
+  ): Record<string, RuleMetaData<string, Record<string, unknown>>>;
 
   /**
    * This method checks if a given file is ignored by your configuration.
@@ -100,7 +100,7 @@ export declare class ESLintBase<
   /**
    * The type of configuration used by this class.
    */
-  static readonly configType: 'eslintrc' | 'flat';
+  static readonly configType: Linter.ConfigTypeSpecifier;
 }
 export interface ESLintOptions<Config extends Linter.ConfigType> {
   /**

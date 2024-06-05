@@ -4,7 +4,6 @@
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { MessageIds } from '../../../src/rules/no-unused-vars';
 import rule from '../../../src/rules/no-unused-vars';
@@ -17,17 +16,25 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.defineRule('use-every-a', context => {
-  /**
-   * Mark a variable as used
-   */
-  function useA(node: TSESTree.Node): void {
-    context.sourceCode.markVariableAsUsed('a', node);
-  }
-  return {
-    VariableDeclaration: useA,
-    ReturnStatement: useA,
-  };
+ruleTester.defineRule('use-every-a', {
+  create: context => {
+    /**
+     * Mark a variable as used
+     */
+    function useA(node: TSESTree.Node): void {
+      context.sourceCode.markVariableAsUsed('a', node);
+    }
+    return {
+      VariableDeclaration: useA,
+      ReturnStatement: useA,
+    };
+  },
+  defaultOptions: [],
+  meta: {
+    messages: {},
+    type: 'problem',
+    schema: [],
+  },
 });
 
 /**
@@ -40,7 +47,6 @@ ruleTester.defineRule('use-every-a', context => {
 function definedError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'unusedVar',
@@ -49,7 +55,6 @@ function definedError(
       action: 'defined',
       additional,
     },
-    type,
   };
 }
 
@@ -63,7 +68,6 @@ function definedError(
 function assignedError(
   varName: string,
   additional = '',
-  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'unusedVar',
@@ -72,7 +76,6 @@ function assignedError(
       action: 'assigned a value',
       additional,
     },
-    type,
   };
 }
 
@@ -232,10 +235,13 @@ foo();
   doSomething();
 })();
     `,
-    `
+    {
+      code: `
 try {
 } catch (e) {}
-    `,
+      `,
+      options: [{ caughtErrors: 'none' }],
+    },
     '/*global a */ a;',
     {
       code: `
@@ -925,7 +931,7 @@ try {
 try {
 } catch (err) {}
       `,
-      options: [{ vars: 'all', args: 'all' }],
+      options: [{ vars: 'all', args: 'all', caughtErrors: 'none' }],
     },
 
     // Using object rest for variable omission
@@ -1232,7 +1238,7 @@ function f() {
     },
     {
       code: '/*global a */',
-      errors: [definedError('a', '', AST_NODE_TYPES.Program)],
+      errors: [definedError('a', '')],
     },
     {
       code: `
@@ -1341,7 +1347,6 @@ function foo() {
           messageId: 'unusedVar',
           data: { varName: 'foo', action: 'defined', additional: '' },
           line: 2,
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -2234,6 +2239,22 @@ try {
       errors: [
         definedError('err', '. Allowed unused args must match /^ignore/u'),
       ],
+    },
+    {
+      code: `
+try {
+} catch (err) {}
+      `,
+      options: [{ caughtErrors: 'all', varsIgnorePattern: '^err' }],
+      errors: [definedError('err', '. Allowed unused vars must match /^err/u')],
+    },
+    {
+      code: `
+try {
+} catch (err) {}
+      `,
+      options: [{ caughtErrors: 'all', varsIgnorePattern: '^.' }],
+      errors: [definedError('err', '. Allowed unused vars must match /^./u')],
     },
 
     // multiple try catch with one success

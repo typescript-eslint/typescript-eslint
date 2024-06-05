@@ -47,7 +47,9 @@ function createProjectProgram(
     parseSettings.filePath,
     parseSettings.tsconfigRootDir,
   );
-  const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
+  const relativeProjects = Array.from(parseSettings.projects.values()).map(
+    describeProjectFilePath,
+  );
   const describedPrograms =
     relativeProjects.length === 1
       ? relativeProjects[0]
@@ -92,7 +94,7 @@ function createProjectProgram(
 
   if (!hasMatchedAnError) {
     const [describedInclusions, describedSpecifiers] =
-      parseSettings.projects.length === 1
+      parseSettings.projects.size === 1
         ? ['that TSConfig does not', 'that TSConfig']
         : ['none of those TSConfigs', 'one of those TSConfigs'];
     errorLines.push(

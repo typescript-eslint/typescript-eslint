@@ -15,46 +15,27 @@ export interface RuleRecommendationAcrossConfigs<
   strict: Partial<Options>;
 }
 
-export interface RuleMetaDataDocs<Options extends readonly unknown[]> {
+export interface RuleMetaDataDocs {
   /**
-   * Concise description of the rule
+   * Concise description of the rule.
    */
   description: string;
+
   /**
-   * The recommendation level for the rule.
-   * Used by the build tools to generate the recommended and strict configs.
-   * Exclude to not include it as a recommendation.
-   */
-  recommended?: RuleRecommendation | RuleRecommendationAcrossConfigs<Options>;
-  /**
-   * The URL of the rule's docs
+   * The URL of the rule's docs.
    */
   url?: string;
-  /**
-   * Does the rule require us to create a full TypeScript Program in order for it
-   * to type-check code. This is only used for documentation purposes.
-   */
-  requiresTypeChecking?: boolean;
-  /**
-   * Does the rule extend (or is it based off of) an ESLint code rule?
-   * Alternately accepts the name of the base rule, in case the rule has been renamed.
-   * This is only used for documentation purposes.
-   */
-  extendsBaseRule?: boolean | string;
 }
 
-export interface RuleMetaData<
-  MessageIds extends string,
-  Options extends readonly unknown[],
-> {
+export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
   /**
    * True if the rule is deprecated, false otherwise
    */
   deprecated?: boolean;
   /**
-   * Documentation for the rule, unnecessary for custom rules/plugins
+   * Documentation for the rule
    */
-  docs?: RuleMetaDataDocs<Options>;
+  docs?: PluginDocs & RuleMetaDataDocs;
   /**
    * The fixer category. Omit if there is no fixer
    */
@@ -73,8 +54,9 @@ export interface RuleMetaData<
    * The type of rule.
    * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
    * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
+   * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
-  type: 'problem' | 'suggestion';
+  type: 'problem' | 'suggestion' | 'layout';
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
@@ -83,6 +65,16 @@ export interface RuleMetaData<
    * The options schema. Supply an empty array if there are no options.
    */
   schema: JSONSchema4 | readonly JSONSchema4[];
+}
+
+export interface RuleMetaDataWithDocs<
+  MessageIds extends string,
+  PluginDocs = unknown,
+> extends RuleMetaData<MessageIds, PluginDocs> {
+  /**
+   * Documentation for the rule
+   */
+  docs: PluginDocs & RuleMetaDataDocs;
 }
 
 export interface RuleFix {
@@ -579,7 +571,7 @@ type RuleListenerExitSelectors = {
 };
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface RuleListenerExtension {
   // The code path functions below were introduced in ESLint v8.7.0 but are
   // intentionally commented out because they cause unresolvable compiler
@@ -628,6 +620,7 @@ export type RuleListener = RuleListenerBaseSelectors &
 export interface RuleModule<
   MessageIds extends string,
   Options extends readonly unknown[] = [],
+  Docs = unknown,
   // for extending base rules
   ExtendedRuleListener extends RuleListener = RuleListener,
 > {
@@ -639,7 +632,7 @@ export interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<MessageIds, Options>;
+  meta: RuleMetaData<MessageIds, Docs>;
 
   /**
    * Function which returns an object with methods that ESLint calls to “visit”
@@ -649,7 +642,26 @@ export interface RuleModule<
     context: Readonly<RuleContext<MessageIds, Options>>,
   ): ExtendedRuleListener;
 }
+
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
+
+export interface RuleModuleWithMetaDocs<
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
+  Docs = unknown,
+  // for extending base rules
+  ExtendedRuleListener extends RuleListener = RuleListener,
+> extends RuleModule<MessageIds, Options, Docs, ExtendedRuleListener> {
+  /**
+   * Metadata about the rule
+   */
+  meta: RuleMetaDataWithDocs<MessageIds, Docs>;
+}
+
+export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
+  string,
+  unknown[]
+>;
 
 /**
  * A loose definition of the RuleModule type for use with configs. This type is
@@ -664,7 +676,7 @@ export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
  * @see {@link LooseParserModule}, {@link LooseProcessorModule}
  */
 export type LooseRuleDefinition =
-  // TODO - ESLint v9 will remove support for RuleCreateFunction
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
   | LooseRuleCreateFunction
   | {
       meta?: object | undefined;

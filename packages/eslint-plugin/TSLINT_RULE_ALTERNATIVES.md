@@ -24,7 +24,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`member-access`]                 | ✅  | [`@typescript-eslint/explicit-member-accessibility`] |
 | [`member-ordering`]               | ✅  | [`@typescript-eslint/member-ordering`]               |
 | [`no-any`]                        | ✅  | [`@typescript-eslint/no-explicit-any`]               |
-| [`no-empty-interface`]            | ✅  | [`@typescript-eslint/no-empty-interface`]            |
+| [`no-empty-interface`]            | ✅  | [`@typescript-eslint/no-empty-object-type`]          |
 | [`no-import-side-effect`]         | 🔌  | [`import/no-unassigned-import`]                      |
 | [`no-inferrable-types`]           | ✅  | [`@typescript-eslint/no-inferrable-types`]           |
 | [`no-internal-module`]            | ✅  | [`@typescript-eslint/prefer-namespace-keyword`]      |
@@ -85,7 +85,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                                  |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                                    |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                            |
-| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/no-throw-literal`]                                                                   |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-literal`]                                                                 |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                       |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                        |
 | [`no-tautology-expression`]          | 🛑  | N/A                                                                                                       |
@@ -604,7 +604,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/member-ordering`]: https://typescript-eslint.io/rules/member-ordering
 [`@typescript-eslint/method-signature-style`]: https://typescript-eslint.io/rules/method-signature-style
 [`@typescript-eslint/no-explicit-any`]: https://typescript-eslint.io/rules/no-explicit-any
-[`@typescript-eslint/no-empty-interface`]: https://typescript-eslint.io/rules/no-empty-interface
+[`@typescript-eslint/no-empty-object-type`]: https://typescript-eslint.io/rules/no-empty-object-type
 [`@typescript-eslint/no-implied-eval`]: https://typescript-eslint.io/rules/no-implied-eval
 [`@typescript-eslint/no-inferrable-types`]: https://typescript-eslint.io/rules/no-inferrable-types
 [`@typescript-eslint/prefer-namespace-keyword`]: https://typescript-eslint.io/rules/prefer-namespace-keyword
@@ -622,7 +622,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare
 [`@typescript-eslint/no-misused-new`]: https://typescript-eslint.io/rules/no-misused-new
 [`@typescript-eslint/no-this-alias`]: https://typescript-eslint.io/rules/no-this-alias
-[`@typescript-eslint/no-throw-literal`]: https://typescript-eslint.io/rules/no-throw-literal
+[`@typescript-eslint/only-throw-literal`]: https://typescript-eslint.io/rules/only-throw-literal
 [`@typescript-eslint/no-extraneous-class`]: https://typescript-eslint.io/rules/no-extraneous-class
 [`@typescript-eslint/no-unused-vars`]: https://typescript-eslint.io/rules/no-unused-vars
 [`@typescript-eslint/no-use-before-define`]: https://typescript-eslint.io/rules/no-use-before-define

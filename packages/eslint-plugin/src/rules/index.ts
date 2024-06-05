@@ -36,6 +36,7 @@ import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
+import noEmptyObjectType from './no-empty-object-type';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraneousClass from './no-extraneous-class';
@@ -63,11 +64,11 @@ import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
-import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
+import noUnnecessaryTemplateExpression from './no-unnecessary-template-expression';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
@@ -85,7 +86,6 @@ import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
-import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import onlyThrowError from './only-throw-error';
@@ -161,6 +161,7 @@ export default {
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
+  'no-empty-object-type': noEmptyObjectType,
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extraneous-class': noExtraneousClass,
@@ -188,11 +189,11 @@ export default {
   'no-restricted-imports': noRestrictedImports,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
-  'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
+  'no-unnecessary-template-expression': noUnnecessaryTemplateExpression,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
@@ -210,7 +211,6 @@ export default {
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
-  'no-useless-template-literals': noUselessTemplateLiterals,
   'no-var-requires': noVarRequires,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'only-throw-error': onlyThrowError,

@@ -10,9 +10,10 @@ export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/ban-ts-comment'],
     docs: {
       description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
-      recommended: 'strict',
     },
     fixable: 'code',
     messages: {

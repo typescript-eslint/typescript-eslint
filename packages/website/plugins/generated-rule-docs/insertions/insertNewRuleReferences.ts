@@ -172,7 +172,7 @@ function linkToConfigs(configs: string[]): mdast.Node[] {
         } as mdast.InlineCode,
       ],
       type: 'link',
-      url: `/users/configs#${config})`,
+      url: `/users/configs#${config}`,
     }),
   );
 

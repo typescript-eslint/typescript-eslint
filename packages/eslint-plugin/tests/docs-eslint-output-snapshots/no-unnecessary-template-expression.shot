@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-useless-template-literals.mdx code examples ESLint output 1`] = `
+exports[`Validating rule docs no-unnecessary-template-expression.mdx code examples ESLint output 1`] = `
 "Incorrect
+
+// Static values can be incorporated into the surrounding template.
 
 const ab1 = \`\${'a'}\${'b'}\`;
                ~~~ Template literal expression is unnecessary and can be simplified.
@@ -17,6 +19,9 @@ const stringWithBoolean = \`\${'true is '}\${true}\`;
                              ~~~~~~~~~~ Template literal expression is unnecessary and can be simplified.
                                           ~~~~ Template literal expression is unnecessary and can be simplified.
 
+// Some simple expressions that are already strings
+// can be rewritten without a template at all.
+
 const text = 'a';
 const wrappedText = \`\${text}\`;
                        ~~~~ Template literal expression is unnecessary and can be simplified.
@@ -27,15 +32,20 @@ const wrappedIntersection = \`\${intersectionWithString}\`;
 "
 `;
 
-exports[`Validating rule docs no-useless-template-literals.mdx code examples ESLint output 2`] = `
+exports[`Validating rule docs no-unnecessary-template-expression.mdx code examples ESLint output 2`] = `
 "Correct
 
-const ab1 = 'ab';
-const ab2 = 'ab';
+// Static values can be incorporated into the surrounding template.
+
+const ab1 = \`ab\`;
+const ab2 = \`ab\`;
 
 const stringWithNumber = \`1 + 1 = 2\`;
 
 const stringWithBoolean = \`true is true\`;
+
+// Some simple expressions that are already strings
+// can be rewritten without a template at all.
 
 const text = 'a';
 const wrappedText = text;

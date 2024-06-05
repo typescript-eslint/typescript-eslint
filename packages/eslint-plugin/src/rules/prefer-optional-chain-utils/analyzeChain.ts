@@ -61,13 +61,24 @@ const analyzeAndChainOperand: OperandAnalyzer = (
   chain,
 ) => {
   switch (operand.comparisonType) {
-    case NullishComparisonType.Boolean:
+    case NullishComparisonType.Boolean: {
+      const nextOperand = chain.at(index + 1);
+      if (
+        nextOperand?.comparisonType ===
+          NullishComparisonType.NotStrictEqualNull &&
+        operand.comparedName.type === AST_NODE_TYPES.Identifier
+      ) {
+        return null;
+      }
+      return [operand];
+    }
+
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 
     case NullishComparisonType.NotStrictEqualNull: {
       // handle `x !== null && x !== undefined`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualUndefined &&
@@ -94,7 +105,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.NotStrictEqualUndefined: {
       // handle `x !== undefined && x !== null`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualNull &&
@@ -132,7 +143,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.StrictEqualNull: {
       // handle `x === null || x === undefined`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.StrictEqualUndefined &&
@@ -159,7 +170,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.StrictEqualUndefined: {
       // handle `x === undefined || x === null`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType === NullishComparisonType.StrictEqualNull &&
         compareNodes(operand.comparedName, nextOperand.comparedName) ===

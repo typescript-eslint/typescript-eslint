@@ -100,7 +100,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
   return output.join('\n').trim() + '\n';
 }
 
-const linter = new Linter();
+const linter = new Linter({ configType: 'eslintrc' });
 linter.defineParser('@typescript-eslint/parser', tseslintParser);
 
 const eslintOutputSnapshotFolder = path.resolve(
@@ -157,6 +157,7 @@ describe('Validating rule docs', () => {
     // comments in the files for more information.
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'no-useless-template-literals.mdx',
     ...oldStylisticRules,
   ]);
 
@@ -391,6 +392,7 @@ describe('Validating rule docs', () => {
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
+                disallowAutomaticSingleRunInference: true,
                 tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
               },
@@ -472,7 +474,7 @@ describe('Validating rule metadata', () => {
     describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
-        // there is no way to access this field but its used only in generation of docs url
+        // there is no way to access this field but it's used only in generation of docs url
         expect(rule.meta.docs?.url).toBe(
           `https://typescript-eslint.io/rules/${ruleName}`,
         );
