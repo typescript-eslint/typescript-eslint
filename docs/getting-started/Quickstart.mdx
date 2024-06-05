@@ -45,6 +45,14 @@ export default tseslint.config(
 
 This code will enable our [recommended configuration](../users/Shared_Configurations.mdx) for linting.
 
+:::note
+This file is in the [ES modules (ESM)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) format. Node interprets `.js` files in the [CommonJS (CJS)](https://nodejs.org/api/modules.html) format by default. To make the above not a syntax error, make sure to do one of the following:
+
+- Add `"type": "module"` to your `package.json`, so that all `.js` files are interpreted as ESM. (This may also affect other `.js` and `.ts` files in your project.)
+- Rename the file to `eslint.config.mjs`. This requires ESLint 8.57 or higher.
+- Refactor the config file to CJS instead, such as `const eslint = require('@eslint/js');` and `module.exports = tseslint.config(...);`.
+  :::
+
 ### Step 3: Running ESLint
 
 Open a terminal to the root of your project and run the following command:
