@@ -372,10 +372,12 @@ ruleTester.run('require-types-exports', rule, {
 
     `
       export namespace A {
-        export type B = number;
+        export namespace B {
+          export type C = number;
+        }
       }
 
-      export function a(arg: A.B) {
+      export function a(arg: A.B.C) {
         return arg;
       }
     `,
@@ -1818,22 +1820,24 @@ ruleTester.run('require-types-exports', rule, {
 
     {
       code: `
-        export namespace A {
-          type B = number;
+        namespace A {
+          export namespace B {
+            export type C = number;
+          }
         }
 
-        export function a(arg: A.B) {
+        export function a(arg: A.B.C) {
           return arg;
         }
       `,
       errors: [
         {
           messageId: 'requireTypeExport',
-          line: 6,
+          line: 8,
           column: 32,
-          endColumn: 35,
+          endColumn: 37,
           data: {
-            name: 'A.B',
+            name: 'A',
           },
         },
       ],

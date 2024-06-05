@@ -137,13 +137,13 @@ export default createRule<[], MessageIds>({
     function checkFunctionTypes(node: FunctionNode): void {
       const scope = context.sourceCode.getScope(node);
 
-      scope.through
-        .map(ref => ref.identifier.parent)
-        .filter(
-          (node): node is TSESTree.TSTypeReference =>
-            node.type === AST_NODE_TYPES.TSTypeReference,
-        )
-        .forEach(checkTypeNode);
+      scope.through.forEach(ref => {
+        const typeRef = findClosestTypeReference(ref.identifier, node);
+
+        if (typeRef) {
+          checkTypeNode(typeRef);
+        }
+      });
     }
 
     function checkVariableTypes(
@@ -157,12 +157,18 @@ export default createRule<[], MessageIds>({
     }
 
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
-      const name = getTypeName(node.typeName);
+      let name = getTypeName(node.typeName);
 
       // Using `this` type is allowed since it's necessarily exported
       // if it's used in an exported entity.
       if (name === 'this') {
         return;
+      }
+
+      // Namespaced types are not exported directly, so we check the
+      // leftmost part of the name.
+      if (Array.isArray(name)) {
+        name = name[0];
       }
 
       const isExternalized = externalizedTypes.has(name);
@@ -196,7 +202,13 @@ export default createRule<[], MessageIds>({
       'ImportDeclaration ImportSpecifier, ImportSpecifier':
         collectImportedTypes,
 
-      'ExportNamedDeclaration TSTypeAliasDeclaration, ExportNamedDeclaration TSInterfaceDeclaration, ExportNamedDeclaration TSEnumDeclaration':
+      'Program > ExportNamedDeclaration > TSTypeAliasDeclaration':
+        collectExportedTypes,
+      'Program > ExportNamedDeclaration > TSInterfaceDeclaration':
+        collectExportedTypes,
+      'Program > ExportNamedDeclaration > TSEnumDeclaration':
+        collectExportedTypes,
+      'Program > ExportNamedDeclaration > TSModuleDeclaration':
         collectExportedTypes,
 
       'ExportNamedDeclaration[declaration.type="FunctionDeclaration"]':
@@ -220,17 +232,34 @@ export default createRule<[], MessageIds>({
   },
 });
 
-function getTypeName(typeName: TSESTree.EntityName): string {
+function getTypeName(typeName: TSESTree.EntityName): string | string[] {
   switch (typeName.type) {
     case AST_NODE_TYPES.Identifier:
       return typeName.name;
 
     case AST_NODE_TYPES.TSQualifiedName:
-      return getTypeName(typeName.left) + '.' + typeName.right.name;
+      return [...(getTypeName(typeName.left) || []), typeName.right.name];
 
     case AST_NODE_TYPES.ThisExpression:
       return 'this';
   }
+}
+
+function findClosestTypeReference(
+  startNode: TSESTree.Node,
+  endNode: TSESTree.Node,
+): TSESTree.TSTypeReference | null {
+  let parent = startNode.parent;
+
+  while (parent && parent !== endNode) {
+    if (parent.type === AST_NODE_TYPES.TSTypeReference) {
+      return parent;
+    }
+
+    parent = parent.parent;
+  }
+
+  return null;
 }
 
 function isAncestorNode(ancestor: TSESTree.Node, node: TSESTree.Node): boolean {
