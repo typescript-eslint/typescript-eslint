@@ -154,26 +154,20 @@ export default createRule<[], MessageIds>({
     function checkVariableTypes(
       node: TSESTree.LetOrConstOrVarDeclarator,
     ): void {
-      typeReferences.forEach(r => {
-        if (isAncestorNode(node, r.identifier.parent)) {
-          checkTypeNode(r.identifier.parent);
+      typeReferences.forEach(ref => {
+        if (isAncestorNode(node, ref.identifier.parent)) {
+          checkTypeNode(ref.identifier.parent);
         }
       });
     }
 
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
-      let name = getTypeName(node.typeName);
+      const name = getTypeName(node.typeName);
 
       // Using `this` type is allowed since it's necessarily exported
       // if it's used in an exported entity.
       if (name === 'this') {
         return;
-      }
-
-      // Namespaced types are not exported directly, so we check the
-      // leftmost part of the name.
-      if (Array.isArray(name)) {
-        name = name[0];
       }
 
       const isExternalized = externalizedTypes.has(name);
@@ -238,18 +232,15 @@ export default createRule<[], MessageIds>({
   },
 });
 
-function getTypeName(typeName: TSESTree.EntityName): string | string[] {
+function getTypeName(typeName: TSESTree.EntityName): string {
   switch (typeName.type) {
     case AST_NODE_TYPES.Identifier:
       return typeName.name;
 
-    case AST_NODE_TYPES.TSQualifiedName: {
-      let left = getTypeName(typeName.left);
-
-      left = Array.isArray(left) ? left : [left];
-
-      return [...left, typeName.right.name];
-    }
+    case AST_NODE_TYPES.TSQualifiedName:
+      // Namespaced types are not exported directly, so we check the
+      // leftmost part of the name.
+      return getTypeName(typeName.left);
 
     case AST_NODE_TYPES.ThisExpression:
       return 'this';
