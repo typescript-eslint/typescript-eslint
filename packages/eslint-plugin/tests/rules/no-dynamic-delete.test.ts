@@ -33,10 +33,6 @@ delete container[-7];
     `,
     `
 const container: { [i: string]: 0 } = {};
-delete container[+7];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
 delete container['-Infinity'];
     `,
     `
@@ -69,6 +65,14 @@ delete container['NaN'];
       code: `
 const container: { [i: string]: 0 } = {};
 delete container['aa' + 'b'];
+      `,
+      errors: [{ messageId: 'dynamicDelete' }],
+      output: null,
+    },
+    {
+      code: `
+const container: { [i: string]: 0 } = {};
+delete container[+7];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
       output: null,
