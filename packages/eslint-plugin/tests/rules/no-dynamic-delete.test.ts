@@ -131,7 +131,7 @@ delete container[name.foo.bar];
     {
       code: `
 const container: { [i: string]: 0 } = {};
-delete container[+"Infinity"];
+delete container[+'Infinity'];
       `,
       output: null,
       errors: [{ messageId: 'dynamicDelete' }],
