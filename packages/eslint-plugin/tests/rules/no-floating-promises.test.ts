@@ -2226,9 +2226,31 @@ myTag\`abc\`;
     },
     {
       code: `
-        declare function safe(...args: unknown[]): Promise<void>;
+        declare function it(...args: unknown[]): Promise<void>;
 
-        safe('...', () => {}).then(() => {});
+        it('...', () => {}).then(() => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {}).finally(() => {});
       `,
       errors: [{ line: 4, messageId: 'floatingVoid' }],
       options: [
