@@ -127,19 +127,18 @@ Examples of code for this rule with `checksVoidReturn: true`:
 
 ```ts option='{ "checksVoidReturn": true }'
 [1, 2, 3].forEach(async value => {
-  await doSomething(value);
+  await fetch(`/${value}`);
 });
 
-new Promise(async (resolve, reject) => {
-  await doSomething();
+new Promise<void>(async (resolve, reject) => {
+  await fetch('/');
   resolve();
 });
 
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', async () => {
-  synchronousCall();
-  await doSomething();
-  otherSynchronousCall();
+document.addEventListener('click', async () => {
+  console.log('synchronous call');
+  await fetch('/');
+  console.log('synchronous call');
 });
 ```
 
@@ -169,8 +168,7 @@ new Promise((resolve, reject) => {
 });
 
 // Name the async wrapper to call it later
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', () => {
+document.addEventListener('click', () => {
   const handler = async () => {
     await doSomething();
     otherSynchronousCall();
@@ -210,30 +208,30 @@ Examples of code for this rule with `checksSpreads: true`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "checksSpreads": true }'
-const getData = () => someAsyncOperation({ myArg: 'foo' });
+const getData = () => fetch('/');
 
-return { foo: 42, ...getData() };
+console.log({ foo: 42, ...getData() });
 
-const getData2 = async () => {
-  await someAsyncOperation({ myArg: 'foo' });
+const awaitData = async () => {
+  await fetch('/');
 };
 
-return { foo: 42, ...getData2() };
+console.log({ foo: 42, ...awaitData() });
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts option='{ "checksSpreads": true }'
-const getData = () => someAsyncOperation({ myArg: 'foo' });
+const getData = () => fetch('/');
 
-return { foo: 42, ...(await getData()) };
+console.log({ foo: 42, ...(await getData()) });
 
-const getData2 = async () => {
-  await someAsyncOperation({ myArg: 'foo' });
+const awaitData = async () => {
+  await fetch('/');
 };
 
-return { foo: 42, ...(await getData2()) };
+console.log({ foo: 42, ...(await awaitData()) });
 ```
 
 </TabItem>
