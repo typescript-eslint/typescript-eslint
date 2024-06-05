@@ -179,8 +179,9 @@ export default createRule<[], MessageIds>({
 
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const type = services.program.getTypeChecker().getTypeAtLocation(tsNode);
+      const symbol = type.aliasSymbol ?? type.getSymbol();
 
-      if (isSymbolFromDefaultLibrary(services.program, type.getSymbol())) {
+      if (isSymbolFromDefaultLibrary(services.program, symbol)) {
         return;
       }
 
