@@ -125,7 +125,7 @@ module.exports = {
         'maintenance/contributor-tiers',
         {
           collapsible: true,
-          items: ['maintenance/issues/rule-deprecations'],
+          items: ['maintenance/issues/rule-deprecations-and-deletions'],
           label: 'Issues',
           link: {
             id: 'maintenance/issues',

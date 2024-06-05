@@ -70,7 +70,7 @@ interface ParserOptions {
   loc?: boolean;
   programs?: Program[] | null;
   project?: string[] | string | boolean | null;
-  projectFolderIgnoreList?: (RegExp | string)[];
+  projectFolderIgnoreList?: string[];
   range?: boolean;
   sourceType?: SourceType | undefined;
   tokens?: boolean;

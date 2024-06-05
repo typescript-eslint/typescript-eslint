@@ -2122,6 +2122,32 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      options: [
+        {
+          default: ['method', 'get'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -5189,6 +5215,54 @@ class Foo {
             rank: 'accessor',
           },
           line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'x',
+            rank: 'method',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      options: [
+        {
+          default: ['method', 'get'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'y',
+            rank: 'get',
+          },
+          line: 4,
           column: 3,
         },
       ],

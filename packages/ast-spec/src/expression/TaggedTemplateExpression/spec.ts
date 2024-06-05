@@ -1,7 +1,7 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type { TSTypeParameterInstantiation } from '../../special/TSTypeParameterInstantiation/spec';
-import type { LeftHandSideExpression } from '../../unions/LeftHandSideExpression';
+import type { Expression } from '../../unions/Expression';
 import type { TemplateLiteral } from '../TemplateLiteral/spec';
 
 export interface TaggedTemplateExpression extends BaseNode {
@@ -11,6 +11,6 @@ export interface TaggedTemplateExpression extends BaseNode {
   /** @deprecated Use {@link `typeArguments`} instead. */
   typeParameters: TSTypeParameterInstantiation | undefined;
 
-  tag: LeftHandSideExpression;
+  tag: Expression;
   quasi: TemplateLiteral;
 }
