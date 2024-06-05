@@ -15,6 +15,7 @@ It supports TypeScript-specific expressions:
 - Marks directives in modules declarations (`"use strict"`, etc.) as not unused
 - Marks the following expressions as unused if their wrapped value expressions are unused:
   - Assertion expressions: `x as number;`, `x!;`, `<number>x;`
+  - Satisfies expressions: `x satisfies number;`
   - Instantiation expressions: `Set<number>;`
 
 Although the type expressions never have runtime side effects (that is, `x!;` is the same as `x;`), they can be used to assert types for testing purposes.
@@ -27,6 +28,7 @@ Although the type expressions never have runtime side effects (that is, `x!;` is
 ```ts
 Set<number>;
 1 as number;
+1 satisfies number;
 window!;
 ```
 
@@ -40,7 +42,8 @@ function getSet() {
 
 // Funtion calls are allowed, so type expressions that wrap function calls are allowed
 getSet()<number>;
-getSet() as Set<unknown>;
+getSet() as typeof Set;
+getSet() satisfies typeof Set;
 getSet()!;
 
 // Namespaces can have directives
