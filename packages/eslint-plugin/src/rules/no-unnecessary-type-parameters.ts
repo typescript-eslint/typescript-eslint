@@ -169,18 +169,18 @@ function countTypeParameterUsage(
 }
 
 /**
- * Populates {@link identifierCounts} by the number of times each type parameter
- * appears in the given type by recursively descending through type references.
+ * Populates {@link foundIdentifierUsages} by the number of times each type parameter
+ * appears in the given type by checking its uses through its type references.
  * This is essentially a limited subset of the scope manager, but for types.
  */
 function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
-  identifierCounts: Map<ts.Identifier, number>,
+  foundIdentifierUsages: Map<ts.Identifier, number>,
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
-  const typeCounts = new Map<ts.Type, number>();
+  const typeUsages = new Map<ts.Type, number>();
   const visitedConstraints = new Set<ts.TypeNode>();
   let functionLikeType = false;
   let visitedDefault = false;
@@ -197,12 +197,15 @@ function collectTypeParameterUsageCounts(
     visitType(type, false);
   }
 
-  function visitType(type: ts.Type | undefined, asRepeatedType: boolean): void {
+  function visitType(
+    type: ts.Type | undefined,
+    assumeMultipleUses: boolean,
+  ): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
     // If it's not recursive, then heck, we've seen it enough times that any
     // referenced types have been counted enough to qualify as used.
-    if (!type || incrementTypeCount(type) > 9) {
+    if (!type || incrementTypeUsages(type) > 9) {
       return;
     }
 
@@ -213,7 +216,7 @@ function collectTypeParameterUsageCounts(
         | undefined;
 
       if (declaration) {
-        incrementIdentifierCount(declaration.name, asRepeatedType);
+        incrementIdentifierCount(declaration.name, assumeMultipleUses);
 
         // Visiting the type of a constrained type parameter will recurse into
         // the constraint. We avoid infinite loops by visiting each only once.
@@ -234,13 +237,13 @@ function collectTypeParameterUsageCounts(
 
     // Intersections and unions like `0 | 1`
     else if (tsutils.isUnionOrIntersectionType(type)) {
-      visitTypesList(type.types, asRepeatedType);
+      visitTypesList(type.types, assumeMultipleUses);
     }
 
     // Index access types like `T[K]`
     else if (tsutils.isIndexedAccessType(type)) {
-      visitType(type.objectType, asRepeatedType);
-      visitType(type.indexType, asRepeatedType);
+      visitType(type.objectType, assumeMultipleUses);
+      visitType(type.indexType, assumeMultipleUses);
     }
 
     // Tuple types like `[K, V]`
@@ -254,14 +257,14 @@ function collectTypeParameterUsageCounts(
     // Template literals like `a${T}b`
     else if (tsutils.isTemplateLiteralType(type)) {
       for (const subType of type.types) {
-        visitType(subType, asRepeatedType);
+        visitType(subType, assumeMultipleUses);
       }
     }
 
     // Conditional types like `T extends string ? T : never`
     else if (tsutils.isConditionalType(type)) {
-      visitType(type.checkType, asRepeatedType);
-      visitType(type.extendsType, asRepeatedType);
+      visitType(type.checkType, assumeMultipleUses);
+      visitType(type.extendsType, assumeMultipleUses);
     }
 
     // Catch-all: inferred object types like `{ K: V }`.
@@ -295,7 +298,7 @@ function collectTypeParameterUsageCounts(
 
     // Catch-all: operator types like `keyof T`
     else if (isOperatorType(type)) {
-      visitType(type.type, asRepeatedType);
+      visitType(type.type, assumeMultipleUses);
     }
 
     // Catch-all: generic type references like `Exclude<T, null>`
@@ -306,16 +309,16 @@ function collectTypeParameterUsageCounts(
 
   function incrementIdentifierCount(
     id: ts.Identifier,
-    asRepeatedType: boolean,
+    assumeMultipleUses: boolean,
   ): void {
-    const identifierCount = identifierCounts.get(id) ?? 0;
-    const value = asRepeatedType ? 2 : 1;
-    identifierCounts.set(id, identifierCount + value);
+    const identifierCount = foundIdentifierUsages.get(id) ?? 0;
+    const value = assumeMultipleUses ? 2 : 1;
+    foundIdentifierUsages.set(id, identifierCount + value);
   }
 
-  function incrementTypeCount(type: ts.Type): number {
-    const count = (typeCounts.get(type) ?? 0) + 1;
-    typeCounts.set(type, count);
+  function incrementTypeUsages(type: ts.Type): number {
+    const count = (typeUsages.get(type) ?? 0) + 1;
+    typeUsages.set(type, count);
     return count;
   }
 
@@ -345,7 +348,7 @@ function collectTypeParameterUsageCounts(
 
   function visitSymbolsListOnce(
     symbols: ts.Symbol[],
-    asRepeatedType: boolean,
+    assumeMultipleUses: boolean,
   ): void {
     if (visitedSymbolLists.has(symbols)) {
       return;
@@ -354,16 +357,16 @@ function collectTypeParameterUsageCounts(
     visitedSymbolLists.add(symbols);
 
     for (const symbol of symbols) {
-      visitType(checker.getTypeOfSymbol(symbol), asRepeatedType);
+      visitType(checker.getTypeOfSymbol(symbol), assumeMultipleUses);
     }
   }
 
   function visitTypesList(
     types: readonly ts.Type[],
-    asRepeatedType: boolean,
+    assumeMultipleUses: boolean,
   ): void {
     for (const type of types) {
-      visitType(type, asRepeatedType);
+      visitType(type, assumeMultipleUses);
     }
   }
 }
