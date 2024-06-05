@@ -60,7 +60,12 @@ export default createRule<[], MessageIds>({
       });
     }
 
-    function collectImportedTypes(node: TSESTree.ImportSpecifier): void {
+    function collectImportedTypes(
+      node:
+        | TSESTree.ImportSpecifier
+        | TSESTree.ImportNamespaceSpecifier
+        | TSESTree.ImportDefaultSpecifier,
+    ): void {
       externalizedTypes.add(node.local.name);
     }
 
