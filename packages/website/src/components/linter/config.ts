@@ -25,7 +25,7 @@ export const defaultParseSettings: ParseSettings = {
   log: console.log,
   preserveNodeMaps: true,
   programs: null,
-  projects: [],
+  projects: new Map(),
   range: true,
   singleRun: false,
   suppressDeprecatedPropertyWarnings: false,

@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction _error_ generator TSESTree - Error 1`] = `
+"TSError
+> 1 | declare function* foo();
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ Generators are not allowed in an ambient context.
+  2 |"
+`;

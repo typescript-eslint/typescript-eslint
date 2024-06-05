@@ -1,7 +1,7 @@
 import type * as unist from 'unist';
 
-import type { RuleModuleWithMetaDocs, VFileWithStem } from './utils';
-import { findH2Index } from './utils';
+import type { RuleModuleWithMetaDocs, VFileWithStem } from '../utils/rules';
+import { findH2Index } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
   howToUse: number;
