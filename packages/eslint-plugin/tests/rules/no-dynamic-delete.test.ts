@@ -51,19 +51,20 @@ delete value;
 const value = 1;
 delete -value;
     `,
-  ],
-  invalid: [
-    {
-      code: `
+    `
 const container: { [i: string]: 0 } = {};
 delete container['aaa'];
-      `,
-      errors: [{ messageId: 'dynamicDelete' }],
-      output: `
+    `,
+    `
 const container: { [i: string]: 0 } = {};
-delete container.aaa;
-      `,
-    },
+delete container['delete'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['NaN'];
+    `,
+  ],
+  invalid: [
     {
       code: `
 const container: { [i: string]: 0 } = {};
@@ -71,17 +72,6 @@ delete container['aa' + 'b'];
       `,
       errors: [{ messageId: 'dynamicDelete' }],
       output: null,
-    },
-    {
-      code: `
-const container: { [i: string]: 0 } = {};
-delete container['delete'];
-      `,
-      errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-delete container.delete;
-      `,
     },
     {
       code: `
@@ -110,17 +100,6 @@ delete container[NaN];
     {
       code: `
 const container: { [i: string]: 0 } = {};
-delete container['NaN'];
-      `,
-      errors: [{ messageId: 'dynamicDelete' }],
-      output: `
-const container: { [i: string]: 0 } = {};
-delete container.NaN;
-      `,
-    },
-    {
-      code: `
-const container: { [i: string]: 0 } = {};
 const name = 'name';
 delete container[name];
       `,
@@ -141,6 +120,22 @@ delete container[getName()];
 const container: { [i: string]: 0 } = {};
 const name = { foo: { bar: 'bar' } };
 delete container[name.foo.bar];
+      `,
+      output: null,
+      errors: [{ messageId: 'dynamicDelete' }],
+    },
+    {
+      code: `
+const container: { [i: string]: 0 } = {};
+delete container[+"Infinity"];
+      `,
+      output: null,
+      errors: [{ messageId: 'dynamicDelete' }],
+    },
+    {
+      code: `
+const container: { [i: string]: 0 } = {};
+delete container[typeof 1];
       `,
       output: null,
       errors: [{ messageId: 'dynamicDelete' }],
