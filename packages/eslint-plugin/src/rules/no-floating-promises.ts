@@ -19,7 +19,7 @@ type Options = [
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
-    allowForKnownSafePromiseReturns?: TypeOrValueSpecifier[];
+    allowForKnownSafeCalls?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -86,8 +86,7 @@ export default createRule<Options, MessageId>({
             type: 'boolean',
           },
           allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
-          allowForKnownSafePromiseReturns:
-            readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -99,7 +98,7 @@ export default createRule<Options, MessageId>({
       ignoreVoid: true,
       ignoreIIFE: false,
       allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
-      allowForKnownSafePromiseReturns: readonlynessOptionsDefaults.allow,
+      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
     },
   ],
 
@@ -109,8 +108,7 @@ export default createRule<Options, MessageId>({
     // TODO: #5439
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const allowForKnownSafePromises = options.allowForKnownSafePromises!;
-    const allowForKnownSafePromiseReturns =
-      options.allowForKnownSafePromiseReturns!;
+    const allowForKnownSafeCalls = options.allowForKnownSafeCalls!;
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
     return {
@@ -215,7 +213,7 @@ export default createRule<Options, MessageId>({
 
       const type = services.getTypeAtLocation(node.callee);
 
-      return allowForKnownSafePromiseReturns.some(allowedType =>
+      return allowForKnownSafeCalls.some(allowedType =>
         typeMatchesSpecifier(type, allowedType, services.program),
       );
     }

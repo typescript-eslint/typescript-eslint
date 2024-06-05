@@ -706,7 +706,7 @@ myTag\`abc\`;
       `,
       options: [
         {
-          allowForKnownSafePromiseReturns: [
+          allowForKnownSafeCalls: [
             {
               from: 'file',
               name: 'it',
@@ -2211,7 +2211,7 @@ myTag\`abc\`;
       errors: [{ line: 4, messageId: 'floatingVoid' }],
       options: [
         {
-          allowForKnownSafePromiseReturns: [
+          allowForKnownSafeCalls: [
             {
               from: 'file',
               name: 'it',
@@ -2233,7 +2233,7 @@ myTag\`abc\`;
       errors: [{ line: 4, messageId: 'floatingVoid' }],
       options: [
         {
-          allowForKnownSafePromiseReturns: [
+          allowForKnownSafeCalls: [
             {
               from: 'file',
               name: 'it',

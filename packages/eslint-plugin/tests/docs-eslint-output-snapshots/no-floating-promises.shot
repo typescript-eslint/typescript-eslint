@@ -111,7 +111,7 @@ returnsSafePromise();
 
 exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 7`] = `
 "Incorrect
-Options: {"allowForKnownSafePromiseReturns":[{"from":"file","name":"safe","path":"input.ts"}]}
+Options: {"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}
 
 declare function unsafe(...args: unknown[]): Promise<void>;
 
@@ -122,7 +122,7 @@ unsafe('...', () => {});
 
 exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 8`] = `
 "Correct
-Options: {"allowForKnownSafePromiseReturns":[{"from":"file","name":"safe","path":"input.ts"}]}
+Options: {"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}
 
 declare function safe(...args: unknown[]): Promise<void>;
 

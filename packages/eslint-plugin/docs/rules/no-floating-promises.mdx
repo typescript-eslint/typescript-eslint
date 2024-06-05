@@ -176,7 +176,7 @@ returnsSafePromise();
 </TabItem>
 </Tabs>
 
-### `allowForKnownSafePromiseReturns`
+### `allowForKnownSafeCalls`
 
 This option allows marking specific functions as "safe" to be called to create floating Promises.
 For example, you may need to do this in the case of libraries whose APIs may be called without handling the resultant Promises.
@@ -187,7 +187,7 @@ Examples of code for this rule with:
 
 ```json
 {
-  "allowForKnownSafePromiseReturns": [
+  "allowForKnownSafeCalls": [
     { "from": "file", "name": "safe", "path": "input.ts" }
   ]
 }
@@ -196,7 +196,7 @@ Examples of code for this rule with:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allowForKnownSafePromiseReturns":[{"from":"file","name":"safe","path":"input.ts"}]}'
+```ts option='{"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}'
 declare function unsafe(...args: unknown[]): Promise<void>;
 
 unsafe('...', () => {});
@@ -205,7 +205,7 @@ unsafe('...', () => {});
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allowForKnownSafePromiseReturns":[{"from":"file","name":"safe","path":"input.ts"}]}' skipValidation
+```ts option='{"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}' skipValidation
 declare function safe(...args: unknown[]): Promise<void>;
 
 safe('...', () => {});

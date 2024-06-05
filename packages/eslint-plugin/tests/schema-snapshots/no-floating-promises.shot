@@ -8,7 +8,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
-      "allowForKnownSafePromiseReturns": {
+      "allowForKnownSafeCalls": {
         "items": {
           "oneOf": [
             {
@@ -214,7 +214,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    allowForKnownSafePromiseReturns?: (
+    allowForKnownSafeCalls?: (
       | {
           from: 'file';
           name: [string, ...string[]] | string;
