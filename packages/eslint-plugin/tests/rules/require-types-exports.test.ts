@@ -365,6 +365,12 @@ ruleTester.run('require-types-exports', rule, {
     `,
 
     `
+      export function f<T extends ReturnType<() => string>>(arg: T) {
+        return arg;
+      }
+    `,
+
+    `
       export class Wrapper {
         work(other: this) {}
       }
