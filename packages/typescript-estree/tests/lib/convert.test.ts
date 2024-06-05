@@ -280,26 +280,29 @@ describe('convert', () => {
 
   describe('suppressDeprecatedPropertyWarnings', () => {
     const makeNodeGetter =
-      // Small convenience for testing the nodes:
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+      <
+        // Small convenience for testing the nodes:
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        S extends ts.Statement,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        TNode extends TSESTree.Node,
+      >(
+        code: string,
+        tsToEsNode: (statement: S) => TSNode,
+      ) =>
+      (converterOptions?: ConverterOptions): TNode => {
+        const ast = convertCode(code);
+        const instance = new Converter(ast, {
+          shouldPreserveNodeMaps: true,
+          ...converterOptions,
+        });
 
-        <S extends ts.Statement, TNode extends TSESTree.Node>(
-          code: string,
-          tsToEsNode: (statement: S) => TSNode,
-        ) =>
-        (converterOptions?: ConverterOptions): TNode => {
-          const ast = convertCode(code);
-          const instance = new Converter(ast, {
-            shouldPreserveNodeMaps: true,
-            ...converterOptions,
-          });
+        instance.convertProgram();
 
-          instance.convertProgram();
-
-          return instance
-            .getASTMaps()
-            .tsNodeToESTreeNodeMap.get(tsToEsNode(ast.statements[0] as S));
-        };
+        return instance
+          .getASTMaps()
+          .tsNodeToESTreeNodeMap.get(tsToEsNode(ast.statements[0] as S));
+      };
 
     const getEsTsEnumDeclaration = makeNodeGetter<
       ts.EnumDeclaration,
