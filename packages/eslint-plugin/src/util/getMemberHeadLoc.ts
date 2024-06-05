@@ -6,7 +6,7 @@ import {
 
 /**
  * Generates report loc suitable for reporting on how a class member is
- * "declared", rather than how it's implemented.
+ * declared, rather than how it's implemented.
  *
  * ```ts
  * class A {
@@ -65,9 +65,21 @@ export function getMemberHeadLoc(
   };
 }
 
+/**
+ * Generates report loc suitable for reporting on how a parameter property is
+ * declared.
+ *
+ * ```ts
+ * class A {
+ *   constructor(private property: string = 'value') {
+ *               ~~~~~~~~~~~~~~~~
+ *   }
+ * ```
+ */
 export function getParameterPropertyHeadLoc(
   sourceCode: Readonly<TSESLint.SourceCode>,
   node: TSESTree.TSParameterProperty,
+  nodeName: string,
 ): TSESTree.SourceLocation {
   // Parameter properties have a weirdly different AST structure
   // than other class members.

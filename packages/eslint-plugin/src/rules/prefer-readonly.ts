@@ -10,7 +10,10 @@ import {
   NullThrowsReasons,
   typeIsOrHasBaseType,
 } from '../util';
-import { getMemberHeadLoc } from '../util/getMemberHeadLoc';
+import {
+  getMemberHeadLoc,
+  getParameterPropertyHeadLoc,
+} from '../util/getMemberHeadLoc';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -168,41 +171,6 @@ export default createRule<Options, MessageIds>({
       };
     }
 
-    /**
-     * For missing readonly modifiers, we want to report any keywords
-     * out in front of the key, and the key itself, but not anything afterwards,
-     * i.e. parens, type annotations, method bodies, or `?`.
-     */
-    function getReportLocForParameterProperty(
-      node: TSESTree.TSParameterProperty,
-      nodeName: string,
-    ): TSESTree.SourceLocation {
-      // Parameter properties have a weirdly different AST structure
-      // than other class members.
-
-      let start: TSESTree.Position;
-
-      if (node.decorators.length === 0) {
-        start = structuredClone(node.loc.start);
-      } else {
-        const lastDecorator = node.decorators[node.decorators.length - 1];
-        const nextToken = nullThrows(
-          context.sourceCode.getTokenAfter(lastDecorator),
-          NullThrowsReasons.MissingToken('token', 'last decorator'),
-        );
-        start = structuredClone(nextToken.loc.start);
-      }
-
-      const end = context.sourceCode.getLocFromIndex(
-        node.parameter.range[0] + nodeName.length,
-      );
-
-      return {
-        start,
-        end,
-      };
-    }
-
     return {
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
@@ -235,7 +203,8 @@ export default createRule<Options, MessageIds>({
                 return { loc: getMemberHeadLoc(context.sourceCode, esNode) };
               case AST_NODE_TYPES.TSParameterProperty:
                 return {
-                  loc: getReportLocForParameterProperty(
+                  loc: getParameterPropertyHeadLoc(
+                    context.sourceCode,
                     esNode,
                     (nameNode as TSESTree.Identifier).name,
                   ),

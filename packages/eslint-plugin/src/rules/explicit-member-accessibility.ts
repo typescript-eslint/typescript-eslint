@@ -7,7 +7,10 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
-import { getMemberHeadLoc } from '../util/getMemberHeadLoc';
+import {
+  getMemberHeadLoc,
+  getParameterPropertyHeadLoc,
+} from '../util/getMemberHeadLoc';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -223,41 +226,6 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
-     * For missing accessibility modifiers, we want to report any keywords
-     * out in front of the key, and the key itself, but not anything afterwards,
-     * i.e. parens, type annotations, method bodies, or `?`.
-     */
-    function getMissingAccessibilityReportLocForParameterProperty(
-      node: TSESTree.TSParameterProperty,
-      nodeName: string,
-    ): TSESTree.SourceLocation {
-      // Parameter properties have a weirdly different AST structure
-      // than other class members.
-
-      let start: TSESTree.Position;
-
-      if (node.decorators.length === 0) {
-        start = structuredClone(node.loc.start);
-      } else {
-        const lastDecorator = node.decorators[node.decorators.length - 1];
-        const nextToken = nullThrows(
-          context.sourceCode.getTokenAfter(lastDecorator),
-          NullThrowsReasons.MissingToken('token', 'last decorator'),
-        );
-        start = structuredClone(nextToken.loc.start);
-      }
-
-      const end = context.sourceCode.getLocFromIndex(
-        node.parameter.range[0] + nodeName.length,
-      );
-
-      return {
-        start,
-        end,
-      };
-    }
-
-    /**
      * Creates a fixer that adds an accessibility modifier keyword
      */
     function getMissingAccessibilitySuggestions(
@@ -377,7 +345,8 @@ export default createRule<Options, MessageIds>({
         case 'explicit': {
           if (!node.accessibility) {
             context.report({
-              loc: getMissingAccessibilityReportLocForParameterProperty(
+              loc: getParameterPropertyHeadLoc(
+                context.sourceCode,
                 node,
                 nodeName,
               ),
