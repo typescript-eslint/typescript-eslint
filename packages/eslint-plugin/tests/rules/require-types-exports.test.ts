@@ -381,6 +381,22 @@ ruleTester.run('require-types-exports', rule, {
         return arg;
       }
     `,
+
+    `
+      import * as ts from 'typescript';
+
+      export function a(arg: ts.Type) {
+        return arg;
+      }
+    `,
+
+    `
+      import ts from 'typescript';
+
+      export function a(arg: ts.Type) {
+        return arg;
+      }
+    `,
   ],
 
   invalid: [

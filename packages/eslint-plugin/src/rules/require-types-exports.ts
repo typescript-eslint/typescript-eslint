@@ -199,8 +199,9 @@ export default createRule<[], MessageIds>({
     return {
       Program: collectTypeReferences,
 
-      'ImportDeclaration ImportSpecifier, ImportSpecifier':
-        collectImportedTypes,
+      'ImportDeclaration ImportSpecifier': collectImportedTypes,
+      'ImportDeclaration ImportNamespaceSpecifier': collectImportedTypes,
+      'ImportDeclaration ImportDefaultSpecifier': collectImportedTypes,
 
       'Program > ExportNamedDeclaration > TSTypeAliasDeclaration':
         collectExportedTypes,
@@ -237,8 +238,13 @@ function getTypeName(typeName: TSESTree.EntityName): string | string[] {
     case AST_NODE_TYPES.Identifier:
       return typeName.name;
 
-    case AST_NODE_TYPES.TSQualifiedName:
-      return [...(getTypeName(typeName.left) || []), typeName.right.name];
+    case AST_NODE_TYPES.TSQualifiedName: {
+      let left = getTypeName(typeName.left);
+
+      left = Array.isArray(left) ? left : [left];
+
+      return [...left, typeName.right.name];
+    }
 
     case AST_NODE_TYPES.ThisExpression:
       return 'this';
