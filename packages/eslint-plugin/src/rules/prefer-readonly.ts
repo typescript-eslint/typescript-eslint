@@ -7,7 +7,6 @@ import {
   createRule,
   getParserServices,
   nullThrows,
-  NullThrowsReasons,
   typeIsOrHasBaseType,
 } from '../util';
 import {
