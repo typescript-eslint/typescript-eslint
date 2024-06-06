@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Website
-docs/packages/type-utils/api
+docs/packages/type-utils/generated
 packages/website/.docusaurus
 packages/website/.cache-loader
 packages/website/build
