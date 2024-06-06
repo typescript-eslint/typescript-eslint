@@ -134,6 +134,7 @@ We generally start the process of supporting a new TypeScript version just after
    - Whenever a PR is merged, change the respective heading's emoji from 🏗 to ✅
 1. Create a PR with a title like `feat: update TypeScript to X.Y-rc` and the following changes:
    - In the root `package.json`, add `|| X.Y.1-rc2` to the `devDependency` on `typescript`
+   - In the parser's `getLib`, update the `switch (target)` and its preceding comment as needed (see [#6782](https://github.com/typescript-eslint/typescript-eslint/pull/6782))
    - Change the `SUPPORTED_TYPESCRIPT_VERSIONS` constant's `<` version to the next version of TypeScript
    - Change the `SUPPORTED_PRERELEASE_RANGES` constant to equal `['X.Y.1-rc']`
    - Rename and update `patches/typescript*` to the new TypeScript version

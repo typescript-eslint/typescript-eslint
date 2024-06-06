@@ -1,8 +1,8 @@
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type * as unist from 'unist';
 
-import type { VFileWithStem } from './utils';
-import { findH2Index } from './utils';
+import type { VFileWithStem } from '../utils/rules';
+import { findH2Index } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
   howToUse: number;
