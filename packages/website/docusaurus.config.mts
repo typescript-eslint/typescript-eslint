@@ -322,6 +322,15 @@ const config: Config = {
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],
     ['@docusaurus/plugin-client-redirects', redirects],
+
+    [
+      'docusaurus-plugin-typedoc',
+      {
+        entryPoints: ['../type-utils/src/index.ts'],
+        tsconfig: '../type-utils/tsconfig.json',
+        out: '../../docs/packages/type-utils/api',
+      },
+    ],
   ],
   themeConfig,
   // Misleading API name, but these are just <link> tags
