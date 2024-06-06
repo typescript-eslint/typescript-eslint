@@ -9,16 +9,9 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/promise-function-async** for documentation.
 
-Ensures that each function is only capable of:
+Ensures that functions returning promises can only return rejected promises when an error is encountered and cannot throw. This simplifies the API for callers by making it so that they only need to handle errors in a single manner.
 
-- returning a rejected promise, or
-- throwing an Error object.
-
-In contrast, non-`async`, `Promise`-returning functions are technically capable of either.
-Code that handles the results of those functions will often need to handle both cases, which can get complex.
-This rule's practice removes a requirement for creating code to handle both cases.
-
-> When functions return unions of `Promise` and non-`Promise` types implicitly, it is usually a mistake—this rule flags those cases. If it is intentional, make the return type explicitly to allow the rule to pass.
+> When functions return unions of `Promise` and non-`Promise` types implicitly, it is usually a mistake—this rule flags those cases. If it is intentional, explicitly specify the return type to allow the rule to pass.
 
 ## Examples
 
