@@ -318,11 +318,6 @@ const config: Config = {
     rules: rulesMeta,
   },
   plugins: [
-    require.resolve('./webpack.plugin'),
-    ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
-    ['@docusaurus/plugin-pwa', pluginPwaOptions],
-    ['@docusaurus/plugin-client-redirects', redirects],
-
     [
       'docusaurus-plugin-typedoc',
       {
@@ -331,6 +326,10 @@ const config: Config = {
         out: '../../docs/packages/type-utils/api',
       },
     ],
+    require.resolve('./webpack.plugin'),
+    ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
+    ['@docusaurus/plugin-pwa', pluginPwaOptions],
+    ['@docusaurus/plugin-client-redirects', redirects],
   ],
   themeConfig,
   // Misleading API name, but these are just <link> tags
