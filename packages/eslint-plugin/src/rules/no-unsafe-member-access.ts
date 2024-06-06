@@ -26,7 +26,7 @@ export default createRule({
     },
     messages: {
       unsafeMemberExpression:
-        'Unsafe member access {{property}} on an `any` value.',
+        'Unsafe member access {{property}} on an {{type}} value.',
       unsafeThisMemberExpression: [
         'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -86,12 +86,14 @@ export default createRule({
             messageId = 'unsafeThisMemberExpression';
           }
         }
+        const isErrorType = tsutils.isIntrinsicErrorType(type);
 
         context.report({
           node: node.property,
           messageId,
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
+            type: isErrorType ? '`error`' : '`any`',
           },
         });
       }
