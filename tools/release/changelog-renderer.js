@@ -1,3 +1,4 @@
+// @ts-check
 const {
   default: defaultChangelogRenderer,
 } = require('nx/release/changelog-renderer');
@@ -10,6 +11,7 @@ const changelogRenderer = async ({
   entryWhenNoChanges,
   changelogRenderOptions,
   repoSlug,
+  conventionalCommitsConfig,
 }) => {
   const defaultChangelog = await defaultChangelogRenderer({
     projectGraph,
@@ -19,6 +21,7 @@ const changelogRenderer = async ({
     entryWhenNoChanges,
     changelogRenderOptions,
     repoSlug,
+    conventionalCommitsConfig,
   });
 
   // Append our custom messaging to the generated changelog entry

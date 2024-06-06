@@ -28,7 +28,7 @@ export namespace Parser {
         /**
          * Information about the parser to uniquely identify it when serializing.
          */
-        meta?: Partial<ParserMeta>;
+        meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
         /**
          * Parses the given text into an ESTree AST
          */
@@ -38,7 +38,7 @@ export namespace Parser {
         /**
          * Information about the parser to uniquely identify it when serializing.
          */
-        meta?: Partial<ParserMeta>;
+        meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
         /**
          * Parses the given text into an AST
          */

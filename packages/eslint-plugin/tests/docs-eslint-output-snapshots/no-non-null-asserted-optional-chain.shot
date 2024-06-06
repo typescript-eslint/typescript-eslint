@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-non-null-asserted-optional-chain.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+foo?.bar!;
+~~~~~~~~~ Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.
+foo?.bar()!;
+~~~~~~~~~~~ Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.
+"
+`;
+
+exports[`Validating rule docs no-non-null-asserted-optional-chain.mdx code examples ESLint output 2`] = `
+"Correct
+
+foo?.bar;
+foo?.bar();
+"
+`;

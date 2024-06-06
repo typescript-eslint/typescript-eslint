@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs unbound-method.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+class MyClass {
+  public log(): void {
+    console.log(this);
+  }
+}
+
+const instance = new MyClass();
+
+// This logs the global scope (\`window\`/\`global\`), not the class instance
+const myLog = instance.log;
+              ~~~~~~~~~~~~ Avoid referencing unbound methods which may cause unintentional scoping of \`this\`.
+                           If your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.
+myLog();
+
+// This log might later be called with an incorrect scope
+const { log } = instance;
+        ~~~ Avoid referencing unbound methods which may cause unintentional scoping of \`this\`.
+            If your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.
+
+// arith.double may refer to \`this\` internally
+const arith = {
+  double(x: number): number {
+    return x * 2;
+  },
+};
+const { double } = arith;
+        ~~~~~~ Avoid referencing unbound methods which may cause unintentional scoping of \`this\`.
+               If your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.
+"
+`;
+
+exports[`Validating rule docs unbound-method.mdx code examples ESLint output 2`] = `
+"Correct
+
+class MyClass {
+  public logUnbound(): void {
+    console.log(this);
+  }
+
+  public logBound = () => console.log(this);
+}
+
+const instance = new MyClass();
+
+// logBound will always be bound with the correct scope
+const { logBound } = instance;
+logBound();
+
+// .bind and lambdas will also add a correct scope
+const dotBindLog = instance.logUnbound.bind(instance);
+const innerLog = () => instance.logUnbound();
+
+// arith.double explicitly declares that it does not refer to \`this\` internally
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+const { double } = arith;
+"
+`;
+
+exports[`Validating rule docs unbound-method.mdx code examples ESLint output 3`] = `
+"Options: { "ignoreStatic": true }
+
+class OtherClass {
+  static log() {
+    console.log(OtherClass);
+  }
+}
+
+// With \`ignoreStatic\`, statics are assumed to not rely on a particular scope
+const { log } = OtherClass;
+
+log();
+"
+`;

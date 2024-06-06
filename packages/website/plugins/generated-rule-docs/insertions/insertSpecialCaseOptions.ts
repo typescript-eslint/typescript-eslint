@@ -1,23 +1,24 @@
 import * as fs from 'fs';
 import type * as mdast from 'mdast';
 import * as path from 'path';
-import type * as unist from 'unist';
 
+import { eslintPluginDirectory } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { eslintPluginDirectory } from '../utils';
 
 export function insertSpecialCaseOptions(page: RuleDocsPage): void {
   if (page.file.stem !== 'ban-types') {
     return;
   }
 
-  const placeToInsert = page.children.findIndex(
-    node =>
-      node.type === 'comment' &&
-      (node as unist.Literal<string>).value.trim() === 'Inject default options',
+  const detailsElement = page.children.find(
+    (node): node is mdast.Parent =>
+      (node as mdast.Node & { name: string }).name === 'details' &&
+      (node as mdast.Parent).children.length > 0 &&
+      ((node as mdast.Parent).children[0] as { name: string }).name ===
+        'summary',
   );
 
-  if (placeToInsert === -1) {
+  if (!detailsElement) {
     throw new Error('Could not find default injection site in ban-types');
   }
 
@@ -32,7 +33,7 @@ export function insertSpecialCaseOptions(page: RuleDocsPage): void {
     throw new Error('Could not find default options for ban-types');
   }
 
-  page.spliceChildren(placeToInsert, 1, {
+  detailsElement.children.push({
     lang: 'ts',
     type: 'code',
     value: defaultOptions,

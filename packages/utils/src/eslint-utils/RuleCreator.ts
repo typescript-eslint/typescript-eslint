@@ -10,12 +10,15 @@ import { applyDefault } from './applyDefault';
 export type { RuleListener, RuleModule };
 
 // we automatically add the url
-export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
-export type NamedCreateRuleMeta<MessageIds extends string> = Omit<
-  RuleMetaData<MessageIds>,
-  'docs'
-> & {
-  docs: NamedCreateRuleMetaDocs;
+export type NamedCreateRuleMetaDocs<Options extends readonly unknown[]> = Omit<
+  RuleMetaDataDocs<Options>,
+  'url'
+>;
+export type NamedCreateRuleMeta<
+  MessageIds extends string,
+  Options extends readonly unknown[],
+> = Omit<RuleMetaData<MessageIds, Options>, 'docs'> & {
+  docs: NamedCreateRuleMetaDocs<Options>;
 };
 
 export interface RuleCreateAndOptions<
@@ -33,14 +36,14 @@ export interface RuleWithMeta<
   Options extends readonly unknown[],
   MessageIds extends string,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: RuleMetaData<MessageIds>;
+  meta: RuleMetaData<MessageIds, Options>;
 }
 
 export interface RuleWithMetaAndName<
   Options extends readonly unknown[],
   MessageIds extends string,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: NamedCreateRuleMeta<MessageIds>;
+  meta: NamedCreateRuleMeta<MessageIds, Options>;
   name: string;
 }
 

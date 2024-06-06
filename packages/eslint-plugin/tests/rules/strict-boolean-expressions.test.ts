@@ -472,6 +472,7 @@ if (y) {
         { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: noFormat`if (('' && {}) || (0 && void 0)) { }`,
+      output: null,
       errors: [
         {
           messageId: 'conditionErrorString',
@@ -520,6 +521,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "'asd' && 123 && [] && null;",
+      output: null,
       errors: [
         { messageId: 'conditionErrorString', line: 1, column: 1 },
         { messageId: 'conditionErrorNumber', line: 1, column: 10 },
@@ -529,6 +531,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "'asd' || 123 || [] || null;",
+      output: null,
       errors: [
         { messageId: 'conditionErrorString', line: 1, column: 1 },
         { messageId: 'conditionErrorNumber', line: 1, column: 10 },
@@ -538,6 +541,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "let x = (1 && 'a' && null) || 0 || '' || {};",
+      output: null,
       errors: [
         { messageId: 'conditionErrorNumber', line: 1, column: 10 },
         { messageId: 'conditionErrorString', line: 1, column: 15 },
@@ -549,6 +553,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "return (1 || 'a' || null) && 0 && '' && {};",
+      output: null,
       errors: [
         { messageId: 'conditionErrorNumber', line: 1, column: 9 },
         { messageId: 'conditionErrorString', line: 1, column: 14 },
@@ -560,6 +565,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "console.log((1 && []) || ('a' && {}));",
+      output: null,
       errors: [
         { messageId: 'conditionErrorNumber', line: 1, column: 14 },
         { messageId: 'conditionErrorObject', line: 1, column: 19 },
@@ -571,6 +577,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "if ((1 && []) || ('a' && {})) void 0;",
+      output: null,
       errors: [
         { messageId: 'conditionErrorNumber', line: 1, column: 6 },
         { messageId: 'conditionErrorObject', line: 1, column: 11 },
@@ -581,6 +588,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "let x = null || 0 || 'a' || [] ? {} : undefined;",
+      output: null,
       errors: [
         { messageId: 'conditionErrorNullish', line: 1, column: 9 },
         { messageId: 'conditionErrorNumber', line: 1, column: 17 },
@@ -591,6 +599,7 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "return !(null || 0 || 'a' || []);",
+      output: null,
       errors: [
         { messageId: 'conditionErrorNullish', line: 1, column: 10 },
         { messageId: 'conditionErrorNumber', line: 1, column: 18 },
@@ -1617,6 +1626,7 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'noStrictNullCheck',
@@ -1644,6 +1654,7 @@ if (x) {
         obj || 0
         obj && 1 || 0
       `,
+      output: null,
       errors: [
         {
           messageId: 'conditionErrorNullableObject',

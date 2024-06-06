@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
+    "projects": ["*"],
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
@@ -57,7 +58,6 @@
         "default",
         "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/yarn.lock",
         {
           "dependentTasksOutputFiles": "**/*.js",
           "transitive": false
@@ -78,7 +78,8 @@
       },
       {
         "runtime": "yarn -v"
-      }
+      },
+      "{workspaceRoot}/yarn.lock"
     ],
     "production": [
       "default",

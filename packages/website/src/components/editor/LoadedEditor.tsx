@@ -13,7 +13,11 @@ import {
 } from '../lib/jsonSchema';
 import { parseTSConfig, tryParseEslintModule } from '../lib/parseConfig';
 import type { LintCodeAction } from '../linter/utils';
-import { parseLintResults, parseMarkers } from '../linter/utils';
+import {
+  createFileName,
+  parseLintResults,
+  parseMarkers,
+} from '../linter/utils';
 import type { TabType } from '../types';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import type { CommonEditorProps } from './types';
@@ -89,7 +93,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [webLinter, sourceType]);
 
   useEffect(() => {
-    const newPath = `/input${fileType}`;
+    const newPath = createFileName(fileType);
     if (tabs.code.uri.path !== newPath) {
       const code = tabs.code.getValue();
       const newModel = monaco.editor.createModel(
@@ -135,14 +139,14 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       monaco.editor.setModelMarkers(model, 'eslint', diagnostics);
       updateMarkers();
     });
-    return () => disposable();
+    return (): void => disposable();
   }, [webLinter, monaco, codeActions, updateMarkers]);
 
   useEffect(() => {
     const disposable = webLinter.onParse((uri, model) => {
       onASTChange(model);
     });
-    return () => disposable();
+    return (): void => disposable();
   }, [webLinter, onASTChange]);
 
   useEffect(() => {
@@ -178,7 +182,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       'typescript',
       createProvideCodeActions(codeActions),
     );
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [codeActions, monaco]);
 
   useEffect(() => {
@@ -191,7 +195,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }
     });
-    return () => disposable.dispose();
+    return (): void => {
+      disposable.dispose();
+    };
   }, [editor, tabs.eslintrc]);
 
   useEffect(() => {
@@ -204,7 +210,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       }, 150),
     );
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [onSelect, editor, tabs.code]);
 
   useEffect(() => {
@@ -227,7 +233,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         }
       },
     });
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [editor, monaco, webLinter]);
 
   useEffect(() => {
@@ -238,12 +244,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       system.watchFile('/.eslintrc', filename => {
         onChange({ eslintrc: system.readFile(filename) });
       }),
-      system.watchFile('/input.*', filename => {
+      system.watchFile('/{file,react}.*', filename => {
         onChange({ code: system.readFile(filename) });
       }),
     ];
 
-    return () => {
+    return (): void => {
       closable.forEach(c => c.close());
     };
   }, [system, onChange]);
@@ -255,14 +261,14 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         system.writeFile(model.uri.path, model.getValue());
       }
     });
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [editor, system]);
 
   useEffect(() => {
     const disposable = monaco.editor.onDidChangeMarkers(() => {
       updateMarkers();
     });
-    return () => disposable.dispose();
+    return (): void => disposable.dispose();
   }, [monaco.editor, updateMarkers]);
 
   const resize = useMemo(() => {

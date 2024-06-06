@@ -10,6 +10,7 @@ import type {
   UpdateModel,
   WebLinterModule,
 } from './types';
+import { createFileName } from './utils';
 
 export function createParser(
   system: PlaygroundSystem,
@@ -43,7 +44,7 @@ export function createParser(
       text: string,
       options: ParserOptions = {},
     ): Parser.ParseResult => {
-      const filePath = options.filePath ?? '/input.ts';
+      const filePath = options.filePath ?? createFileName('.ts');
 
       // if text is empty use empty line to avoid error
       const code = text || '\n';
@@ -78,6 +79,7 @@ export function createParser(
       });
 
       const checker = program.getTypeChecker();
+      const compilerOptions = program.getCompilerOptions();
 
       onUpdate(filePath, {
         storedAST: converted.estree,
@@ -90,6 +92,9 @@ export function createParser(
         ast: converted.estree,
         services: {
           program,
+          emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
+          experimentalDecorators:
+            compilerOptions.experimentalDecorators ?? false,
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
           getSymbolAtLocation: node =>

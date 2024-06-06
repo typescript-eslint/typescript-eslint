@@ -45,7 +45,7 @@ function filterAndMapRuleConfigs({
   excludeDeprecated,
   typeChecked,
   recommendations,
-}: FilterAndMapRuleConfigsSettings = {}): [string, string][] {
+}: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
   let result = Object.entries(rules);
 
   if (excludeDeprecated) {
@@ -61,12 +61,37 @@ function filterAndMapRuleConfigs({
   }
 
   if (recommendations) {
-    result = result.filter(([, rule]) =>
-      recommendations.includes(rule.meta.docs?.recommended),
-    );
+    result = result.filter(([, rule]) => {
+      switch (typeof rule.meta.docs?.recommended) {
+        case 'undefined':
+          return false;
+        case 'object':
+          return Object.keys(rule.meta.docs.recommended).some(recommended =>
+            recommendations.includes(recommended as RuleRecommendation),
+          );
+        case 'string':
+          return recommendations.includes(rule.meta.docs.recommended);
+      }
+    });
   }
 
-  return result.map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'error']);
+  const highestRecommendation = recommendations?.filter(Boolean).at(-1);
+
+  return result.map(([name, rule]) => {
+    const customRecommendation =
+      highestRecommendation &&
+      typeof rule.meta.docs?.recommended === 'object' &&
+      rule.meta.docs.recommended[
+        highestRecommendation as 'recommended' | 'strict'
+      ];
+
+    return [
+      `${RULE_NAME_PREFIX}${name}`,
+      customRecommendation && typeof customRecommendation !== 'boolean'
+        ? ['error', customRecommendation[0]]
+        : 'error',
+    ];
+  });
 }
 
 function itHasBaseRulesOverriden(

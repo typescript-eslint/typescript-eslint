@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function head<T>(items: T[]) {
+  // items can never be nullable, so this is unnecessary
+  if (items) {
+      ~~~~~ Unnecessary conditional, value is always truthy.
+    return items[0].toUpperCase();
+  }
+}
+
+function foo(arg: 'bar' | 'baz') {
+  // arg is never nullable or empty string, so this is unnecessary
+  if (arg) {
+      ~~~ Unnecessary conditional, value is always truthy.
+  }
+}
+
+function bar<T>(arg: string) {
+  // arg can never be nullish, so ?. is unnecessary
+  return arg?.length;
+            ~~ Unnecessary optional chain on a non-nullish value.
+}
+
+// Checks array predicate return types, where possible
+[
+  [1, 2],
+  [3, 4],
+].filter(t => t); // number[] is always truthy
+              ~ Unnecessary conditional, value is always truthy.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 2`] = `
+"Correct
+
+function head<T>(items: T[]) {
+  // Necessary, since items.length might be 0
+  if (items.length) {
+    return items[0].toUpperCase();
+  }
+}
+
+function foo(arg: string) {
+  // Necessary, since foo might be ''.
+  if (arg) {
+  }
+}
+
+function bar(arg?: string | null) {
+  // Necessary, since arg might be nullish
+  return arg?.length;
+}
+
+[0, 1, 2, 3].filter(t => t); // number can be truthy or falsy
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 3`] = `
+"Options: { "allowConstantLoopConditions": true }
+
+while (true) {}
+for (; true; ) {}
+do {} while (true);
+"
+`;

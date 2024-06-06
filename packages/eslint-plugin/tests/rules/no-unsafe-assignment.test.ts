@@ -130,6 +130,7 @@ declare function Foo(props: Props): never;
         },
       },
     },
+
     {
       code: `
 declare function Foo(props: { a: string }): never;
@@ -157,6 +158,11 @@ declare function Foo(props: { a: string }): never;
     'const x: Set<unknown> = y as Set<any>;',
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     'const x: Map<string, string> = new Map();',
+    `
+type Foo = { bar: unknown };
+const bar: any = 1;
+const foo: Foo = { bar };
+    `,
   ],
   invalid: [
     {
@@ -190,7 +196,60 @@ class Foo {
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
+    {
+      code: `
+const [x] = spooky;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
+    },
+    {
+      code: `
+const [[[x]]] = [spooky];
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
+    },
+    {
+      code: `
+const {
+  x: { y: z },
+} = { x: spooky };
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+        {
+          messageId: 'anyAssignment',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
+    },
+    {
+      code: `
+let value: number;
 
+value = spooky;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          data: {
+            sender: 'error typed',
+          },
+        },
+      ],
+    },
     {
       code: `
 const [x] = 1 as any;
@@ -210,8 +269,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<any>',
-            receiver: 'Set<string>',
+            sender: '`Set<any>`',
+            receiver: '`Set<string>`',
           },
         },
       ],
@@ -222,8 +281,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Map<string, any>',
-            receiver: 'Map<string, string>',
+            sender: '`Map<string, any>`',
+            receiver: '`Map<string, string>`',
           },
         },
       ],
@@ -234,8 +293,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<any[]>',
-            receiver: 'Set<string[]>',
+            sender: '`Set<any[]>`',
+            receiver: '`Set<string[]>`',
           },
         },
       ],
@@ -246,8 +305,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<Set<Set<any>>>',
-            receiver: 'Set<Set<Set<string>>>',
+            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`Set<Set<Set<string>>>`',
           },
         },
       ],
@@ -322,8 +381,8 @@ const x = [...([] as any[])];
           column: 43,
           endColumn: 70,
           data: {
-            sender: 'Set<Set<Set<any>>>',
-            receiver: 'Set<Set<Set<string>>>',
+            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`Set<Set<Set<string>>>`',
           },
         },
       ],
@@ -386,6 +445,21 @@ const test: T = ['string', []] as any;
           line: 3,
           column: 7,
           endColumn: 38,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { bar: number };
+const bar: any = 1;
+const foo: Foo = { bar };
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 4,
+          column: 20,
+          endColumn: 23,
         },
       ],
     },

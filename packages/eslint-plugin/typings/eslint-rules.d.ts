@@ -448,7 +448,7 @@ declare module 'eslint/lib/rules/no-magic-numbers' {
     'noMagic',
     [
       {
-        ignore?: string[];
+        ignore?: (number | string)[];
         ignoreArrayIndexes?: boolean;
         enforceConst?: boolean;
         detectObjects?: boolean;

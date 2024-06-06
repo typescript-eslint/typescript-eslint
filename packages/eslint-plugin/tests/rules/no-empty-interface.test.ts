@@ -51,6 +51,7 @@ class Bar {}
   invalid: [
     {
       code: 'interface Foo {}',
+      output: null,
       errors: [
         {
           messageId: 'noEmpty',
@@ -61,6 +62,7 @@ class Bar {}
     },
     {
       code: noFormat`interface Foo extends {}`,
+      output: null,
       errors: [
         {
           messageId: 'noEmpty',

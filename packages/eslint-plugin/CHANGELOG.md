@@ -1,3 +1,309 @@
+## 7.12.0 (2024-06-03)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-useless-template-literals] rename to `no-useless-template-expression` (deprecate `no-useless-template-literals`)
+
+- **rule-tester:** check for parsing errors in suggestion fixes
+
+- **rule-tester:** port `checkDuplicateTestCases` from ESLint
+
+- **eslint-plugin:** [no-floating-promises] add option 'allowForKnownSafePromises'
+
+
+### 🩹 Fixes
+
+- no-useless-template-expression -> no-unnecessary-template-expression
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] combine template literal check with `const` variable check
+
+- **eslint-plugin:** [dot-notation] fix false positive when accessing private/protected property with optional chaining
+
+- **eslint-plugin:** [explicit-member-accessibility] refine report locations
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] declares are always defined, so always check `declare`s
+
+- **eslint-plugin:** [prefer-literal-enum-member] allow using member it self on allowBitwiseExpressions
+
+- **eslint-plugin:** [return-await] clean up in-try-catch detection and make autofixes safe
+
+- **eslint-plugin:** [member-ordering] also TSMethodSignature can be get/set
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Han Yeong-woo
+- Joshua Chen
+- Kim Sang Du
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.11.0 (2024-05-27)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** deprecate prefer-ts-expect-error in favor of ban-ts-comment
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [consistent-type-assertions] prevent syntax errors on arrow functions
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Dom Armstrong
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.10.0 (2024-05-20)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [sort-type-constituents] support case sensitive sorting
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-regexp-exec] fix heuristic to check whether regex may contain global flag
+
+
+### ❤️  Thank You
+
+- auvred
+- Emanuel Hoogeveen
+- jsfm01
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.9.0 (2024-05-13)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [explicit-function-return-types] fix false positive on default parameters
+
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Sheetal Nandi
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.8.0 (2024-04-29)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-argument] handle  tagged templates
+
+- **eslint-plugin:** [prefer-optional-chain] suggests optional chaining during strict null equality check
+
+- **eslint-plugin:** [consistent-type-assertions] handle tagged templates
+
+- **eslint-plugin:** [no-unsafe-return] handle union types
+
+- **eslint-plugin:** [no-unused-vars] clear error report range
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- jsfm01
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.1 (2024-04-22)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-assignment] handle shorthand property assignment
+
+- **eslint-plugin:** [explicit-function-return-type] fix checking wrong ancestor's return type
+
+- **eslint-plugin:** [prefer-optional-chain] only look at left operand for `requireNullish`
+
+- **eslint-plugin:** [no-for-in-array] refine report location
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] allow non-null assertion for void type
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.7.0 (2024-04-15)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** replace `no-new-symbol` with `no-new-native-nonconstructor`
+
+
+### ❤️  Thank You
+
+- Dave
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.6.0 (2024-04-08)
+
+
+### 🚀 Features
+
+- bump npm dependency ranges
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brad Zacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.5.0 (2024-04-01)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] handle TaggedTemplateExpression
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle exactOptionalPropertyTypes compiler option
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Kim Sang Du
+- Mark de Dios
+- Naru
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.4.0 (2024-03-25)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [consistent-type-imports] ignore files with decorators, experimentalDecorators, and emitDecoratorMetadata
+
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle tagged templates
+
+- **eslint-plugin:** deprecate no-throw-literal and add a renamed only-throw-error
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-optional-chain] address multipart nullish checks false positive
+
+- **eslint-plugin:** [prefer-optional-chain] properly disambiguate between `boolean` and `false`
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] avoid remove const casting on template literals with expressions inside
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Brad Zacher
+- Josh Goldberg ✨
+- Kim Sang Du
+- Kirk Waiblinger
+- Marco Pasqualetti
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.1 (2024-03-18)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] revert disable of ignoreVoid in strict config
+
+
+### ❤️  Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.3.0 (2024-03-18)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [restrict-template-expressions] add `allowArray` option
+
+- **eslint-plugin:** add meta.docs.recommended setting for strict config options
+
+- **eslint-plugin:** add rule `use-unknown-in-catch-callback-variables`
+
+- **eslint-plugin:** [prefer-reduce-type-parameter] supports tuple, union, intersection
+
+
+### 🩹 Fixes
+
+- correct `engines.node` constraints in `package.json`
+
+- **eslint-plugin:** [unbound-method] check method definition in object literal using longhand form
+
+- **eslint-plugin:** [consistent-type-imports] handle imports without specifiers
+
+- **eslint-plugin:** [no-redundant-type-constituents] incorrectly marks & string as redundant
+
+- **eslint-plugin:** [no-unnecessary-qualifier] handle merge namespace with enum
+
+- **eslint-plugin:** [no-unused-expressions] false negatives when using assertions
+
+- **eslint-plugin:** [ban-ts-comment] more accurate handling of multiline comments
+
+- **eslint-plugin:** [explicit-function-return-type, explicit-module-boundary-types] improved checking for allowHigherOrderFunctions option
+
+- **eslint-plugin:** [class-literal-property-style] ignore property assigned in constructor
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix false negative for const variable declarations
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alexu
+- Arka Pratim Chaudhuri
+- auvred
+- Derrick Isaacson
+- fnx
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Marta Cardoso
+- Michaël De Boey
+- Tristan Rasmussen
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.2.0 (2024-03-11)
 
 

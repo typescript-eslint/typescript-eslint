@@ -132,10 +132,6 @@ x === null ? x : y;
 declare const x: string | null | unknown;
 x === null ? x : y;
       `,
-      `
-declare const x: string | undefined;
-x === null ? x : y;
-      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -371,7 +367,7 @@ undefined !== x ? x : y;
       `,
       `
 declare const x: string | undefined;
-undefined === x ? y : x;
+x === undefined ? y : x;
       `,
       `
 declare const x: string | undefined;
@@ -387,7 +383,7 @@ null !== x ? x : y;
       `,
       `
 declare const x: string | null;
-null === x ? y : x;
+x === null ? y : x;
       `,
       `
 declare const x: string | null;
@@ -424,6 +420,7 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'noStrictNullCheck',
@@ -788,6 +785,7 @@ declare const c: ${type};
 declare const x: string | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { number: true, boolean: true, bigint: true },
@@ -800,6 +798,7 @@ x || y;
 declare const x: number | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { string: true, boolean: true, bigint: true },
@@ -812,6 +811,7 @@ x || y;
 declare const x: boolean | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { string: true, number: true, bigint: true },
@@ -824,6 +824,7 @@ x || y;
 declare const x: bigint | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: { string: true, number: true, boolean: true },
@@ -837,6 +838,7 @@ x || y;
 declare const x: '' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -854,6 +856,7 @@ x || y;
 declare const x: \`\` | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -871,6 +874,7 @@ x || y;
 declare const x: 0 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -888,6 +892,7 @@ x || y;
 declare const x: 0n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -905,6 +910,7 @@ x || y;
 declare const x: false | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -923,6 +929,7 @@ x || y;
 declare const x: 'a' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -940,6 +947,7 @@ x || y;
 declare const x: \`hello\${'string'}\` | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -957,6 +965,7 @@ x || y;
 declare const x: 1 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -974,6 +983,7 @@ x || y;
 declare const x: 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -991,6 +1001,7 @@ x || y;
 declare const x: true | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1009,6 +1020,7 @@ x || y;
 declare const x: 'a' | 'b' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1026,6 +1038,7 @@ x || y;
 declare const x: 'a' | \`b\` | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1043,6 +1056,7 @@ x || y;
 declare const x: 0 | 1 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1060,6 +1074,7 @@ x || y;
 declare const x: 1 | 2 | 3 | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1077,6 +1092,7 @@ x || y;
 declare const x: 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1094,6 +1110,7 @@ x || y;
 declare const x: 1n | 2n | 3n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1111,6 +1128,7 @@ x || y;
 declare const x: true | false | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1129,6 +1147,7 @@ x || y;
 declare const x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1146,6 +1165,7 @@ x || y;
 declare const x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1163,6 +1183,7 @@ x || y;
 declare const x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1180,6 +1201,7 @@ x || y;
 declare const x: true | false | null | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1197,6 +1219,7 @@ x || y;
 declare const x: 0 | 'foo' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1216,6 +1239,7 @@ x || y;
 declare const x: 0 | 'foo' | undefined;
 x || y;
       `,
+      output: null,
       options: [
         {
           ignorePrimitives: {
@@ -1235,6 +1259,7 @@ x || y;
 declare const x: null;
 x || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -1246,6 +1271,7 @@ x || y;
 const x = undefined;
 x || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -1256,6 +1282,7 @@ x || y;
       code: `
 null || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -1266,6 +1293,7 @@ null || y;
       code: `
 undefined || y;
       `,
+      output: null,
       errors: [
         {
           messageId: 'preferNullishOverOr',

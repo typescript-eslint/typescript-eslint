@@ -17,6 +17,7 @@ export default (
   baseConfig(plugin, parser),
   eslintRecommendedConfig(plugin, parser),
   {
+    name: 'typescript-eslint/recommended',
     rules: {
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/ban-types': 'error',
