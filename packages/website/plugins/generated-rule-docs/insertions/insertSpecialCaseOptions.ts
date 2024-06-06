@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import type * as mdast from 'mdast';
 import * as path from 'path';
 
+import { eslintPluginDirectory } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { eslintPluginDirectory } from '../utils';
 
 export function insertSpecialCaseOptions(page: RuleDocsPage): void {
   if (page.file.stem !== 'ban-types') {

@@ -2,10 +2,10 @@ import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/us
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
+import type { VFileWithStem } from '../utils/rules';
+import { findH2Index } from '../utils/rules';
 import type { HeadingName } from './RuleDocsPage';
 import { requiredHeadingNames, RuleDocsPage } from './RuleDocsPage';
-import type { VFileWithStem } from './utils';
-import { findH2Index } from './utils';
 
 export function createRuleDocsPage(
   children: unist.Node[],

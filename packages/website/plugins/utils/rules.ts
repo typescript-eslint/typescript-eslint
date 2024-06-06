@@ -4,10 +4,11 @@ import type {
 } from '@typescript-eslint/utils/ts-eslint';
 import * as fs from 'fs';
 import * as lz from 'lz-string';
-import type * as mdast from 'mdast';
 import * as path from 'path';
 import type * as unist from 'unist';
 import type { VFile } from 'vfile';
+
+import { nodeIsHeading } from './nodes';
 
 export const eslintPluginDirectory = path.resolve(
   path.join(__dirname, '../../../eslint-plugin'),
@@ -66,18 +67,6 @@ export type VFileWithStem = VFile & {
 
 export function isVFileWithStem(file: VFile): file is VFileWithStem {
   return !!file.stem;
-}
-
-export function nodeIsCode(node: unist.Node): node is mdast.Code {
-  return node.type === 'code';
-}
-
-export function nodeIsHeading(node: unist.Node): node is mdast.Heading {
-  return node.type === 'heading';
-}
-
-export function nodeIsParent(node: unist.Node): node is unist.Parent {
-  return 'children' in node;
 }
 
 export function findH2Index(

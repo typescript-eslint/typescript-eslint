@@ -37,17 +37,18 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      anyAssignment: 'Unsafe assignment of an `any` value.',
+      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
       anyAssignmentThis: [
-        'Unsafe assignment of an `any` value. `this` is typed as `any`.',
+        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeArrayPattern: 'Unsafe array destructuring of an `any` array value.',
+      unsafeArrayPattern:
+        'Unsafe array destructuring of an {{sender}} array value.',
       unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an `any` value.',
+        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an `any` value in an array.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
     },
     schema: [],
   },
@@ -88,6 +89,7 @@ export default createRule({
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
+          data: createData(senderType),
         });
         return false;
       }
@@ -126,6 +128,7 @@ export default createRule({
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: createData(senderType),
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -212,6 +215,7 @@ export default createRule({
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
+            data: createData(senderType),
           });
           didReport = true;
         } else if (
@@ -275,7 +279,9 @@ export default createRule({
         context.report({
           node: reportingNode,
           messageId,
+          data: createData(senderType),
         });
+
         return true;
       }
 
@@ -297,10 +303,7 @@ export default createRule({
       context.report({
         node: reportingNode,
         messageId: 'unsafeAssignment',
-        data: {
-          sender: checker.typeToString(sender),
-          receiver: checker.typeToString(receiver),
-        },
+        data: createData(sender, receiver),
       });
       return true;
     }
@@ -313,6 +316,23 @@ export default createRule({
           ComparisonType.Basic
         : // no type annotation means the variable's type will just be inferred, thus equal
           ComparisonType.None;
+    }
+
+    function createData(
+      senderType: ts.Type,
+      receiverType?: ts.Type,
+    ): Readonly<Record<string, unknown>> | undefined {
+      if (receiverType) {
+        return {
+          sender: '`' + checker.typeToString(senderType) + '`',
+          receiver: '`' + checker.typeToString(receiverType) + '`',
+        };
+      }
+      return {
+        sender: tsutils.isIntrinsicErrorType(senderType)
+          ? 'error typed'
+          : '`any`',
+      };
     }
 
     return {
@@ -383,6 +403,7 @@ export default createRule({
           context.report({
             node: node,
             messageId: 'unsafeArraySpread',
+            data: createData(restType),
           });
         }
       },
