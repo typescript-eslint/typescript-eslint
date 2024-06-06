@@ -142,8 +142,6 @@ export function eslintIntegrationTest(
           'json',
           '--output-file',
           outFile,
-          '--config',
-          './eslint.config.js',
           '--fix-dry-run',
           filesGlob,
         ],
