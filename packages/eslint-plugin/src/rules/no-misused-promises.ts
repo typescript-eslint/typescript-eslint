@@ -763,8 +763,7 @@ function getHeritageTypes(
   tsNode: ts.ClassDeclaration | ts.ClassExpression | ts.InterfaceDeclaration,
 ): ts.Type[] | undefined {
   return tsNode.heritageClauses
-    ?.map(clause => clause.types)
-    .flat()
+    ?.flatMap(clause => clause.types)
     .map(typeExpression => checker.getTypeAtLocation(typeExpression));
 }
 
