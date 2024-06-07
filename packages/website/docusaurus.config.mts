@@ -332,6 +332,7 @@ const config: Config = {
         out: `../../docs/packages/${packageName}/generated`,
         outputFileStrategy: 'modules',
         parametersFormat: 'table',
+        plugin: [require.resolve('./tools/typedoc-plugin-no-inherit-fork.mjs')],
         propertiesFormat: 'table',
         readme: 'none',
         tsconfig: `../${packageName}/tsconfig.json`,
