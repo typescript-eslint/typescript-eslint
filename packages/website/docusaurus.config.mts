@@ -324,6 +324,7 @@ const config: Config = {
         entryPoints: [`../${packageName}/src/index.ts`],
         enumMembersFormat: 'table',
         exclude: '**/*.d.ts',
+        excludeExternals: true,
         groupOrder: ['Functions', 'Variables', '*'],
         hidePageTitle: true,
         id: `typedoc-generated-${packageName}`,
