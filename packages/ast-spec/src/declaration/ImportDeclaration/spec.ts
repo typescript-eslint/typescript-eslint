@@ -19,7 +19,7 @@ export interface ImportDeclaration extends BaseNode {
   /**
    * The attributes declared for the export.
    * @example
-   * ```
+   * ```ts
    * import * from 'mod' with \{ type: 'json' \};
    * ```
    */

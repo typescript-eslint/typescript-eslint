@@ -11,7 +11,7 @@ export interface ClassBase extends BaseNode {
   /**
    * Whether the class is an abstract class.
    * @example
-   * ```
+   * ```ts
    * abstract class Foo {}
    * ```
    */
@@ -22,7 +22,8 @@ export interface ClassBase extends BaseNode {
   body: ClassBody;
   /**
    * Whether the class has been `declare`d:
-   * ```
+   * @example
+   * ```ts
    * declare class Foo {}
    * ```
    */
@@ -30,7 +31,7 @@ export interface ClassBase extends BaseNode {
   /**
    * The decorators declared for the class.
    * @example
-   * ```
+   * ```ts
    * @deco
    * class Foo {}
    * ```

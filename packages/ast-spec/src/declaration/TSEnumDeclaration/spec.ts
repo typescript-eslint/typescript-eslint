@@ -7,14 +7,16 @@ export interface TSEnumDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSEnumDeclaration;
   /**
    * Whether this is a `const` enum.
-   * ```
+   * @example
+   * ```ts
    * const enum Foo {}
    * ```
    */
   const: boolean;
   /**
    * Whether this is a `declare`d enum.
-   * ```
+   * @example
+   * ```ts
    * declare enum Foo {}
    * ```
    */

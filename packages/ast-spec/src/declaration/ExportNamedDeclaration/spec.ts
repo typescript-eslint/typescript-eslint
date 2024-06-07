@@ -29,7 +29,8 @@ interface ExportNamedDeclarationBase extends BaseNode {
   attributes: ImportAttribute[];
   /**
    * The exported declaration.
-   * ```
+   * @example
+   * ```ts
    * export const x = 1;
    * ```
    * This will be `null` if `source` is not `null`, or if there are `specifiers`
@@ -45,7 +46,8 @@ interface ExportNamedDeclarationBase extends BaseNode {
   source: StringLiteral | null;
   /**
    * The specifiers being exported.
-   * ```
+   * @example
+   * ```ts
    * export { a, b };
    * ```
    * This will be an empty array if `declaration` is not `null`

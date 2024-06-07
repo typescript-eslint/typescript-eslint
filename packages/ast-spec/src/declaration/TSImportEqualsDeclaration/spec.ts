@@ -13,7 +13,8 @@ export interface TSImportEqualsDeclaration extends BaseNode {
   id: Identifier;
   /**
    * The value being aliased.
-   * ```
+   * @example
+   * ```ts
    * import F1 = A;
    * import F2 = A.B.C;
    * import F3 = require('mod');
