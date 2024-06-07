@@ -501,7 +501,6 @@ foo(bar);
       options: [{ checksVoidReturn: { attributes: true } }],
     },
     {
-      // Valid void-returning class
       code: `
 class MyClass {
   setThing(): void {
@@ -518,7 +517,6 @@ class MySubclassExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid promise-returning class
       code: `
 class MyClass {
   async setThing(): Promise<void> {
@@ -535,7 +533,6 @@ class MySubclassExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid class with rule off
       code: `
 class MyClass {
   setThing(): void {
@@ -552,7 +549,6 @@ class MySubclassExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid abstract class
       code: `
 class MyClass {
   setThing(): void {
@@ -567,7 +563,6 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid abstract class with rule off
       code: `
 class MyClass {
   setThing(): void {
@@ -582,7 +577,6 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid interface
       code: `
 class MyClass {
   setThing(): void {
@@ -597,7 +591,6 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid interface with rule off
       code: `
 class MyClass {
   setThing(): void {
@@ -612,7 +605,6 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid class
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -627,7 +619,6 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid class with rule off
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -642,7 +633,6 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid abstract class
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -655,7 +645,6 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid abstract class with rule off
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -668,7 +657,6 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid interface extending abstract class
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -681,7 +669,6 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid interface with rule off
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
@@ -694,7 +681,6 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid interface
       code: `
 interface MyInterface {
   setThing(): void;
@@ -707,7 +693,6 @@ interface MySubInterfaceExtendsMyInterface extends MyInterface {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid interface with rule off
       code: `
 interface MyInterface {
   setThing(): void;
@@ -720,7 +705,6 @@ interface MySubInterfaceExtendsMyInterface extends MyInterface {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid class
       code: `
 interface MyInterface {
   setThing(): void;
@@ -735,7 +719,6 @@ class MyClassImplementsMyInterface implements MyInterface {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid class with rule off
       code: `
 interface MyInterface {
   setThing(): void;
@@ -750,7 +733,6 @@ class MyClassImplementsMyInterface implements MyInterface {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid abstract class
       code: `
 interface MyInterface {
   setThing(): void;
@@ -763,7 +745,6 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid abstract class with rule off
       code: `
 interface MyInterface {
   setThing(): void;
@@ -776,7 +757,6 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid class extending type literals intersection
       code: `
 type MyTypeLiteralsIntersection = { setThing(): void } & { thing: number };
 
@@ -790,7 +770,6 @@ class MyClass implements MyTypeLiteralsIntersection {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid class with rule off
       code: `
 type MyTypeLiteralsIntersection = { setThing(): void } & { thing: number };
 
@@ -804,7 +783,6 @@ class MyClass implements MyTypeLiteralsIntersection {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid interface extending generic type
       code: `
 type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
   ? { setThing(): Promise<void> }
@@ -817,7 +795,6 @@ interface MyAsyncInterface extends MyGenericType {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Invalid interface with rule off
       code: `
 type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
   ? { setThing(): Promise<void> }
@@ -830,7 +807,6 @@ interface MyAsyncInterface extends MyGenericType<false> {
       options: [{ checksVoidReturn: { heritageTypes: false } }],
     },
     {
-      // Valid interface extending two interfaces
       code: `
 interface MyInterface {
   setThing(): void;
@@ -847,7 +823,6 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid interface extending two classes
       code: `
 class MyClass {
   setThing(): void {
@@ -868,7 +843,6 @@ interface MyInterface extends MyClass, MyOtherClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid class extending a class and implementing two interfaces
       code: `
 interface MyInterface {
   setThing(): void;
@@ -893,7 +867,6 @@ class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid class expression extending a class
       code: `
 class MyClass {
   setThing(): void {
@@ -910,7 +883,6 @@ const MyClassExpressionExtendsMyClass = class extends MyClass {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid class extending a class expression
       code: `
 const MyClassExpression = class {
   setThing(): void {
@@ -927,7 +899,6 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid interface implementing a class expression
       code: `
 const MyClassExpression = class {
   setThing(): void {
@@ -943,7 +914,6 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Call signatures: TS allows overloads with different return types, so we ignore these
       code: `
 interface MySyncCallSignatures {
   (): void;
@@ -957,7 +927,6 @@ interface MyAsyncInterface extends MySyncCallSignatures {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Construct signatures: These can't be async in the first place
       code: `
 interface MySyncConstructSignatures {
   new (): void;
@@ -971,9 +940,6 @@ interface ThisIsADifferentIssue extends MySyncConstructSignatures {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Index signatures: For now not handling until we can use checker.isTypeAssignableTo (v8)
-      // https://github.com/typescript-eslint/typescript-eslint/pull/8765
-      // https://github.com/typescript-eslint/typescript-eslint/discussions/7936
       code: `
 interface MySyncIndexSignatures {
   [key: string]: void;
@@ -987,7 +953,6 @@ interface ThisIsADifferentIssue extends MySyncIndexSignatures {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Mixed signatures: ignoring call/construct, not handling index (yet)
       code: `
 interface MySyncInterfaceSignatures {
   (): void;
@@ -1007,7 +972,6 @@ interface MyAsyncInterface extends MySyncInterfaceSignatures {
       options: [{ checksVoidReturn: { heritageTypes: true } }],
     },
     {
-      // Valid combination
       code: `
 interface MyCall {
   (): void;
@@ -2123,7 +2087,6 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       ],
     },
     {
-      // Invalid class expression implementing an interface
       code: `
 interface MyInterface {
   setThing(): void;
@@ -2144,7 +2107,6 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
       ],
     },
     {
-      // Invalid class extending a class expression
       code: `
 const MyClassExpression = class {
   setThing(): void {
@@ -2167,7 +2129,6 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
       ],
     },
     {
-      // Invalid interface implementing a class expression
       code: `
 const MyClassExpression = class {
   setThing(): void {
@@ -2189,7 +2150,6 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       ],
     },
     {
-      // Mixed signatures: not handling index signatures (yet); only the named method should error
       code: `
 interface MySyncInterface {
   (): void;
