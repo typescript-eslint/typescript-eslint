@@ -10,8 +10,9 @@ interface ExportNamedDeclarationBase extends BaseNode {
   type: AST_NODE_TYPES.ExportNamedDeclaration;
   /**
    * The assertions declared for the export.
-   * ```
-   * export { foo } from 'mod' assert { type: 'json' };
+   * @example
+   * ```ts
+   * export { foo } from 'mod' assert \{ type: 'json' \};
    * ```
    * This will be an empty array if `source` is `null`
    * @deprecated Replaced with {@link `attributes`}.
@@ -19,8 +20,9 @@ interface ExportNamedDeclarationBase extends BaseNode {
   assertions: ImportAttribute[];
   /**
    * The attributes declared for the export.
-   * ```
-   * export { foo } from 'mod' assert { type: 'json' };
+   * @example
+   * ```ts
+   * export { foo } from 'mod' assert \{ type: 'json' \};
    * ```
    * This will be an empty array if `source` is `null`
    */

@@ -10,8 +10,9 @@ import type { BaseNode } from './BaseNode';
 export interface ClassBase extends BaseNode {
   /**
    * Whether the class is an abstract class.
+   * @example
    * ```
-   * abstract class Foo {...}
+   * abstract class Foo {}
    * ```
    */
   abstract: boolean;
@@ -22,15 +23,16 @@ export interface ClassBase extends BaseNode {
   /**
    * Whether the class has been `declare`d:
    * ```
-   * declare class Foo {...}
+   * declare class Foo {}
    * ```
    */
   declare: boolean;
   /**
    * The decorators declared for the class.
+   * @example
    * ```
    * @deco
-   * class Foo {...}
+   * class Foo {}
    * ```
    */
   decorators: Decorator[];

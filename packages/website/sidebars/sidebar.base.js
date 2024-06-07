@@ -85,7 +85,16 @@ module.exports = {
         'packages/rule-tester',
         'packages/scope-manager',
         'packages/type-utils',
-        'packages/typescript-estree',
+        {
+          collapsible: false,
+          items: ['packages/typescript-estree/ast-spec'],
+          label: 'typescript-estree',
+          link: {
+            id: 'packages/typescript-estree',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         'packages/typescript-eslint',
         'packages/utils',
       ],

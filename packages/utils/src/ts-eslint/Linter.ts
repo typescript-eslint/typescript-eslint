@@ -73,7 +73,7 @@ declare class LinterBase {
    * @param textOrSourceCode The text to parse or a SourceCode object.
    * @param config An ESLintConfig instance to configure everything.
    * @param filenameOrOptions The optional filename of the file being checked.
-   *        If this is not set, the filename will default to '<input>' in the rule context.
+   *        If this is not set, the filename will default to (input) in the rule context.
    *        If this is an object, then it has "filename", "allowInlineConfig", and some properties.
    * @returns The results as an array of messages or an empty array if no messages.
    */

@@ -8,14 +8,14 @@ export interface TSEnumDeclaration extends BaseNode {
   /**
    * Whether this is a `const` enum.
    * ```
-   * const enum Foo {...}
+   * const enum Foo {}
    * ```
    */
   const: boolean;
   /**
    * Whether this is a `declare`d enum.
    * ```
-   * declare enum Foo {...}
+   * declare enum Foo {}
    * ```
    */
   declare: boolean;
