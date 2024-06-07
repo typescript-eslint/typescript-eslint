@@ -163,5 +163,12 @@ const methods = {
         },
       ],
     },
+    {
+      code: `
+let value: NotKnown;
+value();
+      `,
+      errors: [{ messageId: 'unsafeCall' }],
+    },
   ],
 });

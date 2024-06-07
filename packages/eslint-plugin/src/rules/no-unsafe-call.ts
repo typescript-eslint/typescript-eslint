@@ -20,7 +20,7 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow calling a value with type `any`',
+      description: 'Disallow calling a value with type {{type}}',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
@@ -64,9 +64,15 @@ export default createRule<[], MessageIds>({
             messageId = 'unsafeCallThis';
           }
         }
+
+        const isErrorType = tsutils.isIntrinsicErrorType(type);
+
         context.report({
           node: reportingNode,
           messageId: messageId,
+          data: {
+            type: isErrorType ? '`error`' : '`any`',
+          },
         });
       }
     }
