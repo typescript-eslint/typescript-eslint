@@ -5709,6 +5709,7 @@ __metadata:
     espree: ^10.0.1
     esprima: ^4.0.1
     json-stable-stringify-without-jsonify: ^1.0.1
+    lodash: ^4.6.2
     lodash.merge: 4.6.2
     mocha: ^10.4.0
     semver: ^7.6.0
@@ -13811,7 +13812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:~4.17.15":
+"lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.6.2, lodash@npm:~4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7

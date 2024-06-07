@@ -52,6 +52,7 @@
     "@typescript-eslint/utils": "7.12.0",
     "ajv": "^6.12.6",
     "json-stable-stringify-without-jsonify": "^1.0.1",
+    "lodash": "^4.6.2",
     "lodash.merge": "4.6.2",
     "semver": "^7.6.0"
   },
