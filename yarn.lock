@@ -5328,11 +5328,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^20.0.0":
-  version: 20.13.0
-  resolution: "@types/node@npm:20.13.0"
+  version: 20.14.2
+  resolution: "@types/node@npm:20.14.2"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 8e061ecd6649bb587b047cee765f530ec43930f30cd47558d9630f5a802d61cf951e9205c610864cfbd58f70478612123e8cb46d58eb4855c695fb8fcaff5b7c
+  checksum: 265362479b8f3b50fcd1e3f9e9af6121feb01a478dff0335ae67cccc3babfe45d0f12209d3d350595eebd7e67471762697b877c380513f8e5d27a238fa50c805
   languageName: node
   linkType: hard
 
@@ -5871,7 +5871,7 @@ __metadata:
     ncp: ^2.0.0
     netlify: ^13.1.14
     nx: 18.3.5
-    prettier: 3.2.5
+    prettier: 3.3.0
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
     tmp: ^0.2.1
@@ -13516,8 +13516,8 @@ __metadata:
   linkType: hard
 
 "knip@npm:^5.9.4":
-  version: 5.17.3
-  resolution: "knip@npm:5.17.3"
+  version: 5.17.4
+  resolution: "knip@npm:5.17.4"
   dependencies:
     "@ericcornelissen/bash-parser": 0.5.2
     "@nodelib/fs.walk": 2.0.0
@@ -13543,7 +13543,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: 3608a8dd61aa98e684a41acc1d7740e8ea9383f78ca5dab77fe8b20a7b004bb31d42f282cf38c00241cc615765dc61a01ad1a71f2510a027c970805e8683e8c3
+  checksum: aa50bd275b0088e4ec891a9800ab839c96f0eb92df990dafab498c35caf5f81a16e73e9de04d3bb2e4ca2c4e0823bda294a308c16101c9b8a6dbe9007946e1c0
   languageName: node
   linkType: hard
 
@@ -16852,12 +16852,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.2.5, prettier@npm:^3.2.5":
-  version: 3.2.5
-  resolution: "prettier@npm:3.2.5"
+"prettier@npm:3.3.0, prettier@npm:^3.2.5":
+  version: 3.3.0
+  resolution: "prettier@npm:3.3.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 2ee4e1417572372afb7a13bb446b34f20f1bf1747db77cf6ccaf57a9be005f2f15c40f903d41a6b79eec3f57fff14d32a20fb6dee1f126da48908926fe43c311
+  checksum: 0d3a7fca9cab29828e189fefc10e8f6025d1208c84cd1e94def8a8f8a04eea341aa21d0af8c01253527632f8225b0b8482a62b64cafa26e9988cd6f9ff16a38b
   languageName: node
   linkType: hard
 
@@ -19550,8 +19550,8 @@ __metadata:
   linkType: hard
 
 "tsx@npm:^4.7.2":
-  version: 4.11.0
-  resolution: "tsx@npm:4.11.0"
+  version: 4.11.2
+  resolution: "tsx@npm:4.11.2"
   dependencies:
     esbuild: ~0.20.2
     fsevents: ~2.3.3
@@ -19561,7 +19561,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 677b415cec06f1b0da67877ecf8ac6260cb97a0779f0f4492ad49b750f019bb184016b8502e6c83e50dc2a673106b7d0bb109d799328826c145a0e336d67da2d
+  checksum: 06ea76fff1163df83f0bfac3e2bf55ea6c74b9f4bd4c88a94f9fbedb7afcacf2c331379804f43b6fd6a6fe4e7cd3cd9758ddc9408ad79b6f57cfa3b331e63164
   languageName: node
   linkType: hard
 

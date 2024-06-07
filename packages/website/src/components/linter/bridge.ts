@@ -4,7 +4,7 @@ import type * as ts from 'typescript';
 import { debounce } from '../lib/debounce';
 import type { ConfigModel } from '../types';
 import type { PlaygroundSystem } from './types';
-import { getPathRegExp } from './utils';
+import { createFileName, getPathRegExp } from './utils';
 
 export function createFileSystem(
   config: Pick<ConfigModel, 'code' | 'eslintrc' | 'fileType' | 'tsconfig'>,
@@ -13,7 +13,7 @@ export function createFileSystem(
   const files = new Map<string, string>();
   files.set(`/.eslintrc`, config.eslintrc);
   files.set(`/tsconfig.json`, config.tsconfig);
-  files.set(`/input${config.fileType}`, config.code);
+  files.set(createFileName(config.fileType), config.code);
 
   const fileWatcherCallbacks = new Map<RegExp, Set<ts.FileWatcherCallback>>();
 
