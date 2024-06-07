@@ -50,7 +50,7 @@ AST tests belong in the `ast-spec` package, within `fixtures/` subfolders alongs
 
 ### Updating Snapshots
 
-Jest snapshots are generated for use in some tests, e.g. for [rule schemas](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/tests/schema-snapshots) and [code examples in rule docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/tests/docs-eslint-output-snapshots). You may need to re-generate these snapshots after adjusting a rule and/or its documentation, by running the relevant test suite(s) with the `-u` flag:
+[Jest snapshots](https://jestjs.io/docs/snapshot-testing) are generated for use in some tests, e.g. for [rule schemas](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/tests/schema-snapshots) and [code examples in rule docs](https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/tests/docs-eslint-output-snapshots). You may need to re-generate these snapshots after adjusting a rule and/or its documentation, by running the relevant test suite(s) with the `-u` flag:
 
 ```bash
 cd packages/eslint-plugin
