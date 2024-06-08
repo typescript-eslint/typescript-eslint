@@ -30,7 +30,6 @@ describe('getTypeName', () => {
 
   describe('returns primitive type', () => {
     it.each([
-      // string
       ['type Test = string;', 'string'],
       ['type Test = "text";', 'string'],
       ['type Test = string | "text";', 'string'],
@@ -38,17 +37,11 @@ describe('getTypeName', () => {
       ['type Test = string & { foo: number };', 'string'],
       ['type Test<T = number> = T & string;', 'string'],
       ['type Test<T extends string = "text"> = T;', 'string'],
-      // number
       ['type Test = number;', 'number'],
-      // boolean
       ['type Test = boolean;', 'boolean'],
-      // bigint
       ['type Test = bigint;', 'bigint'],
-      // undefined
       ['type Test = undefined;', 'undefined'],
-      // null
       ['type Test = null;', 'null'],
-      // symbol
       ['type Test = symbol;', 'symbol'],
     ])('when code is %s, returns %s', runTest);
   });
