@@ -43,7 +43,7 @@ const optionTesters = (
       (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
     ],
     ['Never', isTypeNeverType],
-  ] satisfies [string, OptionTester][]
+  ] as const satisfies [string, OptionTester][]
 ).map(([type, tester]) => ({
   type,
   option: `allow${type}` as const,
@@ -51,7 +51,7 @@ const optionTesters = (
 }));
 type Options = [
   { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
-    ignoredTypeNames?: string[];
+    allow?: string[];
   },
 ];
 
@@ -96,12 +96,7 @@ export default createRule<Options, MessageId>({
               },
             ]),
           ),
-          ignoredTypeNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
+          allow: { type: 'array', items: { type: 'string' } },
         },
       },
     ],
@@ -113,10 +108,10 @@ export default createRule<Options, MessageId>({
       allowNullish: true,
       allowNumber: true,
       allowRegExp: true,
-      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
+      allow: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
-  create(context, [{ ignoredTypeNames = [], ...options }]) {
+  create(context, [{ allow = [], ...options }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const enabledOptionTesters = optionTesters.filter(
@@ -158,7 +153,7 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
-        ignoredTypeNames.includes(getTypeName(checker, innerType)) ||
+        allow.includes(getTypeName(checker, innerType)) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )
