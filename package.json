@@ -26,8 +26,6 @@
   "scripts": {
     "build": "npx nx run-many --target=build --parallel --exclude website --exclude website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
-    "check-configs": "npx nx run-many --target=check-configs --parallel",
-    "check-docs": "npx nx run-many --target=check-docs --parallel",
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "nx run-many --target=clean",
