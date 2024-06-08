@@ -7,6 +7,7 @@ describe('withoutProjectParserOptions', () => {
       comment: true,
       EXPERIMENTAL_useProjectService: true,
       project: true,
+      projectService: true,
     } as TSESTreeOptions);
     expect(without).toEqual({
       comment: true,
