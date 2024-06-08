@@ -93,7 +93,7 @@ export default createRule({
           messageId,
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
-            type: isErrorType ? '`error`' : '`any`',
+            type: isErrorType ? '`error` typed' : '`any`',
           },
         });
       }

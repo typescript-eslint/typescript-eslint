@@ -170,7 +170,7 @@ value.property;
           column: 7,
           endColumn: 15,
           data: {
-            type: '`error`',
+            type: '`error` typed',
             property: '.property',
           },
         },
