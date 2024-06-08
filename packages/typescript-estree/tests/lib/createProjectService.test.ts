@@ -86,7 +86,7 @@ describe('createProjectService', () => {
         {
           category: ts.DiagnosticCategory.Error,
           code: 1234,
-          file: ts.createSourceFile(join(process.cwd(), 'tsconfig.json'), '', {
+          file: ts.createSourceFile('/tsconfig.json', '', {
             languageVersion: ts.ScriptTarget.Latest,
           }),
           start: 0,
@@ -100,12 +100,12 @@ describe('createProjectService', () => {
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
-          defaultProject: join(process.cwd(), 'tsconfig.json'),
+          defaultProject: '/tsconfig.json',
         },
         undefined,
       ),
     ).toThrow(
-      /Could not parse default project '\/(.*\/)+tsconfig.json': .+ error TS1234: Oh no!/,
+      /Could not parse default project '\/tsconfig.json': .+ error TS1234: Oh no!/,
     );
   });
 
