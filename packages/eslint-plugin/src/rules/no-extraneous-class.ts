@@ -87,7 +87,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const reportNode = 'id' in parent && parent.id ? parent.id : parent;
+        const reportNode =
+          parent.type === AST_NODE_TYPES.ClassDeclaration && parent.id
+            ? parent.id
+            : parent;
         if (node.body.length === 0) {
           if (allowEmpty) {
             return;
@@ -105,7 +108,10 @@ export default createRule<Options, MessageIds>({
         let onlyConstructor = true;
 
         for (const prop of node.body) {
-          if ('kind' in prop && prop.kind === 'constructor') {
+          if (
+            prop.type === AST_NODE_TYPES.MethodDefinition &&
+            prop.kind === 'constructor'
+          ) {
             if (
               prop.value.params.some(
                 param => param.type === AST_NODE_TYPES.TSParameterProperty,
@@ -116,7 +122,11 @@ export default createRule<Options, MessageIds>({
             }
           } else {
             onlyConstructor = false;
-            if ('static' in prop && !prop.static) {
+            if (
+              (prop.type === AST_NODE_TYPES.PropertyDefinition ||
+                prop.type === AST_NODE_TYPES.MethodDefinition) &&
+              !prop.static
+            ) {
               onlyStatic = false;
             }
           }
