@@ -39,7 +39,7 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error when options.defaultProject is set and readConfigFile returns an error', () => {
+  it('throws an error when options.defaultProject is set and getParsedCommandLineOfConfigFile returns an error', () => {
     mockGetParsedCommandLineOfConfigFile.mockReturnValue({
       errors: [
         {
@@ -68,7 +68,7 @@ describe('createProjectService', () => {
     );
   });
 
-  it('throws an error when options.defaultProject is set and readConfigFile throws an error', () => {
+  it('throws an error when options.defaultProject is set and getParsedCommandLineOfConfigFile throws an error', () => {
     mockGetParsedCommandLineOfConfigFile.mockImplementation(() => {
       throw new Error('Oh no!');
     });
