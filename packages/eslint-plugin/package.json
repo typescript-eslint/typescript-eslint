@@ -48,8 +48,6 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
-    "check-configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",

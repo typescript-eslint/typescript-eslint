@@ -239,6 +239,8 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
   - If your code handles mapped types, change from `node.typeParameter.constraint` to `node.constraint` and from `node.typeParameter.name` to `node.key`
 - [feat(ast-spec): remove deprecated type params](https://github.com/typescript-eslint/typescript-eslint/pull/8933)
   - If you haven't already you must stop using those removed AST properties that were already marked as `@deprecated`
+- [fix(typescript-estree): add TSEnumBody node for TSEnumDeclaration body #8920](https://github.com/typescript-eslint/typescript-eslint/pull/8920)
+  - If your code handles enums, switch from `node.members` to `node.body.members`
 
 ### Custom Rule `meta.docs` Types
 

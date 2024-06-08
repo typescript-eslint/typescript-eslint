@@ -227,7 +227,7 @@ export default createRule<Options, MessageIds>({
         if (
           (def.name.parent.type === AST_NODE_TYPES.ArrayPattern ||
             refUsedInArrayPatterns) &&
-          'name' in def.name &&
+          def.name.type === AST_NODE_TYPES.Identifier &&
           options.destructuredArrayIgnorePattern?.test(def.name.name)
         ) {
           continue;
@@ -240,7 +240,7 @@ export default createRule<Options, MessageIds>({
           }
           // skip ignored parameters
           if (
-            'name' in def.name &&
+            def.name.type === AST_NODE_TYPES.Identifier &&
             options.caughtErrorsIgnorePattern?.test(def.name.name)
           ) {
             continue;
@@ -254,7 +254,7 @@ export default createRule<Options, MessageIds>({
           }
           // skip ignored parameters
           if (
-            'name' in def.name &&
+            def.name.type === AST_NODE_TYPES.Identifier &&
             options.argsIgnorePattern?.test(def.name.name)
           ) {
             continue;
@@ -270,7 +270,7 @@ export default createRule<Options, MessageIds>({
         } else {
           // skip ignored variables
           if (
-            'name' in def.name &&
+            def.name.type === AST_NODE_TYPES.Identifier &&
             options.varsIgnorePattern?.test(def.name.name)
           ) {
             continue;

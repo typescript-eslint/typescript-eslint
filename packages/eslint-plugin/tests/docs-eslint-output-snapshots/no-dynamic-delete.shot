@@ -3,12 +3,6 @@
 exports[`Validating rule docs no-dynamic-delete.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-// Can be replaced with the constant equivalents, such as container.aaa
-delete container['aaa'];
-                 ~~~~~ Do not delete dynamically computed property keys.
-delete container['Infinity'];
-                 ~~~~~~~~~~ Do not delete dynamically computed property keys.
-
 // Dynamic, difficult-to-reason-about lookups
 const name = 'name';
 delete container[name];
@@ -30,6 +24,11 @@ delete container.aaa;
 
 // Constants that must be accessed by []
 delete container[7];
-delete container['-Infinity'];
+delete container[-1];
+
+// All strings are allowed, to be compatible with the noPropertyAccessFromIndexSignature
+// TS compiler option
+delete container['aaa'];
+delete container['Infinity'];
 "
 `;
