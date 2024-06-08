@@ -2,6 +2,13 @@
 
 import type { ReportDescriptorMessageData } from '@typescript-eslint/utils/ts-eslint';
 
+/**
+ * Returns a global expression matching placeholders in messages.
+ */
+export function getPlaceholderMatcher(): RegExp {
+  return /\{\{([^{}]+?)\}\}/gu;
+}
+
 export function interpolate(
   text: string,
   data: ReportDescriptorMessageData | undefined,
@@ -10,18 +17,17 @@ export function interpolate(
     return text;
   }
 
+  const matcher = getPlaceholderMatcher();
+
   // Substitution content for any {{ }} markers.
-  return text.replace(
-    /\{\{([^{}]+?)\}\}/gu,
-    (fullMatch, termWithWhitespace: string) => {
-      const term = termWithWhitespace.trim();
+  return text.replace(matcher, (fullMatch, termWithWhitespace: string) => {
+    const term = termWithWhitespace.trim();
 
-      if (term in data) {
-        return String(data[term]);
-      }
+    if (term in data) {
+      return String(data[term]);
+    }
 
-      // Preserve old behavior: If parameter name not provided, don't replace it.
-      return fullMatch;
-    },
-  );
+    // Preserve old behavior: If parameter name not provided, don't replace it.
+    return fullMatch;
+  });
 }

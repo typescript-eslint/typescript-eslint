@@ -14,6 +14,9 @@ import TabItem from '@theme/TabItem';
 
 ## Getting Started
 
+See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to set up your ESLint configuration file.
+[Packages > typescript-eslint](../packages/TypeScript_ESLint.mdx) includes more documentation on the `tseslint` helper.
+
 ### Projects Without Type Checking
 
 If your project does not enable [typed linting](../getting-started/Typed_Linting.mdx), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
@@ -181,8 +184,13 @@ module.exports = {
 Some rules also enabled in `recommended` default to more strict settings in this configuration.
 See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
 
-:::caution
+:::tip
 We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
+
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
 :::
 
 ### `strict-type-checked`
@@ -212,8 +220,13 @@ module.exports = {
 Some rules also enabled in `recommended-type-checked` default to more strict settings in this configuration.
 See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
 
-:::caution
+:::tip
 We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict-type-checked` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
+
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
 :::
 
 ### `stylistic`
@@ -290,6 +303,11 @@ We do not recommend TypeScript projects extend from `plugin:@typescript-eslint/a
 Many rules conflict with each other and/or are intended to be configured per-project.
 :::
 
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
+:::
+
 ### `base`
 
 A minimal ruleset that sets only the required parser and plugin options needed to run typescript-eslint.
@@ -363,6 +381,11 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
+:::
+
 ### `eslint-recommended`
 
 This ruleset is meant to be used after extending `eslint:recommended`.
@@ -375,7 +398,7 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 ```js title="eslint.config.js"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.eslintRecommended,
+  tseslint.configs.eslintRecommended,
 );
 ```
 
@@ -423,6 +446,11 @@ module.exports = {
 ```
 
 See [`configs/strict-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked-only.ts) for the exact contents of this config.
+
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
+:::
 
 ### `stylistic-type-checked-only`
 

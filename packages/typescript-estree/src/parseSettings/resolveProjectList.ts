@@ -18,8 +18,10 @@ const log = debug(
   'typescript-eslint:typescript-estree:parser:parseSettings:resolveProjectList',
 );
 
-let RESOLUTION_CACHE: ExpiringCache<string, readonly CanonicalPath[]> | null =
-  null;
+let RESOLUTION_CACHE: ExpiringCache<
+  string,
+  ReadonlyMap<CanonicalPath, string>
+> | null = null;
 
 export function clearGlobCache(): void {
   RESOLUTION_CACHE?.clear();
@@ -36,7 +38,7 @@ export function resolveProjectList(
     singleRun: boolean;
     tsconfigRootDir: string;
   }>,
-): readonly CanonicalPath[] {
+): ReadonlyMap<CanonicalPath, string> {
   const sanitizedProjects: string[] = [];
 
   // Normalize and sanitize the project paths
@@ -49,7 +51,7 @@ export function resolveProjectList(
   }
 
   if (sanitizedProjects.length === 0) {
-    return [];
+    return new Map();
   }
 
   const projectFolderIgnoreList = (
@@ -91,7 +93,7 @@ export function resolveProjectList(
   const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
   const globProjects = sanitizedProjects.filter(project => isGlob(project));
 
-  const uniqueCanonicalProjectPaths = new Set(
+  const uniqueCanonicalProjectPaths = new Map(
     nonGlobProjects
       .concat(
         globProjects.length === 0
@@ -100,11 +102,12 @@ export function resolveProjectList(
               cwd: options.tsconfigRootDir,
             }),
       )
-      .map(project =>
+      .map(project => [
         getCanonicalFileName(
           ensureAbsolutePath(project, options.tsconfigRootDir),
         ),
-      ),
+        ensureAbsolutePath(project, options.tsconfigRootDir),
+      ]),
   );
 
   log(
@@ -112,9 +115,8 @@ export function resolveProjectList(
     uniqueCanonicalProjectPaths,
   );
 
-  const returnValue = Array.from(uniqueCanonicalProjectPaths);
-  RESOLUTION_CACHE.set(cacheKey, returnValue);
-  return returnValue;
+  RESOLUTION_CACHE.set(cacheKey, uniqueCanonicalProjectPaths);
+  return uniqueCanonicalProjectPaths;
 }
 
 function getHash({
