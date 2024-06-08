@@ -191,3 +191,10 @@ export function typeMatchesSpecifier(
       );
   }
 }
+
+export const typeMatchesSomeSpecifier = (
+  type: ts.Type,
+  specifiers: TypeOrValueSpecifier[] = [],
+  program: ts.Program,
+): boolean =>
+  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));

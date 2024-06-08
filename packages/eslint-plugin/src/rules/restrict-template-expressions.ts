@@ -1,5 +1,5 @@
 import {
-  typeMatchesSpecifier,
+  typeMatchesSomeSpecifier,
   typeOrValueSpecifierSchema,
 } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
@@ -112,7 +112,7 @@ export default createRule<Options, MessageId>({
       allow: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
-  create(context, [{ allow = [], ...options }]) {
+  create(context, [{ allow, ...options }]) {
     const services = getParserServices(context);
     const { program } = services;
     const checker = program.getTypeChecker();
@@ -155,9 +155,7 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
-        allow.some(specifier =>
-          typeMatchesSpecifier(innerType, specifier, program),
-        ) ||
+        typeMatchesSomeSpecifier(innerType, allow, program) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )

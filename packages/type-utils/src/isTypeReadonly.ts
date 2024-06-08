@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 import {
-  typeMatchesSpecifier,
+  typeMatchesSomeSpecifier,
   typeOrValueSpecifierSchema,
 } from './TypeOrValueSpecifier';
 
@@ -232,11 +232,7 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (
-    options.allow?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    )
-  ) {
+  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 
