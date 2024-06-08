@@ -32,7 +32,6 @@ export function createProjectService(
 
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
-  // NOTE: Jest mock's rely on this behavior.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
@@ -76,11 +75,11 @@ export function createProjectService(
         path.dirname(options.defaultProject),
       );
       service.setCompilerOptionsForInferredProjects(
-        // NOTE: The inferred projects APIs are not intended for source files when a tsconfig exists.
-        // There is no API that generates InferredProjectCompilerOptions suggesting it is meant for
-        // hard coded options passed in to be type checked.  The original readConfigFile.config is
-        // type any and all available config parsing methods generate a CompilerOptions type.  Hard
-        // casting as a work around.
+        // NOTE: The inferred projects API is not intended for source files when a tsconfig
+        // exists.  There is no API that generates a InferredProjectCompilerOptions suggesting
+        // it is meant for hard coded options passed in.  The original readConfigFile.config
+        // produced type any and all available config parsing methods generate a CompilerOptions
+        // type.  Hard casting as a work around.
         // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
         configFile.options as any, // providing CompilerOptions while expecting InferredProjectCompilerOptions

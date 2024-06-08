@@ -5,18 +5,17 @@ import type * as ts from 'typescript/lib/tsserverlibrary';
 import { CORE_COMPILER_OPTIONS } from './shared';
 
 /**
- * Utility offered by parser to help consumers read a config file.
+ * Utility offered by parser to help consumers parse a config file.
  *
- * @param configFilePath the path to the tsconfig.json file, relative to `projectDirectory`
+ * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
  */
 function getParsedConfigFile(
-  configFilePath: string,
+  configFile: string,
   projectDirectory?: string,
 ): ts.ParsedCommandLine {
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
-  // NOTE: Jest mock's rely on this behavior.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
@@ -28,7 +27,7 @@ function getParsedConfigFile(
   }
 
   const parsed = tsserver.getParsedCommandLineOfConfigFile(
-    configFilePath,
+    configFile,
     CORE_COMPILER_OPTIONS,
     {
       onUnRecoverableConfigFileDiagnostic: diag => {

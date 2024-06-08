@@ -49,16 +49,16 @@ function useProvidedPrograms(
 /**
  * Utility offered by parser to help consumers construct their own program instance.
  *
- * @param configFilePath the path to the tsconfig.json file, relative to `projectDirectory`
+ * @param configFile the path to the tsconfig.json file, relative to `projectDirectory`
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
  */
 function createProgramFromConfigFile(
-  configFilePath: string,
+  configFile: string,
   projectDirectory?: string,
 ): ts.Program {
-  const configFile = getParsedConfigFile(configFilePath, projectDirectory);
-  const host = ts.createCompilerHost(configFile.options, true);
-  return ts.createProgram(configFile.fileNames, configFile.options, host);
+  const parsed = getParsedConfigFile(configFile, projectDirectory);
+  const host = ts.createCompilerHost(parsed.options, true);
+  return ts.createProgram(parsed.fileNames, parsed.options, host);
 }
 
 export { useProvidedPrograms, createProgramFromConfigFile };

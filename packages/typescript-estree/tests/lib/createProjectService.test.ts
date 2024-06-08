@@ -8,11 +8,11 @@ import { CORE_COMPILER_OPTIONS } from '../../src/create-program/shared';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/projectServicesComplex');
 
-const mockGetParsedCommandLineOfConfigFile = jest.fn();
-const mockSetCompilerOptionsForInferredProjects = jest.fn();
-
 const origGetParsedCommandLineOfConfigFile =
   ts.getParsedCommandLineOfConfigFile;
+
+const mockGetParsedCommandLineOfConfigFile = jest.fn();
+const mockSetCompilerOptionsForInferredProjects = jest.fn();
 
 jest.mock('typescript/lib/tsserverlibrary', () => ({
   ...jest.requireActual('typescript/lib/tsserverlibrary'),
@@ -26,11 +26,6 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
 }));
 
 describe('createProjectService', () => {
-  // not strictly needed but removes the dependency on tests running in a specific order
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
   it('sets allowDefaultProject when options.allowDefaultProject is defined', () => {
     const allowDefaultProject = ['./*.js'];
     const settings = createProjectService({ allowDefaultProject }, undefined);
@@ -93,11 +88,11 @@ describe('createProjectService', () => {
     mockGetParsedCommandLineOfConfigFile.mockImplementation(
       origGetParsedCommandLineOfConfigFile,
     );
+
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
     const compilerOptions = base?.compilerOptions;
-
     const { service } = createProjectService(
       {
         defaultProject: join(FIXTURES_DIR, 'tsconfig.base.json'),
@@ -105,23 +100,21 @@ describe('createProjectService', () => {
       undefined,
     );
 
+    // looser assertion since config parser adds metadata to track references to other files
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      // Looser assertion since config parser tacks on some meta data to track references to other files.
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/compiler/commandLineParser.ts#L2888
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/compiler/commandLineParser.ts#L3125
       expect.objectContaining({ ...CORE_COMPILER_OPTIONS, ...compilerOptions }),
     );
   });
 
-  it('uses the default projects compiler options when options.defaultProject is set with a single extends', () => {
+  it('uses the default projects extended compiler options when options.defaultProject is set and getParsedCommandLineOfConfigFile succeeds', () => {
     mockGetParsedCommandLineOfConfigFile.mockImplementation(
       origGetParsedCommandLineOfConfigFile,
     );
+
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
     const compilerOptions = base?.compilerOptions;
-
     const { service } = createProjectService(
       {
         defaultProject: join(FIXTURES_DIR, 'tsconfig.json'),
@@ -129,18 +122,17 @@ describe('createProjectService', () => {
       undefined,
     );
 
+    // looser assertion since config parser adds metadata to track references to other files
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      // Looser assertion since config parser tacks on some meta data to track references to other files.
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/compiler/commandLineParser.ts#L2888
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/compiler/commandLineParser.ts#L3125
       expect.objectContaining({ ...CORE_COMPILER_OPTIONS, ...compilerOptions }),
     );
   });
 
-  it('uses the default projects compiler options when options.defaultProject is set with multiple extends', () => {
+  it('uses the default projects multiple extended compiler options when options.defaultProject is set and getParsedCommandLineOfConfigFile succeeds', () => {
     mockGetParsedCommandLineOfConfigFile.mockImplementation(
       origGetParsedCommandLineOfConfigFile,
     );
+
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
@@ -151,18 +143,16 @@ describe('createProjectService', () => {
       ...base?.compilerOptions,
       ...overrides?.compilerOptions,
     };
-
     const { service } = createProjectService(
       {
+        // extends tsconfig.base.json and tsconfig.overrides.json
         defaultProject: join(FIXTURES_DIR, 'tsconfig.overridden.json'),
       },
       undefined,
     );
 
+    // looser assertion since config parser adds metadata to track references to other files
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      // Looser assertion since config parser tacks on some meta data to track references to other files.
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/compiler/commandLineParser.ts#L2888
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/compiler/commandLineParser.ts#L3125
       expect.objectContaining({ ...CORE_COMPILER_OPTIONS, ...compilerOptions }),
     );
   });
