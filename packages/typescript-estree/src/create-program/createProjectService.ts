@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import fs from 'node:fs';
 import os from 'node:os';
+import path from 'node:path';
 
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
+import { CORE_COMPILER_OPTIONS } from './shared';
+import { getParsedConfigFile } from './getParsedConfigFile';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
@@ -69,39 +73,25 @@ export function createProjectService(
   });
 
   if (options.defaultProject) {
-    let configRead;
-
     try {
-      configRead = tsserver.readConfigFile(
+      const configFile = getParsedConfigFile(
         options.defaultProject,
-        system.readFile,
+        path.dirname(options.defaultProject),
+      );
+      service.setCompilerOptionsForInferredProjects(
+        // NOTE: The inferred projects APIs are not intended for source files when a tsconfig exists.
+        // There is no API that generates InferredProjectCompilerOptions suggesting it is meant for
+        // hard coded options passed in to be type checked.  The original readConfigFile.config is
+        // type any and all available config parsing methods generate a CompilerOptions type.  Hard
+        // casting as a work around.
+        // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
+        configFile.options as any, // providing CompilerOptions while expecting InferredProjectCompilerOptions
       );
     } catch (error) {
       throw new Error(
         `Could not parse default project '${options.defaultProject}': ${(error as Error).message}`,
       );
     }
-
-    if (configRead.error) {
-      throw new Error(
-        `Could not read default project '${options.defaultProject}': ${tsserver.formatDiagnostic(
-          configRead.error,
-          {
-            getCurrentDirectory: system.getCurrentDirectory,
-            getCanonicalFileName: fileName => fileName,
-            getNewLine: () => os.EOL,
-          },
-        )}`,
-      );
-    }
-
-    service.setCompilerOptionsForInferredProjects(
-      (
-        configRead.config as {
-          compilerOptions: ts.server.protocol.InferredProjectCompilerOptions;
-        }
-      ).compilerOptions,
-    );
   }
 
   return {
