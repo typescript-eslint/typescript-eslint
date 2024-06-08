@@ -51,7 +51,17 @@ function foo(x: any) {
   x();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 4,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -59,7 +69,17 @@ function foo(x: any) {
   x?.();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 4,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -67,7 +87,17 @@ function foo(x: any) {
   x.a.b.c.d.e.f.g();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 18,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -75,7 +105,17 @@ function foo(x: any) {
   x.a.b.c.d.e.f.g?.();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 18,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -83,7 +123,17 @@ function foo(x: { a: any }) {
   x.a();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 6,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -91,7 +141,17 @@ function foo(x: { a: any }) {
   x?.a();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 7,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -99,7 +159,17 @@ function foo(x: { a: any }) {
   x.a?.();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 6,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -168,7 +238,17 @@ const methods = {
 let value: NotKnown;
 value();
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 1,
+          endColumn: 6,
+          data: {
+            type: '`error` type',
+          },
+        },
+      ],
     },
   ],
 });
