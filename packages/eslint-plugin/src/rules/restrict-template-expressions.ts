@@ -1,4 +1,7 @@
-import { typeOrValueSpecifierSchema } from '@typescript-eslint/type-utils';
+import {
+  typeMatchesSpecifier,
+  typeOrValueSpecifierSchema,
+} from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type, TypeChecker } from 'typescript';
@@ -111,7 +114,8 @@ export default createRule<Options, MessageId>({
   ],
   create(context, [{ allow = [], ...options }]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const enabledOptionTesters = optionTesters.filter(
       ({ option }) => options[option],
     );
@@ -151,7 +155,9 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
-        allow.includes(getTypeName(checker, innerType)) ||
+        allow.some(specifier =>
+          typeMatchesSpecifier(innerType, specifier, program),
+        ) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )
