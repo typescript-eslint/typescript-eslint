@@ -125,7 +125,7 @@ describe('createProjectService', () => {
     }).toThrow("Could not parse default project './tsconfig.json': Oh no!");
   });
 
-  it('throws an error when options.defaultProject is set and tserver.sys is undefined', () => {
+  it('throws an error when options.defaultProject is set and tsserver.sys is undefined', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mockSys = undefined as any;
     expect(() => {
