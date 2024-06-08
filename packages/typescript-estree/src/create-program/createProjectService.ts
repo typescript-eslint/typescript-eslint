@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
-import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
-import { CORE_COMPILER_OPTIONS } from './shared';
 import { getParsedConfigFile } from './getParsedConfigFile';
+import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
@@ -35,6 +32,7 @@ export function createProjectService(
 
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
+  // NOTE: Jest mock's rely on this behavior.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
@@ -71,7 +69,6 @@ export function createProjectService(
     session: undefined,
     jsDocParsingMode,
   });
-
   if (options.defaultProject) {
     try {
       const configFile = getParsedConfigFile(
@@ -85,6 +82,7 @@ export function createProjectService(
         // type any and all available config parsing methods generate a CompilerOptions type.  Hard
         // casting as a work around.
         // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
         configFile.options as any, // providing CompilerOptions while expecting InferredProjectCompilerOptions
       );
     } catch (error) {

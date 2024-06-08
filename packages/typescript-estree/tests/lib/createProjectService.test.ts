@@ -1,30 +1,34 @@
-import * as ts from 'typescript';
 import fs from 'node:fs';
 import { join } from 'node:path';
 
-import { CORE_COMPILER_OPTIONS } from '../../src/create-program/shared';
+import * as ts from 'typescript';
+
 import { createProjectService } from '../../src/create-program/createProjectService';
+import { CORE_COMPILER_OPTIONS } from '../../src/create-program/shared';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/projectServicesComplex');
 
 const mockGetParsedCommandLineOfConfigFile = jest.fn();
 const mockSetCompilerOptionsForInferredProjects = jest.fn();
 
-const useMock = () =>
-  jest.mock('typescript/lib/tsserverlibrary', () => ({
-    ...jest.requireActual('typescript/lib/tsserverlibrary'),
-    getParsedCommandLineOfConfigFile: mockGetParsedCommandLineOfConfigFile,
-    server: {
-      ProjectService: class {
-        setCompilerOptionsForInferredProjects =
-          mockSetCompilerOptionsForInferredProjects;
-      },
+const origGetParsedCommandLineOfConfigFile =
+  ts.getParsedCommandLineOfConfigFile;
+
+jest.mock('typescript/lib/tsserverlibrary', () => ({
+  ...jest.requireActual('typescript/lib/tsserverlibrary'),
+  getParsedCommandLineOfConfigFile: mockGetParsedCommandLineOfConfigFile,
+  server: {
+    ProjectService: class {
+      setCompilerOptionsForInferredProjects =
+        mockSetCompilerOptionsForInferredProjects;
     },
-  }));
+  },
+}));
 
 describe('createProjectService', () => {
-  beforeEach(() => {
-    jest.resetModules();
+  // not strictly needed but removes the dependency on tests running in a specific order
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   it('sets allowDefaultProject when options.allowDefaultProject is defined', () => {
@@ -41,18 +45,19 @@ describe('createProjectService', () => {
   });
 
   it('throws an error when options.defaultProject is set and readConfigFile returns an error', () => {
-    useMock();
     mockGetParsedCommandLineOfConfigFile.mockReturnValue({
-      error: {
-        category: ts.DiagnosticCategory.Error,
-        code: 1234,
-        file: ts.createSourceFile('./tsconfig.json', '', {
-          languageVersion: ts.ScriptTarget.Latest,
-        }),
-        start: 0,
-        length: 0,
-        messageText: 'Oh no!',
-      } satisfies ts.Diagnostic,
+      errors: [
+        {
+          category: ts.DiagnosticCategory.Error,
+          code: 1234,
+          file: ts.createSourceFile('./tsconfig.json', '', {
+            languageVersion: ts.ScriptTarget.Latest,
+          }),
+          start: 0,
+          length: 0,
+          messageText: 'Oh no!',
+        },
+      ] satisfies ts.Diagnostic[],
     });
 
     expect(() =>
@@ -64,28 +69,30 @@ describe('createProjectService', () => {
         undefined,
       ),
     ).toThrow(
-      /Could not read default project '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
+      /Could not parse default project '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
     );
   });
 
   it('throws an error when options.defaultProject is set and readConfigFile throws an error', () => {
-    useMock();
     mockGetParsedCommandLineOfConfigFile.mockImplementation(() => {
       throw new Error('Oh no!');
     });
 
-    expect(() =>
-      createProjectService(
+    expect(() => {
+      return createProjectService(
         {
           allowDefaultProject: ['file.js'],
           defaultProject: './tsconfig.json',
         },
         undefined,
-      ),
-    ).toThrow("Could not parse default project './tsconfig.json': Oh no!");
+      );
+    }).toThrow("Could not parse default project './tsconfig.json': Oh no!");
   });
 
   it('uses the default projects compiler options when options.defaultProject is set and getParsedCommandLineOfConfigFile succeeds', () => {
+    mockGetParsedCommandLineOfConfigFile.mockImplementation(
+      origGetParsedCommandLineOfConfigFile,
+    );
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
@@ -107,6 +114,9 @@ describe('createProjectService', () => {
   });
 
   it('uses the default projects compiler options when options.defaultProject is set with a single extends', () => {
+    mockGetParsedCommandLineOfConfigFile.mockImplementation(
+      origGetParsedCommandLineOfConfigFile,
+    );
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
@@ -128,6 +138,9 @@ describe('createProjectService', () => {
   });
 
   it('uses the default projects compiler options when options.defaultProject is set with multiple extends', () => {
+    mockGetParsedCommandLineOfConfigFile.mockImplementation(
+      origGetParsedCommandLineOfConfigFile,
+    );
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );

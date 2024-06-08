@@ -2,9 +2,9 @@ import debug from 'debug';
 import * as path from 'path';
 import * as ts from 'typescript';
 
+import { getParsedConfigFile } from './getParsedConfigFile';
 import type { ASTAndDefiniteProgram } from './shared';
 import { getAstFromProgram } from './shared';
-import { getParsedConfigFile } from './getParsedConfigFile';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
