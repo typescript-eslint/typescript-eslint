@@ -1,8 +1,10 @@
+import { typeOrValueSpecifierSchema } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type, TypeChecker } from 'typescript';
 import { TypeFlags } from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -44,14 +46,10 @@ const optionTesters = (
     ],
     ['Never', isTypeNeverType],
   ] as const satisfies [string, OptionTester][]
-).map(([type, tester]) => ({
-  type,
-  option: `allow${type}` as const,
-  tester,
-}));
+).map(([type, tester]) => ({ type, option: `allow${type}` as const, tester }));
 type Options = [
   { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
-    allow?: string[];
+    allow?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -96,7 +94,7 @@ export default createRule<Options, MessageId>({
               },
             ]),
           ),
-          allow: { type: 'array', items: { type: 'string' } },
+          allow: { type: 'array', items: typeOrValueSpecifierSchema },
         },
       },
     ],
