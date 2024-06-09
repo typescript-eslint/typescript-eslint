@@ -136,7 +136,7 @@ This option takes an array of type specifiers to allow. Each item in the array m
 
 Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }`:
 
-```
+```ts showPlaygroundButton
 const error = new Error();
 const url = new URL();
 const urlSearchParams = new URLSearchParams();
