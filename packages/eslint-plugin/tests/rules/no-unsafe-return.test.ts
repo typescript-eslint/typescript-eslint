@@ -441,11 +441,11 @@ foo(() => 'foo' as any);
     },
     {
       code: `
-      let value: NotKnown;
+let value: NotKnown;
 
-      function example() {
-        return value;
-      }
+function example() {
+  return value;
+}
       `,
       errors: [
         {
