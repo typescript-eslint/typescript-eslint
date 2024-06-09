@@ -451,8 +451,8 @@ function example() {
         {
           messageId: 'unsafeReturn',
           line: 5,
-          column: 9,
-          endColumn: 22,
+          column: 3,
+          endColumn: 16,
           data: {
             type: 'error',
           },
