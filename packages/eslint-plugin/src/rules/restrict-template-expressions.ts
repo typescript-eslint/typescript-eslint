@@ -109,7 +109,10 @@ export default createRule<Options, MessageId>({
       allowNullish: true,
       allowNumber: true,
       allowRegExp: true,
-      allow: ['Error', 'URL', 'URLSearchParams'],
+      allow: ['Error', 'URL', 'URLSearchParams'].map(name => ({
+        from: 'lib',
+        name,
+      })),
     },
   ],
   create(context, [{ allow, ...options }]) {
