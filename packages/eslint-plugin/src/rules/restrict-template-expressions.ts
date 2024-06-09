@@ -109,7 +109,7 @@ export default createRule<Options, MessageId>({
       allowNullish: true,
       allowNumber: true,
       allowRegExp: true,
-      allow: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
+      allow: ['Error', 'URL', 'URLSearchParams'],
     },
   ],
   create(context, [{ allow, ...options }]) {

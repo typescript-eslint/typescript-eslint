@@ -7,10 +7,7 @@ const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
-  },
+  parserOptions: { tsconfigRootDir: rootPath, project: './tsconfig.json' },
 });
 
 ruleTester.run('restrict-template-expressions', rule, {
@@ -288,7 +285,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       code: `
         // more variants may be added to Foo in the future
         type Foo = { type: 'a'; value: number };
-
+        
         function checkFoosAreMatching(foo1: Foo, foo2: Foo) {
           if (foo1.type !== foo2.type) {
             // since Foo currently only has one variant, this code is never run, and \`foo1.type\` has type \`never\`.
@@ -459,12 +456,7 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
       errors: [
-        {
-          messageId: 'invalidType',
-          data: { type: 'T' },
-          line: 3,
-          column: 27,
-        },
+        { messageId: 'invalidType', data: { type: 'T' }, line: 3, column: 27 },
       ],
     },
     {
