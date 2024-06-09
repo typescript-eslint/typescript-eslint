@@ -21,10 +21,10 @@ describe('createProjectService', () => {
     jest.resetModules();
 
     mockSys = origSys;
+    // doMock is used over mock to handle the `sys` property mock
     jest.doMock('typescript/lib/tsserverlibrary', () => {
-      const actualTs = jest.requireActual('typescript/lib/tsserverlibrary');
       return {
-        ...actualTs,
+        ...jest.requireActual('typescript/lib/tsserverlibrary'),
         sys: mockSys,
         getParsedCommandLineOfConfigFile: mockGetParsedCommandLineOfConfigFile,
         server: {
