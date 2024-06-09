@@ -154,8 +154,17 @@ function typeDeclaredInLib(
   if (declarationFiles.length === 0) {
     return true;
   }
-  return declarationFiles.some(declaration =>
-    program.isSourceFileDefaultLibrary(declaration),
+  return (
+    declarationFiles.some(
+      declaration =>
+        program.isSourceFileDefaultLibrary(declaration) ||
+        (program.sourceFileToPackageName.get(declaration.path) == null &&
+          /\/node_modules\/@types\/(bun|node)\//.test(declaration.path)),
+    ) ||
+    // Declared in types of runtime - Treat it as if it's from lib.
+    ['bun', 'node'].some(runtime =>
+      typeDeclaredInPackage(runtime, declarationFiles, program),
+    )
   );
 }
 
