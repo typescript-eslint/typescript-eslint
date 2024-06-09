@@ -21,7 +21,7 @@ describe('createProjectService', () => {
     jest.resetModules();
 
     mockSys = origSys;
-    // doMock is used over mock to handle the `sys` property mock
+    // doMock is used over mock to handle the tsserver.sys property mock
     jest.doMock('typescript/lib/tsserverlibrary', () => {
       return {
         ...jest.requireActual('typescript/lib/tsserverlibrary'),
@@ -80,12 +80,12 @@ describe('createProjectService', () => {
   });
 
   it('throws an error when options.defaultProject is absolute and getParsedCommandLineOfConfigFile returns an error', () => {
-    // NOTE: triggers getCanonicalFileName for coverage
     mockGetParsedCommandLineOfConfigFile.mockReturnValue({
       errors: [
         {
           category: ts.DiagnosticCategory.Error,
           code: 1234,
+          // absolute path triggers getCanonicalFileName for coverage
           file: ts.createSourceFile('/tsconfig.json', '', {
             languageVersion: ts.ScriptTarget.Latest,
           }),
@@ -149,7 +149,10 @@ describe('createProjectService', () => {
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
-    const compilerOptions = base?.compilerOptions;
+    const compilerOptions = {
+      ...CORE_COMPILER_OPTIONS,
+      ...base?.compilerOptions,
+    };
     const { service } = createProjectService(
       {
         defaultProject: join(FIXTURES_DIR, 'tsconfig.base.json'),
@@ -157,9 +160,9 @@ describe('createProjectService', () => {
       undefined,
     );
 
-    // looser assertion since config parser adds metadata to track references to other files
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      expect.objectContaining({ ...CORE_COMPILER_OPTIONS, ...compilerOptions }),
+      // looser assertion since config parser adds metadata to track references to other files
+      expect.objectContaining(compilerOptions),
     );
   });
 
@@ -171,7 +174,10 @@ describe('createProjectService', () => {
     const base = JSON.parse(
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
     );
-    const compilerOptions = base?.compilerOptions;
+    const compilerOptions = {
+      ...CORE_COMPILER_OPTIONS,
+      ...base?.compilerOptions,
+    };
     const { service } = createProjectService(
       {
         defaultProject: join(FIXTURES_DIR, 'tsconfig.json'),
@@ -179,9 +185,9 @@ describe('createProjectService', () => {
       undefined,
     );
 
-    // looser assertion since config parser adds metadata to track references to other files
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      expect.objectContaining({ ...CORE_COMPILER_OPTIONS, ...compilerOptions }),
+      // looser assertion since config parser adds metadata to track references to other files
+      expect.objectContaining(compilerOptions),
     );
   });
 
@@ -197,6 +203,7 @@ describe('createProjectService', () => {
       fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.overrides.json'), 'utf8'),
     );
     const compilerOptions = {
+      ...CORE_COMPILER_OPTIONS,
       ...base?.compilerOptions,
       ...overrides?.compilerOptions,
     };
@@ -208,9 +215,9 @@ describe('createProjectService', () => {
       undefined,
     );
 
-    // looser assertion since config parser adds metadata to track references to other files
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      expect.objectContaining({ ...CORE_COMPILER_OPTIONS, ...compilerOptions }),
+      // looser assertion since config parser adds metadata to track references to other files
+      expect.objectContaining(compilerOptions),
     );
   });
 });
