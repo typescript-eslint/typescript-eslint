@@ -4,6 +4,7 @@ description: 'Enforce template literal expressions to be of `string` type.'
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import TypeOrValueSpecifier from '../TypeOrValueSpecifier.md';
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
@@ -128,11 +129,7 @@ const msg1 = `arg = ${arg}`;
 
 ### `allow`
 
-This option takes an array of type specifiers to allow. Each item in the array must have one of the following forms:
-
-- A type defined in a file (`{ from: "file", name: "Foo", path: "src/foo-file.ts" }` with `path` being an optional path relative to the project root directory)
-- A type from the default library (`{ from: "lib", name: "PromiseLike" }`)
-- A type from a package (`{ from: "package", name: "Foo", package: "foo-lib" }`, this also works for types defined in a typings package).
+<TypeOrValueSpecifier verb="allow" />
 
 Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }`:
 
