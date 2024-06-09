@@ -71,7 +71,7 @@ export default createRule<[], MessageIds>({
           node: reportingNode,
           messageId: messageId,
           data: {
-            type: isErrorType ? '`error`' : '`any`',
+            type: isErrorType ? '`error` type' : '`any`',
           },
         });
       }
