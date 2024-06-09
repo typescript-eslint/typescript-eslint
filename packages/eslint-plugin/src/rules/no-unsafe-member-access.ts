@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -13,6 +14,11 @@ import {
 const enum State {
   Unsafe = 1,
   Safe = 2,
+}
+
+function createDataType(type: ts.Type): '`error` typed' | '`any`' {
+  const isErrorType = tsutils.isIntrinsicErrorType(type);
+  return isErrorType ? '`error` typed' : '`any`';
 }
 
 export default createRule({
@@ -32,7 +38,7 @@ export default createRule({
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
       unsafeComputedMemberAccess:
-        'Computed name {{property}} resolves to an any value.',
+        'Computed name {{property}} resolves to an {{type}} value.',
     },
     schema: [],
   },
@@ -86,14 +92,13 @@ export default createRule({
             messageId = 'unsafeThisMemberExpression';
           }
         }
-        const isErrorType = tsutils.isIntrinsicErrorType(type);
 
         context.report({
           node: node.property,
           messageId,
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
-            type: isErrorType ? '`error` typed' : '`any`',
+            type: createDataType(type),
           },
         });
       }
@@ -129,6 +134,7 @@ export default createRule({
             messageId: 'unsafeComputedMemberAccess',
             data: {
               property: `[${propertyName}]`,
+              type: createDataType(type),
             },
           });
         }
