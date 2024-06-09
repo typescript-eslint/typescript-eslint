@@ -134,7 +134,7 @@ This option takes an array of type specifiers to allow. Each item in the array m
 - A type from the default library (`{ from: "lib", name: "PromiseLike" }`)
 - A type from a package (`{ from: "package", name: "Foo", package: "foo-lib" }`, this also works for types defined in a typings package).
 
-Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }``:
+Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }`:
 
 ```
 const error = new Error();
