@@ -407,12 +407,18 @@ function bar() {
           line: 3,
           column: 3,
           endColumn: 15,
+          data: {
+            type: '`any`',
+          },
         },
         {
           messageId: 'unsafeReturnThis',
           line: 7,
           column: 16,
           endColumn: 20,
+          data: {
+            type: '`any`',
+          },
         },
       ],
     },
@@ -427,9 +433,9 @@ foo(() => 'foo' as any);
           line: 3,
           column: 11,
           endColumn: 23,
-          data:{
-            type:'`any`'
-          }
+          data: {
+            type: '`any`',
+          },
         },
       ],
     },
@@ -447,9 +453,9 @@ foo(() => 'foo' as any);
           line: 5,
           column: 9,
           endColumn: 22,
-          data:{
-            type:"error"
-          }
+          data: {
+            type: 'error',
+          },
         },
       ],
     },

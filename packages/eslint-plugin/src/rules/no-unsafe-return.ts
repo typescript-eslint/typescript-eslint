@@ -137,7 +137,7 @@ export default createRule({
         }
 
         let messageId: 'unsafeReturn' | 'unsafeReturnThis' = 'unsafeReturn';
-        const isErrorType = tsutils.isIntrinsicErrorType(returnNodeType)
+        const isErrorType = tsutils.isIntrinsicErrorType(returnNodeType);
 
         if (!isNoImplicitThis) {
           // `return this`
@@ -157,7 +157,11 @@ export default createRule({
           node: reportingNode,
           messageId,
           data: {
-            type: isErrorType?'error':anyType === AnyType.Any ? '`any`' : '`any[]`',
+            type: isErrorType
+              ? 'error'
+              : anyType === AnyType.Any
+                ? '`any`'
+                : '`any[]`',
           },
         });
       }
