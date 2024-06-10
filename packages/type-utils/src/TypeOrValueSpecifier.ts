@@ -154,12 +154,17 @@ function typeDeclaredInLib(
   if (declarationFiles.length === 0) {
     return true;
   }
-  return declarationFiles.some(
-    declaration =>
-      program.isSourceFileDefaultLibrary(declaration) ||
-      (program.sourceFileToPackageName.get(declaration.path) == null &&
-        /\/node_modules\/@types\/(bun|node)\//.test(declaration.path)),
-  );
+  return declarationFiles.some(declaration => {
+    if (program.isSourceFileDefaultLibrary(declaration)) {
+      return true;
+    }
+    const { path } = declaration;
+    return (
+      // Declared in types of runtime - Treat it as if it's from lib.
+      program.sourceFileToPackageName.get(path) == null &&
+      /\/node_modules\/@types\/(bun|node)\//.test(path)
+    );
+  });
 }
 
 export function typeMatchesSpecifier(
