@@ -31,10 +31,7 @@ export const readonlynessOptionsSchema = {
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: {
-      type: 'array',
-      items: typeOrValueSpecifierSchema,
-    },
+    allow: typeOrValueSpecifierSchema,
   },
 } satisfies JSONSchema4;
 

@@ -99,8 +99,7 @@ export default createRule<Options, MessageId>({
           ),
           allow: {
             description: `Types to allow in template expressions.`,
-            type: 'array',
-            items: typeOrValueSpecifierSchema,
+            ...typeOrValueSpecifierSchema,
           },
         },
       },

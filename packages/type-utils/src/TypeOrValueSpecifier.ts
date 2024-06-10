@@ -28,68 +28,71 @@ export type TypeOrValueSpecifier =
   | string;
 
 export const typeOrValueSpecifierSchema = {
-  oneOf: [
-    { type: 'string' },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: { type: 'string', enum: ['file'] },
-        name: {
-          oneOf: [
-            { type: 'string' },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: { type: 'string' },
-            },
-          ],
+  type: 'array',
+  items: {
+    oneOf: [
+      { type: 'string' },
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: { type: 'string', enum: ['file'] },
+          name: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: { type: 'string' },
+              },
+            ],
+          },
+          path: { type: 'string' },
         },
-        path: { type: 'string' },
+        required: ['from', 'name'],
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: { type: 'string', enum: ['lib'] },
-        name: {
-          oneOf: [
-            { type: 'string' },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: { type: 'string' },
-            },
-          ],
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: { type: 'string', enum: ['lib'] },
+          name: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: { type: 'string' },
+              },
+            ],
+          },
         },
+        required: ['from', 'name'],
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: { type: 'string', enum: ['package'] },
-        name: {
-          oneOf: [
-            { type: 'string' },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: { type: 'string' },
-            },
-          ],
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: { type: 'string', enum: ['package'] },
+          name: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: { type: 'string' },
+              },
+            ],
+          },
+          package: { type: 'string' },
         },
-        package: { type: 'string' },
+        required: ['from', 'name', 'package'],
       },
-      required: ['from', 'name', 'package'],
-    },
-  ],
+    ],
+  },
 } as const satisfies JSONSchema4;
 
 function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
