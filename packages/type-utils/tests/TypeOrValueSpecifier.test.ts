@@ -3,11 +3,8 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import Ajv from 'ajv';
 import path from 'path';
 
-import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
-import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
-} from '../src/TypeOrValueSpecifier';
+import type { TypeOrValueSpecifier } from '../src';
+import { typeMatchesSpecifier, typeOrValueSpecifierSchema } from '../src';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
