@@ -285,7 +285,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       code: `
         // more variants may be added to Foo in the future
         type Foo = { type: 'a'; value: number };
-        
+
         function checkFoosAreMatching(foo1: Foo, foo2: Foo) {
           if (foo1.type !== foo2.type) {
             // since Foo currently only has one variant, this code is never run, and \`foo1.type\` has type \`never\`.
