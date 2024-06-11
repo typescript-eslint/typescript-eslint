@@ -1261,6 +1261,39 @@ console.log(a + c);
       ],
       parserOptions: { ecmaVersion: 6 },
     },
+
+    // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      options: [
+        { ignoreClassWithStaticInitBlock: true, varsIgnorePattern: '^_' },
+      ],
+      parserOptions: { ecmaVersion: 2022 },
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      options: [
+        { ignoreClassWithStaticInitBlock: false, varsIgnorePattern: '^Foo' },
+      ],
+      parserOptions: { ecmaVersion: 2022 },
+    },
   ],
   invalid: [
     {
@@ -2964,6 +2997,65 @@ try {
         },
       ],
       errors: [usedIgnoredError('_err', '. Used args must not match /^_/u')],
+    },
+
+    // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: false }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static {
+    var bar;
+  }
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('bar'), line: 4, column: 9 }],
+    },
+    {
+      code: 'class Foo {}',
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 1, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static bar;
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static bar() {}
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
     },
   ],
 });

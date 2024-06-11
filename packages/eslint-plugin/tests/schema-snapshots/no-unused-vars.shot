@@ -31,6 +31,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "destructuredArrayIgnorePattern": {
             "type": "string"
           },
+          "ignoreClassWithStaticInitBlock": {
+            "type": "boolean"
+          },
           "ignoreRestSiblings": {
             "type": "boolean"
           },
@@ -63,6 +66,7 @@ type Options = [
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
+      ignoreClassWithStaticInitBlock?: boolean;
       ignoreRestSiblings?: boolean;
       reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
