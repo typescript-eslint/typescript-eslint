@@ -1,3 +1,6 @@
+// This rule was feature-frozen before we enabled no-property-in-node.
+/* eslint-disable eslint-plugin/no-property-in-node */
+
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';

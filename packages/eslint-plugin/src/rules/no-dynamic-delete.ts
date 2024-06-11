@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
@@ -42,9 +41,7 @@ export default createRule({
         if (
           node.argument.type !== AST_NODE_TYPES.MemberExpression ||
           !node.argument.computed ||
-          isNecessaryDynamicAccess(
-            diveIntoWrapperExpressions(node.argument.property),
-          )
+          isAcceptableIndexExpression(node.argument.property)
         ) {
           return;
         }
@@ -80,27 +77,13 @@ export default createRule({
   },
 });
 
-function diveIntoWrapperExpressions(
-  node: TSESTree.Expression,
-): TSESTree.Expression {
-  if (node.type === AST_NODE_TYPES.UnaryExpression) {
-    return diveIntoWrapperExpressions(node.argument);
-  }
-
-  return node;
-}
-
-function isNecessaryDynamicAccess(property: TSESTree.Expression): boolean {
-  if (property.type !== AST_NODE_TYPES.Literal) {
-    return false;
-  }
-
-  if (typeof property.value === 'number') {
-    return true;
-  }
-
+function isAcceptableIndexExpression(property: TSESTree.Expression): boolean {
   return (
-    typeof property.value === 'string' &&
-    !tsutils.isValidPropertyAccess(property.value)
+    (property.type === AST_NODE_TYPES.Literal &&
+      ['string', 'number'].includes(typeof property.value)) ||
+    (property.type === AST_NODE_TYPES.UnaryExpression &&
+      property.operator === '-' &&
+      property.argument.type === AST_NODE_TYPES.Literal &&
+      typeof property.argument.value === 'number')
   );
 }
