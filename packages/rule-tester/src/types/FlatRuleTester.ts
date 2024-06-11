@@ -44,12 +44,6 @@ export interface RuleTesterConfig<Formats extends string> {
    * For future use, do not set.
    */
   fixtureMode?: undefined;
-
-  /**
-   * RuleTester compatibility mode, hides some errors, including:
-   * - The data property of invalid test cases is unimplemented and deprecated
-   */
-  hideLegacyConfigLeftovers?: boolean;
 }
 
 export interface ExpectedSuggestion<MessageIds extends string> {
@@ -79,7 +73,7 @@ export interface ExpectedError<MessageIds extends string> {
 export interface Sample {
   name: string;
   code: string;
-  format?: string;
+  extension?: string;
 }
 
 export type ValidSample = Sample;

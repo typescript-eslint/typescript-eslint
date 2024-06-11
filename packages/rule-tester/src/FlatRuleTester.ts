@@ -23,6 +23,8 @@ import type {
   Sample,
   ValidSample,
 } from './types/FlatRuleTester';
+import { interpolate } from './utils/interpolate';
+import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import { sanitize } from './utils/validationHelpers';
 
 // Hide methods publicly by default, for simplicity's sake
@@ -52,7 +54,6 @@ export declare namespace FlatRuleTester {
  *
  * List of current breaking changes:
  * - Uses ESLint's flat config system
- * - The data property of errors in invalid cases is unsupported (ESLint does not expose its interpolate method, it is not a permanent solution to copy the implementation)
  * - Requires type-checking
  * - Does not support string imports for parsers
  */
@@ -166,11 +167,11 @@ export class FlatRuleTester<F extends string> extends TestFramework {
             FlatRuleTester.describe('valid', () =>
               data.valid.forEach(validCase =>
                 FlatRuleTester.it(validCase.name, () => {
-                  if (validCase.format) {
-                    assert.ok(validCase.format in this.#config.extensions);
+                  if (validCase.extension) {
+                    assert.ok(validCase.extension in this.#config.extensions);
                   }
 
-                  const name = `/file.${validCase.format ?? 'ts'}`;
+                  const name = `/file.${validCase.extension ?? 'ts'}`;
                   assert.ok(
                     existsSync(join(this.#fixtureDir, name)),
                     `Fixtures must exist for format: ${name}`,
@@ -183,12 +184,12 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                       files: ['**/*.*'],
                     },
                   ];
-                  if (validCase.format) {
+                  if (validCase.extension) {
                     const formatConfig =
-                      this.#config.extensions[validCase.format as F];
+                      this.#config.extensions[validCase.extension as F];
                     fullConfig.splice(1, 0, {
                       ...formatConfig,
-                      files: [`**/*.${validCase.format}`],
+                      files: [`**/*.${validCase.extension}`],
                     });
                   }
 
@@ -209,14 +210,14 @@ export class FlatRuleTester<F extends string> extends TestFramework {
             FlatRuleTester.describe('invalid', () =>
               data.invalid.forEach(invalidCase =>
                 FlatRuleTester.it(sanitize(invalidCase.name), () => {
-                  if (invalidCase.format) {
+                  if (invalidCase.extension) {
                     assert.ok(
-                      invalidCase.format in this.#config.extensions,
-                      `Undefined format: ${sanitize(invalidCase.format)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
+                      invalidCase.extension in this.#config.extensions,
+                      `Undefined format: ${sanitize(invalidCase.extension)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
                     );
                   }
 
-                  const name = `/file.${invalidCase.format ?? 'ts'}`;
+                  const name = `/file.${invalidCase.extension ?? 'ts'}`;
                   assert.ok(
                     existsSync(join(this.#fixtureDir, name)),
                     'Fixtures must exist',
@@ -229,12 +230,12 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                       files: ['**/*.*'],
                     },
                   ];
-                  if (invalidCase.format) {
+                  if (invalidCase.extension) {
                     const formatConfig =
-                      this.#config.extensions[invalidCase.format as F];
+                      this.#config.extensions[invalidCase.extension as F];
                     fullConfig.splice(1, 0, {
                       ...formatConfig,
-                      files: [`**/*.${invalidCase.format}`],
+                      files: [`**/*.${invalidCase.extension}`],
                     });
                   }
 
@@ -342,12 +343,20 @@ export class FlatRuleTester<F extends string> extends TestFramework {
 
                     // eslint-disable-next-line deprecation/deprecation
                     if (expectedMessage.data) {
-                      // TODO: Implement a compatible version
-                      if (!this.#config.hideLegacyConfigLeftovers) {
-                        throw new Error(
-                          'The data property of invalid testcases is unimplemented and deprecated, use hideLegacyConfigLeftovers to hide this',
-                        );
-                      }
+                      this.#config;
+                      assert.ok(message.messageId !== undefined);
+
+                      const hydrated = interpolate(
+                        rule.meta.messages[message.messageId],
+                        // eslint-disable-next-line deprecation/deprecation
+                        expectedMessage.data as Record<string, unknown>,
+                      );
+
+                      assert.strictEqual(
+                        message.message,
+                        hydrated,
+                        'Message must be equal to data-hydrated message',
+                      );
                     }
 
                     if (expectedMessage.suggestions !== undefined) {
@@ -370,21 +379,23 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                           assert.strictEqual(
                             expectedSuggestion.desc,
                             suggestion.desc,
-                            'Error message ID must be the same',
+                            'Suggestion description must be the same',
                           );
                         }
                         if (expectedSuggestion.output) {
                           assert.strictEqual(
                             expectedSuggestion.output,
-                            suggestion.fix,
-                            'Error message ID must be the same',
+                            SourceCodeFixer.applyFixes(results.output, [
+                              suggestion,
+                            ]).output,
+                            'Suggestion must be the same must be the same',
                           );
                         }
                         if (expectedSuggestion.messageId) {
                           assert.strictEqual(
                             expectedSuggestion.messageId,
                             suggestion.messageId,
-                            'Error message ID must be the same',
+                            'Suggestion message ID must be the same',
                           );
                         }
                       });
@@ -463,7 +474,7 @@ export class FlatRuleConfig<
    * Do not use for new rules
    */
   fromObject(
-    defaultConfiguration: Options,
+    defaultConfiguration: Options | null,
     obj: {
       valid: (LegacyValidSample<Options> | string)[];
       invalid: LegacyInvalidSample<MessageIds, Options>[];
@@ -471,6 +482,9 @@ export class FlatRuleConfig<
     },
   ): void {
     const format = obj.format ?? 'ts';
+    if (defaultConfiguration == null) {
+      defaultConfiguration = this.#rule.defaultOptions;
+    }
 
     obj.valid.forEach(it => {
       if (typeof it === 'string') {
@@ -545,7 +559,7 @@ export class FlatRuleConfiguration<
     this.#validSamples.push({
       code,
       name,
-      format,
+      extension: format,
     });
     return this;
   }
@@ -562,7 +576,7 @@ export class FlatRuleConfiguration<
       name,
       output,
       errors,
-      format,
+      extension: format,
     });
     return this;
   }
