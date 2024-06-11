@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "7.12.0",
+  "version": "7.13.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -48,8 +48,6 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
-    "check-configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
@@ -62,10 +60,10 @@
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "7.12.0",
-    "@typescript-eslint/type-utils": "7.12.0",
-    "@typescript-eslint/utils": "7.12.0",
-    "@typescript-eslint/visitor-keys": "7.12.0",
+    "@typescript-eslint/scope-manager": "7.13.0",
+    "@typescript-eslint/type-utils": "7.13.0",
+    "@typescript-eslint/utils": "7.13.0",
+    "@typescript-eslint/visitor-keys": "7.13.0",
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
@@ -76,8 +74,8 @@
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "7.12.0",
-    "@typescript-eslint/rule-tester": "7.12.0",
+    "@typescript-eslint/rule-schema-to-typescript-types": "7.13.0",
+    "@typescript-eslint/rule-tester": "7.13.0",
     "ajv": "^6.12.6",
     "cross-env": "^7.0.3",
     "cross-fetch": "*",

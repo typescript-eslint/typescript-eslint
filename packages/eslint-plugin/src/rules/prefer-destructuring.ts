@@ -121,7 +121,9 @@ export default createRule<Options, MessageIds>({
           ? baseRules
           : baseRulesWithoutFix();
       if (
-        'typeAnnotation' in leftNode &&
+        (leftNode.type === AST_NODE_TYPES.ArrayPattern ||
+          leftNode.type === AST_NODE_TYPES.Identifier ||
+          leftNode.type === AST_NODE_TYPES.ObjectPattern) &&
         leftNode.typeAnnotation !== undefined &&
         !enforceForDeclarationWithTypeAnnotation
       ) {
