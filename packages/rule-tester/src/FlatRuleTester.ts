@@ -172,7 +172,10 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                     this.#config.defaultExtension ??
                     'ts') as F;
                   assert.ok(
-                    Object.hasOwn(this.#config.extensions, extension),
+                    Object.prototype.hasOwnProperty.call(
+                      this.#config.extensions,
+                      extension,
+                    ),
                     `Undefined format: ${sanitize(extension)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
                   );
 
@@ -220,7 +223,10 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                     this.#config.defaultExtension ??
                     'ts') as F;
                   assert.ok(
-                    Object.hasOwn(this.#config.extensions, extension),
+                    Object.prototype.hasOwnProperty.call(
+                      this.#config.extensions,
+                      extension,
+                    ),
                     `Undefined format: ${sanitize(extension)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
                   );
 
