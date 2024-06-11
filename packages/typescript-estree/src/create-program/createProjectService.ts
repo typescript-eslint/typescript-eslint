@@ -69,7 +69,7 @@ export function createProjectService(
     // The debug library doesn't use levels without creating a namespace for each.
     // Log levels are not passed to the writer so we wouldn't be able to forward
     // to a respective namespace.  Supporting would require an additional flag for
-    // grainular control.  Defaulting to all levels for now.
+    // granular control.  Defaulting to all levels for now.
     hasLevel: (): boolean => true,
     info(s) {
       this.msg(s, tsserver.server.Msg.Info);
