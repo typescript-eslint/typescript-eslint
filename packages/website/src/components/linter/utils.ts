@@ -48,13 +48,6 @@ export function createEditOperation(
   };
 }
 
-/**
- * @see https://typescript-eslint.io/packages/rule-tester/#type-aware-testing
- */
-export function createFileName(extension = '.ts'): string {
-  return `/${extension.endsWith('sx') ? 'react' : 'file'}.${extension}`;
-}
-
 function normalizeCode(code: Monaco.editor.IMarker['code']): {
   value: string;
   target?: string;
