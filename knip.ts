@@ -58,6 +58,9 @@ export default {
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
     },
+    'packages/rule-tester': {
+      ignore: ['tests/fixtures/**'],
+    },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
     },
