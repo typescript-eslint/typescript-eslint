@@ -22,9 +22,14 @@ export interface ProjectServiceSettings {
   service: TypeScriptProjectService;
 }
 
+export interface ProjectServiceParseSettings {
+  extraFileExtensions?: string[];
+}
+
 export function createProjectService(
   optionsRaw: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
+  parseSettings?: ProjectServiceParseSettings,
 ): ProjectServiceSettings {
   const options = typeof optionsRaw === 'object' ? optionsRaw : {};
   validateDefaultProjectForFilesGlob(options);
@@ -93,6 +98,18 @@ export function createProjectService(
           },
         )}`,
       );
+    }
+
+    if (parseSettings?.extraFileExtensions?.length) {
+      service.setHostConfiguration({
+        extraFileExtensions: parseSettings.extraFileExtensions.map(
+          extension => ({
+            extension,
+            isMixedContent: false,
+            scriptKind: tsserver.ScriptKind.Deferred,
+          }),
+        ),
+      });
     }
 
     service.setCompilerOptionsForInferredProjects(

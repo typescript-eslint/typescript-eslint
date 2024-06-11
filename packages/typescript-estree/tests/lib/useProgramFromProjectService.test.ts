@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'path';
-import { ScriptKind } from 'typescript';
 
 import type {
   ProjectServiceSettings,
@@ -23,7 +22,6 @@ const currentDirectory = '/repos/repo';
 
 function createMockProjectService() {
   const openClientFile = jest.fn();
-  const setHostConfiguration = jest.fn();
   const service = {
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
@@ -35,7 +33,6 @@ function createMockProjectService() {
       getCurrentDirectory: () => currentDirectory,
     },
     openClientFile,
-    setHostConfiguration,
   };
 
   return {
@@ -300,48 +297,5 @@ If you absolutely need more files included, set parserOptions.projectService.max
     );
 
     expect(actual).toBe(program);
-  });
-
-  it('does not call setHostConfiguration if extraFileExtensions are not provided', () => {
-    const { service } = createMockProjectService();
-
-    useProgramFromProjectService(
-      createProjectServiceSettings({
-        allowDefaultProject: [mockParseSettings.filePath],
-        service,
-      }),
-      mockParseSettings,
-      false,
-      new Set(),
-    );
-
-    expect(service.setHostConfiguration).not.toHaveBeenCalled();
-  });
-
-  it('calls setHostConfiguration on the service to use extraFileExtensions when it is provided', () => {
-    const { service } = createMockProjectService();
-
-    useProgramFromProjectService(
-      createProjectServiceSettings({
-        allowDefaultProject: [mockParseSettings.filePath],
-        service,
-      }),
-      {
-        ...mockParseSettings,
-        extraFileExtensions: ['.vue'],
-      },
-      false,
-      new Set(),
-    );
-
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
-      extraFileExtensions: [
-        {
-          extension: '.vue',
-          isMixedContent: false,
-          scriptKind: ScriptKind.Deferred,
-        },
-      ],
-    });
   });
 });

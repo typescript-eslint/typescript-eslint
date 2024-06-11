@@ -61,6 +61,11 @@ export function createParseSettings(
         return JSDocParsingMode.ParseAll;
     }
   })();
+  const extraFileExtensions =
+    Array.isArray(tsestreeOptions.extraFileExtensions) &&
+    tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')
+      ? tsestreeOptions.extraFileExtensions
+      : [];
 
   const parseSettings: MutableParseSettings = {
     allowInvalidAST: tsestreeOptions.allowInvalidAST === true,
@@ -76,11 +81,7 @@ export function createParseSettings(
           : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: tsestreeOptions.errorOnUnknownASTType === true,
-    extraFileExtensions:
-      Array.isArray(tsestreeOptions.extraFileExtensions) &&
-      tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')
-        ? tsestreeOptions.extraFileExtensions
-        : [],
+    extraFileExtensions,
     filePath: ensureAbsolutePath(
       typeof tsestreeOptions.filePath === 'string' &&
         tsestreeOptions.filePath !== '<input>'
@@ -110,6 +111,7 @@ export function createParseSettings(
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
             tsestreeOptions.projectService,
             jsDocParsingMode,
+            { extraFileExtensions },
           ))
         : undefined,
     range: tsestreeOptions.range === true,
