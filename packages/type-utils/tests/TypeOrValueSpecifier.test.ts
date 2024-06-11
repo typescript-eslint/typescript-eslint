@@ -11,13 +11,11 @@ describe('TypeOrValueSpecifier', () => {
     const ajv = new Ajv();
     const validate = ajv.compile(typeOrValueSpecifierSchema);
 
-    function runTestPositive(data: unknown): void {
+    const runTestPositive = (...data: unknown[]): void =>
       expect(validate(data)).toBe(true);
-    }
 
-    function runTestNegative(data: unknown): void {
+    const runTestNegative = (...data: unknown[]): void =>
       expect(validate(data)).toBe(false);
-    }
 
     it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']])(
       'matches a simple string specifier %s',
@@ -133,19 +131,15 @@ describe('TypeOrValueSpecifier', () => {
       );
     }
 
-    function runTestPositive(
+    const runTestPositive = (
       code: string,
       specifier: TypeOrValueSpecifier,
-    ): void {
-      runTests(code, specifier, true);
-    }
+    ): void => runTests(code, specifier, true);
 
-    function runTestNegative(
+    const runTestNegative = (
       code: string,
       specifier: TypeOrValueSpecifier,
-    ): void {
-      runTests(code, specifier, false);
-    }
+    ): void => runTests(code, specifier, false);
 
     it.each<[string, TypeOrValueSpecifier]>([
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
