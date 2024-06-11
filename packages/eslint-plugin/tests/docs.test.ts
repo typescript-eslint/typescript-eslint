@@ -30,10 +30,7 @@ interface ParsedMarkdownFile {
 function parseMarkdownFile(filePath: string): ParsedMarkdownFile {
   const fullText = fs.readFileSync(filePath, 'utf-8');
 
-  const tokens = marked.lexer(fullText, {
-    gfm: true,
-    silent: false,
-  });
+  const tokens = marked.lexer(fullText, { gfm: true, silent: false });
 
   return { fullText, tokens };
 }
@@ -128,6 +125,7 @@ describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
+    'shared',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
     'camelcase.md',
@@ -191,10 +189,7 @@ describe('Validating rule docs', () => {
       const { fullText, tokens } = parseMarkdownFile(filePath);
 
       test(`${ruleName}.mdx must start with frontmatter description`, () => {
-        expect(tokens[0]).toMatchObject({
-          raw: '---\n',
-          type: 'hr',
-        });
+        expect(tokens[0]).toMatchObject({ raw: '---\n', type: 'hr' });
         expect(tokens[1]).toMatchObject({
           text: description.includes("'")
             ? `description: "${description}."`
@@ -341,9 +336,7 @@ describe('Validating rule docs', () => {
 
           try {
             parseForESLint(token.text, {
-              ecmaFeatures: {
-                jsx: /^tsx\b/i.test(lang),
-              },
+              ecmaFeatures: { jsx: /^tsx\b/i.test(lang) },
               ecmaVersion: 'latest',
               sourceType: 'module',
               range: true,
@@ -438,9 +431,7 @@ describe('Validating rule docs', () => {
                 tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
               },
-              rules: {
-                [ruleName]: ruleConfig,
-              },
+              rules: { [ruleName]: ruleConfig },
             },
             /^tsx\b/i.test(lang) ? 'react.tsx' : 'file.ts',
           );
