@@ -4045,6 +4045,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/eslint@patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/eslint@patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch::version=19.3.0-canary.20240611-1600875&hash=a8c594&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
+    "@nx/linter": 19.3.0-canary.20240611-1600875
+    semver: ^7.5.3
+    tslib: ^2.3.0
+    typescript: ~5.4.2
+  peerDependencies:
+    "@zkochan/js-yaml": 0.0.7
+    eslint: ^8.0.0 || ^9.0.0
+  peerDependenciesMeta:
+    "@zkochan/js-yaml":
+      optional: true
+  checksum: 1f4bedc1072d601d142edf140bd33033f8f34dc57bb9ccecf582606f3483d9f0fd06d340e0c892cabb8c6ac820f5c23720ed95741199f9c0268a56cf614e7c57
+  languageName: node
+  linkType: hard
+
 "@nx/jest@npm:19.3.0-canary.20240611-1600875":
   version: 19.3.0-canary.20240611-1600875
   resolution: "@nx/jest@npm:19.3.0-canary.20240611-1600875"
@@ -15694,6 +15714,90 @@ __metadata:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
   checksum: 754e945685a9763edaefaaf06cd026ba33813bf08e4897eaf07e2a47a82b72312a49e95763184beae7d4a7e7e29cc76fc7dc61ab9035c87fef06b424a1595cb6
+  languageName: node
+  linkType: hard
+
+"nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::version=19.3.0-canary.20240611-1600875&hash=a55919&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nrwl/tao": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-arm64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-freebsd-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm-gnueabihf": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-arm64-msvc": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-x64-msvc": 19.3.0-canary.20240611-1600875
+    "@yarnpkg/lockfile": ^1.1.0
+    "@yarnpkg/parsers": 3.0.0-rc.46
+    "@zkochan/js-yaml": 0.0.7
+    axios: ^1.6.0
+    chalk: ^4.1.0
+    cli-cursor: 3.1.0
+    cli-spinners: 2.6.1
+    cliui: ^8.0.1
+    dotenv: ~16.3.1
+    dotenv-expand: ~10.0.0
+    enquirer: ~2.3.6
+    figures: 3.2.0
+    flat: ^5.0.2
+    front-matter: ^4.0.2
+    fs-extra: ^11.1.0
+    ignore: ^5.0.4
+    jest-diff: ^29.4.1
+    jsonc-parser: 3.2.0
+    lines-and-columns: ~2.0.3
+    minimatch: 9.0.3
+    node-machine-id: 1.1.12
+    npm-run-path: ^4.0.1
+    open: ^8.4.0
+    ora: 5.3.0
+    semver: ^7.5.3
+    string-width: ^4.2.3
+    strong-log-transformer: ^2.1.0
+    tar-stream: ~2.2.0
+    tmp: ~0.2.1
+    tsconfig-paths: ^4.1.2
+    tslib: ^2.3.0
+    yargs: ^17.6.2
+    yargs-parser: 21.1.1
+  peerDependencies:
+    "@swc-node/register": ^1.8.0
+    "@swc/core": ^1.3.85
+  dependenciesMeta:
+    "@nx/nx-darwin-arm64":
+      optional: true
+    "@nx/nx-darwin-x64":
+      optional: true
+    "@nx/nx-freebsd-x64":
+      optional: true
+    "@nx/nx-linux-arm-gnueabihf":
+      optional: true
+    "@nx/nx-linux-arm64-gnu":
+      optional: true
+    "@nx/nx-linux-arm64-musl":
+      optional: true
+    "@nx/nx-linux-x64-gnu":
+      optional: true
+    "@nx/nx-linux-x64-musl":
+      optional: true
+    "@nx/nx-win32-arm64-msvc":
+      optional: true
+    "@nx/nx-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc-node/register":
+      optional: true
+    "@swc/core":
+      optional: true
+  bin:
+    nx: bin/nx.js
+    nx-cloud: bin/nx-cloud.js
+  checksum: d814ddc827c4dedee3d3bef4de2b4ded01e9d885d1fe0787cb98aef1477dccf93d1e05e9160583fcd2a86186b662e37ac09723a8ee96a06528ed687159d16f43
   languageName: node
   linkType: hard
 
