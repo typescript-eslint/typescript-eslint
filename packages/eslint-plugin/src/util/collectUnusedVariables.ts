@@ -236,20 +236,9 @@ class UnusedVarsVisitor extends Visitor {
     }
   }
 
-  //#endregion HELPERS
-
-  //#region VISITORS
-  // NOTE - This is a simple visitor - meaning it does not support selectors
-
-  protected ClassDeclaration = this.visitClass;
-
-  protected ClassExpression = this.visitClass;
-
-  protected FunctionDeclaration = this.visitFunction;
-
-  protected FunctionExpression = this.visitFunction;
-
-  protected ForInStatement(node: TSESTree.ForInStatement): void {
+  private visitForInForOf(
+    node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
+  ): void {
     /**
      * (Brad Zacher): I hate that this has to exist.
      * But it is required for compat with the base ESLint rule.
@@ -297,6 +286,23 @@ class UnusedVarsVisitor extends Visitor {
 
     this.markVariableAsUsed(idOrVariable);
   }
+
+  //#endregion HELPERS
+
+  //#region VISITORS
+  // NOTE - This is a simple visitor - meaning it does not support selectors
+
+  protected ClassDeclaration = this.visitClass;
+
+  protected ClassExpression = this.visitClass;
+
+  protected FunctionDeclaration = this.visitFunction;
+
+  protected FunctionExpression = this.visitFunction;
+
+  protected ForInStatement = this.visitForInForOf;
+
+  protected ForOfStatement = this.visitForInForOf;
 
   protected Identifier(node: TSESTree.Identifier): void {
     const scope = this.getScope(node);
@@ -553,6 +559,31 @@ function isUsedVariable(variable: ScopeVariable): boolean {
   }
 
   /**
+   * Checks whether a given node is unused expression or not.
+   * @param node The node itself
+   * @returns The node is an unused expression.
+   */
+  function isUnusedExpression(node: TSESTree.Expression): boolean {
+    const parent = node.parent;
+
+    if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
+      return true;
+    }
+
+    if (parent.type === AST_NODE_TYPES.SequenceExpression) {
+      const isLastExpression =
+        parent.expressions[parent.expressions.length - 1] === node;
+
+      if (!isLastExpression) {
+        return true;
+      }
+      return isUnusedExpression(parent);
+    }
+
+    return false;
+  }
+
+  /**
    * If a given reference is left-hand side of an assignment, this gets
    * the right-hand side node of the assignment.
    *
@@ -594,8 +625,6 @@ function isUsedVariable(variable: ScopeVariable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const grandparent = parent.parent!;
     const refScope = ref.from.variableScope;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const varScope = ref.resolved!.scope.variableScope;
@@ -611,7 +640,7 @@ function isUsedVariable(variable: ScopeVariable): boolean {
 
     if (
       parent.type === AST_NODE_TYPES.AssignmentExpression &&
-      grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
+      isUnusedExpression(parent) &&
       id === parent.left &&
       !canBeUsedLater
     ) {
@@ -729,19 +758,16 @@ function isUsedVariable(variable: ScopeVariable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6225
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const grandparent = parent.parent!;
 
     return (
       ref.isRead() && // in RHS of an assignment for itself. e.g. `a = a + 1`
       // self update. e.g. `a += 1`, `a++`
       ((parent.type === AST_NODE_TYPES.AssignmentExpression &&
         !LOGICAL_ASSIGNMENT_OPERATORS.has(parent.operator) &&
-        grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
+        isUnusedExpression(parent) &&
         parent.left === id) ||
         (parent.type === AST_NODE_TYPES.UpdateExpression &&
-          grandparent.type === AST_NODE_TYPES.ExpressionStatement) ||
+          isUnusedExpression(parent)) ||
         (!!rhsNode &&
           isInside(id, rhsNode) &&
           !isInsideOfStorableFunction(id, rhsNode)))

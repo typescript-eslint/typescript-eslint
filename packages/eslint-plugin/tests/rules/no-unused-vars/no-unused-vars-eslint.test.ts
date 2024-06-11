@@ -1,6 +1,6 @@
 // The following tests are adapted from the tests in eslint.
-// Original Code: https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/tests/lib/rules/no-unused-vars.js
-// License      : https://github.com/eslint/eslint/blob/0cb81a9b90dd6b92bac383022f886e501bd2cb31/LICENSE
+// Original Code: https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/tests/lib/rules/no-unused-vars.js
+// License      : https://github.com/eslint/eslint/blob/eb76282e0a2db8aa10a3d5659f5f9237d9729121/LICENSE
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
@@ -90,7 +90,7 @@ function assignedError(
 function usedIgnoredError(
   varName: string,
   additional = '',
-  type: AST_NODE_TYPES = AST_NODE_TYPES.Identifier,
+  type = AST_NODE_TYPES.Identifier,
 ): TSESLint.TestCaseError<MessageIds> {
   return {
     messageId: 'usedIgnoredVar',
@@ -272,13 +272,6 @@ foo();
   doSomething();
 })();
     `,
-    {
-      code: `
-try {
-} catch (e) {}
-      `,
-      options: [{ caughtErrors: 'none' }],
-    },
     '/*global a */ a;',
     {
       code: `
@@ -823,6 +816,7 @@ let _x, y;
 _x = 1;
 [_x, y] = foo;
 y;
+
 // doesn't report _a
 let _a, b;
 [_a, b] = foo;
@@ -839,6 +833,7 @@ let _x, y;
 _x = 1;
 [_x, y] = foo;
 y;
+
 // doesn't report _a
 let _a, b;
 _a = 1;
@@ -937,7 +932,96 @@ b;
       parserOptions: { ecmaVersion: 6 },
     },
 
+    // For-of loops
+    {
+      code: `
+(function (iter) {
+  let name;
+  for (name of iter) return;
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+(function (iter) {
+  let name;
+  for (name of iter) {
+    return;
+  }
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+(function (iter) {
+  for (let name of iter) {
+    return true;
+  }
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+(function (iter) {
+  for (let name of iter) return true;
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+
+    {
+      code: `
+(function (iter) {
+  for (const name of iter) {
+    return true;
+  }
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+(function (iter) {
+  for (const name of iter) return true;
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+
+    // Sequence Expressions (See https://github.com/eslint/eslint/issues/14325)
+    {
+      code: `
+let x = 0;
+foo = (0, x++);
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+let x = 0;
+foo = (0, (x += 1));
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+let x = 0;
+foo = (0, (x = x + 1));
+      `,
+      parserOptions: { ecmaVersion: 6 },
+    },
+
     // caughtErrors
+    {
+      code: `
+try {
+} catch (err) {}
+      `,
+      options: [{ caughtErrors: 'none' }],
+    },
     {
       code: `
 try {
@@ -950,9 +1034,9 @@ try {
     {
       code: `
 try {
-} catch (err) {}
+} catch (ignoreErr) {}
       `,
-      options: [{ caughtErrors: 'none' }],
+      options: [{ caughtErrorsIgnorePattern: '^ignore' }],
     },
     {
       code: `
@@ -968,7 +1052,7 @@ try {
 try {
 } catch (err) {}
       `,
-      options: [{ vars: 'all', args: 'all', caughtErrors: 'none' }],
+      options: [{ caughtErrors: 'none', vars: 'all', args: 'all' }],
     },
 
     // Using object rest for variable omission
@@ -1230,36 +1314,27 @@ a();
       parserOptions: { ecmaVersion: 2020, sourceType: 'module' },
     },
 
-    // https://github.com/eslint/eslint/issues/17568
+    // https://github.com/eslint/eslint/issues/17299
     {
       code: `
-const a = 5;
-const _c = a + 5;
+var a;
+a ||= 1;
       `,
-      options: [
-        { args: 'all', varsIgnorePattern: '^_', reportUsedIgnorePattern: true },
-      ],
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions: { ecmaVersion: 2021 },
     },
     {
       code: `
-(function foo(a, _b) {
-  return a + 5;
-})(5);
+var a;
+a &&= 1;
       `,
-      options: [
-        { args: 'all', argsIgnorePattern: '^_', reportUsedIgnorePattern: true },
-      ],
+      parserOptions: { ecmaVersion: 2021 },
     },
     {
       code: `
-const [a, _b, c] = items;
-console.log(a + c);
+var a;
+a ??= 1;
       `,
-      options: [
-        { destructuredArrayIgnorePattern: '^_', reportUsedIgnorePattern: true },
-      ],
-      parserOptions: { ecmaVersion: 6 },
+      parserOptions: { ecmaVersion: 2021 },
     },
 
     // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
@@ -1293,6 +1368,38 @@ class Foo {
         { ignoreClassWithStaticInitBlock: false, varsIgnorePattern: '^Foo' },
       ],
       parserOptions: { ecmaVersion: 2022 },
+    },
+
+    // https://github.com/eslint/eslint/issues/17568
+    {
+      code: `
+const a = 5;
+const _c = a + 5;
+      `,
+      options: [
+        { args: 'all', varsIgnorePattern: '^_', reportUsedIgnorePattern: true },
+      ],
+      parserOptions: { ecmaVersion: 6 },
+    },
+    {
+      code: `
+(function foo(a, _b) {
+  return a + 5;
+})(5);
+      `,
+      options: [
+        { args: 'all', argsIgnorePattern: '^_', reportUsedIgnorePattern: true },
+      ],
+    },
+    {
+      code: `
+const [a, _b, c] = items;
+console.log(a + c);
+      `,
+      options: [
+        { destructuredArrayIgnorePattern: '^_', reportUsedIgnorePattern: true },
+      ],
+      parserOptions: { ecmaVersion: 6 },
     },
   ],
   invalid: [
@@ -1728,6 +1835,7 @@ foo();
         },
       ],
     },
+
     // https://github.com/eslint/eslint/issues/15611
     {
       code: `
@@ -1851,6 +1959,7 @@ foo();
     {
       code: `
 let _a, b;
+
 foo.forEach(item => {
   [a, b] = item;
 });
@@ -1923,6 +2032,75 @@ foo.forEach(item => {
   }
 })({});
       `,
+      errors: [
+        {
+          line: 3,
+          column: 12,
+          messageId: 'unusedVar',
+          data: {
+            varName: 'name',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+
+    // For-of loops
+    {
+      code: `
+(function (iter) {
+  var name;
+  for (name of iter) {
+    i();
+    return;
+  }
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          line: 4,
+          column: 8,
+          messageId: 'unusedVar',
+          data: {
+            varName: 'name',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+(function (iter) {
+  var name;
+  for (name of iter) {
+  }
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
+      errors: [
+        {
+          line: 4,
+          column: 8,
+          messageId: 'unusedVar',
+          data: {
+            varName: 'name',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+(function (iter) {
+  for (var name of iter) {
+  }
+})({});
+      `,
+      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           line: 3,
@@ -2274,7 +2452,7 @@ a$fooz;
 /*global 𠮷𩸽, 𠮷*/
 𠮷𩸽;
       `,
-      env: { es6: true },
+      parserOptions: { ecmaVersion: 6 },
       errors: [
         {
           line: 2,
@@ -2336,6 +2514,13 @@ export default (a, b) => {
     },
 
     // caughtErrors
+    {
+      code: `
+try {
+} catch (err) {}
+      `,
+      errors: [definedError('err')],
+    },
     {
       code: `
 try {
@@ -2641,6 +2826,173 @@ foo*/
       parserOptions: { ecmaVersion: 2015 },
       errors: [definedError('a'), definedError('c')],
     },
+
+    // https://github.com/eslint/eslint/issues/14325
+    {
+      code: `
+let x = 0;
+x++, (x = 0);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 7 }],
+    },
+    {
+      code: `
+let x = 0;
+x++, (x = 0);
+x = 3;
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 4, column: 1 }],
+    },
+    {
+      code: `
+let x = 0;
+x++, 0;
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 1 }],
+    },
+    {
+      code: `
+let x = 0;
+0, x++;
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 4 }],
+    },
+    {
+      code: `
+let x = 0;
+0, (1, x++);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 8 }],
+    },
+    {
+      code: `
+let x = 0;
+foo = (x++, 0);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 8 }],
+    },
+    {
+      code: `
+let x = 0;
+foo = ((0, x++), 0);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 12 }],
+    },
+    {
+      code: `
+let x = 0;
+(x += 1), 0;
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 2 }],
+    },
+    {
+      code: `
+let x = 0;
+0, (x += 1);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 5 }],
+    },
+    {
+      code: `
+let x = 0;
+0, (1, (x += 1));
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 9 }],
+    },
+    {
+      code: `
+let x = 0;
+foo = ((x += 1), 0);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 9 }],
+    },
+    {
+      code: `
+let x = 0;
+foo = ((0, (x += 1)), 0);
+      `,
+      parserOptions: { ecmaVersion: 2015 },
+      errors: [{ ...assignedError('x'), line: 3, column: 13 }],
+    },
+
+    // https://github.com/eslint/eslint/issues/14866
+    {
+      code: `
+let z = 0;
+(z = z + 1), (z = 2);
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('z'), line: 3, column: 15 }],
+    },
+    {
+      code: `
+let z = 0;
+(z = z + 1), (z = 2);
+z = 3;
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('z'), line: 4, column: 1 }],
+    },
+    {
+      code: `
+let z = 0;
+(z = z + 1), (z = 2);
+z = z + 3;
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('z'), line: 4, column: 1 }],
+    },
+    {
+      code: `
+let x = 0;
+0, (x = x + 1);
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('x'), line: 3, column: 5 }],
+    },
+    {
+      code: `
+let x = 0;
+(x = x + 1), 0;
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('x'), line: 3, column: 2 }],
+    },
+    {
+      code: `
+let x = 0;
+foo = ((0, (x = x + 1)), 0);
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('x'), line: 3, column: 13 }],
+    },
+    {
+      code: `
+let x = 0;
+foo = ((x = x + 1), 0);
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('x'), line: 3, column: 9 }],
+    },
+    {
+      code: `
+let x = 0;
+0, (1, (x = x + 1));
+      `,
+      parserOptions: { ecmaVersion: 2020 },
+      errors: [{ ...assignedError('x'), line: 3, column: 9 }],
+    },
     {
       code: `
 (function ({ a, b }, { c }) {
@@ -2707,16 +3059,7 @@ var a = function () {
   };
 };
       `,
-      errors: [assignedError('a')],
-    },
-    {
-      code: `
-const a = () => {
-  a();
-};
-      `,
-      parserOptions: { ecmaVersion: 2015 },
-      errors: [assignedError('a')],
+      errors: [{ ...assignedError('a'), line: 2, column: 5 }],
     },
     {
       code: `
@@ -2725,7 +3068,7 @@ const a = () => () => {
 };
       `,
       parserOptions: { ecmaVersion: 2015 },
-      errors: [assignedError('a')],
+      errors: [{ ...assignedError('a'), line: 2, column: 7 }],
     },
     {
       code: `
@@ -2733,13 +3076,7 @@ let myArray = [1, 2, 3, 4].filter(x => x == 0);
 myArray = myArray.filter(x => x == 1);
       `,
       parserOptions: { ecmaVersion: 2015 },
-      errors: [
-        {
-          ...assignedError('myArray'),
-          line: 3,
-          column: 1,
-        },
-      ],
+      errors: [{ ...assignedError('myArray'), line: 3, column: 1 }],
     },
     {
       code: `
@@ -2747,43 +3084,7 @@ const a = 1;
 a += 1;
       `,
       parserOptions: { ecmaVersion: 2015 },
-      errors: [
-        {
-          ...assignedError('a'),
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-var a = function () {
-  a();
-};
-      `,
-      errors: [
-        {
-          ...assignedError('a'),
-          line: 2,
-          column: 5,
-        },
-      ],
-    },
-    {
-      code: `
-var a = function () {
-  return function () {
-    a();
-  };
-};
-      `,
-      errors: [
-        {
-          ...assignedError('a'),
-          line: 2,
-          column: 5,
-        },
-      ],
+      errors: [{ ...assignedError('a'), line: 3, column: 1 }],
     },
     {
       code: `
@@ -2792,28 +3093,7 @@ const a = () => {
 };
       `,
       parserOptions: { ecmaVersion: 2015 },
-      errors: [
-        {
-          ...assignedError('a'),
-          line: 2,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: `
-const a = () => () => {
-  a();
-};
-      `,
-      parserOptions: { ecmaVersion: 2015 },
-      errors: [
-        {
-          ...assignedError('a'),
-          line: 2,
-          column: 7,
-        },
-      ],
+      errors: [{ ...assignedError('a'), line: 2, column: 7 }],
     },
 
     // https://github.com/eslint/eslint/issues/14324
@@ -2882,16 +3162,70 @@ function foo1() {
     c = 13;
   };
 }
+
 c = foo1;
       `,
       parserOptions: { ecmaVersion: 2020 },
-      errors: [
-        {
-          ...assignedError('c'),
-          line: 10,
-          column: 1,
-        },
-      ],
+      errors: [{ ...assignedError('c'), line: 11, column: 1 }],
+    },
+
+    // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: false }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+}
+      `,
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static {
+    var bar;
+  }
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('bar'), line: 4, column: 9 }],
+    },
+    {
+      code: 'class Foo {}',
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 1, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static bar;
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
+    },
+    {
+      code: `
+class Foo {
+  static bar() {}
+}
+      `,
+      options: [{ ignoreClassWithStaticInitBlock: true }],
+      parserOptions: { ecmaVersion: 2022 },
+      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
     },
 
     // https://github.com/eslint/eslint/issues/17568
@@ -2997,65 +3331,6 @@ try {
         },
       ],
       errors: [usedIgnoredError('_err', '. Used args must not match /^_/u')],
-    },
-
-    // ignore class with static initialization block https://github.com/eslint/eslint/issues/17772
-    {
-      code: `
-class Foo {
-  static {}
-}
-      `,
-      options: [{ ignoreClassWithStaticInitBlock: false }],
-      parserOptions: { ecmaVersion: 2022 },
-      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
-    },
-    {
-      code: `
-class Foo {
-  static {}
-}
-      `,
-      parserOptions: { ecmaVersion: 2022 },
-      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
-    },
-    {
-      code: `
-class Foo {
-  static {
-    var bar;
-  }
-}
-      `,
-      options: [{ ignoreClassWithStaticInitBlock: true }],
-      parserOptions: { ecmaVersion: 2022 },
-      errors: [{ ...definedError('bar'), line: 4, column: 9 }],
-    },
-    {
-      code: 'class Foo {}',
-      options: [{ ignoreClassWithStaticInitBlock: true }],
-      parserOptions: { ecmaVersion: 2022 },
-      errors: [{ ...definedError('Foo'), line: 1, column: 7 }],
-    },
-    {
-      code: `
-class Foo {
-  static bar;
-}
-      `,
-      options: [{ ignoreClassWithStaticInitBlock: true }],
-      parserOptions: { ecmaVersion: 2022 },
-      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
-    },
-    {
-      code: `
-class Foo {
-  static bar() {}
-}
-      `,
-      options: [{ ignoreClassWithStaticInitBlock: true }],
-      parserOptions: { ecmaVersion: 2022 },
-      errors: [{ ...definedError('Foo'), line: 2, column: 7 }],
     },
   ],
 });
