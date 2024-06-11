@@ -1,0 +1,19 @@
+diff --git a/src/command-line/release/utils/resolve-changelog-renderer.js b/src/command-line/release/utils/resolve-changelog-renderer.js
+index 8c6fa468633703fcdbe491c08e509d10574cd75d..b1a669d22097dde0c88c7c8d5a956159b246b33c 100644
+--- a/src/command-line/release/utils/resolve-changelog-renderer.js
++++ b/src/command-line/release/utils/resolve-changelog-renderer.js
+@@ -13,10 +13,10 @@ function resolveChangelogRenderer(changelogRendererPath) {
+     let changelogRenderer;
+     let cleanupTranspiler = () => { };
+     try {
+-        const rootTsconfigPath = (0, typescript_1.getRootTsConfigPath)();
+-        if (rootTsconfigPath) {
+-            cleanupTranspiler = (0, register_1.registerTsProject)(rootTsconfigPath);
+-        }
++        // const rootTsconfigPath = (0, typescript_1.getRootTsConfigPath)();
++        // if (rootTsconfigPath) {
++        //     cleanupTranspiler = (0, register_1.registerTsProject)(rootTsconfigPath);
++        // }
+         const r = require(interpolatedChangelogRendererPath);
+         changelogRenderer = r.default || r;
+     }

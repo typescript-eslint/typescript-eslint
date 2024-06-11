@@ -3940,42 +3940,51 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/jest@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nrwl/jest@npm:18.3.5"
+"@nrwl/devkit@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/devkit@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/jest": 18.3.5
-  checksum: d5baa3864f21fffa8cf218da46202c297af8d202db49239b3f8a7b7629e02761ca76b7e02f3b342a1db2b21e93515a1a074c9e8ab6de5753fff0eb7e9531f77d
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+  checksum: b895be06eea3ec93f621bebb72a6416cfe920c9209e897b1c996b587d439739f9ec7a86d8490f1244a644e7fd24cb4d0878ebd8420ba93ff35f08e5f6b8d0eed
   languageName: node
   linkType: hard
 
-"@nrwl/js@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nrwl/js@npm:18.3.5"
+"@nrwl/jest@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/jest@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/js": 18.3.5
-  checksum: 0cf7ca17dc58c82529b3c12443ed1d157046517e73c3d1f25e079eb14c529c2ba58903865a57aeaa0a0381b0010559c177ecf8f3defa12d922419981d4043e18
+    "@nx/jest": 19.3.0-canary.20240611-1600875
+  checksum: 2dc3c1a31ef5af8002e844671a46050bf3374e09074525eb01d49b2c04ed47ed43bfe8d3e7266147b596f496f369e7038b4aadb6526515d0e9fb3dda9d6c989d
   languageName: node
   linkType: hard
 
-"@nrwl/tao@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nrwl/tao@npm:18.3.5"
+"@nrwl/js@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/js@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    nx: 18.3.5
+    "@nx/js": 19.3.0-canary.20240611-1600875
+  checksum: 204c46aac1a9c54fd95373b97bcb0881f58dc4cfd8e17376396feec10b421a730487412b475d43730cc0279dea85f836e41b40b06df9ba4f97304e2cf5d19b04
+  languageName: node
+  linkType: hard
+
+"@nrwl/tao@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/tao@npm:19.3.0-canary.20240611-1600875"
+  dependencies:
+    nx: 19.3.0-canary.20240611-1600875
     tslib: ^2.3.0
   bin:
     tao: index.js
-  checksum: 20590a0bf111a7217232b8d6e440da4b157f8d4b88cc4528103180944529ec8a22cd1b47562298f935ce0331ac2ed9b1710c9b449ffda72e03f3a604ea92b94e
+  checksum: 1225b4c0b7b9eb006100c976c0c1a224a175ca6a96bf2a256cbd17d2d275b9cb92aec209c56bc8c57daba002aa8f8aa1914eaaa38356564d2bc96bc08ace97a1
   languageName: node
   linkType: hard
 
-"@nrwl/workspace@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nrwl/workspace@npm:18.3.5"
+"@nrwl/workspace@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/workspace@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/workspace": 18.3.5
-  checksum: 88e990ea7d937db81425ced2deeced09402eaef8d5a8a799bd6969f1d04f592561c3789eb45a4ecab1f266a7c8135e90e5bef7fa3e9bb39cd376abcf18647990
+    "@nx/workspace": 19.3.0-canary.20240611-1600875
+  checksum: e25f2d1ef423f28df33dec372bb0e8950d6f2be757240fc57e78d0e7f5b7d3d8639fc8d49602a5f24009c29bf354dd0267e872e686818a292ad67eb412b35e75
   languageName: node
   linkType: hard
 
@@ -3997,34 +4006,74 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/eslint@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/eslint@npm:18.3.5"
+"@nx/devkit@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/devkit@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/devkit": 18.3.5
-    "@nx/js": 18.3.5
-    "@nx/linter": 18.3.5
-    eslint: ^8.0.0
+    "@nrwl/devkit": 19.3.0-canary.20240611-1600875
+    ejs: ^3.1.7
+    enquirer: ~2.3.6
+    ignore: ^5.0.4
+    minimatch: 9.0.3
+    semver: ^7.5.3
+    tmp: ~0.2.1
     tslib: ^2.3.0
-    typescript: ~5.4.2
+    yargs-parser: 21.1.1
   peerDependencies:
-    js-yaml: 4.1.0
-  peerDependenciesMeta:
-    js-yaml:
-      optional: true
-  checksum: d763859566d51ffd3ae4db53491b8380610eb68b624c2e9388f8bc3bab9db49f4c6fa598960dac92e1818f2883bbf6624f61aaf23d4c153be4f4d58d8a3ce763
+    nx: ">= 17 <= 20"
+  checksum: 857aba91d3d74408cd6aa4b2c83c07f80b1d2191a9d0ea6af1f76f1d7998967a4432520412bc2544d6ec34b1c6a0ba717d8a64cf2b9865108a191131fa0cdd00
   languageName: node
   linkType: hard
 
-"@nx/jest@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/jest@npm:18.3.5"
+"@nx/eslint@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/eslint@npm:19.3.0-canary.20240611-1600875"
+  dependencies:
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
+    "@nx/linter": 19.3.0-canary.20240611-1600875
+    semver: ^7.5.3
+    tslib: ^2.3.0
+    typescript: ~5.4.2
+  peerDependencies:
+    "@zkochan/js-yaml": 0.0.7
+    eslint: ^8.0.0 || ^9.0.0
+  peerDependenciesMeta:
+    "@zkochan/js-yaml":
+      optional: true
+  checksum: 97e5fb6447460ad705b34c70b9d5d66ceaaafa331d999c9ba2e2c52863c9adcde810900b8ba12439f108105fd5206828d6638a34b27531321007d784514a3c37
+  languageName: node
+  linkType: hard
+
+"@nx/eslint@patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/eslint@patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch::version=19.3.0-canary.20240611-1600875&hash=a8c594&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
+    "@nx/linter": 19.3.0-canary.20240611-1600875
+    semver: ^7.5.3
+    tslib: ^2.3.0
+    typescript: ~5.4.2
+  peerDependencies:
+    "@zkochan/js-yaml": 0.0.7
+    eslint: ^8.0.0 || ^9.0.0
+  peerDependenciesMeta:
+    "@zkochan/js-yaml":
+      optional: true
+  checksum: 1f4bedc1072d601d142edf140bd33033f8f34dc57bb9ccecf582606f3483d9f0fd06d340e0c892cabb8c6ac820f5c23720ed95741199f9c0268a56cf614e7c57
+  languageName: node
+  linkType: hard
+
+"@nx/jest@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/jest@npm:19.3.0-canary.20240611-1600875"
   dependencies:
     "@jest/reporters": ^29.4.1
     "@jest/test-result": ^29.4.1
-    "@nrwl/jest": 18.3.5
-    "@nx/devkit": 18.3.5
-    "@nx/js": 18.3.5
+    "@nrwl/jest": 19.3.0-canary.20240611-1600875
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
     "@phenomnomnominal/tsquery": ~5.0.1
     chalk: ^4.1.0
     identity-obj-proxy: 3.0.0
@@ -4035,13 +4084,13 @@ __metadata:
     resolve.exports: 1.1.0
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: 55a45c8034da9f38281cb522fd58cb5b20ecf14a3b2d0e23bd2c0568e984eea5d8fd72192e726794138e0e4fc6f34d7944f37b1634042c94ef9a94fe7b981fc7
+  checksum: 43fbc5e02f3f7a33de3f95441b7c96a666c1e44422acc367d4490814134ff4d3fe1aa2c75bee2d5d2354ad0efb79dfe73b7975485d506dd9ab0ec97a23e768de
   languageName: node
   linkType: hard
 
-"@nx/js@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/js@npm:18.3.5"
+"@nx/js@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/js@npm:19.3.0-canary.20240611-1600875"
   dependencies:
     "@babel/core": ^7.23.2
     "@babel/plugin-proposal-decorators": ^7.22.7
@@ -4050,10 +4099,9 @@ __metadata:
     "@babel/preset-env": ^7.23.2
     "@babel/preset-typescript": ^7.22.5
     "@babel/runtime": ^7.22.6
-    "@nrwl/js": 18.3.5
-    "@nx/devkit": 18.3.5
-    "@nx/workspace": 18.3.5
-    "@phenomnomnominal/tsquery": ~5.0.1
+    "@nrwl/js": 19.3.0-canary.20240611-1600875
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/workspace": 19.3.0-canary.20240611-1600875
     babel-plugin-const-enum: ^1.0.1
     babel-plugin-macros: ^2.8.0
     babel-plugin-transform-typescript-metadata: ^0.3.1
@@ -4078,101 +4126,101 @@ __metadata:
   peerDependenciesMeta:
     verdaccio:
       optional: true
-  checksum: 5552b6cdec1c2903635299a27168c31d09af8e3f10af5dee958b0753c20dc65bab8f922250fce3b525a9390ae9cbaec14b5e4d068c754a203bf90a288b0730d9
+  checksum: 3dd659289504cae5da59005ceb16a27d1e1daeaedf9c48b07ea3ea6cb978dff2d7b06744b797b47c3f85ed5778f2cc59306effe2cec7bb6cefedeb1e111bb419
   languageName: node
   linkType: hard
 
-"@nx/linter@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/linter@npm:18.3.5"
+"@nx/linter@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/linter@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/eslint": 18.3.5
-  checksum: 65c53e90669fcfaee384689186ec5b6e6aac6fb085e7f381369ebc6e59d8bc3bef060e18232fc25f2bcaeb24b46763f52fcebeefcaeeeb3a27472411ccf97d96
+    "@nx/eslint": 19.3.0-canary.20240611-1600875
+  checksum: 4d0c82aea1093bc18e0349585f4a29c86ab759f555440333e9dbddbc9f9bd25a0512c0ce96728463d4c2f7e2ccf03fec2dab15b31866e3e5a9f1d5e8a4b49288
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-darwin-arm64@npm:18.3.5"
+"@nx/nx-darwin-arm64@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-darwin-arm64@npm:19.3.0-canary.20240611-1600875"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-darwin-x64@npm:18.3.5"
+"@nx/nx-darwin-x64@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-darwin-x64@npm:19.3.0-canary.20240611-1600875"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-freebsd-x64@npm:18.3.5"
+"@nx/nx-freebsd-x64@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-freebsd-x64@npm:19.3.0-canary.20240611-1600875"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:18.3.5"
+"@nx/nx-linux-arm-gnueabihf@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-linux-arm64-gnu@npm:18.3.5"
+"@nx/nx-linux-arm64-gnu@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-arm64-gnu@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-linux-arm64-musl@npm:18.3.5"
+"@nx/nx-linux-arm64-musl@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-arm64-musl@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-linux-x64-gnu@npm:18.3.5"
+"@nx/nx-linux-x64-gnu@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-x64-gnu@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-linux-x64-musl@npm:18.3.5"
+"@nx/nx-linux-x64-musl@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-x64-musl@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-win32-arm64-msvc@npm:18.3.5"
+"@nx/nx-win32-arm64-msvc@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-win32-arm64-msvc@npm:19.3.0-canary.20240611-1600875"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/nx-win32-x64-msvc@npm:18.3.5"
+"@nx/nx-win32-x64-msvc@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-win32-x64-msvc@npm:19.3.0-canary.20240611-1600875"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/workspace@npm:18.3.5":
-  version: 18.3.5
-  resolution: "@nx/workspace@npm:18.3.5"
+"@nx/workspace@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/workspace@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nrwl/workspace": 18.3.5
-    "@nx/devkit": 18.3.5
+    "@nrwl/workspace": 19.3.0-canary.20240611-1600875
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
     chalk: ^4.1.0
     enquirer: ~2.3.6
-    nx: 18.3.5
+    nx: 19.3.0-canary.20240611-1600875
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: c6d99a3be00b95bcba11ddf330cc91f41f8d444b7fd49793e6df5b877297be9fdc679422b00f0f7555c778a3199730fee4d457399d3c385062baa29e606a607e
+  checksum: 731cdb3a9f9f70bead4242c8f8296f1080c63ca8c55bc308f1a8c9470cc6d3241085a40aab21080c55c0b30db538c6c86473cf3381eb60a7074fad3e11a92bef
   languageName: node
   linkType: hard
 
@@ -5827,9 +5875,9 @@ __metadata:
     "@eslint/eslintrc": ^2.1.4
     "@eslint/js": ^8.57.0
     "@jest/types": 29.6.3
-    "@nx/eslint": 18.3.5
-    "@nx/jest": 18.3.5
-    "@nx/workspace": 18.3.5
+    "@nx/eslint": 19.3.0-canary.20240611-1600875
+    "@nx/jest": 19.3.0-canary.20240611-1600875
+    "@nx/workspace": 19.3.0-canary.20240611-1600875
     "@swc/core": ^1.4.12
     "@swc/jest": ^0.2.36
     "@types/babel__code-frame": ^7.0.6
@@ -5873,7 +5921,7 @@ __metadata:
     markdownlint-cli: ^0.41.0
     ncp: ^2.0.0
     netlify: ^13.1.14
-    nx: 18.3.5
+    nx: 19.3.0-canary.20240611-1600875
     prettier: 3.3.1
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
@@ -6256,14 +6304,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zkochan/js-yaml@npm:0.0.6":
-  version: 0.0.6
-  resolution: "@zkochan/js-yaml@npm:0.0.6"
+"@zkochan/js-yaml@npm:0.0.7":
+  version: 0.0.7
+  resolution: "@zkochan/js-yaml@npm:0.0.7"
   dependencies:
     argparse: ^2.0.1
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 51b81597a1d1d79c778b8fae48317eaad78d75223d0b7477ad2b35f47cf63b19504da430bb7a03b326e668b282874242cc123e323e57293be038684cb5e755f8
+  checksum: fc53174afc1373c834ba56108e625bf5c98f430fb0a52d3da8e868156e21c2f6a7cd5e649d126db84bba6280bbc82d4f314457846aaf2107022d043100256dd7
   languageName: node
   linkType: hard
 
@@ -10850,6 +10898,15 @@ __metadata:
   version: 0.5.2
   resolution: "fresh@npm:0.5.2"
   checksum: 13ea8b08f91e669a64e3ba3a20eb79d7ca5379a81f1ff7f4310d54e2320645503cc0c78daedc93dfb6191287295f6479544a649c64d8e41a1c0fb0c221552346
+  languageName: node
+  linkType: hard
+
+"front-matter@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "front-matter@npm:4.0.2"
+  dependencies:
+    js-yaml: ^3.13.1
+  checksum: a5b4c36d75a820301ebf31db0f677332d189c4561903ab6853eaa0504b43634f98557dbf87752e09043dbd2c9dcc14b4bcf9151cb319c8ad7e26edb203c0cd23
   languageName: node
   linkType: hard
 
@@ -15576,24 +15633,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:18.3.5":
-  version: 18.3.5
-  resolution: "nx@npm:18.3.5"
+"nx@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "nx@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nrwl/tao": 18.3.5
-    "@nx/nx-darwin-arm64": 18.3.5
-    "@nx/nx-darwin-x64": 18.3.5
-    "@nx/nx-freebsd-x64": 18.3.5
-    "@nx/nx-linux-arm-gnueabihf": 18.3.5
-    "@nx/nx-linux-arm64-gnu": 18.3.5
-    "@nx/nx-linux-arm64-musl": 18.3.5
-    "@nx/nx-linux-x64-gnu": 18.3.5
-    "@nx/nx-linux-x64-musl": 18.3.5
-    "@nx/nx-win32-arm64-msvc": 18.3.5
-    "@nx/nx-win32-x64-msvc": 18.3.5
+    "@nrwl/tao": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-arm64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-freebsd-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm-gnueabihf": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-arm64-msvc": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-x64-msvc": 19.3.0-canary.20240611-1600875
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.0-rc.46
-    "@zkochan/js-yaml": 0.0.6
+    "@zkochan/js-yaml": 0.0.7
     axios: ^1.6.0
     chalk: ^4.1.0
     cli-cursor: 3.1.0
@@ -15604,10 +15661,10 @@ __metadata:
     enquirer: ~2.3.6
     figures: 3.2.0
     flat: ^5.0.2
+    front-matter: ^4.0.2
     fs-extra: ^11.1.0
     ignore: ^5.0.4
     jest-diff: ^29.4.1
-    js-yaml: 4.1.0
     jsonc-parser: 3.2.0
     lines-and-columns: ~2.0.3
     minimatch: 9.0.3
@@ -15656,28 +15713,28 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: bac555ca42b53c277e50905de45fd8e39801f6687f117036a3414e9aec8f96c02d4ff22f50ab3ca35c85c0ac6bf372bec9e987e55160a1ffb75c2435ba46a3eb
+  checksum: 754e945685a9763edaefaaf06cd026ba33813bf08e4897eaf07e2a47a82b72312a49e95763184beae7d4a7e7e29cc76fc7dc61ab9035c87fef06b424a1595cb6
   languageName: node
   linkType: hard
 
-"nx@patch:nx@npm%3A18.3.5#./.yarn/patches/nx-npm-18.3.5-58c0bedf91.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 18.3.5
-  resolution: "nx@patch:nx@npm%3A18.3.5#./.yarn/patches/nx-npm-18.3.5-58c0bedf91.patch::version=18.3.5&hash=6b29d0&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+"nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::version=19.3.0-canary.20240611-1600875&hash=a55919&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
   dependencies:
-    "@nrwl/tao": 18.3.5
-    "@nx/nx-darwin-arm64": 18.3.5
-    "@nx/nx-darwin-x64": 18.3.5
-    "@nx/nx-freebsd-x64": 18.3.5
-    "@nx/nx-linux-arm-gnueabihf": 18.3.5
-    "@nx/nx-linux-arm64-gnu": 18.3.5
-    "@nx/nx-linux-arm64-musl": 18.3.5
-    "@nx/nx-linux-x64-gnu": 18.3.5
-    "@nx/nx-linux-x64-musl": 18.3.5
-    "@nx/nx-win32-arm64-msvc": 18.3.5
-    "@nx/nx-win32-x64-msvc": 18.3.5
+    "@nrwl/tao": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-arm64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-freebsd-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm-gnueabihf": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-arm64-msvc": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-x64-msvc": 19.3.0-canary.20240611-1600875
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.0-rc.46
-    "@zkochan/js-yaml": 0.0.6
+    "@zkochan/js-yaml": 0.0.7
     axios: ^1.6.0
     chalk: ^4.1.0
     cli-cursor: 3.1.0
@@ -15688,10 +15745,10 @@ __metadata:
     enquirer: ~2.3.6
     figures: 3.2.0
     flat: ^5.0.2
+    front-matter: ^4.0.2
     fs-extra: ^11.1.0
     ignore: ^5.0.4
     jest-diff: ^29.4.1
-    js-yaml: 4.1.0
     jsonc-parser: 3.2.0
     lines-and-columns: ~2.0.3
     minimatch: 9.0.3
@@ -15740,7 +15797,7 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: 6b367fec17181559d323cadd3978652b36455054fc6c3c6b7560320c7ceb2b6250220635554563efa88e8bf6b4d0c51a39b09bf182e64ffc4ea26c10067b4d5c
+  checksum: d814ddc827c4dedee3d3bef4de2b4ded01e9d885d1fe0787cb98aef1477dccf93d1e05e9160583fcd2a86186b662e37ac09723a8ee96a06528ed687159d16f43
   languageName: node
   linkType: hard
 
