@@ -56,6 +56,7 @@ export declare namespace FlatRuleTester {
  * - Uses ESLint's flat config system
  * - Requires type-checking
  * - Does not support string imports for parsers
+ * - Does not support modifying parserOptions on a per-case basis (For performance reasons)
  */
 export class FlatRuleTester<F extends string> extends TestFramework {
   #config: Readonly<RuleTesterConfig<F>>;
