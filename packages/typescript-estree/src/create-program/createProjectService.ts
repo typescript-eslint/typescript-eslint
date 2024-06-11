@@ -75,7 +75,7 @@ export function createProjectService(
       this.msg(s, tsserver.server.Msg.Info);
     },
     loggingEnabled: (): boolean =>
-      // if none of the debug namespaces are enabled, then don;t enable logging in tsserver
+      // if none of the debug namespaces are enabled, then don't enable logging in tsserver
       logTsserverInfo.enabled ||
       logTsserverErr.enabled ||
       logTsserverPerf.enabled,
