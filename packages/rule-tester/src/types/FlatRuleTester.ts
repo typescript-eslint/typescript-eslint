@@ -44,6 +44,11 @@ export interface RuleTesterConfig<Formats extends string> {
    * For future use, do not set.
    */
   fixtureMode?: undefined;
+
+  /**
+   * Default extension
+   */
+  defaultExtension?: NoInfer<Formats>;
 }
 
 export interface ExpectedSuggestion<MessageIds extends string> {

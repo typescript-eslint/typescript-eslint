@@ -167,14 +167,18 @@ export class FlatRuleTester<F extends string> extends TestFramework {
             FlatRuleTester.describe('valid', () =>
               data.valid.forEach(validCase =>
                 FlatRuleTester.it(validCase.name, () => {
-                  if (validCase.extension) {
-                    assert.ok(validCase.extension in this.#config.extensions);
-                  }
+                  const extension: F = (validCase.extension ??
+                    this.#config.defaultExtension ??
+                    'ts') as F;
+                  assert.ok(
+                    Object.hasOwn(this.#config.extensions, extension),
+                    `Undefined format: ${sanitize(extension)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
+                  );
 
-                  const name = `/file.${validCase.extension ?? 'ts'}`;
+                  const name = `/file.${extension}`;
                   assert.ok(
                     existsSync(join(this.#fixtureDir, name)),
-                    `Fixtures must exist for format: ${name}`,
+                    `Fixtures must exist for format: ${sanitize(name)}`,
                   );
 
                   const fullConfig: FlatConfig.ConfigArray = [
@@ -184,14 +188,15 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                       files: ['**/*.*'],
                     },
                   ];
-                  if (validCase.extension) {
-                    const formatConfig =
-                      this.#config.extensions[validCase.extension as F];
-                    fullConfig.splice(1, 0, {
-                      ...formatConfig,
-                      files: [`**/*.${validCase.extension}`],
-                    });
-                  }
+
+                  const formatConfig = this.#config.extensions[extension];
+
+                  assert.notStrictEqual(formatConfig, undefined);
+
+                  fullConfig.splice(1, 0, {
+                    ...formatConfig,
+                    files: [`**/*.${extension}`],
+                  });
 
                   const results = this.#linter.verify(
                     validCase.code,
@@ -201,7 +206,7 @@ export class FlatRuleTester<F extends string> extends TestFramework {
 
                   results.forEach(msg => {
                     throw new Error(
-                      `Got error ${msg.message} (${msg.messageId}), expected nothing`,
+                      `Got error ${sanitize(msg.message)} (${msg.messageId ? sanitize(msg.messageId) : '(unknown message ID)'}), expected nothing`,
                     );
                   });
                 }),
@@ -210,14 +215,15 @@ export class FlatRuleTester<F extends string> extends TestFramework {
             FlatRuleTester.describe('invalid', () =>
               data.invalid.forEach(invalidCase =>
                 FlatRuleTester.it(sanitize(invalidCase.name), () => {
-                  if (invalidCase.extension) {
-                    assert.ok(
-                      invalidCase.extension in this.#config.extensions,
-                      `Undefined format: ${sanitize(invalidCase.extension)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
-                    );
-                  }
+                  const extension: F = (invalidCase.extension ??
+                    this.#config.defaultExtension ??
+                    'ts') as F;
+                  assert.ok(
+                    Object.hasOwn(this.#config.extensions, extension),
+                    `Undefined format: ${sanitize(extension)}, should be in ${sanitize(Object.keys(this.#config.extensions).join(', '))}`,
+                  );
 
-                  const name = `/file.${invalidCase.extension ?? 'ts'}`;
+                  const name = `/file.${extension}`;
                   assert.ok(
                     existsSync(join(this.#fixtureDir, name)),
                     'Fixtures must exist',
@@ -230,14 +236,11 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                       files: ['**/*.*'],
                     },
                   ];
-                  if (invalidCase.extension) {
-                    const formatConfig =
-                      this.#config.extensions[invalidCase.extension as F];
-                    fullConfig.splice(1, 0, {
-                      ...formatConfig,
-                      files: [`**/*.${invalidCase.extension}`],
-                    });
-                  }
+                  const formatConfig = this.#config.extensions[extension];
+                  fullConfig.splice(1, 0, {
+                    ...formatConfig,
+                    files: [`**/*.${invalidCase.extension}`],
+                  });
 
                   const allMessages: Linter.LintMessage[] = [];
                   const results = this.#linter.verifyAndFix(
@@ -281,12 +284,12 @@ export class FlatRuleTester<F extends string> extends TestFramework {
                   results.messages.forEach((message, idx) => {
                     assert.ok(
                       message.ruleId != null,
-                      `Parser/linter error occured: ${message.message}`,
+                      `Parser/linter error occured: ${sanitize(message.message)}`,
                     );
 
                     assert.ok(
                       message.ruleId === 'rule/rule',
-                      `Errors must be from the defined rule, as opposed to typescript-eslint or eslint: ${message.ruleId}`,
+                      `Errors must be from the defined rule, as opposed to typescript-eslint or eslint: ${sanitize(message.ruleId)}`,
                     );
 
                     const expectedMessage = invalidCase.errors[idx];
