@@ -520,7 +520,10 @@ export class FlatRuleConfig<
       );
     });
   }
-
+  /**
+   * Gets all configurations and the associated rule from a rule instance
+   * Is a symbol to prevent cluttering up available methods
+   */
   [DATA](): {
     configurations: FlatRuleConfiguration<MessageIds, Options>[];
     rule: RuleModule<MessageIds, Options>;
@@ -585,6 +588,10 @@ export class FlatRuleConfiguration<
     return this;
   }
 
+  /**
+   * Gets all samples and configuration from a configuration instance
+   * Is a symbol to prevent cluttering up available methods
+   */
   [DATA](): {
     valid: ValidSample[];
     invalid: InvalidSample<MessageIds>[];
