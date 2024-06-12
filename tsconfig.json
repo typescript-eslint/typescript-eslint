@@ -1,55 +1,44 @@
 {
-  "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
   "references": [
-    {
-      "path": "./packages/ast-spec"
-    },
-    {
-      "path": "./packages/eslint-plugin"
-    },
-    {
-      "path": "./packages/eslint-plugin-internal"
-    },
-    {
-      "path": "./packages/integration-tests"
-    },
-    {
-      "path": "./packages/parser"
-    },
-    {
-      "path": "./packages/rule-schema-to-typescript-types"
-    },
-    {
-      "path": "./packages/rule-tester"
-    },
-    {
-      "path": "./packages/scope-manager"
-    },
-    {
-      "path": "./packages/type-utils"
-    },
-    {
-      "path": "./packages/types"
-    },
-    {
-      "path": "./packages/typescript-eslint"
-    },
-    {
-      "path": "./packages/typescript-estree"
-    },
-    {
-      "path": "./packages/utils"
-    },
-    {
-      "path": "./packages/visitor-keys"
-    },
-    {
-      "path": "./packages/website"
-    },
-    {
-      "path": "./packages/website-eslint"
-    }
+    { "path": "packages/ast-spec/tsconfig.build.json" },
+    { "path": "packages/types/tsconfig.build.json" },
+    { "path": "packages/visitor-keys/tsconfig.build.json" },
+    { "path": "packages/typescript-estree/tsconfig.build.json" },
+    { "path": "packages/ast-spec/tsconfig.spec.json" },
+    { "path": "packages/ast-spec/tsconfig.json" },
+    { "path": "packages/scope-manager/tsconfig.build.json" },
+    { "path": "packages/utils/tsconfig.build.json" },
+    { "path": "packages/parser/tsconfig.build.json" },
+    { "path": "packages/type-utils/tsconfig.build.json" },
+    { "path": "packages/rule-schema-to-typescript-types/tsconfig.build.json" },
+    { "path": "packages/rule-tester/tsconfig.build.json" },
+    { "path": "packages/eslint-plugin/tsconfig.json" },
+    { "path": "packages/eslint-plugin-internal/tsconfig.json" },
+    { "path": "packages/integration-tests/tsconfig.build.json" },
+    { "path": "packages/integration-tests/tsconfig.spec.json" },
+    { "path": "packages/integration-tests/tsconfig.json" },
+    { "path": "packages/parser/tsconfig.spec.json" },
+    { "path": "packages/parser/tsconfig.json" },
+    { "path": "packages/repo-tools/tsconfig.build.json" },
+    { "path": "packages/repo-tools/tsconfig.json" },
+    { "path": "packages/rule-schema-to-typescript-types/tsconfig.json" },
+    { "path": "packages/rule-tester/tsconfig.spec.json" },
+    { "path": "packages/rule-tester/tsconfig.json" },
+    { "path": "packages/scope-manager/tsconfig.spec.json" },
+    { "path": "packages/scope-manager/tsconfig.json" },
+    { "path": "packages/type-utils/tsconfig.spec.json" },
+    { "path": "packages/type-utils/tsconfig.json" },
+    { "path": "packages/types/tsconfig.json" },
+    { "path": "packages/typescript-eslint/tsconfig.build.json" },
+    { "path": "packages/typescript-eslint/tsconfig.spec.json" },
+    { "path": "packages/typescript-eslint/tsconfig.json" },
+    { "path": "packages/typescript-estree/tsconfig.spec.json" },
+    { "path": "packages/typescript-estree/tsconfig.json" },
+    { "path": "packages/utils/tsconfig.json" },
+    { "path": "packages/visitor-keys/tsconfig.json" },
+    { "path": "packages/website/tsconfig.json" },
+    { "path": "packages/website-eslint/tsconfig.json" }
   ]
 }
