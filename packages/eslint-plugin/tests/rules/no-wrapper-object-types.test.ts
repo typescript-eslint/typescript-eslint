@@ -50,6 +50,18 @@ ruleTester.run('no-wrapper-object-types', rule, {
     'type Unknown = {};',
     'type Void = {};',
     'class MyClass extends Number {}',
+    `
+      type Number = 0 | 1;
+      let value: Number;
+    `,
+    `
+      type Bigint = 0 | 1;
+      let value: Bigint;
+    `,
+    `
+      type T<Symbol> = Symbol;
+      type U<UU> = UU extends T<infer Function> ? Function : never;
+    `,
   ],
   invalid: [
     {

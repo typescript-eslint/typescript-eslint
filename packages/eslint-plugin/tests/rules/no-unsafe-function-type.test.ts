@@ -7,7 +7,14 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-function-type', rule, {
-  valid: ['let value: () => void;', 'let value: <T>(t: T) => T;'],
+  valid: [
+    'let value: () => void;',
+    'let value: <T>(t: T) => T;',
+    `
+      type Function = () => void;
+      let value: Function;
+    `,
+  ],
   invalid: [
     {
       code: 'let value: Function;',
