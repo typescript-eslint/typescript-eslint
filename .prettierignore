@@ -34,3 +34,4 @@ packages/website/build
 packages/rule-tester/tests/eslint-base
 
 /.nx/cache
+/.nx/workspace-data

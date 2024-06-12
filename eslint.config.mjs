@@ -431,6 +431,7 @@ export default tseslint.config(
       'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
+      'eslint-plugin/no-property-in-node': 'error',
       'eslint-plugin/require-meta-docs-description': [
         'error',
         { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
