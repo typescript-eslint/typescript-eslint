@@ -90,6 +90,7 @@ export default createRule({
       // function has an explicit return type, so ensure it's a safe return
       const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
+      const returnTSNode = services.esTreeNodeToTSNodeMap.get(returnNode);
 
       // function expressions will not have their return type modified based on receiver typing
       // so we have to use the contextual typing in these cases, i.e.
@@ -121,12 +122,14 @@ export default createRule({
           }
           if (functionNode.async) {
             const awaitedSignatureReturnType = getAwaitedType(
-              services.program,
+              checker,
               signatureReturnType,
+              functionTSNode,
             );
             const awaitedReturnNodeType = getAwaitedType(
-              services.program,
+              checker,
               returnNodeType,
+              returnTSNode,
             );
             if (
               awaitedReturnNodeType === awaitedSignatureReturnType ||
@@ -160,9 +163,8 @@ export default createRule({
           }
           if (
             anyType === AnyType.PromiseAny &&
-            isPromiseLike(services.program, functionReturnType) &&
             isTypeUnknownType(
-              getAwaitedType(services.program, functionReturnType),
+              getAwaitedType(checker, functionReturnType, returnTSNode),
             )
           ) {
             return;

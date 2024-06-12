@@ -1,13 +1,18 @@
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
-import { isPromiseLike } from './builtinSymbolLikes';
-
-export function getAwaitedType(program: ts.Program, type: ts.Type): ts.Type {
-  if (isPromiseLike(program, type) && tsutils.isTypeReference(type)) {
+export function getAwaitedType(
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  node: ts.Node,
+): ts.Type {
+  if (
+    tsutils.isThenableType(checker, node, type) &&
+    tsutils.isTypeReference(type)
+  ) {
     const awaitedType = type.typeArguments?.[0];
     if (awaitedType) {
-      return getAwaitedType(program, awaitedType);
+      return getAwaitedType(checker, awaitedType, node);
     }
   }
   return type;
