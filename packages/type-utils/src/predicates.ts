@@ -129,7 +129,7 @@ export enum AnyType {
   Safe,
 }
 /**
- * @returns `AnyType.Any` if the type is `any`, `AnyType.AnyArray` if the type is `any[]` or `readonly any[]`,
+ * @returns `AnyType.Any` if the type is `any`, `AnyType.AnyArray` if the type is `any[]` or `readonly any[]`, `AnyType.PromiseAny` if the type is `Promise<any>`,
  *          otherwise it returns `AnyType.Safe`.
  */
 export function discriminateAnyType(
