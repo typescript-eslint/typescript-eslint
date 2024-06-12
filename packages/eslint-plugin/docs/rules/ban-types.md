@@ -3,7 +3,7 @@
 The old `ban-types` rule encompassed multiple areas of functionality, and so has been split into several rules.
 
 **[`no-restricted-types`](./no-restricted-types.mdx)** is the new rule for banning a configurable list of type names.
-It has no options enabled by default.
+It has no options enabled by default and is akin to rules like [`no-restricted-globals`](https://eslint.org/docs/latest/rules/no-restricted-globals), [`no-restricted-properties`](https://eslint.org/docs/latest/rules/no-restricted-properties), and [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
 
 The default options from `ban-types` are now covered by:
 
