@@ -30,9 +30,9 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeReturn: 'Unsafe return of an `{{type}}` typed value.',
+      unsafeReturn: 'Unsafe return of a value of type `{{type}}`.',
       unsafeReturnThis: [
-        'Unsafe return of an `{{type}}` typed value. `this` is typed as `any`.',
+        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
       unsafeReturnAssignment:
