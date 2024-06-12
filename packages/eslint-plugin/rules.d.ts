@@ -37,7 +37,7 @@ This is likely not portable. A type annotation is necessary. ts(2742)
 
 import type { RuleModuleWithMetaDocs } from '@typescript-eslint/utils/ts-eslint';
 
-import type { ESLintPluginDocs, ESLintPluginRuleModule } from './src/util';
+import type { ESLintPluginDocs, ESLintPluginRuleModule } from './dist/util';
 
 export { ESLintPluginDocs, ESLintPluginRuleModule };
 
