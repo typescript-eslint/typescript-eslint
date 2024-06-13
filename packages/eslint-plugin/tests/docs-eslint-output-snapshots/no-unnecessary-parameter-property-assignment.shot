@@ -6,7 +6,7 @@ exports[`Validating rule docs no-unnecessary-parameter-property-assignment.mdx c
 class Foo {
   constructor(public bar: string) {
     this.bar = bar;
-    ~~~~~~~~~~~~~~ This assignment is unnecessary since it already assigned by parameter property.
+    ~~~~~~~~~~~~~~ This assignment is unnecessary since it is already assigned by a parameter property.
   }
 }
 "
