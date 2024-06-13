@@ -159,6 +159,7 @@ describe('Validating rule docs', () => {
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
     'no-useless-template-literals.mdx',
+    'no-restricted-types.mdx',
     'sort-type-union-intersection-members.mdx',
     ...oldStylisticRules,
   ]);
