@@ -159,12 +159,15 @@ describe('Validating rule docs', () => {
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
     'no-useless-template-literals.mdx',
-    'no-restricted-types.mdx',
     'sort-type-union-intersection-members.mdx',
     ...oldStylisticRules,
   ]);
 
-  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+  const rulesWithComplexOptions = new Set([
+    'array-type',
+    'member-ordering',
+    'no-restricted-types',
+  ]);
 
   // TODO: whittle this list down to as few as possible
   const rulesWithComplexOptionHeadings = new Set([
