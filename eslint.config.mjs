@@ -30,7 +30,7 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      // https://github.com/gund/eslint-plugin-deprecation/issues/85
+      // https://github.com/gund/eslint-plugin-deprecation/issues/78
       // https://github.com/typescript-eslint/typescript-eslint/issues/8988
       ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
