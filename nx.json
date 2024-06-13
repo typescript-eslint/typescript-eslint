@@ -6,10 +6,10 @@
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "tools/release/changelog-renderer"
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer"
       },
       "projectChangelogs": {
-        "renderer": "tools/release/changelog-renderer"
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer"
       }
     },
     "version": {

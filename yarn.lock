@@ -15719,7 +15719,7 @@ __metadata:
 
 "nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
   version: 19.3.0-canary.20240611-1600875
-  resolution: "nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::version=19.3.0-canary.20240611-1600875&hash=a55919&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  resolution: "nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::version=19.3.0-canary.20240611-1600875&hash=56bd23&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
   dependencies:
     "@nrwl/tao": 19.3.0-canary.20240611-1600875
     "@nx/nx-darwin-arm64": 19.3.0-canary.20240611-1600875
@@ -15797,7 +15797,7 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: d814ddc827c4dedee3d3bef4de2b4ded01e9d885d1fe0787cb98aef1477dccf93d1e05e9160583fcd2a86186b662e37ac09723a8ee96a06528ed687159d16f43
+  checksum: 2f337128cb9cc845295dcbe27abafcbe44b3bcbff452ba91c4de94457024bac137616ce2dc9e40400e7209d977465f8fa13eb6f70171e65e452978e41bf0ab94
   languageName: node
   linkType: hard
 
