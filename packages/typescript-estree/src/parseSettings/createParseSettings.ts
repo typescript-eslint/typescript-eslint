@@ -111,7 +111,6 @@ export function createParseSettings(
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
             tsestreeOptions.projectService,
             jsDocParsingMode,
-            { extraFileExtensions },
           ))
         : undefined,
     range: tsestreeOptions.range === true,

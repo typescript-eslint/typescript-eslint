@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { minimatch } from 'minimatch';
 import path from 'path';
-import { ScriptKind } from 'typescript';
+import * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
@@ -13,6 +13,41 @@ const log = debug(
   'typescript-eslint:typescript-estree:useProgramFromProjectService',
 );
 
+const union = <T>(self: Set<T>, other: Set<T>): Set<T> =>
+  new Set([...self, ...other]);
+const difference = <T>(self: Set<T>, other: Set<T>): Set<T> =>
+  new Set([...self].filter(elem => !other.has(elem)));
+const symmetricDifference = <T>(self: Set<T>, other: Set<T>): Set<T> =>
+  union(difference(self, other), difference(other, self));
+
+const updateExtraFileExtensions = (
+  service: ts.server.ProjectService & {
+    __extra_file_extensions?: Set<string>;
+  },
+  extraFileExtensions: string[],
+): void => {
+  if (!service.__extra_file_extensions) {
+    service.__extra_file_extensions = new Set<string>();
+  }
+  if (
+    symmetricDifference(
+      service.__extra_file_extensions,
+      new Set(extraFileExtensions),
+    ).size > 0
+  ) {
+    service.__extra_file_extensions = new Set(extraFileExtensions);
+    log('Updating extra file extensions: %s', extraFileExtensions);
+    service.setHostConfiguration({
+      extraFileExtensions: extraFileExtensions.map(extension => ({
+        extension,
+        isMixedContent: false,
+        scriptKind: ts.ScriptKind.Deferred,
+      })),
+    });
+    log('Extra file extensions updated: %o', service.__extra_file_extensions);
+  }
+};
+
 export function useProgramFromProjectService(
   {
     allowDefaultProject,
@@ -23,6 +58,9 @@ export function useProgramFromProjectService(
   hasFullTypeInformation: boolean,
   defaultProjectMatchedFiles: Set<string>,
 ): ASTAndDefiniteProgram | undefined {
+  // NOTE: triggers a full project reload when changes are detected
+  updateExtraFileExtensions(service, parseSettings.extraFileExtensions);
+
   // We don't canonicalize the filename because it caused a performance regression.
   // See https://github.com/typescript-eslint/typescript-eslint/issues/8519
   const filePathAbsolute = absolutify(parseSettings.filePath);
@@ -31,16 +69,6 @@ export function useProgramFromProjectService(
     parseSettings.filePath,
     filePathAbsolute,
   );
-
-  if (parseSettings.extraFileExtensions.length) {
-    service.setHostConfiguration({
-      extraFileExtensions: parseSettings.extraFileExtensions.map(extension => ({
-        extension,
-        isMixedContent: false,
-        scriptKind: ScriptKind.Deferred,
-      })),
-    });
-  }
 
   const opened = service.openClientFile(
     filePathAbsolute,

@@ -4,7 +4,6 @@ import { createProjectService } from '../../src/create-program/createProjectServ
 
 const mockReadConfigFile = jest.fn();
 const mockSetCompilerOptionsForInferredProjects = jest.fn();
-const mockSetHostConfiguration = jest.fn();
 
 jest.mock('typescript/lib/tsserverlibrary', () => ({
   ...jest.requireActual('typescript/lib/tsserverlibrary'),
@@ -13,7 +12,6 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
     ProjectService: class {
       setCompilerOptionsForInferredProjects =
         mockSetCompilerOptionsForInferredProjects;
-      setHostConfiguration = mockSetHostConfiguration;
     },
   },
 }));
@@ -90,46 +88,5 @@ describe('createProjectService', () => {
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
       compilerOptions,
     );
-  });
-
-  it('does not call setHostConfiguration if extraFileExtensions are not provided', () => {
-    const compilerOptions = { strict: true };
-    mockReadConfigFile.mockReturnValue({ config: { compilerOptions } });
-
-    const { service } = createProjectService(
-      {
-        allowDefaultProject: ['file.js'],
-        defaultProject: './tsconfig.json',
-      },
-      undefined,
-    );
-
-    expect(service.setHostConfiguration).not.toHaveBeenCalled();
-  });
-
-  it('calls setHostConfiguration when extraFileExtensions is provided', () => {
-    const compilerOptions = { strict: true };
-    mockReadConfigFile.mockReturnValue({ config: { compilerOptions } });
-
-    const { service } = createProjectService(
-      {
-        allowDefaultProject: ['file.js'],
-        defaultProject: './tsconfig.json',
-      },
-      undefined,
-      {
-        extraFileExtensions: ['.vue'],
-      },
-    );
-
-    expect(service.setHostConfiguration).toHaveBeenCalledWith({
-      extraFileExtensions: [
-        {
-          extension: '.vue',
-          isMixedContent: false,
-          scriptKind: ts.ScriptKind.Deferred,
-        },
-      ],
-    });
   });
 });
