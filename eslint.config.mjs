@@ -95,7 +95,7 @@ export default tseslint.config(
     },
     rules: {
       // make sure we're not leveraging any deprecated APIs
-      'deprecation/deprecation': 'error',
+      '@typescript-eslint/deprecation': 'error',
 
       // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
       '@typescript-eslint/no-confusing-void-expression': 'off',

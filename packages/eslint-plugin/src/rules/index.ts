@@ -16,6 +16,7 @@ import consistentTypeDefinitions from './consistent-type-definitions';
 import consistentTypeExports from './consistent-type-exports';
 import consistentTypeImports from './consistent-type-imports';
 import defaultParamLast from './default-param-last';
+import deprecation from './deprecation';
 import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
@@ -140,6 +141,7 @@ export default {
   'consistent-type-exports': consistentTypeExports,
   'consistent-type-imports': consistentTypeImports,
   'default-param-last': defaultParamLast,
+  deprecation: deprecation,
   'dot-notation': dotNotation,
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,

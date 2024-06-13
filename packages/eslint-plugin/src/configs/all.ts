@@ -29,6 +29,7 @@ export = {
     '@typescript-eslint/consistent-type-imports': 'error',
     'default-param-last': 'off',
     '@typescript-eslint/default-param-last': 'error',
+    '@typescript-eslint/deprecation': 'error',
     'dot-notation': 'off',
     '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',

@@ -11,6 +11,7 @@ export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
     '@typescript-eslint/await-thenable': 'error',
+    '@typescript-eslint/deprecation': 'error',
     '@typescript-eslint/no-array-delete': 'error',
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',

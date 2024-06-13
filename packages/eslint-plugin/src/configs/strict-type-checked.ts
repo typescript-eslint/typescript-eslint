@@ -16,6 +16,7 @@ export = {
       { minimumDescriptionLength: 10 },
     ],
     '@typescript-eslint/ban-types': 'error',
+    '@typescript-eslint/deprecation': 'error',
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-array-delete': 'error',

@@ -1,0 +1,33 @@
+---
+description: 'Prevent usage of deprecated members'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/deprecation** for documentation.
+
+This rule supersedes the `deprecation/deprecation` rule from `eslint-plugin-deprecation`
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+escape('Hello'); // The signature '(string: string): string' of 'escape' is deprecated: A legacy feature for browser compatibility
+unescape('Hello'); // The signature '(string: string): string' of 'unescape' is deprecated: A legacy feature for browser compatibility
+RegExp.lastMatch; // 'lastMatch' is deprecated: A legacy feature for browser compatibility
+
+/**
+ * @deprecated for some reason
+ */
+declare const someValue: string;
+
+console.log(someValue); // 'someValue' is deprecated: for some reason
+
+new Buffer(38); // 'Buffer' is deprecated. since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
+```
+
+</TabItem>
+</Tabs>
