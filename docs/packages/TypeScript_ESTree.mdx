@@ -368,4 +368,6 @@ const { ast, services } = parseAndGenerateServices(code, {
 If you encounter a bug with the parser that you want to investigate, you can turn on the debug logging via setting the environment variable: `DEBUG=typescript-eslint:*`.
 I.e. in this repo you can run: `DEBUG=typescript-eslint:* yarn lint`.
 
-To include TypeScript server logs when using Project Services, include the following in the environment variable: `DEBUG=TBD` # FIXME: before PR
+This will include TypeScript server logs.
+To turn off these logs, include `-typescript-eslint:typescript-estree:tsserver:*` when setting the environment variable.
+I.e. for this repo change to: `DEBUG='typescript-eslint:*,-typescript-eslint:typescript-estree:tsserver:*' yarn lint`.
