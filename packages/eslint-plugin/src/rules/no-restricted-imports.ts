@@ -312,10 +312,7 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.TSImportEqualsDeclaration,
       ): void {
         if (
-          node.moduleReference.type ===
-            AST_NODE_TYPES.TSExternalModuleReference &&
-          node.moduleReference.expression.type === AST_NODE_TYPES.Literal &&
-          typeof node.moduleReference.expression.value === 'string'
+          node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference
         ) {
           const synthesizedImport = {
             ...node,

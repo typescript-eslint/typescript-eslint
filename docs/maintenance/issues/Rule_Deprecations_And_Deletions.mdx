@@ -1,6 +1,6 @@
 ---
-id: rule-deprecations
-title: Rule Deprecations
+id: rule-deprecations-and-deletions
+title: Rule Deprecations, Renames, And Deletions
 ---
 
 Sometimes a rule that used to be 👍 does not age well and becomes 👎.
@@ -14,12 +14,12 @@ In these cases, we aim to remove the old rule with minimal user disruption.
 
 ## Filing the Issue
 
-Rule deprecations can be filed as a [new issue bypassing templates](https://github.com/typescript-eslint/typescript-eslint/issues/new).
+Rule deprecations and renames can be filed as a [new issue bypassing templates](https://github.com/typescript-eslint/typescript-eslint/issues/new).
 
 Provide it an `## Overview` containing:
 
 - The rule name & link to its documentation page
-- A clear explanation of why you believe it should be deprecated
+- A clear explanation of why you believe it should be deprecated and/or renamed
 - Whether it exists in popular configs such as `eslint-config-airbnb-typescript` and `eslint-config-standard-with-typescript`
 - Sourcegraph queries showing how often it appears in user configs
 
@@ -30,5 +30,8 @@ Provide it an `## Overview` containing:
 1. In any minor/patch version, add [rule `meta` properties](https://eslint.org/docs/latest/developer-guide/working-with-rules#rule-basics):
    - `deprecated: true`
    - `replacedBy`, if applicable
-2. In the next major version, you may delete the rule
-   - If the rule is relatively popular with users, consider leaving a documentation page as a tombstone pointing to the new relevant rule or docs (see [`camelcase`](/rules/camelcase/) as an example)
+2. Search through open issues and PRs, and update the name in them accordingly:
+   - Deletions: close them with a link to the issue and deprecation PR
+   - Renames: update their title and explicitly mention in a comment that the rule has been renamed
+3. In the next major version, you may delete the deprecated rule
+   - Leave a documentation page as a tombstone pointing to the new relevant rule or docs (see [`camelcase`](/rules/camelcase) as an example)

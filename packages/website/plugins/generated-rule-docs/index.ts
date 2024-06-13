@@ -1,6 +1,8 @@
 import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { Plugin } from 'unified';
 
+import { nodeIsParent } from '../utils/nodes';
+import { isAnyRuleModuleWithMetaDocs, isVFileWithStem } from '../utils/rules';
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
@@ -10,11 +12,6 @@ import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
-import {
-  isAnyRuleModuleWithMetaDocs,
-  isVFileWithStem,
-  nodeIsParent,
-} from './utils';
 
 export const generatedRuleDocs: Plugin = () => {
   return async (root, file) => {

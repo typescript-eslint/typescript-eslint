@@ -158,10 +158,47 @@ describe('Validating rule docs', () => {
     'ban-types.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'no-useless-template-literals.mdx',
+    'sort-type-union-intersection-members.mdx',
     ...oldStylisticRules,
   ]);
 
   const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+
+  // TODO: whittle this list down to as few as possible
+  const rulesWithComplexOptionHeadings = new Set([
+    'ban-ts-comment',
+    'ban-types',
+    'consistent-type-exports',
+    'consistent-type-imports',
+    'explicit-function-return-type',
+    'explicit-member-accessibility',
+    'explicit-module-boundary-types',
+    'no-base-to-string',
+    'no-confusing-void-expression',
+    'no-duplicate-type-constituents',
+    'no-empty-interface',
+    'no-empty-object-type',
+    'no-explicit-any',
+    'no-floating-promises',
+    'no-inferrable-types',
+    'no-invalid-void-type',
+    'no-meaningless-void-operator',
+    'no-misused-promises',
+    'no-type-alias',
+    'no-unnecessary-condition',
+    'no-unnecessary-type-assertion',
+    'parameter-properties',
+    'prefer-nullish-coalescing',
+    'prefer-optional-chain',
+    'prefer-string-starts-ends-with',
+    'promise-function-async',
+    'restrict-template-expressions',
+    'strict-boolean-expressions',
+    'switch-exhaustiveness-check',
+    'switch-exhaustiveness-check',
+    'unbound-method',
+  ]);
 
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
@@ -263,22 +300,55 @@ describe('Validating rule docs', () => {
         Array.isArray(schema) &&
         !rule.meta.docs?.extendsBaseRule
       ) {
-        test('each rule option should be mentioned in a heading', () => {
-          const headingTextAfterOptions = headings
-            .slice(headings.findIndex(header => header.text === 'Options'))
-            .map(header => header.text)
-            .join('\n');
+        describe('rule options', () => {
+          const headingsAfterOptions = headings.slice(
+            headings.findIndex(header => header.text === 'Options'),
+          );
 
           for (const schemaItem of schema) {
             if (schemaItem.type === 'object') {
               for (const property of Object.keys(
                 schemaItem.properties as object,
               )) {
-                if (!headingTextAfterOptions.includes(`\`${property}\``)) {
-                  throw new Error(
-                    `At least one header should include \`${property}\`.`,
+                test(property, () => {
+                  const correspondingHeadingIndex =
+                    headingsAfterOptions.findIndex(heading =>
+                      heading.text.includes(`\`${property}\``),
+                    );
+
+                  if (correspondingHeadingIndex === -1) {
+                    throw new Error(
+                      `At least one header should include \`${property}\`.`,
+                    );
+                  }
+
+                  if (rulesWithComplexOptionHeadings.has(ruleName)) {
+                    return;
+                  }
+
+                  const relevantChildren = tokens.slice(
+                    tokens.indexOf(
+                      headingsAfterOptions[correspondingHeadingIndex],
+                    ),
+                    tokens.indexOf(
+                      headingsAfterOptions[correspondingHeadingIndex + 1],
+                    ),
                   );
-                }
+
+                  for (const rawTab of [
+                    `<TabItem value="✅ Correct">`,
+                    `<TabItem value="❌ Incorrect">`,
+                  ]) {
+                    if (
+                      !relevantChildren.some(
+                        child =>
+                          child.type === 'html' && child.raw.includes(rawTab),
+                      )
+                    ) {
+                      throw new Error(`Missing option example tab: ${rawTab}`);
+                    }
+                  }
+                });
               }
             }
           }
