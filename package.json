@@ -139,7 +139,6 @@
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
     "typescript": "5.4.5",
-    "nx@18.3.5": "patch:nx@npm%3A18.3.5#./.yarn/patches/nx-npm-18.3.5-58c0bedf91.patch",
     "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
     "@nx/eslint@19.3.0-canary.20240611-1600875": "patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch",
     "nx@19.3.0-canary.20240611-1600875": "patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch"
