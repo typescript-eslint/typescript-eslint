@@ -164,7 +164,7 @@ function typeDeclaredInLib(
     const { path } = declaration;
     return (
       // Declared in types of runtime - Treat it as if it's from lib.
-      program.sourceFileToPackageName.get(path) == null &&
+      program.sourceFileToPackageName.get(path) === undefined &&
       /\/node_modules\/@types\/(bun|node)\//.test(path)
     );
   });
