@@ -19,7 +19,7 @@ export default createRule<[], MessageIds>({
     fixable: 'code',
     messages: {
       unnecessaryAssign:
-        'This assignment is unnecessary since it already assigned by parameter property.',
+        'This assignment is unnecessary since it is already assigned by a parameter property.',
     },
     schema: [],
     type: 'suggestion',
@@ -29,7 +29,7 @@ export default createRule<[], MessageIds>({
     const reportInfoStack: {
       assignedBeforeUnnecessary: Set<string>;
       assignedBeforeConstructor: Set<string>;
-      unnecessaryAssigments: {
+      unnecessaryAssignments: {
         name: string;
         node: TSESTree.AssignmentExpression;
       }[];
@@ -140,17 +140,15 @@ export default createRule<[], MessageIds>({
     return {
       ClassBody(): void {
         reportInfoStack.push({
-          unnecessaryAssigments: [],
+          unnecessaryAssignments: [],
           assignedBeforeUnnecessary: new Set(),
           assignedBeforeConstructor: new Set(),
         });
       },
       'ClassBody:exit'(): void {
-        const { unnecessaryAssigments, assignedBeforeConstructor } = nullThrows(
-          reportInfoStack.pop(),
-          'The top stack should exist',
-        );
-        unnecessaryAssigments.forEach(({ name, node }) => {
+        const { unnecessaryAssignments, assignedBeforeConstructor } =
+          nullThrows(reportInfoStack.pop(), 'The top stack should exist');
+        unnecessaryAssignments.forEach(({ name, node }) => {
           if (assignedBeforeConstructor.has(name)) {
             return;
           }
@@ -205,10 +203,11 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        const { assignedBeforeUnnecessary, unnecessaryAssigments } = nullThrows(
-          reportInfoStack.at(reportInfoStack.length - 1),
-          'The top of stack should exist',
-        );
+        const { assignedBeforeUnnecessary, unnecessaryAssignments } =
+          nullThrows(
+            reportInfoStack.at(reportInfoStack.length - 1),
+            'The top of stack should exist',
+          );
 
         if (!UNNECESSARY_OPERATORS.has(node.operator)) {
           assignedBeforeUnnecessary.add(leftName);
@@ -226,7 +225,7 @@ export default createRule<[], MessageIds>({
         );
 
         if (hasParameterProperty && !assignedBeforeUnnecessary.has(leftName)) {
-          unnecessaryAssigments.push({
+          unnecessaryAssignments.push({
             name: leftName,
             node,
           });
