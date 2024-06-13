@@ -9,6 +9,7 @@ import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForF
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
+const log = debug('typescript-eslint:typescript-estree:createProjectService');
 const logTsserverErr = debug(
   'typescript-eslint:typescript-estree:tsserver:err',
 );
@@ -97,20 +98,25 @@ export function createProjectService(
     startGroup: doNothing,
   };
 
+  log('Creating project service with: %o', options);
+
   const service = new tsserver.server.ProjectService({
     host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
     useSingleInferredProject: false,
     useInferredProjectPerProjectRoot: false,
     logger,
-    eventHandler: (e): void => {
-      logTsserverEvent(e);
-    },
+    eventHandler: logTsserverEvent.enabled
+      ? (e): void => {
+          logTsserverEvent(e);
+        }
+      : undefined,
     session: undefined,
     jsDocParsingMode,
   });
 
   if (options.defaultProject) {
+    log('Enabling default project: %s', options.defaultProject);
     let configRead;
 
     try {
