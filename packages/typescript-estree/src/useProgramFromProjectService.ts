@@ -28,11 +28,13 @@ const updateExtraFileExtensions = (
 ): void => {
   const uniqExtraFileExtensions = new Set(extraFileExtensions);
   if (
-    service.__extra_file_extensions === undefined ||
-    symmetricDifference(
-      service.__extra_file_extensions,
-      uniqExtraFileExtensions,
-    ).size > 0
+    (service.__extra_file_extensions === undefined &&
+      uniqExtraFileExtensions.size > 0) ||
+    (service.__extra_file_extensions !== undefined &&
+      symmetricDifference(
+        service.__extra_file_extensions,
+        uniqExtraFileExtensions,
+      ).size > 0)
   ) {
     log(
       'Updating extra file extensions: %s: %s',
