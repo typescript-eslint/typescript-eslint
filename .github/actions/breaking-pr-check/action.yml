@@ -5,4 +5,4 @@ runs:
   using: 'composite'
   steps:
     - shell: bash
-      run: npx tsx ../../../packages/repo-tools/src/breaking-pr-action-check.mts
+      run: cd ../../../packages/repo-tools && yarn breaking-pr-check-action

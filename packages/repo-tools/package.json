@@ -5,6 +5,7 @@
   "//": "NOTE: intentionally no build step in this package",
   "scripts": {
     "apply-canary-version": "npx tsx ./src/apply-canary-version.mts",
+    "breaking-pr-check-action": "npx tsx ./src/breaking-pr-check-action.mts",
     "format": "npx prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-configs": "npx tsx ./src/generate-configs.mts",
     "generate-contributors": "npx tsx ./src/generate-contributors.mts",
