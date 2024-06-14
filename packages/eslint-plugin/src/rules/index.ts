@@ -64,6 +64,7 @@ import noLossOfPrecision from './no-loss-of-precision';
 import noMagicNumbers from './no-magic-numbers';
 import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
+import noMisusedObjectLikes from './no-misused-object-likes';
 import noMisusedPromises from './no-misused-promises';
 import noMixedEnums from './no-mixed-enums';
 import noNamespace from './no-namespace';
@@ -210,6 +211,7 @@ export default {
   'no-magic-numbers': noMagicNumbers,
   'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
+  'no-misused-object-likes': noMisusedObjectLikes,
   'no-misused-promises': noMisusedPromises,
   'no-mixed-enums': noMixedEnums,
   'no-namespace': noNamespace,
