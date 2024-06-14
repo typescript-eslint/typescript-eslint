@@ -243,6 +243,11 @@ We don't recommend using `--cache`.
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
 
+:::note
+When used with [`projectService`](../packages/Parser.mdx#projectservice) it will trigger a full project reload.
+See [Changes to `extraFileExtensions` with `projectService` in your ESLint options](../troubleshooting/Performance.mdx#changes-to-extrafileextensions-with-projectservice-in-your-eslint-options)
+:::
+
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 

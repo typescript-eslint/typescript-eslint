@@ -79,6 +79,86 @@ module.exports = {
 
 See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
 
+## Changes to `extraFileExtensions` with `projectService` in your ESLint options
+
+Using different [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) for different files with [`projectService`](../packages/Parser.mdx#projectservice) will cause a full project reload.
+This incurs a sizeable performance penalty.
+The optimal approach is to use the same `extraFileExtensions` across `parserOptions` to avoid the performance cost.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+// @ts-check
+
+import tseslint from 'typescript-eslint';
+import vueParser from 'vue-eslint-parser';
+
+// Add this line
+const extraFileExtensions = ['.vue'];
+export default [
+  {
+    files: ['*.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  },
+  {
+    files: ['*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        projectService: true,
+        parser: tseslint.parser,
+        // Remove this line
+        extraFileExtensions: ['.vue'],
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+// Add this line
+const extraFileExtensions = ['.vue'];
+module.exports = {
+  files: ['*.ts'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: true,
+    // Add this line
+    extraFileExtensions,
+  },
+  overrides: [
+    {
+      files: ['*.vue'],
+      parser: 'vue-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        projectService: true,
+        // Remove this line
+        extraFileExtensions: ['.vue'],
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  ],
+};
+```
+
+</TabItem>
+</Tabs>
+
 ## The `indent` / `@typescript-eslint/indent` rules
 
 This rule helps ensure your codebase follows a consistent indentation pattern.
