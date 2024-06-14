@@ -94,7 +94,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unicorn": "^50.0.1",
-    "execa": "7.2.0",
     "glob": "^10.3.12",
     "globals": "^15.0.0",
     "husky": "^9.0.0",
