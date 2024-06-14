@@ -38,7 +38,7 @@ const updateExtraFileExtensions = (
   ) {
     log(
       'Updating extra file extensions: %s: %s',
-      extraFileExtensions,
+      service.__extra_file_extensions,
       uniqExtraFileExtensions,
     );
     service.setHostConfiguration({
