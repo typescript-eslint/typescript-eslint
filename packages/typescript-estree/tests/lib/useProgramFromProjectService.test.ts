@@ -347,12 +347,13 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
   it('does not call setHostConfiguration on the service to use extraFileExtensions when unchanged', () => {
     const { service } = createMockProjectService();
+    const settings = createProjectServiceSettings({
+      allowDefaultProject: [mockParseSettings.filePath],
+      service,
+    });
 
     useProgramFromProjectService(
-      createProjectServiceSettings({
-        allowDefaultProject: [mockParseSettings.filePath],
-        service,
-      }),
+      settings,
       {
         ...mockParseSettings,
         extraFileExtensions: ['.vue'],
@@ -371,6 +372,17 @@ If you absolutely need more files included, set parserOptions.projectService.max
         },
       ],
     });
+
+    useProgramFromProjectService(
+      settings,
+      {
+        ...mockParseSettings,
+        extraFileExtensions: ['.vue'],
+      },
+      false,
+      new Set(),
+    );
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
   });
 
   it('calls setHostConfiguration on the service to use extraFileExtensions when changed', () => {
