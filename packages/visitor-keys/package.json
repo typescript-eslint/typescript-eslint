@@ -3,7 +3,8 @@
   "version": "7.12.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
-    "dist",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
     "_ts4.3",
     "package.json",
     "README.md",

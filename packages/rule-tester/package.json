@@ -3,7 +3,8 @@
   "version": "7.12.0",
   "description": "Tooling to test ESLint rules",
   "files": [
-    "dist",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
     "_ts4.2",
     "README.md",
     "LICENSE"

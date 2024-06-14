@@ -3,7 +3,8 @@
   "version": "7.12.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
-    "dist",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
     "_ts4.3",
     "README.md",
     "LICENSE"

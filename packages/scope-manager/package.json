@@ -3,7 +3,8 @@
   "version": "7.12.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
-    "dist",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
     "package.json",
     "README.md",
     "LICENSE"

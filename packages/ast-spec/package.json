@@ -12,7 +12,8 @@
     "node": "^18.18.0 || >=20.0.0"
   },
   "files": [
-    "dist",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
     "package.json",
     "README.md",
     "LICENSE"

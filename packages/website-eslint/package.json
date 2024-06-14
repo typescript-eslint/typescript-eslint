@@ -4,7 +4,8 @@
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
-    "dist"
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
   ],
   "type": "commonjs",
   "exports": {

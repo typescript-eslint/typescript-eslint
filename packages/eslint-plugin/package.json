@@ -3,7 +3,8 @@
   "version": "7.12.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
-    "dist",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
     "docs",
     "index.d.ts",
     "rules.d.ts",
