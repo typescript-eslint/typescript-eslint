@@ -53,6 +53,34 @@ export class Trie<T> {
     log('Inserted (%d): %s', this.count, filePath);
     return value;
   }
+
+  get(filePath: string): TrieNode<T> | undefined {
+    const parts = path.resolve(filePath).split(path.sep).slice(1);
+    const { lastNodeWithValue } = parts.reduce(
+      ({ currentNode, lastNodeWithValue }, part) => {
+        const childNode = currentNode.children.get(part);
+        if (!childNode) {
+          return { currentNode: currentNode, lastNodeWithValue };
+        }
+        return {
+          currentNode: childNode,
+          lastNodeWithValue:
+            childNode.value != null ? childNode : lastNodeWithValue,
+        };
+      },
+      {
+        currentNode: this.root,
+        lastNodeWithValue: null as TrieNode<T> | null,
+      },
+    );
+    log(
+      'Retrieved (%d): %s: %s',
+      this.count,
+      filePath,
+      lastNodeWithValue?.path,
+    );
+    return lastNodeWithValue;
+  }
 }
 
 export enum WatcherKind {
@@ -74,8 +102,6 @@ export type WatcherCallback<K extends WatcherKind> = {
       callback: (node: TrieNode<Set<Watcher>>, cb: WatcherCallback<K>) => void;
     }
 );
-
-export const watches = new Trie<Set<Watcher>>();
 
 export class Watcher implements ts.FileWatcher {
   constructor(
@@ -142,6 +168,17 @@ export const saveDirectoryWatchCallback = (
       callback(path);
     },
   });
+
+export const getWatchesForProjectService = (
+  service: ts.server.ProjectService & {
+    __watches?: Trie<Set<Watcher>>;
+  },
+): Trie<Set<Watcher>> => {
+  if (!service.__watches) {
+    service.__watches = new Trie<Set<Watcher>>();
+  }
+  return service.__watches;
+};
 
 //  interface WatchOptions {
 //      watchFile?: WatchFileKind;

@@ -1,10 +1,11 @@
 import debug from 'debug';
 import { minimatch } from 'minimatch';
 import path from 'path';
-import { ScriptKind } from 'typescript';
+import * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
+import { getWatchesForProjectService } from './create-program/getWatchesForProjectService';
 import type { ASTAndDefiniteProgram } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 import type { MutableParseSettings } from './parseSettings';
@@ -26,18 +27,32 @@ export function useProgramFromProjectService(
   // We don't canonicalize the filename because it caused a performance regression.
   // See https://github.com/typescript-eslint/typescript-eslint/issues/8519
   const filePathAbsolute = absolutify(parseSettings.filePath);
+
   log(
     'Opening project service file for: %s at absolute path %s',
     parseSettings.filePath,
     filePathAbsolute,
   );
 
+  if (!filePathMatchedByConfiguredProject(service, filePathAbsolute)) {
+    log('Orphaned file: %s', filePathAbsolute);
+    const watches = getWatchesForProjectService(service);
+    const watcher = watches.get(filePathAbsolute);
+    if (watcher?.value !== undefined) {
+      log('Triggering watcher: %s', watcher.path);
+      // TODO: trigger all cbs
+      [...watcher.value].forEach(w => w.callback());
+    } else {
+      log('No watcher found for: %s', filePathAbsolute);
+    }
+  }
+
   if (parseSettings.extraFileExtensions.length) {
     service.setHostConfiguration({
       extraFileExtensions: parseSettings.extraFileExtensions.map(extension => ({
         extension,
         isMixedContent: false,
-        scriptKind: ScriptKind.Deferred,
+        scriptKind: ts.ScriptKind.Deferred,
       })),
     });
   }
@@ -126,6 +141,19 @@ If you absolutely need more files included, set parserOptions.projectService.max
       : path.join(service.host.getCurrentDirectory(), filePath);
   }
 }
+
+const filePathMatchedByConfiguredProject = (
+  service: ts.server.ProjectService,
+  filePath: string,
+): boolean => {
+  const configuredProjects = service.configuredProjects;
+  for (const project of configuredProjects.values()) {
+    if (project.containsFile(filePath as ts.server.NormalizedPath)) {
+      return true;
+    }
+  }
+  return false;
+};
 
 function filePathMatchedBy(
   filePath: string,
