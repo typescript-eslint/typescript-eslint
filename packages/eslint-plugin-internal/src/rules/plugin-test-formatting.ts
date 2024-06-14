@@ -426,9 +426,7 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isNoFormatTemplateTag(
-      tag: TSESTree.LeftHandSideExpression,
-    ): boolean {
+    function isNoFormatTemplateTag(tag: TSESTree.Expression): boolean {
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 
