@@ -1,8 +1,8 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import type { InvalidTestCase } from '@typescript-eslint/utils/ts-eslint';
 
 import rule from '../../src/rules/return-await';
 import { getFixturesRootDir } from '../RuleTester';
-import { InvalidTestCase } from '@typescript-eslint/utils/ts-eslint';
 
 const rootDir = getFixturesRootDir();
 
@@ -62,10 +62,10 @@ ruleTester.run('return-await', rule, {
         async function test() {
           if (Math.random() < 0.33) {
             return await Promise.resolve(1);
-          } else if (Math.random () < 0.5) {
+          } else if (Math.random() < 0.5) {
             return Promise.resolve(2);
           }
-
+        
           try {
           } catch (e) {
             return await Promise.resolve(3);

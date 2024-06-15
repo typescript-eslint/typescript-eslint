@@ -297,7 +297,7 @@ export default createRule({
             suggest: [
               {
                 messageId: 'requiredPromiseAwaitSuggestion',
-                fix: fixer =>
+                fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
                   insertAwait(
                     fixer,
                     node,
@@ -327,7 +327,7 @@ export default createRule({
             suggest: [
               {
                 messageId: 'requiredPromiseAwaitSuggestion',
-                fix: fixer =>
+                fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
                   insertAwait(
                     fixer,
                     node,

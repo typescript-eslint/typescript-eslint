@@ -167,6 +167,20 @@ async function validAlways3() {
 `;
 
 exports[`Validating rule docs return-await.mdx code examples ESLint output 5`] = `
+"Correct
+Options: "error-handling-correctness-only"
+
+async function asyncFunction(): Promise<void> {
+  if (Math.random() < 0.5) {
+    return await Promise.resolve();
+  } else {
+    return Promise.resolve();
+  }
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 6`] = `
 "Incorrect
 Options: "never"
 
@@ -189,7 +203,7 @@ async function invalidNever3() {
 "
 `;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 6`] = `
+exports[`Validating rule docs return-await.mdx code examples ESLint output 7`] = `
 "Correct
 Options: "never"
 
