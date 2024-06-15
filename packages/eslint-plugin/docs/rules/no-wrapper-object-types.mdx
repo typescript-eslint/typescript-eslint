@@ -10,13 +10,12 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/no-wrapper-object-types** for documentation.
 
 The JavaScript language has a set of language types, but some of them correspond to two TypeScript types, which look similar: `boolean`/`Boolean`, `number`/`Number`, `string`/`String`, `bigint`/`BigInt`, `symbol`/`Symbol`, `object`/`Object`.
-The difference is that the lowercase variants are compiler intrinsics and specify the actual _runtime types_ (that is, the return value when you use the `typeof` operator), while the uppercase variants are _structural types_ defined in the library that can be satisfied by any user-defined object with the right properties, not just the real primitives.
+The difference is that the lowercase variants are compiler intrinsics and specify the actual _runtime types_ (that is, the type indicated when executing `typeof x` at runtime), while the uppercase variants are _structural types_ defined in the library that can be satisfied by any user-defined object with the right properties, including but not limited to the real primitives.
 JavaScript also has a "wrapper" class object for each of those primitives, such as [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) and [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number).
 These wrapper objects are assignable to the uppercase types, but not to the lowercase types.
 
-Using the primitives like `0` instead of object wrappers like `new Number(0)` is generally considered a JavaScript best practice.
-JavaScript programs typically work with the real number primitives, rather than objects that "look like" numbers.
-Primitives are simpler to conceptualize and work with `==` and `===` equality checks -- which their object equivalents do notDeepEqual.
+It is widely considered a JavaScript best practice to work with the built-in primitives, like `0`, rather than objects that "look like" numbers, like `new Number(0)`.
+Primitives are simpler to conceptualize, work with `==` and `===` equality checks -- which their object equivalents do notDeepEqual -- and have well-known behavior around truthiness/falsiness which is common to rely on.
 As a result, using the lowercase type names like `number` instead of the uppercase names like `Number` helps make your code behave more reliably.
 
 Examples of code for this rule:
