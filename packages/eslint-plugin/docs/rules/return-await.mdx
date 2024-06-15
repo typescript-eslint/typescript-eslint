@@ -203,6 +203,35 @@ async function validAlways3() {
 </TabItem>
 </Tabs>
 
+### `error-handling-correctness-only`
+
+Same as `in-try-catch`, except _only_ enforces Promises be awaited within the
+error handling contexts explained under that option. Outside of error-handling
+contexts, returned Promises are ignored, whether awaited or not.
+
+:::warning
+We recommend you configure either `in-try-catch` or `always` instead of this option.
+While the choice or awaiting or not awaiting promises outside of error-handling contexts is mostly stylistic, it is best to be consistent.
+:::
+
+Examples of additional correct code with `error-handling-correctness-only`:
+
+<Tabs>
+<TabItem value="✅ Correct">
+
+```ts option='"error-handling-correctness-only"'
+async function asyncFunction(): Promise<void> {
+  if (Math.random() < 0.5) {
+    return await Promise.resolve();
+  } else {
+    return Promise.resolve();
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ### `never`
 
 Disallows all `await`ing any returned promises.

@@ -50,7 +50,12 @@ export default createRule({
     schema: [
       {
         type: 'string',
-        enum: ['in-try-catch', 'always', 'never'],
+        enum: [
+          'in-try-catch',
+          'always',
+          'never',
+          'error-handling-correctness-only',
+        ],
       },
     ],
   },
@@ -283,29 +288,53 @@ export default createRule({
         return;
       }
 
+      if (option === 'error-handling-correctness-only') {
+        if (!isAwait && affectsErrorHandling) {
+          context.report({
+            messageId: 'requiredPromiseAwait',
+            node,
+            // unconditional since always impacts error handling
+            suggest: [
+              {
+                messageId: 'requiredPromiseAwaitSuggestion',
+                fix: fixer =>
+                  insertAwait(
+                    fixer,
+                    node,
+                    isHigherPrecedenceThanAwait(expression),
+                  ),
+              },
+            ],
+          });
+
+          return;
+        }
+      }
+
       if (option === 'in-try-catch') {
         if (isAwait && !affectsErrorHandling) {
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'disallowedPromiseAwaitSuggestion',
-              fix: fixer => removeAwait(fixer, node),
-            }),
+            // unconditional since never impacts error handling
+            fix: fixer => removeAwait(fixer, node),
           });
         } else if (!isAwait && affectsErrorHandling) {
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              fix: fixer =>
-                insertAwait(
-                  fixer,
-                  node,
-                  isHigherPrecedenceThanAwait(expression),
-                ),
-            }),
+            // unconditional since always impacts error handling
+            suggest: [
+              {
+                messageId: 'requiredPromiseAwaitSuggestion',
+                fix: fixer =>
+                  insertAwait(
+                    fixer,
+                    node,
+                    isHigherPrecedenceThanAwait(expression),
+                  ),
+              },
+            ],
           });
         }
 
