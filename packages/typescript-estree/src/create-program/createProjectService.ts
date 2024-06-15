@@ -4,15 +4,15 @@ import os from 'node:os';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
+import {
+  saveDirectoryWatchCallback,
+  saveFileWatchCallback,
+} from './getWatchesForProjectService';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
 const doNothing = (): void => {};
-
-const createStubFileWatcher = (): ts.FileWatcher => ({
-  close: doNothing,
-});
 
 export type TypeScriptProjectService = ts.server.ProjectService;
 
@@ -44,8 +44,8 @@ export function createProjectService(
     clearTimeout,
     setImmediate,
     setTimeout,
-    watchDirectory: createStubFileWatcher,
-    watchFile: createStubFileWatcher,
+    watchDirectory: saveDirectoryWatchCallback,
+    watchFile: saveFileWatchCallback,
   };
 
   const service = new tsserver.server.ProjectService({
@@ -64,6 +64,7 @@ export function createProjectService(
       perftrc: doNothing,
       startGroup: doNothing,
     },
+    canUseWatchEvents: true,
     session: undefined,
     jsDocParsingMode,
   });
