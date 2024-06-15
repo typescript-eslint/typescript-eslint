@@ -2964,15 +2964,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ericcornelissen/bash-parser@npm:0.5.2":
-  version: 0.5.2
-  resolution: "@ericcornelissen/bash-parser@npm:0.5.2"
+"@ericcornelissen/bash-parser@npm:0.5.3":
+  version: 0.5.3
+  resolution: "@ericcornelissen/bash-parser@npm:0.5.3"
   dependencies:
     array-last: ^1.1.1
     babylon: ^6.9.1
     compose-function: ^3.0.3
-    deep-freeze: 0.0.1
-    filter-iterator: 0.0.1
     filter-obj: ^1.1.0
     has-own-property: ^0.1.0
     identity-function: ^1.0.0
@@ -2987,7 +2985,7 @@ __metadata:
     shell-quote-word: ^1.0.1
     to-pascal-case: ^1.0.0
     unescape-js: ^1.0.5
-  checksum: ed6feb775a45e529e36b8ab01cfe2ba39446d8403f30022d4c00f009a45ae47e9c2fd43d5607b7120366c29c42aaf4c5b0bc202066e71d543f3cde235240a87b
+  checksum: b3f6c899ea3240000b83674d37c744e2ae06e776b2f76129db9fcd397d77f2cb84c1c560ce318395fffc6a2b5edb1ec513a8c67514f4ea0229d9d87095955ac5
   languageName: node
   linkType: hard
 
@@ -8883,13 +8881,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-freeze@npm:0.0.1":
-  version: 0.0.1
-  resolution: "deep-freeze@npm:0.0.1"
-  checksum: 1e43c98e44c7849382d9f896e679d48a1b5bf40993f7cc858e3730ef4e2ba387b9b7b7fe722cac34febe7f6a564cd242c27bbc319e8df793c2a287f21e5ba038
-  languageName: node
-  linkType: hard
-
 "deep-is@npm:^0.1.3":
   version: 0.1.4
   resolution: "deep-is@npm:0.1.4"
@@ -10483,7 +10474,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:3.3.2, fast-glob@npm:^3.2.11, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.11, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -10651,13 +10642,6 @@ __metadata:
   dependencies:
     to-regex-range: ^5.0.1
   checksum: b4abfbca3839a3d55e4ae5ec62e131e2e356bf4859ce8480c64c4876100f4df292a63e5bb1618e1d7460282ca2b305653064f01654474aa35c68000980f17798
-  languageName: node
-  linkType: hard
-
-"filter-iterator@npm:0.0.1":
-  version: 0.0.1
-  resolution: "filter-iterator@npm:0.0.1"
-  checksum: 1dd34e0728183b3cc69d45c57ec58cbdd21c5160d53e70592e2db049ed4da81ba551b7bfaccb11731011ce5b07ee09961b09fa4573fe906145ce63d9a1813db0
   languageName: node
   linkType: hard
 
@@ -13344,12 +13328,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:1.21.0, jiti@npm:^1.20.0":
-  version: 1.21.0
-  resolution: "jiti@npm:1.21.0"
+"jiti@npm:^1.20.0, jiti@npm:^1.21.0":
+  version: 1.21.6
+  resolution: "jiti@npm:1.21.6"
   bin:
     jiti: bin/jiti.js
-  checksum: a7bd5d63921c170eaec91eecd686388181c7828e1fa0657ab374b9372bfc1f383cf4b039e6b272383d5cb25607509880af814a39abdff967322459cca41f2961
+  checksum: 9ea4a70a7bb950794824683ed1c632e2ede26949fbd348e2ba5ec8dc5efa54dc42022d85ae229cadaa60d4b95012e80ea07d625797199b688cc22ab0e8891d32
   languageName: node
   linkType: hard
 
@@ -13588,23 +13572,23 @@ __metadata:
   linkType: hard
 
 "knip@npm:^5.9.4":
-  version: 5.17.4
-  resolution: "knip@npm:5.17.4"
+  version: 5.19.0
+  resolution: "knip@npm:5.19.0"
   dependencies:
-    "@ericcornelissen/bash-parser": 0.5.2
+    "@ericcornelissen/bash-parser": 0.5.3
     "@nodelib/fs.walk": 2.0.0
     "@snyk/github-codeowners": 1.1.0
     easy-table: 1.2.0
-    fast-glob: 3.3.2
+    fast-glob: ^3.3.2
     file-entry-cache: 8.0.0
-    jiti: 1.21.0
-    js-yaml: 4.1.0
-    minimist: 1.2.8
-    picocolors: 1.0.0
+    jiti: ^1.21.0
+    js-yaml: ^4.1.0
+    minimist: ^1.2.8
+    picocolors: ^1.0.0
     picomatch: ^4.0.1
-    pretty-ms: 9.0.0
-    resolve: 1.22.8
-    smol-toml: 1.1.4
+    pretty-ms: ^9.0.0
+    resolve: ^1.22.8
+    smol-toml: ^1.1.4
     strip-json-comments: 5.0.1
     summary: 2.1.0
     zod: ^3.22.4
@@ -13615,7 +13599,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: aa50bd275b0088e4ec891a9800ab839c96f0eb92df990dafab498c35caf5f81a16e73e9de04d3bb2e4ca2c4e0823bda294a308c16101c9b8a6dbe9007946e1c0
+  checksum: de4c564e1242fff2d005ee5626c509b8ccf3b0b7e2402766363ac193b607d5742e7a336e321b964c38c143832839b3e361ef6cb8d83add7163ee48902dd6995c
   languageName: node
   linkType: hard
 
@@ -15169,7 +15153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:1.2.8, minimist@npm:^1.2.0, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
@@ -16363,13 +16347,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:1.0.0":
-  version: 1.0.0
-  resolution: "picocolors@npm:1.0.0"
-  checksum: a2e8092dd86c8396bdba9f2b5481032848525b3dc295ce9b57896f931e63fc16f79805144321f72976383fc249584672a75cc18d6777c6b757603f372f745981
-  languageName: node
-  linkType: hard
-
 "picocolors@npm:^1.0.0, picocolors@npm:^1.0.1":
   version: 1.0.1
   resolution: "picocolors@npm:1.0.1"
@@ -16961,7 +16938,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-ms@npm:9.0.0":
+"pretty-ms@npm:^9.0.0":
   version: 9.0.0
   resolution: "pretty-ms@npm:9.0.0"
   dependencies:
@@ -17839,7 +17816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:1.22.8, resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.4, resolve@npm:~1.22.1, resolve@npm:~1.22.2":
+"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.4, resolve@npm:^1.22.8, resolve@npm:~1.22.1, resolve@npm:~1.22.2":
   version: 1.22.8
   resolution: "resolve@npm:1.22.8"
   dependencies:
@@ -17865,7 +17842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@1.22.8#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.4#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.2#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.4#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.8#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.2#~builtin<compat/resolve>":
   version: 1.22.8
   resolution: "resolve@patch:resolve@npm%3A1.22.8#~builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
   dependencies:
@@ -18554,17 +18531,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smol-toml@npm:1.1.4":
-  version: 1.1.4
-  resolution: "smol-toml@npm:1.1.4"
-  checksum: 71537b27c18172c819778d54b6328d438af9d16dd63f0722a9df9fd77c7084eb163274224910c89e6dec0369f130ab050bc3cf4bdba34a4dc134b4faa74749de
-  languageName: node
-  linkType: hard
-
-"smol-toml@npm:~1.2.0":
-  version: 1.2.0
-  resolution: "smol-toml@npm:1.2.0"
-  checksum: d98809da87d94ecd8813ffb3b3f01c199a2916c287c81cf0bdc75d4f762c3b1734d15a90e1226036acc0b11a89beb092ab98e8a4c0ec0f2a688d87dff71f8be6
+"smol-toml@npm:^1.1.4, smol-toml@npm:~1.2.0":
+  version: 1.2.1
+  resolution: "smol-toml@npm:1.2.1"
+  checksum: 12040dd8e38b6efb7a1572bfd803c6a7ac89b8d715d0614b024601165059ea3f4653dd5b87b601308dcefd20a26af8445e9be9888b52e0c4f24d1bfc6d2c4e84
   languageName: node
   linkType: hard
 
