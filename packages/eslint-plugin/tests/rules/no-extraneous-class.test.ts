@@ -90,6 +90,12 @@ class Foo {
       `,
       options: [{ allowWithDecorator: true }],
     },
+    `
+abstract class Foo {
+  public abstract prop: string;
+  public abstract hello(): void;
+}
+    `,
   ],
 
   invalid: [
