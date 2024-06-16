@@ -388,6 +388,24 @@ async function outerFunction() {
       `,
       options: ['in-try-catch'],
     },
+    {
+      // intentionally invalid AST - return is outside a function.
+      // We just want to be sure this doesn't crash.
+      code: `
+using foo = 1 as any;
+return Promise.resolve(42);
+      `,
+    },
+    {
+      // intentionally invalid AST - return is outside a function.
+      // We just want to be sure this doesn't crash.
+      code: `
+{
+  using foo = 1 as any;
+  return Promise.resolve(42);
+}
+      `,
+    },
   ],
   invalid: [
     {
