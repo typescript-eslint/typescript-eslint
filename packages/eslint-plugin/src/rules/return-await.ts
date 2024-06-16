@@ -106,10 +106,9 @@ export default createRule({
           break;
         }
 
-        // This should always exist, since
-        // a) return statements are only allowed in functions in a valid AST
-        // b) even for an invalid AST, the rule validates that the node is
-        //    inside an async function.
+        // This should always exist, since the rule should only be checking
+        // contexts in which `return` statements are legal, which should always
+        // be inside a function.
         scope = nullThrows(
           scope.upper,
           'Expected parent scope to exist. return-await should only operate on return statements within functions',
