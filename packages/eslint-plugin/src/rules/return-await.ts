@@ -106,15 +106,10 @@ export default createRule({
           break;
         }
 
-        if (scope.upper == null) {
-          // we've hit the top level of the program.
-          // This shouldn't happen, since the rule should only be checking
-          // contexts in which `return` statements are legal, which should always
-          // be inside a function.
-          break;
-        }
-
-        scope = scope.upper;
+        // This should always exist, since the rule should only be checking
+        // contexts in which `return` statements are legal, which should always
+        // be inside a function.
+        scope = scope.upper!;
       }
 
       return false;
