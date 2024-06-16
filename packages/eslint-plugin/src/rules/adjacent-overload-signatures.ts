@@ -10,10 +10,15 @@ type RuleNode =
   | TSESTree.TSInterfaceBody
   | TSESTree.TSModuleBlock
   | TSESTree.TSTypeLiteral;
+
 type Member =
   | TSESTree.ClassElement
   | TSESTree.ProgramStatement
   | TSESTree.TypeElement;
+
+type MemberDeclaration =
+  | TSESTree.DefaultExportDeclarations
+  | TSESTree.NamedExportDeclarations;
 
 export default createRule({
   name: 'adjacent-overload-signatures',
@@ -32,7 +37,7 @@ export default createRule({
   create(context) {
     interface Method {
       name: string;
-      static: boolean;
+      static?: boolean;
       callSignature: boolean;
       type: MemberNameType;
     }
@@ -42,9 +47,9 @@ export default createRule({
      * @param member the member being processed.
      * @returns the name and attribute of the member or null if it's a member not relevant to the rule.
      */
-    function getMemberMethod(member: TSESTree.Node): Method | null {
-      const isStatic = 'static' in member && !!member.static;
-
+    function getMemberMethod(
+      member: Member | MemberDeclaration,
+    ): Method | null {
       switch (member.type) {
         case AST_NODE_TYPES.ExportDefaultDeclaration:
         case AST_NODE_TYPES.ExportNamedDeclaration: {
@@ -64,7 +69,6 @@ export default createRule({
           }
           return {
             name,
-            static: isStatic,
             callSignature: false,
             type: MemberNameType.Normal,
           };
@@ -72,27 +76,25 @@ export default createRule({
         case AST_NODE_TYPES.TSMethodSignature:
           return {
             ...getNameFromMember(member, context.sourceCode),
-            static: isStatic,
+            static: !!member.static,
             callSignature: false,
           };
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return {
             name: 'call',
-            static: isStatic,
             callSignature: true,
             type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
             name: 'new',
-            static: isStatic,
             callSignature: false,
             type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
             ...getNameFromMember(member, context.sourceCode),
-            static: isStatic,
+            static: !!member.static,
             callSignature: false,
           };
       }
