@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
+
 import {
   isClosingParenToken,
   isOpeningParenToken,
