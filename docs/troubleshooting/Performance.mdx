@@ -81,9 +81,35 @@ See [Glob pattern in parser's option "project" slows down linting](https://githu
 
 ## Changes to `extraFileExtensions` with `projectService` in your ESLint options
 
-Using different [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) for different files with [`projectService`](../packages/Parser.mdx#projectservice) will cause a full project reload.
-This incurs a sizeable performance penalty.
-The optimal approach is to use the same `extraFileExtensions` across `parserOptions` to avoid the performance cost.
+Using different [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) for different files with
+[`projectService`](../packages/Parser.mdx#projectservice) causes the TypeScript server to perform a full project reload.
+Project reloads can be observed using the [debug environment variable](../packages/typescript-estree/#debugging): `DEBUG='typescript-eslint:typescript-estree:*'`.
+
+```
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+...
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[ '.vue' ]: after=[]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+...
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+```
+
+Frequently switching `extraFileExtensions` may cause project reloads to trigger before the last one completes.
+
+```
+typescript-estree:tsserver:info Scheduled: /path/to/tsconfig.src.json, Cancelled earlier one +0ms
+typescript-estree:tsserver:info Scheduled: *ensureProjectForOpenFiles*, Cancelled earlier one +0ms
+```
+
+The impact of setting `extraFileExtensions` per-package in a project is likely negligible on the CLI.
+That said, when using [typescript-eslint-language-service](https://www.npmjs.com/package/typescript-eslint-language-service),
+the optimal approach is to use the same `extraFileExtensions` across `parserOptions` to avoid project reloads
+when switching between files in different packages.
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
@@ -110,7 +136,7 @@ export default [
   },
   {
     files: ['*.vue'],
-    languageOptions: {
+    languageOptions: {e
       parser: vueParser,
       parserOptions: {
         projectService: true,
@@ -159,7 +185,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-## The `indent` / `@typescript-eslint/indent` rules
+## The `indent` / `@typescripst-eslint/indent` rules
 
 This rule helps ensure your codebase follows a consistent indentation pattern.
 However this involves a _lot_ of computations across every single token in a file.
