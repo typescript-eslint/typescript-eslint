@@ -1,5 +1,5 @@
 ---
-description: 'Enforce consistent returning of awaited values.'
+description: 'Enforce consistent awaiting of returned promises.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,12 +9,14 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/return-await** for documentation.
 
-Returning an awaited promise can make sense for better stack trace information as well as for consistent error handling (returned promises will not be caught in an async function try/catch).
-
 This rule builds on top of the [`eslint/no-return-await`](https://eslint.org/docs/rules/no-return-await) rule.
 It expands upon the base rule to add support for optionally requiring `return await` in certain cases.
 
-The extended rule is named `return-await` instead of `no-return-await` because the extended rule can enforce the positive or the negative. Additionally, while the core rule is now deprecated, the extended rule is still useful in many contexts.
+The extended rule is named `return-await` instead of `no-return-await` because the extended rule can enforce the positive or the negative. Additionally, while the core rule is now deprecated, the extended rule is still useful in many contexts:
+
+- Returning an awaited promise [improves stack trace information](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#improving_stack_trace).
+- When the `return` statement is in `try...catch`, awaiting the promise also allows the promise's rejection to be caught instead of leaving the error to the caller.
+- Contrary to popular belief, `return await promise;` is [at least as fast as directly returning the promise](https://github.com/tc39/proposal-faster-promise-adoption).
 
 ## Options
 
