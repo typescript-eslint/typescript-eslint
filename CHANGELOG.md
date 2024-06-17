@@ -1,3 +1,33 @@
+## 7.13.0 (2024-06-10)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-dynamic-delete] allow all string literals as index ([#9280](https://github.com/typescript-eslint/typescript-eslint/pull/9280))
+- **parser, typescript-estree:** export withoutProjectParserOptions utility ([#9233](https://github.com/typescript-eslint/typescript-eslint/pull/9233))
+- **typescript-estree:** require `import = require()` argument to be a string literal ([#9226](https://github.com/typescript-eslint/typescript-eslint/pull/9226))
+- **typescript-estree:** forbid `.body`, `.async`, `.generator` on `declare function` ([#9225](https://github.com/typescript-eslint/typescript-eslint/pull/9225))
+
+### 🩹 Fixes
+
+- **ast-spec:** function-call-like callee should be Expression not LeftHandSideExpression ([#9231](https://github.com/typescript-eslint/typescript-eslint/pull/9231))
+- **eslint-plugin:** [init-declarations] refine report locations ([#8893](https://github.com/typescript-eslint/typescript-eslint/pull/8893))
+- **eslint-plugin:** [no-base-to-string] make error message more nuanced ([#9281](https://github.com/typescript-eslint/typescript-eslint/pull/9281))
+- **eslint-plugin:** [no-unsafe-assignment] be more specific about error types ([#8304](https://github.com/typescript-eslint/typescript-eslint/pull/8304))
+- **eslint-plugin:** [no-magic-numbers] fix implementation of the `ignore` option ([#9167](https://github.com/typescript-eslint/typescript-eslint/pull/9167))
+- **scope-manager:** handle index signature in class ([#9054](https://github.com/typescript-eslint/typescript-eslint/pull/9054))
+
+### ❤️  Thank You
+
+- Fotis Papadogeorgopoulos
+- Joshua Chen
+- Kirk Waiblinger
+- Tobiloba Adedeji @tobySolutions
+- Vinccool96
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.12.0 (2024-06-03)
 
 
