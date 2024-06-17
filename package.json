@@ -105,7 +105,7 @@
     "markdownlint-cli": "^0.41.0",
     "ncp": "^2.0.0",
     "nx": "19.3.0-canary.20240611-1600875",
-    "prettier": "3.3.1",
+    "prettier": "3.3.2",
     "pretty-format": "^29.7.0",
     "rimraf": "^5.0.5",
     "tmp": "^0.2.1",

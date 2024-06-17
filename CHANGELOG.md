@@ -1,3 +1,19 @@
+## 7.13.1 (2024-06-17)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly] refine report locations ([#8894](https://github.com/typescript-eslint/typescript-eslint/pull/8894))
+- **eslint-plugin:** [return-await] support explicit resource management ([#9044](https://github.com/typescript-eslint/typescript-eslint/pull/9044))
+- **eslint-plugin:** [no-unsafe-member-access] differentiate a types-error any from a true any ([#9291](https://github.com/typescript-eslint/typescript-eslint/pull/9291))
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.13.0 (2024-06-10)
 
 
