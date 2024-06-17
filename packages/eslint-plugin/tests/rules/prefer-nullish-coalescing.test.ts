@@ -329,6 +329,42 @@ x || y;
         },
       ],
     },
+    {
+      code: `
+enum Enum {
+  A = "a",
+  B = "b",
+  C = "c",
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = "a",
+  B = "b",
+  C = "c",
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
@@ -1312,6 +1348,74 @@ null || y;
     {
       code: `
 undefined || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = "a",
+  B = "b",
+  C = "c",
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = "a",
+  B = "b",
+  C = "c",
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
       `,
       output: null,
       errors: [
