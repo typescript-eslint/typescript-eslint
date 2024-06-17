@@ -1,6 +1,8 @@
+import path from 'node:path';
+import util from 'node:util';
+
 import debug from 'debug';
 import { minimatch } from 'minimatch';
-import path from 'path';
 import * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
@@ -13,43 +15,30 @@ const log = debug(
   'typescript-eslint:typescript-estree:useProgramFromProjectService',
 );
 
-const union = <T>(self: Set<T>, other: Set<T>): Set<T> =>
-  new Set([...self, ...other]);
-const difference = <T>(self: Set<T>, other: Set<T>): Set<T> =>
-  new Set([...self].filter(elem => !other.has(elem)));
-const symmetricDifference = <T>(self: Set<T>, other: Set<T>): Set<T> =>
-  union(difference(self, other), difference(other, self));
+const serviceFileExtensions = new WeakMap<ts.server.ProjectService, string[]>();
 
 const updateExtraFileExtensions = (
-  service: ts.server.ProjectService & {
-    __extra_file_extensions?: Set<string>;
-  },
+  service: ts.server.ProjectService,
   extraFileExtensions: string[],
 ): void => {
-  const uniqExtraFileExtensions = new Set(extraFileExtensions);
+  const currentServiceFileExtensions = serviceFileExtensions.get(service) ?? [];
   if (
-    (service.__extra_file_extensions === undefined &&
-      uniqExtraFileExtensions.size > 0) ||
-    (service.__extra_file_extensions !== undefined &&
-      symmetricDifference(
-        service.__extra_file_extensions,
-        uniqExtraFileExtensions,
-      ).size > 0)
+    !util.isDeepStrictEqual(currentServiceFileExtensions, extraFileExtensions)
   ) {
     log(
-      'Updating extra file extensions: %s: %s',
-      service.__extra_file_extensions,
-      uniqExtraFileExtensions,
+      'Updating extra file extensions: before=%s: after=%s',
+      currentServiceFileExtensions,
+      extraFileExtensions,
     );
     service.setHostConfiguration({
-      extraFileExtensions: [...uniqExtraFileExtensions].map(extension => ({
+      extraFileExtensions: extraFileExtensions.map(extension => ({
         extension,
         isMixedContent: false,
         scriptKind: ts.ScriptKind.Deferred,
       })),
     });
-    service.__extra_file_extensions = uniqExtraFileExtensions;
-    log('Extra file extensions updated: %o', service.__extra_file_extensions);
+    serviceFileExtensions.set(service, extraFileExtensions);
+    log('Extra file extensions updated: %o', extraFileExtensions);
   }
 };
 
