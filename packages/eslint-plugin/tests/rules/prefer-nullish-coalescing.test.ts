@@ -233,6 +233,102 @@ x || y;
       declare const y: number;
       x || y;
     `,
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
@@ -1154,42 +1250,6 @@ x || y;
             string: true,
             number: false,
             boolean: true,
-            bigint: true,
-          },
-        },
-      ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-            number: true,
-            boolean: true,
-            bigint: false,
-          },
-        },
-      ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-            number: false,
-            boolean: true,
             bigint: false,
           },
         },
@@ -1213,46 +1273,6 @@ x || y;
         },
       ],
       errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-        },
-      ],
     },
     {
       code: `
