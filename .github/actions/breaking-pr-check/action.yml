@@ -5,4 +5,5 @@ runs:
   using: 'composite'
   steps:
     - shell: bash
-      run: cd ../../../packages/repo-tools && yarn breaking-pr-check-action
+      run: yarn breaking-pr-check-action
+      working-directory: packages/repo-tools

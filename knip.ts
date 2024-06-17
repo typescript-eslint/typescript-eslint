@@ -34,6 +34,7 @@ export default {
       entry: ['packages/repo-tools/src/release/changelog-renderer.js'],
       ignoreBinaries: [
         // https://github.com/webpro/knip/issues/433
+        'breaking-pr-check-action',
         'stylelint',
       ],
     },
