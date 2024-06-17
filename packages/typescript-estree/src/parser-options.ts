@@ -152,7 +152,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
    * It accepts an array of file extensions, each preceded by a `.`.
    *
-   * Note that when used with {@link projectService} it will trigger a full project reload.
+   * NOTE: When used with {@link projectService}, full project reloads may occur.
    */
   extraFileExtensions?: string[];
 
