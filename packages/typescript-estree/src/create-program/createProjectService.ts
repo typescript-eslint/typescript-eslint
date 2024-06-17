@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import os from 'node:os';
+import path from 'node:path';
 
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
+import { getParsedConfigFile } from './getParsedConfigFile';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
@@ -67,41 +68,25 @@ export function createProjectService(
     session: undefined,
     jsDocParsingMode,
   });
-
   if (options.defaultProject) {
-    let configRead;
-
     try {
-      configRead = tsserver.readConfigFile(
+      const configFile = getParsedConfigFile(
         options.defaultProject,
-        system.readFile,
+        path.dirname(options.defaultProject),
+      );
+      service.setCompilerOptionsForInferredProjects(
+        // NOTE: The inferred projects API is not intended for source files when a tsconfig
+        // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
+        // it is meant for hard coded options passed in.  Hard casting as a work around.
+        // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+        configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
       );
     } catch (error) {
       throw new Error(
         `Could not parse default project '${options.defaultProject}': ${(error as Error).message}`,
       );
     }
-
-    if (configRead.error) {
-      throw new Error(
-        `Could not read default project '${options.defaultProject}': ${tsserver.formatDiagnostic(
-          configRead.error,
-          {
-            getCurrentDirectory: system.getCurrentDirectory,
-            getCanonicalFileName: fileName => fileName,
-            getNewLine: () => os.EOL,
-          },
-        )}`,
-      );
-    }
-
-    service.setCompilerOptionsForInferredProjects(
-      (
-        configRead.config as {
-          compilerOptions: ts.server.protocol.InferredProjectCompilerOptions;
-        }
-      ).compilerOptions,
-    );
   }
 
   return {
