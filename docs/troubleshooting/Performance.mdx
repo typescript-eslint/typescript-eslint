@@ -81,8 +81,8 @@ See [Glob pattern in parser's option "project" slows down linting](https://githu
 
 ## Changes to `extraFileExtensions` with `projectService` in your ESLint options
 
-Using different [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) for different files with
-[`projectService`](../packages/Parser.mdx#projectservice) causes the TypeScript server to perform a full project reload.
+When [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) changes while using
+[`projectService`](../packages/Parser.mdx#projectservice), the TypeScript server must perform a full project reload.
 Project reloads can be observed using the [debug environment variable](../packages/typescript-estree/#debugging): `DEBUG='typescript-eslint:typescript-estree:*'`.
 
 ```
@@ -92,24 +92,31 @@ typescript-estree:useProgramFromProjectService Extra file extensions updated: [ 
 ...
 typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[ '.vue' ]: after=[]
 typescript-estree:tsserver:info reload projects.
-typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+typescript-estree:useProgramFromProjectService Extra file extensions updated: []
 ...
 typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
 typescript-estree:tsserver:info reload projects.
 typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
 ```
 
-Frequently switching `extraFileExtensions` may cause project reloads to trigger before the last one completes.
+As files are received, if `extraFileExtensions` differs from the previous file,
+the TypeScript server is updated to match your ESLint options.
+The TypeScript server incrementally updates the project structure by creating an execution pipeline.
+If the ordering of files received from ESLint happens to frequently alternate the value of `extraFileExtensions`,
+a project reload may occur before the last pipeline completes.
+In turn, this can lead to cascading performance issues.
 
 ```
 typescript-estree:tsserver:info Scheduled: /path/to/tsconfig.src.json, Cancelled earlier one +0ms
 typescript-estree:tsserver:info Scheduled: *ensureProjectForOpenFiles*, Cancelled earlier one +0ms
 ```
 
-The impact of setting `extraFileExtensions` per-package in a project is likely negligible on the CLI.
-That said, when using [typescript-eslint-language-service](https://www.npmjs.com/package/typescript-eslint-language-service),
-the optimal approach is to use the same `extraFileExtensions` across `parserOptions` to avoid project reloads
-when switching between files in different packages.
+The impact of setting `extraFileExtensions` per file type in a project may be negligible depending on the order files are received.
+That said, complex ESLint options, cached linting results altering which files are evaluated,
+and switching between files with different `extraFileExtensions` while using
+[typescript-eslint-language-service](https://www.npmjs.com/package/typescript-eslint-language-service)
+may all be sources of unintended project reloads.
+The optimal approach to avoid project reloads altogether is to use the same `extraFileExtensions` across `parserOptions`.
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
