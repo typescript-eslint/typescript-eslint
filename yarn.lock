@@ -3852,10 +3852,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/open-api@npm:^2.31.0":
-  version: 2.31.0
-  resolution: "@netlify/open-api@npm:2.31.0"
-  checksum: 4adef47b2cbcd627a5ce365676d2fe463220f9695e48b76e2ee9426d1049c88b93dae5f87d615d39fb442033ef40db01e3efdfd610c1c3abf8fc5ffed941fdd5
+"@netlify/open-api@npm:^2.32.0":
+  version: 2.32.0
+  resolution: "@netlify/open-api@npm:2.32.0"
+  checksum: 94e5185018d1e93a11cea4a8b5a21892f4ba07c3c0ea5f0e9a14c6f33cea92ca16154a5455b769cfe2b878aea9da168d6c81dea507d101df02cfc7d4ff84c18d
   languageName: node
   linkType: hard
 
@@ -15394,17 +15394,17 @@ __metadata:
   linkType: hard
 
 "netlify@npm:^13.1.14":
-  version: 13.1.17
-  resolution: "netlify@npm:13.1.17"
+  version: 13.1.18
+  resolution: "netlify@npm:13.1.18"
   dependencies:
-    "@netlify/open-api": ^2.31.0
+    "@netlify/open-api": ^2.32.0
     lodash-es: ^4.17.21
     micro-api-client: ^3.3.0
     node-fetch: ^3.0.0
     omit.js: ^2.0.2
     p-wait-for: ^4.0.0
     qs: ^6.9.6
-  checksum: 6a7da96491b015348a0444edca5f7f8a3b5f62e3083ad3b87811897f4bb8f68435be98d8ff23358fab78a47921ea0e337b9dc5e8dc094aa3912e1af1afb67a6e
+  checksum: 53bf979f624630fe941fe6cc50e431759a574692becb988eccd22b6d2e474a5aab0c3f77ddf67ba690dbcd48361ff91cf30c07b65e4296924842bce52afce885
   languageName: node
   linkType: hard
 
