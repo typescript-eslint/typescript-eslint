@@ -23,4 +23,4 @@ type Definition =
   | TypeDefinition
   | VariableDefinition;
 
-export { Definition };
+export type { Definition };

@@ -157,8 +157,12 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(0);
     expect(scope['implicit'].leftToBeResolved).toHaveLength(2);
     expect(scope['implicit'].leftToBeResolved[0].identifier.name).toBe('d');
+    // TODO: Investigate lint error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     expectToBeForScope(scope['implicit'].leftToBeResolved[0].from);
     expect(scope['implicit'].leftToBeResolved[1].identifier.name).toBe('array');
+    // TODO: Investigate lint error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     expectToBeForScope(scope['implicit'].leftToBeResolved[1].from);
 
     scope = scopeManager.scopes[2];
@@ -280,10 +284,16 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(0);
     expect(scope['implicit'].leftToBeResolved).toHaveLength(3);
     expect(scope['implicit'].leftToBeResolved[0].identifier.name).toBe('d');
+    // TODO: Investigate lint error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     expectToBeForScope(scope['implicit'].leftToBeResolved[0].from);
     expect(scope['implicit'].leftToBeResolved[1].identifier.name).toBe('e');
+    // TODO: Investigate lint error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     expectToBeForScope(scope['implicit'].leftToBeResolved[1].from);
     expect(scope['implicit'].leftToBeResolved[2].identifier.name).toBe('array');
+    // TODO: Investigate lint error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     expectToBeForScope(scope['implicit'].leftToBeResolved[2].from);
 
     scope = scopeManager.scopes[2];

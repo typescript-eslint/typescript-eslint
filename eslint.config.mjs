@@ -85,15 +85,8 @@ export default tseslint.config(
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
-          /**
-           * We are currently in the process of transitioning to nx's out of the box structure and
-           * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
-           * files here for now in addition to the tsconfig.json glob pattern.
-           *
-           * TODO(#4665): Clean this up once all packages have been transitioned.
-           */
-          'packages/scope-manager/tsconfig.build.json',
-          'packages/scope-manager/tsconfig.spec.json',
+          'packages/*/tsconfig.build.json',
+          'packages/*/tsconfig.spec.json',
         ],
         tsconfigRootDir: __dirname,
         warnOnUnsupportedTypeScriptVersion: false,

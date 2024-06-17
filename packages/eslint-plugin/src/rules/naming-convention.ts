@@ -787,4 +787,4 @@ function requiresQuoting(
   return _requiresQuoting(name, target);
 }
 
-export { MessageIds, Options };
+export type { MessageIds, Options };

@@ -3,12 +3,14 @@
   "compilerOptions": {
     // repo tools are executed with tsx
     "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "src",
+    "outDir": "dist",
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
-  "references": []
+  "references": [
+    {
+      "path": "../utils/tsconfig.build.json"
+    }
+  ]
 }

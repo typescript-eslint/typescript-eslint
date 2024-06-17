@@ -1,13 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    // disable composite and emitDeclarationOnly for docusaurus usage
+    "composite": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ESNext"],
-    "noEmit": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
@@ -25,5 +28,10 @@
     "sidebars/*.js",
     "./*.mts",
     "./*.ts"
+  ],
+  "references": [
+    {
+      "path": "../rule-schema-to-typescript-types/tsconfig.build.json"
+    }
   ]
 }

@@ -98,4 +98,4 @@ type Lib =
   | 'esnext.full'
   | 'lib';
 
-export { Lib };
+export type { Lib };

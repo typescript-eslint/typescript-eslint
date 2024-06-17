@@ -1,13 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "outDir": "../../dist/out-tsc/website-eslint",
     "allowJs": true,
-    // opt-in files for checking
-    "checkJs": false,
-    // build is done via esbuild
-    "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": false
   },
   "include": ["src", "types", "build.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../scope-manager/tsconfig.build.json"
+    },
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
+    {
+      "path": "../visitor-keys/tsconfig.build.json"
+    }
+  ]
 }

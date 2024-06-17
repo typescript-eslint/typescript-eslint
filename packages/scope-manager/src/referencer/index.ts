@@ -1,1 +1,2 @@
-export { Referencer, ReferencerOptions } from './Referencer';
+export { Referencer } from './Referencer';
+export type { ReferencerOptions } from './Referencer';

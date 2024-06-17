@@ -12,8 +12,7 @@
     "generate-lib": "npx tsx ./src/generate-lib.mts",
     "lint": "npx nx lint",
     "postinstall-script": "npx tsx ./src/postinstall.mts",
-    "test": "npx jest --coverage",
-    "typecheck": "npx tsc --noEmit"
+    "test": "npx jest --coverage"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",

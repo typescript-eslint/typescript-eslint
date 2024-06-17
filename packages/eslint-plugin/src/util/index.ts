@@ -37,7 +37,6 @@ export {
   isObjectNotArray,
   getParserServices,
   nullThrows,
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
   NullThrowsReasons,
 };
+export type { InferMessageIdsTypeFromRule, InferOptionsTypeFromRule };

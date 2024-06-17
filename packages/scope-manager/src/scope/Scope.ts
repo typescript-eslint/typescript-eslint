@@ -37,4 +37,4 @@ type Scope =
   | TypeScope
   | WithScope;
 
-export { Scope };
+export type { Scope };
