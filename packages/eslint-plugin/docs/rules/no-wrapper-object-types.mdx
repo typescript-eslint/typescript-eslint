@@ -1,0 +1,67 @@
+---
+description: 'Disallow using confusing built-in primitive class wrappers.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-wrapper-object-types** for documentation.
+
+The JavaScript language has a set of language types, but some of them correspond to two TypeScript types, which look similar: `boolean`/`Boolean`, `number`/`Number`, `string`/`String`, `bigint`/`BigInt`, `symbol`/`Symbol`, `object`/`Object`.
+The difference is that the lowercase variants are compiler intrinsics and specify the actual _runtime types_ (that is, the return value when you use the `typeof` operator), while the uppercase variants are _structural types_ defined in the library that can be satisfied by any user-defined object with the right properties, not just the real primitives.
+JavaScript also has a "wrapper" class object for each of those primitives, such as [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) and [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number).
+These wrapper objects are assignable to the uppercase types, but not to the lowercase types.
+
+Using the primitives like `0` instead of object wrappers like `new Number(0)` is generally considered a JavaScript best practice.
+JavaScript programs typically work with the real number primitives, rather than objects that "look like" numbers.
+Primitives are simpler to conceptualize and work with `==` and `===` equality checks -- which their object equivalents do notDeepEqual.
+As a result, using the lowercase type names like `number` instead of the uppercase names like `Number` helps make your code behave more reliably.
+
+Examples of code for this rule:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+let myBigInt: BigInt;
+let myBoolean: Boolean;
+let myNumber: Number;
+let myString: String;
+let mySymbol: Symbol;
+
+let myObject: Object = 'allowed by TypeScript';
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+let myBigint: bigint;
+let myBoolean: boolean;
+let myNumber: number;
+let myString: string;
+let mySymbol: symbol;
+
+let myObject: object = "Type 'string' is not assignable to type 'object'.";
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your project is a rare one that intentionally deals with the class equivalents of primitives, it might not be worthwhile to use this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+## Further Reading
+
+- [MDN documentation on primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)
+- [MDN documentation on `string` primitives and `String` objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects)
+
+## Related To
+
+- [`no-empty-object-type`](./no-empty-object-type.mdx)
+- [`no-restricted-types`](./no-restricted-types.mdx)
+- [`no-unsafe-function-type`](./no-unsafe-function-type.mdx)

@@ -24,7 +24,14 @@ export default createRule({
      * @private
      */
     function isOptionalParam(node: TSESTree.Parameter): boolean {
-      return 'optional' in node && node.optional;
+      return (
+        (node.type === AST_NODE_TYPES.ArrayPattern ||
+          node.type === AST_NODE_TYPES.AssignmentPattern ||
+          node.type === AST_NODE_TYPES.Identifier ||
+          node.type === AST_NODE_TYPES.ObjectPattern ||
+          node.type === AST_NODE_TYPES.RestElement) &&
+        node.optional
+      );
     }
 
     /**
