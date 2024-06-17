@@ -73,6 +73,51 @@ export default createRule({
       scopeInfoStack.pop();
     }
 
+    function affectsExplicitResourceManagement(node: TSESTree.Node): boolean {
+      // just need to determine if there is a `using` declaration in scope.
+      let scope = context.sourceCode.getScope(node);
+      const functionScope = scope.variableScope;
+      while (true) {
+        for (const variable of scope.variables) {
+          if (variable.defs.length !== 1) {
+            // This can't be the case for `using` or `await using` since it's
+            // an error to redeclare those more than once in the same scope,
+            // unlike, say, `var` declarations.
+            continue;
+          }
+
+          const declaration = variable.defs[0];
+          const declaratorNode = declaration.node;
+          const declarationNode =
+            declaratorNode.parent as TSESTree.VariableDeclaration;
+
+          // if it's a using/await using declaration, and it comes _before_ the
+          // node we're checking, it affects control flow for that node.
+          if (
+            ['using', 'await using'].includes(declarationNode.kind) &&
+            declaratorNode.range[1] < node.range[0]
+          ) {
+            return true;
+          }
+        }
+
+        if (scope === functionScope) {
+          // We've checked all the relevant scopes
+          break;
+        }
+
+        // This should always exist, since the rule should only be checking
+        // contexts in which `return` statements are legal, which should always
+        // be inside a function.
+        scope = nullThrows(
+          scope.upper,
+          'Expected parent scope to exist. return-await should only operate on return statements within functions',
+        );
+      }
+
+      return false;
+    }
+
     /**
      * Tests whether a node is inside of an explicit error handling context
      * (try/catch/finally) in a way that throwing an exception will have an
@@ -245,7 +290,9 @@ export default createRule({
         return;
       }
 
-      const affectsErrorHandling = affectsExplicitErrorHandling(expression);
+      const affectsErrorHandling =
+        affectsExplicitErrorHandling(expression) ||
+        affectsExplicitResourceManagement(node);
       const useAutoFix = !affectsErrorHandling;
 
       if (option === 'always') {
