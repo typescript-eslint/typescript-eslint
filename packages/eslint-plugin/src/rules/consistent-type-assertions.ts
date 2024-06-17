@@ -8,11 +8,7 @@ import {
   getOperatorPrecedenceForNode,
   getParserServices,
   getTextWithParentheses,
-  isClosingParenToken,
-  isOpeningParenToken,
   isParenthesized,
-  nullThrows,
-  NullThrowsReasons,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
