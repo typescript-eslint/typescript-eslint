@@ -213,7 +213,7 @@ typescript-eslint v8 deletes the `ban-types` rule and replaces it with several m
 To migrate to the new rules:
 
 - If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
-- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
+- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](https://v8--typescript-eslint.netlify.app/rules/no-restricted-types).
 - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban:
   - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type)
   - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](https://v8--typescript-eslint.netlify.app/rules/no-unsafe-function-type)
