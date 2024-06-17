@@ -20,12 +20,12 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow calling a value with type an {{type}} value',
+      description: 'Disallow calling a value with type an `any` value',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an `any` typed value.',
+      unsafeCall: 'Unsafe call of an {{type}} typed value.',
       unsafeCallThis: [
         'Unsafe call of an `any` typed value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
