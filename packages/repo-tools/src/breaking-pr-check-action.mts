@@ -6,7 +6,8 @@ function raiseError(message: string): never {
 }
 
 async function getPullRequest(): Promise<typeof data> {
-  const client = github.getOctokit(process.env.GITHUB_TOKEN);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const client = github.getOctokit(process.env.GITHUB_TOKEN!);
 
   const pr = github.context.payload.pull_request;
   if (!pr) {
@@ -45,7 +46,7 @@ function checkDescription(
   }
   const [firstLine, secondLine] = body.split(/\r?\n/);
 
-  if (!firstLine || !/^BREAKING CHANGE:/.test(firstLine)) {
+  if (!firstLine || !firstLine.startsWith('BREAKING CHANGE:')) {
     raiseError(
       `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
     );
