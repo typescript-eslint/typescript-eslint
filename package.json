@@ -26,8 +26,6 @@
   "scripts": {
     "build": "npx nx run-many --target=build --parallel --exclude website --exclude website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
-    "check-configs": "npx nx run-many --target=check-configs --parallel",
-    "check-docs": "npx nx run-many --target=check-docs --parallel",
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "nx run-many --target=clean",
@@ -65,9 +63,9 @@
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.0",
     "@jest/types": "29.6.3",
-    "@nx/eslint": "18.3.5",
-    "@nx/jest": "18.3.5",
-    "@nx/workspace": "18.3.5",
+    "@nx/eslint": "19.3.0-canary.20240611-1600875",
+    "@nx/jest": "19.3.0-canary.20240611-1600875",
+    "@nx/workspace": "19.3.0-canary.20240611-1600875",
     "@swc/core": "^1.4.12",
     "@swc/jest": "^0.2.36",
     "@types/babel__code-frame": "^7.0.6",
@@ -111,8 +109,8 @@
     "markdownlint-cli": "^0.41.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.14",
-    "nx": "18.3.5",
-    "prettier": "3.3.0",
+    "nx": "19.3.0-canary.20240611-1600875",
+    "prettier": "3.3.2",
     "pretty-format": "^29.7.0",
     "rimraf": "^5.0.5",
     "tmp": "^0.2.1",
@@ -141,7 +139,9 @@
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
     "typescript": "5.4.5",
-    "nx@18.3.5": "patch:nx@npm%3A18.3.5#./.yarn/patches/nx-npm-18.3.5-58c0bedf91.patch"
+    "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
+    "@nx/eslint@19.3.0-canary.20240611-1600875": "patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch",
+    "nx@19.3.0-canary.20240611-1600875": "patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch"
   },
   "packageManager": "yarn@3.8.2"
 }
