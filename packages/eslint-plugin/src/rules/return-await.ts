@@ -293,7 +293,7 @@ export default createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            // unconditional since always impacts error handling
+            // We always report here, as it always impacts error handling
             suggest: [
               {
                 messageId: 'requiredPromiseAwaitSuggestion',
