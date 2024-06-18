@@ -1,6 +1,7 @@
 // @ts-check
 const {
   default: defaultChangelogRenderer,
+  // eslint-disable-next-line import/no-extraneous-dependencies
 } = require('nx/release/changelog-renderer');
 
 const changelogRenderer = async ({
