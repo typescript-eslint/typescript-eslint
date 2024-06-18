@@ -1,4 +1,4 @@
-import type { KnipConfig } from 'knip';
+import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
