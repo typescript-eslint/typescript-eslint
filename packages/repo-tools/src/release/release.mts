@@ -1,5 +1,4 @@
 import { execaSync } from 'execa';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release';
 import yargs from 'yargs';
 

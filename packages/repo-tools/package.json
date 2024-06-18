@@ -29,6 +29,7 @@
     "@typescript-eslint/utils": "7.13.1",
     "cross-fetch": "*",
     "execa": "*",
+    "nx": "19.3.0-canary.20240611-1600875",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "semver": "7.6.2",
