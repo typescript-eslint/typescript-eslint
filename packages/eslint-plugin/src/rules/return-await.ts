@@ -251,14 +251,13 @@ export default createRule({
       }
 
       const affectsErrorHandling = affectsExplicitErrorHandling(expression);
-      const useAutoFix = !affectsErrorHandling;
 
       if (option === 'always') {
         if (!isAwait && isThenable) {
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            ...fixOrSuggest(useAutoFix, {
+            ...fixOrSuggest(!affectsErrorHandling, {
               messageId: 'requiredPromiseAwaitSuggestion',
               fix: fixer =>
                 insertAwait(
@@ -278,7 +277,7 @@ export default createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            ...fixOrSuggest(useAutoFix, {
+            ...fixOrSuggest(!affectsErrorHandling, {
               messageId: 'disallowedPromiseAwaitSuggestion',
               fix: fixer => removeAwait(fixer, node),
             }),
@@ -293,7 +292,7 @@ export default createRule({
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            // We always report here, as it always impacts error handling
+            // Suggest, don't fix, since this affects error handling control flow.
             suggest: [
               {
                 messageId: 'requiredPromiseAwaitSuggestion',
@@ -316,14 +315,14 @@ export default createRule({
           context.report({
             messageId: 'disallowedPromiseAwait',
             node,
-            // unconditional since never impacts error handling
+            // Safe to fix, since this doesn't affect error handling control flow.
             fix: fixer => removeAwait(fixer, node),
           });
         } else if (!isAwait && affectsErrorHandling) {
           context.report({
             messageId: 'requiredPromiseAwait',
             node,
-            // unconditional since always impacts error handling
+            // Suggest, don't fix, since this affects error handling control flow.
             suggest: [
               {
                 messageId: 'requiredPromiseAwaitSuggestion',
