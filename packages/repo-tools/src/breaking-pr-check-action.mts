@@ -46,7 +46,7 @@ function checkDescription(
   }
   const [firstLine, secondLine] = body.split(/\r?\n/);
 
-  if (!firstLine || !firstLine.startsWith('BREAKING CHANGE:')) {
+  if (!firstLine.startsWith('BREAKING CHANGE:')) {
     raiseError(
       `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
     );
