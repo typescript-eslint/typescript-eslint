@@ -22,6 +22,14 @@ class HelloWorldLogger {
 `;
 
 exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+abstract class Foo {}
+               ~~~ Unexpected empty class.
+"
+`;
+
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 3`] = `
 "Correct
 
 export const version = 42;
@@ -36,7 +44,16 @@ function logHelloWorld() {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 3`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 4`] = `
+"Correct
+
+abstract class Foo {
+  abstract prop: string;
+}
+"
+`;
+
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 5`] = `
 "Incorrect
 
 export class Utilities {
@@ -56,7 +73,7 @@ export class Utilities {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 4`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 6`] = `
 "Correct
 
 export function util1() {
@@ -73,7 +90,7 @@ export function util3() {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 5`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 7`] = `
 "Incorrect
 
 // utilities.ts
@@ -91,7 +108,7 @@ Utilities.sayHello();
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 6`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 8`] = `
 "
 
 // utilities.ts
@@ -106,7 +123,7 @@ utilities.sayHello();
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 9`] = `
 "
 
 // utilities.ts
@@ -121,7 +138,7 @@ sayHello();
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 10`] = `
 "Incorrect
 
 export class Utilities {
@@ -135,7 +152,7 @@ export class Utilities {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 9`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 11`] = `
 "Correct
 
 let mutableCount = 1;
@@ -150,7 +167,7 @@ export function incrementCount() {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 10`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 12`] = `
 "Incorrect
 Options: { "allowConstructorOnly": true }
 
@@ -159,7 +176,7 @@ class NoFields {}
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 11`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 13`] = `
 "Correct
 Options: { "allowConstructorOnly": true }
 
@@ -171,7 +188,7 @@ class NoFields {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 12`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 14`] = `
 "Incorrect
 Options: { "allowEmpty": true }
 
@@ -184,7 +201,7 @@ class NoFields {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 13`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 15`] = `
 "Correct
 Options: { "allowEmpty": true }
 
@@ -192,7 +209,7 @@ class NoFields {}
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 14`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 16`] = `
 "Incorrect
 Options: { "allowStaticOnly": true }
 
@@ -201,7 +218,7 @@ class EmptyClass {}
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 15`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 17`] = `
 "Correct
 Options: { "allowStaticOnly": true }
 
@@ -211,7 +228,7 @@ class NotEmptyClass {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 16`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 18`] = `
 "Incorrect
 Options: { "allowWithDecorator": true }
 
@@ -222,7 +239,7 @@ class Constants {
 "
 `;
 
-exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 17`] = `
+exports[`Validating rule docs no-extraneous-class.mdx code examples ESLint output 19`] = `
 "Correct
 Options: { "allowWithDecorator": true }
 
