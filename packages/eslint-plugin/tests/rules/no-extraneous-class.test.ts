@@ -92,8 +92,12 @@ class Foo {
     },
     `
 abstract class Foo {
-  public abstract prop: string;
-  public abstract hello(): void;
+  abstract property: string;
+}
+    `,
+    `
+abstract class Foo {
+  abstract method(): string;
 }
     `,
   ],
@@ -187,6 +191,28 @@ class Foo {
           messageId: 'onlyConstructor',
         },
       ],
+    },
+    {
+      code: `
+abstract class Foo {}
+      `,
+      errors: [empty],
+    },
+    {
+      code: `
+abstract class Foo {
+  static property: string;
+}
+      `,
+      errors: [onlyStatic],
+    },
+    {
+      code: `
+abstract class Foo {
+  constructor() {}
+}
+      `,
+      errors: [onlyConstructor],
     },
   ],
 });
