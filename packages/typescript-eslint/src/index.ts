@@ -68,7 +68,7 @@ const configs = {
   stylisticTypeCheckedOnly: stylisticTypeCheckedOnlyConfig(plugin, parser),
 };
 
-export type Config = TSESLint.FlatConfig.ConfigFile;
+export type Config = TSESLint.FlatConfig.Config;
 export type { ConfigWithExtends };
 /*
 eslint-disable-next-line import/no-default-export --
