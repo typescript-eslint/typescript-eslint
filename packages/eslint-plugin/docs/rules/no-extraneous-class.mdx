@@ -44,6 +44,10 @@ class HelloWorldLogger {
 }
 ```
 
+```ts
+abstract class Foo {}
+```
+
 </TabItem>
 <TabItem value="✅ Correct">
 
@@ -56,6 +60,12 @@ export function isProduction() {
 
 function logHelloWorld() {
   console.log('Hello, world!');
+}
+```
+
+```ts
+abstract class Foo {
+  abstract prop: string;
 }
 ```
 
