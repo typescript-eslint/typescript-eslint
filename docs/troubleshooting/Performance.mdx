@@ -81,10 +81,11 @@ See [Glob pattern in parser's option "project" slows down linting](https://githu
 
 ## Changes to `extraFileExtensions` with `projectService`
 
-When [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) changes while using [`projectService`](../packages/Parser.mdx#projectservice),
-the TypeScript server must perform a full project reload to account for new and removed files from the project.
-Configuring `parserOptions.extraFileExtensions` multiple times with different values in the same project is likely to cause unintentional project reloads.
-The optimal approach to avoid project reloads altogether is to use the same `extraFileExtensions` value.
+Changes to [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) between files in the same project with
+the [`projectService`](../packages/Parser.mdx#projectservice) option is likely to cause more overhead than expected updating the project.
+The optimal approach is to use the same `extraFileExtensions` value across all files in the project.
+For every file linted, we update the `projectService` whenever `extraFileExtensions` changes to match your ESLint options.
+This causes the underlying TypeScript server to perform a full project reload to account for new and removed files from the project.
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
