@@ -60,5 +60,6 @@ if (workspaceVersion === null) {
     dryRun: options.dryRun,
     verbose: options.verbose,
   });
+  // eslint-disable-next-line no-process-exit
   process.exit(publishStatus);
 }

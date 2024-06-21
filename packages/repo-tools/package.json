@@ -5,6 +5,7 @@
   "//": "NOTE: intentionally no build step in this package",
   "scripts": {
     "apply-canary-version": "npx tsx ./src/apply-canary-version.mts",
+    "breaking-pr-check-action": "npx tsx ./src/breaking-pr-check-action.mts",
     "format": "npx prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-configs": "npx tsx ./src/generate-configs.mts",
     "generate-contributors": "npx tsx ./src/generate-contributors.mts",
@@ -16,8 +17,11 @@
     "typecheck": "npx tsc --noEmit"
   },
   "devDependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
     "@jest/types": "29.6.3",
     "@nx/devkit": "*",
+    "@types/yargs": "^17.0.32",
     "@typescript-eslint/eslint-plugin": "7.13.1",
     "@typescript-eslint/scope-manager": "7.13.1",
     "@typescript-eslint/types": "7.13.1",
@@ -25,9 +29,11 @@
     "@typescript-eslint/utils": "7.13.1",
     "cross-fetch": "*",
     "execa": "*",
+    "nx": "19.3.0-canary.20240611-1600875",
     "prettier": "^3.2.5",
     "rimraf": "*",
     "semver": "7.6.2",
-    "typescript": "*"
+    "typescript": "*",
+    "yargs": "^17.7.2"
   }
 }

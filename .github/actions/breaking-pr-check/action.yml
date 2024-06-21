@@ -2,5 +2,8 @@ name: Validate Breaking Change PR
 description: Validate breaking change PR title and description
 
 runs:
-  using: node20
-  main: index.js
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: yarn breaking-pr-check-action
+      working-directory: packages/repo-tools
