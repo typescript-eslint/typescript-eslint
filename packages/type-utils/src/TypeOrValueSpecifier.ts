@@ -200,9 +200,9 @@ export function typeMatchesSpecifier(
   if (!specifierNameMatches(type, specifier.name)) {
     return false;
   }
+  const symbol = type.getSymbol() ?? type.aliasSymbol;
   const declarationFiles =
-    type
-      .getSymbol()
+    symbol
       ?.getDeclarations()
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   switch (specifier.from) {

@@ -55,6 +55,7 @@ export default (
       '@typescript-eslint/no-this-alias': 'error',
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
       '@typescript-eslint/no-unnecessary-condition': 'error',
+      '@typescript-eslint/no-unnecessary-template-expression': 'error',
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
       '@typescript-eslint/no-unnecessary-type-constraint': 'error',
@@ -69,7 +70,6 @@ export default (
       '@typescript-eslint/no-unused-vars': 'error',
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
-      '@typescript-eslint/no-useless-template-literals': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/only-throw-error': 'error',
@@ -80,7 +80,6 @@ export default (
       '@typescript-eslint/prefer-promise-reject-errors': 'error',
       '@typescript-eslint/prefer-reduce-type-parameter': 'error',
       '@typescript-eslint/prefer-return-this-type': 'error',
-      '@typescript-eslint/prefer-ts-expect-error': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',
       '@typescript-eslint/restrict-plus-operands': [

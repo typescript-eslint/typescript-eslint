@@ -6,10 +6,10 @@
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "tools/release/changelog-renderer"
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer"
       },
       "projectChangelogs": {
-        "renderer": "tools/release/changelog-renderer"
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer"
       }
     },
     "version": {
@@ -53,7 +53,11 @@
       }
     },
     "lint": {
-      "dependsOn": ["eslint-plugin:build"],
+      "dependsOn": [
+        "eslint-plugin:build",
+        "eslint-plugin-internal:build",
+        "typescript-eslint:build"
+      ],
       "inputs": [
         "default",
         "{workspaceRoot}/eslint.config.js",

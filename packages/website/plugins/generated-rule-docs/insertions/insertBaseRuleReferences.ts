@@ -1,8 +1,8 @@
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
+import { convertToPlaygroundHash, getEslintrcString } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { convertToPlaygroundHash, getEslintrcString } from '../utils';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =

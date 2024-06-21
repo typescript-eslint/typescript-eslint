@@ -9,6 +9,7 @@ import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-se
 import type { Config } from '@docusaurus/types';
 
 import { version } from './package.json';
+import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -19,6 +20,8 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
+    // Allow Docusaurus TOC remark plugin to pick up the injected H2
+    beforeDefaultRemarkPlugins: [blogFooter],
     remarkPlugins,
   },
   docs: {
@@ -100,8 +103,14 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       {
         href: githubUrl,
         position: 'right',
-        className: 'github-link image-link header-github-link',
+        className: 'github-link image-link header-image-link',
         'aria-label': 'GitHub repository',
+      },
+      {
+        href: 'https://discord.com/invite/FSxKq8Tdyg',
+        position: 'right',
+        className: 'discord-link image-link header-image-link',
+        'aria-label': 'Discord',
       },
     ],
   },
@@ -153,6 +162,11 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             label: 'Report issue',
             href: `${githubUrl}/issues/new/choose`,
             className: 'bug-report-link image-link social-link-icon',
+          },
+          {
+            label: 'Open Collective',
+            href: 'https://opencollective.com/typescript-eslint/contribute',
+            className: 'open-collective-link image-link social-link-icon',
           },
         ],
       },
@@ -275,6 +289,10 @@ const redirects: PluginRedirectOptions = {
     {
       from: '/linting/typed-linting/monorepos',
       to: '/getting-started/typed-linting/monorepos',
+    },
+    {
+      from: '/maintenance/issues/rule-deprecations',
+      to: '/maintenance/issues/rule-deprecations-and-deletions',
     },
   ],
 };

@@ -5,8 +5,9 @@ import { EOL } from 'os';
 import * as path from 'path';
 import prettier from 'prettier';
 
+import { nodeIsHeading } from '../../utils/nodes';
+import { convertToPlaygroundHash } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { convertToPlaygroundHash, nodeIsHeading } from '../utils';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -172,7 +173,7 @@ function linkToConfigs(configs: string[]): mdast.Node[] {
         } as mdast.InlineCode,
       ],
       type: 'link',
-      url: `/users/configs#${config})`,
+      url: `/users/configs#${config}`,
     }),
   );
 

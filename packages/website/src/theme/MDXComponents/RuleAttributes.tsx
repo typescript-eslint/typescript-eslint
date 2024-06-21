@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Link from '@docusaurus/Link';
-import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { RuleMetaDataDocs } from '@typescript-eslint/utils/ts-eslint';
 import React from 'react';
 
 import {
