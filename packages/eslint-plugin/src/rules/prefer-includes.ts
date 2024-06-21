@@ -119,9 +119,7 @@ export default createRule({
       }
 
       // To string.
-      return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value),
-      );
+      return String.fromCodePoint(...chars.map(c => c.value));
     }
 
     function escapeString(str: string): string {
