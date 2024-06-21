@@ -467,6 +467,28 @@ const thisAsserter: ThisAsserter = new ThisAsserter();
 thisAsserter.assertThis(lol);
       `,
     },
+    {
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(...args: any[]): void;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+    },
   ],
 
   invalid: [
@@ -1860,6 +1882,67 @@ someAssert(maybeString);
       errors: [
         {
           messageId: 'conditionErrorNullableString',
+        },
+      ],
+    },
+    {
+      // The implementation signature doesn't count towards the call signatures
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 18,
+          column: 18,
+        },
+      ],
+    },
+    {
+      // The implementation signature doesn't count towards the call signatures
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString, 'more', 'args', 'afterwards');
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 19,
+          column: 18,
         },
       ],
     },
