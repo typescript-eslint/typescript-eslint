@@ -290,13 +290,12 @@ export default createRule<Options, MessageId>({
 
         const firstParameter = declaration.parameters.at(0);
         const nonThisParameters =
-          firstParameter != null &&
-          firstParameter.name.kind === ts.SyntaxKind.Identifier &&
+          firstParameter?.name.kind === ts.SyntaxKind.Identifier &&
           firstParameter.name.text === 'this'
             ? declaration.parameters.slice(1)
             : declaration.parameters;
 
-        // Don't even bother inspecting parameters past the number of
+        // Don't bother inspecting parameters past the number of
         // arguments we have at the call site.
         const checkableNonThisParameters = nonThisParameters.slice(
           0,
