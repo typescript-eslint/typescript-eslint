@@ -1,5 +1,5 @@
 // @ts-check
-/** @type {import('@docusaurus/plugin-content-docs/lib/sidebars/types.js').SidebarsConfig} */
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
   docs: [
     {
@@ -84,6 +84,7 @@ module.exports = {
         'packages/parser',
         'packages/rule-tester',
         'packages/scope-manager',
+        'packages/type-utils',
         'packages/typescript-estree',
         'packages/typescript-eslint',
         'packages/utils',
@@ -125,7 +126,7 @@ module.exports = {
         'maintenance/contributor-tiers',
         {
           collapsible: true,
-          items: ['maintenance/issues/rule-deprecations'],
+          items: ['maintenance/issues/rule-deprecations-and-deletions'],
           label: 'Issues',
           link: {
             id: 'maintenance/issues',

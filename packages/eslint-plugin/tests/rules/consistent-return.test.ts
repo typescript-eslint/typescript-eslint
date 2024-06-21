@@ -380,7 +380,7 @@ ruleTester.run('consistent-return', rule, {
     },
     {
       code: `
-        declare async function bar(): Promise<void>;
+        declare function bar(): Promise<void>;
         function foo(flag?: boolean): Promise<void> {
           if (flag) {
             return bar();

@@ -1,6 +1,6 @@
 ---
 authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+  - image_url: /img/team/joshuakgoldberg.jpg
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
@@ -144,9 +144,3 @@ We hope this option will eventually become the standard way to enable typed lint
 However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
 
 See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#experimental_useprojectservice) for more information.
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

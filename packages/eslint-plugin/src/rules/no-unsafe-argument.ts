@@ -165,7 +165,7 @@ export default createRule<[], MessageIds>({
 
     function checkUnsafeArguments(
       args: TSESTree.Expression[] | TSESTree.CallExpressionArgument[],
-      callee: TSESTree.LeftHandSideExpression,
+      callee: TSESTree.Expression,
       node:
         | TSESTree.CallExpression
         | TSESTree.NewExpression
