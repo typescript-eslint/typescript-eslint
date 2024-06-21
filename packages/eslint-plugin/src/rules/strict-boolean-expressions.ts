@@ -238,6 +238,19 @@ export default createRule<Options, MessageId>({
     }
 
     function traverseCallExpression(node: TSESTree.CallExpression): void {
+      const assertedArgument = findAssertedArgument(node);
+      if (assertedArgument != null) {
+        traverseNode(assertedArgument, true);
+      }
+    }
+
+    /**
+     * Inspect a call expression to see if it's a call to an assertion function.
+     * If it is, return the node of the argument that is asserted.
+     */
+    function findAssertedArgument(
+      node: TSESTree.CallExpression,
+    ): TSESTree.Expression | undefined {
       // If the call looks like `assert(expr1, expr2, ...c, d, e, f)`, then we can
       // only care if `expr1` or `expr2` is asserted, since anything that happens
       // within or after a spread argument is out of scope to reason about.
@@ -245,24 +258,24 @@ export default createRule<Options, MessageId>({
       for (const argument of node.arguments) {
         if (argument.type === AST_NODE_TYPES.SpreadElement) {
           break;
-        } else {
-          checkableArguments.push(argument);
         }
+
+        checkableArguments.push(argument);
       }
 
       // nothing to do
       if (checkableArguments.length === 0) {
-        return;
+        return undefined;
       }
 
       // Game plan: we're going to check the type of the callee. If it has call
       // signatures and they _ALL_ agree that they assert on a parameter at the
-      // _SAME_ position, we'll consider the argument in that position to be a
-      // boolean context.
+      // _SAME_ position, we'll consider the argument in that position to be an
+      // asserted argument.
       const calleeType = getConstrainedTypeAtLocation(services, node.callee);
       const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
 
-      let assertedParameterIndex: number | undefined;
+      let assertedParameterIndex: number | undefined = undefined;
       for (const signature of callSignatures) {
         const declaration = signature.getDeclaration();
         const returnTypeAnnotation = declaration.type;
@@ -279,15 +292,17 @@ export default createRule<Options, MessageId>({
             returnTypeAnnotation.assertsModifier != null
           )
         ) {
-          return;
+          return undefined;
         }
 
         const assertionTarget = returnTypeAnnotation.parameterName;
         if (assertionTarget.kind !== ts.SyntaxKind.Identifier) {
           // This can happen when asserting on `this`. Ignore!
-          return;
+          return undefined;
         }
 
+        // If the first parameter is `this`, skip it, so that our index matches
+        // the index of the argument at the call site.
         const firstParameter = declaration.parameters.at(0);
         const nonThisParameters =
           firstParameter?.name.kind === ts.SyntaxKind.Identifier &&
@@ -308,7 +323,7 @@ export default createRule<Options, MessageId>({
             // Cannot assert a rest parameter, and can't have a rest parameter
             // before the asserted parameter. It's not only a TS error, it's
             // not something we can logically make sense of, so give up here.
-            return;
+            return undefined;
           }
 
           if (parameter.name.kind !== ts.SyntaxKind.Identifier) {
@@ -328,15 +343,16 @@ export default createRule<Options, MessageId>({
         if (assertedParameterIndexForThisSignature == null) {
           // Didn't find an assertion target in this signature that could match
           // the call site.
-          return;
+          return undefined;
         }
 
         if (
           assertedParameterIndex != null &&
           assertedParameterIndex !== assertedParameterIndexForThisSignature
         ) {
-          // Found asserted parameter didn't match previous signatures.
-          return;
+          // The asserted parameter we found for this signature didn't match
+          // previous signatures.
+          return undefined;
         }
 
         assertedParameterIndex = assertedParameterIndexForThisSignature;
@@ -344,11 +360,10 @@ export default createRule<Options, MessageId>({
 
       // Didn't find a unique assertion index.
       if (assertedParameterIndex == null) {
-        return;
+        return undefined;
       }
 
-      const assertedParameter = checkableArguments[assertedParameterIndex];
-      traverseNode(assertedParameter, true);
+      return checkableArguments[assertedParameterIndex];
     }
 
     /**
