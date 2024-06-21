@@ -4,9 +4,8 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE } from './base-config';
+import { TYPE_VALUE } from './base-config';
 
-export const dom_asynciterable = {
-  FileSystemDirectoryHandle: TYPE,
-  ReadableStream: TYPE,
+export const es2023_intl = {
+  Intl: TYPE_VALUE,
 } as Record<string, ImplicitLibVariableOptions>;
