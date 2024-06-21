@@ -276,8 +276,7 @@ export default createRule<Options, MessageId>({
         // you would think this wouldn't be strictly necessary, since we're
         // anyway checking the type of the expression, but, unfortunately TS
         // reports the result of `await (promise as Promise<number> & number)`
-        // as `Promise<number> & number` instead of `number`. In any case,
-        // this saves us a bit of type checking, anyway.
+        // as `Promise<number> & number` instead of `number`.
         return { isUnhandled: false };
       }
 
@@ -333,6 +332,7 @@ export default createRule<Options, MessageId>({
       // Anything else is unhandled.
       return { isUnhandled: true };
     }
+
     function isPromiseArray(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
       for (const ty of tsutils

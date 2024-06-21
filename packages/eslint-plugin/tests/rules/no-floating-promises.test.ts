@@ -2244,25 +2244,26 @@ function* generator(): Generator<number, void, void> {
     },
     {
       code: `
-3 as Promise<number>;
+const value = {};
+value as Promise<number>;
+      `,
+      errors: [{ messageId: 'floatingVoid', line: 3 }],
+    },
+    {
+      code: `
+({}) as Promise<number> & number;
       `,
       errors: [{ messageId: 'floatingVoid', line: 2 }],
     },
     {
       code: `
-3 as Promise<number> & number;
+({}) as Promise<number> & { yolo?: string };
       `,
       errors: [{ messageId: 'floatingVoid', line: 2 }],
     },
     {
       code: `
-3 as Promise<number> & { yolo?: string };
-      `,
-      errors: [{ messageId: 'floatingVoid', line: 2 }],
-    },
-    {
-      code: `
-<Promise<number>>3;
+<Promise<number>>{};
       `,
       errors: [{ messageId: 'floatingVoid', line: 2 }],
     },
