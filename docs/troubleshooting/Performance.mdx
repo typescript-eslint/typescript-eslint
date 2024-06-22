@@ -81,7 +81,7 @@ See [Glob pattern in parser's option "project" slows down linting](https://githu
 
 ## Changes to `extraFileExtensions` with `projectService`
 
-Changes to [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) between files in the same project with
+Using a different `extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) between files in the same project with
 the [`projectService`](../packages/Parser.mdx#projectservice) option is likely to cause more overhead than expected updating the project.
 The optimal approach is to use the same `extraFileExtensions` value across all files in the project.
 For every file linted, we update the `projectService` whenever `extraFileExtensions` changes to match your ESLint options.
