@@ -6,7 +6,7 @@ import type {
 
 import type { DependencyConstraint } from './DependencyConstraint';
 
-export interface ValidTestCase<Options extends Readonly<unknown[]>> {
+export interface ValidTestCase<Options extends readonly unknown[]> {
   /**
    * Name for the test case.
    */
