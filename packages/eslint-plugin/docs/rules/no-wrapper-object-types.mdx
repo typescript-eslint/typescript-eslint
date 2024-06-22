@@ -9,10 +9,12 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-wrapper-object-types** for documentation.
 
-The JavaScript language has a set of language types, but some of them correspond to two TypeScript types, which look similar: `boolean`/`Boolean`, `number`/`Number`, `string`/`String`, `bigint`/`BigInt`, `symbol`/`Symbol`, `object`/`Object`.
-The difference is that the lowercase variants are compiler intrinsics and specify the actual _runtime types_ (that is, the type indicated when executing `typeof x` at runtime), while the uppercase variants are _structural types_ defined in the library that can be satisfied by any user-defined object with the right properties, including but not limited to the real primitives.
-JavaScript also has a "wrapper" class object for each of those primitives, such as [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) and [`Number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number).
-These wrapper objects are assignable to the uppercase types, but not to the lowercase types.
+The JavaScript language has a set of built-in ("intrinsic") types which look similar: `boolean`/`Boolean`, `number`/`Number`, `string`/`String`, `bigint`/`BigInt`, `symbol`/`Symbol`, and `object`/`Object`.
+The lowercase variants are _primitives_ such as `boolean` (e.g. `false`).
+The uppercase variants are "wrapper" class objects for each of those primitives, such as [`Boolean`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) (e.g. `new Boolean(false)`).
+
+In TypeScript, the lowercase variants are compiler intrinsics and specify the actual _runtime types_ (that is, the type indicated when executing `typeof x` at runtime).
+The uppercase variants are _structural types_ defined in the library that can be satisfied by any user-defined object with the right properties, including but not limited to the real primitives.
 
 It is widely considered a JavaScript best practice to work directly with the built-in primitives, like `0`, rather than objects that "look like" the corresponding primitive, like `new Number(0)`.
 
@@ -20,7 +22,7 @@ It is widely considered a JavaScript best practice to work directly with the bui
 - Primitives have well-known behavior around truthiness/falsiness which is common to rely on, whereas all objects are truthy, regardless of the wrapped value (e.g. `new Boolean(false)` is truthy).
 - TypeScript only allows arithmetic operations (e.g. `x - y`) to be performed on numeric primitives, not objects.
 
-As a result, using the lowercase type names like `number` instead of the uppercase names like `Number` helps make your code behave more reliably.
+As a result, using the lowercase type names like `number` in TypeScript types instead of the uppercase names like `Number` is a better practice that describes code more accurately.
 
 Examples of code for this rule:
 
