@@ -7,6 +7,7 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const webworker_iterable = {
+  AbortSignal: TYPE,
   CSSNumericArray: TYPE,
   CSSTransformValue: TYPE,
   CSSUnparsedValue: TYPE,

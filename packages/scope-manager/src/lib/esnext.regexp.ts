@@ -6,7 +6,6 @@
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
-export const dom_asynciterable = {
-  FileSystemDirectoryHandle: TYPE,
-  ReadableStream: TYPE,
+export const esnext_regexp = {
+  RegExp: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
