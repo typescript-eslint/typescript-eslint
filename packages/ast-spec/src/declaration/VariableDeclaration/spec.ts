@@ -29,10 +29,17 @@ export interface LetOrConstOrVarDeclaration extends BaseNode {
   declare: boolean;
   /**
    * The keyword used to declare the variable(s)
+   * ```
    * @example
    * ```ts
    * const x = 1;
+   * ```
+   * @example
+   * ```ts
    * let y = 2;
+   * ```
+   * @example
+   * ```ts
    * var z = 3;
    * ```
    */
