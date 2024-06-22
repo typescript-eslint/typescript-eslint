@@ -1,35 +1,49 @@
 import path from 'node:path';
+// TODO: : ensure tsconfigs are handled
+// TODO: make sure filters are respected
+// edits are sent through script info, this is only triggered for new files
 
 import { debug } from 'debug';
 import * as ts from 'typescript';
+import { minimatch } from 'minimatch';
 
 const log = debug(
   'typescript-eslint:typescript-estree:getWatchesForProjectService',
 );
 
-export class TrieNode<T> {
+export class TrieNode<T extends object> {
   readonly children: Map<string, TrieNode<T>>;
-  value?: T;
+  readonly values: Set<T>;
   constructor(
     public readonly path: string,
     public readonly parent?: TrieNode<T>,
   ) {
     this.children = new Map();
+    this.values = new Set();
+  }
+
+  insert(value: T): void {
+    this.values.add(value);
+  }
+
+  delete(value: T): void {
+    this.values.delete(value);
   }
 }
 
-export class Trie<T> {
+export class Trie<T extends object> {
   root: TrieNode<T>;
-  count: number;
+  valueNodes: WeakMap<T, TrieNode<T>>;
+  values: WeakSet<T>;
 
   constructor() {
     this.root = new TrieNode('');
-    this.count = 0;
+    this.valueNodes = new WeakMap<T, TrieNode<T>>();
+    this.values = new WeakSet();
   }
 
-  insert<U>(filePath: string, apply: (node: TrieNode<T>) => U): U {
-    // implicitly blocks a watch on the root of the file system by skipping first part
-    const parts = path.resolve(filePath).split(path.sep).slice(1);
+  insert(filePath: string, value: T): T {
+    const parts = path.resolve(filePath).split(path.sep);
     const { currentNode } = parts.reduce(
       ({ currentNode, rootPath }, part) => {
         const currentPath = path.join(rootPath, part);
@@ -37,7 +51,6 @@ export class Trie<T> {
         if (!childNode) {
           childNode = new TrieNode(currentPath, currentNode);
           currentNode.children.set(part, childNode);
-          this.count++;
         }
         return {
           currentNode: childNode,
@@ -49,143 +62,129 @@ export class Trie<T> {
         rootPath: this.root.path,
       },
     );
-    const value = apply(currentNode);
-    log('Inserted (%d): %s', this.count, filePath);
+    currentNode.values.add(value);
+    this.values.add(value);
+    this.valueNodes.set(value, currentNode);
+
+    log('Inserted node: %s', filePath);
     return value;
   }
 
   get(filePath: string): TrieNode<T> | undefined {
-    const parts = path.resolve(filePath).split(path.sep).slice(1);
-    const { lastNodeWithValue } = parts.reduce(
-      ({ currentNode, lastNodeWithValue }, part) => {
+    const parts = path.resolve(filePath).split(path.sep);
+    const { lastNodeWithValues } = parts.reduce(
+      ({ currentNode, lastNodeWithValues }, part) => {
         const childNode = currentNode.children.get(part);
         if (!childNode) {
-          return { currentNode: currentNode, lastNodeWithValue };
+          return { currentNode: currentNode, lastNodeWithValues };
         }
         return {
           currentNode: childNode,
-          lastNodeWithValue:
-            childNode.value != null ? childNode : lastNodeWithValue,
+          lastNodeWithValues:
+            childNode.values.size !== 0 ? childNode : lastNodeWithValues,
         };
       },
       {
         currentNode: this.root,
-        lastNodeWithValue: null as TrieNode<T> | null,
+        lastNodeWithValues: undefined as TrieNode<T> | undefined,
       },
     );
-    log(
-      'Retrieved (%d): %s: %s',
-      this.count,
-      filePath,
-      lastNodeWithValue?.path,
-    );
-    return lastNodeWithValue;
+    log('Retrieved node: %s: %s', filePath, lastNodeWithValues?.path);
+    return lastNodeWithValues;
+  }
+
+  clean = (node?: TrieNode<T>) => {
+    if (node === undefined) {
+      return; // TODO:
+    }
+    if (node.values.size === 0 && node.children.size === 0 && node.parent) {
+      node.parent.children.delete(node.path);
+      this.clean(node.parent);
+    }
+  };
+
+  delete(value: T): void {
+    const node = this.valueNodes.get(value);
+    if (node === undefined) {
+      return;
+    }
+    node.delete(value);
+    log('Deleted node: %s', node.path);
+    this.clean(node);
   }
 }
 
 export enum WatcherKind {
-  FILE,
-  DIRECTORY,
+  File,
+  Directory,
 }
 
-// TODO: do not know if the cb's need all this info, just anticipating for recursive and file filters
 export type WatcherCallback<K extends WatcherKind> = {
+  kind: K;
+  path: string;
   options?: ts.WatchOptions;
 } & (
   | {
-      kind: K;
-      callback: (node: TrieNode<Set<Watcher>>, cb: WatcherCallback<K>) => void;
+      kind: WatcherKind.File;
+      callback: ts.FileWatcherCallback;
     }
   | {
-      kind: K;
+      kind: WatcherKind.Directory;
       recursive?: boolean;
-      callback: (node: TrieNode<Set<Watcher>>, cb: WatcherCallback<K>) => void;
+      callback: ts.DirectoryWatcherCallback;
     }
 );
 
-export class Watcher implements ts.FileWatcher {
+export class Watcher<K extends WatcherKind> implements ts.FileWatcher {
   constructor(
-    private readonly root: Trie<Set<Watcher>>,
-    private readonly node: TrieNode<Set<Watcher>>,
-    public readonly callback: () => void,
+    private readonly serviceWatches: Trie<Watcher<WatcherKind>>,
+    public readonly watcherCallback: WatcherCallback<K>,
   ) {}
+
   close(): void {
-    if (this.node.value !== undefined) {
-      this.node.value.delete(this);
-      this.root.count--;
-      log('Closed (%d): %s', this.root.count, this.node.path);
-    }
+    this.serviceWatches.delete(this);
   }
 }
 
-// TODO: : ensure tsconfigs are handled correctly
+const serviceWatches = new Trie<Watcher<WatcherKind>>();
 
-const saveWatchCallback = <K extends WatcherKind>(
-  path: string,
-  cb: WatcherCallback<K>,
-): ts.FileWatcher => {
-  const watcher = watches.insert(path, node => {
-    if (node.value === undefined) {
-      node.value = new Set<Watcher>();
-    }
-    const watcher = new Watcher(watches, node, () => cb.callback(node, cb));
-    node.value.add(watcher);
-    return watcher;
-  });
-  return watcher;
-};
-
-// stores host request to watch a file
 export const saveFileWatchCallback = (
   path: string,
   callback: ts.FileWatcherCallback,
   _pollingInterval?: number,
   options?: ts.WatchOptions,
 ): ts.FileWatcher =>
-  saveWatchCallback(path, {
-    kind: WatcherKind.FILE,
-    options,
-    callback: () => {
-      // TODO: make sure filters are respected
-      // edits are sent through script info, this is only triggered for new files
-      callback(path, ts.FileWatcherEventKind.Created, new Date());
-    },
-  });
+  serviceWatches.insert(
+    path,
+    new Watcher(serviceWatches, {
+      kind: WatcherKind.File,
+      path,
+      options,
+      callback,
+    }),
+  );
 
-// stores host request to watch a directory
 export const saveDirectoryWatchCallback = (
   path: string,
   callback: ts.DirectoryWatcherCallback,
   recursive?: boolean,
   options?: ts.WatchOptions,
 ): ts.FileWatcher =>
-  saveWatchCallback(path, {
-    kind: WatcherKind.DIRECTORY,
-    options,
-    recursive,
-    callback: () => {
-      // TODO: check recursive and filters
-      callback(path);
-    },
-  });
+  serviceWatches.insert(
+    path,
+    new Watcher(serviceWatches, {
+      kind: WatcherKind.Directory,
+      path,
+      options,
+      recursive,
+      callback,
+    }),
+  );
 
-export const getWatchesForProjectService = (
-  service: ts.server.ProjectService & {
-    __watches?: Trie<Set<Watcher>>;
-  },
-): Trie<Set<Watcher>> => {
-  if (!service.__watches) {
-    service.__watches = new Trie<Set<Watcher>>();
-  }
-  return service.__watches;
-};
+export const getWatchesForProjectService = (path: string) =>
+  serviceWatches.get(path);
 
 //  interface WatchOptions {
-//      watchFile?: WatchFileKind;
-//      watchDirectory?: WatchDirectoryKind;
-//      fallbackPolling?: PollingWatchKind;
-//      synchronousWatchDirectory?: boolean;
 //      excludeDirectories?: string[];
 //      excludeFiles?: string[];
-//      [option: string]: CompilerOptionsValue | undefined;
 //  }

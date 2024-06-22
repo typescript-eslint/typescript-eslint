@@ -5,7 +5,10 @@ import * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
-import { getWatchesForProjectService } from './create-program/getWatchesForProjectService';
+import {
+  getWatchesForProjectService,
+  WatcherKind,
+} from './create-program/getWatchesForProjectService';
 import type { ASTAndDefiniteProgram } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 import type { MutableParseSettings } from './parseSettings';
@@ -36,14 +39,19 @@ export function useProgramFromProjectService(
 
   if (!filePathMatchedByConfiguredProject(service, filePathAbsolute)) {
     log('Orphaned file: %s', filePathAbsolute);
-    const watches = getWatchesForProjectService(service);
-    const watcher = watches.get(filePathAbsolute);
-    if (watcher?.value !== undefined) {
-      log('Triggering watcher: %s', watcher.path);
-      // TODO: trigger all cbs
-      [...watcher.value].forEach(w => w.callback());
-    } else {
-      log('No watcher found for: %s', filePathAbsolute);
+    const watches = getWatchesForProjectService(filePathAbsolute);
+    if (watches !== undefined) {
+      watches.values.forEach(watcher => {
+        log('Triggering watchers: %s', watcher.watcherCallback.path);
+        if (watcher.watcherCallback.kind === WatcherKind.File) {
+          watcher.watcherCallback.callback(
+            filePathAbsolute,
+            ts.FileWatcherEventKind.Created,
+          );
+        } else if (watcher.watcherCallback.kind === WatcherKind.Directory) {
+          watcher.watcherCallback.callback(watcher.watcherCallback.path);
+        }
+      });
     }
   }
 
