@@ -1,4 +1,3 @@
-import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -270,9 +269,7 @@ export default createRule<Options, MessageIds>({
       }
 
       // To string.
-      return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value),
-      );
+      return String.fromCodePoint(...chars.map(c => c.value));
     }
 
     /**
