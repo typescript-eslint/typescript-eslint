@@ -58,9 +58,9 @@ while (obj) {
 }
 
 // assertion functions without an `is` are boolean contexts.
-declare function myAssert(value: unknown): asserts value;
+declare function assert(value: unknown): asserts value;
 let maybeString = Math.random() > 0.5 ? '' : undefined;
-myAssert(maybeString);
+assert(maybeString);
 ```
 
 </TabItem>
