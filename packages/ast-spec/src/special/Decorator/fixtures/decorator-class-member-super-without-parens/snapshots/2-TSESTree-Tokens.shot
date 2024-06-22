@@ -132,41 +132,61 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
       end: { column: 7, line: 4 },
     },
   },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [65, 66],
+    loc: {
+      start: { column: 7, line: 4 },
+      end: { column: 8, line: 4 },
+    },
+  },
   Keyword {
     type: "Keyword",
     value: "super",
 
-    range: [65, 70],
+    range: [66, 71],
     loc: {
-      start: { column: 7, line: 4 },
-      end: { column: 12, line: 4 },
+      start: { column: 8, line: 4 },
+      end: { column: 13, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ".",
 
-    range: [70, 71],
+    range: [71, 72],
     loc: {
-      start: { column: 12, line: 4 },
-      end: { column: 13, line: 4 },
+      start: { column: 13, line: 4 },
+      end: { column: 14, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "decorate",
 
-    range: [71, 79],
+    range: [72, 80],
     loc: {
-      start: { column: 13, line: 4 },
-      end: { column: 21, line: 4 },
+      start: { column: 14, line: 4 },
+      end: { column: 22, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [80, 81],
+    loc: {
+      start: { column: 22, line: 4 },
+      end: { column: 23, line: 4 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "method2",
 
-    range: [118, 125],
+    range: [120, 127],
     loc: {
       start: { column: 6, line: 5 },
       end: { column: 13, line: 5 },
@@ -176,7 +196,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: "(",
 
-    range: [125, 126],
+    range: [127, 128],
     loc: {
       start: { column: 13, line: 5 },
       end: { column: 14, line: 5 },
@@ -186,7 +206,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: ")",
 
-    range: [126, 127],
+    range: [128, 129],
     loc: {
       start: { column: 14, line: 5 },
       end: { column: 15, line: 5 },
@@ -196,7 +216,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: "{",
 
-    range: [128, 129],
+    range: [130, 131],
     loc: {
       start: { column: 16, line: 5 },
       end: { column: 17, line: 5 },
@@ -206,7 +226,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: "}",
 
-    range: [129, 130],
+    range: [131, 132],
     loc: {
       start: { column: 17, line: 5 },
       end: { column: 18, line: 5 },
@@ -216,7 +236,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: "}",
 
-    range: [135, 136],
+    range: [137, 138],
     loc: {
       start: { column: 4, line: 6 },
       end: { column: 5, line: 6 },
@@ -226,7 +246,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: "}",
 
-    range: [139, 140],
+    range: [141, 142],
     loc: {
       start: { column: 2, line: 7 },
       end: { column: 3, line: 7 },
@@ -236,7 +256,7 @@ exports[`AST Fixtures special Decorator decorator-class-member-super-without-par
     type: "Punctuator",
     value: "}",
 
-    range: [141, 142],
+    range: [143, 144],
     loc: {
       start: { column: 0, line: 8 },
       end: { column: 1, line: 8 },

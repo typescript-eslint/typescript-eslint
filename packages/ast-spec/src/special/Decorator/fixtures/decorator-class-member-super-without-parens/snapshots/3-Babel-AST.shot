@@ -47,10 +47,10 @@ Program {
                                 object: Super {
                                   type: "Super",
 
-                                  range: [65, 70],
+                                  range: [66, 71],
                                   loc: {
-                                    start: { column: 7, line: 4 },
-                                    end: { column: 12, line: 4 },
+                                    start: { column: 8, line: 4 },
+                                    end: { column: 13, line: 4 },
                                   },
                                 },
                                 optional: false,
@@ -58,24 +58,24 @@ Program {
                                   type: "Identifier",
                                   name: "decorate",
 
-                                  range: [71, 79],
+                                  range: [72, 80],
                                   loc: {
-                                    start: { column: 13, line: 4 },
-                                    end: { column: 21, line: 4 },
+                                    start: { column: 14, line: 4 },
+                                    end: { column: 22, line: 4 },
                                   },
                                 },
 
-                                range: [65, 79],
+                                range: [66, 80],
                                 loc: {
-                                  start: { column: 7, line: 4 },
-                                  end: { column: 21, line: 4 },
+                                  start: { column: 8, line: 4 },
+                                  end: { column: 22, line: 4 },
                                 },
                               },
 
-                              range: [64, 79],
+                              range: [64, 81],
                               loc: {
                                 start: { column: 6, line: 4 },
-                                end: { column: 21, line: 4 },
+                                end: { column: 23, line: 4 },
                               },
                             },
                           ],
@@ -83,7 +83,7 @@ Program {
                             type: "Identifier",
                             name: "method2",
 
-                            range: [118, 125],
+                            range: [120, 127],
                             loc: {
                               start: { column: 6, line: 5 },
                               end: { column: 13, line: 5 },
@@ -98,7 +98,7 @@ Program {
                               type: "BlockStatement",
                               body: [],
 
-                              range: [128, 130],
+                              range: [130, 132],
                               loc: {
                                 start: { column: 16, line: 5 },
                                 end: { column: 18, line: 5 },
@@ -109,14 +109,14 @@ Program {
                             id: null,
                             params: [],
 
-                            range: [125, 130],
+                            range: [127, 132],
                             loc: {
                               start: { column: 13, line: 5 },
                               end: { column: 18, line: 5 },
                             },
                           },
 
-                          range: [64, 130],
+                          range: [64, 132],
                           loc: {
                             start: { column: 6, line: 4 },
                             end: { column: 18, line: 5 },
@@ -124,7 +124,7 @@ Program {
                         },
                       ],
 
-                      range: [56, 136],
+                      range: [56, 138],
                       loc: {
                         start: { column: 12, line: 3 },
                         end: { column: 5, line: 6 },
@@ -142,7 +142,7 @@ Program {
                     },
                     superClass: null,
 
-                    range: [48, 136],
+                    range: [48, 138],
                     loc: {
                       start: { column: 4, line: 3 },
                       end: { column: 5, line: 6 },
@@ -150,7 +150,7 @@ Program {
                   },
                 ],
 
-                range: [42, 140],
+                range: [42, 142],
                 loc: {
                   start: { column: 6, line: 2 },
                   end: { column: 3, line: 7 },
@@ -161,14 +161,14 @@ Program {
               id: null,
               params: [],
 
-              range: [39, 140],
+              range: [39, 142],
               loc: {
                 start: { column: 3, line: 2 },
                 end: { column: 3, line: 7 },
               },
             },
 
-            range: [38, 140],
+            range: [38, 142],
             loc: {
               start: { column: 2, line: 2 },
               end: { column: 3, line: 7 },
@@ -176,7 +176,7 @@ Program {
           },
         ],
 
-        range: [34, 142],
+        range: [34, 144],
         loc: {
           start: { column: 34, line: 1 },
           end: { column: 1, line: 8 },
@@ -203,7 +203,7 @@ Program {
         },
       },
 
-      range: [0, 142],
+      range: [0, 144],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 8 },
@@ -212,7 +212,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 143],
+  range: [0, 145],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 9 },
