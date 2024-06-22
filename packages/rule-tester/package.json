@@ -57,7 +57,7 @@
   },
   "peerDependencies": {
     "@eslint/eslintrc": ">=2",
-    "eslint": "^8.56.0"
+    "eslint": "^8.56.0 || ^9.0.0"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
