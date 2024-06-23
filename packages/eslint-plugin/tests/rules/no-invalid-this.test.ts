@@ -426,7 +426,9 @@ class A {
     `,
     `
 class A {
-      accessor b = this.c;
+  a = 5;
+  b = this.a;
+  accessor c = this.a;
 }
     `,
   ],
