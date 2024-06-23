@@ -117,6 +117,11 @@ export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 export default createRule<Options, MessageIds>({
   name: 'sort-type-constituents',
   meta: {
+    deprecated: true,
+    replacedBy: [
+      'perfectionist/sort-intersection-types',
+      'perfectionist/sort-union-types',
+    ],
     type: 'suggestion',
     docs: {
       description:

@@ -7,6 +7,7 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const dom_iterable = {
+  AbortSignal: TYPE,
   AudioParam: TYPE,
   AudioParamMap: TYPE,
   BaseAudioContext: TYPE,
@@ -19,6 +20,7 @@ export const dom_iterable = {
   Cache: TYPE,
   CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
+  CustomStateSet: TYPE,
   DOMRectList: TYPE,
   DOMStringList: TYPE,
   DOMTokenList: TYPE,

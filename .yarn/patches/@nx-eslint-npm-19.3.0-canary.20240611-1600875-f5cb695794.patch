@@ -1,0 +1,36 @@
+diff --git a/src/utils/config-file.js b/src/utils/config-file.js
+index 8c8061bc2649aca55de16abbbdae0e9fcc11e202..cdafd9e9809bf569acf97745c6701291e14860ec 100644
+--- a/src/utils/config-file.js
++++ b/src/utils/config-file.js
+@@ -30,11 +30,14 @@ function findFlatConfigFile(directory, workspaceRoot) {
+     if (currentDir === workspaceRoot) {
+         return getConfigFileInDirectory(currentDir, exports.ESLINT_FLAT_CONFIG_FILENAMES);
+     }
+-    while (currentDir !== workspaceRoot) {
++    while (true) {
+         const configFilePath = getConfigFileInDirectory(currentDir, exports.ESLINT_FLAT_CONFIG_FILENAMES);
+         if (configFilePath) {
+             return configFilePath;
+         }
++        if (currentDir === workspaceRoot) {
++          break;
++        }
+         currentDir = (0, path_1.dirname)(currentDir);
+     }
+     return null;
+@@ -47,11 +50,14 @@ function findOldConfigFile(filePathOrDirectory, workspaceRoot) {
+     if (currentDir === workspaceRoot) {
+         return getConfigFileInDirectory(currentDir, exports.ESLINT_OLD_CONFIG_FILENAMES);
+     }
+-    while (currentDir !== workspaceRoot) {
++    while (true) {
+         const configFilePath = getConfigFileInDirectory(currentDir, exports.ESLINT_OLD_CONFIG_FILENAMES);
+         if (configFilePath) {
+             return configFilePath;
+         }
++        if (currentDir === workspaceRoot) {
++          break;
++        }
+         currentDir = (0, path_1.dirname)(currentDir);
+     }
+     return null;

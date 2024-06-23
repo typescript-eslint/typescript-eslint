@@ -20,7 +20,11 @@ body:
         - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
           required: true
   - type: markdown
-    id: complexity-note
+    attributes:
+      value: |
+        **All typescript-eslint bug reports need an isolated reproduction** we can clone locally and get running without other projects or existing knowledge of your project.
+        If you can't provide one, your report will likely be closed without action.
+  - type: markdown
     attributes:
       value: |
         ### Note For Complex Issues
