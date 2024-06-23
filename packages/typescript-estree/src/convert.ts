@@ -3063,6 +3063,7 @@ export class Converter {
         result.declare = isDeclare;
 
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+          // eslint-disable-next-line deprecation/deprecation
           result.global = true;
         }
 
