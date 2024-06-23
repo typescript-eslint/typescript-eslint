@@ -424,6 +424,11 @@ class A {
   }
 }
     `,
+    `
+class A {
+      accessor b = this.c;
+}
+    `,
   ],
 
   invalid: [
