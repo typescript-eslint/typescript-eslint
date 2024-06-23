@@ -1,8 +1,8 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type { Identifier } from '../../expression/Identifier/spec';
-import type { TSQualifiedName } from '../../type/TSQualifiedName/spec';
 import type { TSExternalModuleReference } from '../../special/TSExternalModuleReference/spec';
+import type { TSQualifiedName } from '../../type/TSQualifiedName/spec';
 import type { ImportKind } from '../ExportAndImportKind';
 
 interface TSImportEqualsDeclarationBase extends BaseNode {
@@ -19,7 +19,7 @@ interface TSImportEqualsDeclarationBase extends BaseNode {
    * import F3 = require('mod');
    * ```
    */
-  moduleReference: Identifier | TSQualifiedName | TSExternalModuleReference;
+  moduleReference: Identifier | TSExternalModuleReference | TSQualifiedName;
   /**
    * The kind of the import. Always `'value'` unless `moduleReference` is a
    * `TSExternalModuleReference`.
