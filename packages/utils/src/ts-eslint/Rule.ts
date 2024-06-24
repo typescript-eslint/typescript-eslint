@@ -678,8 +678,8 @@ never only allow unidirectional)
 */
 export type LooseRuleCreateFunction = (context: any) => Record<
   string,
-  // eslint-disable-next-line @typescript-eslint/ban-types --
   /*
+  eslint-disable-next-line @typescript-eslint/ban-types --
   intentionally use Function here to give us the basic "is a function" validation
   without enforcing specific argument types so that different AST types can still
   be passed to configs
