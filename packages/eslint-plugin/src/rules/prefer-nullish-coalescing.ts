@@ -325,13 +325,13 @@ export default createRule<Options, MessageIds>({
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const ignorableFlags = [
           (ignorePrimitives === true || ignorePrimitives!.bigint) &&
-            ts.TypeFlags.BigInt,
+            ts.TypeFlags.BigIntLike,
           (ignorePrimitives === true || ignorePrimitives!.boolean) &&
-            ts.TypeFlags.BooleanLiteral,
+            ts.TypeFlags.BooleanLike,
           (ignorePrimitives === true || ignorePrimitives!.number) &&
-            ts.TypeFlags.Number,
+            ts.TypeFlags.NumberLike,
           (ignorePrimitives === true || ignorePrimitives!.string) &&
-            ts.TypeFlags.String,
+            ts.TypeFlags.StringLike,
         ]
           .filter((flag): flag is number => typeof flag === 'number')
           .reduce((previous, flag) => previous | flag, 0);
