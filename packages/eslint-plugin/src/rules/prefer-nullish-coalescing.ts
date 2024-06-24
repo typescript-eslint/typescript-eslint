@@ -339,7 +339,9 @@ export default createRule<Options, MessageIds>({
           type.flags !== ts.TypeFlags.Null &&
           type.flags !== ts.TypeFlags.Undefined &&
           (type as ts.UnionOrIntersectionType).types.some(t =>
-            tsutils.isTypeFlagSet(t, ignorableFlags),
+            tsutils
+              .intersectionTypeParts(t)
+              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
         ) {
           return;
