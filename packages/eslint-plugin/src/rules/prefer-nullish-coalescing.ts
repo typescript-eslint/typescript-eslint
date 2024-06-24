@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getTextWithParentheses,
   getTypeFlags,
   isLogicalOrOperator,
   isNodeEqual,
@@ -288,12 +289,9 @@ export default createRule<Options, MessageIds>({
                       : [node.consequent, node.alternate];
                   return fixer.replaceText(
                     node,
-                    `${context.sourceCode.text.slice(
-                      left.range[0],
-                      left.range[1],
-                    )} ?? ${context.sourceCode.text.slice(
-                      right.range[0],
-                      right.range[1],
+                    `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
+                      context.sourceCode,
+                      right,
                     )}`,
                   );
                 },

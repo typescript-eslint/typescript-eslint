@@ -479,6 +479,26 @@ x ?? 'foo';
           },
         ],
       },
+      {
+        code: code.replace(/y/g, '(z = y)'),
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.replace(/y/g, '(z = y)').length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x ?? (z = y);',
+              },
+            ],
+          },
+        ],
+      },
     ]),
 
     {
