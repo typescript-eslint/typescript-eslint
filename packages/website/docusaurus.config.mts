@@ -269,7 +269,7 @@ const redirects: PluginRedirectOptions = {
     },
     {
       from: '/linting/troubleshooting',
-      to: '/troubleshooting/faqs',
+      to: '/troubleshooting/faqs/general',
     },
     {
       from: '/linting/troubleshooting/formatting',
@@ -286,6 +286,14 @@ const redirects: PluginRedirectOptions = {
     {
       from: '/linting/typed-linting',
       to: '/getting-started/typed-linting',
+    },
+    {
+      from: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/faqs',
+      to: '/troubleshooting/faqs/general',
     },
     {
       from: '/troubleshooting/formatting',
