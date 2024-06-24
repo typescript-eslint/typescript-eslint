@@ -122,66 +122,6 @@ See our docs on [type aware linting](../../getting-started/Typed_Linting.mdx) fo
 You're using an outdated version of `@typescript-eslint/parser`.
 Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
 
-## How do I turn on a `@typescript-eslint` rule?
-
-First make sure you've read the docs and understand ESLint configuration files:
-
-- [Read our getting started guide](../../getting-started/Quickstart.mdx) to ensure your config is properly setup to start configuring our rules.
-- [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
-
-Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
-We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
-In your config file the keys of the `rules` object are the names of the rules you wish to configure and the values follow the following form:
-
-```ts
-type Severity = 'off' | 'warn' | 'error';
-type RuleConfig =
-  | Severity
-  | [Severity]
-  | [
-      Severity,
-      // Options is the tuple type from the rule docs
-      ...Options,
-    ];
-```
-
-Some examples
-
-<Tabs groupId="eslint-config">
-<TabItem value="Flat Config">
-
-```js title="eslint.config.js"
-export default tseslint.config(
-  // ... the rest of your config ...
-  {
-    rules: {
-      // turns a rule on with no configuration (i.e. uses the default configuration)
-      '@typescript-eslint/array-type': 'error',
-      // turns on a rule with configuration
-      '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
-    },
-  },
-);
-```
-
-</TabItem>
-<TabItem value="Legacy Config">
-
-```js title=".eslintrc.cjs"
-module.exports = {
-  // ... the rest of your config ...
-  rules: {
-    // turns a rule on with no configuration (i.e. uses the default configuration)
-    '@typescript-eslint/array-type': 'error',
-    // turns on a rule with configuration
-    '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
-  },
-};
-```
-
-</TabItem>
-</Tabs>
-
 <HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
