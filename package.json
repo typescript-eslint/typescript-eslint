@@ -143,5 +143,5 @@
     "@nx/eslint@19.3.0-canary.20240611-1600875": "patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch",
     "nx@19.3.0-canary.20240611-1600875": "patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch"
   },
-  "packageManager": "yarn@3.8.2"
+  "packageManager": "yarn@3.8.3"
 }
