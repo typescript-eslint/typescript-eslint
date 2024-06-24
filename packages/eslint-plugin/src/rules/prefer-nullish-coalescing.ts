@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getTextWithParentheses,
   getTypeFlags,
   isLogicalOrOperator,
   isNodeEqual,
@@ -288,12 +289,9 @@ export default createRule<Options, MessageIds>({
                       : [node.consequent, node.alternate];
                   return fixer.replaceText(
                     node,
-                    `${context.sourceCode.text.slice(
-                      left.range[0],
-                      left.range[1],
-                    )} ?? ${context.sourceCode.text.slice(
-                      right.range[0],
-                      right.range[1],
+                    `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
+                      context.sourceCode,
+                      right,
                     )}`,
                   );
                 },
@@ -325,13 +323,13 @@ export default createRule<Options, MessageIds>({
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const ignorableFlags = [
           (ignorePrimitives === true || ignorePrimitives!.bigint) &&
-            ts.TypeFlags.BigInt,
+            ts.TypeFlags.BigIntLike,
           (ignorePrimitives === true || ignorePrimitives!.boolean) &&
-            ts.TypeFlags.BooleanLiteral,
+            ts.TypeFlags.BooleanLike,
           (ignorePrimitives === true || ignorePrimitives!.number) &&
-            ts.TypeFlags.Number,
+            ts.TypeFlags.NumberLike,
           (ignorePrimitives === true || ignorePrimitives!.string) &&
-            ts.TypeFlags.String,
+            ts.TypeFlags.StringLike,
         ]
           .filter((flag): flag is number => typeof flag === 'number')
           .reduce((previous, flag) => previous | flag, 0);
@@ -339,7 +337,9 @@ export default createRule<Options, MessageIds>({
           type.flags !== ts.TypeFlags.Null &&
           type.flags !== ts.TypeFlags.Undefined &&
           (type as ts.UnionOrIntersectionType).types.some(t =>
-            tsutils.isTypeFlagSet(t, ignorableFlags),
+            tsutils
+              .intersectionTypeParts(t)
+              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
         ) {
           return;
