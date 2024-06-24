@@ -1,3 +1,29 @@
+## 7.14.0 (2024-06-24)
+
+
+### 🚀 Features
+
+- support TypeScript 5.5 ([#9397](https://github.com/typescript-eslint/typescript-eslint/pull/9397))
+- **ast-spec:** tighter types and documentation for declaration/* ([#9211](https://github.com/typescript-eslint/typescript-eslint/pull/9211))
+
+### 🩹 Fixes
+
+- keep warnAbountTSVersion in sync with package.json ([#9400](https://github.com/typescript-eslint/typescript-eslint/pull/9400))
+- **eslint-plugin:** [no-extraneous-class] handle abstract members ([#9367](https://github.com/typescript-eslint/typescript-eslint/pull/9367))
+- **eslint-plugin:** [prefer-nullish-coalescing] handle intersected primitive types ([#9378](https://github.com/typescript-eslint/typescript-eslint/pull/9378))
+- **eslint-plugin:** [no-invalid-this] support AccessorProperty ([#9411](https://github.com/typescript-eslint/typescript-eslint/pull/9411))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+- cm-ayf @cm-ayf
+- Jake Bailey @jakebailey
+- James Zhan
+- Joshua Chen
+- yoshi2no @yoshi2no
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.13.1 (2024-06-17)
 
 
