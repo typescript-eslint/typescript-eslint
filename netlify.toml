@@ -33,7 +33,7 @@
 
 [[redirects]]
   from = "/linting/troubleshooting"
-  to = "/troubleshooting/faqs"
+  to = "/troubleshooting/faqs/general"
 
 [[redirects]]
   from = "/docs/linting/monorepo"
