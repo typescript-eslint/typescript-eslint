@@ -218,6 +218,20 @@ x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
+    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
     `
       declare const x: any;
       declare const y: number;

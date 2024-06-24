@@ -103,9 +103,8 @@ export default tseslint.config(
       // make sure we're not leveraging any deprecated APIs
       'deprecation/deprecation': 'error',
 
-      // TODO(#7130): Investigate changing these in or removing these from presets
+      // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
       '@typescript-eslint/no-confusing-void-expression': 'off',
-      '@typescript-eslint/prefer-string-starts-ends-with': 'off',
 
       //
       // our plugin :D
@@ -140,6 +139,12 @@ export default tseslint.config(
         'error',
         {
           allowBitwiseExpressions: true,
+        },
+      ],
+      '@typescript-eslint/prefer-string-starts-ends-with': [
+        'error',
+        {
+          allowSingleElementEquality: 'always',
         },
       ],
       '@typescript-eslint/unbound-method': 'off',
@@ -425,6 +430,7 @@ export default tseslint.config(
       'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
+      'eslint-plugin/no-property-in-node': 'error',
       'eslint-plugin/require-meta-docs-description': [
         'error',
         { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },

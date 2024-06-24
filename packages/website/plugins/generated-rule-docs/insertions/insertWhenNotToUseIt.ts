@@ -1,7 +1,7 @@
 import type * as mdast from 'mdast';
 
+import { nodeIsHeading } from '../../utils/nodes';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { nodeIsHeading } from '../utils';
 
 export function insertWhenNotToUseIt(page: RuleDocsPage): void {
   if (!page.rule.meta.docs.requiresTypeChecking) {
