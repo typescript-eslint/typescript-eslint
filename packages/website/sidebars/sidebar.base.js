@@ -34,6 +34,7 @@ module.exports = {
           collapsed: true,
           collapsible: true,
           items: [
+            'troubleshooting/faqs/general',
             'troubleshooting/faqs/eslint',
             'troubleshooting/faqs/frameworks',
             'troubleshooting/faqs/javascript',
@@ -41,7 +42,7 @@ module.exports = {
           ],
           label: 'FAQs',
           link: {
-            id: 'troubleshooting/faqs/index',
+            id: 'troubleshooting/faqs/general',
             type: 'doc',
           },
           type: 'category',
@@ -62,6 +63,10 @@ module.exports = {
         },
       ],
       label: 'Troubleshooting & FAQs',
+      link: {
+        id: 'troubleshooting/faqs/general',
+        type: 'doc',
+      },
       type: 'category',
     },
     {

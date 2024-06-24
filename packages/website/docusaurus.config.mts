@@ -288,10 +288,6 @@ const redirects: PluginRedirectOptions = {
       to: '/getting-started/typed-linting',
     },
     {
-      from: '/troubleshooting',
-      to: '/troubleshooting/faqs',
-    },
-    {
       from: '/troubleshooting/formatting',
       to: '/users/what-about-formatting',
     },
