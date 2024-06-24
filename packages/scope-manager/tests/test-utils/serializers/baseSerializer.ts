@@ -33,7 +33,7 @@ function createSerializer<Constructor extends ConstructorSignature>(
     ): string {
       const id = thing.$id != null ? `$${thing.$id}` : '';
       // If `type` is a base class, we should print out the name of the subclass
-      const constructorName = (Object.getPrototypeOf(thing) as object)
+      const constructorName = (Object.getPrototypeOf(thing) as Object)
         .constructor.name;
 
       if (constructorName === 'ImplicitLibVariable' && thing.name === 'const') {

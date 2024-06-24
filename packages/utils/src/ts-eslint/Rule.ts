@@ -580,7 +580,7 @@ type RuleListenerExitSelectors = {
 };
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface RuleListenerExtension {
   // The code path functions below were introduced in ESLint v8.7.0 but are
   // intentionally commented out because they cause unresolvable compiler
@@ -678,12 +678,12 @@ never only allow unidirectional)
 */
 export type LooseRuleCreateFunction = (context: any) => Record<
   string,
+  // eslint-disable-next-line @typescript-eslint/ban-types --
   /*
   intentionally use Function here to give us the basic "is a function" validation
   without enforcing specific argument types so that different AST types can still
   be passed to configs
   */
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   Function | undefined
 >;
 

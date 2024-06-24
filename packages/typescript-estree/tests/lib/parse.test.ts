@@ -505,7 +505,7 @@ describe('parseAndGenerateServices', () => {
 
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
             - <tsconfigRootDir>/tsconfig.json
             - <tsconfigRootDir>/tsconfig.extra.json
             However, none of those TSConfigs include this file. Either:
