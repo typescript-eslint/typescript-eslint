@@ -7,20 +7,20 @@ slug: /troubleshooting/typed-linting
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
+<HiddenHeading id="allowdefaultproject-glob-too-wide" />
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
 
-These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProjectForFiles` with an excessively wide glob.
-`allowDefaultProjectForFiles` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
+These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProject` with an excessively wide glob.
+`allowDefaultProject` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
 
-To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
+To resolve this error, narrow the glob(s) used for `allowDefaultProject` to include fewer files.
 For example:
 
 ```diff title="eslint.config.js"
 parserOptions: {
   EXPERIMENTAL_useProjectService: {
-    allowDefaultProjectForFiles: [
+    allowDefaultProject: [
 -      "**/*.js",
 +      "./*.js"
     ]
@@ -122,20 +122,20 @@ See our docs on [type aware linting](../../getting-started/Typed_Linting.mdx) fo
 You're using an outdated version of `@typescript-eslint/parser`.
 Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
 
-<HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
+<HiddenHeading id="allowdefaultproject-glob-too-wide" />
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
 
-These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProjectForFiles` with an excessively wide glob.
-`allowDefaultProjectForFiles` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
+These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProject` with an excessively wide glob.
+`allowDefaultProject` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
 
-To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
+To resolve this error, narrow the glob(s) used for `allowDefaultProject` to include fewer files.
 For example:
 
 ```diff title="eslint.config.js"
 parserOptions: {
   EXPERIMENTAL_useProjectService: {
-    allowDefaultProjectForFiles: [
+    allowDefaultProject: [
 -      "**/*.js",
 +      "./*.js"
     ]
