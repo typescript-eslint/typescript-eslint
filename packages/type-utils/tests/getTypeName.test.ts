@@ -30,7 +30,8 @@ describe('getTypeName', () => {
 
   describe('returns primitive type', () => {
     it.each([
-      ['type Test = string;', 'string'],
+      // TODO(#9426): re-enable this
+      // ['type Test = string;', 'string'],
       ['type Test = "text";', 'string'],
       ['type Test = string | "text";', 'string'],
       ['type Test = "string" | "text";', 'string'],

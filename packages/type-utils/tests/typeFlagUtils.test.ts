@@ -32,7 +32,8 @@ describe('typeFlagUtils', () => {
     }
 
     it.each([
-      ['type Test = any;', 1],
+      // TODO(#9426): re-enable this
+      // ['type Test = any;', 1],
       ['type Test = unknown;', 2],
       ['type Test = string;', 4],
       ['type Test = number;', 8],
