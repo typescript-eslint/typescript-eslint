@@ -318,7 +318,7 @@ const config: Config = {
     rules: rulesMeta,
   },
   plugins: [
-    ...['ast-spec', 'type-utils', 'utils'].map(packageName => [
+    ...['ast-spec', 'type-utils'].map(packageName => [
       'docusaurus-plugin-typedoc',
       {
         entryPoints: [`../${packageName}/src/index.ts`],
