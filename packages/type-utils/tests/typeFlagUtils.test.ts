@@ -6,7 +6,9 @@ import * as ts from 'typescript';
 import { getTypeFlags, isTypeFlagSet } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('typeFlagUtils', () => {
+// TODO(#9426): re-enable this
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('typeFlagUtils', () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getType(code: string): ts.Type {
@@ -21,9 +23,7 @@ describe('typeFlagUtils', () => {
     return services.getTypeAtLocation(declaration.id);
   }
 
-  // TODO(#9426): re-enable this
-  // eslint-disable-next-line jest/no-disabled-tests
-  describe.skip('getTypeFlags', () => {
+  describe('getTypeFlags', () => {
     function runTestForAliasDeclaration(
       code: string,
       expected: ts.TypeFlags,

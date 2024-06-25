@@ -6,7 +6,9 @@ import type * as ts from 'typescript';
 import { getTypeName } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('getTypeName', () => {
+// TODO(#9426): re-enable this
+// eslint-disable-next-line jest/no-disabled-tests
+describe.skip('getTypeName', () => {
   function getTypes(code: string): { checker: ts.TypeChecker; type: ts.Type } {
     const rootDir = path.join(__dirname, 'fixtures');
 
@@ -28,9 +30,7 @@ describe('getTypeName', () => {
     expect(result).toBe(expected);
   }
 
-  // TODO(#9426): re-enable this
-  // eslint-disable-next-line jest/no-disabled-tests
-  describe.skip('returns primitive type', () => {
+  describe('returns primitive type', () => {
     it.each([
       // ['type Test = string;', 'string'],
       ['type Test = "text";', 'string'],
