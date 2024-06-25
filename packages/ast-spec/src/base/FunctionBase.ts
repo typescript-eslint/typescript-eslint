@@ -19,7 +19,7 @@ export interface FunctionBase extends BaseNode {
   /**
    * The body of the function.
    * - For an `ArrowFunctionExpression` this may be an `Expression` or `BlockStatement`.
-   * - For a `FunctionDeclaration` or `FunctionExpression` this is always a `BlockStatement.
+   * - For a `FunctionDeclaration` or `FunctionExpression` this is always a `BlockStatement`.
    * - For a `TSDeclareFunction` this is always `undefined`.
    * - For a `TSEmptyBodyFunctionExpression` this is always `null`.
    */

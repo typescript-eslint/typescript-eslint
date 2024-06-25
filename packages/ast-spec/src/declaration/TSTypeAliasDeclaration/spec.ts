@@ -23,7 +23,8 @@ export interface TSTypeAliasDeclaration extends BaseNode {
    */
   typeAnnotation: TypeNode;
   /**
-   * The generic type parameters declared for the type.
+   * The generic type parameters declared for the type. Empty declaration
+   * (`<>`) is different from no declaration.
    */
   typeParameters: TSTypeParameterDeclaration | undefined;
 }

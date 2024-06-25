@@ -13,25 +13,24 @@ export interface ExportAllDeclaration extends BaseNode {
    * ```ts
    * export * from 'mod' assert \{ type: 'json' \};
    * ```
-   * @deprecated -- Replaced with {@link `attributes`}.
+   * @deprecated Replaced with {@link `attributes`}.
    */
   assertions: ImportAttribute[];
   /**
    * The attributes declared for the export.
    * @example
    * ```ts
-   * export * from 'mod' assert \{ type: 'json' \};
+   * export * from 'mod' with \{ type: 'json' \};
    * ```
    */
   attributes: ImportAttribute[];
   /**
-   * The name for the exported items. `null` if no name is assigned.
+   * The name for the exported items (`as X`). `null` if no name is assigned.
    */
   exported: Identifier | null;
   /**
    * The kind of the export.
    */
-  // TODO(#1852) - breaking change remove this because it is a semantic error to have it
   exportKind: ExportKind;
   /**
    * The source module being exported from.

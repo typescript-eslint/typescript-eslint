@@ -3945,42 +3945,51 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/jest@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nrwl/jest@npm:19.3.0"
+"@nrwl/devkit@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/devkit@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/jest": 19.3.0
-  checksum: 7ba6725cec33ad48894251710d070c9b18732148d154d78e3de7bf0ee56c85096a470757ee3b37b0d38007afd008cfd1b214864fcb3435f7ea46e17c59dde984
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+  checksum: b895be06eea3ec93f621bebb72a6416cfe920c9209e897b1c996b587d439739f9ec7a86d8490f1244a644e7fd24cb4d0878ebd8420ba93ff35f08e5f6b8d0eed
   languageName: node
   linkType: hard
 
-"@nrwl/js@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nrwl/js@npm:19.3.0"
+"@nrwl/jest@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/jest@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/js": 19.3.0
-  checksum: 0be24fc81b8aec9b72f0d102c11f3ebeafef05ad187df289cc3a7ac2f46b5c3fc832b98176f8850cd637fb95dca98e1e32ecbb2bc9bd0a71cc59ce2e0e5d37fb
+    "@nx/jest": 19.3.0-canary.20240611-1600875
+  checksum: 2dc3c1a31ef5af8002e844671a46050bf3374e09074525eb01d49b2c04ed47ed43bfe8d3e7266147b596f496f369e7038b4aadb6526515d0e9fb3dda9d6c989d
   languageName: node
   linkType: hard
 
-"@nrwl/tao@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nrwl/tao@npm:19.3.0"
+"@nrwl/js@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/js@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    nx: 19.3.0
+    "@nx/js": 19.3.0-canary.20240611-1600875
+  checksum: 204c46aac1a9c54fd95373b97bcb0881f58dc4cfd8e17376396feec10b421a730487412b475d43730cc0279dea85f836e41b40b06df9ba4f97304e2cf5d19b04
+  languageName: node
+  linkType: hard
+
+"@nrwl/tao@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/tao@npm:19.3.0-canary.20240611-1600875"
+  dependencies:
+    nx: 19.3.0-canary.20240611-1600875
     tslib: ^2.3.0
   bin:
     tao: index.js
-  checksum: f222360877ce79df29850f8af7537b6fbc96c7997fffe4a8700f98b85406a9609817932f14ac4b254232fdb52ea57359e889837adc45d30aad2159db253171dc
+  checksum: 1225b4c0b7b9eb006100c976c0c1a224a175ca6a96bf2a256cbd17d2d275b9cb92aec209c56bc8c57daba002aa8f8aa1914eaaa38356564d2bc96bc08ace97a1
   languageName: node
   linkType: hard
 
-"@nrwl/workspace@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nrwl/workspace@npm:19.3.0"
+"@nrwl/workspace@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nrwl/workspace@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/workspace": 19.3.0
-  checksum: 9a44699272aefb19d8996760c4bdcf6560b02a4c8ad1fcb7d8a41c0363372e7cd354146d86b4776e6600a29610eeb407673c07e5dccb8985643323ea953853b7
+    "@nx/workspace": 19.3.0-canary.20240611-1600875
+  checksum: e25f2d1ef423f28df33dec372bb0e8950d6f2be757240fc57e78d0e7f5b7d3d8639fc8d49602a5f24009c29bf354dd0267e872e686818a292ad67eb412b35e75
   languageName: node
   linkType: hard
 
@@ -4003,13 +4012,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/eslint@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/eslint@npm:19.3.0"
+"@nx/devkit@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/devkit@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/devkit": 19.3.0
-    "@nx/js": 19.3.0
-    "@nx/linter": 19.3.0
+    "@nrwl/devkit": 19.3.0-canary.20240611-1600875
+    ejs: ^3.1.7
+    enquirer: ~2.3.6
+    ignore: ^5.0.4
+    minimatch: 9.0.3
+    semver: ^7.5.3
+    tmp: ~0.2.1
+    tslib: ^2.3.0
+    yargs-parser: 21.1.1
+  peerDependencies:
+    nx: ">= 17 <= 20"
+  checksum: 857aba91d3d74408cd6aa4b2c83c07f80b1d2191a9d0ea6af1f76f1d7998967a4432520412bc2544d6ec34b1c6a0ba717d8a64cf2b9865108a191131fa0cdd00
+  languageName: node
+  linkType: hard
+
+"@nx/eslint@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/eslint@npm:19.3.0-canary.20240611-1600875"
+  dependencies:
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
+    "@nx/linter": 19.3.0-canary.20240611-1600875
     semver: ^7.5.3
     tslib: ^2.3.0
     typescript: ~5.4.2
@@ -4019,19 +4047,39 @@ __metadata:
   peerDependenciesMeta:
     "@zkochan/js-yaml":
       optional: true
-  checksum: 4bf3e949cfbce5c09cf2f6c7fe832c921f92c79aa8c5b8f5605286852d95763d41495101df8eea09428bb0635725308f53deb8f400a2d1499bca866f1f5166c6
+  checksum: 97e5fb6447460ad705b34c70b9d5d66ceaaafa331d999c9ba2e2c52863c9adcde810900b8ba12439f108105fd5206828d6638a34b27531321007d784514a3c37
   languageName: node
   linkType: hard
 
-"@nx/jest@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/jest@npm:19.3.0"
+"@nx/eslint@patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/eslint@patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch::version=19.3.0-canary.20240611-1600875&hash=a8c594&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
+    "@nx/linter": 19.3.0-canary.20240611-1600875
+    semver: ^7.5.3
+    tslib: ^2.3.0
+    typescript: ~5.4.2
+  peerDependencies:
+    "@zkochan/js-yaml": 0.0.7
+    eslint: ^8.0.0 || ^9.0.0
+  peerDependenciesMeta:
+    "@zkochan/js-yaml":
+      optional: true
+  checksum: 1f4bedc1072d601d142edf140bd33033f8f34dc57bb9ccecf582606f3483d9f0fd06d340e0c892cabb8c6ac820f5c23720ed95741199f9c0268a56cf614e7c57
+  languageName: node
+  linkType: hard
+
+"@nx/jest@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/jest@npm:19.3.0-canary.20240611-1600875"
   dependencies:
     "@jest/reporters": ^29.4.1
     "@jest/test-result": ^29.4.1
-    "@nrwl/jest": 19.3.0
-    "@nx/devkit": 19.3.0
-    "@nx/js": 19.3.0
+    "@nrwl/jest": 19.3.0-canary.20240611-1600875
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/js": 19.3.0-canary.20240611-1600875
     "@phenomnomnominal/tsquery": ~5.0.1
     chalk: ^4.1.0
     identity-obj-proxy: 3.0.0
@@ -4042,13 +4090,13 @@ __metadata:
     resolve.exports: 1.1.0
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: 180643d6d40095b87b76c3f1787b6e0404c1d16360a8f9bdaff7f05bf1822dab69ee577cf675be4cf5b1a6ce89276b729eee12a0293731fc785eb82a932de764
+  checksum: 43fbc5e02f3f7a33de3f95441b7c96a666c1e44422acc367d4490814134ff4d3fe1aa2c75bee2d5d2354ad0efb79dfe73b7975485d506dd9ab0ec97a23e768de
   languageName: node
   linkType: hard
 
-"@nx/js@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/js@npm:19.3.0"
+"@nx/js@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/js@npm:19.3.0-canary.20240611-1600875"
   dependencies:
     "@babel/core": ^7.23.2
     "@babel/plugin-proposal-decorators": ^7.22.7
@@ -4057,9 +4105,9 @@ __metadata:
     "@babel/preset-env": ^7.23.2
     "@babel/preset-typescript": ^7.22.5
     "@babel/runtime": ^7.22.6
-    "@nrwl/js": 19.3.0
-    "@nx/devkit": 19.3.0
-    "@nx/workspace": 19.3.0
+    "@nrwl/js": 19.3.0-canary.20240611-1600875
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
+    "@nx/workspace": 19.3.0-canary.20240611-1600875
     babel-plugin-const-enum: ^1.0.1
     babel-plugin-macros: ^2.8.0
     babel-plugin-transform-typescript-metadata: ^0.3.1
@@ -4084,101 +4132,101 @@ __metadata:
   peerDependenciesMeta:
     verdaccio:
       optional: true
-  checksum: 9365f5c79dc74d77d20cab19517c457ec241d4d38dd66bdd719448ab0f11c26a98eff2298fb1213e1e8a5fb26de34e1bc9fa7601de3e33673fcd3317814f6fb9
+  checksum: 3dd659289504cae5da59005ceb16a27d1e1daeaedf9c48b07ea3ea6cb978dff2d7b06744b797b47c3f85ed5778f2cc59306effe2cec7bb6cefedeb1e111bb419
   languageName: node
   linkType: hard
 
-"@nx/linter@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/linter@npm:19.3.0"
+"@nx/linter@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/linter@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nx/eslint": 19.3.0
-  checksum: fe89dadfd0a06946a1e466e47ea76bb498df93213f2fd39532ef79419da4ae3d4b4868a4b18d6855e11dbe624cf3e5ecf5edf8725ad3b4b6155fbf98d66c1c70
+    "@nx/eslint": 19.3.0-canary.20240611-1600875
+  checksum: 4d0c82aea1093bc18e0349585f4a29c86ab759f555440333e9dbddbc9f9bd25a0512c0ce96728463d4c2f7e2ccf03fec2dab15b31866e3e5a9f1d5e8a4b49288
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-darwin-arm64@npm:19.3.0"
+"@nx/nx-darwin-arm64@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-darwin-arm64@npm:19.3.0-canary.20240611-1600875"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-darwin-x64@npm:19.3.0"
+"@nx/nx-darwin-x64@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-darwin-x64@npm:19.3.0-canary.20240611-1600875"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-freebsd-x64@npm:19.3.0"
+"@nx/nx-freebsd-x64@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-freebsd-x64@npm:19.3.0-canary.20240611-1600875"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:19.3.0"
+"@nx/nx-linux-arm-gnueabihf@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-linux-arm64-gnu@npm:19.3.0"
+"@nx/nx-linux-arm64-gnu@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-arm64-gnu@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-linux-arm64-musl@npm:19.3.0"
+"@nx/nx-linux-arm64-musl@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-arm64-musl@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-linux-x64-gnu@npm:19.3.0"
+"@nx/nx-linux-x64-gnu@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-x64-gnu@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-linux-x64-musl@npm:19.3.0"
+"@nx/nx-linux-x64-musl@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-linux-x64-musl@npm:19.3.0-canary.20240611-1600875"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-win32-arm64-msvc@npm:19.3.0"
+"@nx/nx-win32-arm64-msvc@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-win32-arm64-msvc@npm:19.3.0-canary.20240611-1600875"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/nx-win32-x64-msvc@npm:19.3.0"
+"@nx/nx-win32-x64-msvc@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/nx-win32-x64-msvc@npm:19.3.0-canary.20240611-1600875"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/workspace@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/workspace@npm:19.3.0"
+"@nx/workspace@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "@nx/workspace@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nrwl/workspace": 19.3.0
-    "@nx/devkit": 19.3.0
+    "@nrwl/workspace": 19.3.0-canary.20240611-1600875
+    "@nx/devkit": 19.3.0-canary.20240611-1600875
     chalk: ^4.1.0
     enquirer: ~2.3.6
-    nx: 19.3.0
+    nx: 19.3.0-canary.20240611-1600875
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: e1ecbe3963d18b9462aa75a4af82c6281113899d1ad73ec01ca30ca19ee37bfe6f9034ac1055ff465966465a1c9e7e96f6a7f200f2d7e9433d15831cb6290b01
+  checksum: 731cdb3a9f9f70bead4242c8f8296f1080c63ca8c55bc308f1a8c9470cc6d3241085a40aab21080c55c0b30db538c6c86473cf3381eb60a7074fad3e11a92bef
   languageName: node
   linkType: hard
 
@@ -5577,17 +5625,17 @@ __metadata:
   dependencies:
     "@jest/types": 29.6.3
     "@prettier/sync": ^0.5.1
-    "@typescript-eslint/rule-tester": 7.13.1
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/type-utils": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
+    "@typescript-eslint/rule-tester": 7.14.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/type-utils": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
     jest: 29.7.0
     prettier: ^3.2.5
     rimraf: "*"
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/eslint-plugin@7.13.1, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
+"@typescript-eslint/eslint-plugin@7.14.1, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
@@ -5596,12 +5644,12 @@ __metadata:
     "@types/marked": ^5.0.2
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
-    "@typescript-eslint/rule-schema-to-typescript-types": 7.13.1
-    "@typescript-eslint/rule-tester": 7.13.1
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/type-utils": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
-    "@typescript-eslint/visitor-keys": 7.13.1
+    "@typescript-eslint/rule-schema-to-typescript-types": 7.14.1
+    "@typescript-eslint/rule-tester": 7.14.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/type-utils": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
+    "@typescript-eslint/visitor-keys": 7.14.1
     ajv: ^6.12.6
     cross-env: ^7.0.3
     cross-fetch: "*"
@@ -5646,16 +5694,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@7.13.1, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@7.14.1, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
     "@jest/types": 29.6.3
     "@types/glob": "*"
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/types": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/visitor-keys": 7.13.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/types": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/visitor-keys": 7.14.1
     debug: ^4.3.4
     downlevel-dts: "*"
     glob: "*"
@@ -5677,11 +5725,11 @@ __metadata:
   dependencies:
     "@jest/types": 29.6.3
     "@nx/devkit": "*"
-    "@typescript-eslint/eslint-plugin": 7.13.1
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/types": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
+    "@typescript-eslint/eslint-plugin": 7.14.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/types": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
     cross-fetch: "*"
     execa: "*"
     prettier: ^3.2.5
@@ -5691,28 +5739,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-schema-to-typescript-types@7.13.1, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
+"@typescript-eslint/rule-schema-to-typescript-types@7.14.1, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/type-utils": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
+    "@typescript-eslint/type-utils": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
     natural-compare: ^1.4.0
     prettier: ^3.2.5
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@7.13.1, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@7.14.1, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@jest/types": 29.6.3
     "@types/json-stable-stringify-without-jsonify": ^1.0.2
     "@types/lodash.merge": 4.6.9
-    "@typescript-eslint/parser": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
+    "@typescript-eslint/parser": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
     ajv: ^6.12.6
     chai: ^4.4.1
     eslint-visitor-keys: ^4.0.0
@@ -5731,15 +5779,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/scope-manager@7.13.1, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
+"@typescript-eslint/scope-manager@7.14.1, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
     "@jest/types": 29.6.3
     "@types/glob": "*"
-    "@typescript-eslint/types": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/visitor-keys": 7.13.1
+    "@typescript-eslint/types": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/visitor-keys": 7.14.1
     glob: "*"
     jest-specific-snapshot: "*"
     make-dir: "*"
@@ -5768,14 +5816,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@7.13.1, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/type-utils@7.14.1, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/parser": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
+    "@typescript-eslint/parser": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
     ajv: ^6.12.6
     debug: ^4.3.4
     downlevel-dts: "*"
@@ -5792,7 +5840,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@7.13.1, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@7.14.1, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5833,9 +5881,9 @@ __metadata:
     "@eslint/eslintrc": ^2.1.4
     "@eslint/js": ^8.57.0
     "@jest/types": 29.6.3
-    "@nx/eslint": 19.3.0
-    "@nx/jest": 19.3.0
-    "@nx/workspace": 19.3.0
+    "@nx/eslint": 19.3.0-canary.20240611-1600875
+    "@nx/jest": 19.3.0-canary.20240611-1600875
+    "@nx/workspace": 19.3.0-canary.20240611-1600875
     "@swc/core": ^1.4.12
     "@swc/jest": ^0.2.36
     "@types/babel__code-frame": ^7.0.6
@@ -5879,7 +5927,7 @@ __metadata:
     markdownlint-cli: ^0.41.0
     ncp: ^2.0.0
     netlify: ^13.1.14
-    nx: 19.3.0
+    nx: 19.3.0-canary.20240611-1600875
     prettier: 3.3.2
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
@@ -5891,13 +5939,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/typescript-estree@7.13.1, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
+"@typescript-eslint/typescript-estree@7.14.1, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/types": 7.13.1
-    "@typescript-eslint/visitor-keys": 7.13.1
+    "@typescript-eslint/types": 7.14.1
+    "@typescript-eslint/visitor-keys": 7.14.1
     debug: ^4.3.4
     glob: "*"
     globby: ^11.1.0
@@ -5953,14 +6001,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@7.13.1, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@7.14.1, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/types": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/types": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.2.5
@@ -6006,13 +6054,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/visitor-keys@7.13.1, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
+"@typescript-eslint/visitor-keys@7.14.1, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
     "@jest/types": 29.6.3
     "@types/eslint-visitor-keys": "*"
-    "@typescript-eslint/types": 7.13.1
+    "@typescript-eslint/types": 7.14.1
     downlevel-dts: "*"
     eslint-visitor-keys: ^3.4.3
     jest: 29.7.0
@@ -6042,16 +6090,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/website-eslint@7.13.1, @typescript-eslint/website-eslint@workspace:packages/website-eslint":
+"@typescript-eslint/website-eslint@7.14.1, @typescript-eslint/website-eslint@workspace:packages/website-eslint":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/website-eslint@workspace:packages/website-eslint"
   dependencies:
     "@eslint/js": "*"
-    "@typescript-eslint/eslint-plugin": 7.13.1
-    "@typescript-eslint/parser": 7.13.1
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/visitor-keys": 7.13.1
+    "@typescript-eslint/eslint-plugin": 7.14.1
+    "@typescript-eslint/parser": 7.14.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/visitor-keys": 7.14.1
     esbuild: ~0.21.0
     eslint: "*"
     esquery: "*"
@@ -15612,21 +15660,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:19.3.0":
-  version: 19.3.0
-  resolution: "nx@npm:19.3.0"
+"nx@npm:19.3.0-canary.20240611-1600875":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "nx@npm:19.3.0-canary.20240611-1600875"
   dependencies:
-    "@nrwl/tao": 19.3.0
-    "@nx/nx-darwin-arm64": 19.3.0
-    "@nx/nx-darwin-x64": 19.3.0
-    "@nx/nx-freebsd-x64": 19.3.0
-    "@nx/nx-linux-arm-gnueabihf": 19.3.0
-    "@nx/nx-linux-arm64-gnu": 19.3.0
-    "@nx/nx-linux-arm64-musl": 19.3.0
-    "@nx/nx-linux-x64-gnu": 19.3.0
-    "@nx/nx-linux-x64-musl": 19.3.0
-    "@nx/nx-win32-arm64-msvc": 19.3.0
-    "@nx/nx-win32-x64-msvc": 19.3.0
+    "@nrwl/tao": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-arm64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-freebsd-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm-gnueabihf": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-arm64-msvc": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-x64-msvc": 19.3.0-canary.20240611-1600875
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.0-rc.46
     "@zkochan/js-yaml": 0.0.7
@@ -15692,7 +15740,91 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: d64085abecea88b3dcfd7989cc0d43bf3d9976dce8d449c44ea63ce47d014a6ce81ef19fac8c744fa63cd0ff5742fa67f19af8d8ed4f5f5539838069661da502
+  checksum: 754e945685a9763edaefaaf06cd026ba33813bf08e4897eaf07e2a47a82b72312a49e95763184beae7d4a7e7e29cc76fc7dc61ab9035c87fef06b424a1595cb6
+  languageName: node
+  linkType: hard
+
+"nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 19.3.0-canary.20240611-1600875
+  resolution: "nx@patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch::version=19.3.0-canary.20240611-1600875&hash=56bd23&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@nrwl/tao": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-arm64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-darwin-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-freebsd-x64": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm-gnueabihf": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-arm64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-gnu": 19.3.0-canary.20240611-1600875
+    "@nx/nx-linux-x64-musl": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-arm64-msvc": 19.3.0-canary.20240611-1600875
+    "@nx/nx-win32-x64-msvc": 19.3.0-canary.20240611-1600875
+    "@yarnpkg/lockfile": ^1.1.0
+    "@yarnpkg/parsers": 3.0.0-rc.46
+    "@zkochan/js-yaml": 0.0.7
+    axios: ^1.6.0
+    chalk: ^4.1.0
+    cli-cursor: 3.1.0
+    cli-spinners: 2.6.1
+    cliui: ^8.0.1
+    dotenv: ~16.3.1
+    dotenv-expand: ~10.0.0
+    enquirer: ~2.3.6
+    figures: 3.2.0
+    flat: ^5.0.2
+    front-matter: ^4.0.2
+    fs-extra: ^11.1.0
+    ignore: ^5.0.4
+    jest-diff: ^29.4.1
+    jsonc-parser: 3.2.0
+    lines-and-columns: ~2.0.3
+    minimatch: 9.0.3
+    node-machine-id: 1.1.12
+    npm-run-path: ^4.0.1
+    open: ^8.4.0
+    ora: 5.3.0
+    semver: ^7.5.3
+    string-width: ^4.2.3
+    strong-log-transformer: ^2.1.0
+    tar-stream: ~2.2.0
+    tmp: ~0.2.1
+    tsconfig-paths: ^4.1.2
+    tslib: ^2.3.0
+    yargs: ^17.6.2
+    yargs-parser: 21.1.1
+  peerDependencies:
+    "@swc-node/register": ^1.8.0
+    "@swc/core": ^1.3.85
+  dependenciesMeta:
+    "@nx/nx-darwin-arm64":
+      optional: true
+    "@nx/nx-darwin-x64":
+      optional: true
+    "@nx/nx-freebsd-x64":
+      optional: true
+    "@nx/nx-linux-arm-gnueabihf":
+      optional: true
+    "@nx/nx-linux-arm64-gnu":
+      optional: true
+    "@nx/nx-linux-arm64-musl":
+      optional: true
+    "@nx/nx-linux-x64-gnu":
+      optional: true
+    "@nx/nx-linux-x64-musl":
+      optional: true
+    "@nx/nx-win32-arm64-msvc":
+      optional: true
+    "@nx/nx-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc-node/register":
+      optional: true
+    "@swc/core":
+      optional: true
+  bin:
+    nx: bin/nx.js
+    nx-cloud: bin/nx-cloud.js
+  checksum: 2f337128cb9cc845295dcbe27abafcbe44b3bcbff452ba91c4de94457024bac137616ce2dc9e40400e7209d977465f8fa13eb6f70171e65e452978e41bf0ab94
   languageName: node
   linkType: hard
 
@@ -19717,9 +19849,9 @@ __metadata:
   resolution: "typescript-eslint@workspace:packages/typescript-eslint"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/eslint-plugin": 7.13.1
-    "@typescript-eslint/parser": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
+    "@typescript-eslint/eslint-plugin": 7.14.1
+    "@typescript-eslint/parser": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.2.5
@@ -20445,14 +20577,14 @@ __metadata:
     "@types/mdast": ^4.0.3
     "@types/react": "*"
     "@types/unist": ^3.0.2
-    "@typescript-eslint/eslint-plugin": 7.13.1
-    "@typescript-eslint/parser": 7.13.1
-    "@typescript-eslint/rule-schema-to-typescript-types": 7.13.1
-    "@typescript-eslint/scope-manager": 7.13.1
-    "@typescript-eslint/types": 7.13.1
-    "@typescript-eslint/typescript-estree": 7.13.1
-    "@typescript-eslint/utils": 7.13.1
-    "@typescript-eslint/website-eslint": 7.13.1
+    "@typescript-eslint/eslint-plugin": 7.14.1
+    "@typescript-eslint/parser": 7.14.1
+    "@typescript-eslint/rule-schema-to-typescript-types": 7.14.1
+    "@typescript-eslint/scope-manager": 7.14.1
+    "@typescript-eslint/types": 7.14.1
+    "@typescript-eslint/typescript-estree": 7.14.1
+    "@typescript-eslint/utils": 7.14.1
+    "@typescript-eslint/website-eslint": 7.14.1
     "@uiw/react-shields": 2.0.1
     clsx: ^2.1.0
     copy-webpack-plugin: ^12.0.0

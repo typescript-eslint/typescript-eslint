@@ -22,7 +22,7 @@ interface ExportNamedDeclarationBase extends BaseNode {
    * The attributes declared for the export.
    * @example
    * ```ts
-   * export { foo } from 'mod' assert \{ type: 'json' \};
+   * export { foo } from 'mod' with \{ type: 'json' \};
    * ```
    * This will be an empty array if `source` is `null`
    */
@@ -55,6 +55,13 @@ interface ExportNamedDeclarationBase extends BaseNode {
   specifiers: ExportSpecifier[];
 }
 
+/**
+ * Exporting names from the current module.
+ * ```
+ * export {};
+ * export { a, b };
+ * ```
+ */
 export interface ExportNamedDeclarationWithoutSourceWithMultiple
   extends ExportNamedDeclarationBase {
   /**
@@ -68,9 +75,14 @@ export interface ExportNamedDeclarationWithoutSourceWithMultiple
   attributes: ImportAttribute[];
   declaration: null;
   source: null;
-  specifiers: ExportSpecifier[];
 }
 
+/**
+ * Exporting a single named declaration.
+ * ```
+ * export const x = 1;
+ * ```
+ */
 export interface ExportNamedDeclarationWithoutSourceWithSingle
   extends ExportNamedDeclarationBase {
   /**
@@ -84,24 +96,22 @@ export interface ExportNamedDeclarationWithoutSourceWithSingle
   attributes: ImportAttribute[];
   declaration: NamedExportDeclarations;
   source: null;
-  // This will always be an empty array.
+  /**
+   * This will always be an empty array.
+   */
   specifiers: ExportSpecifier[];
 }
 
+/**
+ * Export names from another module.
+ * ```
+ * export { a, b } from 'mod';
+ * ```
+ */
 export interface ExportNamedDeclarationWithSource
   extends ExportNamedDeclarationBase {
-  /**
-   * This will always be an empty array.
-   * @deprecated Replaced with {@link `attributes`}.
-   */
-  assertions: ImportAttribute[];
-  /**
-   * This will always be an empty array.
-   */
-  attributes: ImportAttribute[];
   declaration: null;
   source: StringLiteral;
-  specifiers: ExportSpecifier[];
 }
 
 export type ExportNamedDeclaration =

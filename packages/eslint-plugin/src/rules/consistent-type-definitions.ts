@@ -39,7 +39,7 @@ export default createRule({
           node =>
             node.type === AST_NODE_TYPES.TSModuleDeclaration &&
             node.declare &&
-            node.global,
+            node.kind === 'global',
         );
     }
 

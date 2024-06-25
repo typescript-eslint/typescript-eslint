@@ -13,7 +13,7 @@ export interface ImportDeclaration extends BaseNode {
    * ```ts
    * import * from 'mod' assert \{ type: 'json' \};
    * ```
-   * @deprecated -- Replaced with {@link `attributes`}.
+   * @deprecated Replaced with {@link `attributes`}.
    */
   assertions: ImportAttribute[];
   /**
