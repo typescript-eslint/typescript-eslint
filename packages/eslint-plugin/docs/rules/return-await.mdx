@@ -21,7 +21,11 @@ The extended rule is named `return-await` instead of `no-return-await` because t
 ## Options
 
 ```ts
-type Options = 'in-try-catch' | 'always' | 'never';
+type Options =
+  | 'in-try-catch'
+  | 'always'
+  | 'error-handling-correctness-only'
+  | 'never';
 
 const defaultOptions: Options = 'in-try-catch';
 ```
@@ -289,3 +293,12 @@ async function validNever3() {
 
 </TabItem>
 </Tabs>
+
+### Options Summary
+
+|             Option              | Ordinary Context <br/> (stylistic preference) | Error Handling Context <br/> (catches subtle control flow bugs) |                       Should I use?                        |
+| :-----------------------------: | :-------------------------------------------: | :-------------------------------------------------------------: | :--------------------------------------------------------: |
+|             always              |            `return await promise;`            |                     `return await promise;`                     |                          ✅ Yes!                           |
+|          in-try-catch           |               `return promise;`               |                     `return await promise;`                     |                          ✅ Yes!                           |
+| error-handling-correctness-only |                 don't care 🤷                 |                     `return await promise;`                     | 🟡 Okay to use, but the above options would be preferable. |
+|              never              |               `return promise;`               |                        `return promise;`                        |                           ❌ No!                           |
