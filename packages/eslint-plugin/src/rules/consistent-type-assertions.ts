@@ -5,12 +5,10 @@ import * as ts from 'typescript';
 import {
   createRule,
   getOperatorPrecedence,
+  getOperatorPrecedenceForNode,
   getParserServices,
-  isClosingParenToken,
-  isOpeningParenToken,
+  getTextWithParentheses,
   isParenthesized,
-  nullThrows,
-  NullThrowsReasons,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
@@ -105,28 +103,6 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function getTextWithParentheses(node: TSESTree.Node): string {
-      // Capture parentheses before and after the node
-      let beforeCount = 0;
-      let afterCount = 0;
-
-      if (isParenthesized(node, context.sourceCode)) {
-        const bodyOpeningParen = nullThrows(
-          context.sourceCode.getTokenBefore(node, isOpeningParenToken),
-          NullThrowsReasons.MissingToken('(', 'node'),
-        );
-        const bodyClosingParen = nullThrows(
-          context.sourceCode.getTokenAfter(node, isClosingParenToken),
-          NullThrowsReasons.MissingToken(')', 'node'),
-        );
-
-        beforeCount = node.range[0] - bodyOpeningParen.range[0];
-        afterCount = bodyClosingParen.range[1] - node.range[1];
-      }
-
-      return context.sourceCode.getText(node, beforeCount, afterCount);
-    }
-
     function reportIncorrectAssertionType(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
@@ -150,10 +126,6 @@ export default createRule<Options, MessageIds>({
                   node as TSESTree.TSTypeAssertion,
                 );
 
-                /**
-                 * AsExpression has lower precedence than TypeAssertionExpression,
-                 * so we don't need to wrap expression and typeAnnotation in parens.
-                 */
                 const expressionCode = context.sourceCode.getText(
                   node.expression,
                 );
@@ -176,7 +148,17 @@ export default createRule<Options, MessageIds>({
                     : undefined,
                 );
 
-                const text = `${expressionCode} as ${typeAnnotationCode}`;
+                const expressionPrecedence = getOperatorPrecedenceForNode(
+                  node.expression,
+                );
+
+                const expressionCodeWrapped = getWrappedCode(
+                  expressionCode,
+                  expressionPrecedence,
+                  asPrecedence,
+                );
+
+                const text = `${expressionCodeWrapped} as ${typeAnnotationCode}`;
                 return fixer.replaceText(
                   node,
                   isParenthesized(node, context.sourceCode)
@@ -246,7 +228,10 @@ export default createRule<Options, MessageIds>({
                 parent.id,
                 `: ${context.sourceCode.getText(node.typeAnnotation)}`,
               ),
-              fixer.replaceText(node, getTextWithParentheses(node.expression)),
+              fixer.replaceText(
+                node,
+                getTextWithParentheses(context.sourceCode, node.expression),
+              ),
             ],
           });
         }
@@ -254,7 +239,10 @@ export default createRule<Options, MessageIds>({
           messageId: 'replaceObjectTypeAssertionWithSatisfies',
           data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
-            fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            fixer.replaceText(
+              node,
+              getTextWithParentheses(context.sourceCode, node.expression),
+            ),
             fixer.insertTextAfter(
               node,
               ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,

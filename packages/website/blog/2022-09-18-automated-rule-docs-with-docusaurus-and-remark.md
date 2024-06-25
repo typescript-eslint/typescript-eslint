@@ -1,6 +1,6 @@
 ---
 authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+  - image_url: /img/team/joshuakgoldberg.jpg
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
@@ -220,9 +220,3 @@ I'm excited to focus in particular on [Docs: Proofread rule docs for clarity (#4
 We'd like to extend thanks to [Joshua Chen](https://github.com/Josh-Cena), one of the Docusaurus maintainers who also has been helping us with Docusaurus — and helped proofread [this blog post's PR](https://github.com/typescript-eslint/typescript-eslint/pull/5593).
 Without Joshua, this change would have taken us a great deal longer (if we'd have been able to tackle it at all).
 Thanks Joshua! 🤗
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

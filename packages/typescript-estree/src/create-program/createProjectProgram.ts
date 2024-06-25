@@ -48,7 +48,9 @@ function createProjectProgram(
     parseSettings.filePath,
     parseSettings.tsconfigRootDir,
   );
-  const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
+  const relativeProjects = Array.from(parseSettings.projects.values()).map(
+    describeProjectFilePath,
+  );
   const describedPrograms =
     relativeProjects.length === 1
       ? relativeProjects[0]
@@ -93,7 +95,7 @@ function createProjectProgram(
 
   if (!hasMatchedAnError) {
     const [describedInclusions, describedSpecifiers] =
-      parseSettings.projects.length === 1
+      parseSettings.projects.size === 1
         ? ['that TSConfig does not', 'that TSConfig']
         : ['none of those TSConfigs', 'one of those TSConfigs'];
     errorLines.push(
@@ -101,7 +103,7 @@ function createProjectProgram(
       `- Change ESLint's list of included files to not include this file`,
       `- Change ${describedSpecifiers} to include this file`,
       `- Create a new TSConfig that includes this file and include it in your parserOptions.project`,
-      `See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file`,
+      `See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file`,
     );
   }
 

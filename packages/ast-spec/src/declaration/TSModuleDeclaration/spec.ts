@@ -22,14 +22,12 @@ interface TSModuleDeclarationBase extends BaseNode {
   /**
    * The body of the module.
    * This can only be `undefined` for the code `declare module 'mod';`
-   * This will be a `TSModuleDeclaration` if the name is "nested" (`Foo.Bar`).
    */
   body?: TSModuleBlock;
   /**
    * Whether this is a global declaration
-   * ```
-   * declare global {}
-   * ```
+   *
+   * @deprecated Use {@link kind} instead
    */
   // TODO - remove this in the next major (we have `.kind` now)
   global: boolean;
@@ -50,8 +48,8 @@ interface TSModuleDeclarationBase extends BaseNode {
    * module 'foo' {}
    * ^^^^^^
    *
-   * declare global {}
-   *         ^^^^^^
+   * global {}
+   * ^^^^^^
    * ```
    */
   kind: TSModuleDeclarationKind;
@@ -59,55 +57,72 @@ interface TSModuleDeclarationBase extends BaseNode {
 
 export interface TSModuleDeclarationNamespace extends TSModuleDeclarationBase {
   kind: 'namespace';
-  // namespaces cannot have literal IDs
   id: Identifier | TSQualifiedName;
-  // namespaces must always have a body
   body: TSModuleBlock;
 }
 
 export interface TSModuleDeclarationGlobal extends TSModuleDeclarationBase {
   kind: 'global';
-  // cannot have a nested namespace for global module augmentation
-  // cannot have `declare global;`
-  body: TSModuleBlock;
-  // this will always be an Identifier with name `global`
+  /**
+   * This will always be an Identifier with name `global`
+   */
   id: Identifier;
+  body: TSModuleBlock;
 }
 
 interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
   kind: 'module';
 }
 
-export type TSModuleDeclarationModule =
-  | TSModuleDeclarationModuleWithIdentifierId
-  | TSModuleDeclarationModuleWithStringId;
-export type TSModuleDeclarationModuleWithStringId =
-  | TSModuleDeclarationModuleWithStringIdDeclared
-  | TSModuleDeclarationModuleWithStringIdNotDeclared;
+/**
+ * A string module declaration that is not declared:
+ * ```
+ * module 'foo' {}
+ * ```
+ */
 export interface TSModuleDeclarationModuleWithStringIdNotDeclared
   extends TSModuleDeclarationModuleBase {
   kind: 'module';
   id: StringLiteral;
   declare: false;
-  // cannot have nested namespaces with a string ID, must have a body
   body: TSModuleBlock;
 }
+/**
+ * A string module declaration that is declared:
+ * ```
+ * declare module 'foo' {}
+ * declare module 'foo';
+ * ```
+ */
 export interface TSModuleDeclarationModuleWithStringIdDeclared
   extends TSModuleDeclarationModuleBase {
   kind: 'module';
   id: StringLiteral;
   declare: true;
-  // cannot have nested namespaces with a string ID, might not have a body
   body?: TSModuleBlock;
 }
+/**
+ * The legacy module declaration, replaced with namespace declarations.
+ * ```
+ * module A {}
+ * ```
+ */
 export interface TSModuleDeclarationModuleWithIdentifierId
   extends TSModuleDeclarationModuleBase {
   kind: 'module';
   id: Identifier;
-  // modules with an Identifier must always have a body
+  // TODO: we emit the wrong AST for `module A.B {}`
+  // https://github.com/typescript-eslint/typescript-eslint/pull/6272 only fixed namespaces
+  // Maybe not worth fixing since it's legacy
   body: TSModuleBlock;
 }
 
+export type TSModuleDeclarationModuleWithStringId =
+  | TSModuleDeclarationModuleWithStringIdDeclared
+  | TSModuleDeclarationModuleWithStringIdNotDeclared;
+export type TSModuleDeclarationModule =
+  | TSModuleDeclarationModuleWithIdentifierId
+  | TSModuleDeclarationModuleWithStringId;
 export type TSModuleDeclaration =
   | TSModuleDeclarationGlobal
   | TSModuleDeclarationModule

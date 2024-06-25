@@ -7,7 +7,6 @@ export type ParentNodeType =
   | 'scopeManager'
   | 'scopeReference'
   | 'scopeVariable'
-  | 'tsFlow'
   | 'tsNode'
   | 'tsSignature'
   | 'tsSymbol'

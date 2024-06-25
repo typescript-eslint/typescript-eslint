@@ -132,10 +132,6 @@ x === null ? x : y;
 declare const x: string | null | unknown;
 x === null ? x : y;
       `,
-      `
-declare const x: string | undefined;
-x === null ? x : y;
-      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -222,6 +218,20 @@ x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
+    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
     `
       declare const x: any;
       declare const y: number;
@@ -237,6 +247,138 @@ x || y;
       declare const y: number;
       x || y;
     `,
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
@@ -337,6 +479,26 @@ x ?? 'foo';
           },
         ],
       },
+      {
+        code: code.replace(/y/g, '(z = y)'),
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.replace(/y/g, '(z = y)').length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x ?? (z = y);',
+              },
+            ],
+          },
+        ],
+      },
     ]),
 
     {
@@ -371,7 +533,7 @@ undefined !== x ? x : y;
       `,
       `
 declare const x: string | undefined;
-undefined === x ? y : x;
+x === undefined ? y : x;
       `,
       `
 declare const x: string | undefined;
@@ -387,7 +549,7 @@ null !== x ? x : y;
       `,
       `
 declare const x: string | null;
-null === x ? y : x;
+x === null ? y : x;
       `,
       `
 declare const x: string | null;
@@ -1158,42 +1320,6 @@ x || y;
             string: true,
             number: false,
             boolean: true,
-            bigint: true,
-          },
-        },
-      ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-            number: true,
-            boolean: true,
-            bigint: false,
-          },
-        },
-      ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-            number: false,
-            boolean: true,
             bigint: false,
           },
         },
@@ -1217,46 +1343,6 @@ x || y;
         },
       ],
       errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-        },
-      ],
     },
     {
       code: `
@@ -1296,6 +1382,74 @@ null || y;
     {
       code: `
 undefined || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
       `,
       output: null,
       errors: [

@@ -203,6 +203,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
       ],
       [
+        'type Foo = Promise<number> & {hey?: string}; let foo: Foo = Promise.resolve(5); type Test = typeof foo;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
         'interface Foo {prop: string}; type Test = Foo;',
         {
           from: 'file',
