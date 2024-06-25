@@ -1656,7 +1656,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0 | 'foo' | undefined;
+declare const x: null;
 x ?? y;
       `,
             },
@@ -1699,110 +1699,131 @@ undefined || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0 | 'foo' | undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare const x: Enum | undefined;
-x || y;
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: null;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare const x: Enum.A | Enum.B | undefined;
-x || y;
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-const x = undefined;
-x ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare const x: Enum | undefined;
-x || y;
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-null ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare const x: Enum.A | Enum.B | undefined;
-x || y;
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
 undefined ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x ?? y;
       `,
             },
           ],
