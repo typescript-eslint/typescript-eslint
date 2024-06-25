@@ -97,6 +97,7 @@ export const webworker = {
   RTCEncodedAudioFrameMetadata: TYPE,
   RTCEncodedVideoFrameMetadata: TYPE,
   ReadableStreamGetReaderOptions: TYPE,
+  ReadableStreamIteratorOptions: TYPE,
   ReadableStreamReadDoneResult: TYPE,
   ReadableStreamReadValueResult: TYPE,
   ReadableWritablePair: TYPE,

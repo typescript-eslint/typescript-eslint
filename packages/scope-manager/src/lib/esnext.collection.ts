@@ -8,4 +8,7 @@ import { TYPE } from './base-config';
 
 export const esnext_collection = {
   MapConstructor: TYPE,
+  ReadonlySetLike: TYPE,
+  Set: TYPE,
+  ReadonlySet: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
