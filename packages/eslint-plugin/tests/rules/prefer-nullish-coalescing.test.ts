@@ -1673,6 +1673,15 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+const x = undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1684,6 +1693,14 @@ null || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+null ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
