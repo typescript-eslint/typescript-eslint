@@ -5,6 +5,9 @@ import type {
   RuleRecommendationAcrossConfigs,
 } from '@typescript-eslint/utils/ts-eslint';
 
+/**
+ * This must be kept up-to-date with rules.d.ts.
+ */
 export interface ESLintPluginDocs {
   /**
    * Does the rule extend (or is it based off of) an ESLint code rule?
@@ -30,6 +33,9 @@ export const createRule = ESLintUtils.RuleCreator<ESLintPluginDocs>(
   name => `https://typescript-eslint.io/rules/${name}`,
 );
 
+/**
+ * This must be kept up-to-date with rules.d.ts.
+ */
 export type ESLintPluginRuleModule = RuleModuleWithMetaDocs<
   string,
   readonly unknown[],
