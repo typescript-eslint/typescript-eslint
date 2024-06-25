@@ -32,7 +32,7 @@ describe.skip('getTypeName', () => {
 
   describe('returns primitive type', () => {
     it.each([
-      // ['type Test = string;', 'string'],
+      ['type Test = string;', 'string'],
       ['type Test = "text";', 'string'],
       ['type Test = string | "text";', 'string'],
       ['type Test = "string" | "text";', 'string'],
