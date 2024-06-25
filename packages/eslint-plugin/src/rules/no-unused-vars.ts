@@ -1,9 +1,13 @@
-import { PatternVisitor } from '@typescript-eslint/scope-manager';
+import type { ScopeVariable } from '@typescript-eslint/scope-manager';
+import {
+  DefinitionType,
+  PatternVisitor,
+} from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import {
-  collectUnusedVariables as _collectUnusedVariables,
+  collectVariables,
   createRule,
   getNameLocationInGlobalDirectiveComment,
   isDefinitionFile,
@@ -12,7 +16,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-export type MessageIds = 'unusedVar';
+export type MessageIds = 'unusedVar' | 'usedIgnoredVar';
 export type Options = [
   | 'all'
   | 'local'
@@ -25,6 +29,7 @@ export type Options = [
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
+      reportUsedIgnorePattern?: boolean;
     },
 ];
 
@@ -37,7 +42,14 @@ interface TranslatedOptions {
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
   destructuredArrayIgnorePattern?: RegExp;
+  reportUsedIgnorePattern: boolean;
 }
+
+type VariableType =
+  | 'array-destructure'
+  | 'catch-clause'
+  | 'parameter'
+  | 'variable';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
@@ -85,6 +97,9 @@ export default createRule<Options, MessageIds>({
               destructuredArrayIgnorePattern: {
                 type: 'string',
               },
+              reportUsedIgnorePattern: {
+                type: 'boolean',
+              },
             },
             additionalProperties: false,
           },
@@ -93,6 +108,8 @@ export default createRule<Options, MessageIds>({
     ],
     messages: {
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
+      usedIgnoredVar:
+        "'{{varName}}' is marked as ignored but is used{{additional}}.",
     },
   },
   defaultOptions: [{}],
@@ -105,6 +122,7 @@ export default createRule<Options, MessageIds>({
         args: 'after-used',
         ignoreRestSiblings: false,
         caughtErrors: 'all',
+        reportUsedIgnorePattern: false,
       };
 
       if (typeof firstOption === 'string') {
@@ -115,6 +133,9 @@ export default createRule<Options, MessageIds>({
         options.ignoreRestSiblings =
           firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
         options.caughtErrors = firstOption.caughtErrors ?? options.caughtErrors;
+        options.reportUsedIgnorePattern =
+          firstOption.reportUsedIgnorePattern ??
+          options.reportUsedIgnorePattern;
 
         if (firstOption.varsIgnorePattern) {
           options.varsIgnorePattern = new RegExp(
@@ -148,7 +169,158 @@ export default createRule<Options, MessageIds>({
       return options;
     })();
 
-    function collectUnusedVariables(): TSESLint.Scope.Variable[] {
+    /**
+     * Gets a given variable's description and configured ignore pattern
+     * based on the provided variableType
+     * @param variableType a simple name for the types of variables that this rule supports
+     * @returns the given variable's description and
+     * ignore pattern
+     */
+    function getVariableDescription(variableType: VariableType): {
+      pattern: string | undefined;
+      variableDescription: string;
+    } {
+      switch (variableType) {
+        case 'array-destructure':
+          return {
+            pattern: options.destructuredArrayIgnorePattern?.toString(),
+            variableDescription: 'elements of array destructuring',
+          };
+
+        case 'catch-clause':
+          return {
+            pattern: options.caughtErrorsIgnorePattern?.toString(),
+            variableDescription: 'args',
+          };
+
+        case 'parameter':
+          return {
+            pattern: options.argsIgnorePattern?.toString(),
+            variableDescription: 'args',
+          };
+
+        case 'variable':
+          return {
+            pattern: options.varsIgnorePattern?.toString(),
+            variableDescription: 'vars',
+          };
+      }
+    }
+
+    /**
+     * Generates the message data about the variable being defined and unused,
+     * including the ignore pattern if configured.
+     * @param unusedVar eslint-scope variable object.
+     * @returns The message data to be used with this unused variable.
+     */
+    function getDefinedMessageData(
+      unusedVar: ScopeVariable,
+    ): Record<string, unknown> {
+      const def = unusedVar.defs.at(0)?.type;
+      let additionalMessageData = '';
+
+      if (def) {
+        const { variableDescription, pattern } = (() => {
+          switch (def) {
+            case DefinitionType.CatchClause:
+              if (options.caughtErrorsIgnorePattern) {
+                return getVariableDescription('catch-clause');
+              }
+              break;
+
+            case DefinitionType.Parameter:
+              if (options.argsIgnorePattern) {
+                return getVariableDescription('parameter');
+              }
+              break;
+
+            default:
+              if (options.varsIgnorePattern) {
+                return getVariableDescription('variable');
+              }
+              break;
+          }
+
+          return { pattern: undefined, variableDescription: undefined };
+        })();
+
+        if (pattern && variableDescription) {
+          additionalMessageData = `. Allowed unused ${variableDescription} must match ${pattern}`;
+        }
+      }
+
+      return {
+        varName: unusedVar.name,
+        action: 'defined',
+        additional: additionalMessageData,
+      };
+    }
+
+    /**
+     * Generate the warning message about the variable being
+     * assigned and unused, including the ignore pattern if configured.
+     * @param unusedVar eslint-scope variable object.
+     * @returns The message data to be used with this unused variable.
+     */
+    function getAssignedMessageData(
+      unusedVar: ScopeVariable,
+    ): Record<string, unknown> {
+      const def = unusedVar.defs.at(0);
+      let additionalMessageData = '';
+
+      if (def) {
+        const { variableDescription, pattern } = (() => {
+          if (
+            def.name.parent.type === AST_NODE_TYPES.ArrayPattern &&
+            options.destructuredArrayIgnorePattern
+          ) {
+            return getVariableDescription('array-destructure');
+          } else if (options.varsIgnorePattern) {
+            return getVariableDescription('variable');
+          }
+
+          return { pattern: undefined, variableDescription: undefined };
+        })();
+
+        if (pattern && variableDescription) {
+          additionalMessageData = `. Allowed unused ${variableDescription} must match ${pattern}`;
+        }
+      }
+
+      return {
+        varName: unusedVar.name,
+        action: 'assigned a value',
+        additional: additionalMessageData,
+      };
+    }
+
+    /**
+     * Generate the warning message about a variable being used even though
+     * it is marked as being ignored.
+     * @param variable eslint-scope variable object
+     * @param variableType a simple name for the types of variables that this rule supports
+     * @returns The message data to be used with this used ignored variable.
+     */
+    function getUsedIgnoredMessageData(
+      variable: ScopeVariable,
+      variableType: VariableType,
+    ): Record<string, unknown> {
+      const { variableDescription, pattern } =
+        getVariableDescription(variableType);
+
+      let additionalMessageData = '';
+
+      if (pattern && variableDescription) {
+        additionalMessageData = `. Used ${variableDescription} must not match ${pattern}`;
+      }
+
+      return {
+        varName: variable.name,
+        additional: additionalMessageData,
+      };
+    }
+
+    function collectUnusedVariables(): ScopeVariable[] {
       /**
        * Checks whether a node is a sibling of the rest property or not.
        * @param node a node to check
@@ -168,9 +340,7 @@ export default createRule<Options, MessageIds>({
        * @param variable eslint-scope variable object.
        * @returns True if the variable is exported, false if not.
        */
-      function hasRestSpreadSibling(
-        variable: TSESLint.Scope.Variable,
-      ): boolean {
+      function hasRestSpreadSibling(variable: ScopeVariable): boolean {
         if (options.ignoreRestSiblings) {
           const hasRestSiblingDefinition = variable.defs.some(def =>
             hasRestSibling(def.name.parent),
@@ -190,7 +360,7 @@ export default createRule<Options, MessageIds>({
        * @param variable The variable to check.
        * @returns `true` if the variable is defined after the last used parameter.
        */
-      function isAfterLastUsedArg(variable: TSESLint.Scope.Variable): boolean {
+      function isAfterLastUsedArg(variable: ScopeVariable): boolean {
         const def = variable.defs[0];
         const params = context.sourceCode.getDeclaredVariables(def.node);
         const posteriorParams = params.slice(params.indexOf(variable) + 1);
@@ -201,12 +371,25 @@ export default createRule<Options, MessageIds>({
         );
       }
 
-      const unusedVariablesOriginal = _collectUnusedVariables(context);
-      const unusedVariablesReturn: TSESLint.Scope.Variable[] = [];
-      for (const variable of unusedVariablesOriginal) {
+      const analysisResults = collectVariables(context);
+      const variables = [
+        ...Array.from(analysisResults.unusedVariables, variable => ({
+          used: false,
+          variable,
+        })),
+        ...Array.from(analysisResults.usedVariables, variable => ({
+          used: true,
+          variable,
+        })),
+      ];
+      const unusedVariablesReturn: ScopeVariable[] = [];
+      for (const { used, variable } of variables) {
         // explicit global variables don't have definitions.
         if (variable.defs.length === 0) {
-          unusedVariablesReturn.push(variable);
+          if (!used) {
+            unusedVariablesReturn.push(variable);
+          }
+
           continue;
         }
         const def = variable.defs[0];
@@ -230,6 +413,13 @@ export default createRule<Options, MessageIds>({
           def.name.type === AST_NODE_TYPES.Identifier &&
           options.destructuredArrayIgnorePattern?.test(def.name.name)
         ) {
+          if (options.reportUsedIgnorePattern && used) {
+            context.report({
+              node: def.name,
+              messageId: 'usedIgnoredVar',
+              data: getUsedIgnoredMessageData(variable, 'array-destructure'),
+            });
+          }
           continue;
         }
 
@@ -243,6 +433,13 @@ export default createRule<Options, MessageIds>({
             def.name.type === AST_NODE_TYPES.Identifier &&
             options.caughtErrorsIgnorePattern?.test(def.name.name)
           ) {
+            if (options.reportUsedIgnorePattern && used) {
+              context.report({
+                node: def.name,
+                messageId: 'usedIgnoredVar',
+                data: getUsedIgnoredMessageData(variable, 'catch-clause'),
+              });
+            }
             continue;
           }
         } else if (def.type === TSESLint.Scope.DefinitionType.Parameter) {
@@ -255,6 +452,13 @@ export default createRule<Options, MessageIds>({
             def.name.type === AST_NODE_TYPES.Identifier &&
             options.argsIgnorePattern?.test(def.name.name)
           ) {
+            if (options.reportUsedIgnorePattern && used) {
+              context.report({
+                node: def.name,
+                messageId: 'usedIgnoredVar',
+                data: getUsedIgnoredMessageData(variable, 'parameter'),
+              });
+            }
             continue;
           }
           // if "args" option is "after-used", skip used variables
@@ -271,6 +475,13 @@ export default createRule<Options, MessageIds>({
             def.name.type === AST_NODE_TYPES.Identifier &&
             options.varsIgnorePattern?.test(def.name.name)
           ) {
+            if (options.reportUsedIgnorePattern && used) {
+              context.report({
+                node: def.name,
+                messageId: 'usedIgnoredVar',
+                data: getUsedIgnoredMessageData(variable, 'variable'),
+              });
+            }
             continue;
           }
         }
@@ -285,7 +496,9 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        unusedVariablesReturn.push(variable);
+        if (!used) {
+          unusedVariablesReturn.push(variable);
+        }
       }
 
       return unusedVariablesReturn;
@@ -334,78 +547,6 @@ export default createRule<Options, MessageIds>({
 
       // collect
       'Program:exit'(programNode): void {
-        /**
-         * Generates the message data about the variable being defined and unused,
-         * including the ignore pattern if configured.
-         * @param unusedVar eslint-scope variable object.
-         * @returns The message data to be used with this unused variable.
-         */
-        function getDefinedMessageData(
-          unusedVar: TSESLint.Scope.Variable,
-        ): Record<string, unknown> {
-          const defType = unusedVar.defs[0]?.type;
-          let type;
-          let pattern;
-
-          if (
-            defType === TSESLint.Scope.DefinitionType.CatchClause &&
-            options.caughtErrorsIgnorePattern
-          ) {
-            type = 'args';
-            pattern = options.caughtErrorsIgnorePattern.toString();
-          } else if (
-            defType === TSESLint.Scope.DefinitionType.Parameter &&
-            options.argsIgnorePattern
-          ) {
-            type = 'args';
-            pattern = options.argsIgnorePattern.toString();
-          } else if (
-            defType !== TSESLint.Scope.DefinitionType.Parameter &&
-            options.varsIgnorePattern
-          ) {
-            type = 'vars';
-            pattern = options.varsIgnorePattern.toString();
-          }
-
-          const additional = type
-            ? `. Allowed unused ${type} must match ${pattern}`
-            : '';
-
-          return {
-            varName: unusedVar.name,
-            action: 'defined',
-            additional,
-          };
-        }
-
-        /**
-         * Generate the warning message about the variable being
-         * assigned and unused, including the ignore pattern if configured.
-         * @param unusedVar eslint-scope variable object.
-         * @returns The message data to be used with this unused variable.
-         */
-        function getAssignedMessageData(
-          unusedVar: TSESLint.Scope.Variable,
-        ): Record<string, unknown> {
-          const def = unusedVar.defs.at(0);
-          let additional = '';
-
-          if (
-            options.destructuredArrayIgnorePattern &&
-            def?.name.parent.type === AST_NODE_TYPES.ArrayPattern
-          ) {
-            additional = `. Allowed unused elements of array destructuring patterns must match ${options.destructuredArrayIgnorePattern.toString()}`;
-          } else if (options.varsIgnorePattern) {
-            additional = `. Allowed unused vars must match ${options.varsIgnorePattern.toString()}`;
-          }
-
-          return {
-            varName: unusedVar.name,
-            action: 'assigned a value',
-            additional,
-          };
-        }
-
         const unusedVars = collectUnusedVariables();
 
         for (const unusedVar of unusedVars) {
@@ -625,17 +766,7 @@ namespace Test {
 }
 type T = Test.Foo.T; // Error: Namespace 'Test' has no exported member 'Foo'.
 
-*/
-
-/*
-
-###### TODO ######
-
-We currently extend base `no-unused-vars` implementation because it's easier and lighter-weight.
-
-Because of this, there are a few false-negatives which won't get caught.
-We could fix these if we fork the base rule; but that's a lot of code (~650 lines) to add in.
-I didn't want to do that just yet without some real-world issues, considering these are pretty rare edge-cases.
+---
 
 These cases are mishandled because the base rule assumes that each variable has one def, but type-value shadowing
 creates a variable with two defs
