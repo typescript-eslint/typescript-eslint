@@ -397,6 +397,14 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       code: 'let a: readonly Array<number>[] = [[]];',
       options: [{ default: 'generic', readonly: 'array' }],
     },
+    {
+      code: 'let a: Readonly = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: "const x: Readonly<string> = 'a';",
+      options: [{ default: 'array' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -1915,6 +1923,21 @@ interface FooInterface {
           },
           line: 1,
           column: 12,
+        },
+      ],
+    },
+    {
+      code: "const x: Readonly<string[]> = ['a', 'b'];",
+      output: "const x: readonly string[] = ['a', 'b'];",
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArrayReadonly',
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
         },
       ],
     },
