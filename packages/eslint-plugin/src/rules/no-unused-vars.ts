@@ -29,6 +29,7 @@ export type Options = [
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
+      ignoreClassWithStaticInitBlock?: boolean;
       reportUsedIgnorePattern?: boolean;
     },
 ];
@@ -42,6 +43,7 @@ interface TranslatedOptions {
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
   destructuredArrayIgnorePattern?: RegExp;
+  ignoreClassWithStaticInitBlock: boolean;
   reportUsedIgnorePattern: boolean;
 }
 
@@ -97,6 +99,9 @@ export default createRule<Options, MessageIds>({
               destructuredArrayIgnorePattern: {
                 type: 'string',
               },
+              ignoreClassWithStaticInitBlock: {
+                type: 'boolean',
+              },
               reportUsedIgnorePattern: {
                 type: 'boolean',
               },
@@ -122,6 +127,7 @@ export default createRule<Options, MessageIds>({
         args: 'after-used',
         ignoreRestSiblings: false,
         caughtErrors: 'all',
+        ignoreClassWithStaticInitBlock: false,
         reportUsedIgnorePattern: false,
       };
 
@@ -133,6 +139,9 @@ export default createRule<Options, MessageIds>({
         options.ignoreRestSiblings =
           firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
         options.caughtErrors = firstOption.caughtErrors ?? options.caughtErrors;
+        options.ignoreClassWithStaticInitBlock =
+          firstOption.ignoreClassWithStaticInitBlock ??
+          options.ignoreClassWithStaticInitBlock;
         options.reportUsedIgnorePattern =
           firstOption.reportUsedIgnorePattern ??
           options.reportUsedIgnorePattern;
@@ -421,6 +430,16 @@ export default createRule<Options, MessageIds>({
             });
           }
           continue;
+        }
+
+        if (def.type === TSESLint.Scope.DefinitionType.ClassName) {
+          const hasStaticBlock = def.node.body.body.some(
+            node => node.type === AST_NODE_TYPES.StaticBlock,
+          );
+
+          if (options.ignoreClassWithStaticInitBlock && hasStaticBlock) {
+            continue;
+          }
         }
 
         // skip catch variables
