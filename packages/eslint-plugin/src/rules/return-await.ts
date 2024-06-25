@@ -338,6 +338,7 @@ export default createRule({
       const affectsErrorHandling =
         affectsExplicitErrorHandling(expression) ||
         affectsExplicitResourceManagement(node);
+      const useAutoFix = !affectsErrorHandling;
 
       const ruleConfiguration = getConfiguration(option as Option);
 
@@ -353,7 +354,7 @@ export default createRule({
             context.report({
               messageId: 'requiredPromiseAwait',
               node,
-              ...fixOrSuggest(!affectsErrorHandling, {
+              ...fixOrSuggest(useAutoFix, {
                 messageId: 'requiredPromiseAwaitSuggestion',
                 fix: fixer =>
                   insertAwait(
@@ -370,7 +371,7 @@ export default createRule({
             context.report({
               messageId: 'disallowedPromiseAwait',
               node,
-              ...fixOrSuggest(!affectsErrorHandling, {
+              ...fixOrSuggest(useAutoFix, {
                 messageId: 'disallowedPromiseAwaitSuggestion',
                 fix: fixer => removeAwait(fixer, node),
               }),
