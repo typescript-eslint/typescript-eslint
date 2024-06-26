@@ -115,9 +115,7 @@ class UnusedVarsVisitor extends Visitor {
 
   //#region HELPERS
 
-  private getScope<T extends TSESLint.Scope.Scope = TSESLint.Scope.Scope>(
-    currentNode: TSESTree.Node,
-  ): T {
+  private getScope(currentNode: TSESTree.Node): TSESLint.Scope.Scope {
     // On Program node, get the outermost scope to avoid return Node.js special function scope or ES modules scope.
     const inner = currentNode.type !== AST_NODE_TYPES.Program;
 
@@ -127,15 +125,15 @@ class UnusedVarsVisitor extends Visitor {
 
       if (scope) {
         if (scope.type === ScopeType.functionExpressionName) {
-          return scope.childScopes[0] as T;
+          return scope.childScopes[0];
         }
-        return scope as T;
+        return scope;
       }
 
       node = node.parent;
     }
 
-    return this.#scopeManager.scopes[0] as T;
+    return this.#scopeManager.scopes[0];
   }
 
   private markVariableAsUsed(
@@ -184,7 +182,7 @@ class UnusedVarsVisitor extends Visitor {
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   ): void {
     // skip a variable of class itself name in the class scope
-    const scope = this.getScope<TSESLint.Scope.Scopes.ClassScope>(node);
+    const scope = this.getScope(node) as TSESLint.Scope.Scopes.ClassScope;
     for (const variable of scope.variables) {
       if (variable.identifiers[0] === scope.block.id) {
         this.markVariableAsUsed(variable);

@@ -280,11 +280,17 @@ describe('convert', () => {
 
   describe('suppressDeprecatedPropertyWarnings', () => {
     const makeNodeGetter =
-      <S extends ts.Statement, T extends TSESTree.Node>(
+      <
+        // Small convenience for testing the nodes:
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        S extends ts.Statement,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        TNode extends TSESTree.Node,
+      >(
         code: string,
         tsToEsNode: (statement: S) => TSNode,
       ) =>
-      (converterOptions?: ConverterOptions): T => {
+      (converterOptions?: ConverterOptions): TNode => {
         const ast = convertCode(code);
         const instance = new Converter(ast, {
           shouldPreserveNodeMaps: true,
