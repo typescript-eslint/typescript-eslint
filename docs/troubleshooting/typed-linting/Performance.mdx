@@ -1,12 +1,13 @@
 ---
-id: performance-troubleshooting
-title: Performance Troubleshooting
+id: performance
+slug: /troubleshooting/typed-linting/performance
+title: Performance
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-As mentioned in the [type-aware linting doc](../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in the [type-aware linting doc](../../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
 
 If you're experiencing times much slower than that, then there are a few common culprits.
 
@@ -81,8 +82,8 @@ See [Glob pattern in parser's option "project" slows down linting](https://githu
 
 ## Changes to `extraFileExtensions` with `projectService`
 
-Using a different [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) between files in the same project with
-the [`projectService`](../packages/Parser.mdx#projectservice) option may cause performance degradations.
+Using a different [`extraFileExtensions`](../../packages/Parser.mdx#extrafileextensions) between files in the same project with
+the [`projectService`](../../packages/Parser.mdx#projectservice) option may cause performance degradations.
 For every file linted, we update the `projectService` whenever `extraFileExtensions` changes.
 This causes the underlying TypeScript server to perform a full project reload.
 
@@ -160,7 +161,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-Project reloads can be observed using the [debug environment variable](../packages/typescript-estree/#debugging): `DEBUG='typescript-eslint:typescript-estree:*'`.
+Project reloads can be observed using the [debug environment variable](../../packages/typescript-estree/#debugging): `DEBUG='typescript-eslint:typescript-estree:*'`.
 
 ```
 typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
@@ -187,7 +188,7 @@ Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
 
-See our [documentation on formatting](./Formatting.mdx) for more information.
+See our [documentation on formatting](../../users/What_About_Formatting.mdx) for more information.
 
 ## `eslint-plugin-prettier`
 

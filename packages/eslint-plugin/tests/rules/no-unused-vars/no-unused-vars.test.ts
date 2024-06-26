@@ -1,7 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
-import { collectUnusedVariables } from '../../../src/util';
+import { collectVariables } from '../../../src/util';
 import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -22,7 +22,7 @@ const withMetaParserOptions = {
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
 ruleTester.defineRule('collect-unused-vars', {
   create(context) {
-    collectUnusedVariables(context);
+    collectVariables(context);
     return {};
   },
   defaultOptions: [],
@@ -1143,6 +1143,13 @@ export namespace Bar {
   export import TheFoo = Foo;
 }
     `,
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: false }],
+    },
   ],
 
   invalid: [
@@ -1992,6 +1999,97 @@ const foo: number = 1;
           column: 7,
           endLine: 2,
           endColumn: 10,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  B = Foo.A,
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+        },
+      ],
+    },
+
+    // reportUsedIgnorePattern
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+interface _Foo {}
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+enum _Foo {
+  A = 1,
+}
+export const x = _Foo.A;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+namespace _Foo {}
+export const x = _Foo;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
         },
       ],
     },

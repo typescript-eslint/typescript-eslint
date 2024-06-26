@@ -669,13 +669,6 @@ class Referencer extends Visitor {
     // enum members can be referenced within the enum body
     this.scopeManager.nestTSEnumScope(node);
 
-    // define the enum name again inside the new enum scope
-    // references to the enum should not resolve directly to the enum
-    this.currentScope().defineIdentifier(
-      node.id,
-      new TSEnumNameDefinition(node.id, node),
-    );
-
     for (const member of node.body.members) {
       // TS resolves literal named members to be actual names
       // enum Foo {
@@ -721,7 +714,7 @@ class Referencer extends Visitor {
   }
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    if (node.id.type === AST_NODE_TYPES.Identifier && !node.global) {
+    if (node.id.type === AST_NODE_TYPES.Identifier && node.kind !== 'global') {
       this.currentScope().defineIdentifier(
         node.id,
         new TSModuleNameDefinition(node.id, node),
