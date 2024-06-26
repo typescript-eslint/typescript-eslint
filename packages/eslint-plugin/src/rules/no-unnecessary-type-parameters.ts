@@ -17,7 +17,6 @@ export default createRule({
   meta: {
     docs: {
       description: 'Disallow type parameters that only appear once',
-      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
