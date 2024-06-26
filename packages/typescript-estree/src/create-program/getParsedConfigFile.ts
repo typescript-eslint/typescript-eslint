@@ -51,7 +51,6 @@ function getParsedConfigFile(
 
   return result;
 
-  // scoped to parent function to use lazy typescript import
   function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
     return tsserver.formatDiagnostics(diagnostics, {
       getCanonicalFileName: f => f,
