@@ -79,6 +79,106 @@ module.exports = {
 
 See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
 
+## Changes to `extraFileExtensions` with `projectService`
+
+Using a different [`extraFileExtensions`](../packages/Parser.mdx#extrafileextensions) between files in the same project with
+the [`projectService`](../packages/Parser.mdx#projectservice) option may cause performance degradations.
+For every file linted, we update the `projectService` whenever `extraFileExtensions` changes.
+This causes the underlying TypeScript server to perform a full project reload.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+// @ts-check
+
+import tseslint from 'typescript-eslint';
+import vueParser from 'vue-eslint-parser';
+
+// Add this line
+const extraFileExtensions = ['.vue'];
+export default [
+  {
+    files: ['*.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  },
+  {
+    files: ['*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        projectService: true,
+        parser: tseslint.parser,
+        // Remove this line
+        extraFileExtensions: ['.vue'],
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+// Add this line
+const extraFileExtensions = ['.vue'];
+module.exports = {
+  files: ['*.ts'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: true,
+    // Add this line
+    extraFileExtensions,
+  },
+  overrides: [
+    {
+      files: ['*.vue'],
+      parser: 'vue-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        projectService: true,
+        // Remove this line
+        extraFileExtensions: ['.vue'],
+        // Add this line
+        extraFileExtensions,
+      },
+    },
+  ],
+};
+```
+
+</TabItem>
+</Tabs>
+
+Project reloads can be observed using the [debug environment variable](../packages/typescript-estree/#debugging): `DEBUG='typescript-eslint:typescript-estree:*'`.
+
+```
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+...
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[ '.vue' ]: after=[]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: []
+...
+typescript-estree:tsserver:info Scheduled: /path/to/tsconfig.src.json, Cancelled earlier one +0ms
+typescript-estree:tsserver:info Scheduled: *ensureProjectForOpenFiles*, Cancelled earlier one +0ms
+...
+typescript-estree:useProgramFromProjectService Updating extra file extensions: before=[]: after=[ '.vue' ]
+typescript-estree:tsserver:info reload projects.
+typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
+```
+
 ## The `indent` / `@typescript-eslint/indent` rules
 
 This rule helps ensure your codebase follows a consistent indentation pattern.

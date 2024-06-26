@@ -12,7 +12,6 @@ export = {
   rules: {
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/ban-ts-comment': 'error',
-    '@typescript-eslint/ban-types': 'error',
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-array-delete': 'error',
@@ -40,6 +39,7 @@ export = {
     '@typescript-eslint/no-unsafe-call': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
     '@typescript-eslint/no-unsafe-enum-comparison': 'error',
+    '@typescript-eslint/no-unsafe-function-type': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
     '@typescript-eslint/no-unsafe-unary-minus': 'error',
@@ -47,6 +47,7 @@ export = {
     '@typescript-eslint/no-unused-expressions': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-wrapper-object-types': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/only-throw-error': 'error',
     '@typescript-eslint/prefer-as-const': 'error',

@@ -700,6 +700,27 @@ myTag\`abc\`;
     },
     {
       code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
 myTag\`abc\`.catch(() => {});
       `,
@@ -2180,6 +2201,72 @@ myTag\`abc\`;
       `,
       options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
       errors: [{ line: 4, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+        declare function unsafe(...args: unknown[]): Promise<void>;
+
+        unsafe('...', () => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {}).then(() => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {}).finally(() => {});
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
     },
   ],
 });

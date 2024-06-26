@@ -76,6 +76,7 @@ import { es2023 } from './es2023';
 import { es2023_array } from './es2023.array';
 import { es2023_collection } from './es2023.collection';
 import { es2023_full } from './es2023.full';
+import { es2023_intl } from './es2023.intl';
 import { esnext } from './esnext';
 import { esnext_array } from './esnext.array';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -87,6 +88,7 @@ import { esnext_full } from './esnext.full';
 import { esnext_intl } from './esnext.intl';
 import { esnext_object } from './esnext.object';
 import { esnext_promise } from './esnext.promise';
+import { esnext_regexp } from './esnext.regexp';
 import { esnext_string } from './esnext.string';
 import { esnext_symbol } from './esnext.symbol';
 import { esnext_weakref } from './esnext.weakref';
@@ -167,6 +169,7 @@ const lib = {
   'es2022.regexp': es2022_regexp,
   'es2023.array': es2023_array,
   'es2023.collection': es2023_collection,
+  'es2023.intl': es2023_intl,
   'esnext.array': esnext_array,
   'esnext.collection': esnext_collection,
   'esnext.symbol': esnext_symbol,
@@ -179,6 +182,7 @@ const lib = {
   'esnext.weakref': esnext_weakref,
   'esnext.decorators': esnext_decorators,
   'esnext.object': esnext_object,
+  'esnext.regexp': esnext_regexp,
   decorators,
   'decorators.legacy': decorators_legacy,
   'es2016.full': es2016_full,

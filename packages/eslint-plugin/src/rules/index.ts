@@ -5,7 +5,6 @@ import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
-import banTypes from './ban-types';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import classMethodsUseThis from './class-methods-use-this';
 import consistentGenericConstructors from './consistent-generic-constructors';
@@ -62,6 +61,7 @@ import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
+import noRestrictedTypes from './no-restricted-types';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
@@ -78,6 +78,7 @@ import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
+import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
@@ -87,6 +88,7 @@ import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noVarRequires from './no-var-requires';
+import noWrapperObjectTypes from './no-wrapper-object-types';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import onlyThrowError from './only-throw-error';
 import parameterProperties from './parameter-properties';
@@ -130,7 +132,6 @@ export default {
   'await-thenable': awaitThenable,
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
-  'ban-types': banTypes,
   'class-literal-property-style': classLiteralPropertyStyle,
   'class-methods-use-this': classMethodsUseThis,
   'consistent-generic-constructors': consistentGenericConstructors,
@@ -187,6 +188,7 @@ export default {
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
+  'no-restricted-types': noRestrictedTypes,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
@@ -203,6 +205,7 @@ export default {
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,
+  'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
@@ -212,6 +215,7 @@ export default {
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
   'no-var-requires': noVarRequires,
+  'no-wrapper-object-types': noWrapperObjectTypes,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'only-throw-error': onlyThrowError,
   'parameter-properties': parameterProperties,

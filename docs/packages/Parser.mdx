@@ -3,7 +3,12 @@ id: parser
 sidebar_label: parser
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `@typescript-eslint/parser`
+
+<PackageLink packageName="parser" scope="@typescript-eslint" />
 
 > An [ESLint parser](https://eslint.org/docs/user-guide/configuring/plugins#specifying-parser) used to parse TypeScript code into ESLint-compatible nodes, as well as provide backing TypeScript programs. ✨
 
@@ -147,6 +152,10 @@ This option allows you to provide one or more additional file extensions which s
 The default extensions are `['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx']`.
 Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
 
+:::note
+See [Changes to `extraFileExtensions` with `projectService`](../troubleshooting/Performance.mdx#changes-to-extrafileextensions-with-projectservice) to avoid performance issues.
+:::
+
 ### `jsDocParsingMode`
 
 > Default if `parserOptions.project` is set, then `'all'`, otherwise `'none'`
@@ -276,7 +285,25 @@ For an option that allows linting files outside of your TSConfig file(s), see [`
 Specifies using TypeScript APIs to generate type information for rules.
 It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 
-```js
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default [
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -284,6 +311,9 @@ module.exports = {
   },
 };
 ```
+
+</TabItem>
+</Tabs>
 
 **This setting or [`project`](#project) are required to use [rules which require type information](../getting-started/Typed_Linting.mdx)**.
 
@@ -383,6 +413,24 @@ declare function createProgram(
 
 Example usage:
 
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import * as parser from '@typescript-eslint/parser';
+
+export default [
+  {
+    parserOptions: {
+      programs: [parser.createProgram('tsconfig.json')],
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
 ```js title=".eslintrc.js"
 const parser = require('@typescript-eslint/parser');
 
@@ -391,4 +439,35 @@ module.exports = {
     programs: [parser.createProgram('tsconfig.json')],
   },
 };
+```
+
+</TabItem>
+</Tabs>
+
+### `withoutProjectParserOptions(parserOptions)`
+
+Removes options that prompt the parser to parse the project with type information.
+In other words, you can use this if you are invoking the parser directly, to ensure that one file will be parsed in isolation, which is much faster.
+
+This is useful in cases where you invoke the parser directly, such as in an ESLint plugin context.
+
+```ts
+declare function withoutProjectParserOptions(
+  options: TSESTreeOptions,
+): TSESTreeOptions;
+```
+
+Example usage:
+
+```js title="somePlugin.js"
+const parser = require('@typescript-eslint/parser');
+
+function parse(path, content, context) {
+  const contextParserOptions = context.languageOptions?.parserOptions ?? {};
+  const parserOptions =
+    parser.withoutProjectParserOptions(contextParserOptions);
+
+  // Do something with the cleaned-up options eventually, such as invoking the parser
+  parser.parseForESLint(content, parserOptions);
+}
 ```

@@ -5,6 +5,8 @@ sidebar_label: typescript-estree
 
 # `@typescript-eslint/typescript-estree`
 
+<PackageLink packageName="typescript-estree" scope="@typescript-eslint" />
+
 > The underlying code used by [`@typescript-eslint/parser`](./Parser.mdx) that converts TypeScript source code into an <a href="https://github.com/estree/estree">ESTree</a>-compatible form. ✨
 
 This parser is designed to be generic and robust.
@@ -201,6 +203,8 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
    * It accepts an array of file extensions, each preceded by a `.`.
+   *
+   * NOTE: When used with {@link projectService}, full project reloads may occur.
    */
   extraFileExtensions?: string[];
 
@@ -365,3 +369,7 @@ const { ast, services } = parseAndGenerateServices(code, {
 
 If you encounter a bug with the parser that you want to investigate, you can turn on the debug logging via setting the environment variable: `DEBUG=typescript-eslint:*`.
 I.e. in this repo you can run: `DEBUG=typescript-eslint:* yarn lint`.
+
+This will include TypeScript server logs.
+To turn off these logs, include `-typescript-eslint:typescript-estree:tsserver:*` when setting the environment variable.
+I.e. for this repo change to: `DEBUG='typescript-eslint:*,-typescript-eslint:typescript-estree:tsserver:*' yarn lint`.

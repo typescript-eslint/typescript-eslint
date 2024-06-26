@@ -9,6 +9,10 @@ import {
   nullThrows,
   typeIsOrHasBaseType,
 } from '../util';
+import {
+  getMemberHeadLoc,
+  getParameterPropertyHeadLoc,
+} from '../util/getMemberHeadLoc';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -160,15 +164,6 @@ export default createRule<Options, MessageIds>({
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
-      if (
-        ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
-      ) {
-        return {
-          esNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
-          nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
-        };
-      }
-
       return {
         esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
         nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
@@ -196,13 +191,35 @@ export default createRule<Options, MessageIds>({
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
             getEsNodesFromViolatingNode(violatingNode);
+
+          const reportNodeOrLoc:
+            | { node: TSESTree.Node }
+            | { loc: TSESTree.SourceLocation } = (() => {
+            switch (esNode.type) {
+              case AST_NODE_TYPES.MethodDefinition:
+              case AST_NODE_TYPES.PropertyDefinition:
+              case AST_NODE_TYPES.TSAbstractMethodDefinition:
+                return { loc: getMemberHeadLoc(context.sourceCode, esNode) };
+              case AST_NODE_TYPES.TSParameterProperty:
+                return {
+                  loc: getParameterPropertyHeadLoc(
+                    context.sourceCode,
+                    esNode,
+                    (nameNode as TSESTree.Identifier).name,
+                  ),
+                };
+              default:
+                return { node: esNode };
+            }
+          })();
+
           context.report({
+            ...reportNodeOrLoc,
             data: {
               name: context.sourceCode.getText(nameNode),
             },
             fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
             messageId: 'preferReadonly',
-            node: esNode,
           });
         }
       },
