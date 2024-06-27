@@ -93,19 +93,22 @@ Examples of code for this rule with `{ allowInterfaces: 'with-single-extends' }`
 
 <Tabs>
 <TabItem value="❌ Incorrect">
-```ts option='{ "allowInterfaces": "with-single-extends" }' showPlaygroundButton
+
+```ts option='{ "allowInterfaces": "with-single-extends" }'
 interface Foo {}
 ```
+
 </TabItem>
 <TabItem value="✅ Correct">
-```ts option='{ "allowInterfaces": "with-single-extends" }' showPlaygroundButton
+
+```ts option='{ "allowInterfaces": "with-single-extends" }'
 interface Base {
   value: boolean;
 }
 
 interface Derived extends Base {}
+```
 
-````
 </TabItem>
 </Tabs>
 
@@ -120,15 +123,18 @@ Examples of code for this rule with `{ allowObjectTypes: 'always' }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
-```ts option='{ "allowObjectTypes": "always" }' showPlaygroundButton
+
+```ts option='{ "allowObjectTypes": "always" }'
 interface Base {}
-````
+```
 
 </TabItem>
 <TabItem value="✅ Correct">
-```ts option='{ "allowObjectTypes": "always" }' showPlaygroundButton
+
+```ts option='{ "allowObjectTypes": "always" }'
 type Base = {};
 ```
+
 </TabItem>
 </Tabs>
 
@@ -142,7 +148,7 @@ Examples of code for this rule with `{ allowWithName: 'Props$' }`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
+```ts option='{ "allowWithName": "Props$" }'
 interface InterfaceValue {}
 
 type TypeValue = {};
@@ -151,7 +157,7 @@ type TypeValue = {};
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
+```ts option='{ "allowWithName": "Props$" }'
 interface InterfaceProps {}
 
 type TypeProps = {};

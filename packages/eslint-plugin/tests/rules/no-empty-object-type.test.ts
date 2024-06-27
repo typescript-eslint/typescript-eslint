@@ -17,9 +17,11 @@ interface Base {
 interface Base {
   name: string;
 }
+
 interface Derived {
   age: number;
 }
+
 // valid because extending multiple interfaces can be used instead of a union type
 interface Both extends Base, Derived {}
     `,
@@ -32,6 +34,7 @@ interface Both extends Base, Derived {}
 interface Base {
   name: string;
 }
+
 interface Derived extends Base {}
       `,
       options: [{ allowInterfaces: 'with-single-extends' }],
@@ -41,7 +44,9 @@ interface Derived extends Base {}
 interface Base {
   props: string;
 }
+
 interface Derived extends Base {}
+
 class Derived {}
       `,
       options: [{ allowInterfaces: 'with-single-extends' }],
@@ -76,9 +81,9 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
+          line: 1,
           column: 11,
           data: { option: 'allowInterfaces' },
-          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {
@@ -98,9 +103,9 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
+          line: 1,
           column: 11,
           data: { option: 'allowInterfaces' },
-          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {
@@ -122,12 +127,14 @@ class Derived {}
 interface Base {
   props: string;
 }
+
 interface Derived extends Base {}
+
 class Other {}
       `,
       errors: [
         {
-          line: 5,
+          line: 6,
           column: 11,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
@@ -137,7 +144,9 @@ class Other {}
 interface Base {
   props: string;
 }
+
 type Derived = Base
+
 class Other {}
       `,
             },
@@ -150,12 +159,14 @@ class Other {}
 interface Base {
   props: string;
 }
+
 interface Derived extends Base {}
+
 class Derived {}
       `,
       errors: [
         {
-          line: 5,
+          line: 6,
           column: 11,
           messageId: 'noEmptyInterfaceWithSuper',
         },
@@ -166,13 +177,15 @@ class Derived {}
 interface Base {
   props: string;
 }
+
 interface Derived extends Base {}
+
 const derived = class Derived {};
       `,
       errors: [
         {
           messageId: 'noEmptyInterfaceWithSuper',
-          line: 5,
+          line: 6,
           column: 11,
           suggestions: [
             {
@@ -181,7 +194,9 @@ const derived = class Derived {};
 interface Base {
   props: string;
 }
+
 type Derived = Base
+
 const derived = class Derived {};
       `,
             },
@@ -194,12 +209,13 @@ const derived = class Derived {};
 interface Base {
   name: string;
 }
+
 interface Derived extends Base {}
       `,
       errors: [
         {
           messageId: 'noEmptyInterfaceWithSuper',
-          line: 5,
+          line: 6,
           column: 11,
           suggestions: [
             {
@@ -208,6 +224,7 @@ interface Derived extends Base {}
 interface Base {
   name: string;
 }
+
 type Derived = Base
       `,
             },
