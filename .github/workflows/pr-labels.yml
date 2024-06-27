@@ -12,7 +12,7 @@ jobs:
       pull-requests: write
     steps:
       - id: changed-stable-configs
-        uses: tj-actions/changed-files@v44.5.2
+        uses: tj-actions/changed-files@v44.5.5
         with:
           files: packages/{eslint-plugin,typescript-eslint}/src/configs/{recommended,stylistic}*
       - if: steps.changed-stable-configs.outputs.any_changed == 'true'
