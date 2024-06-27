@@ -2164,6 +2164,21 @@ describe("RuleTester", () => {
             }, "Error should have 2 suggestions. Instead found 1 suggestions");
         });
 
+        it("should fail when the suggestion property is neither a number nor an array", () => {
+            assert.throws(() => {
+                ruleTester.run("suggestions-basic", require("./fixtures/suggestions").basic, {
+                    valid: [],
+                    invalid: [{
+                        code: "var foo;",
+                        errors: [{
+                            message: "Avoid using identifiers named 'foo'.",
+                            suggestions: "1"
+                        }]
+                    }]
+                });
+            }, "Test error object property 'suggestions' should be an array or a number");
+        });
+
         it("should throw if suggestion fix made a syntax error.", () => {
             assert.throw(() => {
                 ruleTester.run(
@@ -2204,21 +2219,6 @@ describe("RuleTester", () => {
                     }
                 );
             }, /A fatal parsing error occurred in suggestion fix\.\nError: .+\nSuggestion output:\n.+/u);
-        });
-
-        it("should fail when the suggestion property is neither a number nor an array", () => {
-            assert.throws(() => {
-                ruleTester.run("suggestions-basic", require("./fixtures/suggestions").basic, {
-                    valid: [],
-                    invalid: [{
-                        code: "var foo;",
-                        errors: [{
-                            message: "Avoid using identifiers named 'foo'.",
-                            suggestions: "1"
-                        }]
-                    }]
-                });
-            }, "Test error object property 'suggestions' should be an array or a number");
         });
 
         it("should throw if the suggestion description doesn't match", () => {
