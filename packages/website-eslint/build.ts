@@ -31,7 +31,9 @@ function createResolve(
   join: string,
 ): esbuild.OnResolveResult {
   const resolvedPackage = requireResolved(targetPath + '/package.json');
-  return { path: path.join(resolvedPackage, '../src/', join) };
+  return {
+    path: path.join(resolvedPackage, '../src/', join),
+  };
 }
 
 async function buildPackage(name: string, file: string): Promise<void> {
@@ -40,7 +42,9 @@ async function buildPackage(name: string, file: string): Promise<void> {
   const rulesPath = path.join(eslintRoot, '../lib/rules/index.js');
 
   await esbuild.build({
-    entryPoints: { [name]: requireResolved(file) },
+    entryPoints: {
+      [name]: requireResolved(file),
+    },
     format: 'cjs',
     platform: 'browser',
     bundle: true,
