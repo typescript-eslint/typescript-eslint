@@ -138,10 +138,13 @@ export default createRule<[], MessageId>({
 
           const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 
-          function endsWithEscapedDollarSign(str: string): boolean {
-            return new RegExp(`${evenNumOfBackslashesRegExp.source}\\$$`).test(
-              str,
-            );
+          // '\\$' <- false
+          // '\\\\$' <- true
+          // '\\\\\\$' <- false
+          function endsWithUnescapedDollarSign(str: string): boolean {
+            return new RegExp(
+              String(evenNumOfBackslashesRegExp.source) + '\\$$',
+            ).test(str);
           }
 
           if (nextQuasi.value.raw.length !== 0) {
@@ -152,18 +155,39 @@ export default createRule<[], MessageId>({
           if (isLiteral(expression)) {
             let escapedValue = (
               typeof expression.value === 'string'
-                ? expression.raw.slice(1, -1)
-                : // 1     -> '1'
-                  // /\\/  -> '/\\\\/'
-                  String(expression.value).replace(/\\\\/g, '\\\\\\\\')
-            ).replace(
-              new RegExp(`${evenNumOfBackslashesRegExp.source}(\`|\\\${)`, 'g'),
-              '\\$1',
-            );
+                ? // The value is already a string, so we're removing quotes:
+                  // "'va`lue'" -> "va`lue"
+                  expression.raw.slice(1, -1)
+                : // The value may be one of number | bigint | boolean | RegExp | null.
+                  // In regular expressions, we escape every backslash
+                  String(expression.value).replace(/\\/g, '\\\\')
+            )
+              // The string or RegExp may contain ` or ${.
+              // We want both of these to be escaped in the final template expression.
+              //
+              // A pair of backslashes means "escaped backslash", so backslashes
+              // from this pair won't escape ` or ${. Therefore, to escape these
+              // sequences in the resulting template expression, we need to escape
+              // all sequences that are preceded by an even number of backslashes.
+              //
+              // This RegExp does the following transformations:
+              // \` -> \`
+              // \\` -> \\\`
+              // \${ -> \${
+              // \\${ -> \\\${
+              .replace(
+                new RegExp(
+                  String(evenNumOfBackslashesRegExp.source) + '(`|\\${)',
+                  'g',
+                ),
+                '\\$1',
+              );
 
+            // `...${'...$'}{...`
+            //           ^^^^
             if (
               nextCharacterIsOpeningCurlyBrace &&
-              endsWithEscapedDollarSign(escapedValue)
+              endsWithUnescapedDollarSign(escapedValue)
             ) {
               escapedValue = escapedValue.replaceAll(/\$$/g, '\\$');
             }
@@ -174,9 +198,18 @@ export default createRule<[], MessageId>({
 
             fixers.push(fixer => [fixer.replaceText(expression, escapedValue)]);
           } else if (isTemplateLiteral(expression)) {
+            // Since we iterate from the last expression to the first,
+            // a subsequent expression can tell the current expression
+            // that it starts with {.
+            //
+            // `... ${`... $`}${'{...'} ...`
+            //             ^     ^ subsequent expression starts with {
+            //             current expression ends with a dollar sign,
+            //             so '$' + '{' === '${' (bad news for us).
+            //             Let's escape the dollar sign at the end.
             if (
               nextCharacterIsOpeningCurlyBrace &&
-              endsWithEscapedDollarSign(
+              endsWithUnescapedDollarSign(
                 expression.quasis[expression.quasis.length - 1].value.raw,
               )
             ) {
@@ -204,9 +237,11 @@ export default createRule<[], MessageId>({
             nextCharacterIsOpeningCurlyBrace = false;
           }
 
+          // `... $${'{...'} ...`
+          //      ^^^^^
           if (
             nextCharacterIsOpeningCurlyBrace &&
-            endsWithEscapedDollarSign(prevQuasi.value.raw)
+            endsWithUnescapedDollarSign(prevQuasi.value.raw)
           ) {
             fixers.push(fixer => [
               fixer.replaceTextRange(
