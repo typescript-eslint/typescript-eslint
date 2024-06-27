@@ -3,7 +3,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isReferenceToGlobalFunction,
+} from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
 const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
@@ -36,9 +40,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getCalleeName(
-      node: TSESTree.LeftHandSideExpression,
-    ): string | null {
+    function getCalleeName(node: TSESTree.Expression): string | null {
       if (node.type === AST_NODE_TYPES.Identifier) {
         return node.name;
       }
@@ -121,18 +123,6 @@ export default createRule({
       }
     }
 
-    function isReferenceToGlobalFunction(
-      calleeName: string,
-      node: TSESTree.Node,
-    ): boolean {
-      const ref = context.sourceCode
-        .getScope(node)
-        .references.find(ref => ref.identifier.name === calleeName);
-
-      // ensure it's the "global" version
-      return !ref?.resolved || ref.resolved.defs.length === 0;
-    }
-
     function checkImpliedEval(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
@@ -167,7 +157,7 @@ export default createRule({
       if (
         EVAL_LIKE_METHODS.has(calleeName) &&
         !isFunction(handler) &&
-        isReferenceToGlobalFunction(calleeName, node)
+        isReferenceToGlobalFunction(calleeName, node, context.sourceCode)
       ) {
         context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }

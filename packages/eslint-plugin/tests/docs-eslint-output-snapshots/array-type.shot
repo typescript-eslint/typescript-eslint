@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs array-type.mdx code examples ESLint output 1`] = `
+"Incorrect
+Options: { "default": "array" }
+
+const x: Array<string> = ['a', 'b'];
+         ~~~~~~~~~~~~~ Array type using 'Array<string>' is forbidden. Use 'string[]' instead.
+const y: ReadonlyArray<string> = ['a', 'b'];
+         ~~~~~~~~~~~~~~~~~~~~~ Array type using 'ReadonlyArray<string>' is forbidden. Use 'readonly string[]' instead.
+"
+`;
+
+exports[`Validating rule docs array-type.mdx code examples ESLint output 2`] = `
+"Correct
+Options: { "default": "array" }
+
+const x: string[] = ['a', 'b'];
+const y: readonly string[] = ['a', 'b'];
+"
+`;
+
+exports[`Validating rule docs array-type.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "default": "generic" }
+
+const x: string[] = ['a', 'b'];
+         ~~~~~~~~ Array type using 'string[]' is forbidden. Use 'Array<string>' instead.
+const y: readonly string[] = ['a', 'b'];
+         ~~~~~~~~~~~~~~~~~ Array type using 'readonly string[]' is forbidden. Use 'ReadonlyArray<string>' instead.
+"
+`;
+
+exports[`Validating rule docs array-type.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "default": "generic" }
+
+const x: Array<string> = ['a', 'b'];
+const y: ReadonlyArray<string> = ['a', 'b'];
+"
+`;
+
+exports[`Validating rule docs array-type.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "default": "array-simple" }
+
+const a: (string | number)[] = ['a', 'b'];
+         ~~~~~~~~~~~~~~~~~~~ Array type using 'T[]' is forbidden for non-simple types. Use 'Array<T>' instead.
+const b: { prop: string }[] = [{ prop: 'a' }];
+         ~~~~~~~~~~~~~~~~~~ Array type using 'T[]' is forbidden for non-simple types. Use 'Array<T>' instead.
+const c: (() => void)[] = [() => {}];
+         ~~~~~~~~~~~~~~ Array type using 'T[]' is forbidden for non-simple types. Use 'Array<T>' instead.
+const d: Array<MyType> = ['a', 'b'];
+         ~~~~~~~~~~~~~ Array type using 'Array<MyType>' is forbidden for simple types. Use 'MyType[]' instead.
+const e: Array<string> = ['a', 'b'];
+         ~~~~~~~~~~~~~ Array type using 'Array<string>' is forbidden for simple types. Use 'string[]' instead.
+const f: ReadonlyArray<string> = ['a', 'b'];
+         ~~~~~~~~~~~~~~~~~~~~~ Array type using 'ReadonlyArray<string>' is forbidden for simple types. Use 'readonly string[]' instead.
+"
+`;
+
+exports[`Validating rule docs array-type.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "default": "array-simple" }
+
+const a: Array<string | number> = ['a', 'b'];
+const b: Array<{ prop: string }> = [{ prop: 'a' }];
+const c: Array<() => void> = [() => {}];
+const d: MyType[] = ['a', 'b'];
+const e: string[] = ['a', 'b'];
+const f: readonly string[] = ['a', 'b'];
+"
+`;

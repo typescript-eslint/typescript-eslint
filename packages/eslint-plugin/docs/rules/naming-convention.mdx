@@ -12,6 +12,15 @@ import TabItem from '@theme/TabItem';
 Enforcing naming conventions helps keep the codebase consistent, and reduces overhead when thinking about how to name a variable.
 Additionally, a well-designed style guide can help communicate intent, such as by enforcing all private properties begin with an `_`, and all global-level constants are written in `UPPER_CASE`.
 
+:::note
+This rule is _feature frozen_: it will no longer receive new features such as new options.
+It still will accept bug and documentation fixes for its existing area of features and to support new TypeScript versions.
+
+Stylistic rules that enforce naming and/or sorting conventions tend to grow incomprehensibly complex as increasingly obscure features are requested.
+This rule has reached the limit of what is reasonable for the typescript-eslint project to maintain.
+See [eslint-plugin: Feature freeze naming and sorting stylistic rules](https://github.com/typescript-eslint/typescript-eslint/issues/8792) for more information.
+:::
+
 ## Examples
 
 This rule allows you to enforce conventions for any identifier, using granular selectors to create a fine-grained style guide.
@@ -569,6 +578,22 @@ This allows you to emulate the old `interface-name-prefix` rule.
         "regex": "^I[A-Z]",
         "match": false
       }
+    }
+  ]
+}
+```
+
+### Enforce that function names are either in camelCase or PascalCase
+
+Function names are typically camelCase, but UI library components (especially JSX, such as React and Solid) use PascalCase to distinguish them from intrinsic elements. If you are writing function components, consider allowing both camelCase and PascalCase for functions.
+
+```json
+{
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "function",
+      "format": ["camelCase", "PascalCase"]
     }
   ]
 }

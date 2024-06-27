@@ -142,11 +142,12 @@ interface Foo {
 
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-Each item must be one of:
+This option takes an array of type specifiers to ignore.
+Each item in the array must have one of the following forms:
 
-- A type defined in a file (`{from: "file", name: "Foo", path: "src/foo-file.ts"}` with `path` being an optional path relative to the project root directory)
-- A type from the default library (`{from: "lib", name: "Foo"}`)
-- A type from a package (`{from: "package", name: "Foo", package: "foo-lib"}`, this also works for types defined in a typings package).
+- A type defined in a file (`{ from: "file", name: "Foo", path: "src/foo-file.ts" }` with `path` being an optional path relative to the project root directory)
+- A type from the default library (`{ from: "lib", name: "Foo" }`)
+- A type from a package (`{ from: "package", name: "Foo", package: "foo-lib" }`, this also works for types defined in a typings package).
 
 Additionally, a type may be defined just as a simple string, which then matches the type independently of its origin.
 
@@ -303,7 +304,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "ignoreInferredTypes": true }'
+```ts option='{ "ignoreInferredTypes": true }' skipValidation
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
 acceptsCallback((options: CallbackOptions) => {});
@@ -336,7 +337,7 @@ acceptsCallback(options => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts option='{ "ignoreInferredTypes": true }'
+```ts option='{ "ignoreInferredTypes": true }' skipValidation
 export interface CallbackOptions {
   prop: string;
 }
@@ -401,3 +402,8 @@ function foo(arg: MyType) {}
 ## When Not To Use It
 
 If your project does not attempt to enforce strong immutability guarantees of parameters, you can avoid this rule.
+
+This rule is very strict on what it considers mutable.
+Many types that describe themselves as readonly are considered mutable because they have mutable properties such as arrays or tuples.
+To work around these limitations, you might need to use the rule's options.
+In particular, the [`allow` option](#allow) can explicitly mark a type as readonly.

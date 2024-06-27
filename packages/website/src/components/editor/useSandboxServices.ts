@@ -62,7 +62,7 @@ export const useSandboxServices = (
               wrappingIndent: 'same',
               hover: { above: false },
             },
-            acquireTypes: false,
+            acquireTypes: true,
             compilerOptions:
               compilerOptions as Monaco.languages.typescript.CompilerOptions,
             domID: editorEmbedId,
@@ -91,6 +91,7 @@ export const useSandboxServices = (
 
         window.system = system;
         window.esquery = lintUtils.esquery;
+        window.visitorKeys = lintUtils.visitorKeys;
 
         const webLinter = createLinter(
           system,

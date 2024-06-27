@@ -102,8 +102,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `checkAny: false`
+<TabItem value="✅ Correct for `checkAny: false`">
 
 ```ts option='{ "checkAny": false }'
 declare const thing: any;
@@ -129,8 +128,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `checkUnknown: false`
+<TabItem value="✅ Correct for `checkUnknown: false`">
 
 ```ts option='{ "checkUnknown": false }'
 declare const thing: unknown;
@@ -156,8 +154,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `checkString: false`
+<TabItem value="✅ Correct for `checkString: false`">
 
 ```ts option='{ "checkString": false }'
 declare const thing: string;
@@ -183,8 +180,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `checkNumber: false`
+<TabItem value="✅ Correct for `checkNumber: false`">
 
 ```ts option='{ "checkNumber": false }'
 declare const thing: number;
@@ -199,22 +195,35 @@ thing && thing.toString();
 
 When this option is `true` the rule will check operands that are typed as `boolean` when inspecting "loose boolean" operands.
 
+:::note
+
+This rule intentionally ignores the following case:
+
+```ts
+declare const x: false | { a: string };
+x && x.a;
+!x || x.a;
+```
+
+The boolean expression narrows out the non-nullish falsy cases - so converting the chain to `x?.a` would introduce a type error.
+
+:::
+
 <Tabs>
 
 <TabItem value="❌ Incorrect for `checkBoolean: true`">
 
 ```ts option='{ "checkBoolean": true }'
-declare const thing: boolean;
+declare const thing: true;
 
 thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `checkBoolean: false`
+<TabItem value="✅ Correct for `checkBoolean: false`">
 
 ```ts option='{ "checkBoolean": false }'
-declare const thing: boolean;
+declare const thing: true;
 
 thing && thing.toString();
 ```
@@ -237,8 +246,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `checkBigInt: false`
+<TabItem value="✅ Correct for `checkBigInt: false`">
 
 ```ts option='{ "checkBigInt": false }'
 declare const thing: bigint;
@@ -263,8 +271,7 @@ thing1 && thing1.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct">
- for `requireNullish: true`
+<TabItem value="✅ Correct for `requireNullish: true`">
 
 ```ts option='{ "requireNullish": true }'
 declare const thing1: string | null;

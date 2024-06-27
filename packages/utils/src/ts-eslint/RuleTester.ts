@@ -84,7 +84,7 @@ interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: string | null;
+  readonly output?: string | string[] | null;
 }
 
 interface TestCaseError<MessageIds extends string> {

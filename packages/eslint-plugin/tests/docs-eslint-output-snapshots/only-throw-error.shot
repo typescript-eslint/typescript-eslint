@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs only-throw-error.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+throw 'error';
+      ~~~~~~~ Expected an error object to be thrown.
+
+throw 0;
+      ~ Expected an error object to be thrown.
+
+throw undefined;
+      ~~~~~~~~~ Do not throw undefined.
+
+throw null;
+      ~~~~ Expected an error object to be thrown.
+
+const err = new Error();
+throw 'an ' + err;
+      ~~~~~~~~~~~ Expected an error object to be thrown.
+
+const err = new Error();
+throw \`\${err}\`;
+      ~~~~~~~~ Expected an error object to be thrown.
+
+const err = '';
+throw err;
+
+function getError() {
+  return '';
+}
+throw getError();
+      ~~~~~~~~~~ Expected an error object to be thrown.
+
+const foo = {
+  bar: '',
+};
+throw foo.bar;
+      ~~~~~~~ Expected an error object to be thrown.
+"
+`;
+
+exports[`Validating rule docs only-throw-error.mdx code examples ESLint output 2`] = `
+"Correct
+
+throw new Error();
+
+throw new Error('error');
+
+const e = new Error('error');
+throw e;
+
+try {
+  throw new Error('error');
+} catch (e) {
+  throw e;
+}
+
+const err = new Error();
+throw err;
+
+function getError() {
+  return new Error();
+}
+throw getError();
+
+const foo = {
+  bar: new Error(),
+};
+throw foo.bar;
+
+class CustomError extends Error {
+  // ...
+}
+throw new CustomError();
+"
+`;

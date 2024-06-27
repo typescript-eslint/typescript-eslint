@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs ban-tslint-comment.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+/* tslint:disable */
+~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:disable */"
+/* tslint:enable */
+~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:enable */"
+/* tslint:disable:rule1 rule2 rule3... */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:disable:rule1 rule2 rule3... */"
+/* tslint:enable:rule1 rule2 rule3... */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:enable:rule1 rule2 rule3... */"
+// tslint:disable-next-line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "// tslint:disable-next-line"
+someCode(); // tslint:disable-line
+            ~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "// tslint:disable-line"
+// tslint:disable-next-line:rule1 rule2 rule3...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "// tslint:disable-next-line:rule1 rule2 rule3..."
+"
+`;
+
+exports[`Validating rule docs ban-tslint-comment.mdx code examples ESLint output 2`] = `
+"Correct
+
+// This is a comment that just happens to mention tslint
+/* This is a multiline comment that just happens to mention tslint */
+someCode(); // This is a comment that just happens to mention tslint
+"
+`;

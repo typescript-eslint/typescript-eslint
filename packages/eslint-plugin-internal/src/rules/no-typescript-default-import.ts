@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -21,7 +20,6 @@ export default createRule({
     docs: {
       description:
         "Enforce that packages rules don't do `import ts from 'typescript';`",
-      recommended: 'recommended',
     },
     fixable: 'code',
     schema: [],
@@ -62,10 +60,7 @@ export default createRule({
         node: TSESTree.TSExternalModuleReference,
       ): void {
         const parent = node.parent as TSESTree.TSImportEqualsDeclaration;
-        if (
-          node.expression.type === AST_NODE_TYPES.Literal &&
-          node.expression.value === 'typescript'
-        ) {
+        if (node.expression.value === 'typescript') {
           context.report({
             node,
             messageId: 'noTSDefaultImport',

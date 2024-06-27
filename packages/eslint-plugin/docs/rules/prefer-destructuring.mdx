@@ -87,14 +87,14 @@ Examples with `{ enforceForDeclarationWithTypeAnnotation: true }`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts
+```ts option='{ "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }'
 const x: string = obj.x;
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts
+```ts option='{ "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }'
 const { x }: { x: string } = obj;
 ```
 

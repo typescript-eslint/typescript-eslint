@@ -101,7 +101,7 @@ Examples of code with `{ "allowedPromiseNames": ["Bluebird"] }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "allowedPromiseNames": ["Bluebird"] }'
-import { Bluebird } from 'bluebird';
+class Bluebird {}
 
 const returnsBluebird = () => new Bluebird(() => {});
 ```
@@ -110,7 +110,7 @@ const returnsBluebird = () => new Bluebird(() => {});
 <TabItem value="✅ Correct">
 
 ```ts option='{ "allowedPromiseNames": ["Bluebird"] }'
-import { Bluebird } from 'bluebird';
+class Bluebird {}
 
 const returnsBluebird = async () => new Bluebird(() => {});
 ```

@@ -16,8 +16,6 @@ It adds support for optional parameters.
 <TabItem value="❌ Incorrect">
 
 ```ts
-/* eslint @typescript-eslint/default-param-last: "error" */
-
 function f(a = 0, b: number) {}
 function f(a: number, b = 0, c: number) {}
 function f(a: number, b?: number, c: number) {}
@@ -39,8 +37,6 @@ class Foo {
 <TabItem value="✅ Correct">
 
 ```ts
-/* eslint @typescript-eslint/default-param-last: "error" */
-
 function f(a = 0) {}
 function f(a: number, b = 0) {}
 function f(a: number, b?: number) {}

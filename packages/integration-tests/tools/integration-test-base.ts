@@ -182,11 +182,12 @@ export function eslintIntegrationTest(
 }
 
 export function typescriptIntegrationTest(
+  testName: string,
   testFilename: string,
   tscArgs: string[],
   assertOutput: (out: string) => void,
 ): void {
-  integrationTest('typescript', testFilename, async testFolder => {
+  integrationTest(testName, testFilename, async testFolder => {
     const [result] = await Promise.allSettled([
       execFile('yarn', ['tsc', '--noEmit', ...tscArgs], {
         cwd: testFolder,

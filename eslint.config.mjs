@@ -64,7 +64,6 @@ export default tseslint.config(
 
   // extends ...
   eslint.configs.recommended,
-  ...compat.config(eslintPluginPlugin.configs.recommended),
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
@@ -77,12 +76,6 @@ export default tseslint.config(
         ...globals.node,
       },
       parserOptions: {
-        allowAutomaticSingleRunInference: true,
-        cacheLifetime: {
-          // we pretty well never create/change tsconfig structure - so no need to ever evict the cache
-          // in the rare case that we do - just need to manually restart their IDE.
-          glob: 'Infinity',
-        },
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -104,9 +97,8 @@ export default tseslint.config(
       // make sure we're not leveraging any deprecated APIs
       'deprecation/deprecation': 'error',
 
-      // TODO(#7130): Investigate changing these in or removing these from presets
+      // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
       '@typescript-eslint/no-confusing-void-expression': 'off',
-      '@typescript-eslint/prefer-string-starts-ends-with': 'off',
 
       //
       // our plugin :D
@@ -136,11 +128,18 @@ export default tseslint.config(
         'error',
         { allowConstantLoopConditions: true },
       ],
+      '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/prefer-literal-enum-member': [
         'error',
         {
           allowBitwiseExpressions: true,
+        },
+      ],
+      '@typescript-eslint/prefer-string-starts-ends-with': [
+        'error',
+        {
+          allowSingleElementEquality: 'always',
         },
       ],
       '@typescript-eslint/unbound-method': 'off',
@@ -167,6 +166,12 @@ export default tseslint.config(
         {
           ignoreConditionalTests: true,
           ignorePrimitives: true,
+        },
+      ],
+      '@typescript-eslint/no-require-imports': [
+        'error',
+        {
+          allow: ['/package\\.json$'],
         },
       ],
 
@@ -202,6 +207,7 @@ export default tseslint.config(
         { commentPattern: '.*intentional fallthrough.*' },
       ],
       'one-var': ['error', 'never'],
+      'prefer-object-has-own': 'error',
 
       //
       // eslint-plugin-eslint-comment
@@ -348,7 +354,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
-      'eslint-plugin/consistent-output': 'off', // Might eventually be removed from `eslint-plugin/recommended`: https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/284
       'jest/no-disabled-tests': 'error',
       'jest/no-focused-tests': 'error',
       'jest/no-alias-methods': 'error',
@@ -414,6 +419,8 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/internal/no-typescript-estree-import': 'error',
     },
+
+    extends: [...compat.config(eslintPluginPlugin.configs.recommended)],
   },
   {
     files: [
@@ -425,6 +432,7 @@ export default tseslint.config(
       'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
+      'eslint-plugin/no-property-in-node': 'error',
       'eslint-plugin/require-meta-docs-description': [
         'error',
         { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
@@ -513,6 +521,7 @@ export default tseslint.config(
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      'react/prop-types': 'off',
     },
     settings: {
       react: {

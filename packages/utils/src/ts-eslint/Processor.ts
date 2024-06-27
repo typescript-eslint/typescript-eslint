@@ -57,7 +57,7 @@ export namespace Processor {
     /**
      * Information about the processor to uniquely identify it when serializing.
      */
-    meta?: Partial<ProcessorMeta>;
+    meta?: { [K in keyof ProcessorMeta]?: ProcessorMeta[K] | undefined };
 
     /**
      * The function to extract code blocks.
@@ -82,6 +82,6 @@ export namespace Processor {
     /**
      * If `true` then it means the processor supports autofix.
      */
-    supportsAutofix?: boolean;
+    supportsAutofix?: boolean | undefined;
   }
 }

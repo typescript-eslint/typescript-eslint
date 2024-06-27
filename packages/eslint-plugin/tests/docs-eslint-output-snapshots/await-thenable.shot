@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs await-thenable.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+await 'value';
+~~~~~~~~~~~~~ Unexpected \`await\` of a non-Promise (non-"Thenable") value.
+
+const createValue = () => 'value';
+await createValue();
+~~~~~~~~~~~~~~~~~~~ Unexpected \`await\` of a non-Promise (non-"Thenable") value.
+"
+`;
+
+exports[`Validating rule docs await-thenable.mdx code examples ESLint output 2`] = `
+"Correct
+
+await Promise.resolve('value');
+
+const createValue = async () => 'value';
+await createValue();
+"
+`;

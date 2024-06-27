@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class declaration index-signature 1`] = `
+ScopeManager {
+  variables: [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: [
+        TypeDefinition$1 {
+          name: Identifier<"Bar">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "Bar",
+      references: [
+        Reference$1 {
+          identifier: Identifier<"Bar">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: [
+        ClassNameDefinition$2 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "Foo",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: [
+        ClassNameDefinition$3 {
+          name: Identifier<"Foo">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "Foo",
+      references: [
+        Reference$2 {
+          identifier: Identifier<"Foo">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+  ],
+  scopes: [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "Bar" => Variable$2,
+        "Foo" => Variable$3,
+      },
+      type: "global",
+      upper: null,
+      variables: [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$3,
+      ],
+    },
+    ClassScope$2 {
+      block: ClassDeclaration$2,
+      isStrict: true,
+      references: [
+        Reference$1,
+        Reference$2,
+      ],
+      set: Map {
+        "Foo" => Variable$4,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: [
+        Variable$4,
+      ],
+    },
+  ],
+}
+`;

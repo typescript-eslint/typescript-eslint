@@ -14,6 +14,13 @@ The fundamental benefit of `Error` objects is that they automatically keep track
 
 This rule restricts what can be thrown as an exception.
 
+:::info[Migration from `no-throw-literal`]
+
+This rule was formerly known as `no-throw-literal`.
+The new name is a drop-in replacement with identical functionality.
+
+:::
+
 ## Examples
 
 This rule is aimed at maintaining consistency when throwing exception by disallowing to throw literals and other expressions which cannot possibly be an `Error` object.
@@ -39,10 +46,10 @@ throw `${err}`;
 const err = '';
 throw err;
 
-function err() {
+function getError() {
   return '';
 }
-throw err();
+throw getError();
 
 const foo = {
   bar: '',
@@ -70,10 +77,10 @@ try {
 const err = new Error();
 throw err;
 
-function err() {
+function getError() {
   return new Error();
 }
-throw err();
+throw getError();
 
 const foo = {
   bar: new Error(),

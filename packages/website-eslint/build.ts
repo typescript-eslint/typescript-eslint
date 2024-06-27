@@ -135,7 +135,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
           );
           const anyAlias = /^(@typescript-eslint\/[a-z-]+)\/([a-z-]+)$/;
           build.onResolve({ filter: anyAlias }, args => {
-            const parts = args.path.match(anyAlias);
+            const parts = anyAlias.exec(args.path);
             if (parts) {
               return createResolve(parts[1], `${parts[2]}/index.ts`);
             }

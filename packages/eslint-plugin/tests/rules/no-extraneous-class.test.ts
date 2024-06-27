@@ -90,6 +90,16 @@ class Foo {
       `,
       options: [{ allowWithDecorator: true }],
     },
+    `
+abstract class Foo {
+  abstract property: string;
+}
+    `,
+    `
+abstract class Foo {
+  abstract method(): string;
+}
+    `,
   ],
 
   invalid: [
@@ -181,6 +191,28 @@ class Foo {
           messageId: 'onlyConstructor',
         },
       ],
+    },
+    {
+      code: `
+abstract class Foo {}
+      `,
+      errors: [empty],
+    },
+    {
+      code: `
+abstract class Foo {
+  static property: string;
+}
+      `,
+      errors: [onlyStatic],
+    },
+    {
+      code: `
+abstract class Foo {
+  constructor() {}
+}
+      `,
+      errors: [onlyConstructor],
     },
   ],
 });

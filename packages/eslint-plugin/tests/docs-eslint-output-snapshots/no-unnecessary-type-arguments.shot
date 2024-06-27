@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function f<T = number>() {}
+f<number>();
+  ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+function g<T = number, U = string>() {}
+g<string, string>();
+          ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+class C<T = number> {}
+new C<number>();
+      ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+
+class D extends C<number> {}
+                  ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 4`] = `
+"Incorrect
+
+interface I<T = number> {}
+class Impl implements I<number> {}
+                        ~~~~~~ This is the default value for this type parameter, so it can be omitted.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 5`] = `
+"Correct
+
+function f<T = number>() {}
+f();
+f<string>();
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 6`] = `
+"Correct
+
+function g<T = number, U = string>() {}
+g<string>();
+g<number, number>();
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 7`] = `
+"Correct
+
+class C<T = number> {}
+new C();
+new C<string>();
+
+class D extends C {}
+class D extends C<string> {}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-type-arguments.mdx code examples ESLint output 8`] = `
+"Correct
+
+interface I<T = number> {}
+class Impl implements I<string> {}
+"
+`;

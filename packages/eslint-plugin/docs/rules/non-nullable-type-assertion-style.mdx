@@ -23,7 +23,7 @@ This rule reports when an `as` cast is doing the same job as a `!` would, and su
 <TabItem value="❌ Incorrect">
 
 ```ts
-const maybe = Math.random() > 0.5 ? '' : undefined;
+const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
 
 const definitely = maybe as string;
 const alsoDefinitely = <string>maybe;
@@ -33,7 +33,7 @@ const alsoDefinitely = <string>maybe;
 <TabItem value="✅ Correct">
 
 ```ts
-const maybe = Math.random() > 0.5 ? '' : undefined;
+const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
 
 const definitely = maybe!;
 const alsoDefinitely = maybe!;

@@ -12,6 +12,15 @@ import TabItem from '@theme/TabItem';
 This rule aims to standardize the way classes, interfaces, and type literals are structured and ordered.
 A consistent ordering of fields, methods and constructors can make code easier to read, navigate, and edit.
 
+:::note
+This rule is _feature frozen_: it will no longer receive new features such as new options.
+It still will accept bug and documentation fixes for its existing area of features.
+
+Stylistic rules that enforce naming and/or sorting conventions tend to grow incomprehensibly complex as increasingly obscure features are requested.
+This rule has reached the limit of what is reasonable for the typescript-eslint project to maintain.
+See [eslint-plugin: Feature freeze naming and sorting stylistic rules](https://github.com/typescript-eslint/typescript-eslint/issues/8792) for more information.
+:::
+
 ## Options
 
 ```ts
@@ -1002,9 +1011,9 @@ interface Foo {
   b(): void;
   a: boolean;
 
-  [a: string]: number; // Order doesn't matter (no sortable identifier)
-  new (): Bar; // Order doesn't matter (no sortable identifier)
-  (): Baz; // Order doesn't matter (no sortable identifier)
+  [a: string]: number;
+  new (): Bar;
+  (): Baz;
 }
 ```
 
@@ -1013,12 +1022,12 @@ interface Foo {
 
 ```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
+  [a: string]: number;
   a: boolean;
   b(): void;
 
-  [a: string]: number; // Order doesn't matter (no sortable identifier)
-  new (): Bar; // Order doesn't matter (no sortable identifier)
-  (): Baz; // Order doesn't matter (no sortable identifier)
+  (): Baz;
+  new (): Bar;
 }
 ```
 

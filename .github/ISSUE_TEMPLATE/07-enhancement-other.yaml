@@ -25,11 +25,14 @@ body:
       options:
         - ast-spec
         - parser
+        - rule-tester
         - scope-manager
         - type-utils
+        - types
         - typescript-eslint
         - typescript-estree
         - utils
+        - visitor-keys
         - website
     validations:
       required: true

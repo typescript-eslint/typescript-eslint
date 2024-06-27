@@ -206,6 +206,7 @@ export function getOperatorPrecedenceForNode(
       return OperatorPrecedence.Spread;
 
     case AST_NODE_TYPES.YieldExpression:
+    case AST_NODE_TYPES.ArrowFunctionExpression:
       return OperatorPrecedence.Yield;
 
     case AST_NODE_TYPES.ConditionalExpression:
@@ -280,7 +281,6 @@ export function getOperatorPrecedenceForNode(
     case AST_NODE_TYPES.ArrayExpression:
     case AST_NODE_TYPES.ObjectExpression:
     case AST_NODE_TYPES.FunctionExpression:
-    case AST_NODE_TYPES.ArrowFunctionExpression:
     case AST_NODE_TYPES.ClassExpression:
     case AST_NODE_TYPES.TemplateLiteral:
     case AST_NODE_TYPES.JSXElement:

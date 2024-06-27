@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function x(x: number): void;
+function x(x: string): void;
+           ~~~~~~~~~ These overloads can be combined into one signature taking \`number | string\`.
+"
+`;
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+function y(): void;
+function y(...x: number[]): void;
+           ~~~~~~~~~~~~~~ These overloads can be combined into one signature with a rest parameter.
+"
+`;
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 3`] = `
+"Correct
+
+function x(x: number | string): void;
+"
+`;
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 4`] = `
+"Correct
+
+function y(...x: number[]): void;
+"
+`;
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 5`] = `
+"Correct
+
+// This rule won't check overload signatures with different rest parameter types.
+// See https://github.com/microsoft/TypeScript/issues/5077
+function f(...a: number[]): void;
+function f(...a: string[]): void;
+"
+`;
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 6`] = `
+"Incorrect
+Options: { "ignoreDifferentlyNamedParameters": true }
+
+function f(a: number): void;
+function f(a: string): void;
+           ~~~~~~~~~ These overloads can be combined into one signature taking \`number | string\`.
+"
+`;
+
+exports[`Validating rule docs unified-signatures.mdx code examples ESLint output 7`] = `
+"Correct
+Options: { "ignoreDifferentlyNamedParameters": true }
+
+function f(a: number): void;
+function f(b: string): void;
+"
+`;

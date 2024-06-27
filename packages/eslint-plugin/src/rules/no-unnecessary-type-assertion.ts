@@ -88,7 +88,14 @@ export default createRule<Options, MessageIds>({
         // check if the defined variable type has changed since assignment
         const declarationType = checker.getTypeFromTypeNode(declaration.type);
         const type = getConstrainedTypeAtLocation(services, node);
-        if (declarationType === type) {
+        if (
+          declarationType === type &&
+          // `declare`s are never narrowed, so never skip them
+          !(
+            services.tsNodeToESTreeNodeMap.get(declaration)
+              .parent as TSESTree.VariableDeclaration
+          ).declare
+        ) {
           // possibly used before assigned, so just skip it
           // better to false negative and skip it, than false positive and fix to compile erroring code
           //
@@ -108,24 +115,56 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isLiteralVariableDeclarationChangingTypeWithConst(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-    ): boolean {
-      /**
-       * If the type assertion is on a template literal WITH expressions we
-       * should keep the `const` casting
-       * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
-       */
-      if (node.expression.type === AST_NODE_TYPES.TemplateLiteral) {
-        return node.expression.expressions.length === 0;
-      }
-
+    function isImplicitlyNarrowedConstDeclaration({
+      expression,
+      parent,
+    }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion): boolean {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const maybeDeclarationNode = node.parent.parent!;
+      const maybeDeclarationNode = parent.parent!;
+      const isTemplateLiteralWithExpressions =
+        expression.type === AST_NODE_TYPES.TemplateLiteral &&
+        expression.expressions.length !== 0;
       return (
         maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
-        maybeDeclarationNode.kind === 'const'
+        maybeDeclarationNode.kind === 'const' &&
+        /**
+         * Even on `const` variable declarations, template literals with expressions can sometimes be widened without a type assertion.
+         * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
+         */
+        !isTemplateLiteralWithExpressions
       );
+    }
+
+    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
+      if (uncast === cast) {
+        return true;
+      }
+
+      if (
+        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
+        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
+        tsutils.isCompilerOptionEnabled(
+          compilerOptions,
+          'exactOptionalPropertyTypes',
+        )
+      ) {
+        const uncastParts = tsutils
+          .unionTypeParts(uncast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        const castParts = tsutils
+          .unionTypeParts(cast)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        if (uncastParts.length !== castParts.length) {
+          return false;
+        }
+
+        const uncastPartsSet = new Set(uncastParts);
+        return castParts.every(part => uncastPartsSet.has(part));
+      }
+
+      return false;
     }
 
     return {
@@ -157,7 +196,7 @@ export default createRule<Options, MessageIds>({
 
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
-        if (!isNullableType(type)) {
+        if (!isNullableType(type) && !isTypeFlagSet(type, ts.TypeFlags.Void)) {
           if (
             node.expression.type === AST_NODE_TYPES.Identifier &&
             isPossiblyUsedBeforeAssigned(node.expression)
@@ -185,6 +224,7 @@ export default createRule<Options, MessageIds>({
               ts.TypeFlags.Undefined,
             );
             const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
+            const typeIncludesVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
 
             const contextualTypeIncludesUndefined = isTypeFlagSet(
               contextualType,
@@ -193,6 +233,10 @@ export default createRule<Options, MessageIds>({
             const contextualTypeIncludesNull = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Null,
+            );
+            const contextualTypeIncludesVoid = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Void,
             );
 
             // make sure that the parent accepts the same types
@@ -203,8 +247,11 @@ export default createRule<Options, MessageIds>({
             const isValidNull = typeIncludesNull
               ? contextualTypeIncludesNull
               : true;
+            const isValidVoid = typeIncludesVoid
+              ? contextualTypeIncludesVoid
+              : true;
 
-            if (isValidUndefined && isValidNull) {
+            if (isValidUndefined && isValidNull && isValidVoid) {
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
@@ -232,10 +279,10 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = uncastType === castType;
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isLiteralVariableDeclarationChangingTypeWithConst(node)
+          ? isImplicitlyNarrowedConstDeclaration(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {

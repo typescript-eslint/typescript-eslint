@@ -172,13 +172,13 @@ const schema: JSONSchema4AnyOfSchema = {
 function isObjectOfPaths(
   obj: unknown,
 ): obj is { paths: ArrayOfStringOrObject } {
-  return Object.prototype.hasOwnProperty.call(obj, 'paths');
+  return !!obj && Object.hasOwn(obj, 'paths');
 }
 
 function isObjectOfPatterns(
   obj: unknown,
 ): obj is { patterns: ArrayOfStringOrObjectPatterns } {
-  return Object.prototype.hasOwnProperty.call(obj, 'patterns');
+  return !!obj && Object.hasOwn(obj, 'patterns');
 }
 
 function isOptionsArrayOfStringOrObject(
@@ -312,10 +312,7 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.TSImportEqualsDeclaration,
       ): void {
         if (
-          node.moduleReference.type ===
-            AST_NODE_TYPES.TSExternalModuleReference &&
-          node.moduleReference.expression.type === AST_NODE_TYPES.Literal &&
-          typeof node.moduleReference.expression.value === 'string'
+          node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference
         ) {
           const synthesizedImport = {
             ...node,

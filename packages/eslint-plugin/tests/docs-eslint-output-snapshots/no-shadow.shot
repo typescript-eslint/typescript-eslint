@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-shadow.mdx code examples ESLint output 1`] = `
+"Options: { "ignoreTypeValueShadow": true }
+
+type Foo = number;
+interface Bar {
+  prop: number;
+}
+
+function f() {
+  const Foo = 1;
+  const Bar = 'test';
+}
+"
+`;
+
+exports[`Validating rule docs no-shadow.mdx code examples ESLint output 2`] = `
+"Options: { "ignoreFunctionTypeParameterNameValueShadow": true }
+
+const test = 1;
+type Func = (test: string) => typeof test;
+"
+`;

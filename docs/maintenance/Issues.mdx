@@ -141,7 +141,7 @@ We avoid features that:
 - Are only relevant for a minority of users, as they aren't likely worth the maintenance burden
 - Aren't TypeScript-specific (e.g. should be in ESLint core instead)
 - Are only relevant with specific userland frameworks or libraries, such as Jest or React
-- Are for "formatting" functionality (we [strongly recommend users use a separate dedicated formatter](../troubleshooting/Formatting.mdx))
+- Are for "formatting" functionality (we [strongly recommend users use a separate dedicated formatter](../users/What_About_Formatting.mdx))
 
 #### ✨ Rule Enhancements
 
@@ -163,7 +163,7 @@ For enhancements meant to limit which kinds of nodes the rule targets, mark the 
 #### 🚀 New Rules
 
 We're generally accepting of new rules that meet the above feature request criteria.
-The biggest exception is rules that can roughly be implemented with [`@typescript-eslint/ban-types`](/rules/ban-types) and/or [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
+The biggest exception is rules that can roughly be implemented with [`@typescript-eslint/no-restricted-types`](/rules/no-restricted-types) and/or [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
 
 ## Pruning Old Issues
 
