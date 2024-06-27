@@ -146,7 +146,7 @@ describe('useProgramFromProjectService', () => {
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultproject-glob-too-wide
 
 Matching files:
 - a
@@ -180,7 +180,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowdefaultproject-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultproject-glob-too-wide
 
 Matching files:
 - 0
@@ -302,7 +302,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     expect(actual).toBe(program);
   });
 
-  it('does not call setHostConfiguration if extraFileExtensions are not provided', () => {
+  it('does not call setHostConfiguration on the service with default extensions if extraFileExtensions are not provided', () => {
     const { service } = createMockProjectService();
 
     useProgramFromProjectService(
@@ -318,7 +318,26 @@ If you absolutely need more files included, set parserOptions.projectService.max
     expect(service.setHostConfiguration).not.toHaveBeenCalled();
   });
 
-  it('calls setHostConfiguration on the service to use extraFileExtensions when it is provided', () => {
+  it('does not call setHostConfiguration on the service with default extensions if extraFileExtensions is empty', () => {
+    const { service } = createMockProjectService();
+
+    useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: [mockParseSettings.filePath],
+        service,
+      }),
+      {
+        ...mockParseSettings,
+        extraFileExtensions: [],
+      },
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).not.toHaveBeenCalled();
+  });
+
+  it('calls setHostConfiguration on the service with default extensions to use extraFileExtensions when it is provided', () => {
     const { service } = createMockProjectService();
 
     useProgramFromProjectService(
@@ -342,6 +361,126 @@ If you absolutely need more files included, set parserOptions.projectService.max
           scriptKind: ScriptKind.Deferred,
         },
       ],
+    });
+  });
+
+  it('does not call setHostConfiguration on the service to use extraFileExtensions when unchanged', () => {
+    const { service } = createMockProjectService();
+    const settings = createProjectServiceSettings({
+      allowDefaultProject: [mockParseSettings.filePath],
+      service,
+    });
+
+    useProgramFromProjectService(
+      settings,
+      {
+        ...mockParseSettings,
+        extraFileExtensions: ['.vue'],
+      },
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      extraFileExtensions: [
+        {
+          extension: '.vue',
+          isMixedContent: false,
+          scriptKind: ScriptKind.Deferred,
+        },
+      ],
+    });
+
+    useProgramFromProjectService(
+      settings,
+      {
+        ...mockParseSettings,
+        extraFileExtensions: ['.vue'],
+      },
+      false,
+      new Set(),
+    );
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls setHostConfiguration on the service to use extraFileExtensions when changed', () => {
+    const { service } = createMockProjectService();
+    const settings = createProjectServiceSettings({
+      allowDefaultProject: [mockParseSettings.filePath],
+      service,
+    });
+
+    useProgramFromProjectService(
+      settings,
+      {
+        ...mockParseSettings,
+        extraFileExtensions: ['.vue'],
+      },
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      extraFileExtensions: [
+        {
+          extension: '.vue',
+          isMixedContent: false,
+          scriptKind: ScriptKind.Deferred,
+        },
+      ],
+    });
+
+    useProgramFromProjectService(
+      settings,
+      {
+        ...mockParseSettings,
+        extraFileExtensions: [],
+      },
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(2);
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      extraFileExtensions: [],
+    });
+  });
+
+  it('calls setHostConfiguration on the service with non-default extensions to use defaults when extraFileExtensions are not provided', () => {
+    const { service } = createMockProjectService();
+    const settings = createProjectServiceSettings({
+      allowDefaultProject: [mockParseSettings.filePath],
+      service,
+    });
+
+    useProgramFromProjectService(
+      settings,
+      {
+        ...mockParseSettings,
+        extraFileExtensions: ['.vue'],
+      },
+      false,
+      new Set(),
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(1);
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      extraFileExtensions: [
+        {
+          extension: '.vue',
+          isMixedContent: false,
+          scriptKind: ScriptKind.Deferred,
+        },
+      ],
+    });
+
+    useProgramFromProjectService(settings, mockParseSettings, false, new Set());
+
+    expect(service.setHostConfiguration).toHaveBeenCalledTimes(2);
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      extraFileExtensions: [],
     });
   });
 });

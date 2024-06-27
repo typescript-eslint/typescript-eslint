@@ -408,6 +408,7 @@ export type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
 ) => void;
 
 interface RuleListenerBaseSelectors {
+  AccessorProperty?: RuleFunction<TSESTree.AccessorProperty>;
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
