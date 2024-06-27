@@ -77,7 +77,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
     },
     alias: Object.fromEntries(
       [
-        // built-in Node packages
+        // built-in Node packages — alias each twice — both with and without the `node:` prefix
         ...['util', 'assert', 'path'].flatMap(from => [from, `node:${from}`]),
         // other NPM packages
         'typescript',
