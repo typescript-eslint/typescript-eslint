@@ -155,7 +155,9 @@ export default createRule<[], MessageIds>({
       node: TSESTree.LetOrConstOrVarDeclarator,
     ): void {
       typeReferences.forEach(ref => {
-        if (isAncestorNode(node, ref.identifier.parent)) {
+        const isTypeUsedInNode = isAncestorNode(node, ref.identifier.parent);
+
+        if (isTypeUsedInNode) {
           checkTypeNode(ref.identifier.parent);
         }
       });
