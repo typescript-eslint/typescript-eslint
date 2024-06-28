@@ -10,7 +10,6 @@ import type {
   UpdateModel,
   WebLinterModule,
 } from './types';
-import { createFileName } from './utils';
 
 export function createParser(
   system: PlaygroundSystem,
@@ -44,7 +43,7 @@ export function createParser(
       text: string,
       options: ParserOptions = {},
     ): Parser.ParseResult => {
-      const filePath = options.filePath ?? createFileName('.ts');
+      const filePath = options.filePath ?? '/input.ts';
 
       // if text is empty use empty line to avoid error
       const code = text || '\n';

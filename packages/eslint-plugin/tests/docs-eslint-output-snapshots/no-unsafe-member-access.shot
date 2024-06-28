@@ -27,9 +27,9 @@ nestedAny.prop[key];
 // Using an any to access a member is unsafe
 const arr = [1, 2, 3];
 arr[anyVar];
-    ~~~~~~ Computed name [anyVar] resolves to an any value.
+    ~~~~~~ Computed name [anyVar] resolves to an \`any\` value.
 nestedAny[anyVar];
-          ~~~~~~ Computed name [anyVar] resolves to an any value.
+          ~~~~~~ Computed name [anyVar] resolves to an \`any\` value.
 "
 `;
 
