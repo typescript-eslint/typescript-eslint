@@ -235,6 +235,7 @@ function getTypeReferencesRecursively(
 
           collect(nodeToCheck);
         });
+
         break;
 
       case AST_NODE_TYPES.ArrowFunctionExpression:
@@ -246,6 +247,7 @@ function getTypeReferencesRecursively(
         scope.through.forEach(ref => {
           collect(ref.identifier.parent);
         });
+
         break;
       }
 
@@ -284,18 +286,17 @@ function getTypeReferencesRecursively(
         if (node.typeAnnotation?.typeAnnotation) {
           collect(node.typeAnnotation.typeAnnotation);
         }
+
         break;
 
       case AST_NODE_TYPES.TSQualifiedName:
         collect(node.parent);
         break;
 
-      case AST_NODE_TYPES.TSAsExpression: {
+      case AST_NODE_TYPES.TSAsExpression:
         collect(node.expression);
         collect(node.typeAnnotation);
-
         break;
-      }
 
       default:
         break;
