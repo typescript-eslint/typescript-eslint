@@ -1,6 +1,5 @@
-import type { Reference } from '@typescript-eslint/scope-manager';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -10,19 +9,6 @@ import {
 } from '../util';
 
 type MessageIds = 'requireTypeExport';
-
-type FunctionNode =
-  | TSESTree.FunctionDeclaration
-  | TSESTree.TSDeclareFunction
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression;
-
-type TypeReference = Reference & {
-  isTypeReference: true;
-  identifier: {
-    parent: TSESTree.TSTypeReference;
-  };
-};
 
 export default createRule<[], MessageIds>({
   name: 'require-types-exports',
@@ -41,24 +27,8 @@ export default createRule<[], MessageIds>({
   create(context) {
     const services = getParserServices(context);
 
-    const typeReferences = new Set<TypeReference>();
     const externalizedTypes = new Set<string>();
     const reportedTypes = new Set<string>();
-
-    function collectTypeReferences(node: TSESTree.Program): void {
-      const scope = context.sourceCode.getScope(node);
-
-      scope.references.forEach(r => {
-        if (
-          r.resolved?.isTypeVariable &&
-          r.identifier.type === AST_NODE_TYPES.Identifier &&
-          r.identifier.parent.type === AST_NODE_TYPES.TSTypeReference &&
-          r.isTypeReference
-        ) {
-          typeReferences.add(r as TypeReference);
-        }
-      });
-    }
 
     function collectImportedTypes(
       node:
@@ -82,11 +52,12 @@ export default createRule<[], MessageIds>({
       node: (
         | TSESTree.ExportNamedDeclaration
         | TSESTree.DefaultExportDeclarations
+        | TSESTree.ArrowFunctionExpression
       ) & {
         declaration: TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction;
       },
     ): void {
-      checkFunctionTypes(node.declaration);
+      checkNodeTypes(node.declaration);
     }
 
     function visitExportedVariableDeclaration(
@@ -95,20 +66,8 @@ export default createRule<[], MessageIds>({
       },
     ): void {
       for (const declaration of node.declaration.declarations) {
-        if (declaration.init?.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-          checkFunctionTypes(declaration.init);
-        } else {
-          checkVariableTypes(declaration);
-        }
+        checkNodeTypes(declaration);
       }
-    }
-
-    function visitDefaultExportedArrowFunction(
-      node: TSESTree.ExportDefaultDeclaration & {
-        declaration: TSESTree.ArrowFunctionExpression;
-      },
-    ): void {
-      checkFunctionTypes(node.declaration);
     }
 
     function visitDefaultExportedIdentifier(
@@ -128,39 +87,17 @@ export default createRule<[], MessageIds>({
           continue;
         }
 
-        if (
-          def.node.init.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          def.node.init.type === AST_NODE_TYPES.FunctionExpression
-        ) {
-          checkFunctionTypes(def.node.init);
-        } else {
-          checkVariableTypes(def.node);
-        }
+        checkNodeTypes(def.node);
       }
     }
 
-    function checkFunctionTypes(node: FunctionNode): void {
-      const scope = context.sourceCode.getScope(node);
+    function checkNodeTypes(node: TSESTree.Node): void {
+      const typeReferences = getTypeReferencesRecursively(
+        node,
+        context.sourceCode,
+      );
 
-      scope.through.forEach(ref => {
-        const typeRef = findClosestTypeReference(ref.identifier, node);
-
-        if (typeRef) {
-          checkTypeNode(typeRef);
-        }
-      });
-    }
-
-    function checkVariableTypes(
-      node: TSESTree.LetOrConstOrVarDeclarator,
-    ): void {
-      typeReferences.forEach(ref => {
-        const isTypeUsedInNode = isAncestorNode(node, ref.identifier.parent);
-
-        if (isTypeUsedInNode) {
-          checkTypeNode(ref.identifier.parent);
-        }
-      });
+      typeReferences.forEach(checkTypeNode);
     }
 
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
@@ -199,8 +136,6 @@ export default createRule<[], MessageIds>({
     }
 
     return {
-      Program: collectTypeReferences,
-
       'ImportDeclaration ImportSpecifier': collectImportedTypes,
       'ImportDeclaration ImportNamespaceSpecifier': collectImportedTypes,
       'ImportDeclaration ImportDefaultSpecifier': collectImportedTypes,
@@ -220,14 +155,14 @@ export default createRule<[], MessageIds>({
       'ExportNamedDeclaration[declaration.type="TSDeclareFunction"]':
         visitExportedFunctionDeclaration,
 
-      'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
-        visitExportedVariableDeclaration,
-
       'ExportDefaultDeclaration[declaration.type="FunctionDeclaration"]':
         visitExportedFunctionDeclaration,
 
       'ExportDefaultDeclaration[declaration.type="ArrowFunctionExpression"]':
-        visitDefaultExportedArrowFunction,
+        visitExportedFunctionDeclaration,
+
+      'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
+        visitExportedVariableDeclaration,
 
       'ExportDefaultDeclaration[declaration.type="Identifier"]':
         visitDefaultExportedIdentifier,
@@ -250,33 +185,137 @@ function getTypeName(typeName: TSESTree.EntityName): string {
   }
 }
 
-function findClosestTypeReference(
-  startNode: TSESTree.Node,
-  endNode: TSESTree.Node,
-): TSESTree.TSTypeReference | null {
-  let parent = startNode.parent;
+function getTypeReferencesRecursively(
+  node: TSESTree.Node,
+  sourceCode: TSESLint.SourceCode,
+): Set<TSESTree.TSTypeReference> {
+  const typeReferences = new Set<TSESTree.TSTypeReference>();
 
-  while (parent && parent !== endNode) {
-    if (parent.type === AST_NODE_TYPES.TSTypeReference) {
-      return parent;
+  collect(node);
+
+  function collect(node: TSESTree.Node): void {
+    switch (node.type) {
+      case AST_NODE_TYPES.VariableDeclarator:
+        collect(node.id);
+
+        if (node.init) {
+          collect(node.init);
+        }
+        break;
+
+      case AST_NODE_TYPES.Identifier: {
+        const typeAnnotation = node.typeAnnotation?.typeAnnotation;
+
+        if (typeAnnotation) {
+          collect(typeAnnotation);
+        }
+
+        // If it's a reference to a variable inside an object, we need to get the declared variable.
+        if (
+          node.parent.type === AST_NODE_TYPES.Property ||
+          node.parent.type === AST_NODE_TYPES.ArrayExpression
+        ) {
+          const variableNode = sourceCode.getScope(node).set.get(node.name);
+
+          variableNode?.defs.forEach(def => {
+            collect(def.name);
+            collect(def.node);
+          });
+        }
+
+        break;
+      }
+
+      case AST_NODE_TYPES.ObjectExpression:
+        node.properties.forEach(property => {
+          const nodeToCheck =
+            property.type === AST_NODE_TYPES.Property
+              ? property.value
+              : property.argument;
+
+          collect(nodeToCheck);
+        });
+        break;
+
+      case AST_NODE_TYPES.ArrayExpression:
+        node.elements.forEach(element => {
+          if (!element) {
+            return;
+          }
+
+          const nodeToCheck =
+            element.type === AST_NODE_TYPES.SpreadElement
+              ? element.argument
+              : element;
+
+          collect(nodeToCheck);
+        });
+        break;
+
+      case AST_NODE_TYPES.ArrowFunctionExpression:
+      case AST_NODE_TYPES.FunctionDeclaration:
+      case AST_NODE_TYPES.FunctionExpression:
+      case AST_NODE_TYPES.TSDeclareFunction: {
+        const scope = sourceCode.getScope(node);
+
+        scope.through.forEach(ref => {
+          collect(ref.identifier.parent);
+        });
+        break;
+      }
+
+      case AST_NODE_TYPES.TSTypeReference:
+        typeReferences.add(node);
+
+        node.typeArguments?.params.forEach(param => collect(param));
+        break;
+
+      case AST_NODE_TYPES.TSArrayType:
+        collect(node.elementType);
+        break;
+
+      case AST_NODE_TYPES.TSTupleType:
+        node.elementTypes.forEach(element => collect(element));
+        break;
+
+      case AST_NODE_TYPES.TSUnionType:
+      case AST_NODE_TYPES.TSIntersectionType:
+        node.types.forEach(type => collect(type));
+        break;
+
+      case AST_NODE_TYPES.TSTypeLiteral:
+        node.members.forEach(member => collect(member));
+        break;
+
+      case AST_NODE_TYPES.TSPropertySignature:
+        if (node.typeAnnotation?.typeAnnotation) {
+          collect(node.typeAnnotation.typeAnnotation);
+        }
+        break;
+
+      case AST_NODE_TYPES.TSQualifiedName:
+        collect(node.parent);
+        break;
+
+      case AST_NODE_TYPES.TSAsExpression: {
+        collect(node.expression);
+
+        const isAsConstAnnotation =
+          node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+          node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
+          node.typeAnnotation.typeName.name === 'const';
+
+        if (!isAsConstAnnotation) {
+          collect(node.typeAnnotation);
+        }
+
+        break;
+      }
+
+      default:
+        break;
     }
-
-    parent = parent.parent;
   }
 
-  return null;
-}
-
-function isAncestorNode(ancestor: TSESTree.Node, node: TSESTree.Node): boolean {
-  let parent = node.parent;
-
-  while (parent) {
-    if (parent === ancestor) {
-      return true;
-    }
-
-    parent = parent.parent;
-  }
-
-  return false;
+  return typeReferences;
 }

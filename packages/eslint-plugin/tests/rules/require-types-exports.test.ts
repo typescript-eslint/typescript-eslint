@@ -2003,5 +2003,608 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      code: `
+        type A = string;
+        type B = string;
+
+        const apple: A = 'apple';
+        const banana: B = 'banana';
+
+        export const value = {
+          path: {
+            to: {
+              apple,
+              and: {
+                banana,
+              },
+            },
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 22,
+          endColumn: 23,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 23,
+          endColumn: 24,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = string;
+        type B = string;
+
+        const apple: A = 'apple';
+        const banana: B = 'banana';
+
+        const value = {
+          path: {
+            to: {
+              apple,
+              and: {
+                banana,
+              },
+            },
+          },
+        };
+
+        export default value;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 22,
+          endColumn: 23,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 23,
+          endColumn: 24,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = string;
+        type B = string;
+
+        const apple: A = 'apple';
+        const banana: B = 'banana';
+
+        const value = {
+          spreadObject: { ...{ apple } },
+          spreadArray: [...[banana]],
+        };
+
+        export default value;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 22,
+          endColumn: 23,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 23,
+          endColumn: 24,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Fruit = 'apple' | 'banana';
+
+        const apple: Fruit = 'apple';
+        const banana: Fruit = 'banana';
+
+        export const value = {
+          path: {
+            to: [apple, banana],
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 22,
+          endColumn: 27,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Fruit = 'apple' | 'banana';
+
+        const apple: Fruit = 'apple';
+        const banana: Fruit = 'banana';
+
+        export const value = {
+          path: {
+            to: [apple, banana] as const,
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 22,
+          endColumn: 27,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Fruit = 'apple' | 'banana';
+
+        const apple: Fruit = 'apple';
+        const banana: Fruit = 'banana';
+
+        export const value = {
+          path: {
+            to: [apple, banana] as any,
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 22,
+          endColumn: 27,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Fruit = 'apple' | 'banana';
+
+        const apple = 'apple';
+        const banana = 'banana';
+
+        export const value = {
+          path: {
+            to: [apple, banana] as [Fruit, Fruit],
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 9,
+          column: 37,
+          endColumn: 42,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Fruit = 'apple' | 'banana';
+
+        const apple = 'apple';
+        const banana = 'banana';
+
+        export const value = {
+          path: {
+            to: [apple, banana] as Fruit | number,
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 9,
+          column: 36,
+          endColumn: 41,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+        type C = boolean;
+        type D = symbol;
+
+        declare const a: [A, B] | ([Array<C>, Set<D>] & number);
+
+        export const value = { a };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 27,
+          endColumn: 28,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 30,
+          endColumn: 31,
+          data: {
+            name: 'B',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 43,
+          endColumn: 44,
+          data: {
+            name: 'C',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 51,
+          endColumn: 52,
+          data: {
+            name: 'D',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        export const value = {
+          func: (arg: A): B => 'apple',
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 23,
+          endColumn: 24,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 27,
+          endColumn: 28,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        export const value = {
+          func: function (arg: A): B {
+            return 'apple';
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 32,
+          endColumn: 33,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 36,
+          endColumn: 37,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        const func = (arg: A): B => 'apple';
+
+        export const value = {
+          func,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 28,
+          endColumn: 29,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 32,
+          endColumn: 33,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        const func = function (arg: A): B {
+          return 'apple';
+        };
+
+        export const value = {
+          func,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 38,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const func = <T extends A>(arg: T): T => 'apple';
+
+        export const value = {
+          func,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 33,
+          endColumn: 34,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const func = function <T extends A>(arg: T): T {
+          return 'apple';
+        };
+
+        export const value = {
+          func,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 42,
+          endColumn: 43,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        export const value = {
+          func: <T extends A>(arg: T): T => 'apple',
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 28,
+          endColumn: 29,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        export const value = {
+          func: function <T extends A>(arg: T): T {
+            return 'apple';
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 37,
+          endColumn: 38,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        declare function func<T extends A>(arg: T): T;
+
+        export const value = {
+          func,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry,
+        }
+
+        declare function func<T extends Fruit>(arg: T): T;
+
+        export const value = {
+          func,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 41,
+          endColumn: 46,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry,
+        }
+
+        declare const a: Fruit.Apple;
+
+        export const value = {
+          a,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 26,
+          endColumn: 37,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
   ],
 });
