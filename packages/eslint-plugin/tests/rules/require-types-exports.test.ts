@@ -403,6 +403,47 @@ ruleTester.run('require-types-exports', rule, {
         return arg;
       }
     `,
+
+    `
+      declare const element: HTMLElement;
+
+      export default element;
+    `,
+
+    `
+      export const date: Date = new Date();
+    `,
+
+    `
+      import ts from 'typescript';
+      
+      export enum Fruit {
+        Apple,
+        Banana,
+        Cherry,
+      }
+      
+      declare const apple: Fruit.Apple;
+      
+      export type A = number;
+      export type B = string;
+      export type C = boolean;
+      
+      export interface D {
+        key: string;
+      }
+      
+      function func<T extends Record<string, [A, B] | { key: C & D }>>(
+        arg: T,
+      ): T | ts.Type {
+        return arg;
+      }
+      
+      export const value = {
+        apple,
+        func,
+      };
+    `,
   ],
 
   invalid: [
@@ -2262,7 +2303,7 @@ ruleTester.run('require-types-exports', rule, {
         type C = boolean;
         type D = symbol;
 
-        declare const a: [A, B] | ([Array<C>, Set<D>] & number);
+        declare const a: [A, B] | ([Array<C>, Set<D>] & Exclude<A, B>);
 
         export const value = { a };
       `,

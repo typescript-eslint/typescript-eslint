@@ -1,12 +1,11 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
+import {
+  DefinitionType,
+  ImplicitLibVariable,
+} from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import {
-  createRule,
-  getParserServices,
-  isSymbolFromDefaultLibrary,
-} from '../util';
+import { createRule } from '../util';
 
 type MessageIds = 'requireTypeExport';
 
@@ -25,8 +24,6 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const services = getParserServices(context);
-
     const externalizedTypes = new Set<string>();
     const reportedTypes = new Set<string>();
 
@@ -76,7 +73,7 @@ export default createRule<[], MessageIds>({
       },
     ): void {
       const scope = context.sourceCode.getScope(node);
-      const variable = scope.set.get(node.declaration.name);
+      const variable = getVariable(node.declaration.name, scope);
 
       if (!variable) {
         return;
@@ -103,24 +100,10 @@ export default createRule<[], MessageIds>({
     function checkTypeNode(node: TSESTree.TSTypeReference): void {
       const name = getTypeName(node.typeName);
 
-      // Using `this` type is allowed since it's necessarily exported
-      // if it's used in an exported entity.
-      if (name === 'this') {
-        return;
-      }
-
       const isExternalized = externalizedTypes.has(name);
       const isReported = reportedTypes.has(name);
 
       if (isExternalized || isReported) {
-        return;
-      }
-
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const type = services.program.getTypeChecker().getTypeAtLocation(tsNode);
-      const symbol = type.aliasSymbol ?? type.getSymbol();
-
-      if (isSymbolFromDefaultLibrary(services.program, symbol)) {
         return;
       }
 
@@ -210,12 +193,14 @@ function getTypeReferencesRecursively(
           collect(typeAnnotation);
         }
 
-        // If it's a reference to a variable inside an object, we need to get the declared variable.
+        // If it's a reference to a variable inside an object or an array,
+        // we need to get the declared variable.
         if (
           node.parent.type === AST_NODE_TYPES.Property ||
           node.parent.type === AST_NODE_TYPES.ArrayExpression
         ) {
-          const variableNode = sourceCode.getScope(node).set.get(node.name);
+          const scope = sourceCode.getScope(node);
+          const variableNode = getVariable(node.name, scope);
 
           variableNode?.defs.forEach(def => {
             collect(def.name);
@@ -264,11 +249,19 @@ function getTypeReferencesRecursively(
         break;
       }
 
-      case AST_NODE_TYPES.TSTypeReference:
-        typeReferences.add(node);
+      case AST_NODE_TYPES.TSTypeReference: {
+        const scope = sourceCode.getScope(node);
+        const variable = getVariable(getTypeName(node.typeName), scope);
+
+        const isBuiltinType = variable instanceof ImplicitLibVariable;
+
+        if (!isBuiltinType) {
+          typeReferences.add(node);
+        }
 
         node.typeArguments?.params.forEach(param => collect(param));
         break;
+      }
 
       case AST_NODE_TYPES.TSArrayType:
         collect(node.elementType);
@@ -299,15 +292,7 @@ function getTypeReferencesRecursively(
 
       case AST_NODE_TYPES.TSAsExpression: {
         collect(node.expression);
-
-        const isAsConstAnnotation =
-          node.typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
-          node.typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
-          node.typeAnnotation.typeName.name === 'const';
-
-        if (!isAsConstAnnotation) {
-          collect(node.typeAnnotation);
-        }
+        collect(node.typeAnnotation);
 
         break;
       }
@@ -318,4 +303,24 @@ function getTypeReferencesRecursively(
   }
 
   return typeReferences;
+}
+
+function getVariable(
+  name: string,
+  initialScope: TSESLint.Scope.Scope | null,
+): TSESLint.Scope.Variable | null {
+  let variable: TSESLint.Scope.Variable | null = null;
+  let scope: TSESLint.Scope.Scope | null = initialScope;
+
+  while (scope) {
+    variable = scope.set.get(name) ?? null;
+
+    if (variable) {
+      break;
+    }
+
+    scope = scope.upper;
+  }
+
+  return variable;
 }
