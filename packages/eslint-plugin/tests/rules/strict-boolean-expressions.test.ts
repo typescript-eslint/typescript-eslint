@@ -410,6 +410,11 @@ if (y) {
         },
       ],
     },
+    `
+declare const foo: boolean & { __BRAND: 'Foo' };
+if (foo) {
+}
+    `,
   ],
 
   invalid: [
