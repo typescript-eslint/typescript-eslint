@@ -1,6 +1,7 @@
 import {
   DefinitionType,
   ImplicitLibVariable,
+  ScopeType,
 } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -277,7 +278,13 @@ function getTypeReferencesRecursively(
 
         const isBuiltinType = variable instanceof ImplicitLibVariable;
 
-        if (!isBuiltinType) {
+        const isGenericTypeArg =
+          variable?.scope.type === ScopeType.function &&
+          variable.identifiers.every(
+            id => id.parent.type === AST_NODE_TYPES.TSTypeParameter,
+          );
+
+        if (!isBuiltinType && !isGenericTypeArg) {
           typeReferences.add(node);
         }
 

@@ -2811,5 +2811,28 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      code: `
+        type A = number;
+
+        export function func1<R extends A>(arg: R): R {
+          return func2<R>(arg);
+        }
+
+        declare function func2<T extends A>(arg: T): T;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
   ],
 });
