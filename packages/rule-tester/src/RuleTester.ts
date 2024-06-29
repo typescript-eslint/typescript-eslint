@@ -836,7 +836,7 @@ export class RuleTester extends TestFramework {
           // Just an error message.
           assertMessageMatches(message.message, error);
           assert.ok(
-            message.suggestions === void 0,
+            message.suggestions === undefined,
             `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
           );
         } else if (typeof error === 'object' && error != null) {
@@ -972,9 +972,8 @@ export class RuleTester extends TestFramework {
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
             const hasSuggestions = message.suggestions !== void 0;
-            // @ts-expect-error -- we purposely don't verify for undefined
-            const messageSuggestions: Linter.LintSuggestion[] =
-              message.suggestions;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const messageSuggestions = message.suggestions!;
 
             if (!hasSuggestions && expectsSuggestions) {
               assert.ok(
