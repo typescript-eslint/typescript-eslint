@@ -91,7 +91,6 @@ async function buildPackage(name: string, file: string): Promise<void> {
         setup(build): void {
           build.onLoad(
             makeFilter([
-              '/eslint-utils/rule-tester/RuleTester.ts',
               '/ts-eslint/ESLint.ts',
               '/ts-eslint/RuleTester.ts',
               '/ts-eslint/CLIEngine.ts',

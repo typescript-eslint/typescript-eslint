@@ -5,7 +5,10 @@ on:
   pull_request:
     types: [opened, edited]
   issue_comment:
-    types: [created, edited]
+    # nx bot and netlify bot edit their comments regularly
+    # this floods our action queue with this action
+    # it's rare that someone edits a comment to add an image so to save our queue we ignore the edit
+    types: [created]
   discussion:
     types: [created, edited]
   discussion_comment:
