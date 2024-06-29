@@ -416,29 +416,29 @@ ruleTester.run('require-types-exports', rule, {
 
     `
       import ts from 'typescript';
-      
+
       export enum Fruit {
         Apple,
         Banana,
         Cherry,
       }
-      
+
       declare const apple: Fruit.Apple;
-      
+
       export type A = number;
       export type B = string;
       export type C = boolean;
-      
+
       export interface D {
         key: string;
       }
-      
+
       function func<T extends Record<string, [A, B] | { key: C & D }>>(
         arg: T,
       ): T | ts.Type {
         return arg;
       }
-      
+
       export const value = {
         apple,
         func,
@@ -2643,6 +2643,45 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 37,
           data: {
             name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type Item = {
+          key: string;
+          value: number;
+        };
+
+        type ItemKey = Item['key'];
+
+        const item: Item = { key: 'apple', value: 1 };
+
+        const map = new Map<ItemKey, Item>([['apple', item]]);
+
+        export const value = {
+          map,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 9,
+          column: 21,
+          endColumn: 25,
+          data: {
+            name: 'Item',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 11,
+          column: 29,
+          endColumn: 36,
+          data: {
+            name: 'ItemKey',
           },
         },
       ],

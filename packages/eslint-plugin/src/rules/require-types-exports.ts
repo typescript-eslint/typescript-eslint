@@ -238,6 +238,12 @@ function getTypeReferencesRecursively(
 
         break;
 
+      case AST_NODE_TYPES.NewExpression:
+        collect(node.callee);
+        node.arguments.forEach(arg => collect(arg));
+        node.typeArguments?.params.forEach(param => collect(param));
+        break;
+
       case AST_NODE_TYPES.ArrowFunctionExpression:
       case AST_NODE_TYPES.FunctionDeclaration:
       case AST_NODE_TYPES.FunctionExpression:
