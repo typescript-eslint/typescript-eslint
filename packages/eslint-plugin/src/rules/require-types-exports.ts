@@ -173,10 +173,17 @@ function getTypeReferencesRecursively(
   sourceCode: TSESLint.SourceCode,
 ): Set<TSESTree.TSTypeReference> {
   const typeReferences = new Set<TSESTree.TSTypeReference>();
+  const visited = new Set<TSESTree.Node>();
 
   collect(node);
 
   function collect(node: TSESTree.Node): void {
+    if (visited.has(node)) {
+      return;
+    }
+
+    visited.add(node);
+
     switch (node.type) {
       case AST_NODE_TYPES.VariableDeclarator:
         collect(node.id);
@@ -193,20 +200,14 @@ function getTypeReferencesRecursively(
           collect(typeAnnotation);
         }
 
-        // If it's a reference to a variable inside an object or an array,
-        // we need to get the declared variable.
-        if (
-          node.parent.type === AST_NODE_TYPES.Property ||
-          node.parent.type === AST_NODE_TYPES.ArrayExpression
-        ) {
-          const scope = sourceCode.getScope(node);
-          const variableNode = getVariable(node.name, scope);
+        // Resolve the variable to its declaration (in cases where the variable is referenced)
+        const scope = sourceCode.getScope(node);
+        const variableNode = getVariable(node.name, scope);
 
-          variableNode?.defs.forEach(def => {
-            collect(def.name);
-            collect(def.node);
-          });
-        }
+        variableNode?.defs.forEach(def => {
+          collect(def.name);
+          collect(def.node);
+        });
 
         break;
       }
@@ -239,6 +240,7 @@ function getTypeReferencesRecursively(
         break;
 
       case AST_NODE_TYPES.NewExpression:
+      case AST_NODE_TYPES.CallExpression:
         collect(node.callee);
         node.arguments.forEach(arg => collect(arg));
         node.typeArguments?.params.forEach(param => collect(param));
@@ -251,11 +253,23 @@ function getTypeReferencesRecursively(
         const scope = sourceCode.getScope(node);
 
         scope.through.forEach(ref => {
-          collect(ref.identifier.parent);
+          const isSelfReference = ref.identifier.parent === node;
+
+          const nodeToCheck = isSelfReference
+            ? ref.identifier
+            : ref.identifier.parent;
+
+          collect(nodeToCheck);
         });
 
         break;
       }
+
+      case AST_NODE_TYPES.ReturnStatement:
+        if (node.argument) {
+          collect(node.argument);
+        }
+        break;
 
       case AST_NODE_TYPES.TSTypeReference: {
         const scope = sourceCode.getScope(node);

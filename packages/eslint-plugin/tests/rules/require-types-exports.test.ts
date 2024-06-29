@@ -2650,6 +2650,62 @@ ruleTester.run('require-types-exports', rule, {
 
     {
       code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry,
+        }
+
+        declare const a: Fruit.Apple;
+
+        export const value = {
+          key: () => a,
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 26,
+          endColumn: 37,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry,
+        }
+
+        declare const a: Fruit.Apple;
+
+        export const value = {
+          key: function () {
+            return a;
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 26,
+          endColumn: 37,
+          data: {
+            name: 'Fruit',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
         type Item = {
           key: string;
           value: number;
@@ -2682,6 +2738,75 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 36,
           data: {
             name: 'ItemKey',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const item: A = 1;
+
+        export const value = {
+          key: (() => item)(),
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 21,
+          endColumn: 22,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const item: A = 1;
+
+        export const value = {
+          key: ((a: A) => a)(item),
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 21,
+          endColumn: 22,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const item: A = 1;
+
+        export const value = {
+          key: (<T extends A>(a: T) => a)(item),
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 28,
+          endColumn: 29,
+          data: {
+            name: 'A',
           },
         },
       ],
