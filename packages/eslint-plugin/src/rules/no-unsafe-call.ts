@@ -20,7 +20,7 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow calling a value with type an `any` value',
+      description: 'Disallow calling a value with type `any`',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
