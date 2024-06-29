@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { sync as globSync } from 'globby';
+import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
