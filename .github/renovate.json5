@@ -29,12 +29,6 @@
 
   packageRules: [
     {
-      automerge: true,
-      automergeStrategy: 'squash',
-      description: 'Automerge everything but major updates.',
-      matchUpdateTypes: ['minor', 'pin', 'digest'],
-    },
-    {
       addLabels: ['javascript'],
       description: 'Label JS ecosystem PRs appropriately.',
       matchManagers: ['npm'],
