@@ -63,14 +63,14 @@ function filterAndMapRuleConfigs({
   if (recommendations) {
     result = result.filter(([, rule]) => {
       switch (typeof rule.meta.docs.recommended) {
-        case 'undefined':
-          return false;
         case 'object':
           return Object.keys(rule.meta.docs.recommended).some(recommended =>
             recommendations.includes(recommended as RuleRecommendation),
           );
         case 'string':
           return recommendations.includes(rule.meta.docs.recommended);
+        default:
+          return false;
       }
     });
   }
