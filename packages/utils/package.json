@@ -23,10 +23,6 @@
       "types": "./dist/eslint-utils/index.d.ts",
       "default": "./dist/eslint-utils/index.js"
     },
-    "./eslint-utils/rule-tester": {
-      "types": "./dist/eslint-utils/rule-tester/RuleTester.d.ts",
-      "default": "./dist/eslint-utils/rule-tester/RuleTester.js"
-    },
     "./json-schema": {
       "types": "./dist/json-schema.d.ts",
       "default": "./dist/json-schema.js"
