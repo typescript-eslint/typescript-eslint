@@ -7,6 +7,19 @@ slug: /troubleshooting/typed-linting
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+## Editor ESLint reports become out-of-date after file changes
+
+There is a known issue in at least VS Code with typed linting that files might have out-of-date lint errors after multiple updates to files on disk.
+The root cause is that ESLint doesn't provide a way for editors to know about cross-file dependencies, such as type information.
+This results in files receiving out-of-date type information when files they import from are changed.
+
+You might see this as erroneous `no-unsafe-*` rule complaints on `any` or `error typed` values.
+Other rules may be more subtly incorrect.
+
+For now, the workaround is to run the _**Restart ESLint Server**_ command in VS Code (or an equivalent in other editors) when types get out of date.
+
+See [ESLint does not re-compute cross-file information on file changes (microsoft/vscode-eslint#1774)](https://github.com/microsoft/vscode-eslint/issues/1774) for more information.
+
 <HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
