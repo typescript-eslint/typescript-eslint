@@ -19,4 +19,13 @@ export const es2015_core = {
   RegExpConstructor: TYPE,
   String: TYPE,
   StringConstructor: TYPE,
+  Int8Array: TYPE,
+  Uint8Array: TYPE,
+  Uint8ClampedArray: TYPE,
+  Int16Array: TYPE,
+  Uint16Array: TYPE,
+  Int32Array: TYPE,
+  Uint32Array: TYPE,
+  Float32Array: TYPE,
+  Float64Array: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

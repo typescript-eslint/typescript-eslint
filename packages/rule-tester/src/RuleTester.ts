@@ -187,16 +187,16 @@ export class RuleTester extends TestFramework {
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<Options extends Readonly<unknown[]>>(
+  static only<Options extends readonly unknown[]>(
     item: ValidTestCase<Options> | string,
   ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends readonly unknown[]>(
     item: InvalidTestCase<MessageIds, Options>,
   ): InvalidTestCase<MessageIds, Options>;
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
       | InvalidTestCase<MessageIds, Options>
       | ValidTestCase<Options>

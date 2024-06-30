@@ -5,7 +5,6 @@ interface TsParsedEnums {
   ModifierFlags: Record<number, string>;
   ObjectFlags: Record<number, string>;
   SymbolFlags: Record<number, string>;
-  FlowFlags: Record<number, string>;
   TypeFlags: Record<number, string>;
   ScriptKind: Record<number, string>;
   TransformFlags: Record<number, string>;
@@ -46,7 +45,6 @@ function getTsEnum(type: keyof TsParsedEnums): Record<number, string> {
     ModifierFlags: extractEnum(window.ts.ModifierFlags),
     ObjectFlags: extractEnum(window.ts.ObjectFlags),
     SymbolFlags: extractEnum(window.ts.SymbolFlags),
-    FlowFlags: extractEnum(window.ts.FlowFlags),
     TypeFlags: extractEnum(window.ts.TypeFlags),
     ScriptKind: extractEnum(window.ts.ScriptKind),
     ScriptTarget: extractEnum(window.ts.ScriptTarget),

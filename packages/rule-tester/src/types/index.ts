@@ -12,7 +12,7 @@ export type TesterConfigWithDefaults = Mutable<
 
 export interface RunTests<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > {
   // RuleTester.run also accepts strings for valid cases
   readonly valid: readonly (ValidTestCase<Options> | string)[];
@@ -21,7 +21,7 @@ export interface RunTests<
 
 export interface NormalizedRunTests<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > {
   readonly valid: readonly ValidTestCase<Options>[];
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
