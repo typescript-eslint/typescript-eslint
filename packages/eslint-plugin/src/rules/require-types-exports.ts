@@ -192,10 +192,7 @@ function getTypeReferencesRecursively(
     switch (node.type) {
       case AST_NODE_TYPES.VariableDeclarator:
         collect(node.id);
-
-        if (node.init) {
-          collect(node.init);
-        }
+        collect(node.init);
         break;
 
       case AST_NODE_TYPES.Identifier: {
@@ -334,7 +331,6 @@ function getTypeReferencesRecursively(
 
       case AST_NODE_TYPES.TSPropertySignature:
         collect(node.typeAnnotation?.typeAnnotation);
-
         break;
 
       case AST_NODE_TYPES.TSQualifiedName:
