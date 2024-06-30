@@ -202,7 +202,6 @@ function getTypeReferencesRecursively(
           collect(def.name);
           collect(def.node);
         });
-
         break;
       }
 
@@ -226,7 +225,6 @@ function getTypeReferencesRecursively(
 
           collect(nodeToCheck);
         });
-
         break;
 
       case AST_NODE_TYPES.NewExpression:
@@ -255,15 +253,6 @@ function getTypeReferencesRecursively(
         node.params.forEach(collect);
         collect(node.returnType?.typeAnnotation);
         collectFunctionReturnStatements(node).forEach(collect);
-
-        break;
-
-      case AST_NODE_TYPES.BlockStatement:
-        node.body.forEach(item => {
-          if (item.type === AST_NODE_TYPES.ReturnStatement) {
-            collect(item);
-          }
-        });
         break;
 
       case AST_NODE_TYPES.AssignmentPattern:
@@ -278,7 +267,6 @@ function getTypeReferencesRecursively(
       case AST_NODE_TYPES.ObjectPattern:
         node.properties.forEach(collect);
         collect(node.typeAnnotation?.typeAnnotation);
-
         break;
 
       case AST_NODE_TYPES.ArrayPattern:
