@@ -179,11 +179,7 @@ function getTypeReferencesRecursively(
   collect(node);
 
   function collect(node: TSESTree.Node | null | undefined): void {
-    if (!node) {
-      return;
-    }
-
-    if (visited.has(node)) {
+    if (!node || visited.has(node)) {
       return;
     }
 
