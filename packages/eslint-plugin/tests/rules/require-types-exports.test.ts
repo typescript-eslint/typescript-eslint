@@ -2834,5 +2834,90 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        export function func1<R extends A>(arg: R): R {
+          doWork(String(arg));
+
+          return arg;
+        }
+
+        declare function doWork(arg: B): void;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = number;
+
+        export function func1<R extends A>(arg: R) {
+          return func2(arg);
+        }
+
+        declare function func2(arg: B): B;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 9,
+          column: 37,
+          endColumn: 38,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        export function func1<R extends A>(arg: R): R {
+          function doWork(arg2: B): void {}
+
+          doWork(String(arg));
+
+          return arg;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
   ],
 });

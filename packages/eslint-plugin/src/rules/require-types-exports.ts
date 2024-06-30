@@ -178,7 +178,11 @@ function getTypeReferencesRecursively(
 
   collect(node);
 
-  function collect(node: TSESTree.Node): void {
+  function collect(node: TSESTree.Node | null | undefined): void {
+    if (!node) {
+      return;
+    }
+
     if (visited.has(node)) {
       return;
     }
@@ -195,11 +199,7 @@ function getTypeReferencesRecursively(
         break;
 
       case AST_NODE_TYPES.Identifier: {
-        const typeAnnotation = node.typeAnnotation?.typeAnnotation;
-
-        if (typeAnnotation) {
-          collect(typeAnnotation);
-        }
+        collect(node.typeAnnotation?.typeAnnotation);
 
         // Resolve the variable to its declaration (in cases where the variable is referenced)
         const scope = sourceCode.getScope(node);
@@ -226,12 +226,8 @@ function getTypeReferencesRecursively(
 
       case AST_NODE_TYPES.ArrayExpression:
         node.elements.forEach(element => {
-          if (!element) {
-            return;
-          }
-
           const nodeToCheck =
-            element.type === AST_NODE_TYPES.SpreadElement
+            element?.type === AST_NODE_TYPES.SpreadElement
               ? element.argument
               : element;
 
@@ -250,26 +246,53 @@ function getTypeReferencesRecursively(
       case AST_NODE_TYPES.ArrowFunctionExpression:
       case AST_NODE_TYPES.FunctionDeclaration:
       case AST_NODE_TYPES.FunctionExpression:
-      case AST_NODE_TYPES.TSDeclareFunction: {
-        const scope = sourceCode.getScope(node);
+      case AST_NODE_TYPES.TSDeclareFunction:
+        node.typeParameters?.params.forEach(param => collect(param.constraint));
+        node.params.forEach(collect);
 
-        scope.through.forEach(ref => {
-          const isSelfReference = ref.identifier.parent === node;
-
-          const nodeToCheck = isSelfReference
-            ? ref.identifier
-            : ref.identifier.parent;
-
-          collect(nodeToCheck);
-        });
+        /**
+         * If there is a return type annotation - collect the types from there.
+         * Otherwise - infer the return type from the return statements.
+         */
+        if (node.returnType) {
+          collect(node.returnType.typeAnnotation);
+        } else {
+          collect(node.body);
+        }
 
         break;
-      }
+
+      case AST_NODE_TYPES.BlockStatement:
+        node.body.forEach(item => {
+          if (item.type === AST_NODE_TYPES.ReturnStatement) {
+            collect(item);
+          }
+        });
+        break;
+
+      case AST_NODE_TYPES.AssignmentPattern:
+        collect(node.left);
+        break;
+
+      case AST_NODE_TYPES.RestElement:
+        collect(node.argument);
+        collect(node.typeAnnotation?.typeAnnotation);
+        break;
+
+      case AST_NODE_TYPES.ObjectPattern:
+        node.properties.forEach(collect);
+        collect(node.typeAnnotation?.typeAnnotation);
+
+        break;
+
+      case AST_NODE_TYPES.ArrayPattern:
+        node.elements.forEach(collect);
+        collect(node.typeAnnotation?.typeAnnotation);
+
+        break;
 
       case AST_NODE_TYPES.ReturnStatement:
-        if (node.argument) {
-          collect(node.argument);
-        }
+        collect(node.argument);
         break;
 
       case AST_NODE_TYPES.TSTypeReference: {
@@ -288,7 +311,7 @@ function getTypeReferencesRecursively(
           typeReferences.add(node);
         }
 
-        node.typeArguments?.params.forEach(param => collect(param));
+        node.typeArguments?.params.forEach(collect);
         break;
       }
 
@@ -297,22 +320,20 @@ function getTypeReferencesRecursively(
         break;
 
       case AST_NODE_TYPES.TSTupleType:
-        node.elementTypes.forEach(element => collect(element));
+        node.elementTypes.forEach(collect);
         break;
 
       case AST_NODE_TYPES.TSUnionType:
       case AST_NODE_TYPES.TSIntersectionType:
-        node.types.forEach(type => collect(type));
+        node.types.forEach(collect);
         break;
 
       case AST_NODE_TYPES.TSTypeLiteral:
-        node.members.forEach(member => collect(member));
+        node.members.forEach(collect);
         break;
 
       case AST_NODE_TYPES.TSPropertySignature:
-        if (node.typeAnnotation?.typeAnnotation) {
-          collect(node.typeAnnotation.typeAnnotation);
-        }
+        collect(node.typeAnnotation?.typeAnnotation);
 
         break;
 
