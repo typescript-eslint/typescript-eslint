@@ -3059,50 +3059,6 @@ ruleTester.run('require-types-exports', rule, {
     },
 
     {
-      skip: true,
-      only: true,
-      code: `
-        type A = number;
-        type B = string;
-        type C = boolean;
-
-        const obj: { key: { to: A; and: C } } = {
-          key: {
-            to: 1,
-            and: true,
-          },
-        };
-
-        const obj2 = {
-          b: 'asd' as B,
-        };
-
-        export function func() {
-          if (Math.random() > 0.5) {
-            return obj.key;
-          }
-
-          if (Math.random() < 0.5) {
-            return obj.key.to;
-          }
-
-          return obj.key.to + obj2.b + 'asd';
-        }
-      `,
-      errors: [
-        {
-          messageId: 'requireTypeExport',
-          line: 5,
-          column: 39,
-          endColumn: 42,
-          data: {
-            name: 'A',
-          },
-        },
-      ],
-    },
-
-    {
       code: `
         type A = number;
 
