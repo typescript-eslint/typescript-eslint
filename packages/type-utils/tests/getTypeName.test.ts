@@ -1,7 +1,6 @@
 import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 import path from 'path';
-import util from 'util';
 import type * as ts from 'typescript';
 
 import { getTypeName } from '../src';
@@ -16,7 +15,6 @@ describe('getTypeName', () => {
       filePath: path.join(rootDir, 'file.ts'),
       tsconfigRootDir: rootDir,
     });
-    console.log(util.inspect(ast, { depth: 25 }));
     expectToHaveParserServices(services);
     const checker = services.program.getTypeChecker();
     const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
@@ -32,8 +30,8 @@ describe('getTypeName', () => {
 
   describe('returns primitive type', () => {
     it.each([
-      ['type Test = "text";', 'string'],
       ['type Test = string;', 'string'],
+      ['type Test = "text";', 'string'],
       ['type Test = string | "text";', 'string'],
       ['type Test = "string" | "text";', 'string'],
       ['type Test = string & { foo: number };', 'string'],
