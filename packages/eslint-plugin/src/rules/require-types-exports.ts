@@ -246,11 +246,6 @@ function getTypeReferencesRecursively(
       case AST_NODE_TYPES.TSDeclareFunction:
         node.typeParameters?.params.forEach(param => collect(param.constraint));
         node.params.forEach(collect);
-
-        /**
-         * If there is a return type annotation - collect the types from there.
-         * Otherwise - infer the return type from the return statements.
-         */
         collect(node.returnType?.typeAnnotation);
         collectFunctionReturnStatements(node).forEach(collect);
 
