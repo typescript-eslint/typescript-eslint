@@ -2897,6 +2897,82 @@ ruleTester.run('require-types-exports', rule, {
     {
       code: `
         type A = number;
+        type B = number;
+        type C = number;
+
+        export function func1<R extends A>(arg: R) {
+          if (Math.random() > 0.5) {
+            return func2(arg);
+          } else {
+            return func3(arg);
+          }
+        }
+
+        declare function func2(arg: B): B;
+        declare function func3(arg: C): C;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 14,
+          column: 37,
+          endColumn: 38,
+          data: {
+            name: 'B',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 15,
+          column: 37,
+          endColumn: 38,
+          data: {
+            name: 'C',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = number;
+
+        export function func1<R extends A>(arg: R) {
+          const a = (() => {
+            return func2(arg);
+          })();
+
+          return arg;
+        }
+
+        declare function func2(arg: B): B;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
         type B = string;
 
         export function func1<R extends A>(arg: R): R {

@@ -4,7 +4,7 @@ import {
   ScopeType,
 } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, simpleTraverse } from '@typescript-eslint/utils';
 
 import { createRule, findVariable } from '../util';
 
@@ -254,7 +254,7 @@ function getTypeReferencesRecursively(
         if (node.returnType) {
           collect(node.returnType.typeAnnotation);
         } else {
-          collect(node.body);
+          collectFunctionReturnStatements(node).forEach(collect);
         }
 
         break;
@@ -355,22 +355,45 @@ function getTypeReferencesRecursively(
   return typeReferences;
 }
 
-function getVariable(
-  name: string,
-  initialScope: TSESLint.Scope.Scope | null,
-): TSESLint.Scope.Variable | null {
-  let variable: TSESLint.Scope.Variable | null = null;
-  let scope: TSESLint.Scope.Scope | null = initialScope;
+function collectFunctionReturnStatements(
+  functionNode: TSESTree.Node,
+): Set<TSESTree.Node> {
+  const isArrowFunctionReturn =
+    functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    functionNode.body.type === AST_NODE_TYPES.Identifier;
 
-  while (scope) {
-    variable = scope.set.get(name) ?? null;
-
-    if (variable) {
-      break;
-    }
-
-    scope = scope.upper;
+  if (isArrowFunctionReturn) {
+    return new Set([functionNode.body]);
   }
 
-  return variable;
+  const returnStatements = new Set<TSESTree.Node>();
+
+  simpleTraverse(functionNode, {
+    visitors: {
+      ReturnStatement: (node: TSESTree.Node) => {
+        if (getParentFunction(node) === functionNode) {
+          returnStatements.add(node);
+        }
+      },
+    },
+  });
+
+  return returnStatements;
+}
+
+function getParentFunction(node: TSESTree.Node): TSESTree.Node | null {
+  let parent: TSESTree.Node | undefined = node.parent;
+
+  const functionTypes = new Set([
+    AST_NODE_TYPES.ArrowFunctionExpression,
+    AST_NODE_TYPES.FunctionDeclaration,
+    AST_NODE_TYPES.FunctionExpression,
+    AST_NODE_TYPES.TSDeclareFunction,
+  ]);
+
+  while (parent && !functionTypes.has(parent.type)) {
+    parent = parent.parent;
+  }
+
+  return parent ?? null;
 }
