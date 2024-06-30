@@ -6,7 +6,7 @@ import {
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, findVariable } from '../util';
 
 type MessageIds = 'requireTypeExport';
 
@@ -74,7 +74,7 @@ export default createRule<[], MessageIds>({
       },
     ): void {
       const scope = context.sourceCode.getScope(node);
-      const variable = getVariable(node.declaration.name, scope);
+      const variable = findVariable(scope, node.declaration.name);
 
       if (!variable) {
         return;
@@ -200,7 +200,7 @@ function getTypeReferencesRecursively(
 
         // Resolve the variable to its declaration (in cases where the variable is referenced)
         const scope = sourceCode.getScope(node);
-        const variableNode = getVariable(node.name, scope);
+        const variableNode = findVariable(scope, node.name);
 
         variableNode?.defs.forEach(def => {
           collect(def.name);
@@ -294,7 +294,7 @@ function getTypeReferencesRecursively(
 
       case AST_NODE_TYPES.TSTypeReference: {
         const scope = sourceCode.getScope(node);
-        const variable = getVariable(getTypeName(node.typeName), scope);
+        const variable = findVariable(scope, getTypeName(node.typeName));
 
         const isBuiltinType = variable instanceof ImplicitLibVariable;
 
