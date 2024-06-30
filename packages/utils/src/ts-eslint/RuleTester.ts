@@ -147,6 +147,7 @@ interface RuleTesterConfig extends ClassicConfig.Config {
   readonly parserOptions?: Readonly<ParserOptions>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class RuleTesterBase {
   /**
    * Creates a new instance of RuleTester.

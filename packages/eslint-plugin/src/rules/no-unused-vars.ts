@@ -15,8 +15,9 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
-export type MessageIds = 'unusedVar' | 'usedIgnoredVar';
+export type MessageIds = 'unusedVar' | 'usedIgnoredVar' | 'usedOnlyAsType';
 export type Options = [
   | 'all'
   | 'local'
@@ -115,6 +116,8 @@ export default createRule<Options, MessageIds>({
       unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
       usedIgnoredVar:
         "'{{varName}}' is marked as ignored but is used{{additional}}.",
+      usedOnlyAsType:
+        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
     },
   },
   defaultOptions: [{}],
@@ -581,6 +584,12 @@ export default createRule<Options, MessageIds>({
               ? writeReferences[writeReferences.length - 1].identifier
               : unusedVar.identifiers[0];
 
+            const usedOnlyAsType = unusedVar.references.some(ref =>
+              referenceContainsTypeQuery(ref.identifier),
+            );
+
+            const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
+
             const { start } = id.loc;
             const idLength = id.name.length;
 
@@ -594,7 +603,7 @@ export default createRule<Options, MessageIds>({
 
             context.report({
               loc,
-              messageId: 'unusedVar',
+              messageId,
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
