@@ -3,7 +3,12 @@ id: parser
 sidebar_label: parser
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # `@typescript-eslint/parser`
+
+<PackageLink packageName="parser" scope="@typescript-eslint" />
 
 > An [ESLint parser](https://eslint.org/docs/user-guide/configuring/plugins#specifying-parser) used to parse TypeScript code into ESLint-compatible nodes, as well as provide backing TypeScript programs. ✨
 
@@ -310,7 +315,25 @@ An experimental alternative to `parserOptions.project`.
 This directs the parser to use a more seamless TypeScript API to generate type information for rules.
 It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 
-```js
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default [
+  {
+    languageOptions: {
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: true,
+      },
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -318,6 +341,9 @@ module.exports = {
   },
 };
 ```
+
+</TabItem>
+</Tabs>
 
 This option should bring two main benefits:
 
@@ -346,6 +372,24 @@ declare function createProgram(
 
 Example usage:
 
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+import * as parser from '@typescript-eslint/parser';
+
+export default [
+  {
+    parserOptions: {
+      programs: [parser.createProgram('tsconfig.json')],
+    },
+  },
+];
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
 ```js title=".eslintrc.js"
 const parser = require('@typescript-eslint/parser');
 
@@ -354,4 +398,35 @@ module.exports = {
     programs: [parser.createProgram('tsconfig.json')],
   },
 };
+```
+
+</TabItem>
+</Tabs>
+
+### `withoutProjectParserOptions(parserOptions)`
+
+Removes options that prompt the parser to parse the project with type information.
+In other words, you can use this if you are invoking the parser directly, to ensure that one file will be parsed in isolation, which is much faster.
+
+This is useful in cases where you invoke the parser directly, such as in an ESLint plugin context.
+
+```ts
+declare function withoutProjectParserOptions(
+  options: TSESTreeOptions,
+): TSESTreeOptions;
+```
+
+Example usage:
+
+```js title="somePlugin.js"
+const parser = require('@typescript-eslint/parser');
+
+function parse(path, content, context) {
+  const contextParserOptions = context.languageOptions?.parserOptions ?? {};
+  const parserOptions =
+    parser.withoutProjectParserOptions(contextParserOptions);
+
+  // Do something with the cleaned-up options eventually, such as invoking the parser
+  parser.parseForESLint(content, parserOptions);
+}
 ```

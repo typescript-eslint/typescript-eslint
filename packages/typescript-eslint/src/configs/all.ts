@@ -104,6 +104,7 @@ export default (
       '@typescript-eslint/no-unnecessary-parameter-property-assignment':
         'error',
       '@typescript-eslint/no-unnecessary-qualifier': 'error',
+      '@typescript-eslint/no-unnecessary-template-expression': 'error',
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
       '@typescript-eslint/no-unnecessary-type-constraint': 'error',
@@ -124,7 +125,6 @@ export default (
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
-      '@typescript-eslint/no-unnecessary-template-expression': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',
       'no-throw-literal': 'off',
@@ -158,7 +158,6 @@ export default (
       '@typescript-eslint/restrict-template-expressions': 'error',
       'no-return-await': 'off',
       '@typescript-eslint/return-await': 'error',
-      '@typescript-eslint/sort-type-constituents': 'error',
       '@typescript-eslint/strict-boolean-expressions': 'error',
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',

@@ -25,7 +25,26 @@ Please don't:
 - Comment on a closed PR
   - Reasoning: It is much easier for maintainers to not lose track of things if they are posted as issues. If you think there's a bug in typescript-eslint, the right way to ask is to [file a new issue](https://github.com/typescript-eslint/typescript-eslint/issues/new/choose). The issue templates include helpful & necessary practices such as making sure you're on the latest version of all our packages. You can provide the link to the relevant PR to add more context.
 
-### Raising a PR
+### Testing Changes
+
+#### Code Coverage
+
+We aim for 100% code coverage in all PRs when possible, except in the `website/` package.
+Coverage reports are generated locally whenever `yarn test` is run.
+
+The `codecov` bot also comments on each PR with its percentage, as well as links to the line-by-line coverage of each file touched by the PR.
+
+#### Granular Unit Tests
+
+Most tests in most packages are set up as small, self-contained unit tests.
+We generally prefer that to keep tests and their failure reports granular.
+
+For rule tests we recommend, when reasonable:
+
+- Including both `valid` and `invalid` code changes in most PRs that affect rule behavior
+- Limiting to one error per `invalid` case
+
+### Raising the PR
 
 Once your changes are ready, you can raise a PR! 🙌
 The title of your PR should match the following format:
@@ -83,6 +102,14 @@ You can [resolve conversations](https://docs.github.com/en/pull-requests/collabo
 Once you've addressed all our feedback by making code changes and/or started a followup discussion, [re-request review](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#re-requesting-a-review) from each maintainer whose feedback you addressed.
 
 Once the feedback is addressed, and the PR is approved, we'll ensure the branch is up to date with `main`, and merge it for you.
+
+#### Updating Over Time
+
+You generally don't need to keep merging commits from `main` into your PR branch.
+If you see merge conflicts or other intersections that worry you, then you can preemptively - but that's optional.
+
+If we think merge conflicts need to be resolved in order to merge and/or review a PR, we might do that for you as a courtesy _if_ we have time.
+If not, we may ask you to.
 
 ### Asking Questions
 
