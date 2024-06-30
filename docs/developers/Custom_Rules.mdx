@@ -233,15 +233,15 @@ In that case, it is best to add an explicit type declaration.
 This rule snippet targets name nodes of both function and interface declarations:
 
 ```ts
-import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils, TSESTree } from '@typescript-eslint/utils';
 
 export const rule = createRule({
   create(context) {
     return {
       'FunctionDeclaration, TSInterfaceDeclaration'(
         node:
-          | AST_NODE_TYPES.FunctionDeclaration
-          | AST_NODE_TYPES.TSInterfaceDeclaration,
+          | TSESTree.FunctionDeclaration
+          | TSESTree.TSInterfaceDeclaration,
       ) {
         if (/^[a-z]/.test(node.id.name)) {
           // ...
