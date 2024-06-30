@@ -31,7 +31,7 @@ Let's dig in!
 TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the TypeScript language:
 
 ```ts
-import type { SomeThing } from './some-module.js';
+import type { SomeThing } from './some-module';
 export type { SomeThing };
 ```
 
@@ -39,7 +39,7 @@ The key difference with `export type` and `import type` is that they _do not rep
 Attempting to use a _value_ imported as only a _type_ in runtime code will cause a TypeScript error:
 
 ```ts twoslash
-import type { SomeThing } from './some-module.js';
+import type { SomeThing } from './some-module';
 
 new SomeThing();
 //  ~~~~~~~~~
@@ -50,7 +50,7 @@ new SomeThing();
 TypeScript 4.5 also added [inline type qualifiers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names), which allow for indicating that only some specifiers in a statement should be type-system-only:
 
 ```ts
-import { type SomeType, SomeValue } from './some-module.js';
+import { type SomeType, SomeValue } from './some-module';
 ```
 
 ## Benefits of Enforcing Type-only Imports/Exports
@@ -77,7 +77,7 @@ Take this file with exactly three lines of code:
 ```ts
 // Is SomeThing a class? A type? A variable?
 // Just from this file, we don't know! 😫
-import { SomeThing } from './may-include-side-effects.js';
+import { SomeThing } from './may-include-side-effects';
 ```
 
 If that `./may-include-side-effects.js` module includes side effects, keeping or removing the import can have very different runtime behaviors in the project.
@@ -86,7 +86,7 @@ Indicating in code which values are type-only can be necessary for transpilers t
 ```ts
 // Now we know this file's SomeThing is only used as a type.
 // We can remove this import in transpiled JavaScript syntax.
-import type { SomeThing } from './may-include-side-effects.js';
+import type { SomeThing } from './may-include-side-effects';
 ```
 
 ## Enforcing With typescript-eslint
@@ -111,7 +111,7 @@ You can enable them in your [ESLint configuration](https://eslint.org/docs/lates
 With those rules enabled, running ESLint on the following code would produce a lint complaint:
 
 ```ts
-import { GetString } from './types.js';
+import { GetString } from './types';
 // All imports in the declaration are only used as types. Use `import type`.
 
 export function getAndLogValue(getter: GetString) {
@@ -124,7 +124,7 @@ The two rules can auto-fix code to use `type`s as necessary when ESLint is run o
 For example, the `import` statement from earlier would be auto-fixed to:
 
 ```ts
-import type { GetString } from './types.js';
+import type { GetString } from './types';
 
 export function getAndLogValue(getter: GetString) {
   console.log('Value:', getter());
