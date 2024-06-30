@@ -4,17 +4,14 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue, nullThrows } from '../util';
 
-type MessageIds = 'unnecessaryAssign';
-
 const UNNECESSARY_OPERATORS = new Set(['=', '&&=', '||=', '??=']);
 
-export default createRule<[], MessageIds>({
+export default createRule({
   name: 'no-unnecessary-parameter-property-assignment',
   meta: {
     docs: {
       description:
         'Disallow unnecessary assignment of constructor property parameter',
-      requiresTypeChecking: false,
     },
     fixable: 'code',
     messages: {
