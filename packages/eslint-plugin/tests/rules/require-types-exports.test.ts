@@ -2973,6 +2973,37 @@ ruleTester.run('require-types-exports', rule, {
     {
       code: `
         type A = number;
+        type B = number;
+
+        export function func1<R extends A>(arg: R) {
+          return arg as B;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 41,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 25,
+          endColumn: 26,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
         type B = string;
 
         export function func1<R extends A>(arg: R): R {

@@ -251,11 +251,8 @@ function getTypeReferencesRecursively(
          * If there is a return type annotation - collect the types from there.
          * Otherwise - infer the return type from the return statements.
          */
-        if (node.returnType) {
-          collect(node.returnType.typeAnnotation);
-        } else {
-          collectFunctionReturnStatements(node).forEach(collect);
-        }
+        collect(node.returnType?.typeAnnotation);
+        collectFunctionReturnStatements(node).forEach(collect);
 
         break;
 
