@@ -3057,5 +3057,106 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      skip: true,
+      only: true,
+      code: `
+        type A = number;
+        type B = string;
+        type C = boolean;
+
+        const obj: { key: { to: A; and: C } } = {
+          key: {
+            to: 1,
+            and: true,
+          },
+        };
+
+        const obj2 = {
+          b: 'asd' as B,
+        };
+
+        export function func() {
+          if (Math.random() > 0.5) {
+            return obj.key;
+          }
+
+          if (Math.random() < 0.5) {
+            return obj.key.to;
+          }
+
+          return obj.key.to + obj2.b + 'asd';
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 39,
+          endColumn: 42,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const value: A = 1;
+
+        export function func() {
+          return Math.random() > 0.5 && value;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 22,
+          endColumn: 23,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+        type B = string;
+
+        const valueA: A = 1;
+        const valueB: B = 'test';
+
+        export function func() {
+          return Math.random() > 0.5 ? valueA : valueB;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 23,
+          endColumn: 24,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 23,
+          endColumn: 24,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
   ],
 });

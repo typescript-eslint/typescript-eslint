@@ -240,6 +240,17 @@ function getTypeReferencesRecursively(
         node.typeArguments?.params.forEach(param => collect(param));
         break;
 
+      case AST_NODE_TYPES.BinaryExpression:
+      case AST_NODE_TYPES.LogicalExpression:
+        collect(node.left);
+        collect(node.right);
+        break;
+
+      case AST_NODE_TYPES.ConditionalExpression:
+        collect(node.consequent);
+        collect(node.alternate);
+        break;
+
       case AST_NODE_TYPES.ArrowFunctionExpression:
       case AST_NODE_TYPES.FunctionDeclaration:
       case AST_NODE_TYPES.FunctionExpression:
