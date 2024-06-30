@@ -1,5 +1,6 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
+import type { TSEnumBody } from '../../special/spec';
 import type { Expression } from '../../unions/Expression';
 import type {
   PropertyNameComputed,
@@ -13,6 +14,7 @@ interface TSEnumMemberBase extends BaseNode {
     | PropertyNameNonComputed;
   initializer: Expression | undefined;
   computed: boolean;
+  parent: TSEnumBody;
 }
 
 /**

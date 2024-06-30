@@ -11,7 +11,7 @@ export function cloneDeeplyExcludesParent<T>(x: T): T {
     const retv = {} as typeof x;
 
     for (const key in x) {
-      if (key !== 'parent' && Object.prototype.hasOwnProperty.call(x, key)) {
+      if (key !== 'parent' && Object.hasOwn(x, key)) {
         retv[key] = cloneDeeplyExcludesParent(x[key]);
       }
     }

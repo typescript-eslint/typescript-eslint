@@ -17,8 +17,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the declaration of empty interfaces',
-      recommended: 'stylistic',
     },
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/no-empty-object-type'],
     fixable: 'code',
     hasSuggestions: true,
     messages: {

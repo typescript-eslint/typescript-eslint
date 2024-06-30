@@ -18,6 +18,7 @@ export default createRule({
     docs: {
       description:
         'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     messages: {

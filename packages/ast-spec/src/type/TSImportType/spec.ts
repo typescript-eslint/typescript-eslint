@@ -9,7 +9,4 @@ export interface TSImportType extends BaseNode {
   argument: TypeNode;
   qualifier: EntityName | null;
   typeArguments: TSTypeParameterInstantiation | null;
-
-  /** @deprecated Use {@link `typeArguments`} instead. */
-  typeParameters: TSTypeParameterInstantiation | null;
 }

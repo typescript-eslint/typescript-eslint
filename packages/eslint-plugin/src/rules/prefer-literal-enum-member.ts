@@ -41,7 +41,7 @@ export default createRule({
       decl: TSESTree.TSEnumDeclaration,
       name: string,
     ): boolean {
-      return decl.members.some(
+      return decl.body.members.some(
         member =>
           isIdentifierWithName(member.id, name) ||
           (member.id.type === AST_NODE_TYPES.Literal &&
@@ -101,7 +101,7 @@ export default createRule({
         ) {
           return;
         }
-        const declaration = node.parent as TSESTree.TSEnumDeclaration;
+        const declaration = node.parent.parent;
 
         // -1 and +1
         if (node.initializer.type === AST_NODE_TYPES.UnaryExpression) {

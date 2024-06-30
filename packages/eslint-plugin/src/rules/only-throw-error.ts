@@ -25,7 +25,7 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow throwing non-`Error` values as exceptions',
-      recommended: 'strict',
+      recommended: 'recommended',
       extendsBaseRule: 'no-throw-literal',
       requiresTypeChecking: true,
     },

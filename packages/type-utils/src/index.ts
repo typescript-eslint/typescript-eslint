@@ -4,8 +4,6 @@ export * from './getConstrainedTypeAtLocation';
 export * from './getContextualType';
 export * from './getDeclaration';
 export * from './getSourceFileOfNode';
-export * from './getTokenAtPosition';
-export * from './getTypeArguments';
 export * from './getTypeName';
 export * from './isSymbolFromDefaultLibrary';
 export * from './isTypeReadonly';

@@ -37,3 +37,25 @@ Options: { "allow": ["/package.json$"] }
 console.log(require('../package.json').version);
 "
 `;
+
+exports[`Validating rule docs no-require-imports.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "allowAsImport": true }
+
+var foo = require('foo');
+          ~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+const foo = require('foo');
+            ~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+let foo = require('foo');
+          ~~~~~~~~~~~~~~ A \`require()\` style import is forbidden.
+"
+`;
+
+exports[`Validating rule docs no-require-imports.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "allowAsImport": true }
+
+import foo = require('foo');
+import foo from 'foo';
+"
+`;

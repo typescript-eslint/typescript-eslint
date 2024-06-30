@@ -13,7 +13,7 @@ import {
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isReferenceToGlobalFunction, isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 const enum ComparisonValueType {
@@ -153,16 +153,13 @@ export function gatherLogicalOperands(
             comparedExpression.operator === 'typeof'
           ) {
             const argument = comparedExpression.argument;
-            if (argument.type === AST_NODE_TYPES.Identifier) {
-              const reference = sourceCode
-                .getScope(argument)
-                .references.find(ref => ref.identifier.name === argument.name);
-
-              if (!reference?.resolved?.defs.length) {
-                // typeof window === 'undefined'
-                result.push({ type: OperandValidity.Invalid });
-                continue;
-              }
+            if (
+              argument.type === AST_NODE_TYPES.Identifier &&
+              // typeof window === 'undefined'
+              isReferenceToGlobalFunction(argument.name, argument, sourceCode)
+            ) {
+              result.push({ type: OperandValidity.Invalid });
+              continue;
             }
 
             // typeof x.y === 'undefined'

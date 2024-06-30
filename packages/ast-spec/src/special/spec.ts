@@ -11,6 +11,7 @@ export * from './PrivateIdentifier/spec';
 export * from './Program/spec';
 export * from './SwitchCase/spec';
 export * from './TSClassImplements/spec';
+export * from './TSEnumBody/spec';
 export * from './TSExternalModuleReference/spec';
 export * from './TSInterfaceBody/spec';
 export * from './TSInterfaceHeritage/spec';

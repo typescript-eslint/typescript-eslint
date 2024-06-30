@@ -76,11 +76,6 @@ const mockedDescribeSkip = jest.mocked(RuleTester.describeSkip);
 const mockedIt = jest.mocked(RuleTester.it);
 const _mockedItOnly = jest.mocked(RuleTester.itOnly);
 const _mockedItSkip = jest.mocked(RuleTester.itSkip);
-const runRuleForItemSpy = jest.spyOn(
-  RuleTester.prototype,
-  // @ts-expect-error -- method is private
-  'runRuleForItem',
-) as jest.SpiedFunction<RuleTester['runRuleForItem']>;
 const mockedParserClearCaches = jest.mocked(parser.clearCaches);
 
 const EMPTY_PROGRAM: TSESTree.Program = {
@@ -92,33 +87,6 @@ const EMPTY_PROGRAM: TSESTree.Program = {
   tokens: [],
   range: [0, 0],
 };
-runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
-  return {
-    messages:
-      'errors' in testCase
-        ? [
-            {
-              column: 0,
-              line: 0,
-              message: 'error',
-              messageId: 'error',
-              nodeType: AST_NODE_TYPES.Program,
-              ruleId: 'my-rule',
-              severity: 2,
-              source: null,
-            },
-          ]
-        : [],
-    output: testCase.code,
-    afterAST: EMPTY_PROGRAM,
-    beforeAST: EMPTY_PROGRAM,
-    config: { parser: '' },
-  };
-});
-
-beforeEach(() => {
-  jest.clearAllMocks();
-});
 
 const NOOP_RULE: RuleModule<'error'> = {
   meta: {
@@ -134,13 +102,45 @@ const NOOP_RULE: RuleModule<'error'> = {
   },
 };
 
-function getTestConfigFromCall(): unknown[] {
-  return runRuleForItemSpy.mock.calls.map(c => {
-    return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
-  });
-}
-
 describe('RuleTester', () => {
+  const runRuleForItemSpy = jest.spyOn(
+    RuleTester.prototype,
+    // @ts-expect-error -- method is private
+    'runRuleForItem',
+  ) as jest.SpiedFunction<RuleTester['runRuleForItem']>;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
+    return {
+      messages:
+        'errors' in testCase
+          ? [
+              {
+                column: 0,
+                line: 0,
+                message: 'error',
+                messageId: 'error',
+                nodeType: AST_NODE_TYPES.Program,
+                ruleId: 'my-rule',
+                severity: 2,
+                source: null,
+              },
+            ]
+          : [],
+      outputs: [testCase.code],
+      afterAST: EMPTY_PROGRAM,
+      beforeAST: EMPTY_PROGRAM,
+      config: { parser: '' },
+    };
+  });
+
+  function getTestConfigFromCall(): unknown[] {
+    return runRuleForItemSpy.mock.calls.map(c => {
+      return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
+    });
+  }
+
   describe('filenames', () => {
     it('automatically sets the filename for tests', () => {
       const ruleTester = new RuleTester({
@@ -172,7 +172,6 @@ describe('RuleTester', () => {
           {
             code: 'type-aware parser options should override the constructor config',
             parserOptions: {
-              EXPERIMENTAL_useProjectService: false,
               project: 'tsconfig.test-specific.json',
               tsconfigRootDir: '/set/in/the/test/',
             },
@@ -191,10 +190,16 @@ describe('RuleTester', () => {
           {
             "code": "string based valid test",
             "filename": "/some/path/that/totally/exists/file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
           {
             "code": "object based valid test",
             "filename": "/some/path/that/totally/exists/file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
           {
             "code": "explicit filename shouldn't be overwritten",
@@ -204,6 +209,7 @@ describe('RuleTester', () => {
             "code": "jsx should have the correct filename",
             "filename": "/some/path/that/totally/exists/react.tsx",
             "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
               "ecmaFeatures": {
                 "jsx": true,
               },
@@ -213,7 +219,7 @@ describe('RuleTester', () => {
             "code": "type-aware parser options should override the constructor config",
             "filename": "/set/in/the/test/file.ts",
             "parserOptions": {
-              "EXPERIMENTAL_useProjectService": false,
+              "disallowAutomaticSingleRunInference": true,
               "project": "tsconfig.test-specific.json",
               "tsconfigRootDir": "/set/in/the/test/",
             },
@@ -226,6 +232,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "/some/path/that/totally/exists/file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
         ]
       `);
@@ -266,11 +275,15 @@ describe('RuleTester', () => {
           {
             "code": "normal",
             "filename": "/some/path/that/totally/exists/set-in-constructor.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
           },
           {
             "code": "jsx",
             "filename": "/some/path/that/totally/exists/react-set-in-constructor.tsx",
             "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
               "ecmaFeatures": {
                 "jsx": true,
               },
@@ -462,6 +475,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -470,6 +486,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10.0",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -478,6 +497,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10.0.0",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -491,6 +513,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -504,6 +529,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -517,6 +545,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
         ]
@@ -592,6 +623,9 @@ describe('RuleTester', () => {
               },
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -602,6 +636,9 @@ describe('RuleTester', () => {
               },
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -617,6 +654,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -632,6 +672,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
           {
@@ -650,6 +693,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
         ]
@@ -703,17 +749,26 @@ describe('RuleTester', () => {
           {
             "code": "string based is always run",
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
             "code": "no constraints is always run",
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
             "code": "empty object is always run",
             "dependencyConstraints": {},
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -722,6 +777,9 @@ describe('RuleTester', () => {
               "totally-real-dependency": "10",
             },
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -732,6 +790,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -743,6 +804,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": false,
           },
           {
@@ -756,6 +820,9 @@ describe('RuleTester', () => {
               },
             ],
             "filename": "file.ts",
+            "parserOptions": {
+              "disallowAutomaticSingleRunInference": true,
+            },
             "skip": true,
           },
         ]
@@ -875,6 +942,304 @@ describe('RuleTester', () => {
           ]
         `);
       });
+    });
+  });
+});
+
+describe('RuleTester - multipass fixer', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('without fixes', () => {
+    const ruleTester = new RuleTester();
+    const rule: RuleModule<'error'> = {
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        type: 'problem',
+        schema: [],
+      },
+      defaultOptions: [],
+      create(context) {
+        return {
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+            });
+          },
+        };
+      },
+    };
+
+    it('passes with no output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('passes with null output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('throws with string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'bar',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Expected autofix to be suggested.');
+    });
+
+    it('throws with array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar', 'baz'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Expected autofix to be suggested.');
+    });
+  });
+
+  describe('with single fix', () => {
+    const ruleTester = new RuleTester();
+    const rule: RuleModule<'error'> = {
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        type: 'problem',
+        fixable: 'code',
+        schema: [],
+      },
+      defaultOptions: [],
+      create(context) {
+        return {
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+              fix: fixer => fixer.replaceText(node, 'bar'),
+            });
+          },
+        };
+      },
+    };
+
+    it('passes with correct string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'bar',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('passes with correct array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('throws with no output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow("The rule fixed the code. Please add 'output' property.");
+    });
+
+    it('throws with null output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: null,
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Expected no autofixes to be suggested.');
+    });
+
+    it('throws with incorrect array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar', 'baz'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Outputs do not match.');
+    });
+
+    it('throws with incorrect string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'baz',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Output is incorrect.');
+    });
+  });
+
+  describe('with multiple fixes', () => {
+    const ruleTester = new RuleTester();
+    const rule: RuleModule<'error'> = {
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        type: 'problem',
+        fixable: 'code',
+        schema: [],
+      },
+      defaultOptions: [],
+      create(context) {
+        return {
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+              fix: fixer => fixer.replaceText(node, 'bar'),
+            });
+          },
+          'Identifier[name=bar]'(node): void {
+            context.report({
+              node,
+              messageId: 'error',
+              fix: fixer => fixer.replaceText(node, 'baz'),
+            });
+          },
+        };
+      },
+    };
+
+    it('passes with correct array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar', 'baz'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('throws with string output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: 'bar',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow(
+        'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
+      );
+    });
+
+    it('throws with incorrect array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['bar'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Outputs do not match.');
+    });
+
+    it('throws with incorrectly ordered array output', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          valid: [],
+          invalid: [
+            {
+              code: 'foo',
+              output: ['baz', 'bar'],
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+      }).toThrow('Outputs do not match.');
     });
   });
 });

@@ -92,6 +92,7 @@ import type { Program } from '../special/Program/spec';
 import type { SwitchCase } from '../special/SwitchCase/spec';
 import type { TemplateElement } from '../special/TemplateElement/spec';
 import type { TSClassImplements } from '../special/TSClassImplements/spec';
+import type { TSEnumBody } from '../special/TSEnumBody/spec';
 import type { TSExternalModuleReference } from '../special/TSExternalModuleReference/spec';
 import type { TSInterfaceBody } from '../special/TSInterfaceBody/spec';
 import type { TSInterfaceHeritage } from '../special/TSInterfaceHeritage/spec';
@@ -272,6 +273,7 @@ export type Node =
   | TSDeclareFunction
   | TSDeclareKeyword
   | TSEmptyBodyFunctionExpression
+  | TSEnumBody
   | TSEnumDeclaration
   | TSEnumMember
   | TSExportAssignment

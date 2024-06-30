@@ -1,5 +1,4 @@
 export * from './applyDefault';
-export * from './context';
 export * from './getParserServices';
 export * from './InferTypesFromRule';
 export * from './RuleCreator';

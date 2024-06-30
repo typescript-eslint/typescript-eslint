@@ -23,6 +23,27 @@ exports[`AST Fixtures legacy-fixtures types mapped-readonly AST Alignment - AST 
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
                   type: 'TSMappedType',
+-                 constraint: TSStringKeyword {
+-                   type: 'TSStringKeyword',
+-
+-                   range: [99, 105],
+-                   loc: {
+-                     start: { column: 26, line: 3 },
+-                     end: { column: 32, line: 3 },
+-                   },
+-                 },
+-                 key: Identifier {
+-                   type: 'Identifier',
+-                   decorators: Array [],
+-                   name: 'P',
+-                   optional: false,
+-
+-                   range: [94, 95],
+-                   loc: {
+-                     start: { column: 21, line: 3 },
+-                     end: { column: 22, line: 3 },
+-                   },
+-                 },
                   nameType: null,
                   optional: true,
                   readonly: true,
@@ -35,41 +56,26 @@ exports[`AST Fixtures legacy-fixtures types mapped-readonly AST Alignment - AST 
                       end: { column: 42, line: 3 },
                     },
                   },
-                  typeParameter: TSTypeParameter {
-                    type: 'TSTypeParameter',
--                   const: false,
-                    constraint: TSStringKeyword {
-                      type: 'TSStringKeyword',
++                 typeParameter: TSTypeParameter {
++                   type: 'TSTypeParameter',
++                   constraint: TSStringKeyword {
++                     type: 'TSStringKeyword',
 
-                      range: [99, 105],
-                      loc: {
-                        start: { column: 26, line: 3 },
-                        end: { column: 32, line: 3 },
-                      },
-                    },
--                   in: false,
--                   name: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'P',
--                     optional: false,
++                     range: [99, 105],
++                     loc: {
++                       start: { column: 26, line: 3 },
++                       end: { column: 32, line: 3 },
++                     },
++                   },
 +                   name: 'P',
-
--                     range: [94, 95],
--                     loc: {
--                       start: { column: 21, line: 3 },
--                       end: { column: 22, line: 3 },
--                     },
--                   },
--                   out: false,
--
-                    range: [94, 105],
-                    loc: {
-                      start: { column: 21, line: 3 },
-                      end: { column: 32, line: 3 },
-                    },
-                  },
-
++
++                   range: [94, 105],
++                   loc: {
++                     start: { column: 21, line: 3 },
++                     end: { column: 32, line: 3 },
++                   },
++                 },
++
                   range: [82, 117],
                   loc: {
                     start: { column: 9, line: 3 },

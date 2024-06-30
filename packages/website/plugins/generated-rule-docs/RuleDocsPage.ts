@@ -1,6 +1,7 @@
+import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type * as unist from 'unist';
 
-import type { RuleModuleWithMetaDocs, VFileWithStem } from '../utils/rules';
+import type { VFileWithStem } from '../utils/rules';
 import { findH2Index } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
@@ -24,7 +25,7 @@ export class RuleDocsPage {
   #children: unist.Node[];
   #file: Readonly<VFileWithStem>;
   #headingIndices: RequiredHeadingIndices;
-  #rule: Readonly<RuleModuleWithMetaDocs>;
+  #rule: Readonly<ESLintPluginRuleModule>;
 
   get children(): readonly unist.Node[] {
     return this.#children;
@@ -38,14 +39,14 @@ export class RuleDocsPage {
     return this.#headingIndices;
   }
 
-  get rule(): Readonly<RuleModuleWithMetaDocs> {
+  get rule(): Readonly<ESLintPluginRuleModule> {
     return this.#rule;
   }
 
   constructor(
     children: unist.Node[],
     file: Readonly<VFileWithStem>,
-    rule: Readonly<RuleModuleWithMetaDocs>,
+    rule: Readonly<ESLintPluginRuleModule>,
   ) {
     this.#children = children;
     this.#file = file;

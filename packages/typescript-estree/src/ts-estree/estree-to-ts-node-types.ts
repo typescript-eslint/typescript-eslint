@@ -177,6 +177,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSConstructorType]: ts.ConstructorTypeNode;
   [AST_NODE_TYPES.TSConstructSignatureDeclaration]: ts.ConstructSignatureDeclaration;
   [AST_NODE_TYPES.TSDeclareFunction]: ts.FunctionDeclaration;
+  [AST_NODE_TYPES.TSEnumBody]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumDeclaration]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumMember]: ts.EnumMember;
   [AST_NODE_TYPES.TSExportAssignment]: ts.ExportAssignment;

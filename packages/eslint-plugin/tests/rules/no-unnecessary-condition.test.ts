@@ -592,9 +592,9 @@ const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
+        projectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
       },
     },
     {
@@ -607,9 +607,9 @@ declare const key: Key;
 foo?.[key].trim();
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
+        projectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
       },
     },
     {
@@ -625,9 +625,9 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
 }
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
+        projectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
       },
     },
     {
@@ -644,9 +644,9 @@ function Foo(outer: Outer, key: Foo): number | undefined {
 }
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
+        projectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
       },
     },
     {
@@ -659,9 +659,9 @@ declare const key: Key;
 foo?.[key]?.trim();
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
+        projectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
       },
     },
     `
@@ -825,9 +825,9 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
 }
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
+        projectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
       },
     },
     `

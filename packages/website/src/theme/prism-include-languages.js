@@ -8,9 +8,10 @@ export default function prismIncludeLanguages(PrismObject) {
   globalThis.Prism = PrismObject;
 
   additionalLanguages.forEach(lang => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require(`prismjs/components/prism-${lang}`);
   });
-
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require(`../prism/language/jsonc`);
   delete globalThis.Prism;
 }

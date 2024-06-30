@@ -10,6 +10,16 @@ exports[`AST Fixtures declaration TSEnumDeclaration empty AST Alignment - AST 1`
     body: Array [
       TSEnumDeclaration {
         type: 'TSEnumDeclaration',
+-       body: TSEnumBody {
+-         type: 'TSEnumBody',
+-         members: Array [],
+-
+-         range: [9, 11],
+-         loc: {
+-           start: { column: 9, line: 1 },
+-           end: { column: 11, line: 1 },
+-         },
+-       },
 -       const: false,
 -       declare: false,
         id: Identifier {
@@ -24,7 +34,7 @@ exports[`AST Fixtures declaration TSEnumDeclaration empty AST Alignment - AST 1`
             end: { column: 8, line: 1 },
           },
         },
-        members: Array [],
++       members: Array [],
 
         range: [0, 11],
         loc: {

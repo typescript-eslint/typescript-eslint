@@ -24,7 +24,7 @@ export default createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-      const { members } = node;
+      const { members } = node.body;
 
       members.forEach((member, index) => {
         if (member.initializer == null) {

@@ -41,7 +41,7 @@ ScopeManager {
       defs: [
         TypeDefinition$3 {
           name: Identifier<"k">,
-          node: TSTypeParameter$3,
+          node: TSMappedType$3,
         },
       ],
       name: "k",
@@ -95,7 +95,7 @@ ScopeManager {
       ],
     },
     MappedTypeScope$2 {
-      block: TSMappedType$5,
+      block: TSMappedType$3,
       isStrict: true,
       references: [
         Reference$2,

@@ -29,6 +29,12 @@ function compareMessagesByLocation(a: LintMessage, b: LintMessage): number {
   return a.line - b.line || a.column - b.column;
 }
 
+export interface AppliedFixes {
+  fixed: boolean;
+  messages: readonly LintMessage[];
+  output: string;
+}
+
 /**
  * Applies the fixes specified by the messages to the given text. Tries to be
  * smart about the fixes and won't apply fixes over the same area in the text.
@@ -39,11 +45,7 @@ function compareMessagesByLocation(a: LintMessage, b: LintMessage): number {
 export function applyFixes(
   sourceText: string,
   messages: readonly LintMessage[],
-): {
-  fixed: boolean;
-  messages: readonly LintMessage[];
-  output: string;
-} {
+): AppliedFixes {
   // clone the array
   const remainingMessages: LintMessage[] = [];
   const fixes: LintMessageWithFix[] = [];

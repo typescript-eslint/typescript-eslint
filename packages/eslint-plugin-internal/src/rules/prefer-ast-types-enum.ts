@@ -13,7 +13,6 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: 'recommended',
       description:
         'Enforce consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums',
     },
@@ -41,9 +40,8 @@ export default createRule({
       Literal(node: TSESTree.Literal): void {
         if (
           node.parent.type === AST_NODE_TYPES.TSEnumMember &&
-          node.parent.parent.type === AST_NODE_TYPES.TSEnumDeclaration &&
           ['AST_NODE_TYPES', 'AST_TOKEN_TYPES', 'DefinitionType'].includes(
-            node.parent.parent.id.name,
+            node.parent.parent.parent.id.name,
           )
         ) {
           return;
@@ -55,15 +53,15 @@ export default createRule({
 
         const value = node.value;
 
-        if (Object.prototype.hasOwnProperty.call(AST_NODE_TYPES, value)) {
+        if (Object.hasOwn(AST_NODE_TYPES, value)) {
           report('AST_NODE_TYPES', node);
         }
 
-        if (Object.prototype.hasOwnProperty.call(AST_TOKEN_TYPES, value)) {
+        if (Object.hasOwn(AST_TOKEN_TYPES, value)) {
           report('AST_TOKEN_TYPES', node);
         }
 
-        if (Object.prototype.hasOwnProperty.call(DefinitionType, value)) {
+        if (Object.hasOwn(DefinitionType, value)) {
           report('DefinitionType', node);
         }
       },

@@ -10,7 +10,6 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: 'recommended',
       description: 'Disallow relative paths to internal packages',
     },
     messages: {

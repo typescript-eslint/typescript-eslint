@@ -1,4 +1,4 @@
-import { normalize } from 'path';
+import path from 'path';
 
 import type { TSESTreeOptions } from '../parser-options';
 
@@ -33,8 +33,8 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
     return true;
   }
 
-  // Currently behind a flag while we gather real-world feedback
-  if (options.allowAutomaticSingleRunInference) {
+  // Ideally, we'd like to try to auto-detect CI or CLI usage that lets us infer a single CLI run.
+  if (!options.disallowAutomaticSingleRunInference) {
     const possibleEslintBinPaths = [
       'node_modules/.bin/eslint', // npm or yarn repo
       'node_modules/eslint/bin/eslint.js', // pnpm repo
@@ -43,8 +43,8 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
       // Default to single runs for CI processes. CI=true is set by most CI providers by default.
       process.env.CI === 'true' ||
       // This will be true for invocations such as `npx eslint ...` and `./node_modules/.bin/eslint ...`
-      possibleEslintBinPaths.some(path =>
-        process.argv[1].endsWith(normalize(path)),
+      possibleEslintBinPaths.some(binPath =>
+        process.argv[1].endsWith(path.normalize(binPath)),
       )
     ) {
       return true;

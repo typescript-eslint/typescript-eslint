@@ -622,13 +622,9 @@ export default createRule<Options, MessageId>({
       if (prevType.isUnion()) {
         const isOwnNullable = prevType.types.some(type => {
           const signatures = type.getCallSignatures();
-          return signatures.some(sig =>
-            isNullableType(sig.getReturnType(), { allowUndefined: true }),
-          );
+          return signatures.some(sig => isNullableType(sig.getReturnType()));
         });
-        return (
-          !isOwnNullable && isNullableType(prevType, { allowUndefined: true })
-        );
+        return !isOwnNullable && isNullableType(prevType);
       }
 
       return false;
