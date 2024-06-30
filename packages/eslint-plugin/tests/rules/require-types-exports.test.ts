@@ -2919,5 +2919,36 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      code: `
+        type ItemsMap = Record<string, number>;
+        type Key = keyof ItemsMap;
+
+        export function get<K extends Key>(key: K): ItemsMap[K] {
+          return key as never;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 39,
+          endColumn: 42,
+          data: {
+            name: 'Key',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 53,
+          endColumn: 61,
+          data: {
+            name: 'ItemsMap',
+          },
+        },
+      ],
+    },
   ],
 });

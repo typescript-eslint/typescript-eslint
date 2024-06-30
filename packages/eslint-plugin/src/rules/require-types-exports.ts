@@ -342,6 +342,11 @@ function getTypeReferencesRecursively(
         collect(node.typeAnnotation);
         break;
 
+      case AST_NODE_TYPES.TSIndexedAccessType:
+        collect(node.objectType);
+        collect(node.indexType);
+        break;
+
       default:
         break;
     }
