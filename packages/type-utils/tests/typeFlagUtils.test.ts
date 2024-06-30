@@ -6,9 +6,7 @@ import * as ts from 'typescript';
 import { getTypeFlags, isTypeFlagSet } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-// TODO(#9426): re-enable this
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('typeFlagUtils', () => {
+describe('typeFlagUtils', () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getType(code: string): ts.Type {
