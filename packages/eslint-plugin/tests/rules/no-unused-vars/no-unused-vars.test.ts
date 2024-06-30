@@ -774,7 +774,7 @@ export function foo() {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
     `
-function foo<T>(value: T): T {
+export function foo<T>(value: T): T {
   return { value };
 }
 export type Foo<T> = typeof foo<T>;
@@ -1150,6 +1150,18 @@ export const x: _Foo = 1;
       `,
       options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: false }],
     },
+    `
+export const foo: number = 1;
+
+export type Foo = typeof foo;
+    `,
+    `
+import { foo } from 'foo';
+
+export type Foo = typeof foo;
+
+export const bar = (): Foo => foo;
+    `,
   ],
 
   invalid: [
@@ -2090,6 +2102,161 @@ export const x = _Foo;
             additional: '. Used vars must not match /^_/u',
           },
           line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const foo: number;
+
+        export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 23,
+          endLine: 2,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = typeof foo | string;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = (typeof foo | string) & { __brand: 'foo' };
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          bar: {
+            baz: 123,
+          },
+        };
+
+        export type Bar = typeof foo.bar;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          bar: {
+            baz: 123,
+          },
+        };
+
+        export type Bar = (typeof foo)['bar'];
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        import { foo } from 'foo';
+
+        export type Bar = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 18,
+          endLine: 2,
+          endColumn: 21,
         },
       ],
     },
