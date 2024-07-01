@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-misused-spread 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowClassDeclarations": {
+        "description": "Whether to allow spreading class declarations in objects. Defaults to false.",
+        "type": "boolean"
+      },
+      "allowClassInstances": {
+        "description": "Whether to allow spreading class instances in objects. Defaults to false.",
+        "type": "boolean"
+      },
+      "allowFunctions": {
+        "description": "Whether to allow spreading functions without properties in objects. Defaults to false.",
+        "type": "boolean"
+      },
+      "allowIterables": {
+        "description": "Whether to allow spreading iterables in objects. Defaults to false.",
+        "type": "boolean"
+      },
+      "allowStrings": {
+        "description": "Whether to allow spreading strings in arrays. Defaults to false.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to allow spreading class declarations in objects. Defaults to false. */
+    allowClassDeclarations?: boolean;
+    /** Whether to allow spreading class instances in objects. Defaults to false. */
+    allowClassInstances?: boolean;
+    /** Whether to allow spreading functions without properties in objects. Defaults to false. */
+    allowFunctions?: boolean;
+    /** Whether to allow spreading iterables in objects. Defaults to false. */
+    allowIterables?: boolean;
+    /** Whether to allow spreading strings in arrays. Defaults to false. */
+    allowStrings?: boolean;
+  },
+];
+"
+`;

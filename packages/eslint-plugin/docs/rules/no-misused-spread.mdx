@@ -1,0 +1,225 @@
+---
+description: 'Disallow using the spread operator when it might cause unexpected behavior.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
+
+The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript that can be misused in ways not always detectable by TypeScript. This rule disallows using the spread operator on types where spreading can lead to unexpected behavior.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare const userName: string;
+const chars = [...userName];
+
+declare const arr: number[];
+const arrSpread = { ...arr };
+
+declare const set: Set<number>;
+const setSpread = { ...set };
+
+declare const map: Map<string, number>;
+const mapSpread = { ...map };
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj };
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+declare const userName: string;
+const chars = userName.split('');
+
+declare const arr: number[];
+const arrSpread = [...arr];
+
+declare const set: Set<number>;
+const setSpread = [...set];
+
+declare const map: Map<string, number>;
+const mapObject = Object.fromEntries(map);
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj() };
+```
+
+</TabItem>
+</Tabs>
+
+## Options
+
+### `allowStrings`
+
+By default, this rule disallows using the spread operator on strings inside arrays:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const fruit = 'Apple';
+const chars = [...fruit];
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowStrings": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowStrings": true
+    }
+  ]
+}
+```
+
+### `allowFunctions`
+
+By default, this rule disallows using the spread operator on functions without additional properties:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+declare function doWork();
+
+const spread = { ...doWork };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowFunctions": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowFunctions": true
+    }
+  ]
+}
+```
+
+### `allowIterables`
+
+By default, this rule disallows using the spread operator on iterables:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const set = new Set([1, 2, 3]);
+
+const spread = { ...set };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowIterables": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowIterables": true
+    }
+  ]
+}
+```
+
+### `allowClassInstances`
+
+By default, this rule disallows using the spread operator on instances of classes:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const user = new User('John');
+
+const spread = { ...user };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowClassInstances": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowClassInstances": true
+    }
+  ]
+}
+```
+
+### `allowClassDeclarations`
+
+By default, this rule disallows using the spread operator on class declarations:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const spread = { ...User };
+```
+
+</TabItem>
+</Tabs>
+
+If you want to allow this behavior, you can configure the rule with `"allowClassDeclarations": true`:
+
+```json
+{
+  "@typescript-eslint/no-misused-spread": [
+    "error",
+    {
+      "allowClassDeclarations": true
+    }
+  ]
+}
+```
+
+## When Not To Use It
+
+If you intentionally want to use the spread operator in those cases, and expect
+the specific behavior that comes with it, you might not want this rule.
+For example, when you want to spread an array into an object and expect the
+result to be an object with the array elements as values and the array indices
+as keys.
