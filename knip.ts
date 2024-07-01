@@ -102,6 +102,9 @@ export default {
         '@generated/docusaurus.config',
         '^@theme/.*',
         '^@theme-original/.*',
+        'docusaurus-plugin-typedoc',
+        'typedoc',
+        'typedoc-plugin-markdown',
       ],
     },
     'packages/website-eslint': {

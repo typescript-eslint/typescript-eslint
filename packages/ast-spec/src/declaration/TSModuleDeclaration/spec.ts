@@ -26,6 +26,10 @@ interface TSModuleDeclarationBase extends BaseNode {
   body?: TSModuleBlock;
   /**
    * Whether this is a global declaration
+   * @example
+   * ```ts
+   * declare global {}
+   * ```
    *
    * @deprecated Use {@link kind} instead
    */
@@ -33,7 +37,8 @@ interface TSModuleDeclarationBase extends BaseNode {
   global: boolean;
   /**
    * Whether the module is `declare`d
-   * ```
+   * @example
+   * ```ts
    * declare namespace F {}
    * ```
    */
@@ -41,7 +46,8 @@ interface TSModuleDeclarationBase extends BaseNode {
 
   /**
    * The keyword used to define this module declaration
-   * ```
+   * @example
+   * ```ts
    * namespace Foo {}
    * ^^^^^^^^^
    *

@@ -8,7 +8,8 @@ export interface TSTypeAliasDeclaration extends BaseNode {
   type: AST_NODE_TYPES.TSTypeAliasDeclaration;
   /**
    * Whether the type was `declare`d.
-   * ```
+   * @example
+   * ```ts
    * declare type T = 1;
    * ```
    */
