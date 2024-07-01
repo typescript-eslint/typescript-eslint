@@ -75,7 +75,6 @@ export default createRule({
         return true;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (isBuiltinSymbolLike(services.program, type, FUNCTION_CONSTRUCTOR)) {
         return true;
       }
