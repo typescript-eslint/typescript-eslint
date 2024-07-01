@@ -8,6 +8,8 @@ on:
 
 jobs:
   close_v8_issue_on_pr_merge:
+    permissions:
+      issues: write
     runs-on: ubuntu-latest
     steps:
       - name: Closes issues related to a merged pull request.
