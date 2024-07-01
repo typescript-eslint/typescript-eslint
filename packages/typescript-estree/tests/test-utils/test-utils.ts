@@ -77,7 +77,7 @@ export function isJSXFileType(fileType: string): boolean {
  * @param ast the AST object
  * @returns copy of the AST object
  */
-export function deeplyCopy<T>(ast: T): T {
+export function deeplyCopy<T extends NonNullable<unknown>>(ast: T): T {
   return omitDeep(ast) as T;
 }
 
@@ -96,8 +96,8 @@ function isObjectLike(value: unknown): value is UnknownObject {
  * @param selectors advance ast modifications
  * @returns formatted object
  */
-export function omitDeep<T = UnknownObject>(
-  root: T,
+export function omitDeep(
+  root: UnknownObject,
   keysToOmit: { key: string; predicate: (value: unknown) => boolean }[] = [],
   selectors: Record<
     string,
@@ -152,5 +152,5 @@ export function omitDeep<T = UnknownObject>(
     return node;
   }
 
-  return visit(root as UnknownObject, null);
+  return visit(root, null);
 }
