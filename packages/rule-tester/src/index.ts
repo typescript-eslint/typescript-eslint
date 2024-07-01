@@ -1,4 +1,5 @@
 export { RuleTester } from './RuleTester';
+export { FlatRuleTester } from './FlatRuleTester';
 export { noFormat } from './noFormat';
 export type {
   InvalidTestCase,
