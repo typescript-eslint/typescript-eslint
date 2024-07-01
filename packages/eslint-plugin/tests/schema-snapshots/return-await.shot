@@ -6,7 +6,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "enum": ["always", "in-try-catch", "never"],
+    "enum": [
+      "always",
+      "error-handling-correctness-only",
+      "in-try-catch",
+      "never"
+    ],
     "type": "string"
   }
 ]
@@ -14,6 +19,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['always' | 'in-try-catch' | 'never'];
+type Options = [
+  'always' | 'error-handling-correctness-only' | 'in-try-catch' | 'never',
+];
 "
 `;
