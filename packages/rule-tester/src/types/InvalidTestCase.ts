@@ -63,7 +63,7 @@ export interface TestCaseError<MessageIds extends string> {
 
 export interface InvalidTestCase<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > extends ValidTestCase<Options> {
   /**
    * Expected errors.

@@ -27,7 +27,7 @@ export class RuleDocsPage {
   #headingIndices: RequiredHeadingIndices;
   #rule: Readonly<ESLintPluginRuleModule>;
 
-  get children(): Readonly<unist.Node[]> {
+  get children(): readonly unist.Node[] {
     return this.#children;
   }
 

@@ -6,13 +6,12 @@ import type * as ts from 'typescript';
 import { getTypeName } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-// TODO(#9426): re-enable this
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('getTypeName', () => {
+describe('getTypeName', () => {
   function getTypes(code: string): { checker: ts.TypeChecker; type: ts.Type } {
     const rootDir = path.join(__dirname, 'fixtures');
 
     const { ast, services } = parseForESLint(code, {
+      disallowAutomaticSingleRunInference: true,
       project: './tsconfig.json',
       filePath: path.join(rootDir, 'file.ts'),
       tsconfigRootDir: rootDir,

@@ -11,7 +11,7 @@ import type {
   SharedConfigurationSettings,
 } from './Rule';
 
-interface ValidTestCase<Options extends Readonly<unknown[]>> {
+interface ValidTestCase<Options extends readonly unknown[]> {
   /**
    * Name for the test case.
    */
@@ -75,7 +75,7 @@ interface SuggestionOutput<MessageIds extends string> {
 
 interface InvalidTestCase<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > extends ValidTestCase<Options> {
   /**
    * Expected errors.
@@ -135,7 +135,7 @@ type RuleTesterTestFrameworkFunction = (
 
 interface RunTests<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > {
   // RuleTester.run also accepts strings for valid cases
   readonly valid: readonly (ValidTestCase<Options> | string)[];
@@ -147,6 +147,7 @@ interface RuleTesterConfig extends ClassicConfig.Config {
   readonly parserOptions?: Readonly<ParserOptions>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class RuleTesterBase {
   /**
    * Creates a new instance of RuleTester.
@@ -160,7 +161,7 @@ declare class RuleTesterBase {
    * @param rule The rule to test.
    * @param test The collection of tests to run.
    */
-  run<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     tests: RunTests<MessageIds, Options>,
@@ -190,7 +191,7 @@ declare class RuleTesterBase {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  defineRule<MessageIds extends string, Options extends readonly unknown[]>(
     name: string,
     rule:
       | RuleCreateFunction<MessageIds, Options>

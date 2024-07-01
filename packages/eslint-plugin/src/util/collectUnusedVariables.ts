@@ -15,6 +15,9 @@ import {
   TSESLint,
 } from '@typescript-eslint/utils';
 
+import { isTypeImport } from './isTypeImport';
+import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
+
 interface VariableAnalysis {
   readonly unusedVariables: ReadonlySet<ScopeVariable>;
   readonly usedVariables: ReadonlySet<ScopeVariable>;
@@ -784,6 +787,8 @@ function isUsedVariable(variable: ScopeVariable): boolean {
   const enumDeclNodes = getEnumDeclarations(variable);
   const isEnumDecl = enumDeclNodes.size > 0;
 
+  const isImportedAsType = variable.defs.every(isTypeImport);
+
   let rhsNode: TSESTree.Node | null = null;
 
   return variable.references.some(ref => {
@@ -794,6 +799,7 @@ function isUsedVariable(variable: ScopeVariable): boolean {
     return (
       ref.isRead() &&
       !forItself &&
+      !(!isImportedAsType && referenceContainsTypeQuery(ref.identifier)) &&
       !(isFunctionDefinition && isSelfReference(ref, functionNodes)) &&
       !(isTypeDecl && isInsideOneOf(ref, typeDeclNodes)) &&
       !(isModuleDecl && isSelfReference(ref, moduleDeclNodes)) &&
