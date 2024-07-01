@@ -76,6 +76,21 @@ ruleTester.run('no-unused-expressions', rule, {
       class Foo<T> {}
       new Foo<string>();
     `,
+    `
+      function getSet() {
+        return Set;
+      }
+      getSet()<string>;
+    `,
+    `
+      console.log()!;
+    `,
+    `
+      console.log() as void;
+    `,
+    `
+      console.log() satisfies void;
+    `,
     {
       code: 'foo && foo?.();',
       options: [{ allowShortCircuit: true }],
@@ -378,6 +393,20 @@ foo!;
           endLine: 3,
           column: 1,
           endColumn: 6,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo satisfies any;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 16,
         },
       ]),
     },

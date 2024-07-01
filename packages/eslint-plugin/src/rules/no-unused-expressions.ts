@@ -62,6 +62,7 @@ export default createRule<Options, MessageIds>({
         if (
           expressionType ===
             TSESTree.AST_NODE_TYPES.TSInstantiationExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSSatisfiesExpression ||
           expressionType === TSESTree.AST_NODE_TYPES.TSAsExpression ||
           expressionType === TSESTree.AST_NODE_TYPES.TSNonNullExpression ||
           expressionType === TSESTree.AST_NODE_TYPES.TSTypeAssertion
