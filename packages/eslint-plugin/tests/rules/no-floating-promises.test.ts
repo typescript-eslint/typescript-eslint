@@ -2237,5 +2237,13 @@ createMyThenable();
       errors: [{ line: 8, messageId: 'floatingVoid' }],
       options: [{ checkThenables: true }],
     },
+    {
+      code: `
+declare const createPromise: () => Promise<number>;
+createPromise();
+      `,
+      errors: [{ line: 3, messageId: 'floatingVoid' }],
+      options: [{ checkThenables: false }],
+    },
   ],
 });
