@@ -3,8 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
-import { isBuiltinSymbolLike } from '../../../type-utils/src/builtinSymbolLikes';
+import { createRule, getParserServices, isBuiltinSymbolLike } from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
 const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
