@@ -8,7 +8,7 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
-  isSymbolFromDefaultLibrary,
+  isBuiltinSymbolLike,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -379,10 +379,11 @@ export default createRule<Options, MessageId>({
       }
 
       // Otherwise, we always consider the built-in Promise to be Promise-like...
-      const symbol = type.getSymbol();
+      const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
       if (
-        symbol?.name === 'Promise' &&
-        isSymbolFromDefaultLibrary(services.program, symbol)
+        typeParts.some(typePart =>
+          isBuiltinSymbolLike(services.program, typePart, 'Promise'),
+        )
       ) {
         return true;
       }
@@ -396,7 +397,7 @@ export default createRule<Options, MessageId>({
       // rejected/caught via a second parameter. Original source (MIT licensed):
       //
       //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
-      for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
+      for (const ty of typeParts) {
         const then = ty.getProperty('then');
         if (then === undefined) {
           continue;

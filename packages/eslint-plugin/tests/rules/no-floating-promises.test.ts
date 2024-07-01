@@ -2245,5 +2245,25 @@ createPromise();
       errors: [{ line: 3, messageId: 'floatingVoid' }],
       options: [{ checkThenables: false }],
     },
+    {
+      code: `
+class MyPromise<T> extends Promise<T> {}
+declare const createMyPromise: () => MyPromise<number>;
+createMyPromise();
+      `,
+      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+class MyPromise<T> extends Promise<T> {
+  additional: string;
+}
+declare const createMyPromise: () => MyPromise<number>;
+createMyPromise();
+      `,
+      errors: [{ line: 6, messageId: 'floatingVoid' }],
+      options: [{ checkThenables: false }],
+    },
   ],
 });
