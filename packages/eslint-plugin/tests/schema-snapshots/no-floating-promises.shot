@@ -102,6 +102,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         },
         "type": "array"
       },
+      "checkThenables": {
+        "description": "Whether to check all \\"Thenable\\"s, not just the built-in Promise type.",
+        "type": "boolean"
+      },
       "ignoreIIFE": {
         "description": "Whether to ignore async IIFEs (Immediately Invoked Function Expressions).",
         "type": "boolean"
@@ -137,6 +141,8 @@ type Options = [
         }
       | string
     )[];
+    /** Whether to check all "Thenable"s, not just the built-in Promise type. */
+    checkThenables?: boolean;
     /** Whether to ignore async IIFEs (Immediately Invoked Function Expressions). */
     ignoreIIFE?: boolean;
     /** Whether to ignore \`void\` expressions. */
