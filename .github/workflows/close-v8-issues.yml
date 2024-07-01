@@ -1,7 +1,7 @@
 name: Close issues related to a merged pull request based on v8 branch.
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
     branches:
       - v8
