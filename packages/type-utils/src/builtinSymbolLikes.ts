@@ -120,7 +120,7 @@ export function isBuiltinTypeAliasLike(
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
-  symbolName: string,
+  symbolName: string | string[],
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
     const symbol = subType.getSymbol();
@@ -128,8 +128,12 @@ export function isBuiltinSymbolLike(
       return false;
     }
 
+    const actualSymbolName = symbol.getName();
+
     if (
-      symbol.getName() === symbolName &&
+      (Array.isArray(symbolName)
+        ? symbolName.some(name => actualSymbolName === name)
+        : actualSymbolName === symbolName) &&
       isSymbolFromDefaultLibrary(program, symbol)
     ) {
       return true;
