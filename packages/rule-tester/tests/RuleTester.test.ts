@@ -143,6 +143,10 @@ function getTestConfigFromCall(): unknown[] {
 describe('RuleTester', () => {
   describe('filenames', () => {
     it('automatically sets the filename for tests', () => {
+      jest
+        .spyOn(process, 'cwd')
+        .mockReturnValue('/some/path/that/totally/exists/');
+
       const ruleTester = new RuleTester({
         parser: '@typescript-eslint/parser',
         parserOptions: {
@@ -232,6 +236,10 @@ describe('RuleTester', () => {
     });
 
     it('allows the automated filenames to be overridden in the constructor', () => {
+      jest
+        .spyOn(process, 'cwd')
+        .mockReturnValue('/some/path/that/totally/exists/');
+
       const ruleTester = new RuleTester({
         parser: '@typescript-eslint/parser',
         parserOptions: {
