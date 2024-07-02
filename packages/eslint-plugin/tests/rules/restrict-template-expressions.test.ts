@@ -7,10 +7,7 @@ const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
-  },
+  parserOptions: { tsconfigRootDir: rootPath, project: './tsconfig.json' },
 });
 
 ruleTester.run('restrict-template-expressions', rule, {
@@ -315,6 +312,14 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allow
+    {
+      options: [{ allow: [`Promise`] }],
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+    },
+    'const msg = `arg = ${new URL()}`;',
+    'const msg = `arg = ${new URLSearchParams()}`;',
+    'const msg = `arg = ${new Error()}`;',
     'const msg = `arg = ${false}`;',
     'const msg = `arg = ${null}`;',
     'const msg = `arg = ${undefined}`;',
@@ -378,6 +383,15 @@ ruleTester.run('restrict-template-expressions', rule, {
         },
       ],
       options: [{ allowNullish: false, allowArray: true }],
+    },
+    {
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+      errors: [{ messageId: 'invalidType' }],
+    },
+    {
+      code: 'const msg = `arg = ${new URL()}`;',
+      options: [{ allow: [] }],
+      errors: [{ messageId: 'invalidType' }],
     },
     {
       code: `
@@ -459,12 +473,7 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
       errors: [
-        {
-          messageId: 'invalidType',
-          data: { type: 'T' },
-          line: 3,
-          column: 27,
-        },
+        { messageId: 'invalidType', data: { type: 'T' }, line: 3, column: 27 },
       ],
     },
     {

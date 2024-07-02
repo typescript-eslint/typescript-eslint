@@ -11,7 +11,7 @@ import {
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
-  typeMatchesSpecifier,
+  typeMatchesSomeSpecifier,
 } from '../util';
 
 type Options = [
@@ -365,8 +365,10 @@ export default createRule<Options, MessageId>({
 
       // Ignore anything specified by `allowForKnownSafePromises` option.
       if (
-        allowForKnownSafePromises.some(allowedType =>
-          typeMatchesSpecifier(type, allowedType, services.program),
+        typeMatchesSomeSpecifier(
+          type,
+          allowForKnownSafePromises,
+          services.program,
         )
       ) {
         return false;

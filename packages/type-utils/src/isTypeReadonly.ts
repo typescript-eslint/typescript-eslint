@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 import {
-  typeMatchesSpecifier,
+  typeMatchesSomeSpecifier,
   typeOrValueSpecifierSchema,
 } from './TypeOrValueSpecifier';
 
@@ -31,10 +31,7 @@ export const readonlynessOptionsSchema = {
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: {
-      type: 'array',
-      items: typeOrValueSpecifierSchema,
-    },
+    allow: typeOrValueSpecifierSchema,
   },
 } satisfies JSONSchema4;
 
@@ -232,11 +229,7 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (
-    options.allow?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    )
-  ) {
+  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 

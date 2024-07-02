@@ -4,6 +4,7 @@ description: 'Enforce template literal expressions to be of `string` type.'
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import TypeOrValueSpecifier from './shared/TypeOrValueSpecifier.md';
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
@@ -124,6 +125,19 @@ Examples of additional **correct** code for this rule with `{ allowArray: true }
 ```ts option='{ "allowArray": true }' showPlaygroundButton
 const arg = ['foo', 'bar'];
 const msg1 = `arg = ${arg}`;
+```
+
+### `allow`
+
+<TypeOrValueSpecifier verb="allow" />
+
+Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }`:
+
+```ts showPlaygroundButton
+const error = new Error();
+const url = new URL('https://typescript-eslint.io');
+const urlSearchParams = new URLSearchParams();
+const msg1 = `args = ${error}, ${url}, ${urlSearchParams}`;
 ```
 
 ## When Not To Use It

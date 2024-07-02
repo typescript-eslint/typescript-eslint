@@ -27,97 +27,73 @@ export type TypeOrValueSpecifier =
   | PackageSpecifier
   | string;
 
-export const typeOrValueSpecifierSchema: JSONSchema4 = {
-  oneOf: [
-    {
-      type: 'string',
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['file'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
-                type: 'string',
+export const typeOrValueSpecifierSchema = {
+  type: 'array',
+  items: {
+    oneOf: [
+      { type: 'string' },
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: { type: 'string', enum: ['file'] },
+          name: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: { type: 'string' },
               },
-            },
-          ],
+            ],
+          },
+          path: { type: 'string' },
         },
-        path: {
-          type: 'string',
-        },
+        required: ['from', 'name'],
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['lib'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
-                type: 'string',
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: { type: 'string', enum: ['lib'] },
+          name: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: { type: 'string' },
               },
-            },
-          ],
+            ],
+          },
         },
+        required: ['from', 'name'],
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['package'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
-                type: 'string',
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: { type: 'string', enum: ['package'] },
+          name: {
+            oneOf: [
+              { type: 'string' },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: { type: 'string' },
               },
-            },
-          ],
+            ],
+          },
+          package: { type: 'string' },
         },
-        package: {
-          type: 'string',
-        },
+        required: ['from', 'name', 'package'],
       },
-      required: ['from', 'name', 'package'],
-    },
-  ],
-};
+    ],
+  },
+} as const satisfies JSONSchema4;
 
 function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
   if (typeof name === 'string') {
@@ -181,9 +157,17 @@ function typeDeclaredInLib(
   if (declarationFiles.length === 0) {
     return true;
   }
-  return declarationFiles.some(declaration =>
-    program.isSourceFileDefaultLibrary(declaration),
-  );
+  return declarationFiles.some(declaration => {
+    if (program.isSourceFileDefaultLibrary(declaration)) {
+      return true;
+    }
+    const { path } = declaration;
+    return (
+      // Declared in types of runtime - Treat it as if it's from lib.
+      program.sourceFileToPackageName.get(path) === undefined &&
+      /\/node_modules\/@types\/(bun|node)\//.test(path)
+    );
+  });
 }
 
 export function typeMatchesSpecifier(
@@ -218,3 +202,10 @@ export function typeMatchesSpecifier(
       );
   }
 }
+
+export const typeMatchesSomeSpecifier = (
+  type: ts.Type,
+  specifiers: TypeOrValueSpecifier[] = [],
+  program: ts.Program,
+): boolean =>
+  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
