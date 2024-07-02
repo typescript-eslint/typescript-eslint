@@ -150,6 +150,7 @@ type T = Record<string, A | B>;
         },
       ],
     },
+    { code: '(a: string | undefined) => {};' },
   ],
   invalid: [
     {
@@ -663,6 +664,11 @@ type T = Record<string, A  >;
           },
         },
       ],
+    },
+    {
+      code: '(a?: string | undefined) => {};',
+      errors: [{ messageId: 'unnecessary' }],
+      output: '(a?: string  ) => {};',
     },
   ],
 });
