@@ -6,10 +6,7 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
-  },
+  parserOptions: { tsconfigRootDir: rootDir, project: './tsconfig.json' },
   parser: '@typescript-eslint/parser',
 });
 
@@ -730,6 +727,17 @@ Promise.resolve().catch((...{ find }: [unknown]) => {
           ],
         },
       ],
+    },
+
+    {
+      only: true,
+      code: `
+        Promise.resolve().then(
+          () => {},
+          error => {},
+        );
+      `,
+      errors: [{ messageId: 'useUnknown' }],
     },
   ],
 });
