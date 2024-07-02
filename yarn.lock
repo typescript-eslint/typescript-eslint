@@ -13392,7 +13392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.20.0, jiti@npm:^1.21.0":
+"jiti@npm:^1.20.0, jiti@npm:^1.21.6":
   version: 1.21.6
   resolution: "jiti@npm:1.21.6"
   bin:
@@ -13636,15 +13636,15 @@ __metadata:
   linkType: hard
 
 "knip@npm:^5.9.4":
-  version: 5.22.2
-  resolution: "knip@npm:5.22.2"
+  version: 5.23.3
+  resolution: "knip@npm:5.23.3"
   dependencies:
     "@ericcornelissen/bash-parser": 0.5.3
     "@nodelib/fs.walk": 2.0.0
     "@snyk/github-codeowners": 1.1.0
     easy-table: 1.2.0
     fast-glob: ^3.3.2
-    jiti: ^1.21.0
+    jiti: ^1.21.6
     js-yaml: ^4.1.0
     minimist: ^1.2.8
     picocolors: ^1.0.0
@@ -13663,7 +13663,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: 995924973618391af39ba6bfb324f1f4dac427879a944eeecbcf48b61ec165f10f18196f27a7d079076f351223ed067bb917bc863e0424153c3fae2dd65582d6
+  checksum: 93acc4d1745dc7b64c17f8545c43ec03ef67b78c3291347e886c8e09c2dc134dfbfd0ebb83e160717d4a19025d46e037590a99c51886a325efa7a817bbaa9145
   languageName: node
   linkType: hard
 
