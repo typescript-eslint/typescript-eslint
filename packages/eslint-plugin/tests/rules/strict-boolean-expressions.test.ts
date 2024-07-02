@@ -410,6 +410,85 @@ if (y) {
         },
       ],
     },
+    `
+declare function assert(a: number, b: unknown): asserts a;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b is string;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(nullableString, boo);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(...nullableString, nullableString);
+    `,
+    `
+declare function assert(
+  this: object,
+  a: number,
+  b?: unknown,
+  c?: unknown,
+): asserts c;
+declare const nullableString: string | null;
+declare const foo: number;
+const o: { assert: typeof assert } = {
+  assert,
+};
+o.assert(foo, nullableString);
+    `,
+    {
+      code: `
+declare function assert(x: unknown): x is string;
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+    },
+    {
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+declare const lol: string | number | unknown | null;
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(lol);
+      `,
+    },
+    {
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(...args: any[]): void;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+    },
   ],
 
   invalid: [
@@ -1723,6 +1802,147 @@ if (x) {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 5,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 13,
+        },
+      ],
+    },
+    {
+      code: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(maybeString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+        },
+      ],
+    },
+    {
+      // The implementation signature doesn't count towards the call signatures
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 18,
+          column: 18,
+        },
+      ],
+    },
+    {
+      // The implementation signature doesn't count towards the call signatures
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString, 'more', 'args', 'afterwards');
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 19,
+          column: 18,
         },
       ],
     },
