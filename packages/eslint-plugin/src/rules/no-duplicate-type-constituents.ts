@@ -5,13 +5,10 @@ import type { Type } from 'typescript';
 import { createRule, getParserServices } from '../util';
 
 export type Options = [
-  {
-    ignoreIntersections?: boolean;
-    ignoreUnions?: boolean;
-  },
+  { ignoreIntersections?: boolean; ignoreUnions?: boolean },
 ];
 
-export type MessageIds = 'duplicate';
+export type MessageIds = 'duplicate' | 'unnecessary';
 
 const astIgnoreKeys = new Set(['range', 'loc', 'parent']);
 
@@ -79,31 +76,25 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     messages: {
       duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
+      unnecessary:
+        'Explicit undefined is unnecessary on an optional parameter.',
     },
     schema: [
       {
         additionalProperties: false,
         type: 'object',
         properties: {
-          ignoreIntersections: {
-            type: 'boolean',
-          },
-          ignoreUnions: {
-            type: 'boolean',
-          },
+          ignoreIntersections: { type: 'boolean' },
+          ignoreUnions: { type: 'boolean' },
         },
       },
     ],
   },
-  defaultOptions: [
-    {
-      ignoreIntersections: false,
-      ignoreUnions: false,
-    },
-  ],
+  defaultOptions: [{ ignoreIntersections: false, ignoreUnions: false }],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const { sourceCode } = context;
 
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
@@ -111,18 +102,23 @@ export default createRule<Options, MessageIds>({
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       node.types.reduce<TSESTree.TypeNode[]>(
         (uniqueConstituents, constituentNode) => {
+          const reportDuplicate = (
+            duplicatePrevious: TSESTree.TypeNode,
+          ): TSESTree.TypeNode[] => {
+            report('duplicate', constituentNode, {
+              type:
+                node.type === AST_NODE_TYPES.TSIntersectionType
+                  ? 'Intersection'
+                  : 'Union',
+              previous: sourceCode.getText(duplicatePrevious),
+            });
+            return uniqueConstituents;
+          };
           const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
             ele => isSameAstNode(ele, constituentNode),
           );
           if (duplicatedPreviousConstituentInAst) {
-            reportDuplicate(
-              {
-                duplicated: constituentNode,
-                duplicatePrevious: duplicatedPreviousConstituentInAst,
-              },
-              node,
-            );
-            return uniqueConstituents;
+            return reportDuplicate(duplicatedPreviousConstituentInAst);
           }
           const constituentNodeType = checker.getTypeAtLocation(
             parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
@@ -130,14 +126,7 @@ export default createRule<Options, MessageIds>({
           const duplicatedPreviousConstituentInType =
             cachedTypeMap.get(constituentNodeType);
           if (duplicatedPreviousConstituentInType) {
-            reportDuplicate(
-              {
-                duplicated: constituentNode,
-                duplicatePrevious: duplicatedPreviousConstituentInType,
-              },
-              node,
-            );
-            return uniqueConstituents;
+            return reportDuplicate(duplicatedPreviousConstituentInType);
           }
           cachedTypeMap.set(constituentNodeType, constituentNode);
           return [...uniqueConstituents, constituentNode];
@@ -145,63 +134,71 @@ export default createRule<Options, MessageIds>({
         [],
       );
     }
-    function reportDuplicate(
-      duplicateConstituent: {
-        duplicated: TSESTree.TypeNode;
-        duplicatePrevious: TSESTree.TypeNode;
-      },
-      parentNode: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
+    function report(
+      messageId: MessageIds,
+      node: TSESTree.TypeNode,
+      data?: Record<string, unknown>,
     ): void {
-      const beforeTokens = context.sourceCode.getTokensBefore(
-        duplicateConstituent.duplicated,
-        { filter: token => token.value === '|' || token.value === '&' },
-      );
-      const beforeUnionOrIntersectionToken =
-        beforeTokens[beforeTokens.length - 1];
-      const bracketBeforeTokens = context.sourceCode.getTokensBetween(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const beforeUnionOrIntersectionToken = sourceCode
+        .getTokensBefore(node, {
+          filter: token => ['|', '&'].includes(token.value),
+        })
+        .at(-1)!;
+      const bracketBeforeTokens = sourceCode.getTokensBetween(
         beforeUnionOrIntersectionToken,
-        duplicateConstituent.duplicated,
+        node,
       );
-      const bracketAfterTokens = context.sourceCode.getTokensAfter(
-        duplicateConstituent.duplicated,
-        { count: bracketBeforeTokens.length },
-      );
-      const reportLocation: TSESTree.SourceLocation = {
-        start: duplicateConstituent.duplicated.loc.start,
-        end:
-          bracketAfterTokens.length > 0
-            ? bracketAfterTokens[bracketAfterTokens.length - 1].loc.end
-            : duplicateConstituent.duplicated.loc.end,
-      };
+      const bracketAfterTokens = sourceCode.getTokensAfter(node, {
+        count: bracketBeforeTokens.length,
+      });
       context.report({
-        data: {
-          type:
-            parentNode.type === AST_NODE_TYPES.TSIntersectionType
-              ? 'Intersection'
-              : 'Union',
-          previous: context.sourceCode.getText(
-            duplicateConstituent.duplicatePrevious,
-          ),
+        data,
+        messageId,
+        node,
+        loc: {
+          start: node.loc.start,
+          end: (bracketAfterTokens.at(-1) ?? node).loc.end,
         },
-        messageId: 'duplicate',
-        node: duplicateConstituent.duplicated,
-        loc: reportLocation,
-        fix: fixer => {
-          return [
+        fix: fixer =>
+          [
             beforeUnionOrIntersectionToken,
             ...bracketBeforeTokens,
-            duplicateConstituent.duplicated,
+            node,
             ...bracketAfterTokens,
-          ].map(token => fixer.remove(token));
-        },
+          ].map(token => fixer.remove(token)),
       });
     }
     return {
-      ...(!ignoreIntersections && {
-        TSIntersectionType: checkDuplicate,
-      }),
+      ...(!ignoreIntersections && { TSIntersectionType: checkDuplicate }),
       ...(!ignoreUnions && {
-        TSUnionType: checkDuplicate,
+        TSUnionType(node): void {
+          checkDuplicate(node);
+          const maybeTypeAnnotation = node.parent;
+          if (maybeTypeAnnotation.type === AST_NODE_TYPES.TSTypeAnnotation) {
+            const maybeIdentifier = maybeTypeAnnotation.parent;
+            if (
+              maybeIdentifier.type === AST_NODE_TYPES.Identifier &&
+              maybeIdentifier.optional
+            ) {
+              const maybeFunction = maybeIdentifier.parent;
+              const { type } = maybeFunction;
+              if (
+                (type === AST_NODE_TYPES.ArrowFunctionExpression ||
+                  type === AST_NODE_TYPES.FunctionDeclaration ||
+                  type === AST_NODE_TYPES.FunctionExpression) &&
+                maybeFunction.params.includes(maybeIdentifier)
+              ) {
+                const explicitUndefined = node.types.find(
+                  ({ type }) => type === AST_NODE_TYPES.TSUndefinedKeyword,
+                );
+                if (explicitUndefined) {
+                  report('unnecessary', explicitUndefined);
+                }
+              }
+            }
+          }
+        },
       }),
     };
   },
