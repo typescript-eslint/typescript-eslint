@@ -60,6 +60,12 @@ class B implements FG.A {}
     `
 interface B extends FG.A {}
     `,
+    `
+class B implements F.S.T.A {}
+    `,
+    `
+interface B extends F.S.T.A {}
+    `,
   ],
   invalid: [
     {
