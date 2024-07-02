@@ -331,7 +331,7 @@ function isStaticMemberAccessOfValue(
     | TSESTree.MemberExpressionComputedName
     | TSESTree.MemberExpressionNonComputedName,
   value: string,
-  scope?: Scope.Scope | undefined,
+  scope?: Scope.Scope,
 ): boolean {
   if (!memberExpression.computed) {
     // x.memberName case.
