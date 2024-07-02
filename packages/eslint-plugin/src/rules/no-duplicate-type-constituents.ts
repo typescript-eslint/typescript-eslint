@@ -102,31 +102,35 @@ export default createRule<Options, MessageIds>({
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       node.types.reduce<TSESTree.TypeNode[]>(
         (uniqueConstituents, constituentNode) => {
-          const reportDuplicate = (
-            duplicatePrevious: TSESTree.TypeNode,
-          ): TSESTree.TypeNode[] => {
-            report('duplicate', constituentNode, {
-              type:
-                node.type === AST_NODE_TYPES.TSIntersectionType
-                  ? 'Intersection'
-                  : 'Union',
-              previous: sourceCode.getText(duplicatePrevious),
-            });
-            return uniqueConstituents;
+          const reportIfDuplicate = (
+            duplicatePrevious?: TSESTree.TypeNode,
+            // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+          ): true | void => {
+            if (duplicatePrevious) {
+              report('duplicate', constituentNode, {
+                type:
+                  node.type === AST_NODE_TYPES.TSIntersectionType
+                    ? 'Intersection'
+                    : 'Union',
+                previous: sourceCode.getText(duplicatePrevious),
+              });
+              return true;
+            }
           };
-          const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
-            ele => isSameAstNode(ele, constituentNode),
-          );
-          if (duplicatedPreviousConstituentInAst) {
-            return reportDuplicate(duplicatedPreviousConstituentInAst);
+          if (
+            reportIfDuplicate(
+              uniqueConstituents.find(ele =>
+                isSameAstNode(ele, constituentNode),
+              ),
+            )
+          ) {
+            return uniqueConstituents;
           }
           const constituentNodeType = checker.getTypeAtLocation(
             parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
           );
-          const duplicatedPreviousConstituentInType =
-            cachedTypeMap.get(constituentNodeType);
-          if (duplicatedPreviousConstituentInType) {
-            return reportDuplicate(duplicatedPreviousConstituentInType);
+          if (reportIfDuplicate(cachedTypeMap.get(constituentNodeType))) {
+            return uniqueConstituents;
           }
           cachedTypeMap.set(constituentNodeType, constituentNode);
           return [...uniqueConstituents, constituentNode];
