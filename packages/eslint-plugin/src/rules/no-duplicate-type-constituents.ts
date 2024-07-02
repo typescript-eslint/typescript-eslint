@@ -104,6 +104,7 @@ export default createRule<Options, MessageIds>({
         (uniqueConstituents, constituentNode) => {
           const reportIfDuplicate = (
             duplicatePrevious?: TSESTree.TypeNode,
+            // https://github.com/typescript-eslint/typescript-eslint/issues/5752
             // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
           ): true | void => {
             if (duplicatePrevious) {
