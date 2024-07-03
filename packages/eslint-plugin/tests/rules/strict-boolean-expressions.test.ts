@@ -410,6 +410,43 @@ if (y) {
         },
       ],
     },
+    {
+      // double exclamation `!!x` expression should be considered as well as `Boolean(x)`
+      options: [{ allowString: false, allowNumber: false }],
+      // test strings listed below are taken from cases in this file.
+      code: noFormat`
+        if (true && !!(1 + 1)) {}
+        while (false || !!("a" + "b")) {}
+        if (((!!('')) && {}) || (0 && void 0)) { }
+        if (('' && {}) || ((!!(0)) && void 0)) { }
+        while (!!("")) {}
+        for (; !!("foo");) {}
+        declare const x: string; if (!!(x)) {}
+        (x: string) => (!!!(x));
+        (x: string) => (!!!!(x)); // additional case for multiple "!!"
+        (x: string) => (!!!!!(x)); // additional case for multiple "!!"
+        <T extends string>(x: T) => (!!(x)) ? 1 : 0;
+        while (!!(0n)) {}
+        for (; !!(123);) {}
+        declare const xx: number; if (!!(xx)) {}
+        (x: bigint) => !!!(x);
+        <T extends number>(x: T) => (!!(x)) ? 1 : 0;
+        !!!([]["length"]); // doesn't count as array.length when computed
+        declare const a: any[] & { notLength: number }; if (!!(a.notLength)) {}
+      `,
+    },
+    noFormat`declare const x: string | null; if (!!(x)) {}`,
+    noFormat`if (true && (!!((1 + 1)))) {}`,
+    noFormat`<T extends string | null | undefined>(x: T) => (!!(x)) ? 1 : 0;`,
+    noFormat`function foo(x: '' | 'bar' | null) { if (!!!(x)) {} }`,
+    noFormat`declare const x: number | null; if (!!(x)) {}`,
+    noFormat`(x?: number) => !!!(x);`,
+    noFormat`<T extends number | null | undefined>(x: T) => (!!(x)) ? 1 : 0;`,
+    noFormat`function foo(x: 0 | 1 | null) { if (!!!(x)) {} }`,
+    noFormat`if (!!(x)) {}`,
+    noFormat`x => !(!!(x));`,
+    noFormat`<T extends any>(x: T) => (!!(x)) ? 1 : 0;`,
+    noFormat`<T>(x: T) => (Boolean(x)) ? 1 : 0;`,
   ],
 
   invalid: [
