@@ -30,8 +30,6 @@ export default {
 
         // imported in eslint.config.js
         '@typescript-eslint/utils',
-        // imported in eslint.config.mjs
-        '@typescript-eslint/eslint-plugin-internal',
       ],
       entry: ['tools/release/changelog-renderer.js'],
       ignoreBinaries: [
@@ -89,7 +87,6 @@ export default {
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
-        '@babel/runtime',
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',

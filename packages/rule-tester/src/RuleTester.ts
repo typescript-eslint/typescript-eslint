@@ -20,6 +20,7 @@ import { Linter } from '@typescript-eslint/utils/ts-eslint';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint';
+import stringify from 'json-stable-stringify-without-jsonify';
 import merge from 'lodash.merge';
 
 import { TestFramework } from './TestFramework';
@@ -40,6 +41,7 @@ import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
 import { isReadonlyArray } from './utils/isReadonlyArray';
+import { isSerializable } from './utils/serialization';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
   emitLegacyRuleAPIWarning,
@@ -185,16 +187,16 @@ export class RuleTester extends TestFramework {
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<Options extends Readonly<unknown[]>>(
+  static only<Options extends readonly unknown[]>(
     item: ValidTestCase<Options> | string,
   ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends readonly unknown[]>(
     item: InvalidTestCase<MessageIds, Options>,
   ): InvalidTestCase<MessageIds, Options>;
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
       | InvalidTestCase<MessageIds, Options>
       | ValidTestCase<Options>
@@ -254,10 +256,7 @@ export class RuleTester extends TestFramework {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
       if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
+        return { ...test, filename: getFilename(test.parserOptions) };
       }
       return test;
     };
@@ -393,6 +392,9 @@ export class RuleTester extends TestFramework {
       );
     }
 
+    const seenValidTestCases = new Set<string>();
+    const seenInvalidTestCases = new Set<string>();
+
     if (typeof rule === 'function') {
       emitLegacyRuleAPIWarning(ruleName);
     }
@@ -442,7 +444,12 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(ruleName, rule, valid);
+              this.#testValidTemplate(
+                ruleName,
+                rule,
+                valid,
+                seenValidTestCases,
+              );
             });
           });
         });
@@ -458,7 +465,12 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(ruleName, rule, invalid);
+              this.#testInvalidTemplate(
+                ruleName,
+                rule,
+                invalid,
+                seenInvalidTestCases,
+              );
             });
           });
         });
@@ -483,6 +495,8 @@ export class RuleTester extends TestFramework {
     output: string;
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
+    config: RuleTesterConfig;
+    filename?: string;
   } {
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
     let code;
@@ -656,6 +670,8 @@ export class RuleTester extends TestFramework {
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
+      config,
+      filename,
     };
   }
 
@@ -670,6 +686,7 @@ export class RuleTester extends TestFramework {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     itemIn: ValidTestCase<Options> | string,
+    seenValidTestCases: Set<string>,
   ): void {
     const item: ValidTestCase<Options> =
       typeof itemIn === 'object' ? itemIn : { code: itemIn };
@@ -684,6 +701,8 @@ export class RuleTester extends TestFramework {
         "Optional test case property 'name' must be a string",
       );
     }
+
+    checkDuplicateTestCase(item, seenValidTestCases);
 
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
@@ -712,6 +731,7 @@ export class RuleTester extends TestFramework {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     item: InvalidTestCase<MessageIds, Options>,
+    seenInvalidTestCases: Set<string>,
   ): void {
     assert.ok(
       typeof item.code === 'string',
@@ -731,6 +751,8 @@ export class RuleTester extends TestFramework {
     if (Array.isArray(item.errors) && item.errors.length === 0) {
       assert.fail('Invalid cases must have at least one error');
     }
+
+    checkDuplicateTestCase(item, seenInvalidTestCases);
 
     const ruleHasMetaMessages =
       hasOwnProperty(rule, 'meta') && hasOwnProperty(rule.meta, 'messages');
@@ -1046,6 +1068,25 @@ export class RuleTester extends TestFramework {
                     [actualSuggestion],
                   ).output;
 
+                  // Verify if suggestion fix makes a syntax error or not.
+                  const errorMessageInSuggestion = this.#linter
+                    .verify(
+                      codeWithAppliedSuggestion,
+                      result.config,
+                      result.filename,
+                    )
+                    .find(m => m.fatal);
+
+                  assert(
+                    !errorMessageInSuggestion,
+                    [
+                      'A fatal parsing error occurred in suggestion fix.',
+                      `Error: ${errorMessageInSuggestion?.message}`,
+                      'Suggestion output:',
+                      codeWithAppliedSuggestion,
+                    ].join('\n'),
+                  );
+
                   assert.strictEqual(
                     codeWithAppliedSuggestion,
                     expectedSuggestion.output,
@@ -1093,6 +1134,30 @@ export class RuleTester extends TestFramework {
  */
 function assertASTDidntChange(beforeAST: unknown, afterAST: unknown): void {
   assert.deepStrictEqual(beforeAST, afterAST, 'Rule should not modify AST.');
+}
+
+/**
+ * Check if this test case is a duplicate of one we have seen before.
+ */
+function checkDuplicateTestCase(
+  item: unknown,
+  seenTestCases: Set<unknown>,
+): void {
+  if (!isSerializable(item)) {
+    /*
+     * If we can't serialize a test case (because it contains a function, RegExp, etc), skip the check.
+     * This might happen with properties like: options, plugins, settings, languageOptions.parser, languageOptions.parserOptions.
+     */
+    return;
+  }
+
+  const serializedTestCase = stringify(item);
+
+  assert(
+    !seenTestCases.has(serializedTestCase),
+    'detected duplicate test case',
+  );
+  seenTestCases.add(serializedTestCase);
 }
 
 /**

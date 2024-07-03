@@ -34,7 +34,7 @@ import RulesTable from "@site/src/components/RulesTable";
 - `💭 requires type information` refers to whether the rule requires [typed linting](/getting-started/typed-linting).
 - `🧱 extension rule` means that the rule is an extension of an [core ESLint rule](https://eslint.org/docs/latest/rules) (see [Extension Rules](#extension-rules)).
 - `📐 formatting rule` means that the rule has to do with formatting.
-  - We [strongly recommend against using ESLint for formatting](/troubleshooting/formatting).
+  - We [strongly recommend against using ESLint for formatting](/users/what-about-formatting).
   - Soon, formatting rules will be moved to the [ESLint stylistic plugin](https://eslint.style).
 - `💀 deprecated rule` means that the rule should no longer be used and will be removed from the plugin in a future version.
 

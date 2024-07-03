@@ -8,4 +8,5 @@ import { TYPE } from './base-config';
 
 export const dom_asynciterable = {
   FileSystemDirectoryHandle: TYPE,
+  ReadableStream: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

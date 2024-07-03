@@ -4,6 +4,14 @@ const $ = $_config({
   stdout: 'inherit',
   stderr: 'inherit',
   verbose: true,
+  env: {
+    /**
+     * Do not apply the special GitHub Actions group markers within the
+     * postinstall logging, it cannot work correctly when nested within
+     * yarn's output and therefore just adds visual noise.
+     */
+    NX_SKIP_LOG_GROUPING: 'true',
+  },
 });
 
 /**

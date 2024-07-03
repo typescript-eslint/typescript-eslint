@@ -36,9 +36,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getCalleeName(
-      node: TSESTree.LeftHandSideExpression,
-    ): string | null {
+    function getCalleeName(node: TSESTree.Expression): string | null {
       if (node.type === AST_NODE_TYPES.Identifier) {
         return node.name;
       }

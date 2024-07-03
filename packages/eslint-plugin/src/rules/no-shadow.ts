@@ -87,7 +87,7 @@ export default createRule<Options, MessageIds>({
      */
     function isGlobalAugmentation(scope: TSESLint.Scope.Scope): boolean {
       return (
-        (scope.type === ScopeType.tsModule && !!scope.block.global) ||
+        (scope.type === ScopeType.tsModule && scope.block.kind === 'global') ||
         (!!scope.upper && isGlobalAugmentation(scope.upper))
       );
     }
