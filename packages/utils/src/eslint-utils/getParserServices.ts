@@ -3,7 +3,7 @@ import type {
   ParserServices,
   ParserServicesWithTypeInformation,
 } from '../ts-estree';
-import { parserSeemsToBeTSESLint as parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
+import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
 
 const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
