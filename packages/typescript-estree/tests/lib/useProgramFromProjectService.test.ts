@@ -142,7 +142,7 @@ describe('useProgramFromProjectService', () => {
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowdefaultprojectforfiles-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultprojectforfiles-glob-too-wide
 
 Matching files:
 - a
@@ -176,7 +176,7 @@ If you absolutely need more files included, set parserOptions.EXPERIMENTAL_usePr
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
 
-See https://typescript-eslint.io/troubleshooting/#allowdefaultprojectforfiles-glob-too-wide
+See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultprojectforfiles-glob-too-wide
 
 Matching files:
 - 0

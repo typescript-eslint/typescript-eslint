@@ -1,14 +1,28 @@
 ---
-id: performance-troubleshooting
-title: Performance Troubleshooting
+id: performance
+slug: /troubleshooting/typed-linting/performance
+title: Performance
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-As mentioned in the [type-aware linting doc](../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
+As mentioned in the [type-aware linting doc](../../getting-started/Typed_Linting.mdx), if you're using type-aware linting, your lint times should be roughly the same as your build times.
 
 If you're experiencing times much slower than that, then there are a few common culprits.
+
+## Slow TypeScript Types
+
+Running typed linting on a project is generally as slow as type checking that same project.
+If TypeScript's type checker runs slowly on your project, then typed linting will as well.
+
+The [TypeScript Wiki's Performance page](https://github.com/microsoft/TypeScript/wiki/Performance) includes general performance tips and steps to investigate slow type checking.
+In particular for typed linting:
+
+- [Investigating Issues](https://github.com/microsoft/TypeScript/wiki/Performance#investigating-issues) can spot slow types and type checking:
+  - [Running `tsc` alone](https://github.com/microsoft/TypeScript/wiki/Performance#running-tsc-alone) should provide a baseline for your full project's type checking speed.
+  - [Performance Tracing](https://github.com/microsoft/TypeScript/wiki/Performance#performance-tracing) can spotlight specific slow types within your project.
+- [Using Project References](https://github.com/microsoft/TypeScript/wiki/Performance#using-project-references) -which requires enabling the [new "project service" (`parserOptions.projectService`) in v8](/blog/announcing-typescript-eslint-v8-beta#project-service)- can be helpful to speed up type checking on larger projects.
 
 ## Wide includes in your `tsconfig`
 
@@ -87,7 +101,7 @@ Across a large codebase, these can add up, and severely impact performance.
 
 We recommend not using this rule, and instead using a tool like [`prettier`](https://www.npmjs.com/package/prettier) to enforce a standardized formatting.
 
-See our [documentation on formatting](./Formatting.mdx) for more information.
+See our [documentation on formatting](../../users/What_About_Formatting.mdx) for more information.
 
 ## `eslint-plugin-prettier`
 

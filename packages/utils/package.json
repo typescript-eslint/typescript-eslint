@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "7.13.0",
+  "version": "7.15.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -22,10 +22,6 @@
     "./eslint-utils": {
       "types": "./dist/eslint-utils/index.d.ts",
       "default": "./dist/eslint-utils/index.js"
-    },
-    "./eslint-utils/rule-tester": {
-      "types": "./dist/eslint-utils/rule-tester/RuleTester.d.ts",
-      "default": "./dist/eslint-utils/rule-tester/RuleTester.js"
     },
     "./json-schema": {
       "types": "./dist/json-schema.d.ts",
@@ -68,9 +64,9 @@
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.0",
-    "@typescript-eslint/scope-manager": "7.13.0",
-    "@typescript-eslint/types": "7.13.0",
-    "@typescript-eslint/typescript-estree": "7.13.0"
+    "@typescript-eslint/scope-manager": "7.15.0",
+    "@typescript-eslint/types": "7.15.0",
+    "@typescript-eslint/typescript-estree": "7.15.0"
   },
   "peerDependencies": {
     "eslint": "^8.56.0"

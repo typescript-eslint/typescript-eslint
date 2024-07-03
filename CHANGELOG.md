@@ -1,3 +1,83 @@
+## 7.15.0 (2024-07-01)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [array-type] detect `Readonly<string[]>` case ([#8752](https://github.com/typescript-eslint/typescript-eslint/pull/8752))
+- **eslint-plugin:** back-port new rules around empty object types from v8 ([#9443](https://github.com/typescript-eslint/typescript-eslint/pull/9443))
+
+### 🩹 Fixes
+
+- disable `EXPERIMENTAL_useProjectService` in `disabled-type-checked` shared config ([#9459](https://github.com/typescript-eslint/typescript-eslint/pull/9459))
+- **eslint-plugin:** [no-unsafe-return] differentiate a types-error any from a true any ([#9254](https://github.com/typescript-eslint/typescript-eslint/pull/9254))
+- **eslint-plugin:** [no-unsafe-call] differentiate a types-error any from a true any ([#9304](https://github.com/typescript-eslint/typescript-eslint/pull/9304))
+- **utils:** clean outdated `RuleTester` export ([#9322](https://github.com/typescript-eslint/typescript-eslint/pull/9322))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Kim Sang Du @developer-bandi
+- rgehbt @Gehbt
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.14.1 (2024-06-24)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] treat enums and literals as their underlying primitive types ([#9376](https://github.com/typescript-eslint/typescript-eslint/pull/9376))
+- **eslint-plugin:** [prefer-nullish-coalescing] ensure ternary fix does not remove parens ([#9380](https://github.com/typescript-eslint/typescript-eslint/pull/9380))
+
+### ❤️  Thank You
+
+- Jake Bailey @jakebailey
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.14.0 (2024-06-24)
+
+
+### 🚀 Features
+
+- support TypeScript 5.5 ([#9397](https://github.com/typescript-eslint/typescript-eslint/pull/9397))
+- **ast-spec:** tighter types and documentation for declaration/* ([#9211](https://github.com/typescript-eslint/typescript-eslint/pull/9211))
+
+### 🩹 Fixes
+
+- keep warnAbountTSVersion in sync with package.json ([#9400](https://github.com/typescript-eslint/typescript-eslint/pull/9400))
+- **eslint-plugin:** [no-extraneous-class] handle abstract members ([#9367](https://github.com/typescript-eslint/typescript-eslint/pull/9367))
+- **eslint-plugin:** [prefer-nullish-coalescing] handle intersected primitive types ([#9378](https://github.com/typescript-eslint/typescript-eslint/pull/9378))
+- **eslint-plugin:** [no-invalid-this] support AccessorProperty ([#9411](https://github.com/typescript-eslint/typescript-eslint/pull/9411))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+- cm-ayf @cm-ayf
+- Jake Bailey @jakebailey
+- James Zhan
+- Joshua Chen
+- yoshi2no @yoshi2no
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.13.1 (2024-06-17)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly] refine report locations ([#8894](https://github.com/typescript-eslint/typescript-eslint/pull/8894))
+- **eslint-plugin:** [return-await] support explicit resource management ([#9044](https://github.com/typescript-eslint/typescript-eslint/pull/9044))
+- **eslint-plugin:** [no-unsafe-member-access] differentiate a types-error any from a true any ([#9291](https://github.com/typescript-eslint/typescript-eslint/pull/9291))
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.13.0 (2024-06-10)
 
 

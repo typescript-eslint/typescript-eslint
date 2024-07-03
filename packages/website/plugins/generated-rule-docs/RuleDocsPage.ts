@@ -26,7 +26,7 @@ export class RuleDocsPage {
   #headingIndices: RequiredHeadingIndices;
   #rule: Readonly<RuleModuleWithMetaDocs>;
 
-  get children(): Readonly<unist.Node[]> {
+  get children(): readonly unist.Node[] {
     return this.#children;
   }
 
