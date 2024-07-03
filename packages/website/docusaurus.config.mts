@@ -263,32 +263,56 @@ const pluginPwaOptions: PluginPwaOptions = {
 const redirects: PluginRedirectOptions = {
   redirects: [
     {
+      from: '/getting-started/typed-linting/monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
+    },
+    {
       from: '/linting/configs',
       to: '/users/configs',
     },
     {
       from: '/linting/troubleshooting',
-      to: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
     },
     {
       from: '/linting/troubleshooting/formatting',
-      to: '/troubleshooting/formatting',
+      to: '/users/what-about-formatting',
     },
     {
-      from: '/linting/troubleshooting/performance-troubleshooting',
-      to: '/troubleshooting/performance-troubleshooting',
+      from: '/linting/troubleshooting/typed-linting/Performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
     },
     {
       from: '/linting/troubleshooting/tslint',
-      to: '/troubleshooting/tslint',
+      to: '/users/what-about-tslint',
     },
     {
       from: '/linting/typed-linting',
       to: '/getting-started/typed-linting',
     },
     {
-      from: '/linting/typed-linting/monorepos',
-      to: '/getting-started/typed-linting/monorepos',
+      from: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/faqs',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/formatting',
+      to: '/users/what-about-formatting',
+    },
+    {
+      from: '/troubleshooting/tslint',
+      to: '/users/what-about-tslint',
+    },
+    {
+      from: '/troubleshooting/performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
+    },
+    {
+      from: '/linting/troubleshooting/typed-linting/Monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
     },
     {
       from: '/maintenance/issues/rule-deprecations',

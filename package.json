@@ -110,7 +110,7 @@
     "rimraf": "^5.0.5",
     "tmp": "^0.2.1",
     "tsx": "*",
-    "typescript": ">=4.7.4 <5.5.0",
+    "typescript": ">=4.7.4 <5.6.0",
     "typescript-eslint": "workspace:^"
   },
   "resolutions": {
@@ -132,7 +132,7 @@
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
-    "typescript": "5.4.5",
+    "typescript": "5.5.2",
     "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
     "@nx/eslint@19.3.0-canary.20240611-1600875": "patch:@nx/eslint@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/@nx-eslint-npm-19.3.0-canary.20240611-1600875-f5cb695794.patch",
     "nx@19.3.0-canary.20240611-1600875": "patch:nx@npm%3A19.3.0-canary.20240611-1600875#./.yarn/patches/nx-npm-19.3.0-canary.20240611-1600875-bd96520563.patch"
