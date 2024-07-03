@@ -1,3 +1,27 @@
+## 7.15.0 (2024-07-01)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [array-type] detect `Readonly<string[]>` case ([#8752](https://github.com/typescript-eslint/typescript-eslint/pull/8752))
+- **eslint-plugin:** back-port new rules around empty object types from v8 ([#9443](https://github.com/typescript-eslint/typescript-eslint/pull/9443))
+
+### 🩹 Fixes
+
+- disable `EXPERIMENTAL_useProjectService` in `disabled-type-checked` shared config ([#9459](https://github.com/typescript-eslint/typescript-eslint/pull/9459))
+- **eslint-plugin:** [no-unsafe-return] differentiate a types-error any from a true any ([#9254](https://github.com/typescript-eslint/typescript-eslint/pull/9254))
+- **eslint-plugin:** [no-unsafe-call] differentiate a types-error any from a true any ([#9304](https://github.com/typescript-eslint/typescript-eslint/pull/9304))
+- **utils:** clean outdated `RuleTester` export ([#9322](https://github.com/typescript-eslint/typescript-eslint/pull/9322))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Kim Sang Du @developer-bandi
+- rgehbt @Gehbt
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.14.1 (2024-06-24)
 
 
