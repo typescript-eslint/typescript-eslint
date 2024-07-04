@@ -415,6 +415,16 @@ declare const foo: boolean & { __BRAND: 'Foo' };
 if (foo) {
 }
     `,
+    `
+declare const foo: true & { __BRAND: 'Foo' };
+if (foo) {
+}
+    `,
+    `
+declare const foo: false & { __BRAND: 'Foo' };
+if (foo) {
+}
+    `,
   ],
 
   invalid: [

@@ -284,7 +284,7 @@ export default createRule<Options, MessageId>({
         wantedTypes.every(type => types.has(type));
 
       // boolean
-      if (is('boolean') || is('truthy boolean') || is('branded boolean')) {
+      if (is('boolean') || is('truthy boolean')) {
         // boolean is always okay
         return;
       }
@@ -821,8 +821,7 @@ export default createRule<Options, MessageId>({
       | 'string'
       | 'truthy boolean'
       | 'truthy number'
-      | 'truthy string'
-      | 'branded boolean';
+      | 'truthy string';
 
     /**
      * Check union variants for the types we care about
@@ -910,11 +909,7 @@ export default createRule<Options, MessageId>({
             ),
         )
       ) {
-        if (types.some(type => isBrandedBoolean(type))) {
-          variantTypes.add('branded boolean');
-        } else {
-          variantTypes.add('object');
-        }
+        variantTypes.add(types.some(isBrandedBoolean) ? 'boolean' : 'object');
       }
 
       if (
@@ -969,15 +964,13 @@ function isArrayLengthExpression(
  * @param type The type checked
  */
 function isBrandedBoolean(type: ts.Type): boolean {
-  if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.Intersection)) {
-    return false;
-  }
-
-  const types = (type as ts.IntersectionType).types;
-  return types.some(childType =>
-    tsutils.isTypeFlagSet(
-      childType,
-      ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
-    ),
+  return (
+    type.isIntersection() &&
+    type.types.some(childType =>
+      tsutils.isTypeFlagSet(
+        childType,
+        ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
+      ),
+    )
   );
 }
