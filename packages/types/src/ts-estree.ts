@@ -17,7 +17,7 @@ declare module './generated/ast-spec' {
     parent: TSESTree.ClassBody;
   }
 
-  export interface AccessorPropertyNonComputedName {
+  interface AccessorPropertyNonComputedName {
     parent: TSESTree.ClassBody;
   }
 }
