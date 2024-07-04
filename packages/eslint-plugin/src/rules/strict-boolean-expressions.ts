@@ -375,76 +375,75 @@ export default createRule<Options, MessageId>({
       // string
       if (is('string') || is('truthy string')) {
         if (!options.allowString) {
-          if (hasDoubleExclamationExpression(node.parent)) {
-            return;
-          }
-          if (isLogicalNegationExpression(node.parent)) {
-            // if (!string)
-            context.report({
-              node,
-              messageId: 'conditionErrorString',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareStringLength',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `${code}.length === 0`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCompareEmptyString',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `${code} === ""`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `!Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
-          } else {
-            // if (string)
-            context.report({
-              node,
-              messageId: 'conditionErrorString',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareStringLength',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code}.length > 0`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCompareEmptyString',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} !== ""`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
+          if (!hasDoubleExclamationExpression(node.parent)) {
+            if (isLogicalNegationExpression(node.parent)) {
+              // if (!string)
+              context.report({
+                node,
+                messageId: 'conditionErrorString',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareStringLength',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `${code}.length === 0`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCompareEmptyString',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `${code} === ""`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `!Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            } else {
+              // if (string)
+              context.report({
+                node,
+                messageId: 'conditionErrorString',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareStringLength',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code}.length > 0`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCompareEmptyString',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} !== ""`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            }
           }
         }
         return;
@@ -453,75 +452,74 @@ export default createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          if (hasDoubleExclamationExpression(node.parent)) {
-            return;
-          }
-          if (isLogicalNegationExpression(node.parent)) {
-            // if (!nullableString)
-            context.report({
-              node,
-              messageId: 'conditionErrorNullableString',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `${code} == null`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixDefaultEmptyString',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} ?? ""`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `!Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
-          } else {
-            // if (nullableString)
-            context.report({
-              node,
-              messageId: 'conditionErrorNullableString',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} != null`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixDefaultEmptyString',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} ?? ""`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
+          if (!hasDoubleExclamationExpression(node.parent)) {
+            if (isLogicalNegationExpression(node.parent)) {
+              // if (!nullableString)
+              context.report({
+                node,
+                messageId: 'conditionErrorNullableString',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareNullish',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `${code} == null`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixDefaultEmptyString',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} ?? ""`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `!Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            } else {
+              // if (nullableString)
+              context.report({
+                node,
+                messageId: 'conditionErrorNullableString',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareNullish',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} != null`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixDefaultEmptyString',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} ?? ""`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            }
           }
         }
         return;
@@ -530,103 +528,102 @@ export default createRule<Options, MessageId>({
       // number
       if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
-          if (hasDoubleExclamationExpression(node.parent)) {
-            return;
-          }
-          if (isArrayLengthExpression(node, checker, services)) {
-            if (isLogicalNegationExpression(node.parent)) {
-              // if (!array.length)
-              context.report({
-                node,
-                messageId: 'conditionErrorNumber',
-                fix: getWrappingFixer({
-                  sourceCode: context.sourceCode,
-                  node: node.parent,
-                  innerNode: node,
-                  wrap: code => `${code} === 0`,
-                }),
-              });
-            } else {
-              // if (array.length)
-              context.report({
-                node,
-                messageId: 'conditionErrorNumber',
-                fix: getWrappingFixer({
-                  sourceCode: context.sourceCode,
+          if (!hasDoubleExclamationExpression(node.parent)) {
+            if (isArrayLengthExpression(node, checker, services)) {
+              if (isLogicalNegationExpression(node.parent)) {
+                // if (!array.length)
+                context.report({
                   node,
-                  wrap: code => `${code} > 0`,
-                }),
-              });
-            }
-          } else if (isLogicalNegationExpression(node.parent)) {
-            // if (!number)
-            context.report({
-              node,
-              messageId: 'conditionErrorNumber',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareZero',
+                  messageId: 'conditionErrorNumber',
                   fix: getWrappingFixer({
                     sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
-                    // TODO: we have to compare to 0n if the type is bigint
                     wrap: code => `${code} === 0`,
                   }),
-                },
-                {
-                  // TODO: don't suggest this for bigint because it can't be NaN
-                  messageId: 'conditionFixCompareNaN',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `Number.isNaN(${code})`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `!Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
-          } else {
-            // if (number)
-            context.report({
-              node,
-              messageId: 'conditionErrorNumber',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareZero',
+                });
+              } else {
+                // if (array.length)
+                context.report({
+                  node,
+                  messageId: 'conditionErrorNumber',
                   fix: getWrappingFixer({
                     sourceCode: context.sourceCode,
                     node,
-                    wrap: code => `${code} !== 0`,
+                    wrap: code => `${code} > 0`,
                   }),
-                },
-                {
-                  messageId: 'conditionFixCompareNaN',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `!Number.isNaN(${code})`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
+                });
+              }
+            } else if (isLogicalNegationExpression(node.parent)) {
+              // if (!number)
+              context.report({
+                node,
+                messageId: 'conditionErrorNumber',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareZero',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      // TODO: we have to compare to 0n if the type is bigint
+                      wrap: code => `${code} === 0`,
+                    }),
+                  },
+                  {
+                    // TODO: don't suggest this for bigint because it can't be NaN
+                    messageId: 'conditionFixCompareNaN',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `Number.isNaN(${code})`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `!Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            } else {
+              // if (number)
+              context.report({
+                node,
+                messageId: 'conditionErrorNumber',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareZero',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} !== 0`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCompareNaN',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `!Number.isNaN(${code})`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            }
           }
         }
         return;
@@ -635,75 +632,74 @@ export default createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          if (hasDoubleExclamationExpression(node.parent)) {
-            return;
-          }
-          if (isLogicalNegationExpression(node.parent)) {
-            // if (!nullableNumber)
-            context.report({
-              node,
-              messageId: 'conditionErrorNullableNumber',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `${code} == null`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixDefaultZero',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} ?? 0`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node: node.parent,
-                    innerNode: node,
-                    wrap: code => `!Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
-          } else {
-            // if (nullableNumber)
-            context.report({
-              node,
-              messageId: 'conditionErrorNullableNumber',
-              suggest: [
-                {
-                  messageId: 'conditionFixCompareNullish',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} != null`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixDefaultZero',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `${code} ?? 0`,
-                  }),
-                },
-                {
-                  messageId: 'conditionFixCastBoolean',
-                  fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
-                    node,
-                    wrap: code => `Boolean(${code})`,
-                  }),
-                },
-              ],
-            });
+          if (!hasDoubleExclamationExpression(node.parent)) {
+            if (isLogicalNegationExpression(node.parent)) {
+              // if (!nullableNumber)
+              context.report({
+                node,
+                messageId: 'conditionErrorNullableNumber',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareNullish',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `${code} == null`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixDefaultZero',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} ?? 0`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node: node.parent,
+                      innerNode: node,
+                      wrap: code => `!Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            } else {
+              // if (nullableNumber)
+              context.report({
+                node,
+                messageId: 'conditionErrorNullableNumber',
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareNullish',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} != null`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixDefaultZero',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `${code} ?? 0`,
+                    }),
+                  },
+                  {
+                    messageId: 'conditionFixCastBoolean',
+                    fix: getWrappingFixer({
+                      sourceCode: context.sourceCode,
+                      node,
+                      wrap: code => `Boolean(${code})`,
+                    }),
+                  },
+                ],
+              });
+            }
           }
         }
         return;
@@ -799,23 +795,22 @@ export default createRule<Options, MessageId>({
       // any
       if (is('any')) {
         if (!options.allowAny) {
-          if (hasDoubleExclamationExpression(node.parent)) {
-            return;
+          if (!hasDoubleExclamationExpression(node.parent)) {
+            context.report({
+              node,
+              messageId: 'conditionErrorAny',
+              suggest: [
+                {
+                  messageId: 'conditionFixCastBoolean',
+                  fix: getWrappingFixer({
+                    sourceCode: context.sourceCode,
+                    node,
+                    wrap: code => `Boolean(${code})`,
+                  }),
+                },
+              ],
+            });
           }
-          context.report({
-            node,
-            messageId: 'conditionErrorAny',
-            suggest: [
-              {
-                messageId: 'conditionFixCastBoolean',
-                fix: getWrappingFixer({
-                  sourceCode: context.sourceCode,
-                  node,
-                  wrap: code => `Boolean(${code})`,
-                }),
-              },
-            ],
-          });
         }
         return;
       }
