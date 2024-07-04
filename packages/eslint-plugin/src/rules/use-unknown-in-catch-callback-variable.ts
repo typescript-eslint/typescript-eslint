@@ -69,13 +69,13 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getArgIndexToCheck(node: TSESTree.Expression): number | false {
+    function getArgIndexToCheck(node: TSESTree.Expression): 0 | 1 | false {
       if (node.type !== AST_NODE_TYPES.MemberExpression) {
         return false;
       }
       const argIndexToCheck = ['catch', 'then'].findIndex(method =>
         isStaticMemberAccessOfValue(node, method),
-      );
+      ) as -1 | 0 | 1;
       if (argIndexToCheck === -1) {
         return false;
       }
@@ -296,7 +296,8 @@ export default createRule<[], MessageIds>({
 
     return {
       CallExpression(node): void {
-        if (node.arguments.length === 0) {
+        const args = node.arguments;
+        if (args.length === 0) {
           return;
         }
         const argIndexToCheck = getArgIndexToCheck(node.callee);
@@ -304,10 +305,10 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        const firstArgument = node.arguments[0];
-        const argToCheck = node.arguments[argIndexToCheck];
+        const firstArgument = args[0];
+        const argToCheck = args[argIndexToCheck];
         // If we are checking a .then() call, we need to check the second argument.
-        // But if the first argument is a
+        // But if the first argument is a spread argument, we need to check its length
         if (
           argIndexToCheck &&
           firstArgument.type === AST_NODE_TYPES.SpreadElement
@@ -321,11 +322,11 @@ export default createRule<[], MessageIds>({
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
         if (firstArgument.type === AST_NODE_TYPES.SpreadElement) {
-          if (node.arguments.length === 1) {
+          if (args.length === 1) {
             if (shouldFlagSingleSpreadArg(firstArgument)) {
               context.report({ node: firstArgument, messageId: 'useUnknown' });
             }
-          } else if (shouldFlagMultipleSpreadArgs(node.arguments)) {
+          } else if (shouldFlagMultipleSpreadArgs(args)) {
             context.report({ node, messageId: 'useUnknownSpreadArgs' });
           }
           return;
