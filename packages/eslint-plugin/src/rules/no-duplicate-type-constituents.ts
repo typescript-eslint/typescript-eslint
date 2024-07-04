@@ -5,7 +5,10 @@ import type { Type } from 'typescript';
 import { createRule, getParserServices } from '../util';
 
 export type Options = [
-  { ignoreIntersections?: boolean; ignoreUnions?: boolean },
+  {
+    ignoreIntersections?: boolean;
+    ignoreUnions?: boolean;
+  },
 ];
 
 export type MessageIds = 'duplicate' | 'unnecessary';
@@ -84,13 +87,22 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         type: 'object',
         properties: {
-          ignoreIntersections: { type: 'boolean' },
-          ignoreUnions: { type: 'boolean' },
+          ignoreIntersections: {
+            type: 'boolean',
+          },
+          ignoreUnions: {
+            type: 'boolean',
+          },
         },
       },
     ],
   },
-  defaultOptions: [{ ignoreIntersections: false, ignoreUnions: false }],
+  defaultOptions: [
+    {
+      ignoreIntersections: false,
+      ignoreUnions: false,
+    },
+  ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
