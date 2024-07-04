@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import console from 'console';
 import type { Type } from 'typescript';
 
 import { createRule, getParserServices } from '../util';
@@ -156,19 +157,43 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TypeNode,
       data?: Record<string, unknown>,
     ): void {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const beforeUnionOrIntersectionToken = sourceCode
-        .getTokensBefore(node, {
+      const getUnionOrIntersectionToken = (
+        where: 'Before' | 'After',
+        at: number,
+      ): TSESTree.Token | undefined =>
+        sourceCode[`getTokens${where}`](node, {
           filter: token => ['|', '&'].includes(token.value),
-        })
-        .at(-1)!;
-      const bracketBeforeTokens = sourceCode.getTokensBetween(
-        beforeUnionOrIntersectionToken,
-        node,
+        }).at(at);
+
+      const beforeUnionOrIntersectionToken = getUnionOrIntersectionToken(
+        'Before',
+        -1,
       );
-      const bracketAfterTokens = sourceCode.getTokensAfter(node, {
-        count: bracketBeforeTokens.length,
-      });
+      let afterUnionOrIntersectionToken: TSESTree.Token | undefined;
+      let bracketBeforeTokens;
+      let bracketAfterTokens;
+      if (beforeUnionOrIntersectionToken) {
+        bracketBeforeTokens = sourceCode.getTokensBetween(
+          beforeUnionOrIntersectionToken,
+          node,
+        );
+        bracketAfterTokens = sourceCode.getTokensAfter(node, {
+          count: bracketBeforeTokens.length,
+        });
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        afterUnionOrIntersectionToken = getUnionOrIntersectionToken(
+          'After',
+          0,
+        )!;
+        bracketAfterTokens = sourceCode.getTokensBetween(
+          node,
+          afterUnionOrIntersectionToken,
+        );
+        bracketBeforeTokens = sourceCode.getTokensBefore(node, {
+          count: bracketAfterTokens.length,
+        });
+      }
       context.report({
         data,
         messageId,
@@ -183,7 +208,8 @@ export default createRule<Options, MessageIds>({
             ...bracketBeforeTokens,
             node,
             ...bracketAfterTokens,
-          ].map(token => fixer.remove(token)),
+            afterUnionOrIntersectionToken,
+          ].flatMap(token => (token ? fixer.remove(token) : [])),
       });
     }
     return {

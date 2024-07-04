@@ -670,5 +670,10 @@ type T = Record<string, A  >;
       errors: [{ messageId: 'unnecessary' }],
       output: '(a?: string  ) => {};',
     },
+    {
+      code: '(arg?: undefined | string) => {};',
+      errors: [{ messageId: 'unnecessary' }],
+      output: '(arg?:   string) => {};',
+    },
   ],
 });
