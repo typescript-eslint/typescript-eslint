@@ -410,15 +410,16 @@ if (y) {
         },
       ],
     },
-    {
+    ...batchedSingleLineTests<MessageId, Options>({
       // double exclamation `!!x` expression should be considered as well as `Boolean(x)`
       options: [{ allowString: false, allowNumber: false }],
-      // test strings listed below are taken from cases in this file.
+      // test strings listed below are taken from cases already existing in this file.
       code: noFormat`
         if (true && !!(1 + 1)) {}
         while (false || !!("a" + "b")) {}
-        if (((!!('')) && {}) || (0 && void 0)) { }
-        if (('' && {}) || ((!!(0)) && void 0)) { }
+        // if (((!!('')) && {}) || (0 && void 0)) { }
+        // if (('' && {}) || ((!!(0)) && void 0)) { }
+        if (((!!(''))) || ((!!(0)))) { } // remove uncorrelated "&& {}" and "&& void 0"
         while (!!("")) {}
         for (; !!("foo");) {}
         declare const x: string; if (!!(x)) {}
@@ -434,7 +435,7 @@ if (y) {
         !!!([]["length"]); // doesn't count as array.length when computed
         declare const a: any[] & { notLength: number }; if (!!(a.notLength)) {}
       `,
-    },
+    }),
     noFormat`declare const x: string | null; if (!!(x)) {}`,
     noFormat`if (true && (!!((1 + 1)))) {}`,
     noFormat`<T extends string | null | undefined>(x: T) => (!!(x)) ? 1 : 0;`,
