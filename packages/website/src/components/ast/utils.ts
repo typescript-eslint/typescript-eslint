@@ -60,11 +60,6 @@ export function getNodeType(value: unknown): ParentNodeType {
       return 'tsSymbol';
     } else if ('getParameters' in value && value.getParameters != null) {
       return 'tsSignature';
-    } else if (
-      'flags' in value &&
-      ('antecedent' in value || 'antecedents' in value || 'consequent' in value)
-    ) {
-      return 'tsFlow';
     }
   }
   return undefined;
@@ -104,8 +99,6 @@ export function getTypeName(
       return `Symbol(${String(value.escapedName)})`;
     case 'tsSignature':
       return '[Signature]';
-    case 'tsFlow':
-      return '[FlowNode]';
   }
   return undefined;
 }
@@ -151,11 +144,6 @@ export function getTooltipLabel(
       case 'tsSymbol':
         if (propName === 'flags') {
           return tsEnumFlagToString('SymbolFlags', value);
-        }
-        break;
-      case 'tsFlow':
-        if (propName === 'flags') {
-          return tsEnumFlagToString('FlowFlags', value);
         }
         break;
     }

@@ -12,6 +12,7 @@ const changelogRenderer = async ({
   changelogRenderOptions,
   repoSlug,
   conventionalCommitsConfig,
+  changes,
 }) => {
   const defaultChangelog = await defaultChangelogRenderer({
     projectGraph,
@@ -22,6 +23,7 @@ const changelogRenderer = async ({
     changelogRenderOptions,
     repoSlug,
     conventionalCommitsConfig,
+    changes,
   });
 
   // Append our custom messaging to the generated changelog entry
