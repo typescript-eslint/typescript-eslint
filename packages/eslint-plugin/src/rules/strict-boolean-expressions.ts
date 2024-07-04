@@ -375,7 +375,9 @@ export default createRule<Options, MessageId>({
       // string
       if (is('string') || is('truthy string')) {
         if (!options.allowString) {
-          if (hasDoubleExclamationExpression(node.parent)) return;
+          if (hasDoubleExclamationExpression(node.parent)) {
+            return;
+          }
           if (isLogicalNegationExpression(node.parent)) {
             // if (!string)
             context.report({
@@ -451,7 +453,9 @@ export default createRule<Options, MessageId>({
       // nullable string
       if (is('nullish', 'string')) {
         if (!options.allowNullableString) {
-          if (hasDoubleExclamationExpression(node.parent)) return;
+          if (hasDoubleExclamationExpression(node.parent)) {
+            return;
+          }
           if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableString)
             context.report({
@@ -526,7 +530,9 @@ export default createRule<Options, MessageId>({
       // number
       if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
-          if (hasDoubleExclamationExpression(node.parent)) return;
+          if (hasDoubleExclamationExpression(node.parent)) {
+            return;
+          }
           if (isArrayLengthExpression(node, checker, services)) {
             if (isLogicalNegationExpression(node.parent)) {
               // if (!array.length)
@@ -629,7 +635,9 @@ export default createRule<Options, MessageId>({
       // nullable number
       if (is('nullish', 'number')) {
         if (!options.allowNullableNumber) {
-          if (hasDoubleExclamationExpression(node.parent)) return;
+          if (hasDoubleExclamationExpression(node.parent)) {
+            return;
+          }
           if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableNumber)
             context.report({
@@ -791,7 +799,9 @@ export default createRule<Options, MessageId>({
       // any
       if (is('any')) {
         if (!options.allowAny) {
-          if (hasDoubleExclamationExpression(node.parent)) return;
+          if (hasDoubleExclamationExpression(node.parent)) {
+            return;
+          }
           context.report({
             node,
             messageId: 'conditionErrorAny',

@@ -410,7 +410,7 @@ if (y) {
         },
       ],
     },
-    ...batchedSingleLineTests<MessageId, Options>({
+    {
       // double exclamation `!!x` expression should be considered as well as `Boolean(x)`
       options: [{ allowString: false, allowNumber: false }],
       // test strings listed below are taken from cases already existing in this file.
@@ -435,7 +435,7 @@ if (y) {
         !!!([]["length"]); // doesn't count as array.length when computed
         declare const a: any[] & { notLength: number }; if (!!(a.notLength)) {}
       `,
-    }),
+    },
     noFormat`declare const x: string | null; if (!!(x)) {}`,
     noFormat`if (true && (!!((1 + 1)))) {}`,
     noFormat`<T extends string | null | undefined>(x: T) => (!!(x)) ? 1 : 0;`,
@@ -447,7 +447,6 @@ if (y) {
     noFormat`if (!!(x)) {}`,
     noFormat`x => !(!!(x));`,
     noFormat`<T extends any>(x: T) => (!!(x)) ? 1 : 0;`,
-    noFormat`<T>(x: T) => (Boolean(x)) ? 1 : 0;`,
   ],
 
   invalid: [
