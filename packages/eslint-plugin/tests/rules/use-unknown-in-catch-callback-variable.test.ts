@@ -112,8 +112,12 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
       });
     `,
     `
-      declare const thenArgs: [() => void];
-      Promise.resolve().then(...thenArgs, (error: unknown) => {});
+      declare const singleTupleArg: [() => void];
+      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
+    `,
+    `
+      declare const arrayArg: (() => void)[];
+      Promise.resolve().then(...arrayArg, error => {});
     `,
   ],
 
@@ -767,6 +771,14 @@ Promise.resolve().catch((...{ find }: [unknown]) => {
           ],
         },
       ],
+    },
+
+    {
+      code: `
+        declare const thenArgs: [() => {}, (err: any) => {}];
+        Promise.resolve().then(...thenArgs);
+      `,
+      errors: [{ line: 3, messageId: 'useUnknownSpreadArgs' }],
     },
   ],
 });

@@ -324,7 +324,7 @@ export default createRule<[], MessageIds>({
             if (type && isFlaggableHandlerType(type)) {
               context.report({
                 node: firstArgument,
-                messageId: 'useUnknown',
+                messageId: 'useUnknownSpreadArgs',
               });
             }
             // No further checks needed, as we don't need to go overboard with complex handling.
