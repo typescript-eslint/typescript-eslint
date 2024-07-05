@@ -355,7 +355,7 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        // First argument is an "ordinary" argument (i.e. not a spread argument)
+        // Argument to check is an "ordinary" argument (i.e. not a spread argument)
         // promise.catch(f), promise.catch(() => {}), promise.catch(<expression>, <<other-args>>)
         if (shouldFlagArgument(argumentToCheck)) {
           // We are now guaranteed to report, but we have a bit of work to do

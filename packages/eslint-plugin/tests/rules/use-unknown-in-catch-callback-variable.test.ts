@@ -21,6 +21,14 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
       });
     `,
     `
+      Promise.resolve().then(
+        () => {},
+        (err: unknown) => {
+          throw err;
+        },
+      );
+    `,
+    `
       Promise.resolve().catch(() => {
         throw new Error();
       });
@@ -102,6 +110,10 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
       Promise.resolve().catch((...{ find }: [unknown]) => {
         console.log(find);
       });
+    `,
+    `
+      declare const thenArgs: [() => void];
+      Promise.resolve().then(...thenArgs, (error: unknown) => {});
     `,
   ],
 
@@ -326,6 +338,31 @@ Promise.resolve().catch(err => {
 Promise.resolve().catch((err: unknown) => {
   throw err;
 });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve().then(
+  () => {},
+  error => {},
+);
+      `,
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().then(
+  () => {},
+  (error: unknown) => {},
+);
       `,
             },
           ],
@@ -725,32 +762,6 @@ Promise.resolve().catch((...{ find }: [string]) => {
 Promise.resolve().catch((...{ find }: [unknown]) => {
   console.log(find);
 });
-      `,
-            },
-          ],
-        },
-      ],
-    },
-
-    {
-      only: true,
-      code: `
-Promise.resolve().then(
-  () => {},
-  error => {},
-);
-      `,
-      errors: [
-        {
-          messageId: 'useUnknown',
-          suggestions: [
-            {
-              messageId: 'addUnknownTypeAnnotationSuggestion',
-              output: `
-Promise.resolve().then(
-  () => {},
-  (error: unknown) => {},
-);
       `,
             },
           ],
