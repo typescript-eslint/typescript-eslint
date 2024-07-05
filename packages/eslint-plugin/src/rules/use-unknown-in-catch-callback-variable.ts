@@ -69,7 +69,7 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getArgIndexToCheck(node: TSESTree.Expression): 0 | 1 | false {
+    function getArgumentIndexToCheck(node: TSESTree.Expression): 0 | 1 | false {
       if (node.type !== AST_NODE_TYPES.MemberExpression) {
         return false;
       }
@@ -300,31 +300,49 @@ export default createRule<[], MessageIds>({
         if (args.length === 0) {
           return;
         }
-        const argIndexToCheck = getArgIndexToCheck(node.callee);
-        if (argIndexToCheck === false) {
+        const argumentIndexToCheck = getArgumentIndexToCheck(node.callee);
+        if (argumentIndexToCheck === false) {
           return;
         }
 
         const [firstArgument] = args;
-        let argToCheck = args[argIndexToCheck];
+        const argumentToCheck = args[argumentIndexToCheck];
         // If we are checking a .then() call, we need to check the second argument.
-        // But if the first argument is a spread argument, we need to check its length
+        // But if the first argument is a spread argument, that could affect things, so handle that here.
         if (
-          argIndexToCheck &&
+          argumentIndexToCheck &&
           firstArgument.type === AST_NODE_TYPES.SpreadElement
         ) {
           const spreadArgsType = getSpreadArgsType(firstArgument);
-          if (checker.isTupleType(spreadArgsType)) {
+          // If it's a tuple type with a fixedLength of 1, no special handling needed.
+          if (
+            checker.isTupleType(spreadArgsType) &&
+            spreadArgsType.target.fixedLength !== 1
+          ) {
+            // If the fixed length is not 1, then check index 1 of this spread type.
+            const type = checker.getTypeArguments(spreadArgsType).at(1);
+            if (type && isFlaggableHandlerType(type)) {
+              context.report({
+                node: firstArgument,
+                messageId: 'useUnknown',
+              });
+            }
+            // No further checks needed, as we don't need to go overboard with complex handling.
+            return;
+          }
+          // Too complex to figure out what's going on, so we'll ignore.
+          if (checker.isArrayType(spreadArgsType)) {
+            return;
           }
         }
 
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
-        if (firstArgument.type === AST_NODE_TYPES.SpreadElement) {
+        if (argumentToCheck.type === AST_NODE_TYPES.SpreadElement) {
           if (args.length === 1) {
-            if (shouldFlagSingleSpreadArg(firstArgument)) {
+            if (shouldFlagSingleSpreadArg(argumentToCheck)) {
               context.report({
-                node: firstArgument,
+                node: argumentToCheck,
                 messageId: 'useUnknown',
               });
             }
@@ -339,13 +357,13 @@ export default createRule<[], MessageIds>({
 
         // First argument is an "ordinary" argument (i.e. not a spread argument)
         // promise.catch(f), promise.catch(() => {}), promise.catch(<expression>, <<other-args>>)
-        if (shouldFlagArgument(firstArgument)) {
+        if (shouldFlagArgument(argumentToCheck)) {
           // We are now guaranteed to report, but we have a bit of work to do
           // to determine exactly where, and whether we can fix it.
           const overrides =
-            refineReportForNormalArgumentIfPossible(firstArgument);
+            refineReportForNormalArgumentIfPossible(argumentToCheck);
           context.report({
-            node: firstArgument,
+            node: argumentToCheck,
             messageId: 'useUnknown',
             ...overrides,
           });
