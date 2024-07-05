@@ -735,12 +735,27 @@ Promise.resolve().catch((...{ find }: [unknown]) => {
     {
       only: true,
       code: `
-        Promise.resolve().then(
-          () => {},
-          error => {},
-        );
+Promise.resolve().then(
+  () => {},
+  error => {},
+);
       `,
-      errors: [{ messageId: 'useUnknown' }],
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().then(
+  () => {},
+  (error: unknown) => {},
+);
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
