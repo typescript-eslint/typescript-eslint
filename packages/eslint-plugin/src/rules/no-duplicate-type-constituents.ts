@@ -2,7 +2,12 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type } from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type Options = [
   {
@@ -180,11 +185,13 @@ export default createRule<Options, MessageIds>({
           count: bracketBeforeTokens.length,
         });
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        afterUnionOrIntersectionToken = getUnionOrIntersectionToken(
-          'After',
-          0,
-        )!;
+        afterUnionOrIntersectionToken = nullThrows(
+          getUnionOrIntersectionToken('After', 0),
+          NullThrowsReasons.MissingToken(
+            'union or intersection token',
+            'duplicate type constituent',
+          ),
+        );
         bracketAfterTokens = sourceCode.getTokensBetween(
           node,
           afterUnionOrIntersectionToken,
