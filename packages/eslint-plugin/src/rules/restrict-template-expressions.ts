@@ -49,7 +49,11 @@ const optionTesters = (
     ],
     ['Never', isTypeNeverType],
   ] as const satisfies [string, OptionTester][]
-).map(([type, tester]) => ({ type, option: `allow${type}` as const, tester }));
+).map(([type, tester]) => ({
+  type,
+  option: `allow${type}` as const,
+  tester,
+}));
 type Options = [
   { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
     allow?: TypeOrValueSpecifier[];

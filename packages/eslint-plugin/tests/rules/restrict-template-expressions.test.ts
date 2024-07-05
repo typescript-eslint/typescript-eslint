@@ -7,7 +7,10 @@ const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
-  parserOptions: { tsconfigRootDir: rootPath, project: './tsconfig.json' },
+  parserOptions: {
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+  },
 });
 
 ruleTester.run('restrict-template-expressions', rule, {
@@ -473,7 +476,12 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
       errors: [
-        { messageId: 'invalidType', data: { type: 'T' }, line: 3, column: 27 },
+        {
+          messageId: 'invalidType',
+          data: { type: 'T' },
+          line: 3,
+          column: 27,
+        },
       ],
     },
     {

@@ -31,42 +31,34 @@ export const typeOrValueSpecifierSchema = {
   type: 'array',
   items: {
     oneOf: [
-      { type: 'string' },
       {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          from: { type: 'string', enum: ['file'] },
-          name: {
-            oneOf: [
-              { type: 'string' },
-              {
-                type: 'array',
-                minItems: 1,
-                uniqueItems: true,
-                items: { type: 'string' },
-              },
-            ],
-          },
-          path: { type: 'string' },
-        },
-        required: ['from', 'name'],
+        type: 'string',
       },
       {
         type: 'object',
         additionalProperties: false,
         properties: {
-          from: { type: 'string', enum: ['lib'] },
+          from: {
+            type: 'string',
+            enum: ['file'],
+          },
           name: {
             oneOf: [
-              { type: 'string' },
+              {
+                type: 'string',
+              },
               {
                 type: 'array',
                 minItems: 1,
                 uniqueItems: true,
-                items: { type: 'string' },
+                items: {
+                  type: 'string',
+                },
               },
             ],
+          },
+          path: {
+            type: 'string',
           },
         },
         required: ['from', 'name'],
@@ -75,19 +67,54 @@ export const typeOrValueSpecifierSchema = {
         type: 'object',
         additionalProperties: false,
         properties: {
-          from: { type: 'string', enum: ['package'] },
+          from: {
+            type: 'string',
+            enum: ['lib'],
+          },
           name: {
             oneOf: [
-              { type: 'string' },
+              {
+                type: 'string',
+              },
               {
                 type: 'array',
                 minItems: 1,
                 uniqueItems: true,
-                items: { type: 'string' },
+                items: {
+                  type: 'string',
+                },
               },
             ],
           },
-          package: { type: 'string' },
+        },
+        required: ['from', 'name'],
+      },
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          from: {
+            type: 'string',
+            enum: ['package'],
+          },
+          name: {
+            oneOf: [
+              {
+                type: 'string',
+              },
+              {
+                type: 'array',
+                minItems: 1,
+                uniqueItems: true,
+                items: {
+                  type: 'string',
+                },
+              },
+            ],
+          },
+          package: {
+            type: 'string',
+          },
         },
         required: ['from', 'name', 'package'],
       },
