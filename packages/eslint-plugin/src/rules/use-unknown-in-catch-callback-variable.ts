@@ -305,8 +305,8 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        const firstArgument = args[0];
-        const argToCheck = args[argIndexToCheck];
+        const [firstArgument] = args;
+        let argToCheck = args[argIndexToCheck];
         // If we are checking a .then() call, we need to check the second argument.
         // But if the first argument is a spread argument, we need to check its length
         if (
@@ -315,7 +315,6 @@ export default createRule<[], MessageIds>({
         ) {
           const spreadArgsType = getSpreadArgsType(firstArgument);
           if (checker.isTupleType(spreadArgsType)) {
-            spreadArgsType.target;
           }
         }
 
@@ -324,10 +323,16 @@ export default createRule<[], MessageIds>({
         if (firstArgument.type === AST_NODE_TYPES.SpreadElement) {
           if (args.length === 1) {
             if (shouldFlagSingleSpreadArg(firstArgument)) {
-              context.report({ node: firstArgument, messageId: 'useUnknown' });
+              context.report({
+                node: firstArgument,
+                messageId: 'useUnknown',
+              });
             }
           } else if (shouldFlagMultipleSpreadArgs(args)) {
-            context.report({ node, messageId: 'useUnknownSpreadArgs' });
+            context.report({
+              node,
+              messageId: 'useUnknownSpreadArgs',
+            });
           }
           return;
         }
