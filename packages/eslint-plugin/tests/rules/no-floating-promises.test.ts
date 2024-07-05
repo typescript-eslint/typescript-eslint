@@ -3747,7 +3747,23 @@ void myTag\`abc\`;
 
         unsafe('...', () => {});
       `,
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        declare function unsafe(...args: unknown[]): Promise<void>;
+
+        void unsafe('...', () => {});
+      `,
+            },
+          ],
+        },
+      ],
       options: [
         {
           allowForKnownSafeCalls: [
@@ -3769,7 +3785,22 @@ void myTag\`abc\`;
 
         it('...', () => {}).then(() => {});
       `,
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        void it('...', () => {}).then(() => {});
+      `,
+            },
+          ],
+        },
+      ],
       options: [
         {
           allowForKnownSafeCalls: [
@@ -3791,7 +3822,22 @@ void myTag\`abc\`;
 
         it('...', () => {}).finally(() => {});
       `,
-      errors: [{ line: 4, messageId: 'floatingVoid' }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        void it('...', () => {}).finally(() => {});
+      `,
+            },
+          ],
+        },
+      ],
       options: [
         {
           allowForKnownSafeCalls: [
