@@ -1,21 +1,24 @@
-import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import path from 'path';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
-interface FileSpecifier {
+import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
+import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
+import { typeDeclaredInLib } from './typeOrValueSpecifiers/typeDeclaredInLib';
+import { typeDeclaredInPackage } from './typeOrValueSpecifiers/typeDeclaredInPackage';
+
+export interface FileSpecifier {
   from: 'file';
   name: string[] | string;
   path?: string;
 }
 
-interface LibSpecifier {
+export interface LibSpecifier {
   from: 'lib';
   name: string[] | string;
 }
 
-interface PackageSpecifier {
+export interface PackageSpecifier {
   from: 'package';
   name: string[] | string;
   package: string;
@@ -119,73 +122,6 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
   ],
 };
 
-function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
-  if (typeof name === 'string') {
-    name = [name];
-  }
-  if (name.some(item => item === type.intrinsicName)) {
-    return true;
-  }
-  const symbol = type.aliasSymbol ?? type.getSymbol();
-  if (symbol === undefined) {
-    return false;
-  }
-  return name.some(item => (item as ts.__String) === symbol.escapedName);
-}
-
-function typeDeclaredInFile(
-  relativePath: string | undefined,
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
-): boolean {
-  if (relativePath === undefined) {
-    const cwd = getCanonicalFileName(program.getCurrentDirectory());
-    return declarationFiles.some(declaration =>
-      getCanonicalFileName(declaration.fileName).startsWith(cwd),
-    );
-  }
-  const absolutePath = getCanonicalFileName(
-    path.join(program.getCurrentDirectory(), relativePath),
-  );
-  return declarationFiles.some(
-    declaration => getCanonicalFileName(declaration.fileName) === absolutePath,
-  );
-}
-
-function typeDeclaredInPackage(
-  packageName: string,
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
-): boolean {
-  // Handle scoped packages - if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
-
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
-  return declarationFiles.some(declaration => {
-    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
-    return (
-      packageIdName !== undefined &&
-      matcher.test(packageIdName) &&
-      program.isSourceFileFromExternalLibrary(declaration)
-    );
-  });
-}
-
-function typeDeclaredInLib(
-  declarationFiles: ts.SourceFile[],
-  program: ts.Program,
-): boolean {
-  // Assertion: The type is not an error type.
-
-  // Intrinsic type (i.e. string, number, boolean, etc) - Treat it as if it's from lib.
-  if (declarationFiles.length === 0) {
-    return true;
-  }
-  return declarationFiles.some(declaration =>
-    program.isSourceFileDefaultLibrary(declaration),
-  );
-}
-
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
@@ -201,10 +137,10 @@ export function typeMatchesSpecifier(
     return false;
   }
   const symbol = type.getSymbol() ?? type.aliasSymbol;
-  const declarationFiles =
-    symbol
-      ?.getDeclarations()
-      ?.map(declaration => declaration.getSourceFile()) ?? [];
+  const declarations = symbol?.getDeclarations() ?? [];
+  const declarationFiles = declarations.map(declaration =>
+    declaration.getSourceFile(),
+  );
   switch (specifier.from) {
     case 'file':
       return typeDeclaredInFile(specifier.path, declarationFiles, program);
@@ -213,6 +149,7 @@ export function typeMatchesSpecifier(
     case 'package':
       return typeDeclaredInPackage(
         specifier.package,
+        declarations,
         declarationFiles,
         program,
       );
