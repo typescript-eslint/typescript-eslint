@@ -3341,9 +3341,9 @@ __metadata:
   linkType: hard
 
 "@eslint-community/regexpp@npm:^4.10.0, @eslint-community/regexpp@npm:^4.6.1":
-  version: 4.10.1
-  resolution: "@eslint-community/regexpp@npm:4.10.1"
-  checksum: 1e04bc366fb8152c9266258cd25e3fded102f1d212a9476928e3cb98c48be645df6d676728d1c596053992fb9134879fe0de23c9460035b342cceb22d3af1776
+  version: 4.11.0
+  resolution: "@eslint-community/regexpp@npm:4.11.0"
+  checksum: 97d2fe46690b69417a551bd19a3dc53b6d9590d2295c43cc4c4e44e64131af541e2f4a44d5c12e87de990403654d3dae9d33600081f3a2f0386b368abc9111ec
   languageName: node
   linkType: hard
 
@@ -3936,15 +3936,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nrwl/devkit@npm:19.3.0"
-  dependencies:
-    "@nx/devkit": 19.3.0
-  checksum: 47ceb34813cd5a3dc11d3dbfdcf76fd1dfd09b315045197fdb45b651cc67ef476b46d289da94c37614cd109806a975c938e64ebe2e6c0b7e9100c05a51f27e4e
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:19.4.0":
   version: 19.4.0
   resolution: "@nrwl/devkit@npm:19.4.0"
@@ -3993,26 +3984,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@nx/devkit@npm:19.3.0"
-  dependencies:
-    "@nrwl/devkit": 19.3.0
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    minimatch: 9.0.3
-    semver: ^7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-    yargs-parser: 21.1.1
-  peerDependencies:
-    nx: ">= 17 <= 20"
-  checksum: 32538ea477361f195aa5af2160371a89169c4a557ea0baccf6b74753817fd983ca976f82b46815c14040301f8ea5d2bae3d979fb1a669bc96966ad5cfa5d77a9
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:19.4.0":
+"@nx/devkit@npm:*, @nx/devkit@npm:19.4.0":
   version: 19.4.0
   resolution: "@nx/devkit@npm:19.4.0"
   dependencies:
