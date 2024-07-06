@@ -147,7 +147,7 @@ returnsSafePromise();
 "
 `;
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 9`] = `
 "Incorrect
 Options: {"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}
 
@@ -158,7 +158,7 @@ unsafe('...', () => {});
 "
 `;
 
-exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs no-floating-promises.mdx code examples ESLint output 10`] = `
 "Correct
 Options: {"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}
 
