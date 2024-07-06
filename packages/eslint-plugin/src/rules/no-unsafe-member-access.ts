@@ -107,7 +107,7 @@ export default createRule({
     }
 
     return {
-      // ignore MemberExpression's with ancestor's of type `TSClassImplements` or `TSInterfaceHeritage`
+      // ignore MemberExpressions with ancestors of type `TSClassImplements` or `TSInterfaceHeritage`
       'MemberExpression:not(TSClassImplements MemberExpression, TSInterfaceHeritage MemberExpression)':
         checkMemberExpression,
       'MemberExpression[computed = true] > *.property'(
