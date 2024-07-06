@@ -56,12 +56,6 @@ interface AnalyzeOptions {
    * The source type of the script.
    */
   sourceType?: SourceType;
-
-  // TODO - remove this in v8
-  /**
-   * @deprecated This option never did what it was intended for and will be removed in a future major release.
-   */
-  emitDecoratorMetadata?: boolean;
 }
 
 const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
@@ -72,7 +66,6 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   jsxFragmentName: null,
   lib: ['es2018'],
   sourceType: 'script',
-  emitDecoratorMetadata: false,
 };
 
 /**
@@ -96,7 +89,6 @@ function analyze(
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
     lib: providedOptions?.lib ?? ['esnext'],
-    emitDecoratorMetadata: false,
   };
 
   // ensure the option is lower cased
