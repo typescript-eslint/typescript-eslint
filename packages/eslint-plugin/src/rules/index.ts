@@ -92,6 +92,7 @@ import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
+import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
@@ -102,6 +103,7 @@ import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
+import noWrapperObjectTypes from './no-wrapper-object-types';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
 import onlyThrowError from './only-throw-error';
@@ -243,6 +245,7 @@ export default {
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
+  'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
@@ -250,6 +253,7 @@ export default {
   'no-useless-empty-export': noUselessEmptyExport,
   'no-useless-template-literals': noUselessTemplateLiterals,
   'no-var-requires': noVarRequires,
+  'no-wrapper-object-types': noWrapperObjectTypes,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
   'only-throw-error': onlyThrowError,
