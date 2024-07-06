@@ -107,8 +107,8 @@ export default createRule({
     }
 
     return {
-      // ignore MemberExpression if it's parent is TSClassImplements or TSInterfaceHeritage
-      ':not(TSClassImplements, TSInterfaceHeritage) > MemberExpression':
+      // ignore MemberExpressions with ancestors of type `TSClassImplements` or `TSInterfaceHeritage`
+      'MemberExpression:not(TSClassImplements MemberExpression, TSInterfaceHeritage MemberExpression)':
         checkMemberExpression,
       'MemberExpression[computed = true] > *.property'(
         node: TSESTree.Expression,
