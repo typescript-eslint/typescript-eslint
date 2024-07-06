@@ -42,7 +42,7 @@ function typeDeclaredInDeclarationFile(
   });
 }
 
-export function typeDeclaredInPackage(
+export function typeDeclaredInPackageDeclarationFile(
   packageName: string,
   declarations: ts.Node[],
   declarationFiles: ts.SourceFile[],

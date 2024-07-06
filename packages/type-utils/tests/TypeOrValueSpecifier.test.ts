@@ -342,6 +342,31 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
+      // The following type is available from the multi-file @types/node package.
+      [
+        'import { it } from "node:test"; type Test = typeof it;',
+        {
+          from: 'package',
+          name: 'it',
+          package: 'node:test',
+        },
+      ],
+      [
+        `
+          declare module "node:test" {
+            export function it(): void;
+          }
+
+          import { it } from "node:test";
+
+          type Test = typeof it;
+        `,
+        {
+          from: 'package',
+          name: 'it',
+          package: 'node:test',
+        },
+      ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([

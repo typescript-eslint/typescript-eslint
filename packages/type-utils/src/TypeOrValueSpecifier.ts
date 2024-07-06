@@ -5,7 +5,7 @@ import type * as ts from 'typescript';
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
 import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
 import { typeDeclaredInLib } from './typeOrValueSpecifiers/typeDeclaredInLib';
-import { typeDeclaredInPackage } from './typeOrValueSpecifiers/typeDeclaredInPackage';
+import { typeDeclaredInPackageDeclarationFile } from './typeOrValueSpecifiers/typeDeclaredInPackageDeclarationFile';
 
 export interface FileSpecifier {
   from: 'file';
@@ -147,7 +147,7 @@ export function typeMatchesSpecifier(
     case 'lib':
       return typeDeclaredInLib(declarationFiles, program);
     case 'package':
-      return typeDeclaredInPackage(
+      return typeDeclaredInPackageDeclarationFile(
         specifier.package,
         declarations,
         declarationFiles,
