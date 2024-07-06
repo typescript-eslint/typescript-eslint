@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-literal-enum-member */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
