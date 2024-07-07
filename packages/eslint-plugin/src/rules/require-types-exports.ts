@@ -4,7 +4,7 @@ import {
   ScopeType,
 } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, simpleTraverse } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, findVariable } from '../util';
 
@@ -252,7 +252,10 @@ function getTypeReferencesRecursively(
         node.typeParameters?.params.forEach(param => collect(param.constraint));
         node.params.forEach(collect);
         collect(node.returnType?.typeAnnotation);
-        collectFunctionReturnStatements(node).forEach(collect);
+
+        if (node.body) {
+          collectFunctionReturnStatements(node).forEach(collect);
+        }
         break;
 
       case AST_NODE_TYPES.AssignmentPattern:
@@ -343,11 +346,14 @@ function getTypeReferencesRecursively(
 }
 
 function collectFunctionReturnStatements(
-  functionNode: TSESTree.Node,
+  functionNode:
+    | TSESTree.ArrowFunctionExpression
+    | TSESTree.FunctionDeclaration
+    | TSESTree.FunctionExpression,
 ): Set<TSESTree.Node> {
   const isArrowFunctionReturn =
     functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-    functionNode.body.type === AST_NODE_TYPES.Identifier;
+    functionNode.body.type !== AST_NODE_TYPES.BlockStatement;
 
   if (isArrowFunctionReturn) {
     return new Set([functionNode.body]);
@@ -355,32 +361,58 @@ function collectFunctionReturnStatements(
 
   const returnStatements = new Set<TSESTree.Node>();
 
-  simpleTraverse(functionNode, {
-    visitors: {
-      ReturnStatement: (node: TSESTree.Node) => {
-        if (getParentFunction(node) === functionNode) {
-          returnStatements.add(node);
-        }
-      },
-    },
-  });
+  forEachReturnStatement(functionNode, returnNode =>
+    returnStatements.add(returnNode),
+  );
 
   return returnStatements;
 }
 
-function getParentFunction(node: TSESTree.Node): TSESTree.Node | null {
-  let parent: TSESTree.Node | undefined = node.parent;
+// Heavily inspired by:
+// https://github.com/typescript-eslint/typescript-eslint/blob/103de6eed/packages/eslint-plugin/src/util/astUtils.ts#L47-L80
+export function forEachReturnStatement(
+  functionNode:
+    | TSESTree.ArrowFunctionExpression
+    | TSESTree.FunctionDeclaration
+    | TSESTree.FunctionExpression,
+  visitor: (returnNode: TSESTree.ReturnStatement) => void,
+): void {
+  return traverse(functionNode.body);
 
-  const functionTypes = new Set([
-    AST_NODE_TYPES.ArrowFunctionExpression,
-    AST_NODE_TYPES.FunctionDeclaration,
-    AST_NODE_TYPES.FunctionExpression,
-    AST_NODE_TYPES.TSDeclareFunction,
-  ]);
+  function traverse(node: TSESTree.Node | null): void {
+    switch (node?.type) {
+      case AST_NODE_TYPES.ReturnStatement:
+        return visitor(node);
 
-  while (parent && !functionTypes.has(parent.type)) {
-    parent = parent.parent;
+      case AST_NODE_TYPES.SwitchStatement:
+        return node.cases.forEach(traverse);
+
+      case AST_NODE_TYPES.SwitchCase:
+        return node.consequent.forEach(traverse);
+
+      case AST_NODE_TYPES.BlockStatement:
+        return node.body.forEach(traverse);
+
+      case AST_NODE_TYPES.DoWhileStatement:
+      case AST_NODE_TYPES.ForInStatement:
+      case AST_NODE_TYPES.ForOfStatement:
+      case AST_NODE_TYPES.WhileStatement:
+      case AST_NODE_TYPES.ForStatement:
+      case AST_NODE_TYPES.WithStatement:
+      case AST_NODE_TYPES.CatchClause:
+      case AST_NODE_TYPES.LabeledStatement:
+        return traverse(node.body);
+
+      case AST_NODE_TYPES.IfStatement:
+        traverse(node.consequent);
+        traverse(node.alternate);
+        return;
+
+      case AST_NODE_TYPES.TryStatement:
+        traverse(node.block);
+        traverse(node.handler);
+        traverse(node.finalizer);
+        return;
+    }
   }
-
-  return parent ?? null;
 }

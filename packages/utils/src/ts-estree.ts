@@ -12,5 +12,3 @@ export type {
   ParserServicesWithTypeInformation,
   ParserServicesWithoutTypeInformation,
 } from '@typescript-eslint/typescript-estree';
-
-export { simpleTraverse } from '@typescript-eslint/typescript-estree';
