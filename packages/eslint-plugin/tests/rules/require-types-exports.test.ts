@@ -1908,6 +1908,113 @@ ruleTester.run('require-types-exports', rule, {
 
     {
       code: `
+        namespace A {
+          export type B = number;
+        }
+
+        type B = string;
+
+        export function a(arg: B) {
+          return arg;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 8,
+          column: 32,
+          endColumn: 33,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        namespace A {
+          export interface B {
+            value: number;
+          }
+        }
+
+        type B = string;
+
+        export function a(arg: B) {
+          return arg;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 10,
+          column: 32,
+          endColumn: 33,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        namespace A {
+          export enum B {
+            Value1,
+            Value2,
+          }
+        }
+
+        type B = string;
+
+        export function a(arg: B) {
+          return arg;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 11,
+          column: 32,
+          endColumn: 33,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        namespace A {
+          export namespace B {
+            export type C = number;
+          }
+        }
+
+        type B = string;
+
+        export function a(arg: B) {
+          return arg;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 10,
+          column: 32,
+          endColumn: 33,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
         import type { A } from './types';
 
         type T1 = number;
