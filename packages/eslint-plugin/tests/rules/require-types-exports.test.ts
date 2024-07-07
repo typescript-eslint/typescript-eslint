@@ -2816,6 +2816,52 @@ ruleTester.run('require-types-exports', rule, {
       code: `
         type A = number;
 
+        const item: A = 1;
+
+        export const value = {
+          key: ((a: A) => [a])(item),
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 21,
+          endColumn: 22,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        const item: A = 1;
+
+        export const value = {
+          key: ((a: A) => ({ a }))(item),
+        };
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 7,
+          column: 21,
+          endColumn: 22,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
         export function func1<R extends A>(arg: R): R {
           return func2<R>(arg);
         }
