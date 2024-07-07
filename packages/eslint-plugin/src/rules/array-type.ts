@@ -272,13 +272,17 @@ export default createRule<Options, MessageIds>({
         }`;
         const end = `${typeParens ? ')' : ''}${isReadonlyWithGenericArrayType ? '' : `[]`}${parentParens ? ')' : ''}`;
 
+        const isReadonlyAndSimpleArrayType =
+          currentOption === 'array-simple' && node.typeName.name === 'Readonly'; // e.g. Readonly<string[]>
         context.report({
           node,
           messageId,
           data: {
             className: isReadonlyArrayType ? node.typeName.name : 'Array',
             readonlyPrefix,
-            type: getMessageType(type),
+            type: isReadonlyAndSimpleArrayType
+              ? getMessageType(type).slice(0, -2)
+              : getMessageType(type),
           },
           fix(fixer) {
             return [
