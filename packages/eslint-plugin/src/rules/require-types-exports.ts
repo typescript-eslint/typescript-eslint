@@ -18,7 +18,8 @@ export default createRule<[], MessageIds>({
       recommended: 'strict',
     },
     messages: {
-      requireTypeExport: 'Expected type "{{ name }}" to be exported',
+      requireTypeExport:
+        '"{{ name }}" is used in other exports from this file, so it should also be exported.',
     },
     schema: [],
   },
