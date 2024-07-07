@@ -297,21 +297,17 @@ export default createRule<[], MessageIds>({
     return {
       CallExpression(node): void {
         const args = node.arguments;
-        if (args.length === 0) {
-          return;
-        }
         const argumentIndexToCheck = getArgumentIndexToCheck(node.callee);
         if (argumentIndexToCheck === false) {
           return;
         }
 
-        const [firstArgument] = args;
-        const argumentToCheck = args[argumentIndexToCheck];
+        const firstArgument = args.at(0);
         // If we are checking a .then() call, we need to check the second argument.
         // But if the first argument is a spread argument, that could affect things, so handle that here.
         if (
           argumentIndexToCheck &&
-          firstArgument.type === AST_NODE_TYPES.SpreadElement
+          firstArgument?.type === AST_NODE_TYPES.SpreadElement
         ) {
           const spreadArgsType = getSpreadArgsType(firstArgument);
           // If it's a tuple type with a fixedLength of 1, no special handling needed.
@@ -336,6 +332,10 @@ export default createRule<[], MessageIds>({
           }
         }
 
+        const argumentToCheck = args.at(argumentIndexToCheck);
+        if (!argumentToCheck) {
+          return;
+        }
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
         if (argumentToCheck.type === AST_NODE_TYPES.SpreadElement) {
