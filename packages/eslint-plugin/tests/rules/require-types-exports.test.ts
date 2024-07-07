@@ -444,6 +444,18 @@ ruleTester.run('require-types-exports', rule, {
         func,
       };
     `,
+
+    `
+      export function func1() {
+        return func2(1);
+      }
+
+      export type A = number;
+
+      export function func2(arg: A) {
+        return 1;
+      }
+    `,
   ],
 
   invalid: [

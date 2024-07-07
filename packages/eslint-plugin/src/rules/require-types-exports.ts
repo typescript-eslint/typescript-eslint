@@ -36,13 +36,32 @@ export default createRule<[], MessageIds>({
       externalizedTypes.add(node.local.name);
     }
 
-    function collectExportedTypes(
-      node:
+    function collectExportedTypes(node: TSESTree.Program): void {
+      const isCollectableType = (
+        node: TSESTree.Node,
+      ): node is
         | TSESTree.TSTypeAliasDeclaration
         | TSESTree.TSInterfaceDeclaration
-        | TSESTree.TSEnumDeclaration,
-    ): void {
-      externalizedTypes.add(node.id.name);
+        | TSESTree.TSEnumDeclaration
+        | TSESTree.TSModuleDeclaration => {
+        return [
+          AST_NODE_TYPES.TSTypeAliasDeclaration,
+          AST_NODE_TYPES.TSInterfaceDeclaration,
+          AST_NODE_TYPES.TSEnumDeclaration,
+          AST_NODE_TYPES.TSModuleDeclaration,
+        ].includes(node.type);
+      };
+
+      node.body.forEach(statement => {
+        if (
+          statement.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+          statement.declaration &&
+          isCollectableType(statement.declaration) &&
+          statement.declaration.id.type === AST_NODE_TYPES.Identifier
+        ) {
+          externalizedTypes.add(statement.declaration.id.name);
+        }
+      });
     }
 
     function visitExportedFunctionDeclaration(
@@ -124,14 +143,7 @@ export default createRule<[], MessageIds>({
       'ImportDeclaration ImportNamespaceSpecifier': collectImportedTypes,
       'ImportDeclaration ImportDefaultSpecifier': collectImportedTypes,
 
-      'Program > ExportNamedDeclaration > TSTypeAliasDeclaration':
-        collectExportedTypes,
-      'Program > ExportNamedDeclaration > TSInterfaceDeclaration':
-        collectExportedTypes,
-      'Program > ExportNamedDeclaration > TSEnumDeclaration':
-        collectExportedTypes,
-      'Program > ExportNamedDeclaration > TSModuleDeclaration':
-        collectExportedTypes,
+      Program: collectExportedTypes,
 
       'ExportNamedDeclaration[declaration.type="FunctionDeclaration"]':
         visitExportedFunctionDeclaration,
