@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+    project: './tsconfig-with-dom.json',
   },
 });
 
@@ -3263,6 +3263,27 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 24,
           data: {
             name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare function func<T>(): string;
+
+        type A = string;
+
+        export default func<A>();
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 6,
+          column: 29,
+          endColumn: 30,
+          data: {
+            name: 'A',
           },
         },
       ],

@@ -1,5 +1,4 @@
 import {
-  DefinitionType,
   ImplicitLibVariable,
   ScopeType,
 } from '@typescript-eslint/scope-manager';
@@ -68,25 +67,10 @@ export default createRule<[], MessageIds>({
       }
     }
 
-    function visitDefaultExportedIdentifier(
-      node: TSESTree.DefaultExportDeclarations & {
-        declaration: TSESTree.Identifier;
-      },
+    function visitExportDefaultDeclaration(
+      node: TSESTree.ExportDefaultDeclaration,
     ): void {
-      const scope = context.sourceCode.getScope(node);
-      const variable = findVariable(scope, node.declaration.name);
-
-      if (!variable) {
-        return;
-      }
-
-      for (const def of variable.defs) {
-        if (def.type !== DefinitionType.Variable || !def.node.init) {
-          continue;
-        }
-
-        checkNodeTypes(def.node);
-      }
+      checkNodeTypes(node.declaration);
     }
 
     function checkNodeTypes(node: TSESTree.Node): void {
@@ -148,8 +132,7 @@ export default createRule<[], MessageIds>({
       'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
         visitExportedVariableDeclaration,
 
-      'ExportDefaultDeclaration[declaration.type="Identifier"]':
-        visitDefaultExportedIdentifier,
+      ExportDefaultDeclaration: visitExportDefaultDeclaration,
     };
   },
 });
