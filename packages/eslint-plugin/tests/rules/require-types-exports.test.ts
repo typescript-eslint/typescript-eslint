@@ -3288,5 +3288,108 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
+
+    {
+      code: `
+        type Apple = 'apple';
+        type Banana = 'banana';
+
+        export type Fruites = Apple | Banana;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 31,
+          endColumn: 36,
+          data: {
+            name: 'Apple',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 39,
+          endColumn: 45,
+          data: {
+            name: 'Banana',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        export interface B {
+          a: A;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 14,
+          endColumn: 15,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = number;
+
+        interface B {
+          b: string;
+        }
+
+        export namespace C {
+          export type D = A;
+          export type E = B;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 9,
+          column: 27,
+          endColumn: 28,
+          data: {
+            name: 'A',
+          },
+        },
+        {
+          messageId: 'requireTypeExport',
+          line: 10,
+          column: 27,
+          endColumn: 28,
+          data: {
+            name: 'B',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        type A = 'test';
+        export type B = \`test-\${A}\`;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 3,
+          column: 33,
+          endColumn: 34,
+          data: {
+            name: 'A',
+          },
+        },
+      ],
+    },
   ],
 });

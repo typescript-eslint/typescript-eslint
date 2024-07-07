@@ -67,6 +67,22 @@ export default createRule<[], MessageIds>({
       }
     }
 
+    function visitExportedTypeAliasDeclaration(
+      node: TSESTree.ExportNamedDeclaration & {
+        declaration: TSESTree.TSTypeAliasDeclaration;
+      },
+    ): void {
+      checkNodeTypes(node.declaration.typeAnnotation);
+    }
+
+    function visitExportedInterfaceDeclaration(
+      node: TSESTree.ExportNamedDeclaration & {
+        declaration: TSESTree.TSInterfaceDeclaration;
+      },
+    ): void {
+      checkNodeTypes(node.declaration.body);
+    }
+
     function visitExportDefaultDeclaration(
       node: TSESTree.ExportDefaultDeclaration,
     ): void {
@@ -131,6 +147,18 @@ export default createRule<[], MessageIds>({
 
       'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
         visitExportedVariableDeclaration,
+
+      'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"]':
+        visitExportedTypeAliasDeclaration,
+
+      'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
+        visitExportedTypeAliasDeclaration,
+
+      'ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
+        visitExportedInterfaceDeclaration,
+
+      'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
+        visitExportedInterfaceDeclaration,
 
       ExportDefaultDeclaration: visitExportDefaultDeclaration,
     };
@@ -300,6 +328,14 @@ function getTypeReferencesRecursively(
 
       case AST_NODE_TYPES.TSTypeLiteral:
         node.members.forEach(collect);
+        break;
+
+      case AST_NODE_TYPES.TSTemplateLiteralType:
+        node.types.forEach(collect);
+        break;
+
+      case AST_NODE_TYPES.TSInterfaceBody:
+        node.body.forEach(collect);
         break;
 
       case AST_NODE_TYPES.TSPropertySignature:
