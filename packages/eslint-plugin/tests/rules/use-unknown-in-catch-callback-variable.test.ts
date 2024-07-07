@@ -111,6 +111,8 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
         console.log(find);
       });
     `,
+    'Promise.resolve.then();',
+    'Promise.resolve().then(() => {});',
     `
       declare const singleTupleArg: [() => void];
       Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
