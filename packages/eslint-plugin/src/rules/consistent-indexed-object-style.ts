@@ -3,8 +3,8 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferIndexSignature' | 'preferRecord';
-type Options = ['index-signature' | 'record'];
+export type MessageIds = 'preferIndexSignature' | 'preferRecord';
+export type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-indexed-object-style',

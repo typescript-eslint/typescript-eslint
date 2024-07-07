@@ -16,7 +16,7 @@ import {
 const EQ_OPERATORS = /^[=!]=/;
 const regexpp = new RegExpParser();
 
-type AllowedSingleElementEquality = 'always' | 'never';
+export type AllowedSingleElementEquality = 'always' | 'never';
 
 export type Options = [
   {
@@ -24,7 +24,7 @@ export type Options = [
   },
 ];
 
-type MessageIds = 'preferEndsWith' | 'preferStartsWith';
+export type MessageIds = 'preferEndsWith' | 'preferStartsWith';
 
 export default createRule<Options, MessageIds>({
   name: 'prefer-string-starts-ends-with',

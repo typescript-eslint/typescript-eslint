@@ -10,9 +10,9 @@ import {
   isTypeUnknownType,
 } from '../util';
 
-type MessageIds = 'object' | 'undef';
+export type MessageIds = 'object' | 'undef';
 
-type Options = [
+export type Options = [
   {
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;

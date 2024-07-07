@@ -14,9 +14,9 @@ const enum OptionKeys {
   VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
-type Options = { [k in OptionKeys]?: boolean };
+export type Options = { [k in OptionKeys]?: boolean };
 
-type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
+export type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
 export default createRule<[Options], MessageIds>({
   name: 'typedef',

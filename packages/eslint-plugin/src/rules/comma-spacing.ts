@@ -10,13 +10,13 @@ import {
   isTokenOnSameLine,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     before: boolean;
     after: boolean;
   },
 ];
-type MessageIds = 'missing' | 'unexpected';
+export type MessageIds = 'missing' | 'unexpected';
 
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',

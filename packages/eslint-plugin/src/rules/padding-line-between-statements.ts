@@ -35,14 +35,14 @@ interface NodeTestObject {
   test: NodeTest;
 }
 
-interface PaddingOption {
+export interface PaddingOption {
   blankLine: keyof typeof PaddingTypes;
   prev: string[] | string;
   next: string[] | string;
 }
 
-type MessageIds = 'expectedBlankLine' | 'unexpectedBlankLine';
-type Options = PaddingOption[];
+export type MessageIds = 'expectedBlankLine' | 'unexpectedBlankLine';
+export type Options = PaddingOption[];
 
 const LT = `[${Array.from(
   new Set(['\r\n', '\r', '\n', '\u2028', '\u2029']),

@@ -11,7 +11,7 @@ import {
   isTypeFlagSet,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowAny?: boolean;
     allowBoolean?: boolean;
@@ -22,7 +22,7 @@ type Options = [
   },
 ];
 
-type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
+export type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
 export default createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',

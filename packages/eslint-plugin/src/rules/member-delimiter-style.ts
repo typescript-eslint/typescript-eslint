@@ -4,10 +4,10 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { createRule, deepMerge } from '../util';
 
-type Delimiter = 'comma' | 'none' | 'semi';
+export type Delimiter = 'comma' | 'none' | 'semi';
 // need type's implicit index sig for deepMerge
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type TypeOptions = {
+export type TypeOptions = {
   delimiter?: Delimiter;
   requireLast?: boolean;
 };
@@ -15,19 +15,19 @@ type TypeOptionsWithType = TypeOptions & {
   type: string;
 };
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type BaseOptions = {
+export type BaseOptions = {
   multiline?: TypeOptions;
   singleline?: TypeOptions;
 };
-type Config = BaseOptions & {
+export type Config = BaseOptions & {
   overrides?: {
     typeLiteral?: BaseOptions;
     interface?: BaseOptions;
   };
   multilineDetection?: 'brackets' | 'last-member';
 };
-type Options = [Config];
-type MessageIds =
+export type Options = [Config];
+export type MessageIds =
   | 'expectedComma'
   | 'expectedSemi'
   | 'unexpectedComma'

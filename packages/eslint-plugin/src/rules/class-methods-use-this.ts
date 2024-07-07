@@ -8,7 +8,7 @@ import {
   getStaticStringValue,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     exceptMethods?: string[];
     enforceForClassFields?: boolean;
@@ -16,7 +16,7 @@ type Options = [
     ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
   },
 ];
-type MessageIds = 'missingThis';
+export type MessageIds = 'missingThis';
 
 export default createRule<Options, MessageIds>({
   name: 'class-methods-use-this',

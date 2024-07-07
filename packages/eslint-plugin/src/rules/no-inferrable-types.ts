@@ -4,13 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type Options = [
+export type Options = [
   {
     ignoreParameters?: boolean;
     ignoreProperties?: boolean;
   },
 ];
-type MessageIds = 'noInferrableType';
+export type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',

@@ -56,7 +56,7 @@ export interface ValidOperand {
 export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
-type Operand = ValidOperand | InvalidOperand;
+export type Operand = ValidOperand | InvalidOperand;
 
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(

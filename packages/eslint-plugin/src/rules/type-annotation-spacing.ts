@@ -31,8 +31,8 @@ interface Config extends WhitespaceRule {
 
 type WhitespaceRules = Required<WhitespaceOverride>;
 
-type Options = [Config?];
-type MessageIds =
+export type Options = [Config?];
+export type MessageIds =
   | 'expectedSpaceAfter'
   | 'expectedSpaceBefore'
   | 'unexpectedSpaceAfter'

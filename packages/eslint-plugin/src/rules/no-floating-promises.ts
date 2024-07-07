@@ -14,7 +14,7 @@ import {
   typeMatchesSpecifier,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     ignoreVoid?: boolean;
     ignoreIIFE?: boolean;
@@ -22,7 +22,7 @@ type Options = [
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
   | 'floatingVoid'
   | 'floatingUselessRejectionHandler'

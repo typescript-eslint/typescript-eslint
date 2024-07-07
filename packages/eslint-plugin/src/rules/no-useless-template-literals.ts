@@ -11,7 +11,7 @@ import {
   isUndefinedIdentifier,
 } from '../util';
 
-type MessageId = 'noUnnecessaryTemplateExpression';
+export type MessageId = 'noUnnecessaryTemplateExpression';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',

@@ -15,12 +15,12 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     typesToIgnore?: string[];
   },
 ];
-type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
+export type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',

@@ -5,8 +5,8 @@ import type {
   PreferOptionalChainOptions,
 } from '../../../src/rules/prefer-optional-chain-utils/PreferOptionalChainOptions';
 
-type MutateFn = (c: string) => string;
-type BaseCaseCreator = (args: {
+export type MutateFn = (c: string) => string;
+export type BaseCaseCreator = (args: {
   operator: '&&' | '||';
   mutateCode?: MutateFn;
   mutateOutput?: MutateFn;

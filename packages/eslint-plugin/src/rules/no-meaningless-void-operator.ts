@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     checkNever: boolean;
   },
