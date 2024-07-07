@@ -456,6 +456,8 @@ ruleTester.run('require-types-exports', rule, {
         return 1;
       }
     `,
+
+    'export type ValueOf<T> = T[keyof T];',
   ],
 
   invalid: [

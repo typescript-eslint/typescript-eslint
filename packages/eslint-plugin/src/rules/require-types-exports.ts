@@ -7,7 +7,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, findVariable } from '../util';
 
-type MessageIds = 'requireTypeExport';
+export type MessageIds = 'requireTypeExport';
 
 export default createRule<[], MessageIds>({
   name: 'require-types-exports',
@@ -87,20 +87,14 @@ export default createRule<[], MessageIds>({
       }
     }
 
-    function visitExportedTypeAliasDeclaration(
+    function visitExportedTypeDeclaration(
       node: TSESTree.ExportNamedDeclaration & {
-        declaration: TSESTree.TSTypeAliasDeclaration;
+        declaration:
+          | TSESTree.TSTypeAliasDeclaration
+          | TSESTree.TSInterfaceDeclaration;
       },
     ): void {
-      checkNodeTypes(node.declaration.typeAnnotation);
-    }
-
-    function visitExportedInterfaceDeclaration(
-      node: TSESTree.ExportNamedDeclaration & {
-        declaration: TSESTree.TSInterfaceDeclaration;
-      },
-    ): void {
-      checkNodeTypes(node.declaration.body);
+      checkNodeTypes(node.declaration);
     }
 
     function visitExportDefaultDeclaration(
@@ -162,16 +156,16 @@ export default createRule<[], MessageIds>({
         visitExportedVariableDeclaration,
 
       'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"]':
-        visitExportedTypeAliasDeclaration,
+        visitExportedTypeDeclaration,
 
       'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
-        visitExportedTypeAliasDeclaration,
+        visitExportedTypeDeclaration,
 
       'ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
-        visitExportedInterfaceDeclaration,
+        visitExportedTypeDeclaration,
 
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
-        visitExportedInterfaceDeclaration,
+        visitExportedTypeDeclaration,
 
       ExportDefaultDeclaration: visitExportDefaultDeclaration,
     };
@@ -313,7 +307,8 @@ function getTypeReferencesRecursively(
         const isBuiltinType = variable instanceof ImplicitLibVariable;
 
         const isGenericTypeArg =
-          variable?.scope.type === ScopeType.function &&
+          (variable?.scope.type === ScopeType.function ||
+            variable?.scope.type === ScopeType.type) &&
           variable.identifiers.every(
             id => id.parent.type === AST_NODE_TYPES.TSTypeParameter,
           );
@@ -347,8 +342,12 @@ function getTypeReferencesRecursively(
         node.types.forEach(collect);
         break;
 
-      case AST_NODE_TYPES.TSInterfaceBody:
-        node.body.forEach(collect);
+      case AST_NODE_TYPES.TSTypeAliasDeclaration:
+        collect(node.typeAnnotation);
+        break;
+
+      case AST_NODE_TYPES.TSInterfaceDeclaration:
+        node.body.body.forEach(collect);
         break;
 
       case AST_NODE_TYPES.TSPropertySignature:
@@ -402,7 +401,7 @@ function collectFunctionReturnStatements(
 
 // Heavily inspired by:
 // https://github.com/typescript-eslint/typescript-eslint/blob/103de6eed/packages/eslint-plugin/src/util/astUtils.ts#L47-L80
-export function forEachReturnStatement(
+function forEachReturnStatement(
   functionNode:
     | TSESTree.ArrowFunctionExpression
     | TSESTree.FunctionDeclaration
