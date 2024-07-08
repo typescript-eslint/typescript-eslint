@@ -149,11 +149,39 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       options: [{ allowArray: true }],
       code: `
-        const arg = [];
         function test<T extends string[]>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        declare const arg: [number, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [1, 'a'] as const;
+        const msg = \`arg = \${arg || 'default'}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        function test<T extends [string, string]>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
+    {
+      code: `
+        declare const arg: [number | undefined, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowNullish: true, allowArray: true }],
     },
     // allowAny
     {
@@ -375,6 +403,20 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     {
       code: `
+        declare const arg: number[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'number[]' },
+          line: 3,
+          column: 30,
+        },
+      ],
+    },
+    {
+      code: `
         const msg = \`arg = \${[, 2]}\`;
       `,
       errors: [
@@ -395,6 +437,21 @@ ruleTester.run('restrict-template-expressions', rule, {
       code: 'const msg = `arg = ${new URL()}`;',
       options: [{ allow: [] }],
       errors: [{ messageId: 'invalidType' }],
+    },
+    {
+      code: `
+        declare const arg: [number | undefined, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '[number | undefined, string]' },
+          line: 3,
+          column: 30,
+        },
+      ],
+      options: [{ allowNullish: false, allowArray: true }],
     },
     {
       code: `
