@@ -30,18 +30,32 @@ type Options =
 const defaultOptions: Options = 'in-try-catch';
 ```
 
+The options in this rule distinguish between "ordinary contexts" and "error-handling contexts".
+An error-handling context is anywhere where returning an unawaited promise would cause unexpected control flow regarding exceptions/rejections.
+See detailed examples in the sections for each option.
+
+- If you return a promise within a `try` block, it should be awaited in order to trigger subsequent `catch` or `finally` blocks as expected.
+- If you return a promise within a `catch` block, and there _is_ a `finally` block, it should be awaited in order to trigger the `finally` block as expected.
+- If you return a promise between a `using` or `await using` declaration and the end of its scope, it should be awaited, since it behaves equivalently to code wrapped in a `try` block followed by a `finally`.
+
+Ordinary contexts are anywhere else a promise may be returned.
+The choice of whether to await a returned promise in an ordinary context is mostly stylistic.
+
+With these terms defined, the options may be summarized as follows:
+
+|             Option              | Ordinary Context <br/> (stylistic preference 🎨) |        Error-Handling Context <br/> (catches bugs 🐛)        |                 Should I use this option?                  |
+| :-----------------------------: | :----------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------: |
+|             always              |             `return await promise;`              |                   `return await promise;`                    |                          ✅ Yes!                           |
+|          in-try-catch           |                `return promise;`                 |                   `return await promise;`                    |                          ✅ Yes!                           |
+| error-handling-correctness-only |                  don't care 🤷                   |                   `return await promise;`                    | 🟡 Okay to use, but the above options would be preferable. |
+|              never              |                `return promise;`                 | `return promise;` <br/> (⚠️ This behavior may be harmful ⚠️) |             ❌ No. This option is deprecated.              |
+
 ### `in-try-catch`
 
-In cases where returning an unawaited promise would cause unexpected error-handling control flow, the rule enforces that `await` must be used.
-Otherwise, the rule enforces that `await` must _not_ be used.
+In error-handling contexts, the rule enforces that returned promises must be awaited.
+In ordinary contexts, the rule enforces that returned promises _must not_ be awaited.
 
-Listing the error-handling cases exhaustively:
-
-- if you `return` a promise within a `try`, then it must be `await`ed, since it will always be followed by a `catch` or `finally`.
-- if you `return` a promise within a `catch`, and there is _no_ `finally`, then it must _not_ be `await`ed.
-- if you `return` a promise within a `catch`, and there _is_ a `finally`, then it _must_ be `await`ed.
-- if you `return` a promise within a `finally`, then it must not be `await`ed.
-- if you `return` a promise between a `using` or `await using` declaration and the end of its scope, it must be `await`ed, since it behaves equivalently to code wrapped in a `try` block.
+Examples of code with `in-try-catch`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -173,7 +187,7 @@ async function validInTryCatch7() {
 
 ### `always`
 
-Requires that all returned promises are `await`ed.
+Requires that all returned promises are awaited.
 
 Examples of code with `always`:
 
@@ -220,11 +234,10 @@ async function validAlways3() {
 
 ### `error-handling-correctness-only`
 
-Same as `in-try-catch`, except _only_ enforces Promises be awaited within the
-error handling contexts explained under that option. Outside of error-handling
-contexts, returned Promises are ignored, whether awaited or not.
+In error-handling contexts, the rule enforces that returned promises must be awaited.
+In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited.
 
-:::warning
+:::info
 We recommend you configure either `in-try-catch` or `always` instead of this option.
 While the choice of whether to await promises outside of error-handling contexts is mostly stylistic, it's generally best to be consistent.
 :::
@@ -249,7 +262,17 @@ async function asyncFunction(): Promise<void> {
 
 ### `never`
 
-Disallows all `await`ing any returned promises.
+Disallows awaiting any returned promises.
+
+:::warning
+
+This option is deprecated and will be removed in a future major version of typescript-eslint.
+
+The `never` option introduces undesirable behavior in error-handling contexts.
+If you prefer to minimize returning awaited promises, consider instead using `in-try-catch` instead, which also generally bans returning awaited promises, but only where it is _safe_ not to await a promise.
+
+See more details at [typescript-eslint#9433](https://github.com/typescript-eslint/typescript-eslint/issues/9433).
+:::
 
 Examples of code with `never`:
 
@@ -293,12 +316,3 @@ async function validNever3() {
 
 </TabItem>
 </Tabs>
-
-### Options Summary
-
-|             Option              | Ordinary Context <br/> (stylistic preference) | Error Handling Context <br/> (catches subtle control flow bugs) |                       Should I use?                        |
-| :-----------------------------: | :-------------------------------------------: | :-------------------------------------------------------------: | :--------------------------------------------------------: |
-|             always              |            `return await promise;`            |                     `return await promise;`                     |                          ✅ Yes!                           |
-|          in-try-catch           |               `return promise;`               |                     `return await promise;`                     |                          ✅ Yes!                           |
-| error-handling-correctness-only |                 don't care 🤷                 |                     `return await promise;`                     | 🟡 Okay to use, but the above options would be preferable. |
-|              never              |               `return promise;`               |                        `return promise;`                        |                           ❌ No!                           |
