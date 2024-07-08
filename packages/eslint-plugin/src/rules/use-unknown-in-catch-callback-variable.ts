@@ -27,14 +27,14 @@ type MessageIds =
   | 'wrongRestTypeAnnotationSuggestion';
 
 const useUnknownMessageBase =
-  'Prefer the safe `: unknown` for a catch callback variable.';
+  'Prefer the safe `: unknown` for a `{{method}}`{{append}} callback variable.';
 
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
   meta: {
     docs: {
       description:
-        'Enforce typing arguments in `.catch()` callbacks as `unknown`',
+        'Enforce typing arguments in `.then()` and `.catch()` rejection callbacks as `unknown`',
       requiresTypeChecking: true,
       recommended: 'strict',
     },
@@ -48,11 +48,11 @@ export default createRule<[], MessageIds>({
         ' The thrown error may be nullable, or may not have the expected shape.',
       useUnknownSpreadArgs:
         useUnknownMessageBase +
-        ' The argument list may contain a handler that does not use `unknown` for the catch callback variable.',
+        ' The argument list may contain a handler that does not use `unknown` for the rejection callback variable.',
       addUnknownTypeAnnotationSuggestion:
-        'Add an explicit `: unknown` type annotation to the catch variable.',
+        'Add an explicit `: unknown` type annotation to the rejection callback variable.',
       addUnknownRestTypeAnnotationSuggestion:
-        'Add an explicit `: [unknown]` type annotation to the catch rest variable.',
+        'Add an explicit `: [unknown]` type annotation to the rejection callback rest variable.',
       wrongTypeAnnotationSuggestion:
         'Change existing type annotation to `: unknown`.',
       wrongRestTypeAnnotationSuggestion:
@@ -69,14 +69,24 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getArgumentIndexToCheck(node: TSESTree.Expression): 0 | 1 | false {
+    type ArgumentIndexToCheck = 0 | 1;
+    function getPromiseMethodInfo(node: TSESTree.Expression):
+      | {
+          argumentIndexToCheck: ArgumentIndexToCheck;
+          messageData: { method: string; append?: string };
+        }
+      | false {
       if (node.type !== AST_NODE_TYPES.MemberExpression) {
         return false;
       }
-      const argIndexToCheck = ['catch', 'then'].findIndex(method =>
+      const methodsToCheck = [
+        { method: 'catch' },
+        { method: 'then', append: ' rejection' },
+      ] as const;
+      const argumentIndexToCheck = methodsToCheck.findIndex(({ method }) =>
         isStaticMemberAccessOfValue(node, method),
-      ) as -1 | 0 | 1;
-      if (argIndexToCheck === -1) {
+      ) as -1 | ArgumentIndexToCheck;
+      if (argumentIndexToCheck === -1) {
         return false;
       }
 
@@ -87,7 +97,10 @@ export default createRule<[], MessageIds>({
           checker,
           tsNode,
           checker.getTypeAtLocation(objectTsNode),
-        ) && argIndexToCheck
+        ) && {
+          argumentIndexToCheck,
+          messageData: methodsToCheck[argumentIndexToCheck],
+        }
       );
     }
 
@@ -297,10 +310,15 @@ export default createRule<[], MessageIds>({
     return {
       CallExpression(node): void {
         const args = node.arguments;
-        const argumentIndexToCheck = getArgumentIndexToCheck(node.callee);
-        if (argumentIndexToCheck === false) {
+        const promiseMethodInfo = getPromiseMethodInfo(node.callee);
+        if (!promiseMethodInfo) {
           return;
         }
+        const { argumentIndexToCheck, messageData } = promiseMethodInfo;
+
+        const report = (
+          descriptor: TSESLint.ReportDescriptor<MessageIds>,
+        ): void => context.report({ ...descriptor, data: messageData });
 
         const firstArgument = args.at(0);
         // If we are checking a .then() call, we need to check the second argument.
@@ -318,7 +336,7 @@ export default createRule<[], MessageIds>({
             // If the fixed length is not 1, then check index 1 of this spread type.
             const type = checker.getTypeArguments(spreadArgsType).at(1);
             if (type && isFlaggableHandlerType(type)) {
-              context.report({
+              report({
                 node: firstArgument,
                 messageId: 'useUnknownSpreadArgs',
               });
@@ -341,13 +359,13 @@ export default createRule<[], MessageIds>({
         if (argumentToCheck.type === AST_NODE_TYPES.SpreadElement) {
           if (args.length === 1) {
             if (shouldFlagSingleSpreadArg(argumentToCheck)) {
-              context.report({
+              report({
                 node: argumentToCheck,
                 messageId: 'useUnknown',
               });
             }
           } else if (shouldFlagMultipleSpreadArgs(args)) {
-            context.report({
+            report({
               node,
               messageId: 'useUnknownSpreadArgs',
             });
@@ -362,7 +380,7 @@ export default createRule<[], MessageIds>({
           // to determine exactly where, and whether we can fix it.
           const overrides =
             refineReportForNormalArgumentIfPossible(argumentToCheck);
-          context.report({
+          report({
             node: argumentToCheck,
             messageId: 'useUnknown',
             ...overrides,
