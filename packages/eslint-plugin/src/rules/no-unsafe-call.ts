@@ -25,7 +25,7 @@ export default createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an `any` typed value.',
+      unsafeCall: 'Unsafe call of an {{type}} typed value.',
       unsafeCallThis: [
         'Unsafe call of an `any` typed value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -64,9 +64,15 @@ export default createRule<[], MessageIds>({
             messageId = 'unsafeCallThis';
           }
         }
+
+        const isErrorType = tsutils.isIntrinsicErrorType(type);
+
         context.report({
           node: reportingNode,
           messageId: messageId,
+          data: {
+            type: isErrorType ? '`error` type' : '`any`',
+          },
         });
       }
     }
