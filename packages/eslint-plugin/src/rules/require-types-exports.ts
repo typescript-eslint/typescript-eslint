@@ -104,15 +104,16 @@ export default createRule<[], MessageIds>({
     }
 
     function checkNodeTypes(node: TSESTree.Node): void {
-      const typeReferences = getTypeReferencesRecursively(
+      const { typeReferences, typeQueries } = getVisibleTypesRecursively(
         node,
         context.sourceCode,
       );
 
-      typeReferences.forEach(checkTypeNode);
+      typeReferences.forEach(checkTypeReference);
+      typeQueries.forEach(checkTypeQuery);
     }
 
-    function checkTypeNode(node: TSESTree.TSTypeReference): void {
+    function checkTypeReference(node: TSESTree.TSTypeReference): void {
       const name = getTypeName(node.typeName);
 
       const isExternalized = externalizedTypes.has(name);
@@ -123,7 +124,25 @@ export default createRule<[], MessageIds>({
       }
 
       context.report({
-        node: node,
+        node,
+        messageId: 'requireTypeExport',
+        data: {
+          name,
+        },
+      });
+
+      reportedTypes.add(name);
+    }
+
+    function checkTypeQuery(node: TSESTree.TSTypeQuery): void {
+      const name = context.sourceCode.getText(node);
+      const isReported = reportedTypes.has(name);
+
+      if (isReported) {
+        return;
+      }
+      context.report({
+        node,
         messageId: 'requireTypeExport',
         data: {
           name,
@@ -187,11 +206,15 @@ function getTypeName(typeName: TSESTree.EntityName): string {
   }
 }
 
-function getTypeReferencesRecursively(
+function getVisibleTypesRecursively(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
-): Set<TSESTree.TSTypeReference> {
+): {
+  typeReferences: Set<TSESTree.TSTypeReference>;
+  typeQueries: Set<TSESTree.TSTypeQuery>;
+} {
   const typeReferences = new Set<TSESTree.TSTypeReference>();
+  const typeQueries = new Set<TSESTree.TSTypeQuery>();
   const visited = new Set<TSESTree.Node>();
 
   collect(node);
@@ -321,6 +344,16 @@ function getTypeReferencesRecursively(
         break;
       }
 
+      case AST_NODE_TYPES.TSTypeOperator:
+        collect(node.typeAnnotation);
+        break;
+
+      case AST_NODE_TYPES.TSTypeQuery:
+        if (isInsideFunctionDeclaration(node)) {
+          typeQueries.add(node);
+        }
+        break;
+
       case AST_NODE_TYPES.TSArrayType:
         collect(node.elementType);
         break;
@@ -373,7 +406,29 @@ function getTypeReferencesRecursively(
     }
   }
 
-  return typeReferences;
+  return {
+    typeReferences,
+    typeQueries,
+  };
+}
+
+function isInsideFunctionDeclaration(node: TSESTree.Node): boolean {
+  const functionNodes = new Set([
+    AST_NODE_TYPES.ArrowFunctionExpression,
+    AST_NODE_TYPES.FunctionDeclaration,
+    AST_NODE_TYPES.FunctionExpression,
+    AST_NODE_TYPES.TSDeclareFunction,
+  ]);
+
+  if (!node.parent) {
+    return false;
+  }
+
+  if (functionNodes.has(node.parent.type)) {
+    return true;
+  }
+
+  return isInsideFunctionDeclaration(node.parent);
 }
 
 function collectFunctionReturnStatements(

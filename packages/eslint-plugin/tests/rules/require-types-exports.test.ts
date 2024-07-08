@@ -458,6 +458,25 @@ ruleTester.run('require-types-exports', rule, {
     `,
 
     'export type ValueOf<T> = T[keyof T];',
+
+    `
+      const fruits = { apple: 'apple' };
+      export type Fruits = typeof fruits;
+
+      export function getFruit<Key extends keyof Fruits>(key: Key): Fruits[Key] {
+        return fruits[key];
+      }
+    `,
+
+    `
+      const fruits = { apple: 'apple' };
+
+      export function doWork(): number {
+        const fruit: keyof typeof fruits = 'apple';
+
+        return 1;
+      }
+    `,
   ],
 
   invalid: [
@@ -3401,6 +3420,71 @@ ruleTester.run('require-types-exports', rule, {
           endColumn: 34,
           data: {
             name: 'A',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        const fruits = { apple: 'apple' };
+
+        export function getFruit<Key extends keyof typeof fruits>(
+          key: Key,
+        ): (typeof fruits)[Key] {
+          return fruits[key];
+        }
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 52,
+          endColumn: 65,
+          data: {
+            name: 'typeof fruits',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        const fruits = { apple: 'apple' };
+
+        export declare function processFruit<F extends typeof fruits.apple>(
+          fruit: F,
+        ): void;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 4,
+          column: 56,
+          endColumn: 75,
+          data: {
+            name: 'typeof fruits.apple',
+          },
+        },
+      ],
+    },
+
+    {
+      code: `
+        const fruits = { apple: 'apple' };
+
+        export declare function processFruit<
+          F extends Record<keyof typeof fruits, string>,
+        >(fruit: F): void;
+      `,
+      errors: [
+        {
+          messageId: 'requireTypeExport',
+          line: 5,
+          column: 34,
+          endColumn: 47,
+          data: {
+            name: 'typeof fruits',
           },
         },
       ],
