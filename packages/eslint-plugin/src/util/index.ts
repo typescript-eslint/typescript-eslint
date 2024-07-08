@@ -7,6 +7,7 @@ export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
 export * from './getStaticStringValue';
 export * from './getStringLength';
+export * from './getTextWithParentheses';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
 export * from './isNodeEqual';

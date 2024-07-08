@@ -11,12 +11,13 @@ function getSpecificNode<
 ): Node;
 function getSpecificNode<
   Selector extends AST_NODE_TYPES,
-  Node extends Extract<TSESTree.Node, { type: Selector }>,
   ReturnType extends TSESTree.Node,
 >(
   ast: TSESTree.Node,
   selector: Selector,
-  cb: (node: Node) => ReturnType | null | undefined,
+  cb: (
+    node: Extract<TSESTree.Node, { type: Selector }>,
+  ) => ReturnType | null | undefined,
 ): ReturnType;
 
 function getSpecificNode(

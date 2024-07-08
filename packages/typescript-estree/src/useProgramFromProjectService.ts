@@ -1,7 +1,9 @@
+import path from 'node:path';
+import util from 'node:util';
+
 import debug from 'debug';
 import { minimatch } from 'minimatch';
-import path from 'path';
-import { ScriptKind } from 'typescript';
+import * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
@@ -13,6 +15,33 @@ const log = debug(
   'typescript-eslint:typescript-estree:useProgramFromProjectService',
 );
 
+const serviceFileExtensions = new WeakMap<ts.server.ProjectService, string[]>();
+
+const updateExtraFileExtensions = (
+  service: ts.server.ProjectService,
+  extraFileExtensions: string[],
+): void => {
+  const currentServiceFileExtensions = serviceFileExtensions.get(service) ?? [];
+  if (
+    !util.isDeepStrictEqual(currentServiceFileExtensions, extraFileExtensions)
+  ) {
+    log(
+      'Updating extra file extensions: before=%s: after=%s',
+      currentServiceFileExtensions,
+      extraFileExtensions,
+    );
+    service.setHostConfiguration({
+      extraFileExtensions: extraFileExtensions.map(extension => ({
+        extension,
+        isMixedContent: false,
+        scriptKind: ts.ScriptKind.Deferred,
+      })),
+    });
+    serviceFileExtensions.set(service, extraFileExtensions);
+    log('Extra file extensions updated: %o', extraFileExtensions);
+  }
+};
+
 export function useProgramFromProjectService(
   {
     allowDefaultProject,
@@ -23,6 +52,9 @@ export function useProgramFromProjectService(
   hasFullTypeInformation: boolean,
   defaultProjectMatchedFiles: Set<string>,
 ): ASTAndDefiniteProgram | undefined {
+  // NOTE: triggers a full project reload when changes are detected
+  updateExtraFileExtensions(service, parseSettings.extraFileExtensions);
+
   // We don't canonicalize the filename because it caused a performance regression.
   // See https://github.com/typescript-eslint/typescript-eslint/issues/8519
   const filePathAbsolute = absolutify(parseSettings.filePath);
@@ -31,16 +63,6 @@ export function useProgramFromProjectService(
     parseSettings.filePath,
     filePathAbsolute,
   );
-
-  if (parseSettings.extraFileExtensions.length) {
-    service.setHostConfiguration({
-      extraFileExtensions: parseSettings.extraFileExtensions.map(extension => ({
-        extension,
-        isMixedContent: false,
-        scriptKind: ScriptKind.Deferred,
-      })),
-    });
-  }
 
   const opened = service.openClientFile(
     filePathAbsolute,

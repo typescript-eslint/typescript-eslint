@@ -2,7 +2,7 @@ import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/r
 import type { Plugin } from 'unified';
 
 import { nodeIsParent } from '../utils/nodes';
-import { isAnyRuleModuleWithMetaDocs, isVFileWithStem } from '../utils/rules';
+import { isESLintPluginRuleModule, isVFileWithStem } from '../utils/rules';
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
@@ -20,7 +20,7 @@ export const generatedRuleDocs: Plugin = () => {
     }
 
     const rule = pluginRules[file.stem];
-    if (!isAnyRuleModuleWithMetaDocs(rule)) {
+    if (!isESLintPluginRuleModule(rule)) {
       return;
     }
 
