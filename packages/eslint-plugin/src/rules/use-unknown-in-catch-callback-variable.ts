@@ -73,14 +73,14 @@ export default createRule<[], MessageIds>({
     function getPromiseMethodInfo(node: TSESTree.Expression):
       | {
           argumentIndexToCheck: ArgumentIndexToCheck;
-          messageData: { method: string; append?: string };
+          messageData: Record<'method' | 'append', string>;
         }
       | false {
       if (node.type !== AST_NODE_TYPES.MemberExpression) {
         return false;
       }
       const methodsToCheck = [
-        { method: 'catch' },
+        { method: 'catch', append: '' },
         { method: 'then', append: ' rejection' },
       ] as const;
       const argumentIndexToCheck = methodsToCheck.findIndex(({ method }) =>
