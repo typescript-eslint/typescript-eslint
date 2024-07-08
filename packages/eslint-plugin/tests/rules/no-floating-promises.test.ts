@@ -733,6 +733,41 @@ promise().then(() => {});
         },
       ],
     },
+    {
+      code: `
+interface SafePromise<T> extends Promise<T> {
+  brand: 'safe';
+}
+
+declare const createSafePromise: () => SafePromise<string>;
+createSafePromise();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }],
+          checkThenables: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const createPromise: () => PromiseLike<number>;
+createPromise();
+      `,
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+      `,
+      options: [{ checkThenables: false }],
+    },
   ],
 
   invalid: [
@@ -3719,6 +3754,134 @@ void myTag\`abc\`;
           ],
         },
       ],
+    },
+    {
+      code: `
+declare const createPromise: () => PromiseLike<number>;
+createPromise();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const createPromise: () => PromiseLike<number>;
+void createPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+void createMyThenable();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+declare const createPromise: () => Promise<number>;
+createPromise();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const createPromise: () => Promise<number>;
+void createPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+class MyPromise<T> extends Promise<T> {}
+declare const createMyPromise: () => MyPromise<number>;
+createMyPromise();
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+class MyPromise<T> extends Promise<T> {}
+declare const createMyPromise: () => MyPromise<number>;
+void createMyPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+class MyPromise<T> extends Promise<T> {
+  additional: string;
+}
+declare const createMyPromise: () => MyPromise<number>;
+createMyPromise();
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+class MyPromise<T> extends Promise<T> {
+  additional: string;
+}
+declare const createMyPromise: () => MyPromise<number>;
+void createMyPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: false }],
     },
   ],
 });

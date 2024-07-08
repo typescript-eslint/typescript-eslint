@@ -8,6 +8,7 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
+  isBuiltinSymbolLike,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -16,9 +17,10 @@ import {
 
 type Options = [
   {
-    ignoreVoid?: boolean;
-    ignoreIIFE?: boolean;
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
+    checkThenables?: boolean;
+    ignoreIIFE?: boolean;
+    ignoreVoid?: boolean;
   },
 ];
 
@@ -75,6 +77,12 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          checkThenables: {
+            description:
+              'Whether to check all "Thenable"s, not just the built-in Promise type.',
+            type: 'boolean',
+          },
           ignoreVoid: {
             description: 'Whether to ignore `void` expressions.',
             type: 'boolean',
@@ -84,7 +92,6 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -93,15 +100,18 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      checkThenables: true,
       ignoreVoid: true,
       ignoreIIFE: false,
-      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
     },
   ],
 
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const { checkThenables } = options;
+
     // TODO: #5439
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const allowForKnownSafePromises = options.allowForKnownSafePromises!;
@@ -356,14 +366,10 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    // Modified from tsutils.isThenable() to only consider thenables which can be
-    // rejected/caught via a second parameter. Original source (MIT licensed):
-    //
-    //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
       type ??= checker.getTypeAtLocation(node);
 
-      // Ignore anything specified by `allowForKnownSafePromises` option.
+      // The highest priority is to allow anything allowlisted
       if (
         typeMatchesSomeSpecifier(
           type,
@@ -374,7 +380,26 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
+      // Otherwise, we always consider the built-in Promise to be Promise-like...
+      const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
+      if (
+        typeParts.some(typePart =>
+          isBuiltinSymbolLike(services.program, typePart, 'Promise'),
+        )
+      ) {
+        return true;
+      }
+
+      // ...and only check all Thenables if explicitly told to
+      if (!checkThenables) {
+        return false;
+      }
+
+      // Modified from tsutils.isThenable() to only consider thenables which can be
+      // rejected/caught via a second parameter. Original source (MIT licensed):
+      //
+      //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
+      for (const ty of typeParts) {
         const then = ty.getProperty('then');
         if (then === undefined) {
           continue;
