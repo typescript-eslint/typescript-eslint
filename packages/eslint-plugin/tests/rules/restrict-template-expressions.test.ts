@@ -317,7 +317,7 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     // allow
     {
-      options: [{ allow: [`Promise`] }],
+      options: [{ allow: [{ from: 'lib', name: 'Promise' }] }],
       code: 'const msg = `arg = ${Promise.resolve()}`;',
     },
     'const msg = `arg = ${new URL()}`;',
