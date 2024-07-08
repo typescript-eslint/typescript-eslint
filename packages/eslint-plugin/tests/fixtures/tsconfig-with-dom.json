@@ -1,9 +1,6 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "ESNext",
-    "strict": true,
-    "esModuleInterop": true,
     "lib": ["esnext", "DOM"]
   }
 }
