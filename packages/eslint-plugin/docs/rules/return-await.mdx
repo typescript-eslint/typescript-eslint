@@ -55,6 +55,8 @@ With these terms defined, the options may be summarized as follows:
 In error-handling contexts, the rule enforces that returned promises must be awaited.
 In ordinary contexts, the rule enforces that returned promises _must not_ be awaited.
 
+This is a good option if you prefer the shorter `return promise` form for stylistic reasons, wherever it's safe to use.
+
 Examples of code with `in-try-catch`:
 
 <Tabs>
@@ -189,6 +191,8 @@ async function validInTryCatch7() {
 
 Requires that all returned promises are awaited.
 
+This is a good option if you like the consistency of simply always awaiting promises, or prefer not having to consider the distinction between error-handling contexts and ordinary contexts.
+
 Examples of code with `always`:
 
 <Tabs>
@@ -236,6 +240,8 @@ async function validAlways3() {
 
 In error-handling contexts, the rule enforces that returned promises must be awaited.
 In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited.
+
+This is a good option if you only want to benefit from rule's ability to catch control flow bugs in error-handling contexts, but don't want to enforce a particular style otherwise.
 
 :::info
 We recommend you configure either `in-try-catch` or `always` instead of this option.
