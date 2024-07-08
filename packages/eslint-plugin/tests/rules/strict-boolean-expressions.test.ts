@@ -531,6 +531,117 @@ if (foo) {
         { messageId: 'conditionErrorNullish', line: 1, column: 25 },
       ],
     },
+    {
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
+      ],
+      code: noFormat`
+declare const foo: true & { __BRAND: 'Foo' };
+if (('' && foo) || (0 && void 0)) { }
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorString',
+          line: 3,
+          column: 6,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+declare const foo: true & { __BRAND: 'Foo' };
+if (((''.length > 0) && foo) || (0 && void 0)) { }
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+declare const foo: true & { __BRAND: 'Foo' };
+if ((('' !== "") && foo) || (0 && void 0)) { }
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const foo: true & { __BRAND: 'Foo' };
+if (((Boolean('')) && foo) || (0 && void 0)) { }
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 3,
+          column: 21,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: `
+declare const foo: true & { __BRAND: 'Foo' };
+if (('' && foo) || ((0 !== 0) && void 0)) { }
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: `
+declare const foo: true & { __BRAND: 'Foo' };
+if (('' && foo) || ((!Number.isNaN(0)) && void 0)) { }
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const foo: true & { __BRAND: 'Foo' };
+if (('' && foo) || ((Boolean(0)) && void 0)) { }
+      `,
+            },
+          ],
+        },
+        { messageId: 'conditionErrorNullish', line: 3, column: 26 },
+      ],
+    },
+    {
+      options: [
+        { allowString: false, allowNumber: false, allowNullableObject: false },
+      ],
+      code: noFormat`
+declare const foo: false & { __BRAND: 'Foo' };
+if (('' && {}) || (foo && void 0)) { }
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorString',
+          line: 3,
+          column: 6,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+declare const foo: false & { __BRAND: 'Foo' };
+if (((''.length > 0) && {}) || (foo && void 0)) { }
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+declare const foo: false & { __BRAND: 'Foo' };
+if ((('' !== "") && {}) || (foo && void 0)) { }
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const foo: false & { __BRAND: 'Foo' };
+if (((Boolean('')) && {}) || (foo && void 0)) { }
+      `,
+            },
+          ],
+        },
+        { messageId: 'conditionErrorObject', line: 3, column: 12 },
+        { messageId: 'conditionErrorNullish', line: 3, column: 27 },
+      ],
+    },
 
     // shouldn't check last logical operand when used for control flow
     {
