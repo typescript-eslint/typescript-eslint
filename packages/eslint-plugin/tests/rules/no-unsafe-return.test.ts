@@ -497,7 +497,7 @@ async function foo() {
           line: 4,
           column: 3,
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -515,7 +515,7 @@ function foo() {
           line: 4,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -533,7 +533,7 @@ async function foo(): Promise<number> {
           line: 4,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -550,7 +550,7 @@ async function foo(arg: number) {
           line: 3,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -567,7 +567,7 @@ function foo(): Promise<any> {
           line: 3,
           column: 3,
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -584,7 +584,7 @@ function foo(): Promise<object> {
           line: 3,
           column: 3,
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -601,7 +601,7 @@ function foo(): Promise<object> {
           line: 3,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -618,7 +618,7 @@ function foo(): Promise<object> {
           line: 3,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -635,7 +635,7 @@ async function foo(): Promise<object> {
           line: 3,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -652,7 +652,7 @@ async function foo(): Promise<object> {
           line: 3,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],
@@ -669,7 +669,7 @@ async function foo() {
           line: 3,
           column: 3,
           data: {
-            type: 'Promise<any>',
+            type: '`Promise<any>`',
           },
         },
       ],

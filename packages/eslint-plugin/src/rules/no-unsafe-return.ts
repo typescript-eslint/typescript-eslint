@@ -206,7 +206,9 @@ export default createRule({
               ? 'error'
               : anyType === AnyType.Any
                 ? '`any`'
-                : '`any[]`',
+                : anyType === AnyType.PromiseAny
+                  ? '`Promise<any>`'
+                  : '`any[]`',
           },
         });
       }
