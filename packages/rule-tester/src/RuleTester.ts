@@ -20,6 +20,7 @@ import { Linter } from '@typescript-eslint/utils/ts-eslint';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint';
+import stringify from 'json-stable-stringify-without-jsonify';
 import merge from 'lodash.merge';
 
 import { TestFramework } from './TestFramework';
@@ -28,6 +29,7 @@ import type {
   NormalizedRunTests,
   RuleTesterConfig,
   RunTests,
+  SuggestionOutput,
   TesterConfigWithDefaults,
   ValidTestCase,
 } from './types';
@@ -38,8 +40,8 @@ import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints
 import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
-import { interpolate } from './utils/interpolate';
-import { isReadonlyArray } from './utils/isReadonlyArray';
+import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
+import { isSerializable } from './utils/serialization';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
   emitLegacyRuleAPIWarning,
@@ -72,6 +74,45 @@ let defaultConfig = deepMerge(
   {},
   testerDefaultConfig,
 ) as TesterConfigWithDefaults;
+
+/**
+ * Extracts names of {{ placeholders }} from the reported message.
+ * @param message Reported message
+ * @returns Array of placeholder names
+ */
+function getMessagePlaceholders(message: string): string[] {
+  const matcher = getPlaceholderMatcher();
+
+  return Array.from(message.matchAll(matcher), ([, name]) => name.trim());
+}
+
+/**
+ * Returns the placeholders in the reported messages but
+ * only includes the placeholders available in the raw message and not in the provided data.
+ * @param message The reported message
+ * @param raw The raw message specified in the rule meta.messages
+ * @param data The passed
+ * @returns Missing placeholder names
+ */
+function getUnsubstitutedMessagePlaceholders(
+  message: string,
+  raw: string,
+  data: Record<string, unknown> = {},
+): string[] {
+  const unsubstituted = getMessagePlaceholders(message);
+
+  if (unsubstituted.length === 0) {
+    return [];
+  }
+
+  // Remove false positives by only counting placeholders in the raw message, which were not provided in the data matcher or added with a data property
+  const known = getMessagePlaceholders(raw);
+  const provided = Object.keys(data);
+
+  return unsubstituted.filter(
+    name => known.includes(name) && !provided.includes(name),
+  );
+}
 
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
@@ -146,16 +187,16 @@ export class RuleTester extends TestFramework {
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<Options extends Readonly<unknown[]>>(
+  static only<Options extends readonly unknown[]>(
     item: ValidTestCase<Options> | string,
   ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
    */
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends readonly unknown[]>(
     item: InvalidTestCase<MessageIds, Options>,
   ): InvalidTestCase<MessageIds, Options>;
-  static only<MessageIds extends string, Options extends Readonly<unknown[]>>(
+  static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
       | InvalidTestCase<MessageIds, Options>
       | ValidTestCase<Options>
@@ -215,10 +256,7 @@ export class RuleTester extends TestFramework {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
       if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(test.parserOptions),
-        };
+        return { ...test, filename: getFilename(test.parserOptions) };
       }
       return test;
     };
@@ -354,6 +392,9 @@ export class RuleTester extends TestFramework {
       );
     }
 
+    const seenValidTestCases = new Set<string>();
+    const seenInvalidTestCases = new Set<string>();
+
     if (typeof rule === 'function') {
       emitLegacyRuleAPIWarning(ruleName);
     }
@@ -403,7 +444,12 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(ruleName, rule, valid);
+              this.#testValidTemplate(
+                ruleName,
+                rule,
+                valid,
+                seenValidTestCases,
+              );
             });
           });
         });
@@ -419,7 +465,12 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(ruleName, rule, invalid);
+              this.#testInvalidTemplate(
+                ruleName,
+                rule,
+                invalid,
+                seenInvalidTestCases,
+              );
             });
           });
         });
@@ -444,6 +495,8 @@ export class RuleTester extends TestFramework {
     output: string;
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
+    config: RuleTesterConfig;
+    filename?: string;
   } {
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
     let code;
@@ -475,7 +528,17 @@ export class RuleTester extends TestFramework {
       config = merge(config, itemConfig);
     }
 
-    if (item.filename) {
+    if (hasOwnProperty(item, 'only')) {
+      assert.ok(
+        typeof item.only === 'boolean',
+        "Optional test case property 'only' must be a boolean",
+      );
+    }
+    if (hasOwnProperty(item, 'filename')) {
+      assert.ok(
+        typeof item.filename === 'string',
+        "Optional test case property 'filename' must be a string",
+      );
       filename = item.filename;
     }
 
@@ -617,6 +680,8 @@ export class RuleTester extends TestFramework {
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
+      config,
+      filename,
     };
   }
 
@@ -631,6 +696,7 @@ export class RuleTester extends TestFramework {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     itemIn: ValidTestCase<Options> | string,
+    seenValidTestCases: Set<string>,
   ): void {
     const item: ValidTestCase<Options> =
       typeof itemIn === 'object' ? itemIn : { code: itemIn };
@@ -645,6 +711,8 @@ export class RuleTester extends TestFramework {
         "Optional test case property 'name' must be a string",
       );
     }
+
+    checkDuplicateTestCase(item, seenValidTestCases);
 
     const result = this.runRuleForItem(ruleName, rule, item);
     const messages = result.messages;
@@ -673,6 +741,7 @@ export class RuleTester extends TestFramework {
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
     item: InvalidTestCase<MessageIds, Options>,
+    seenInvalidTestCases: Set<string>,
   ): void {
     assert.ok(
       typeof item.code === 'string',
@@ -692,6 +761,8 @@ export class RuleTester extends TestFramework {
     if (Array.isArray(item.errors) && item.errors.length === 0) {
       assert.fail('Invalid cases must have at least one error');
     }
+
+    checkDuplicateTestCase(item, seenInvalidTestCases);
 
     const ruleHasMetaMessages =
       hasOwnProperty(rule, 'meta') && hasOwnProperty(rule.meta, 'messages');
@@ -764,6 +835,10 @@ export class RuleTester extends TestFramework {
         if (typeof error === 'string' || error instanceof RegExp) {
           // Just an error message.
           assertMessageMatches(message.message, error);
+          assert.ok(
+            message.suggestions === undefined,
+            `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
+          );
         } else if (typeof error === 'object' && error != null) {
           /*
            * Error object.
@@ -809,6 +884,19 @@ export class RuleTester extends TestFramework {
               error.messageId,
               `messageId '${message.messageId}' does not match expected messageId '${error.messageId}'.`,
             );
+
+            const unsubstitutedPlaceholders =
+              getUnsubstitutedMessagePlaceholders(
+                message.message,
+                rule.meta.messages[message.messageId],
+                error.data,
+              );
+
+            assert.ok(
+              unsubstitutedPlaceholders.length === 0,
+              `The reported message has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property in the context.report() call.`,
+            );
+
             if (hasOwnProperty(error, 'data')) {
               /*
                *  if data was provided, then directly compare the returned message to a synthetic
@@ -828,14 +916,11 @@ export class RuleTester extends TestFramework {
                 `Hydrated message "${rehydratedMessage}" does not match "${message.message}"`,
               );
             }
+          } else {
+            assert.fail(
+              "Test error must specify either a 'messageId' or 'message'.",
+            );
           }
-
-          assert.ok(
-            hasOwnProperty(error, 'data')
-              ? hasOwnProperty(error, 'messageId')
-              : true,
-            "Error must specify 'messageId' if 'data' is used.",
-          );
 
           if (error.type) {
             assert.strictEqual(
@@ -877,117 +962,180 @@ export class RuleTester extends TestFramework {
             );
           }
 
+          assert.ok(
+            !message.suggestions || hasOwnProperty(error, 'suggestions'),
+            `Error at index ${i} has suggestions. Please specify 'suggestions' property on the test error object.`,
+          );
           if (hasOwnProperty(error, 'suggestions')) {
             // Support asserting there are no suggestions
-            if (
-              !error.suggestions ||
-              (isReadonlyArray(error.suggestions) &&
-                error.suggestions.length === 0)
-            ) {
-              if (
-                Array.isArray(message.suggestions) &&
-                message.suggestions.length > 0
-              ) {
-                assert.fail(
-                  `Error should have no suggestions on error with message: "${message.message}"`,
-                );
-              }
-            } else {
-              assert(
-                Array.isArray(message.suggestions),
-                `Error should have an array of suggestions. Instead received "${String(
-                  message.suggestions,
-                )}" on error with message: "${message.message}"`,
+            const expectsSuggestions = Array.isArray(error.suggestions)
+              ? error.suggestions.length > 0
+              : Boolean(error.suggestions);
+            const hasSuggestions = message.suggestions !== void 0;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const messageSuggestions = message.suggestions!;
+
+            if (!hasSuggestions && expectsSuggestions) {
+              assert.ok(
+                !error.suggestions,
+                `Error should have suggestions on error with message: "${message.message}"`,
               );
-              const messageSuggestions = message.suggestions;
-              assert.strictEqual(
-                messageSuggestions.length,
-                error.suggestions.length,
-                `Error should have ${error.suggestions.length} suggestions. Instead found ${messageSuggestions.length} suggestions`,
+            } else if (hasSuggestions) {
+              assert.ok(
+                expectsSuggestions,
+                `Error should have no suggestions on error with message: "${message.message}"`,
               );
-
-              error.suggestions.forEach((expectedSuggestion, index) => {
-                assert.ok(
-                  typeof expectedSuggestion === 'object' &&
-                    expectedSuggestion != null,
-                  "Test suggestion in 'suggestions' array must be an object.",
+              if (typeof error.suggestions === 'number') {
+                assert.strictEqual(
+                  messageSuggestions.length,
+                  error.suggestions,
+                  // It is possible that error.suggestions is a number
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  `Error should have ${error.suggestions} suggestions. Instead found ${messageSuggestions.length} suggestions`,
                 );
-                Object.keys(expectedSuggestion).forEach(propertyName => {
-                  assert.ok(
-                    SUGGESTION_OBJECT_PARAMETERS.has(propertyName),
-                    `Invalid suggestion property name '${propertyName}'. Expected one of ${FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST}.`,
-                  );
-                });
+              } else if (Array.isArray(error.suggestions)) {
+                assert.strictEqual(
+                  messageSuggestions.length,
+                  error.suggestions.length,
+                  `Error should have ${error.suggestions.length} suggestions. Instead found ${messageSuggestions.length} suggestions`,
+                );
 
-                const actualSuggestion = messageSuggestions[index];
-                const suggestionPrefix = `Error Suggestion at index ${index} :`;
+                error.suggestions.forEach(
+                  (expectedSuggestion: SuggestionOutput<MessageIds>, index) => {
+                    assert.ok(
+                      typeof expectedSuggestion === 'object' &&
+                        expectedSuggestion != null,
+                      "Test suggestion in 'suggestions' array must be an object.",
+                    );
+                    Object.keys(expectedSuggestion).forEach(propertyName => {
+                      assert.ok(
+                        SUGGESTION_OBJECT_PARAMETERS.has(propertyName),
+                        `Invalid suggestion property name '${propertyName}'. Expected one of ${FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST}.`,
+                      );
+                    });
 
-                // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
-                if (hasOwnProperty(expectedSuggestion, 'desc')) {
-                  assert.ok(
-                    !hasOwnProperty(expectedSuggestion, 'data'),
-                    `${suggestionPrefix} Test should not specify both 'desc' and 'data'.`,
-                  );
-                  // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
-                  const expectedDesc = expectedSuggestion.desc as string;
-                  assert.strictEqual(
-                    actualSuggestion.desc,
-                    expectedDesc,
-                    `${suggestionPrefix} desc should be "${expectedDesc}" but got "${actualSuggestion.desc}" instead.`,
-                  );
-                }
+                    const actualSuggestion = messageSuggestions[index];
+                    const suggestionPrefix = `Error Suggestion at index ${index}:`;
 
-                if (hasOwnProperty(expectedSuggestion, 'messageId')) {
-                  assert.ok(
-                    ruleHasMetaMessages,
-                    `${suggestionPrefix} Test can not use 'messageId' if rule under test doesn't define 'meta.messages'.`,
-                  );
-                  assert.ok(
-                    hasOwnProperty(
-                      rule.meta.messages,
-                      expectedSuggestion.messageId,
-                    ),
-                    `${suggestionPrefix} Test has invalid messageId '${expectedSuggestion.messageId}', the rule under test allows only one of ${friendlyIDList}.`,
-                  );
-                  assert.strictEqual(
-                    actualSuggestion.messageId,
-                    expectedSuggestion.messageId,
-                    `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
-                  );
-                  if (hasOwnProperty(expectedSuggestion, 'data')) {
-                    const unformattedMetaMessage =
-                      rule.meta.messages[expectedSuggestion.messageId];
-                    const rehydratedDesc = interpolate(
-                      unformattedMetaMessage,
-                      expectedSuggestion.data,
+                    // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
+                    if (hasOwnProperty(expectedSuggestion, 'desc')) {
+                      // @ts-expect-error -- we purposely don't define `desc` on our types as the current standard is `messageId`
+                      const expectedDesc = expectedSuggestion.desc as string;
+
+                      assert.ok(
+                        !hasOwnProperty(expectedSuggestion, 'data'),
+                        `${suggestionPrefix} Test should not specify both 'desc' and 'data'.`,
+                      );
+                      assert.ok(
+                        !hasOwnProperty(expectedSuggestion, 'messageId'),
+                        `${suggestionPrefix} Test should not specify both 'desc' and 'messageId'.`,
+                      );
+                      assert.strictEqual(
+                        actualSuggestion.desc,
+                        expectedDesc,
+                        `${suggestionPrefix} desc should be "${expectedDesc}" but got "${actualSuggestion.desc}" instead.`,
+                      );
+                    } else if (
+                      hasOwnProperty(expectedSuggestion, 'messageId')
+                    ) {
+                      assert.ok(
+                        ruleHasMetaMessages,
+                        `${suggestionPrefix} Test can not use 'messageId' if rule under test doesn't define 'meta.messages'.`,
+                      );
+                      assert.ok(
+                        hasOwnProperty(
+                          rule.meta.messages,
+                          expectedSuggestion.messageId,
+                        ),
+                        `${suggestionPrefix} Test has invalid messageId '${expectedSuggestion.messageId}', the rule under test allows only one of ${friendlyIDList}.`,
+                      );
+                      assert.strictEqual(
+                        actualSuggestion.messageId,
+                        expectedSuggestion.messageId,
+                        `${suggestionPrefix} messageId should be '${expectedSuggestion.messageId}' but got '${actualSuggestion.messageId}' instead.`,
+                      );
+
+                      const unsubstitutedPlaceholders =
+                        getUnsubstitutedMessagePlaceholders(
+                          actualSuggestion.desc,
+                          rule.meta.messages[expectedSuggestion.messageId],
+                          expectedSuggestion.data,
+                        );
+
+                      assert.ok(
+                        unsubstitutedPlaceholders.length === 0,
+                        `The message of the suggestion has ${unsubstitutedPlaceholders.length > 1 ? `unsubstituted placeholders: ${unsubstitutedPlaceholders.map(name => `'${name}'`).join(', ')}` : `an unsubstituted placeholder '${unsubstitutedPlaceholders[0]}'`}. Please provide the missing ${unsubstitutedPlaceholders.length > 1 ? 'values' : 'value'} via the 'data' property for the suggestion in the context.report() call.`,
+                      );
+
+                      if (hasOwnProperty(expectedSuggestion, 'data')) {
+                        const unformattedMetaMessage =
+                          rule.meta.messages[expectedSuggestion.messageId];
+                        const rehydratedDesc = interpolate(
+                          unformattedMetaMessage,
+                          expectedSuggestion.data,
+                        );
+
+                        assert.strictEqual(
+                          actualSuggestion.desc,
+                          rehydratedDesc,
+                          `${suggestionPrefix} Hydrated test desc "${rehydratedDesc}" does not match received desc "${actualSuggestion.desc}".`,
+                        );
+                      }
+                    } else if (hasOwnProperty(expectedSuggestion, 'data')) {
+                      assert.fail(
+                        `${suggestionPrefix} Test must specify 'messageId' if 'data' is used.`,
+                      );
+                    } else {
+                      assert.fail(
+                        `${suggestionPrefix} Test must specify either 'messageId' or 'desc'.`,
+                      );
+                    }
+
+                    assert.ok(
+                      hasOwnProperty(expectedSuggestion, 'output'),
+                      `${suggestionPrefix} The "output" property is required.`,
+                    );
+                    const codeWithAppliedSuggestion =
+                      SourceCodeFixer.applyFixes(item.code, [
+                        actualSuggestion,
+                      ]).output;
+
+                    // Verify if suggestion fix makes a syntax error or not.
+                    const errorMessageInSuggestion = this.#linter
+                      .verify(
+                        codeWithAppliedSuggestion,
+                        result.config,
+                        result.filename,
+                      )
+                      .find(m => m.fatal);
+
+                    assert(
+                      !errorMessageInSuggestion,
+                      [
+                        'A fatal parsing error occurred in suggestion fix.',
+                        `Error: ${errorMessageInSuggestion?.message}`,
+                        'Suggestion output:',
+                        codeWithAppliedSuggestion,
+                      ].join('\n'),
                     );
 
                     assert.strictEqual(
-                      actualSuggestion.desc,
-                      rehydratedDesc,
-                      `${suggestionPrefix} Hydrated test desc "${rehydratedDesc}" does not match received desc "${actualSuggestion.desc}".`,
+                      codeWithAppliedSuggestion,
+                      expectedSuggestion.output,
+                      `Expected the applied suggestion fix to match the test suggestion output for suggestion at index: ${index} on error with message: "${message.message}"`,
                     );
-                  }
-                } else {
-                  assert.ok(
-                    !hasOwnProperty(expectedSuggestion, 'data'),
-                    `${suggestionPrefix} Test must specify 'messageId' if 'data' is used.`,
-                  );
-                }
-
-                if (hasOwnProperty(expectedSuggestion, 'output')) {
-                  const codeWithAppliedSuggestion = SourceCodeFixer.applyFixes(
-                    item.code,
-                    [actualSuggestion],
-                  ).output;
-
-                  assert.strictEqual(
-                    codeWithAppliedSuggestion,
-                    expectedSuggestion.output,
-                    `Expected the applied suggestion fix to match the test suggestion output for suggestion at index: ${index} on error with message: "${message.message}"`,
-                  );
-                }
-              });
+                    assert.notStrictEqual(
+                      expectedSuggestion.output,
+                      item.code,
+                      `The output of a suggestion should differ from the original source code for suggestion at index: ${index} on error with message: "${message.message}"`,
+                    );
+                  },
+                );
+              } else {
+                assert.fail(
+                  "Test error object property 'suggestions' should be an array or a number",
+                );
+              }
             }
           }
         } else {
@@ -1017,6 +1165,11 @@ export class RuleTester extends TestFramework {
         item.code,
         "The rule fixed the code. Please add 'output' property.",
       );
+      assert.notStrictEqual(
+        item.code,
+        item.output,
+        "Test property 'output' matches 'code'. If no autofix is expected, then omit the 'output' property or set it to null.",
+      );
     }
 
     assertASTDidntChange(result.beforeAST, result.afterAST);
@@ -1028,6 +1181,30 @@ export class RuleTester extends TestFramework {
  */
 function assertASTDidntChange(beforeAST: unknown, afterAST: unknown): void {
   assert.deepStrictEqual(beforeAST, afterAST, 'Rule should not modify AST.');
+}
+
+/**
+ * Check if this test case is a duplicate of one we have seen before.
+ */
+function checkDuplicateTestCase(
+  item: unknown,
+  seenTestCases: Set<unknown>,
+): void {
+  if (!isSerializable(item)) {
+    /*
+     * If we can't serialize a test case (because it contains a function, RegExp, etc), skip the check.
+     * This might happen with properties like: options, plugins, settings, languageOptions.parser, languageOptions.parserOptions.
+     */
+    return;
+  }
+
+  const serializedTestCase = stringify(item);
+
+  assert(
+    !seenTestCases.has(serializedTestCase),
+    'detected duplicate test case',
+  );
+  seenTestCases.add(serializedTestCase);
 }
 
 /**

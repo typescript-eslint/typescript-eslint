@@ -77,48 +77,26 @@ const IGNORED_FILTER = {
   regex: /.gnored/.source,
 };
 
-type Cases = {
-  code: string[];
-  options: Omit<Options[0], 'format'>;
-}[];
+type Cases = { code: string[]; options: Omit<Options[0], 'format'> }[];
 
 export function createTestCases(cases: Cases): void {
-  const ruleTester = new RuleTester({
-    parser: '@typescript-eslint/parser',
-  });
-
-  ruleTester.run('naming-convention', rule, {
-    invalid: createInvalidTestCases(),
-    valid: createValidTestCases(),
-  });
-
-  function createValidTestCases(): TSESLint.ValidTestCase<Options>[] {
-    const newCases: TSESLint.ValidTestCase<Options>[] = [];
-
-    for (const test of cases) {
-      for (const [formatLoose, names] of Object.entries(formatTestNames)) {
-        const format = [formatLoose as PredefinedFormatsString];
-        for (const name of names.valid) {
+  const createValidTestCases = (): TSESLint.ValidTestCase<Options>[] =>
+    cases.flatMap(test =>
+      Object.entries(formatTestNames).flatMap(([formatLoose, names]) =>
+        names.valid.flatMap(name => {
+          const format = [formatLoose as PredefinedFormatsString];
           const createCase = (
             preparedName: string,
             options: Selector,
           ): TSESLint.ValidTestCase<Options> => ({
-            options: [
-              {
-                ...options,
-                filter: IGNORED_FILTER,
-              },
-            ],
+            options: [{ ...options, filter: IGNORED_FILTER }],
             code: `// ${JSON.stringify(options)}\n${test.code
               .map(code => code.replace(REPLACE_REGEX, preparedName))
               .join('\n')}`,
           });
 
-          newCases.push(
-            createCase(name, {
-              ...test.options,
-              format,
-            }),
+          return [
+            createCase(name, { ...test.options, format }),
 
             // leadingUnderscore
             createCase(name, {
@@ -167,11 +145,6 @@ export function createTestCases(cases: Cases): void {
               leadingUnderscore: 'allowSingleOrDouble',
             }),
             createCase(`__${name}`, {
-              ...test.options,
-              format,
-              leadingUnderscore: 'allowSingleOrDouble',
-            }),
-            createCase(name, {
               ...test.options,
               format,
               leadingUnderscore: 'allowSingleOrDouble',
@@ -228,11 +201,6 @@ export function createTestCases(cases: Cases): void {
               format,
               trailingUnderscore: 'allowSingleOrDouble',
             }),
-            createCase(name, {
-              ...test.options,
-              format,
-              trailingUnderscore: 'allowSingleOrDouble',
-            }),
 
             // prefix
             createCase(`MyPrefix${name}`, {
@@ -257,13 +225,10 @@ export function createTestCases(cases: Cases): void {
               format,
               suffix: ['MySuffix1', 'MySuffix2'],
             }),
-          );
-        }
-      }
-    }
-
-    return newCases;
-  }
+          ];
+        }),
+      ),
+    );
 
   function createInvalidTestCases(): TSESLint.InvalidTestCase<
     MessageIds,
@@ -480,4 +445,13 @@ export function createTestCases(cases: Cases): void {
 
     return newCases;
   }
+
+  const ruleTester = new RuleTester({
+    parser: '@typescript-eslint/parser',
+  });
+
+  ruleTester.run('naming-convention', rule, {
+    invalid: createInvalidTestCases(),
+    valid: createValidTestCases(),
+  });
 }

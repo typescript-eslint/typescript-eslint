@@ -30,7 +30,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeReturn: 'Unsafe return of a value of type `{{type}}`.',
+      unsafeReturn: 'Unsafe return of an {{type}} typed value.',
       unsafeReturnThis: [
         'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -182,6 +182,7 @@ export default createRule({
         }
 
         let messageId: 'unsafeReturn' | 'unsafeReturnThis' = 'unsafeReturn';
+        const isErrorType = tsutils.isIntrinsicErrorType(returnNodeType);
 
         if (!isNoImplicitThis) {
           // `return this`
@@ -201,12 +202,11 @@ export default createRule({
           node: reportingNode,
           messageId,
           data: {
-            type:
-              anyType === AnyType.Any
-                ? 'any'
-                : anyType === AnyType.AnyArray
-                  ? 'any[]'
-                  : 'Promise<any>',
+            type: isErrorType
+              ? 'error'
+              : anyType === AnyType.Any
+                ? '`any`'
+                : '`any[]`',
           },
         });
       }

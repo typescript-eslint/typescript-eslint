@@ -6,10 +6,22 @@ interface ClassDeclarationBase extends ClassBase {
   type: AST_NODE_TYPES.ClassDeclaration;
 }
 
+/**
+ * A normal class declaration:
+ * ```
+ * class A {}
+ * ```
+ */
 export interface ClassDeclarationWithName extends ClassDeclarationBase {
   id: Identifier;
 }
 
+/**
+ * Default-exported class declarations have optional names:
+ * ```
+ * export default class {}
+ * ```
+ */
 export interface ClassDeclarationWithOptionalName extends ClassDeclarationBase {
   id: Identifier | null;
 }

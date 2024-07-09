@@ -1,3 +1,146 @@
+## 7.16.0 (2024-07-08)
+
+
+### 🩹 Fixes
+
+- **deps:** update dependency @eslint-community/regexpp to v4.11.0
+
+- **website:** react key error on internal pages of website
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Josh Goldberg ✨
+- Juan Sanchez
+- Vinccool96
+- YeonJuan
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.15.0 (2024-07-01)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.14.1 (2024-06-24)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.14.0 (2024-06-24)
+
+
+### 🚀 Features
+
+- support TypeScript 5.5
+
+
+### 🩹 Fixes
+
+- keep warnAbountTSVersion in sync with package.json
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- cm-ayf
+- Jake Bailey
+- James Zhan
+- Joshua Chen
+- yoshi2no
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.13.1 (2024-06-17)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.13.0 (2024-06-10)
+
+
+### 🚀 Features
+
+- **typescript-estree:** require `import = require()` argument to be a string literal
+
+- **typescript-estree:** forbid `.body`, `.async`, `.generator` on `declare function`
+
+- **parser, typescript-estree:** export withoutProjectParserOptions utility
+
+
+### ❤️  Thank You
+
+- Fotis Papadogeorgopoulos
+- Joshua Chen
+- Kirk Waiblinger
+- Tobiloba Adedeji
+- Vinccool96
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.12.0 (2024-06-03)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.11.0 (2024-05-27)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** truncate number of files printed by the maximum file error
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Dom Armstrong
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.10.0 (2024-05-20)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** don't add in-project files to defaultProjectMatchedFiles
+
+
+### ❤️  Thank You
+
+- auvred
+- Emanuel Hoogeveen
+- jsfm01
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.9.0 (2024-05-13)
+
+
+### 🩹 Fixes
+
+- do not pass tsconfig canonical file name to typescript API to get program details for config file
+
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Sheetal Nandi
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.8.0 (2024-04-29)
 
 
