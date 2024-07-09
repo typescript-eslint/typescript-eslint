@@ -605,6 +605,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     {
       code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
+      // only: true,
     },
     {
       code: 'type Fn = <T>(value: unknown) => value is T;',

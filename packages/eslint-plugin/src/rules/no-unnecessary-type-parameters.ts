@@ -271,12 +271,17 @@ function collectTypeParameterUsageCounts(
     // `isTypeReference` to avoid descending into all the properties of a
     // generic interface/class, e.g. `Map<K, V>`.
     else if (tsutils.isObjectType(type)) {
-      visitSymbolsListOnce(type.getProperties(), false);
+      const properties = type.getProperties();
+      visitSymbolsListOnce(properties, false);
 
       if (isMappedType(type)) {
         visitType(type.typeParameter, false);
-        visitType(type.templateType, false);
-        visitType(type.constraintType, false);
+        if (properties.length === 0) {
+          // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
+          // They have properties, so we need to avoid double-counting.
+          visitType(type.templateType, false);
+          visitType(type.constraintType, false);
+        }
       }
 
       for (const typeArgument of type.aliasTypeArguments ?? []) {
