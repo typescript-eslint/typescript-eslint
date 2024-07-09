@@ -16,6 +16,7 @@ describe('getAwaitedType', () => {
     program: ts.Program;
     type: ts.Type;
     checker: ts.TypeChecker;
+    node: ts.Node;
   } {
     const { ast, services } = parseForESLint(code, {
       project: './tsconfig.json',
@@ -32,6 +33,7 @@ describe('getAwaitedType', () => {
     return {
       program: services.program,
       type: services.getTypeAtLocation(declarator.id),
+      node: services.esTreeNodeToTSNodeMap.get(declarator.id),
       checker,
     };
   }
@@ -46,21 +48,19 @@ describe('getAwaitedType', () => {
   }
 
   it('non-promise', () => {
-    const { program, type, checker } = getTypes('const test: number = 1');
-    expectTypesAre(getAwaitedType(program, type), checker, 'number');
+    const { type, checker, node } = getTypes('const test: number = 1');
+    expectTypesAre(getAwaitedType(checker, type, node), checker, 'number');
   });
 
   it('Promise<{{type}}> to {{type}}', () => {
-    const { program, type, checker } = getTypes(
-      'const test = Promise.resolve(1)',
-    );
-    expectTypesAre(getAwaitedType(program, type), checker, 'number');
+    const { type, checker, node } = getTypes('const test = Promise.resolve(1)');
+    expectTypesAre(getAwaitedType(checker, type, node), checker, 'number');
   });
 
   it('Promise<Promise<{{type}}>> to {{type}}', () => {
-    const { program, type, checker } = getTypes(
+    const { type, checker, node } = getTypes(
       'const test: Promise<Promise<number>> = Promise.resolve(Promise.resolve(1))',
     );
-    expectTypesAre(getAwaitedType(program, type), checker, 'number');
+    expectTypesAre(getAwaitedType(checker, type, node), checker, 'number');
   });
 });
