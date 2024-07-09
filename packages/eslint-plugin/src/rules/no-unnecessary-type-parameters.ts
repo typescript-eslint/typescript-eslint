@@ -275,6 +275,8 @@ function collectTypeParameterUsageCounts(
 
       if (isMappedType(type)) {
         visitType(type.typeParameter, false);
+        visitType(type.templateType, false);
+        visitType(type.constraintType, false);
       }
 
       for (const typeArgument of type.aliasTypeArguments ?? []) {
@@ -372,6 +374,8 @@ function collectTypeParameterUsageCounts(
 
 interface MappedType extends ts.ObjectType {
   typeParameter?: ts.Type;
+  constraintType?: ts.Type;
+  templateType?: ts.Type;
 }
 
 function isMappedType(type: ts.Type): type is MappedType {
