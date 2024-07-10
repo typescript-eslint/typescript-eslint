@@ -77,16 +77,22 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 ## Limitations
 
 Note that this rule allows any type parameter that is used multiple times, even if those uses are via a type argument.
-For example, the following `T` is used multiple times by virtue of being in an `Array`, even though its name only appears once after declaration:
+For example, the following `T` is used multiple times by virtue of being in an `Set`, even though its name only appears once after declaration:
 
 ```ts
-declare function createStateHistory<T>(): T[];
+declare function createStateHistory<T>(): Set<T>;
 ```
 
-This is because the type parameter `T` relates multiple methods in the `T[]` together, making it used more than once.
+This is because the type parameter `T` relates multiple methods in the `Set<T>` together, making it used more than once.
 
 Therefore, this rule won't report on type parameters used as a type argument.
-That includes type arguments given to global types such as `Array` (including the `T[]` shorthand and in tuples), `Map`, and `Set`.
+That includes type arguments given to global types such as `Map` and `Set`, whereas `readonly T[]`, `T[]`, `ReadonlyArray` and `Array` are special cases that are reported on:
+
+```ts
+declare function createStateHistory<T>(): Array<T>;
+```
+
+In such case an error will be reported because `T` is used only once as type argument for the `Array` global type.
 
 ## When Not To Use It
 
