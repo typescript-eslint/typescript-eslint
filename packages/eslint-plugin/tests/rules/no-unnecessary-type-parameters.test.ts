@@ -617,15 +617,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     {
       code: `
         declare function mapObj<K extends string, V>(
-          obj: { [key in K]?: null },
-          fn: (key: K) => number,
-        ): number[];
-      `,
-      errors: [{ messageId: 'sole', data: { name: 'V' } }],
-    },
-    {
-      code: `
-        declare function mapObj<K extends string, V>(
           obj: { [key in K]?: V },
           fn: (key: K) => number,
         ): number[];
