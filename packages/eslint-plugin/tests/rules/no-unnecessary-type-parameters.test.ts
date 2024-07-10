@@ -16,11 +16,6 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
-    // `
-    //   class ClassyArray<T> {
-    //     arr: T[];
-    //   }
-    // `,
     `
       class ClassyArray<T> {
         value1: T;
@@ -57,20 +52,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         }
       }
     `,
-    // `
-    //   class Joiner<T extends string | number> {
-    //     join(els: T[]) {
-    //       return els.map(el => '' + el).join(',');
-    //     }
-    //   }
-    // `,
-    // `
-    //   class Joiner {
-    //     join<T extends string | number>(els: T[]) {
-    //       return els.map(el => '' + el).join(',');
-    //     }
-    //   }
-    // `,
     `
       declare class Foo {
         getProp<T>(this: Record<'prop', T>): T;
@@ -636,6 +617,34 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: `
         function getLength<T>(array: readonly T[]) {
           return array.length;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        class ClassyArray<T> {
+          arr: T[];
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        class Joiner<T extends string | number> {
+          join(els: T[]) {
+            return els.map(el => '' + el).join(',');
+          }
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        class Joiner {
+          join<T extends string | number>(els: T[]) {
+            return els.map(el => '' + el).join(',');
+          }
         }
       `,
       errors: [{ messageId: 'sole', data: { name: 'T' } }],

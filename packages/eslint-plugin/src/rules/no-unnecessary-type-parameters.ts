@@ -172,6 +172,12 @@ function countTypeParameterUsage(
   return counts;
 }
 
+// Usually when we encounter a generic type like `Fn<T>`, we assume it uses T
+// in multiple places because it might be something like `{a: T, b: T}`. But for
+// a few special types like Arrays, we want Array<T> (or T[]) to only count as
+// a single use.
+const SINGULAR_TYPES = new Set(['Array', 'ReadonlyArray']);
+
 /**
  * Populates {@link foundIdentifierUsages} by the number of times each type parameter
  * appears in the given type by checking its uses through its type references.
@@ -252,16 +258,13 @@ function collectTypeParameterUsageCounts(
 
     // Tuple types like `[K, V]`
     // Generic type references like `Map<K, V>`
-    else if (tsutils.isTupleType(type) || tsutils.isTypeReference(type)) {
+    else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        visitType(
-          typeArgument,
-          !['Array', 'ReadonlyArray'].includes(
-            // it seems that type.symbol is not always defined
-            (type.symbol as ts.Symbol | undefined)?.escapedName ??
-              ('' as string),
-          ),
-        );
+        const assumeMultipleUses =
+          !tsutils.isTupleType(type.target) &&
+          !SINGULAR_TYPES.has(type.symbol.getName());
+
+        visitType(typeArgument, assumeMultipleUses);
       }
     }
 
