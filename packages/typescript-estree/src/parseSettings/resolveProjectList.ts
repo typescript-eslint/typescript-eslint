@@ -56,15 +56,15 @@ export function resolveProjectList(
 
   const projectFolderIgnoreList = (
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
-  )
-    .reduce<string[]>((acc, folder) => {
-      if (typeof folder === 'string') {
-        acc.push(folder);
-      }
-      return acc;
-    }, [])
-    // prefix with a ! for not match glob
-    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+  ).reduce<string[]>((acc, folder) => {
+    if (typeof folder === 'string') {
+      acc.push(
+        // prefix with a ! for not match glob
+        folder.startsWith('!') ? folder : `!${folder}`,
+      );
+    }
+    return acc;
+  }, []);
 
   const cacheKey = getHash({
     project: sanitizedProjects,
@@ -93,16 +93,20 @@ export function resolveProjectList(
   const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
   const globProjects = sanitizedProjects.filter(project => isGlob(project));
 
+  let globProjectPaths: string[] = [];
+
+  if (globProjects.length > 0) {
+    globProjectPaths = globProjects.flatMap(pattern =>
+      globSync(pattern, {
+        cwd: options.tsconfigRootDir,
+        ignore: projectFolderIgnoreList,
+      }),
+    );
+  }
+
   const uniqueCanonicalProjectPaths = new Map(
     nonGlobProjects
-      .concat(
-        globProjects.length === 0
-          ? []
-          : globSync([...globProjects, ...projectFolderIgnoreList], {
-              cwd: options.tsconfigRootDir,
-              dot: true,
-            }),
-      )
+      .concat(globProjectPaths)
       .map(project => [
         getCanonicalFileName(
           ensureAbsolutePath(project, options.tsconfigRootDir),
