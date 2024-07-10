@@ -44,6 +44,16 @@ const foo10 = () => [] as any[];
 const foo11 = (): string[] => [1, 2, 3] as any[];
                               ~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
 
+function foo12(): Promise<object> {
+  return Promise.resolve<any>({});
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`Promise<any>\` typed value.
+}
+
+async function foo13() {
+  return Promise.resolve({} as any);
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`Promise<any>\` typed value.
+}
+
 // generic position examples
 function assignability1(): Set<string> {
   return new Set<any>([1]);
@@ -67,6 +77,10 @@ function foo2() {
 
 const foo3 = () => [];
 const foo4 = () => ['a'];
+
+async function foo5() {
+  return Promise.resolve(1);
+}
 
 function assignability1(): Set<string> {
   return new Set<string>(['foo']);
