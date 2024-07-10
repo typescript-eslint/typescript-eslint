@@ -202,7 +202,7 @@ export default createRule<Options, MessageIds>({
         case 'catch-clause':
           return {
             pattern: options.caughtErrorsIgnorePattern?.toString(),
-            variableDescription: 'args',
+            variableDescription: 'caught errors',
           };
 
         case 'parameter':
