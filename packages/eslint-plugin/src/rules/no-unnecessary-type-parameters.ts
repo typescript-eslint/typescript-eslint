@@ -82,6 +82,12 @@ export default createRule({
   },
 });
 
+// Usually when we encounter a generic type like `Fn<T>`, we assume it uses T
+// in multiple places because it might be something like `{a: T, b: T}`. But for
+// a few special types like Arrays, we want Array<T> (or T[]) to only count as
+// a single use.
+const SINGULAR_TYPES = new Set(['Array', 'ReadonlyArray']);
+
 function isTypeParameterRepeatedInAST(
   node: TSESTree.TSTypeParameter,
   references: Reference[],
@@ -119,7 +125,7 @@ function isTypeParameterRepeatedInAST(
         !(
           grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
           grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
-          ['Array', 'ReadonlyArray'].includes(grandparent.parent.typeName.name)
+          SINGULAR_TYPES.has(grandparent.parent.typeName.name)
         )
       ) {
         return true;
@@ -171,12 +177,6 @@ function countTypeParameterUsage(
 
   return counts;
 }
-
-// Usually when we encounter a generic type like `Fn<T>`, we assume it uses T
-// in multiple places because it might be something like `{a: T, b: T}`. But for
-// a few special types like Arrays, we want Array<T> (or T[]) to only count as
-// a single use.
-const SINGULAR_TYPES = new Set(['Array', 'ReadonlyArray']);
 
 /**
  * Populates {@link foundIdentifierUsages} by the number of times each type parameter
