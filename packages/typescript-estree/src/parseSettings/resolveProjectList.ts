@@ -96,6 +96,9 @@ export function resolveProjectList(
   let globProjectPaths: string[] = [];
 
   if (globProjects.length > 0) {
+    // Although fast-glob supports multiple patterns, fast-glob returns arbitrary order of results
+    // to improve performance. To ensure the order is correct, we need to call fast-glob for each pattern
+    // separately and then concatenate the results in patterns' order.
     globProjectPaths = globProjects.flatMap(pattern =>
       globSync(pattern, {
         cwd: options.tsconfigRootDir,
