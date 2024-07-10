@@ -86,7 +86,7 @@ declare function createStateHistory<T>(): Set<T>;
 This is because the type parameter `T` relates multiple methods in the `Set<T>` together, making it used more than once.
 
 Therefore, this rule won't report on type parameters used as a type argument.
-That includes type arguments given to global types such as `Map` and `Set`, whereas `readonly T[]`, `T[]`, `ReadonlyArray` and `Array` are special cases that are reported on:
+That includes type arguments given to global types such as `Map` and `Set`, whereas `readonly T[]`, `T[]`, `ReadonlyArray`, `Array` and tuples are special cases that are reported on:
 
 ```ts
 declare function createStateHistory<T>(): Array<T>;
