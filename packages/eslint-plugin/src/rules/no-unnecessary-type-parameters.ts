@@ -257,6 +257,7 @@ function collectTypeParameterUsageCounts(
         visitType(
           typeArgument,
           !['Array', 'ReadonlyArray'].includes(
+            // it seems that type.symbol is not always defined
             (type.symbol as ts.Symbol | undefined)?.escapedName ??
               ('' as string),
           ),
