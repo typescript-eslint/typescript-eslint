@@ -115,7 +115,12 @@ function isTypeParameterRepeatedInAST(
       );
       if (
         grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-        grandparent.params.includes(reference.identifier.parent)
+        grandparent.params.includes(reference.identifier.parent) &&
+        !(
+          grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
+          grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
+          ['Array', 'ReadonlyArray'].includes(grandparent.parent.typeName.name)
+        )
       ) {
         return true;
       }
@@ -249,7 +254,12 @@ function collectTypeParameterUsageCounts(
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTupleType(type) || tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        visitType(typeArgument, true);
+        visitType(
+          typeArgument,
+          !['Array', 'ReadonlyArray'].includes(
+            type.symbol.escapedName.toString(),
+          ),
+        );
       }
     }
 
