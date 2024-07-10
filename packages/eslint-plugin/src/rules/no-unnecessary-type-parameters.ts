@@ -257,7 +257,8 @@ function collectTypeParameterUsageCounts(
         visitType(
           typeArgument,
           !['Array', 'ReadonlyArray'].includes(
-            type.symbol.escapedName.toString(),
+            (type.symbol as ts.Symbol | undefined)?.escapedName ??
+              ('' as string),
           ),
         );
       }

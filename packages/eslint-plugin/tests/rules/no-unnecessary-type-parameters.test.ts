@@ -146,11 +146,11 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return r;
       }
     `,
-    // `
-    //   function arrayOfPairs<T>() {
-    //     return [] as [T, T][];
-    //   }
-    // `,
+    `
+      function arrayOfPairs<T>() {
+        return [] as [T, T][];
+      }
+    `,
     `
       function isNonNull<T>(v: T): v is Exclude<T, null> {
         return v !== null;
@@ -202,12 +202,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         getResult: (t: unknown) => U | undefined,
       ): U | undefined;
     `,
-    // `
-    //   function findFirstResult<T, U>(
-    //     inputs: T[],
-    //     getResult: (t: T) => () => [U | undefined],
-    //   ): () => [U | undefined];
-    // `,
+    `
+      function findFirstResult<T, U>(
+        inputs: T[],
+        getResult: (t: T) => () => [U | undefined],
+      ): () => [U | undefined];
+    `,
     `
       function getData<T>(url: string): Promise<T | null> {
         return Promise.resolve(null);
@@ -243,7 +243,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeSets<K>(): [Set<K>][];',
     'declare function makeMap<K, V>(): Map<K, V>;',
     'declare function makeMap<K, V>(): [Map<K, V>];',
-    // 'declare function arrayOfPairs<T>(): [T, T][];',
+    'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function fetchJson<T>(url: string): Promise<T>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
@@ -300,48 +300,48 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return options;
       }
     `,
-    // `
-    //   import * as ts from 'typescript';
+    `
+      import * as ts from 'typescript';
 
-    //   declare function forEachReturnStatement<T>(
-    //     body: ts.Block,
-    //     visitor: (stmt: ts.ReturnStatement) => T,
-    //   ): T | undefined;
-    // `,
-    // `
-    //   import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+      declare function forEachReturnStatement<T>(
+        body: ts.Block,
+        visitor: (stmt: ts.ReturnStatement) => T,
+      ): T | undefined;
+    `,
+    `
+      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 
-    //   declare const isNodeOfType: <NodeType extends AST_NODE_TYPES>(
-    //     nodeType: NodeType,
-    //   ) => node is Extract<TSESTree.Node, { type: NodeType }>;
-    // `,
-    // `
-    //   import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+      declare const isNodeOfType: <NodeType extends AST_NODE_TYPES>(
+        nodeType: NodeType,
+      ) => node is Extract<TSESTree.Node, { type: NodeType }>;
+    `,
+    `
+      import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 
-    //   const isNodeOfType =
-    //     <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
-    //     (
-    //       node: TSESTree.Node | null,
-    //     ): node is Extract<TSESTree.Node, { type: NodeType }> =>
-    //       node?.type === nodeType;
-    // `,
-    // `
-    //   import type { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/types';
+      const isNodeOfType =
+        <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
+        (
+          node: TSESTree.Node | null,
+        ): node is Extract<TSESTree.Node, { type: NodeType }> =>
+          node?.type === nodeType;
+    `,
+    `
+      import type { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/types';
 
-    //   export const isNotTokenOfTypeWithConditions =
-    //     <
-    //       TokenType extends AST_TOKEN_TYPES,
-    //       ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
-    //       Conditions extends Partial<ExtractedToken>,
-    //     >(
-    //       tokenType: TokenType,
-    //       conditions: Conditions,
-    //     ): ((
-    //       token: TSESTree.Token | null | undefined,
-    //     ) => token is Exclude<TSESTree.Token, Conditions & ExtractedToken>) =>
-    //     (token): token is Exclude<TSESTree.Token, Conditions & ExtractedToken> =>
-    //       tokenType in conditions;
-    // `,
+      export const isNotTokenOfTypeWithConditions =
+        <
+          TokenType extends AST_TOKEN_TYPES,
+          ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
+          Conditions extends Partial<ExtractedToken>,
+        >(
+          tokenType: TokenType,
+          conditions: Conditions,
+        ): ((
+          token: TSESTree.Token | null | undefined,
+        ) => token is Exclude<TSESTree.Token, Conditions & ExtractedToken>) =>
+        (token): token is Exclude<TSESTree.Token, Conditions & ExtractedToken> =>
+          tokenType in conditions;
+    `,
   ],
 
   invalid: [
