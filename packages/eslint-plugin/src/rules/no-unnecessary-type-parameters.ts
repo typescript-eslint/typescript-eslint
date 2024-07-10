@@ -260,11 +260,11 @@ function collectTypeParameterUsageCounts(
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        const assumeMultipleUses =
+        const thisAssumeMultipleUses =
           !tsutils.isTupleType(type.target) &&
           !SINGULAR_TYPES.has(type.symbol.getName());
 
-        visitType(typeArgument, assumeMultipleUses);
+        visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
       }
     }
 
