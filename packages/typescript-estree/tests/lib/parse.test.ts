@@ -686,8 +686,11 @@ describe('parseAndGenerateServices', () => {
     describe('cacheLifetime', () => {
       describe('glob', () => {
         const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
+        // fast-glob returns arbitrary order of results to improve performance.
+        // `resolveProjectList()` calls fast-glob for each pattern to ensure the
+        // order is correct.
+        // Thus the expected call time of spy is the number of patterns.
         const expectFastGlobCalls = project.length;
-
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
