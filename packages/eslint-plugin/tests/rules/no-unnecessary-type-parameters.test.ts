@@ -608,5 +608,21 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
     },
+    {
+      code: `
+        function getLength<T>(array: Array<T>) {
+          return array.length;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        function getLength<T>(array: ReadonlyArray<T>) {
+          return array.length;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
   ],
 });
