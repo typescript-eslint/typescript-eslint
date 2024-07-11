@@ -66,10 +66,8 @@ export default createRule<Options, MessageId>({
       floatingFixAwait: 'Add await operator.',
       floatingVoid: messageBaseVoid,
       floatingFixVoid: 'Add void operator to ignore.',
-      floatingUselessRejectionHandler:
-        messageBase + ' ' + messageRejectionHandler,
-      floatingUselessRejectionHandlerVoid:
-        messageBaseVoid + ' ' + messageRejectionHandler,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
       floatingPromiseArray: messagePromiseArray,
       floatingPromiseArrayVoid: messagePromiseArrayVoid,
     },

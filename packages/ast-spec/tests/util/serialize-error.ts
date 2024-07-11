@@ -13,16 +13,12 @@ export function serializeError(error: unknown, contents: string): unknown {
     location: { start, end },
   } = error;
 
-  return (
-    name +
-    '\n' +
-    codeFrameColumns(
-      contents,
-      {
-        start: { line: start.line, column: start.column + 1 },
-        end: { line: end.line, column: end.column + 1 },
-      },
-      { highlightCode: false, message },
-    )
-  );
+  return `${name}\n${codeFrameColumns(
+    contents,
+    {
+      start: { line: start.line, column: start.column + 1 },
+      end: { line: end.line, column: end.column + 1 },
+    },
+    { highlightCode: false, message },
+  )}`;
 }

@@ -103,7 +103,7 @@ export default createRule<Options, MessageIds>({
                   fixer.remove(typeArguments),
                   fixer.insertTextAfter(
                     getIDToAttachAnnotation(),
-                    ': ' + typeAnnotation,
+                    `: ${typeAnnotation}`,
                   ),
                 ];
               },

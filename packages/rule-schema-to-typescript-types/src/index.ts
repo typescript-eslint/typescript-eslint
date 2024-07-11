@@ -50,7 +50,7 @@ export async function compile(
     return await prettier.format(unformattedCode, await prettierConfig);
   } catch (e) {
     if (e instanceof Error) {
-      e.message = e.message + `\n\nUnformatted Code:\n${unformattedCode}`;
+      e.message = `${e.message}\n\nUnformatted Code:\n${unformattedCode}`;
     }
     throw e;
   }

@@ -324,8 +324,8 @@ export default createRule({
     ): Readonly<Record<string, unknown>> | undefined {
       if (receiverType) {
         return {
-          sender: '`' + checker.typeToString(senderType) + '`',
-          receiver: '`' + checker.typeToString(receiverType) + '`',
+          sender: `\`${checker.typeToString(senderType)}\``,
+          receiver: `\`${checker.typeToString(receiverType)}\``,
         };
       }
       return {

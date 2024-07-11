@@ -85,7 +85,7 @@ export const useSandboxServices = (
         if (worker.getLibFiles) {
           const libs = await worker.getLibFiles();
           for (const [key, value] of Object.entries(libs)) {
-            system.writeFile('/' + key, value);
+            system.writeFile(`/${key}`, value);
           }
         }
 
