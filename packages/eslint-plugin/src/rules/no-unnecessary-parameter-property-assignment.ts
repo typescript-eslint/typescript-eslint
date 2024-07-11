@@ -13,7 +13,6 @@ export default createRule({
       description:
         'Disallow unnecessary assignment of constructor property parameter',
     },
-    fixable: 'code',
     messages: {
       unnecessaryAssign:
         'This assignment is unnecessary since it is already assigned by a parameter property.',
