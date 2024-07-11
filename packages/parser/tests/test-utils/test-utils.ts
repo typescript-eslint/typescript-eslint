@@ -40,7 +40,7 @@ export function createSnapshotTestBlock(
   code: string,
   config: ParserOptions = {},
 ): () => void {
-  config = Object.assign({}, defaultConfig, config);
+  config = { ...defaultConfig, ...config };
 
   /**
    * @returns the AST object
@@ -72,7 +72,7 @@ export function createSnapshotTestBlock(
  * @param config The configuration object for the parser
  */
 export function testServices(code: string, config: ParserOptions = {}): void {
-  config = Object.assign({}, defaultConfig, config);
+  config = { ...defaultConfig, ...config };
 
   const services = parser.parseForESLint(code, config).services;
   expect(services).toBeDefined();
