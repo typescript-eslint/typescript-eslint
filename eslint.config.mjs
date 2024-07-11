@@ -206,6 +206,7 @@ export default tseslint.config(
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
       ],
+      'no-unreachable-loop': 'error',
       'one-var': ['error', 'never'],
 
       //
