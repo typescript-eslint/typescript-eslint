@@ -10,7 +10,7 @@ const defaultConfig = {
   tokens: true,
   comment: true,
   errorOnUnknownASTType: true,
-  sourceType: 'module',
+  sourceType: 'module' as const,
 };
 
 /**
