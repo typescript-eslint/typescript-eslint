@@ -135,6 +135,7 @@ export default tseslint.config(
         { allowConstantLoopConditions: true },
       ],
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
+      '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/prefer-literal-enum-member': [
         'error',
