@@ -151,29 +151,27 @@ export default createRule<Options, MessageIds>({
             messageId: 'unexpectedWhitespace',
           });
         }
-      } else {
-        if (!hasWhitespace) {
-          context.report({
-            node,
-            loc: lastCalleeToken.loc.start,
-            messageId: 'missing',
-            fix(fixer) {
-              return fixer.insertTextBefore(openingParenToken, ' ');
-            },
-          });
-        } else if (!config!.allowNewlines && hasNewline) {
-          context.report({
-            node,
-            loc: lastCalleeToken.loc.start,
-            messageId: 'unexpectedNewline',
-            fix(fixer) {
-              return fixer.replaceTextRange(
-                [lastCalleeToken.range[1], openingParenToken.range[0]],
-                ' ',
-              );
-            },
-          });
-        }
+      } else if (!hasWhitespace) {
+        context.report({
+          node,
+          loc: lastCalleeToken.loc.start,
+          messageId: 'missing',
+          fix(fixer) {
+            return fixer.insertTextBefore(openingParenToken, ' ');
+          },
+        });
+      } else if (!config!.allowNewlines && hasNewline) {
+        context.report({
+          node,
+          loc: lastCalleeToken.loc.start,
+          messageId: 'unexpectedNewline',
+          fix(fixer) {
+            return fixer.replaceTextRange(
+              [lastCalleeToken.range[1], openingParenToken.range[0]],
+              ' ',
+            );
+          },
+        });
       }
     }
 

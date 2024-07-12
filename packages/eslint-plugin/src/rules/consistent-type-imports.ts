@@ -177,25 +177,23 @@ export default createRule<Options, MessageIds>({
             // definitely import type { TypeX }
             sourceImports.typeOnlyNamedImport = node;
           }
-        } else {
-          if (
-            !sourceImports.valueOnlyNamedImport &&
-            node.specifiers.length &&
-            node.specifiers.every(
-              specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
-            )
-          ) {
-            sourceImports.valueOnlyNamedImport = node;
-            sourceImports.valueImport = node;
-          } else if (
-            !sourceImports.valueImport &&
-            node.specifiers.some(
-              specifier =>
-                specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
-            )
-          ) {
-            sourceImports.valueImport = node;
-          }
+        } else if (
+          !sourceImports.valueOnlyNamedImport &&
+          node.specifiers.length &&
+          node.specifiers.every(
+            specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
+          )
+        ) {
+          sourceImports.valueOnlyNamedImport = node;
+          sourceImports.valueImport = node;
+        } else if (
+          !sourceImports.valueImport &&
+          node.specifiers.some(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
+          )
+        ) {
+          sourceImports.valueImport = node;
         }
 
         const typeSpecifiers: TSESTree.ImportClause[] = [];
@@ -730,30 +728,25 @@ export default createRule<Options, MessageIds>({
           } else {
             afterFixes.push(insertTypeNamedSpecifiers);
           }
+        }
+        // The import is both default and named.  Insert named on new line because can't mix default type import and named type imports
+        else if (fixStyle === 'inline-type-imports') {
+          yield fixer.insertTextBefore(
+            node,
+            `import {${typeNamedSpecifiers
+              .map(spec => {
+                const insertText = context.sourceCode.text.slice(...spec.range);
+                return `type ${insertText}`;
+              })
+              .join(', ')}} from ${context.sourceCode.getText(node.source)};\n`,
+          );
         } else {
-          // The import is both default and named.  Insert named on new line because can't mix default type import and named type imports
-          if (fixStyle === 'inline-type-imports') {
-            yield fixer.insertTextBefore(
-              node,
-              `import {${typeNamedSpecifiers
-                .map(spec => {
-                  const insertText = context.sourceCode.text.slice(
-                    ...spec.range,
-                  );
-                  return `type ${insertText}`;
-                })
-                .join(
-                  ', ',
-                )}} from ${context.sourceCode.getText(node.source)};\n`,
-            );
-          } else {
-            yield fixer.insertTextBefore(
-              node,
-              `import type {${
-                fixesNamedSpecifiers.typeNamedSpecifiersText
-              }} from ${context.sourceCode.getText(node.source)};\n`,
-            );
-          }
+          yield fixer.insertTextBefore(
+            node,
+            `import type {${
+              fixesNamedSpecifiers.typeNamedSpecifiersText
+            }} from ${context.sourceCode.getText(node.source)};\n`,
+          );
         }
       }
 
