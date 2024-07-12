@@ -87,7 +87,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
         const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
         output.push(
           squiggleWithIndent +
-            error.message.split('\n').join(`\n${errorMessageIndent}`),
+            error.message.replaceAll('\n', `\n${errorMessageIndent}`),
         );
       } else if (i === endLine) {
         output.push('~'.repeat(endColumn));
