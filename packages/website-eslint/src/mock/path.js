@@ -82,9 +82,7 @@ export function resolve(...args) {
 
   // Normalize the path
   resolvedPath = normalizeArray(
-    filter(resolvedPath.split('/'), function (p) {
-      return !!p;
-    }),
+    filter(resolvedPath.split('/'), p => !!p),
     !resolvedAbsolute,
   ).join('/');
 
@@ -99,9 +97,7 @@ export function normalize(path) {
 
   // Normalize the path
   path = normalizeArray(
-    filter(path.split('/'), function (p) {
-      return !!p;
-    }),
+    filter(path.split('/'), p => !!p),
     !isPathAbsolute,
   ).join('/');
 
@@ -123,7 +119,7 @@ export function isAbsolute(path) {
 // posix version
 export function join(...paths) {
   return normalize(
-    filter(paths, function (p) {
+    filter(paths, p => {
       if (typeof p !== 'string') {
         throw new TypeError('Arguments to path.join must be strings');
       }
