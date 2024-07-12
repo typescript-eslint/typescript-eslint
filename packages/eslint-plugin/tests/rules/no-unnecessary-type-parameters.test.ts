@@ -211,6 +211,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     `,
     'declare function get(): void;',
     'declare function get<T>(param: T[]): T;',
+    'declare function factory<T>(): T[];',
     'declare function box<T>(val: T): { val: T };',
     'declare function identity<T>(param: T): T;',
     'declare function compare<T>(param1: T, param2: T): boolean;',

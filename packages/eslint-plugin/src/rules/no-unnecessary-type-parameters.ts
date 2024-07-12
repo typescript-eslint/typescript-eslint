@@ -210,6 +210,7 @@ function collectTypeParameterUsageCounts(
   function visitType(
     type: ts.Type | undefined,
     assumeMultipleUses: boolean,
+    isReturnType = false,
   ): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
@@ -262,7 +263,7 @@ function collectTypeParameterUsageCounts(
       for (const typeArgument of type.typeArguments ?? []) {
         const thisAssumeMultipleUses =
           !tsutils.isTupleType(type.target) &&
-          !SINGULAR_TYPES.has(type.symbol.getName());
+          (!SINGULAR_TYPES.has(type.symbol.getName()) || isReturnType);
 
         visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
       }
@@ -357,6 +358,7 @@ function collectTypeParameterUsageCounts(
       checker.getTypePredicateOfSignature(signature)?.type ??
         signature.getReturnType(),
       false,
+      true,
     );
   }
 
