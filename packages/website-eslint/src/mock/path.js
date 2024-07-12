@@ -143,7 +143,7 @@ export function relative(from, to) {
       }
     }
 
-    var end = arr.length - 1;
+    let end = arr.length - 1;
     for (; end >= 0; end--) {
       if (arr[end] !== '') {
         break;
