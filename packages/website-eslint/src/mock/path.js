@@ -92,8 +92,8 @@ export function resolve() {
 // path.normalize(path)
 // posix version
 export function normalize(path) {
-  let isPathAbsolute = isAbsolute(path);
-  let trailingSlash = path.endsWith('/');
+  const isPathAbsolute = isAbsolute(path);
+  const trailingSlash = path.endsWith('/');
 
   // Normalize the path
   path = normalizeArray(
