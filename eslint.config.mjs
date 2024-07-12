@@ -208,6 +208,7 @@ export default tseslint.config(
       ],
       'one-var': ['error', 'never'],
       'operator-assignment': 'error',
+      'prefer-arrow-callback': 'error',
 
       //
       // eslint-plugin-eslint-comment
