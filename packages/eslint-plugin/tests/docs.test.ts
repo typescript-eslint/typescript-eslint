@@ -83,7 +83,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
             ? Math.max(1, endColumn - startColumn)
             : line.length - startColumn,
         );
-        const squiggleWithIndent = `${' '.repeat(startColumn) + squiggle} `;
+        const squiggleWithIndent = `${' '.repeat(startColumn)}${squiggle} `;
         const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
         output.push(
           squiggleWithIndent +
