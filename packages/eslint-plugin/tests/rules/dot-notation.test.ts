@@ -239,8 +239,9 @@ x.pub_prop = 123;
       errors: [{ messageId: 'useDot', data: { key: q('SHOUT_CASE') } }],
     },
     {
-      code: 'a\n' + "  ['SHOUT_CASE'];",
-      output: 'a\n' + '  .SHOUT_CASE;',
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: "a\n  ['SHOUT_CASE'];",
+      output: 'a\n  .SHOUT_CASE;',
       errors: [
         {
           messageId: 'useDot',
@@ -279,8 +280,9 @@ x.pub_prop = 123;
       ],
     },
     {
-      code: 'foo\n' + '  .while;',
-      output: 'foo\n' + '  ["while"];',
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: 'foo\n  .while;',
+      output: 'foo\n  ["while"];',
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'while' } }],
     },
