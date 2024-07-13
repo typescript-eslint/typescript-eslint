@@ -311,6 +311,19 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
+      code: 'type ErrorTypes = NotKnown | 0;',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'union',
+            typeName: 'NotKnown',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
       code: 'type T = number | 0;',
       errors: [
         {
@@ -648,6 +661,19 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           data: {
             container: 'intersection',
             typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown & 0;',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'intersection',
+            typeName: 'NotKnown',
           },
           messageId: 'overrides',
         },

@@ -102,6 +102,10 @@ function describeLiteralType(type: ts.Type): string {
     return type.value.toString();
   }
 
+  if (tsutils.isIntrinsicErrorType(type) && type.aliasSymbol) {
+    return type.aliasSymbol.escapedName.toString();
+  }
+
   if (isTypeAnyType(type)) {
     return 'any';
   }
