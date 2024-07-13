@@ -213,6 +213,7 @@ export default tseslint.config(
         { commentPattern: '.*intentional fallthrough.*' },
       ],
       'one-var': ['error', 'never'],
+      'prefer-arrow-callback': 'error',
       'prefer-object-has-own': 'error',
 
       //
