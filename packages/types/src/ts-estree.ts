@@ -39,7 +39,7 @@ declare module './generated/ast-spec' {
   }
 
   interface ImportAttribute {
-    parent: TSESTree.ImportDeclaration | ImportExpression;
+    parent: TSESTree.ImportDeclaration | TSESTree.ImportExpression;
   }
 
   interface ImportDefaultSpecifier {
