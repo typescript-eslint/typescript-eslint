@@ -2235,6 +2235,32 @@ assert(nullableString);
           messageId: 'conditionErrorNullableString',
           line: 4,
           column: 8,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(Boolean(nullableString));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2250,6 +2276,32 @@ assert(foo, nullableString);
           messageId: 'conditionErrorNullableString',
           line: 4,
           column: 13,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, Boolean(nullableString));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2266,6 +2318,35 @@ assert(foo, nullableString);
           messageId: 'conditionErrorNullableString',
           line: 5,
           column: 13,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, Boolean(nullableString));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2281,6 +2362,32 @@ assert(foo, nullableString);
           messageId: 'conditionErrorNullableString',
           line: 4,
           column: 13,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, Boolean(nullableString));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2300,6 +2407,50 @@ someAssert(maybeString);
       errors: [
         {
           messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(maybeString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(maybeString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(Boolean(maybeString));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2330,6 +2481,74 @@ assert(3 as any, nullableString);
           messageId: 'conditionErrorNullableString',
           line: 18,
           column: 18,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, Boolean(nullableString));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2361,6 +2580,77 @@ assert(3 as any, nullableString, 'more', 'args', 'afterwards');
           messageId: 'conditionErrorNullableString',
           line: 19,
           column: 18,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString != null, 'more', 'args', 'afterwards');
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString ?? "", 'more', 'args', 'afterwards');
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, Boolean(nullableString), 'more', 'args', 'afterwards');
+      `,
+            },
+          ],
         },
       ],
     },
