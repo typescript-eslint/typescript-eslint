@@ -248,18 +248,16 @@ We found that this is a pretty common operation when writing ESLint configs whic
 For example in codebases with type-aware linting a config object like this is a very common way to disable TS-specific linting setups on JS files:
 
 ```js
-export default tseslint.config([
-  {
-    files: ['**/*.js'],
-    extends: [tseslint.configs.disableTypeChecked],
-    rules: {
-      // turn off other type-aware rules
-      'deprecation/deprecation': 'off',
-      '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
+export default tseslint.config({
+  files: ['**/*.js'],
+  extends: [tseslint.configs.disableTypeChecked],
+  rules: {
+    // turn off other type-aware rules
+    'deprecation/deprecation': 'off',
+    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
 
-      // turn off rules that don't apply to JS code
-      '@typescript-eslint/explicit-function-return-type': 'off',
-    },
+    // turn off rules that don't apply to JS code
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
-]);
+});
 ```

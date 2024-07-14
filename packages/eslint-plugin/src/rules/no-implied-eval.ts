@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isBuiltinSymbolLike,
   isReferenceToGlobalFunction,
 } from '../util';
 
@@ -79,15 +80,8 @@ export default createRule({
         return true;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (symbol && symbol.escapedName === FUNCTION_CONSTRUCTOR) {
-        const declarations = symbol.getDeclarations() ?? [];
-        for (const declaration of declarations) {
-          const sourceFile = declaration.getSourceFile();
-          if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
-            return true;
-          }
-        }
+      if (isBuiltinSymbolLike(services.program, type, FUNCTION_CONSTRUCTOR)) {
+        return true;
       }
 
       const signatures = checker.getSignaturesOfType(
@@ -135,13 +129,11 @@ export default createRule({
         const type = services.getTypeAtLocation(node.callee);
         const symbol = type.getSymbol();
         if (symbol) {
-          const declarations = symbol.getDeclarations() ?? [];
-          for (const declaration of declarations) {
-            const sourceFile = declaration.getSourceFile();
-            if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
-              context.report({ node, messageId: 'noFunctionConstructor' });
-              return;
-            }
+          if (
+            isBuiltinSymbolLike(services.program, type, 'FunctionConstructor')
+          ) {
+            context.report({ node, messageId: 'noFunctionConstructor' });
+            return;
           }
         } else {
           context.report({ node, messageId: 'noFunctionConstructor' });

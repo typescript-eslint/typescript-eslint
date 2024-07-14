@@ -950,7 +950,20 @@ x || y;
           ignorePrimitives: { number: true, boolean: true, bigint: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: string | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -963,7 +976,20 @@ x || y;
           ignorePrimitives: { string: true, boolean: true, bigint: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: number | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -976,7 +1002,20 @@ x || y;
           ignorePrimitives: { string: true, number: true, bigint: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: boolean | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -989,7 +1028,20 @@ x || y;
           ignorePrimitives: { string: true, number: true, boolean: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: bigint | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // falsy
     {
@@ -1008,7 +1060,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: '' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1026,7 +1091,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: \`\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1044,7 +1122,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1062,7 +1153,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1080,7 +1184,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // truthy
     {
@@ -1099,7 +1216,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 'a' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1117,7 +1247,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: \`hello\${'string'}\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1135,7 +1278,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1153,7 +1309,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1171,7 +1340,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: true | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // Unions of same primitive
     {
@@ -1190,7 +1372,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1208,7 +1403,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1226,7 +1434,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1244,7 +1465,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1262,7 +1496,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1280,7 +1527,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1298,7 +1558,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: true | false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // Mixed unions
     {
@@ -1317,7 +1590,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1335,7 +1621,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: true | false | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1346,6 +1645,15 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: null;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1358,6 +1666,15 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+const x = undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1369,6 +1686,14 @@ null || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+null ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1380,6 +1705,14 @@ undefined || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+undefined ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1397,6 +1730,20 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1414,6 +1761,20 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1431,6 +1792,20 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1448,6 +1823,20 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },

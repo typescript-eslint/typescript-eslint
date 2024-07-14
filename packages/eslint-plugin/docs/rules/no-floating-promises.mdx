@@ -84,6 +84,55 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 
 ## Options
 
+### `checkThenables`
+
+A ["Thenable"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) value is an object which has a `then` method, such as a `Promise`.
+Other Thenables include TypeScript's built-in `PromiseLike` interface and any custom object that happens to have a `.then()`.
+
+The `checkThenables` option triggers `no-floating-promises` to also consider all values that satisfy the Thenable shape (a `.then()` method that takes two callback parameters), not just Promises.
+This can be useful if your code works with older `Promise` polyfills instead of the native `Promise` class.
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{"checkThenables": true}'
+declare function createPromiseLike(): PromiseLike<string>;
+
+createPromiseLike();
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{"checkThenables": true}'
+declare function createPromiseLike(): PromiseLike<string>;
+
+await createPromiseLike();
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+await createMyThenable();
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+This option is enabled by default in v7 but will be turned off by default in v8.
+:::
+
 ### `ignoreVoid`
 
 This option, which is `true` by default, allows you to stop the rule reporting promises consumed with void operator.

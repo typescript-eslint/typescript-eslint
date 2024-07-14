@@ -209,6 +209,7 @@ declare class TokenStore {
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class SourceCodeBase extends TokenStore {
   /**
    * Represents parsed source code.

@@ -546,6 +546,18 @@ let value: unknown;
           endColumn: 15,
           endLine: 1,
           messageId: 'noEmptyObject',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type Base = object | null;',
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type Base = unknown | null;',
+            },
+          ],
         },
       ],
       options: [{ allowWithName: 'Base' }],
@@ -559,6 +571,18 @@ let value: unknown;
           endColumn: 15,
           endLine: 1,
           messageId: 'noEmptyObject',
+          suggestions: [
+            {
+              data: { replacement: 'object' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type Base = object;',
+            },
+            {
+              data: { replacement: 'unknown' },
+              messageId: 'replaceEmptyObjectType',
+              output: 'type Base = unknown;',
+            },
+          ],
         },
       ],
       options: [{ allowWithName: 'Mismatch' }],

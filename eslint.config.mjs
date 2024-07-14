@@ -2,6 +2,7 @@
 
 import url from 'node:url';
 
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
@@ -29,15 +30,20 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      ['deprecation']: deprecationPlugin,
+      // https://github.com/gund/eslint-plugin-deprecation/issues/78
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
+      ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      ['import']: importPlugin,
+      // https://github.com/import-js/eslint-plugin-import/issues/2948
+      ['import']: fixupPluginRules(importPlugin),
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
-      ['react-hooks']: reactHooksPlugin,
-      ['react']: reactPlugin,
+      // https://github.com/facebook/react/issues/28313
+      ['react-hooks']: fixupPluginRules(reactHooksPlugin),
+      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
+      ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
     },
@@ -207,6 +213,7 @@ export default tseslint.config(
         { commentPattern: '.*intentional fallthrough.*' },
       ],
       'one-var': ['error', 'never'],
+      'prefer-arrow-callback': 'error',
       'prefer-object-has-own': 'error',
 
       //
@@ -512,8 +519,8 @@ export default tseslint.config(
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     extends: [
       ...compat.config(jsxA11yPlugin.configs.recommended),
-      ...compat.config(reactPlugin.configs.recommended),
-      ...compat.config(reactHooksPlugin.configs.recommended),
+      ...fixupConfigRules(compat.config(reactPlugin.configs.recommended)),
+      ...fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',

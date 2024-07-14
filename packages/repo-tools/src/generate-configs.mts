@@ -391,6 +391,7 @@ async function main(): Promise<void> {
       parserOptions: {
         project: false,
         program: null,
+        projectService: false,
       },
       rules: allRuleEntries.reduce(
         (config, entry) =>

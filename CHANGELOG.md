@@ -1,3 +1,58 @@
+## 7.16.0 (2024-07-08)
+
+
+### 🚀 Features
+
+- **ast-spec:** add parent property to AccessorProperty node types ([#9487](https://github.com/typescript-eslint/typescript-eslint/pull/9487))
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] add new rule ([#8903](https://github.com/typescript-eslint/typescript-eslint/pull/8903))
+- **eslint-plugin:** add support for nested namespaces to unsafe-member-access ([#9478](https://github.com/typescript-eslint/typescript-eslint/pull/9478))
+- **eslint-plugin:** [no-floating-promises] add checkThenables option ([#9263](https://github.com/typescript-eslint/typescript-eslint/pull/9263))
+- **rule-tester:** stricter rule test validations ([#9086](https://github.com/typescript-eslint/typescript-eslint/pull/9086))
+
+### 🩹 Fixes
+
+- **deps:** update dependency @eslint-community/regexpp to v4.11.0 ([#9497](https://github.com/typescript-eslint/typescript-eslint/pull/9497))
+- **eslint-plugin:** [no-floating-promises] add `suggestions` to tests from #9263 `checkThenables` ([#9515](https://github.com/typescript-eslint/typescript-eslint/pull/9515), [#9263](https://github.com/typescript-eslint/typescript-eslint/issues/9263))
+- **eslint-plugin:** [restrict-template-expressions] don't report tuples if `allowArray` option is enabled ([#9492](https://github.com/typescript-eslint/typescript-eslint/pull/9492))
+- **utils:** context.parserPath may be undefined ([#9486](https://github.com/typescript-eslint/typescript-eslint/pull/9486))
+- **website:** react key error on internal pages of website ([#9506](https://github.com/typescript-eslint/typescript-eslint/pull/9506))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Josh Goldberg ✨
+- Juan Sanchez @JSanchezIO
+- Vinccool96
+- YeonJuan @yeonjuan
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.15.0 (2024-07-01)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [array-type] detect `Readonly<string[]>` case ([#8752](https://github.com/typescript-eslint/typescript-eslint/pull/8752))
+- **eslint-plugin:** back-port new rules around empty object types from v8 ([#9443](https://github.com/typescript-eslint/typescript-eslint/pull/9443))
+
+### 🩹 Fixes
+
+- disable `EXPERIMENTAL_useProjectService` in `disabled-type-checked` shared config ([#9459](https://github.com/typescript-eslint/typescript-eslint/pull/9459))
+- **eslint-plugin:** [no-unsafe-return] differentiate a types-error any from a true any ([#9254](https://github.com/typescript-eslint/typescript-eslint/pull/9254))
+- **eslint-plugin:** [no-unsafe-call] differentiate a types-error any from a true any ([#9304](https://github.com/typescript-eslint/typescript-eslint/pull/9304))
+- **utils:** clean outdated `RuleTester` export ([#9322](https://github.com/typescript-eslint/typescript-eslint/pull/9322))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Kim Sang Du @developer-bandi
+- rgehbt @Gehbt
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.14.1 (2024-06-24)
 
 
