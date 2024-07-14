@@ -7,11 +7,8 @@ import {
   getOperatorPrecedence,
   getOperatorPrecedenceForNode,
   getParserServices,
-  isClosingParenToken,
-  isOpeningParenToken,
+  getTextWithParentheses,
   isParenthesized,
-  nullThrows,
-  NullThrowsReasons,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
@@ -104,28 +101,6 @@ export default createRule<Options, MessageIds>({
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'const'
       );
-    }
-
-    function getTextWithParentheses(node: TSESTree.Node): string {
-      // Capture parentheses before and after the node
-      let beforeCount = 0;
-      let afterCount = 0;
-
-      if (isParenthesized(node, context.sourceCode)) {
-        const bodyOpeningParen = nullThrows(
-          context.sourceCode.getTokenBefore(node, isOpeningParenToken),
-          NullThrowsReasons.MissingToken('(', 'node'),
-        );
-        const bodyClosingParen = nullThrows(
-          context.sourceCode.getTokenAfter(node, isClosingParenToken),
-          NullThrowsReasons.MissingToken(')', 'node'),
-        );
-
-        beforeCount = node.range[0] - bodyOpeningParen.range[0];
-        afterCount = bodyClosingParen.range[1] - node.range[1];
-      }
-
-      return context.sourceCode.getText(node, beforeCount, afterCount);
     }
 
     function reportIncorrectAssertionType(
@@ -253,7 +228,10 @@ export default createRule<Options, MessageIds>({
                 parent.id,
                 `: ${context.sourceCode.getText(node.typeAnnotation)}`,
               ),
-              fixer.replaceText(node, getTextWithParentheses(node.expression)),
+              fixer.replaceText(
+                node,
+                getTextWithParentheses(context.sourceCode, node.expression),
+              ),
             ],
           });
         }
@@ -261,7 +239,10 @@ export default createRule<Options, MessageIds>({
           messageId: 'replaceObjectTypeAssertionWithSatisfies',
           data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
-            fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            fixer.replaceText(
+              node,
+              getTextWithParentheses(context.sourceCode, node.expression),
+            ),
             fixer.insertTextAfter(
               node,
               ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
