@@ -83,7 +83,8 @@ type MessageIds =
   | 'errorStringArraySimple'
   | 'errorStringGeneric'
   | 'errorStringGenericSimple'
-  | 'errorStringArrayReadonly';
+  | 'errorStringArrayReadonly'
+  | 'errorStringArraySimpleReadonly';
 
 export default createRule<Options, MessageIds>({
   name: 'array-type',
@@ -106,6 +107,8 @@ export default createRule<Options, MessageIds>({
         "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
       errorStringGenericSimple:
         "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
+      errorStringArraySimpleReadonly:
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}' instead.",
     },
     schema: [
       {
@@ -233,7 +236,9 @@ export default createRule<Options, MessageIds>({
             ? isReadonlyWithGenericArrayType
               ? 'errorStringArrayReadonly'
               : 'errorStringArray'
-            : 'errorStringArraySimple';
+            : isReadonlyArrayType && node.typeName.name !== 'ReadonlyArray'
+              ? 'errorStringArraySimpleReadonly'
+              : 'errorStringArraySimple';
 
         if (!typeParams || typeParams.length === 0) {
           // Create an 'any' array
@@ -271,18 +276,13 @@ export default createRule<Options, MessageIds>({
           typeParens ? '(' : ''
         }`;
         const end = `${typeParens ? ')' : ''}${isReadonlyWithGenericArrayType ? '' : `[]`}${parentParens ? ')' : ''}`;
-
-        const isReadonlyAndSimpleArrayType =
-          currentOption === 'array-simple' && node.typeName.name === 'Readonly'; // e.g. Readonly<string[]>
         context.report({
           node,
           messageId,
           data: {
             className: isReadonlyArrayType ? node.typeName.name : 'Array',
             readonlyPrefix,
-            type: isReadonlyAndSimpleArrayType
-              ? getMessageType(type).slice(0, -2)
-              : getMessageType(type),
+            type: getMessageType(type),
           },
           fix(fixer) {
             return [
