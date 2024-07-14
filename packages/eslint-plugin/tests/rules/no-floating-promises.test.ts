@@ -770,15 +770,11 @@ createSafePromise();
         },
       ],
     },
-    {
-      code: `
-declare const createPromise: () => PromiseLike<number>;
-createPromise();
-      `,
-      options: [{ checkThenables: false }],
-    },
-    {
-      code: `
+    `
+declare const createPromiseLike: () => PromiseLike<number>;
+createPromiseLike();
+    `,
+    `
 interface MyThenable {
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 }
@@ -786,9 +782,7 @@ interface MyThenable {
 declare function createMyThenable(): MyThenable;
 
 createMyThenable();
-      `,
-      options: [{ checkThenables: false }],
-    },
+    `,
   ],
 
   invalid: [
@@ -2104,6 +2098,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ checkThenables: true }],
     },
     {
       code: `
@@ -3586,6 +3581,7 @@ promise;
       options: [
         {
           allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+          checkThenables: true,
         },
       ],
       errors: [
@@ -3962,7 +3958,6 @@ void createPromise();
           ],
         },
       ],
-      options: [{ checkThenables: false }],
     },
     {
       code: `
@@ -3986,7 +3981,6 @@ void createMyPromise();
           ],
         },
       ],
-      options: [{ checkThenables: false }],
     },
     {
       code: `
@@ -4014,7 +4008,7 @@ void createMyPromise();
           ],
         },
       ],
-      options: [{ checkThenables: false }],
+      options: [{ checkThenables: true }],
     },
   ],
 });

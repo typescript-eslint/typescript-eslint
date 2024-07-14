@@ -104,7 +104,7 @@ export default createRule<Options, MessageId>({
     {
       allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
       allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
-      checkThenables: true,
+      checkThenables: false,
       ignoreIIFE: false,
       ignoreVoid: true,
     },
