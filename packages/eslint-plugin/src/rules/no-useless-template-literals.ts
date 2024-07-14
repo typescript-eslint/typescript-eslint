@@ -5,9 +5,9 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getMovedNodeCode,
   getParserServices,
   getStaticStringValue,
-  getWrappingCode,
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
@@ -94,11 +94,10 @@ export default createRule<[], MessageId>({
             node: node.expressions[0],
             messageId: 'noUselessTemplateLiteral',
             fix(fixer): TSESLint.RuleFix | null {
-              const wrappingCode = getWrappingCode({
+              const wrappingCode = getMovedNodeCode({
                 sourceCode: context.sourceCode,
-                replaceNode: node.expressions[0],
-                originNode: node,
-                parent: node.parent,
+                nodeToMove: node.expressions[0],
+                destinationNode: node,
               });
 
               return fixer.replaceText(node, wrappingCode);

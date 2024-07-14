@@ -74,22 +74,32 @@ export function getWrappingFixer(
     return fixer.replaceText(node, code);
   };
 }
-
-export function getWrappingCode(params: {
+/**
+ * If the node to be moved and the destination node require parentheses, include parentheses in the node to be moved.
+ * @param sourceCode Source code of current file
+ * @param nodeToMove Nodes that need to be moved
+ * @param destinationNode Final destination node with nodeToMove
+ * @returns If parentheses are required, code for the nodeToMove node is returned with parentheses at both ends of the code.
+ */
+export function getMovedNodeCode(params: {
   sourceCode: Readonly<TSESLint.SourceCode>;
-  replaceNode: TSESTree.Node;
-  originNode: TSESTree.Node;
-  parent: TSESTree.Node;
+  nodeToMove: TSESTree.Node;
+  destinationNode: TSESTree.Node;
 }): string {
-  const { sourceCode, replaceNode, originNode, parent } = params;
-  const code = sourceCode.getText(replaceNode);
-  const isNodeNeedParen = !isStrongPrecedenceNode(replaceNode);
-  const isParentNeedParam = isWeakPrecedenceParent(originNode, parent);
-
-  if (isNodeNeedParen && isParentNeedParam) {
-    return `(${code})`;
+  const { sourceCode, nodeToMove: existingNode, destinationNode } = params;
+  const code = sourceCode.getText(existingNode);
+  if (isStrongPrecedenceNode(existingNode)) {
+    // Moved node never needs parens
+    return code;
   }
-  return code;
+
+  if (!isWeakPrecedenceParent(destinationNode)) {
+    // Destination would never needs parens, regardless what node moves there
+    return code;
+  }
+
+  // Parens may be necessary
+  return `(${code})`;
 }
 
 /**
@@ -114,10 +124,8 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
 /**
  * Check if a node's parent could have different precedence if the node changes.
  */
-function isWeakPrecedenceParent(
-  node: TSESTree.Node,
-  parent = node.parent,
-): boolean {
+function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
+  const parent = node.parent;
   if (!parent) {
     return false;
   }
