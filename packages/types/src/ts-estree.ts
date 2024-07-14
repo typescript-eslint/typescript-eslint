@@ -53,8 +53,8 @@ declare module './generated/ast-spec' {
   interface ImportSpecifier {
     parent:
       | TSESTree.ExportAllDeclaration
-      | ExportNamedDeclaration
-      | ImportDeclaration;
+      | TSESTree.ExportNamedDeclaration
+      | TSESTree.ImportDeclaration;
   }
 
   interface JSXAttribute {
