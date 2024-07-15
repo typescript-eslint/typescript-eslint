@@ -530,6 +530,12 @@ declare const nullableString: string | null;
 assert(nullableString);
 assert('one', nullableString);
     `,
+    // Intentional use of `any` to test a function call with no call signatures.
+    `
+declare const assert: any;
+declare const nullableString: string | null;
+assert(nullableString);
+    `,
   ],
 
   invalid: [
