@@ -48,19 +48,33 @@ describe('getAwaitedType', () => {
   }
 
   it('non-promise', () => {
-    const { type, checker, node } = getTypes('const test: number = 1');
-    expectTypesAre(getAwaitedType(checker, type, node), checker, 'number');
+    const { program, type, checker, node } = getTypes('const test: number = 1');
+    expectTypesAre(
+      getAwaitedType(program, checker, type, node),
+      checker,
+      'number',
+    );
   });
 
   it('Promise<{{type}}> to {{type}}', () => {
-    const { type, checker, node } = getTypes('const test = Promise.resolve(1)');
-    expectTypesAre(getAwaitedType(checker, type, node), checker, 'number');
+    const { program, type, checker, node } = getTypes(
+      'const test = Promise.resolve(1)',
+    );
+    expectTypesAre(
+      getAwaitedType(program, checker, type, node),
+      checker,
+      'number',
+    );
   });
 
   it('Promise<Promise<{{type}}>> to {{type}}', () => {
-    const { type, checker, node } = getTypes(
+    const { program, type, checker, node } = getTypes(
       'const test: Promise<Promise<number>> = Promise.resolve(Promise.resolve(1))',
     );
-    expectTypesAre(getAwaitedType(checker, type, node), checker, 'number');
+    expectTypesAre(
+      getAwaitedType(program, checker, type, node),
+      checker,
+      'number',
+    );
   });
 });
