@@ -536,6 +536,13 @@ declare const assert: any;
 declare const nullableString: string | null;
 assert(nullableString);
     `,
+    // Coverage for absent "test expression".
+    // Ensure that no crash or false positive occurs
+    `
+      for (let x = 0; ; x++) {
+        break;
+      }
+    `,
   ],
 
   invalid: [
