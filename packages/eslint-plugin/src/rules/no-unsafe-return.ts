@@ -81,7 +81,12 @@ export default createRule({
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
       const type = checker.getTypeAtLocation(tsNode);
-      const anyType = discriminateAnyType(type, checker, services.program);
+      const anyType = discriminateAnyType(
+        type,
+        checker,
+        services.program,
+        tsNode,
+      );
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
@@ -122,11 +127,13 @@ export default createRule({
           }
           if (functionNode.async) {
             const awaitedSignatureReturnType = getAwaitedType(
+              services.program,
               checker,
               signatureReturnType,
               functionTSNode,
             );
             const awaitedReturnNodeType = getAwaitedType(
+              services.program,
               checker,
               returnNodeType,
               returnTSNode,
@@ -161,10 +168,16 @@ export default createRule({
           ) {
             return;
           }
+
           if (
             anyType === AnyType.PromiseAny &&
             isTypeUnknownType(
-              getAwaitedType(checker, functionReturnType, returnTSNode),
+              getAwaitedType(
+                services.program,
+                checker,
+                functionReturnType,
+                returnTSNode,
+              ),
             )
           ) {
             return;

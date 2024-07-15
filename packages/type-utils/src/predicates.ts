@@ -2,7 +2,7 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isPromiseLike } from './builtinSymbolLikes';
+import { getAwaitedType } from './getAwaitedType';
 import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
@@ -136,6 +136,7 @@ export function discriminateAnyType(
   type: ts.Type,
   checker: ts.TypeChecker,
   program: ts.Program,
+  tsNode: ts.Node,
 ): AnyType {
   if (isTypeAnyType(type)) {
     return AnyType.Any;
@@ -143,18 +144,22 @@ export function discriminateAnyType(
   if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
   }
-  if (isPromiseLike(program, type) && tsutils.isTypeReference(type)) {
-    const awaitedType = type.typeArguments?.[0];
-    if (awaitedType) {
-      const awaitedAnyType = discriminateAnyType(awaitedType, checker, program);
-      if (
-        awaitedAnyType === AnyType.Any ||
-        awaitedAnyType === AnyType.PromiseAny
-      ) {
+
+  for (const part of tsutils.typeParts(type)) {
+    const awaitedType = getAwaitedType(program, checker, part, tsNode);
+    if (awaitedType !== type) {
+      const awaitedAnyType = discriminateAnyType(
+        awaitedType,
+        checker,
+        program,
+        tsNode,
+      );
+      if (awaitedAnyType === AnyType.Any) {
         return AnyType.PromiseAny;
       }
     }
   }
+
   return AnyType.Safe;
 }
 

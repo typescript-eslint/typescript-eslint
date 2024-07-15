@@ -152,6 +152,14 @@ function foo(): Set<number> {
         return [] as any[];
       }
     `,
+    `
+      class PromiseLike<T = any> extends Promise<number> {}
+      async function foo() {
+        return new PromiseLike(resolve => {
+          resolve(42);
+        });
+      }
+    `,
   ],
   invalid: [
     {
@@ -661,6 +669,57 @@ async function foo(): Promise<object> {
       code: `
 async function foo() {
   return {} as Promise<Promise<Promise<Promise<any>>>>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: '`Promise<any>`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  return {} as Promise<any> | Promise<object>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: '`Promise<any>`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  return {} as Promise<any | object>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 3,
+          data: {
+            type: '`Promise<any>`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  return {} as Promise<any> & { __brand: 'any' };
 }
       `,
       errors: [
