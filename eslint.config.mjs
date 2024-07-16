@@ -209,6 +209,7 @@ export default tseslint.config(
       'no-useless-computed-key': 'error',
       'one-var': ['error', 'never'],
       'prefer-arrow-callback': 'error',
+      'prefer-rest-params': 'error',
 
       //
       // eslint-plugin-eslint-comment
