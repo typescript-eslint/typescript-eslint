@@ -1,3 +1,16 @@
+## 7.16.1 (2024-07-15)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] descend into all parts of mapped types in no-unnecessary-type-parameters ([#9530](https://github.com/typescript-eslint/typescript-eslint/pull/9530))
+
+### ❤️  Thank You
+
+- Dan Vanderkam @danvk
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.16.0 (2024-07-08)
 
 
