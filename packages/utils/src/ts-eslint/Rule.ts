@@ -203,9 +203,9 @@ export interface RuleContext<
    */
   options: Options;
   /**
-   * The name of the parser from configuration.
+   * The name of the parser from configuration, if in eslintrc (legacy) config.
    */
-  parserPath: string;
+  parserPath: string | undefined;
   /**
    * The language options configured for this run
    */

@@ -17,6 +17,18 @@ import TabItem from '@theme/TabItem';
 See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to set up your ESLint configuration file.
 [Packages > typescript-eslint](../packages/TypeScript_ESLint.mdx) includes more documentation on the `tseslint` helper.
 
+```js title="eslint.config.js"
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+);
+```
+
 ### Projects Without Type Checking
 
 If your project does not enable [typed linting](../getting-started/Typed_Linting.mdx), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
