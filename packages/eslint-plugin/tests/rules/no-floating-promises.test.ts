@@ -140,9 +140,8 @@ async function test() {
 }
     `,
     `
+declare const promiseValue: Promise<number>;
 async function test() {
-  declare const promiseValue: Promise<number>;
-
   await promiseValue;
   promiseValue.then(
     () => {},
@@ -158,9 +157,8 @@ async function test() {
 }
     `,
     `
+declare const promiseUnion: Promise<number> | number;
 async function test() {
-  declare const promiseUnion: Promise<number> | number;
-
   await promiseUnion;
   promiseUnion.then(
     () => {},
@@ -177,9 +175,8 @@ async function test() {
 }
     `,
     `
+declare const promiseIntersection: Promise<number> & number;
 async function test() {
-  declare const promiseIntersection: Promise<number> & number;
-
   await promiseIntersection;
   promiseIntersection.then(
     () => {},
@@ -210,12 +207,12 @@ async function test() {
 }
     `,
     `
+declare const intersectionPromise: Promise<number> & number;
 async function test() {
   await (Math.random() > 0.5 ? numberPromise : 0);
   await (Math.random() > 0.5 ? foo : 0);
   await (Math.random() > 0.5 ? bar : 0);
 
-  declare const intersectionPromise: Promise<number> & number;
   await intersectionPromise;
 }
     `,
@@ -308,8 +305,8 @@ async function test() {
 
     // optional chaining
     `
+declare const returnsPromise: () => Promise<void> | null;
 async function test() {
-  declare const returnsPromise: () => Promise<void> | null;
   await returnsPromise?.();
   returnsPromise()?.then(
     () => {},
@@ -708,6 +705,42 @@ myTag\`abc\`.catch(() => {});
       code: `
 declare const myTag: (strings: TemplateStringsArray) => string;
 myTag\`abc\`;
+      `,
+    },
+    {
+      code: `
+declare let x: any;
+declare const promiseArray: Array<Promise<unknown>>;
+x = promiseArray;
+      `,
+    },
+    {
+      code: `
+declare let x: Promise<number>;
+x = Promise.resolve(2);
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function f() {
+  return promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function* generator() {
+  yield* promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+async function* generator() {
+  yield Promise.resolve();
+}
       `,
     },
     {
@@ -1746,9 +1779,9 @@ async function test() {
     },
     {
       code: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   promiseValue.then(() => {});
   promiseValue.catch();
@@ -1836,9 +1869,9 @@ async function test() {
     },
     {
       code: `
-async function test() {
-  declare const promiseUnion: Promise<number> | number;
+declare const promiseUnion: Promise<number> | number;
 
+async function test() {
   promiseUnion;
 }
       `,
@@ -1863,9 +1896,9 @@ async function test() {
     },
     {
       code: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   promiseIntersection;
   promiseIntersection.then(() => {});
   promiseIntersection.catch();
@@ -2365,13 +2398,13 @@ async function test() {
     },
     {
       code: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
       options: [{ ignoreIIFE: true }],
       errors: [
@@ -3452,6 +3485,16 @@ void promiseArray;
     },
     {
       code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function f() {
+  await promiseArray;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [{ line: 4, messageId: 'floatingPromiseArray' }],
+    },
+    {
+      code: `
 [1, 2, Promise.reject(), 3];
       `,
       errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
@@ -3882,6 +3925,49 @@ void createMyPromise();
         },
       ],
       options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+declare const x: any;
+function* generator(): Generator<number, void, Promise<number>> {
+  yield x;
+}
+      `,
+      errors: [{ messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+declare const x: Generator<number, Promise<number>, void>;
+function* generator(): Generator<number, void, void> {
+  yield* x;
+}
+      `,
+      errors: [{ messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
+const value = {};
+value as Promise<number>;
+      `,
+      errors: [{ messageId: 'floatingVoid', line: 3 }],
+    },
+    {
+      code: `
+({}) as Promise<number> & number;
+      `,
+      errors: [{ messageId: 'floatingVoid', line: 2 }],
+    },
+    {
+      code: `
+({}) as Promise<number> & { yolo?: string };
+      `,
+      errors: [{ messageId: 'floatingVoid', line: 2 }],
+    },
+    {
+      code: `
+<Promise<number>>{};
+      `,
+      errors: [{ messageId: 'floatingVoid', line: 2 }],
     },
   ],
 });
