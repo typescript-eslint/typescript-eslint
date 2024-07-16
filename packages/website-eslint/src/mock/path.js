@@ -59,12 +59,12 @@ const splitPath = function (filename) {
 
 // path.resolve([from ...], to)
 // posix version
-export function resolve() {
+export function resolve(...args) {
   let resolvedPath = '';
   let resolvedAbsolute = false;
 
-  for (let i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    const path = i >= 0 ? arguments[i] : '/';
+  for (let i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    const path = i >= 0 ? args[i] : '/';
 
     // Skip empty and invalid entries
     if (typeof path !== 'string') {
@@ -117,8 +117,7 @@ export function isAbsolute(path) {
 }
 
 // posix version
-export function join() {
-  const paths = Array.prototype.slice.call(arguments, 0);
+export function join(...paths) {
   return normalize(
     filter(paths, p => {
       if (typeof p !== 'string') {
