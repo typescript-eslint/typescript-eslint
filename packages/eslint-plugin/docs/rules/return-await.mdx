@@ -43,12 +43,12 @@ The choice of whether to await a returned promise in an ordinary context is most
 
 With these terms defined, the options may be summarized as follows:
 
-|             Option              | Ordinary Context <br/> (stylistic preference 🎨) |        Error-Handling Context <br/> (catches bugs 🐛)        |                 Should I use this option?                  |
-| :-----------------------------: | :----------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------: |
-|             always              |             `return await promise;`              |                   `return await promise;`                    |                          ✅ Yes!                           |
-|          in-try-catch           |                `return promise;`                 |                   `return await promise;`                    |                          ✅ Yes!                           |
-| error-handling-correctness-only |                  don't care 🤷                   |                   `return await promise;`                    | 🟡 Okay to use, but the above options would be preferable. |
-|              never              |                `return promise;`                 | `return promise;` <br/> (⚠️ This behavior may be harmful ⚠️) |             ❌ No. This option is deprecated.              |
+|              Option               | Ordinary Context <br/> (stylistic preference 🎨) |        Error-Handling Context <br/> (catches bugs 🐛)        |                 Should I use this option?                  |
+| :-------------------------------: | :----------------------------------------------: | :----------------------------------------------------------: | :--------------------------------------------------------: |
+|             `always`              |             `return await promise;`              |                   `return await promise;`                    |                          ✅ Yes!                           |
+|          `in-try-catch`           |                `return promise;`                 |                   `return await promise;`                    |                          ✅ Yes!                           |
+| `error-handling-correctness-only` |                  don't care 🤷                   |                   `return await promise;`                    | 🟡 Okay to use, but the above options would be preferable. |
+|              `never`              |                `return promise;`                 | `return promise;` <br/> (⚠️ This behavior may be harmful ⚠️) |             ❌ No. This option is deprecated.              |
 
 ### `in-try-catch`
 
