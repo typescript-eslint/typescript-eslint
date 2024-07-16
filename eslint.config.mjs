@@ -27,6 +27,7 @@ export default tseslint.config(
   {
     // note - intentionally uses computed syntax to make it easy to sort the keys
     plugins: {
+      /* eslint-disable no-useless-computed-key */
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['deprecation']: deprecationPlugin,
@@ -40,6 +41,7 @@ export default tseslint.config(
       ['react']: reactPlugin,
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
+      /* eslint-enable no-useless-computed-key */
     },
   },
   {
