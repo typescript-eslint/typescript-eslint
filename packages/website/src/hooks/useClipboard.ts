@@ -8,7 +8,6 @@ export function useClipboard(code: () => string): useClipboardResult {
   const [copied, setCopied] = useDebouncedToggle(false);
 
   const copy = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     void navigator.clipboard.writeText(code()).then(() => {
       setCopied(true);
     });

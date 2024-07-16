@@ -1,7 +1,9 @@
-import { parserPathSeemsToBeTSESLint } from '../../src/eslint-utils/parserPathSeemsToBeTSESLint';
+import { parserSeemsToBeTSESLint } from '../../src/eslint-utils/parserSeemsToBeTSESLint';
 
-describe('parserPathSeemsToBeTSESLint', () => {
+describe('parserSeemsToBeTSESLint', () => {
   test.each([
+    [undefined, false],
+    ['espree', false],
     ['local.js', false],
     ['../other.js', false],
     ['@babel/eslint-parser/lib/index.cjs', false],
@@ -19,6 +21,6 @@ describe('parserPathSeemsToBeTSESLint', () => {
     ['/path/to/@typescript-eslint/packages/parser/dist/index.js', true],
     ['/path/to/@typescript-eslint/packages/parser/index.js', true],
   ])('%s', (parserPath, expected) => {
-    expect(parserPathSeemsToBeTSESLint(parserPath)).toBe(expected);
+    expect(parserSeemsToBeTSESLint(parserPath)).toBe(expected);
   });
 });
