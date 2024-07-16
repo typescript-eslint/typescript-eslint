@@ -328,6 +328,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         (token): token is Exclude<TSESTree.Token, Conditions & ExtractedToken> =>
           tokenType in conditions;
     `,
+    `
+      declare function mapObj<K extends string, V>(
+        obj: { [key in K]?: V },
+        fn: (key: K, val: V) => number,
+      ): number[];
+    `,
   ],
 
   invalid: [
@@ -675,6 +681,15 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         declare function returnsTuple<T>(): [T];
       `,
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        declare function mapObj<K extends string, V>(
+          obj: { [key in K]?: V },
+          fn: (key: K) => number,
+        ): number[];
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'V' } }],
     },
   ],
 });
