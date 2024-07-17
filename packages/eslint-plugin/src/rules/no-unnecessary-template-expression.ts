@@ -12,6 +12,17 @@ import {
 
 type MessageId = 'noUnnecessaryTemplateExpression';
 
+const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
+
+// '\\$' <- false
+// '\\\\$' <- true
+// '\\\\\\$' <- false
+function endsWithUnescapedDollarSign(str: string): boolean {
+  return new RegExp(String(evenNumOfBackslashesRegExp.source) + '\\$$').test(
+    str,
+  );
+}
+
 export default createRule<[], MessageId>({
   name: 'no-unnecessary-template-expression',
   meta: {
@@ -129,23 +140,12 @@ export default createRule<[], MessageId>({
 
         let nextCharacterIsOpeningCurlyBrace = false;
 
-        fixableExpressions.forEach(expression => {
+        for (const expression of fixableExpressions) {
           const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
             [];
           const index = node.expressions.indexOf(expression);
           const prevQuasi = node.quasis[index];
           const nextQuasi = node.quasis[index + 1];
-
-          const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
-
-          // '\\$' <- false
-          // '\\\\$' <- true
-          // '\\\\\\$' <- false
-          function endsWithUnescapedDollarSign(str: string): boolean {
-            return new RegExp(
-              String(evenNumOfBackslashesRegExp.source) + '\\$$',
-            ).test(str);
-          }
 
           if (nextQuasi.value.raw.length !== 0) {
             nextCharacterIsOpeningCurlyBrace =
@@ -270,7 +270,7 @@ export default createRule<[], MessageId>({
               ];
             },
           });
-        });
+        }
       },
     };
   },
