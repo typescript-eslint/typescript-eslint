@@ -1796,9 +1796,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   void promiseValue;
   promiseValue.then(() => {});
   promiseValue.catch();
@@ -1815,9 +1815,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   void promiseValue.then(() => {});
   promiseValue.catch();
@@ -1834,9 +1834,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   promiseValue.then(() => {});
   void promiseValue.catch();
@@ -1853,9 +1853,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   promiseValue.then(() => {});
   promiseValue.catch();
@@ -1883,9 +1883,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseUnion: Promise<number> | number;
+declare const promiseUnion: Promise<number> | number;
 
+async function test() {
   void promiseUnion;
 }
       `,
@@ -1912,9 +1912,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   void promiseIntersection;
   promiseIntersection.then(() => {});
   promiseIntersection.catch();
@@ -1930,9 +1930,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   promiseIntersection;
   void promiseIntersection.then(() => {});
   promiseIntersection.catch();
@@ -1948,9 +1948,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   promiseIntersection;
   promiseIntersection.then(() => {});
   void promiseIntersection.catch();
@@ -2415,13 +2415,13 @@ declare const promiseIntersection: Promise<number> & number;
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          void promiseIntersection;
-          promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  void promiseIntersection;
+  promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -2433,13 +2433,13 @@ declare const promiseIntersection: Promise<number> & number;
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          void promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  void promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -2451,13 +2451,13 @@ declare const promiseIntersection: Promise<number> & number;
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          promiseIntersection.then(() => {});
-          void promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  promiseIntersection.then(() => {});
+  void promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -2469,13 +2469,13 @@ declare const promiseIntersection: Promise<number> & number;
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          void promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  void promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -3933,7 +3933,22 @@ function* generator(): Generator<number, void, Promise<number>> {
   yield x;
 }
       `,
-      errors: [{ messageId: 'floatingVoid' }],
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const x: any;
+function* generator(): Generator<number, void, Promise<number>> {
+  void (yield x);
+}
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -3942,32 +3957,100 @@ function* generator(): Generator<number, void, void> {
   yield* x;
 }
       `,
-      errors: [{ messageId: 'floatingVoid' }],
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const x: Generator<number, Promise<number>, void>;
+function* generator(): Generator<number, void, void> {
+  void (yield* x);
+}
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
 const value = {};
 value as Promise<number>;
       `,
-      errors: [{ messageId: 'floatingVoid', line: 3 }],
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const value = {};
+void (value as Promise<number>);
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
 ({}) as Promise<number> & number;
       `,
-      errors: [{ messageId: 'floatingVoid', line: 2 }],
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void (({}) as Promise<number> & number);
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
 ({}) as Promise<number> & { yolo?: string };
       `,
-      errors: [{ messageId: 'floatingVoid', line: 2 }],
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void (({}) as Promise<number> & { yolo?: string });
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
 <Promise<number>>{};
       `,
-      errors: [{ messageId: 'floatingVoid', line: 2 }],
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void (<Promise<number>>{});
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });
