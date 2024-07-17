@@ -65,28 +65,16 @@ ruleTester.run('unbound-method', rule, {
       [5.2, 7.1, 3.6].map(foo.floor);
     `,
     "['1', '2', '3'].map(Number['floor']);",
-    `
-      class Foo extends Number {}
-      const x = Foo.parseInt;
-    `,
     'const x = console.log;',
     'const x = Object.defineProperty;',
     `
       const foo = Object;
       const x = foo.defineProperty;
     `,
-    `
-      class Foo extends Object {}
-      const x = Foo.defineProperty;
-    `,
     'const x = String.fromCharCode;',
     `
       const foo = String;
       const x = foo.fromCharCode;
-    `,
-    `
-      class Foo extends String {}
-      const x = Foo.fromCharCode;
     `,
     'const x = RegExp.prototype;',
     'const x = Symbol.keyFor;',
@@ -112,10 +100,6 @@ ruleTester.run('unbound-method', rule, {
     `
       const foo = Date;
       const x = foo.parse;
-    `,
-    `
-      class Foo extends Date {}
-      const x = Foo.parse;
     `,
     'const x = Atomics.load;',
     `
@@ -648,6 +632,102 @@ const foo = Foo;
         {
           line: 6,
           messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Number;
+const x = foo.toFixed;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Object;
+const x = foo.hasOwnProperty;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: String;
+const x = foo.slice;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Date;
+const x = foo.getTime;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Number {}
+const x = Foo.parseInt;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends String {}
+const x = Foo.fromCharCode;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Object {}
+const x = Foo.defineProperty;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Date {}
+const x = Foo.parse;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
         },
       ],
     },

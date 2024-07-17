@@ -68,6 +68,21 @@ const nativelyBoundMembers = new Set(
   }),
 );
 
+const SUPPORTED_GLOBAL_TYPES = [
+  'NumberConstructor',
+  'ObjectConstructor',
+  'StringConstructor',
+  'SymbolConstructor',
+  'ArrayConstructor',
+  'Array',
+  'ProxyConstructor',
+  'Console',
+  'DateConstructor',
+  'Atomics',
+  'Math',
+  'JSON',
+];
+
 const isNotImported = (
   symbol: ts.Symbol,
   currentSourceFile: ts.SourceFile | undefined,
@@ -156,13 +171,21 @@ export default createRule<Options, MessageIds>({
       object: TSESTree.Node,
       property: TSESTree.Node,
     ): boolean {
+      // We can't rely entirely on the type-level checks made at the end of this
+      // function, because sometimes type declarations don't come from the
+      // default library, but come from, for example, "@types/node". And we can't
+      // tell if a method is unbound just by looking at its signature declared in
+      // the interface.
+      //
+      // See related discussion https://github.com/typescript-eslint/typescript-eslint/pull/8952#discussion_r1576543310
       if (
         object.type === AST_NODE_TYPES.Identifier &&
         property.type === AST_NODE_TYPES.Identifier
       ) {
         const objectSymbol = services.getSymbolAtLocation(object);
         const notImported =
-          objectSymbol != null && isNotImported(objectSymbol, currentSourceFile);
+          objectSymbol != null &&
+          isNotImported(objectSymbol, currentSourceFile);
 
         if (
           notImported &&
@@ -172,27 +195,13 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      // if `${object.name}.${property.name}` doesn't match any of
+      // the nativelyBoundMembers, then we fallback to type-level checks
       return (
         isBuiltinSymbolLike(
           services.program,
           services.getTypeAtLocation(object),
-          [
-            'NumberConstructor',
-            'Number',
-            'ObjectConstructor',
-            'Object',
-            'StringConstructor',
-            'String', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
-            'SymbolConstructor',
-            'ArrayConstructor',
-            'Array',
-            'ProxyConstructor',
-            'DateConstructor',
-            'Date',
-            'Atomics',
-            'Math',
-            'JSON',
-          ],
+          SUPPORTED_GLOBAL_TYPES,
         ) &&
         isSymbolFromDefaultLibrary(
           services.program,
