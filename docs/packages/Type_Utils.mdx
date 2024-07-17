@@ -1,0 +1,20 @@
+---
+id: type-utils
+sidebar_label: type-utils
+---
+
+# `@typescript-eslint/type-utils`
+
+<PackageLink packageName="type-utils" scope="@typescript-eslint" />
+
+> Type utilities for working with TypeScript within ESLint rules. ✨
+
+This package contains public utilities for working with TypeScript types that ESLint rules often use.
+Rules declared in [`@typescript-eslint/eslint-plugin`](./ESLint_Plugin.mdx) use these utility functions.
+
+The utilities in this package are both:
+
+- More generally ESLint-focused than the broad TypeScript utilities in [`ts-api-utils`](https://npmjs.com/package/ts-api-utils)
+- Separated from [`@typescript-eslint/utils`](./Utils.mdx) so that that package does not require a dependency on `typescript`
+
+> See [Custom Rules](../developers/Custom_Rules.mdx) for documentation on creating your own custom ESLint rules for TypeScript code.

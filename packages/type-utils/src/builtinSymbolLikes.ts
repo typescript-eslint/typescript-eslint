@@ -3,18 +3,24 @@ import * as ts from 'typescript';
 import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
 
 /**
- * class Foo extends Promise<number> {}
- * Foo.reject
- *  ^ PromiseLike
+ * @example
+ * ```ts
+ * class DerivedClass extends Promise<number> {}
+ * DerivedClass.reject
+ * // ^ PromiseLike
+ * ```
  */
 export function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
   return isBuiltinSymbolLike(program, type, 'Promise');
 }
 
 /**
- * const foo = Promise
- * foo.reject
- *  ^ PromiseConstructorLike
+ * @example
+ * ```ts
+ * const value = Promise
+ * value.reject
+ * // ^ PromiseConstructorLike
+ * ```
  */
 export function isPromiseConstructorLike(
   program: ts.Program,
@@ -24,17 +30,23 @@ export function isPromiseConstructorLike(
 }
 
 /**
+ * @example
+ * ```ts
  * class Foo extends Error {}
  * new Foo()
- *      ^ ErrorLike
+ * //   ^ ErrorLike
+ * ```
  */
 export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
   return isBuiltinSymbolLike(program, type, 'Error');
 }
 
 /**
+ * @example
+ * ```ts
  * type T = Readonly<Error>
- *      ^ ReadonlyErrorLike
+ * //   ^ ReadonlyErrorLike
+ * ```
  */
 export function isReadonlyErrorLike(
   program: ts.Program,
@@ -50,8 +62,11 @@ export function isReadonlyErrorLike(
 }
 
 /**
+ * @example
+ * ```ts
  * type T = Readonly<{ foo: 'bar' }>
- *      ^ ReadonlyTypeLike
+ * //   ^ ReadonlyTypeLike
+ * ```
  */
 export function isReadonlyTypeLike(
   program: ts.Program,

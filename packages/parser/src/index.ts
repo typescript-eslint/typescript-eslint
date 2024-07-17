@@ -5,6 +5,7 @@ export {
   ParserServicesWithoutTypeInformation,
   clearCaches,
   createProgram,
+  withoutProjectParserOptions,
 } from '@typescript-eslint/typescript-estree';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder

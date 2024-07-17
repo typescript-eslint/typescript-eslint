@@ -770,7 +770,32 @@ class Bar {
 }
       `,
     },
+    {
+      code: `
+type CallBack = () => void;
+
+function f(gotcha: CallBack = () => {}): void {}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+const f = (gotcha: CallBack = () => {}): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+type ObjectWithCallback = { callback: () => void };
+
+const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
   ],
+
   invalid: [
     {
       code: `
@@ -1937,6 +1962,55 @@ let foo = (() => () => {})()();
           endLine: 2,
           column: 21,
           endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+function f(gotcha: CallBack = () => {}): void {}
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          column: 34,
+          endLine: 4,
+          endColumn: 36,
+        },
+      ],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+const f = (gotcha: CallBack = () => {}): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          column: 34,
+          endLine: 4,
+          endColumn: 36,
+        },
+      ],
+    },
+    {
+      code: `
+type ObjectWithCallback = { callback: () => void };
+
+const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          column: 43,
         },
       ],
     },

@@ -46,25 +46,24 @@ Options: { "checksVoidReturn": true }
 
 [1, 2, 3].forEach(async value => {
                   ~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
-  await doSomething(value);
+  await fetch(\`/\${value}\`);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 ~
 
-new Promise(async (resolve, reject) => {
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
-  await doSomething();
-~~~~~~~~~~~~~~~~~~~~~~
+new Promise<void>(async (resolve, reject) => {
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
+  await fetch('/');
+~~~~~~~~~~~~~~~~~~~
   resolve();
 ~~~~~~~~~~~~
 });
 ~
 
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', async () => {
-  synchronousCall();
-  await doSomething();
-  otherSynchronousCall();
+document.addEventListener('click', async () => {
+  console.log('synchronous call');
+  await fetch('/');
+  console.log('synchronous call');
 });
 "
 `;
@@ -95,8 +94,7 @@ new Promise((resolve, reject) => {
 });
 
 // Name the async wrapper to call it later
-const eventEmitter = new EventEmitter();
-eventEmitter.on('some-event', () => {
+document.addEventListener('click', () => {
   const handler = async () => {
     await doSomething();
     otherSynchronousCall();
@@ -117,16 +115,17 @@ exports[`Validating rule docs no-misused-promises.mdx code examples ESLint outpu
 "Incorrect
 Options: { "checksSpreads": true }
 
-const getData = () => someAsyncOperation({ myArg: 'foo' });
+const getData = () => fetch('/');
 
-return { foo: 42, ...getData() };
+console.log({ foo: 42, ...getData() });
+                          ~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
 
-const getData2 = async () => {
-  await someAsyncOperation({ myArg: 'foo' });
+const awaitData = async () => {
+  await fetch('/');
 };
 
-return { foo: 42, ...getData2() };
-                     ~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
+console.log({ foo: 42, ...awaitData() });
+                          ~~~~~~~~~~~ Expected a non-Promise value to be spreaded in an object.
 "
 `;
 
@@ -134,14 +133,14 @@ exports[`Validating rule docs no-misused-promises.mdx code examples ESLint outpu
 "Correct
 Options: { "checksSpreads": true }
 
-const getData = () => someAsyncOperation({ myArg: 'foo' });
+const getData = () => fetch('/');
 
-return { foo: 42, ...(await getData()) };
+console.log({ foo: 42, ...(await getData()) });
 
-const getData2 = async () => {
-  await someAsyncOperation({ myArg: 'foo' });
+const awaitData = async () => {
+  await fetch('/');
 };
 
-return { foo: 42, ...(await getData2()) };
+console.log({ foo: 42, ...(await awaitData()) });
 "
 `;
