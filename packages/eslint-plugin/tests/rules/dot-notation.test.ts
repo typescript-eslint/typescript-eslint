@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/dot-notation';
 import { getFixturesRootDir } from '../RuleTester';
@@ -239,14 +239,19 @@ x.pub_prop = 123;
       errors: [{ messageId: 'useDot', data: { key: q('SHOUT_CASE') } }],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: "a\n  ['SHOUT_CASE'];",
-      output: 'a\n  .SHOUT_CASE;',
+      code: noFormat`
+a
+  ['SHOUT_CASE'];
+      `,
+      output: `
+a
+  .SHOUT_CASE;
+      `,
       errors: [
         {
           messageId: 'useDot',
           data: { key: q('SHOUT_CASE') },
-          line: 2,
+          line: 3,
           column: 4,
         },
       ],
@@ -280,9 +285,14 @@ x.pub_prop = 123;
       ],
     },
     {
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: 'foo\n  .while;',
-      output: 'foo\n  ["while"];',
+      code: noFormat`
+foo
+  .while;
+      `,
+      output: `
+foo
+  ["while"];
+      `,
       options: [{ allowKeywords: false }],
       errors: [{ messageId: 'useBrackets', data: { key: 'while' } }],
     },
