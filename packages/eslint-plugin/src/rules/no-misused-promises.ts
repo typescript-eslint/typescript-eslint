@@ -20,7 +20,7 @@ type Options = [
 interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
-  heritageTypes?: boolean;
+  inheritedMethods?: boolean;
   properties?: boolean;
   returns?: boolean;
   variables?: boolean;
@@ -31,7 +31,7 @@ type MessageId =
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
-  | 'voidReturnHeritageType'
+  | 'voidReturnInheritedMethod'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
   | 'voidReturnVariable';
@@ -48,7 +48,7 @@ function parseChecksVoidReturn(
       return {
         arguments: true,
         attributes: true,
-        heritageTypes: true,
+        inheritedMethods: true,
         properties: true,
         returns: true,
         variables: true,
@@ -58,7 +58,7 @@ function parseChecksVoidReturn(
       return {
         arguments: checksVoidReturn.arguments ?? true,
         attributes: checksVoidReturn.attributes ?? true,
-        heritageTypes: checksVoidReturn.heritageTypes ?? true,
+        inheritedMethods: checksVoidReturn.inheritedMethods ?? true,
         properties: checksVoidReturn.properties ?? true,
         returns: checksVoidReturn.returns ?? true,
         variables: checksVoidReturn.variables ?? true,
@@ -79,8 +79,8 @@ export default createRule<Options, MessageId>({
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
         'Promise-returning function provided to attribute where a void return was expected.',
-      voidReturnHeritageType:
-        "Promise-returning method provided where a void return was expected by heritage type '{{ heritageTypeName }}'.",
+      voidReturnInheritedMethod:
+        "Promise-returning method provided where a void return was expected by extended/implemented type '{{ heritageTypeName }}'.",
       voidReturnProperty:
         'Promise-returning function provided to property where a void return was expected.',
       voidReturnReturnValue:
@@ -106,7 +106,7 @@ export default createRule<Options, MessageId>({
                 properties: {
                   arguments: { type: 'boolean' },
                   attributes: { type: 'boolean' },
-                  heritageTypes: { type: 'boolean' },
+                  inheritedMethods: { type: 'boolean' },
                   properties: { type: 'boolean' },
                   returns: { type: 'boolean' },
                   variables: { type: 'boolean' },
@@ -160,7 +160,7 @@ export default createRule<Options, MessageId>({
           ...(checksVoidReturn.attributes && {
             JSXAttribute: checkJSXAttribute,
           }),
-          ...(checksVoidReturn.heritageTypes && {
+          ...(checksVoidReturn.inheritedMethods && {
             ClassDeclaration: checkClassLikeOrInterfaceNode,
             ClassExpression: checkClassLikeOrInterfaceNode,
             TSInterfaceDeclaration: checkClassLikeOrInterfaceNode,
@@ -418,7 +418,7 @@ export default createRule<Options, MessageId>({
 
     /**
      * Checks `heritageType` for a member named `memberName` that returns void; reports the
-     * 'voidReturnHeritageType' message if found.
+     * 'voidReturnInheritedMethod' message if found.
      * @param nodeMember Node member that returns a Promise
      * @param heritageType Heritage type to check against
      * @param memberName Name of the member to check for
@@ -441,7 +441,7 @@ export default createRule<Options, MessageId>({
       }
       context.report({
         node: services.tsNodeToESTreeNodeMap.get(nodeMember),
-        messageId: 'voidReturnHeritageType',
+        messageId: 'voidReturnInheritedMethod',
         data: { heritageTypeName: checker.typeToString(heritageType) },
       });
     }

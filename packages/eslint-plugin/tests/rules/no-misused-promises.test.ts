@@ -514,7 +514,7 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -530,7 +530,7 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -546,7 +546,7 @@ class MySubclassExtendsMyClass extends MyClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -560,7 +560,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -574,7 +574,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -588,7 +588,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -602,7 +602,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -616,7 +616,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -630,7 +630,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -642,7 +642,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
   abstract setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -654,7 +654,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
   abstract setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -666,7 +666,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -678,7 +678,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -690,7 +690,7 @@ interface MySubInterfaceExtendsMyInterface extends MyInterface {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -702,7 +702,7 @@ interface MySubInterfaceExtendsMyInterface extends MyInterface {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -716,7 +716,7 @@ class MyClassImplementsMyInterface implements MyInterface {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -730,7 +730,7 @@ class MyClassImplementsMyInterface implements MyInterface {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -742,7 +742,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
   abstract setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -754,7 +754,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
   abstract setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -767,7 +767,7 @@ class MyClass implements MyTypeLiteralsIntersection {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -780,7 +780,7 @@ class MyClass implements MyTypeLiteralsIntersection {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -792,7 +792,7 @@ interface MyAsyncInterface extends MyGenericType {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -804,7 +804,7 @@ interface MyAsyncInterface extends MyGenericType<false> {
   setThing(): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: false } }],
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
     },
     {
       code: `
@@ -820,7 +820,7 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -840,7 +840,7 @@ interface MyInterface extends MyClass, MyOtherClass {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -864,7 +864,7 @@ class MySubclass extends MyClass implements MyInterface, MyOtherInterface {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -880,7 +880,7 @@ const MyClassExpressionExtendsMyClass = class extends MyClass {
   }
 };
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -896,7 +896,7 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
   }
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -911,7 +911,7 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
   setThing(): void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -924,7 +924,7 @@ interface MyAsyncInterface extends MySyncCallSignatures {
   (arg: string): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -937,7 +937,7 @@ interface ThisIsADifferentIssue extends MySyncConstructSignatures {
   new (arg: string): Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -950,7 +950,7 @@ interface ThisIsADifferentIssue extends MySyncIndexSignatures {
   [key: number]: Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -969,7 +969,7 @@ interface MyAsyncInterface extends MySyncInterfaceSignatures {
   [key: number]: () => Promise<void>;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
     {
       code: `
@@ -1005,7 +1005,7 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
   syncMethodProperty: () => void;
 }
       `,
-      options: [{ checksVoidReturn: { heritageTypes: true } }],
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
   ],
 
@@ -1799,7 +1799,7 @@ class MySubclassExtendsMyClass extends MyClass {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyClass' },
         },
       ],
@@ -1819,7 +1819,7 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyClass' },
         },
       ],
@@ -1839,7 +1839,7 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyClass' },
         },
       ],
@@ -1859,7 +1859,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
@@ -1877,7 +1877,7 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
@@ -1895,7 +1895,7 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
@@ -1915,7 +1915,7 @@ class MyInterfaceSubclass implements MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -1933,7 +1933,7 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -1951,7 +1951,7 @@ interface MySubInterface extends MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -1970,7 +1970,7 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
       errors: [
         {
           line: 6,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyTypeIntersection' },
         },
       ],
@@ -1988,7 +1988,7 @@ interface MyAsyncInterface extends MyGenericType<false> {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: '{ setThing(): void; }' },
         },
       ],
@@ -2010,12 +2010,12 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
       errors: [
         {
           line: 11,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyInterface' },
         },
         {
           line: 11,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyOtherInterface' },
         },
       ],
@@ -2041,12 +2041,12 @@ interface MyInterface extends MyClass, MyOtherClass {
       errors: [
         {
           line: 15,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyClass' },
         },
         {
           line: 15,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyOtherClass' },
         },
       ],
@@ -2076,12 +2076,12 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       errors: [
         {
           line: 17,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyClass' },
         },
         {
           line: 17,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
@@ -2101,7 +2101,7 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
       errors: [
         {
           line: 7,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyInterface' },
         },
       ],
@@ -2123,7 +2123,7 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
       errors: [
         {
           line: 9,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyClassExpression' },
         },
       ],
@@ -2144,7 +2144,7 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       errors: [
         {
           line: 10,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'typeof MyClassExpression' },
         },
       ],
@@ -2171,7 +2171,7 @@ interface MyAsyncInterface extends MySyncInterface {
       errors: [
         {
           line: 16,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
@@ -2213,12 +2213,12 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       errors: [
         {
           line: 29,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyMethods' },
         },
         {
           line: 31,
-          messageId: 'voidReturnHeritageType',
+          messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyMethods' },
         },
       ],

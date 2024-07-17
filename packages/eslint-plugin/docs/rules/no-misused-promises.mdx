@@ -79,12 +79,12 @@ Disables checking an asynchronous function passed as argument where the paramete
 
 Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.
 
-#### `heritageTypes`
+#### `inheritedMethods`
 
-Disables checking an asynchronous method in a type whose extended/implemented heritage type expects that method to return `void`.
+Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.
 
 :::note
-For now, `no-misused-promises` only checks named methods against heritage types: that is, call/construct/index signatures are ignored. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Index signature checking may be implemented in the future.
+For now, `no-misused-promises` only checks _named_ methods against extended/implemented types: that is, call/construct/index signatures are ignored. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Index signature checking may be implemented in the future.
 :::
 
 #### `properties`

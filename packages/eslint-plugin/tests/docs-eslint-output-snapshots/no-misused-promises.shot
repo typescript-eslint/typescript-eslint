@@ -72,7 +72,7 @@ interface MySyncInterface {
 }
 class MyClass implements MySyncInterface {
   async setThing(): Promise<void> {
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise-returning method provided where a void return was expected by heritage type 'MySyncInterface'.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise-returning method provided where a void return was expected by extended/implemented type 'MySyncInterface'.
     this.thing = await fetchThing();
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }
