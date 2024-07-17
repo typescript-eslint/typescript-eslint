@@ -2,7 +2,6 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getAwaitedType } from './getAwaitedType';
 import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
@@ -144,18 +143,19 @@ export function discriminateAnyType(
   if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
   }
-
   for (const part of tsutils.typeParts(type)) {
-    const awaitedType = getAwaitedType(program, checker, part, tsNode);
-    if (awaitedType !== type) {
-      const awaitedAnyType = discriminateAnyType(
-        awaitedType,
-        checker,
-        program,
-        tsNode,
-      );
-      if (awaitedAnyType === AnyType.Any) {
-        return AnyType.PromiseAny;
+    if (tsutils.isThenableType(checker, tsNode, type)) {
+      const awaitedType = checker.getAwaitedType(part);
+      if (awaitedType) {
+        const awaitedAnyType = discriminateAnyType(
+          awaitedType,
+          checker,
+          program,
+          tsNode,
+        );
+        if (awaitedAnyType === AnyType.Any) {
+          return AnyType.PromiseAny;
+        }
       }
     }
   }

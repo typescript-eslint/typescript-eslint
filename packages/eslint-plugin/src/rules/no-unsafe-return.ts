@@ -7,7 +7,6 @@ import {
   AnyType,
   createRule,
   discriminateAnyType,
-  getAwaitedType,
   getConstrainedTypeAtLocation,
   getContextualType,
   getParserServices,
@@ -81,6 +80,7 @@ export default createRule({
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
       const type = checker.getTypeAtLocation(tsNode);
+
       const anyType = discriminateAnyType(
         type,
         checker,
@@ -95,7 +95,6 @@ export default createRule({
       // function has an explicit return type, so ensure it's a safe return
       const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
-      const returnTSNode = services.esTreeNodeToTSNodeMap.get(returnNode);
 
       // function expressions will not have their return type modified based on receiver typing
       // so we have to use the contextual typing in these cases, i.e.
@@ -126,24 +125,18 @@ export default createRule({
             return;
           }
           if (functionNode.async) {
-            const awaitedSignatureReturnType = getAwaitedType(
-              services.program,
-              checker,
-              signatureReturnType,
-              functionTSNode,
-            );
-            const awaitedReturnNodeType = getAwaitedType(
-              services.program,
-              checker,
-              returnNodeType,
-              returnTSNode,
-            );
+            const awaitedSignatureReturnType =
+              checker.getAwaitedType(signatureReturnType);
+
+            const awaitedReturnNodeType =
+              checker.getAwaitedType(returnNodeType);
             if (
               awaitedReturnNodeType === awaitedSignatureReturnType ||
-              isTypeFlagSet(
-                awaitedSignatureReturnType,
-                ts.TypeFlags.Any | ts.TypeFlags.Unknown,
-              )
+              (awaitedSignatureReturnType &&
+                isTypeFlagSet(
+                  awaitedSignatureReturnType,
+                  ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+                ))
             ) {
               return;
             }
@@ -168,17 +161,11 @@ export default createRule({
           ) {
             return;
           }
-
+          const awaitedType = checker.getAwaitedType(functionReturnType);
           if (
+            awaitedType &&
             anyType === AnyType.PromiseAny &&
-            isTypeUnknownType(
-              getAwaitedType(
-                services.program,
-                checker,
-                functionReturnType,
-                returnTSNode,
-              ),
-            )
+            isTypeUnknownType(awaitedType)
           ) {
             return;
           }

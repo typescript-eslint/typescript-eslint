@@ -20,5 +20,9 @@ declare module 'typescript' {
      * - `readonly [foo]`
      */
     isTupleType(type: Type): type is TupleTypeReference;
+    /**
+     * Return the awaited type of the given type.
+     */
+    getAwaitedType(type: Type): Type | undefined;
   }
 }

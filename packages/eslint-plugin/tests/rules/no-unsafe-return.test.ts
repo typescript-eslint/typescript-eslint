@@ -152,14 +152,6 @@ function foo(): Set<number> {
         return [] as any[];
       }
     `,
-    `
-      class PromiseLike<T = any> extends Promise<number> {}
-      async function foo() {
-        return new PromiseLike(resolve => {
-          resolve(42);
-        });
-      }
-    `,
   ],
   invalid: [
     {
@@ -726,6 +718,28 @@ async function foo() {
         {
           messageId: 'unsafeReturn',
           line: 3,
+          column: 3,
+          data: {
+            type: '`Promise<any>`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Alias<T> extends Promise<any> {
+  foo: 'bar';
+}
+
+declare const value: Alias<number>;
+function foo() {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 8,
           column: 3,
           data: {
             type: '`Promise<any>`',

@@ -22,6 +22,10 @@ declare module 'typescript' {
      * Return the type of the given property in the given type, or undefined if no such property exists
      */
     getTypeOfPropertyOfType(type: Type, propertyName: string): Type | undefined;
+    /**
+     * Return the awaited type of the given type.
+     */
+    getAwaitedType(type: Type): Type | undefined;
   }
 
   interface Type {
