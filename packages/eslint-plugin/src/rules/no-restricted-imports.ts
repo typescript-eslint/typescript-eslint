@@ -314,7 +314,7 @@ export default createRule<Options, MessageIds>({
         if (
           node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference
         ) {
-          const synthesizedImport = {
+          const synthesizedImport: TSESTree.ImportDeclaration = {
             ...node,
             type: AST_NODE_TYPES.ImportDeclaration,
             source: node.moduleReference.expression,
@@ -325,9 +325,11 @@ export default createRule<Options, MessageIds>({
                 ...node.id,
                 type: AST_NODE_TYPES.ImportDefaultSpecifier,
                 local: node.id,
+                // @ts-expect-error -- parent types are incompatible but it's fine for the purposes of this extension
+                parent: node.id.parent,
               },
             ],
-          } satisfies TSESTree.ImportDeclaration;
+          };
           return checkImportNode(synthesizedImport);
         }
       },
