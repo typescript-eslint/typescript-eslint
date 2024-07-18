@@ -1,0 +1,260 @@
+---
+authors:
+  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+    name: Josh Goldberg
+    title: typescript-eslint Maintainer
+    url: https://github.com/JoshuaKGoldberg
+description: Using a faster and more convenient "Project Service" API for configuring typed linting.
+slug: parser-options-project-service
+tags: [parser, parser options, project, project service, tsconfig]
+title: Stable Typed Linting with `parserOptions.projectService`
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+["Typed linting"](/linting/typed-linting), or enabling ESLint rules to tap into the power of the TypeScript type checker, is one of the best parts of typescript-eslint.
+It enables a slew of more powerful lint rules that check for nuanced bugs, best practice violations, and other code issues.
+But typed linting hasn't always been straightforward to configure or performant at runtime.
+
+With typescript-eslint 8.0, we're marking as stable a **`parserOptions.projectService`** option that uses more powerful TypeScript APIs than previous typed linting implementations.
+We've found it to bring the following benefits:
+
+- ✍️ **Configuration**: simpler ESLint configs for typed linting and no ESLint-specific TSConfig file
+- 🧠 **Predictability**: uses the same type information services as editors, including more reliability
+- ⚡️ **Speed**: faster linting times out-of-the-box both in CLIs and in editors
+
+This blog post will cover how `parserOptions.projectService` improves performance, simplifies configurations, and brings linting type information much closer to what editors such as VS Code run with.
+
+// <!-- truncate -->
+
+## Introducing the Project Service
+
+Back in [Relative TSConfig Projects with `parserOptions.project = true` > Project Services](2023-09-18-parser-options-project-true.md#project-services), we'd mentioned a replacement for `parserOptions.project`:
+
+> The downside of having users specify `parserOptions.project` at all is that `@typescript-eslint/parser` needs manual logic to create TypeScript Programs and associate them with linted files.
+> Manual Program creation logic comes with a few issues:
+>
+> - Complex project setups can be difficult to get right.
+>   - For example, [typescript-eslint does not yet support Project References](https://github.com/typescript-eslint/typescript-eslint/issues/2094).
+> - The TypeScript compiler options used in the user's editor might differ from the compiler options in the TSConfigs they specified on disk.
+> - Files not included in created Programs can't be linted with type information, even though editors still typically surface type information when editing those files.
+>   - Most commonly, `.eslintrc.(c)js` files can be tricky to lint, resulting in the dreaded [_TSConfig does not include this file_ error](/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+>
+> We're working on an option to instead call the same TypeScript "Project Service" APIs that editors such as VS Code use to create Programs for us instead.
+> Project Services will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
+
+Following a year of discussion and testing, we believe the new Project Service API is ready to be used by real-world projects.
+We've found it to be generally faster at runtime and more straightforward to configure.
+
+We're therefore promoting the `parserOptions.EXPERIMENTAL_useProjectService` option to the stable name **`parserOptions.projectService`** in typescript-eslint v8.
+
+## ✍️ Onboarding to the Project Service
+
+You can change over to the new Project Service API by replacing `project` with `projectService` in your ESLint configuration:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default tseslint.config({
+  // ...
+  languageOptions: {
+    parserOptions: {
+      // Remove this line
+      project: true,
+      // Add this line
+      projectService: true,
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+  // ...
+});
+```
+
+:::note
+[`import.meta.dirname`](https://nodejs.org/api/esm.html#importmetadirname) is only present for ESM files in Node.js >=20.11.0 / >= 21.2.0.<br />
+For CommonJS modules and/or older versions of Node.js, [use `__dirname` or an alternative](https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-js-when-using-es6-modules).
+:::
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+module.exports = {
+  // ...
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    // Remove this line
+    project: true,
+    // Add this line
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  // ...
+};
+```
+
+</TabItem>
+</Tabs>
+
+Other settings, including how you run ESLint and configure rules, should work the same.
+
+### Including Additional Files
+
+One long-standing pain point of typed linting is enabling type information for files not included in the project's `tsconfig.json`.
+Common solutions in the legacy Program API were to either skip type checking for those files or to create a separate `tsconfig.eslint.json` that enabled `compilerOptions.allowJs = true`.
+
+Now, the new Project Service API allows for a configuration object specifying:
+
+- `allowDefaultProjectForFiles`: a glob of "out-of-project" files to lint with type information
+- `defaultProject`: path to a TSConfig to use for out-of-project file type information
+
+For example, the following config solves the common case of projects that have root-level files like `eslint.config.js` and `vitest.config.ts`:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.js"
+export default tseslint.config({
+  // ...
+  languageOptions: {
+    parserOptions: {
+      projectService: {
+        allowDefaultProjectForFiles: ['./*'],
+        defaultProject: './tsconfig.json',
+      },
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+  // ...
+});
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+module.exports = {
+  // ...
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    projectService: {
+      allowDefaultProjectForFiles: ['./*'],
+      defaultProject: './tsconfig.json',
+    },
+    tsconfigRootDir: __dirname,
+  },
+  // ...
+};
+```
+
+</TabItem>
+</Tabs>
+
+:::tip
+This means you should be able to remove any lint-only `tsconfig.eslint.json` files!
+🥳
+:::
+
+## 🧠 Predictability and Reliability
+
+One of the challenges of typed linting is using TypeScript APIs designed for TypeScript projects in ESLint's runtime.
+[ESLint does not provide parsers session information](https://github.com/eslint/rfcs/pull/102).
+As a result, `@typescript-eslint/parser` has to use approximations to guess whether it was in the more performance-friendly "single-run" mode (rather than in ESLint's multi-pass `--fix` mode or a long-lived editor session).
+Single-run mode comes with several bugs.
+For example:
+
+- ESLint's `--fix` mode breaks type information after the first run ([#9577](https://github.com/typescript-eslint/typescript-eslint/pull/9577))
+- Extra file extensions, such as those used by `.svelte` and `.vue` fileSync, are not supported ([#9504](https://github.com/typescript-eslint/typescript-eslint/issues/9504))
+
+typescript-eslint's single-run inference enables uses common heuristics such as checking for `'--fix'` in `process.argv`, the presence of `process.env.CI`, and the presence of `parserOptions.extraFileExtensions`.
+It can be disabled with `parserOptions.disallowSingleRunInference`.
+
+Enabling single-run mode generally improves performance by 10-20%.
+typescript-eslint@v8 enables inference of single-run mode by default.
+If your project is stuck on `parserOptions.project`, we recommend keeping single-run inference on if possible.
+
+`parserOptions.projectService` does not suffer from the same bugs as `parserOptions.project` with single-run mode.
+It supports extra file extensions out-of-the-box and does not slow down when used with ESLint's `--fix`.
+
+We recommend switching to `parserOptions.projectService` if possible.
+
+## ⚡️ Performance Comparisons
+
+In addition to simplifying configuration, we have also found the new Project Service API to result in _roughly equivalent or faster_ lint times compared to the equivalent legacy program APIs.
+
+We measured two variations of typed linting on a simulated project of roughly 1,024 files:
+
+- ◀️ Legacy Projects: using `parserOptions.project` _(without single-run inference)_
+- 🆕 Project Service: using `parserOptions.projectService`
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">API</th>
+      <th colspan="2">🧒 Small</th>
+      <th colspan="2">🧑 Medium</th>
+      <th colspan="2">🧓 Large</th>
+    </tr>
+    <tr>
+      <td>Solo</td>
+      <td>Projects</td>
+      <td>Solo</td>
+      <td>Projects</td>
+      <td>Solo</td>
+      <td>Projects</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>◀️ Legacy Projects</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>🆕 Project Service</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>𝚫 Delta</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+See [typescript-eslint/performance](https://github.com/typescript-eslint/performance) for details on the performance measurements.
+
+## Next Steps
+
+### Giving Feedback
+
+We'd love to hear from you on how this option works for you.
+Does it live up to what we've promised, and/or does it have bugs we haven't fixed yet?
+Please do post in the [Community Feedback: Project Service APIs](https://github.com/typescript-eslint/typescript-eslint/discussions/8030) GitHub Discussions post on how it goes for you.
+
+For support in setting up the new APIs, feel free to ask on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#project-service` channel.
+We'd be happy to help you try out `parserOptions.projectService`.
+
+### Long Term Vision
+
+Our hope is that the Project Service API becomes the standard way to work with typed linting over the next few major versions.
+Our priority will be to improve the new Project Service API so that it works in all places the legacy project program behavior does.
+We won't remove the legacy project program behavior unless and until the new Project Service API is able to fully replace it.
+
+So, please, try out the new Project Service API.
+It should help make your typed linting faster and more straightforward to configure. 💜
