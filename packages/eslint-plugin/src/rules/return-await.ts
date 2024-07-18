@@ -73,38 +73,6 @@ export default createRule({
 
     const scopeInfoStack: ScopeInfo[] = [];
 
-    type WhetherToAwait = 'await' | 'no-await' | "don't-care";
-
-    interface RuleConfiguration {
-      ordinaryContext: WhetherToAwait;
-      errorHandlingContext: WhetherToAwait;
-    }
-
-    function getConfiguration(option: Option): RuleConfiguration {
-      switch (option) {
-        case 'always':
-          return {
-            ordinaryContext: 'await',
-            errorHandlingContext: 'await',
-          };
-        case 'never':
-          return {
-            ordinaryContext: 'no-await',
-            errorHandlingContext: 'no-await',
-          };
-        case 'error-handling-correctness-only':
-          return {
-            ordinaryContext: "don't-care",
-            errorHandlingContext: 'await',
-          };
-        case 'in-try-catch':
-          return {
-            ordinaryContext: 'no-await',
-            errorHandlingContext: 'await',
-          };
-      }
-    }
-
     function enterFunction(node: FunctionNode): void {
       scopeInfoStack.push({
         hasAsync: node.async,
@@ -426,6 +394,38 @@ export default createRule({
     };
   },
 });
+
+type WhetherToAwait = 'await' | 'no-await' | "don't-care";
+
+interface RuleConfiguration {
+  ordinaryContext: WhetherToAwait;
+  errorHandlingContext: WhetherToAwait;
+}
+
+function getConfiguration(option: Option): RuleConfiguration {
+  switch (option) {
+    case 'always':
+      return {
+        ordinaryContext: 'await',
+        errorHandlingContext: 'await',
+      };
+    case 'never':
+      return {
+        ordinaryContext: 'no-await',
+        errorHandlingContext: 'no-await',
+      };
+    case 'error-handling-correctness-only':
+      return {
+        ordinaryContext: "don't-care",
+        errorHandlingContext: 'await',
+      };
+    case 'in-try-catch':
+      return {
+        ordinaryContext: 'no-await',
+        errorHandlingContext: 'await',
+      };
+  }
+}
 
 function fixOrSuggest<MessageId extends string>(
   useFix: boolean,
