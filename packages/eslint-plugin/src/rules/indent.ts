@@ -3,7 +3,7 @@
  * This is due to some really funky type conversions between different node types.
  * This is done intentionally based on the internal implementation of the base indent rule.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment  */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, eslint-plugin/no-property-in-node */
 
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';

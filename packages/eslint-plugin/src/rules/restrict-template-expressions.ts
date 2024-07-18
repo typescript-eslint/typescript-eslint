@@ -30,7 +30,7 @@ const optionTesters = (
     [
       'Array',
       (type, checker, recursivelyCheckType): boolean =>
-        checker.isArrayType(type) &&
+        (checker.isArrayType(type) || checker.isTupleType(type)) &&
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         recursivelyCheckType(type.getNumberIndexType()!),
     ],

@@ -11,7 +11,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import type { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
 import { parse } from '@typescript-eslint/typescript-estree';
-import { ESLint } from '@typescript-eslint/utils/ts-eslint';
+import { FlatESLint } from '@typescript-eslint/utils/ts-eslint';
 import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 import ts from 'typescript';
@@ -299,11 +299,11 @@ async function main(): Promise<void> {
   fs.writeFileSync(TYPES_FILE, formattedLibUnionCode);
   console.log('Wrote Lib union type file');
 
-  const lint = new ESLint({
+  const lint = new FlatESLint({
     fix: true,
   });
   const results = await lint.lintFiles(filesWritten);
-  await ESLint.outputFixes(results);
+  await FlatESLint.outputFixes(results);
   console.log('Autofixed lint errors');
 }
 

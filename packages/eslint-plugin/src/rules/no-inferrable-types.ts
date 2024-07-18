@@ -120,8 +120,7 @@ export default createRule<Options, MessageIds>({
 
           return (
             isFunctionCall(unwrappedInit, 'BigInt') ||
-            (unwrappedInit.type === AST_NODE_TYPES.Literal &&
-              'bigint' in unwrappedInit)
+            unwrappedInit.type === AST_NODE_TYPES.Literal
           );
         }
 
