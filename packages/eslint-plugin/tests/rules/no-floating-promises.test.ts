@@ -697,6 +697,27 @@ myTag\`abc\`;
     },
     {
       code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
 myTag\`abc\`.catch(() => {});
       `,
@@ -766,6 +787,38 @@ promise().then(() => {});
         },
       ],
     },
+
+    {
+      code: `
+        declare module 'abc' {
+          export function it(name: string, action: () => void): void;
+        }
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'abc' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare module 'abc' {
+          export function it(name: string, action: () => void): void;
+        }
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'abc' },
+          ],
+        },
+      ],
+    },
     {
       code: `
 interface SafePromise<T> extends Promise<T> {
@@ -782,15 +835,11 @@ createSafePromise();
         },
       ],
     },
-    {
-      code: `
-declare const createPromise: () => PromiseLike<number>;
-createPromise();
-      `,
-      options: [{ checkThenables: false }],
-    },
-    {
-      code: `
+    `
+declare const createPromiseLike: () => PromiseLike<number>;
+createPromiseLike();
+    `,
+    `
 interface MyThenable {
   then(onFulfilled: () => void, onRejected: () => void): MyThenable;
 }
@@ -798,9 +847,7 @@ interface MyThenable {
 declare function createMyThenable(): MyThenable;
 
 createMyThenable();
-      `,
-      options: [{ checkThenables: false }],
-    },
+    `,
   ],
 
   invalid: [
@@ -2116,6 +2163,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ checkThenables: true }],
     },
     {
       code: `
@@ -3608,6 +3656,7 @@ promise;
       options: [
         {
           allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+          checkThenables: true,
         },
       ],
       errors: [
@@ -3800,6 +3849,118 @@ void myTag\`abc\`;
     },
     {
       code: `
+        declare function unsafe(...args: unknown[]): Promise<void>;
+
+        unsafe('...', () => {});
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        declare function unsafe(...args: unknown[]): Promise<void>;
+
+        void unsafe('...', () => {});
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {}).then(() => {});
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        void it('...', () => {}).then(() => {});
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {}).finally(() => {});
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        void it('...', () => {}).finally(() => {});
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const createPromise: () => PromiseLike<number>;
 createPromise();
       `,
@@ -3872,7 +4033,6 @@ void createPromise();
           ],
         },
       ],
-      options: [{ checkThenables: false }],
     },
     {
       code: `
@@ -3896,7 +4056,6 @@ void createMyPromise();
           ],
         },
       ],
-      options: [{ checkThenables: false }],
     },
     {
       code: `
@@ -3924,7 +4083,7 @@ void createMyPromise();
           ],
         },
       ],
-      options: [{ checkThenables: false }],
+      options: [{ checkThenables: true }],
     },
     {
       code: `

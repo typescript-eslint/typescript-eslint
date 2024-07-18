@@ -2,6 +2,7 @@
 
 import url from 'node:url';
 
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
@@ -29,15 +30,20 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      ['deprecation']: deprecationPlugin,
+      // https://github.com/gund/eslint-plugin-deprecation/issues/78
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
+      ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      ['import']: importPlugin,
+      // https://github.com/import-js/eslint-plugin-import/issues/2948
+      ['import']: fixupPluginRules(importPlugin),
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
-      ['react-hooks']: reactHooksPlugin,
-      ['react']: reactPlugin,
+      // https://github.com/facebook/react/issues/28313
+      ['react-hooks']: fixupPluginRules(reactHooksPlugin),
+      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
+      ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
     },
@@ -76,12 +82,6 @@ export default tseslint.config(
         ...globals.node,
       },
       parserOptions: {
-        allowAutomaticSingleRunInference: true,
-        cacheLifetime: {
-          // we pretty well never create/change tsconfig structure - so no need to ever evict the cache
-          // in the rare case that we do - just need to manually restart their IDE.
-          glob: 'Infinity',
-        },
         project: [
           'tsconfig.json',
           'packages/*/tsconfig.json',
@@ -174,6 +174,12 @@ export default tseslint.config(
           ignorePrimitives: true,
         },
       ],
+      '@typescript-eslint/no-require-imports': [
+        'error',
+        {
+          allow: ['/package\\.json$'],
+        },
+      ],
 
       //
       // Internal repo rules
@@ -211,6 +217,7 @@ export default tseslint.config(
       'no-void': ['error', { allowAsStatement: true }],
       'one-var': ['error', 'never'],
       'prefer-arrow-callback': 'error',
+      'prefer-object-has-own': 'error',
       'prefer-rest-params': 'error',
 
       //
@@ -516,8 +523,8 @@ export default tseslint.config(
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     extends: [
       ...compat.config(jsxA11yPlugin.configs.recommended),
-      ...compat.config(reactPlugin.configs.recommended),
-      ...compat.config(reactHooksPlugin.configs.recommended),
+      ...fixupConfigRules(compat.config(reactPlugin.configs.recommended)),
+      ...fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
@@ -525,6 +532,7 @@ export default tseslint.config(
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      'react/prop-types': 'off',
     },
     settings: {
       react: {

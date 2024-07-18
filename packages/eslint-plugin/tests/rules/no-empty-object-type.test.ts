@@ -81,9 +81,9 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
-          line: 1,
           column: 11,
           data: { option: 'allowInterfaces' },
+          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {
@@ -103,9 +103,9 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
-          line: 1,
           column: 11,
           data: { option: 'allowInterfaces' },
+          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {
@@ -134,8 +134,8 @@ class Other {}
       `,
       errors: [
         {
-          line: 6,
           column: 11,
+          line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
@@ -166,8 +166,8 @@ class Derived {}
       `,
       errors: [
         {
-          line: 6,
           column: 11,
+          line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
         },
       ],
@@ -548,10 +548,12 @@ let value: unknown;
           messageId: 'noEmptyObject',
           suggestions: [
             {
+              data: { replacement: 'object' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = object | null;',
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = unknown | null;',
             },
@@ -571,10 +573,12 @@ let value: unknown;
           messageId: 'noEmptyObject',
           suggestions: [
             {
+              data: { replacement: 'object' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = object;',
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = unknown;',
             },

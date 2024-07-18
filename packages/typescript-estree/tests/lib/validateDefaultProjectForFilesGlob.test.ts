@@ -1,35 +1,35 @@
 import { validateDefaultProjectForFilesGlob } from '../../src/create-program/validateDefaultProjectForFilesGlob';
 
 describe('validateDefaultProjectForFilesGlob', () => {
-  it('does not throw when options.allowDefaultProjectForFiles is an empty array', () => {
+  it('does not throw when options.allowDefaultProject is an empty array', () => {
     expect(() =>
-      validateDefaultProjectForFilesGlob({ allowDefaultProjectForFiles: [] }),
+      validateDefaultProjectForFilesGlob({ allowDefaultProject: [] }),
     ).not.toThrow();
   });
 
-  it('does not throw when options.allowDefaultProjectForFiles contains a non-** glob', () => {
+  it('does not throw when options.allowDefaultProject contains a non-** glob', () => {
     expect(() =>
       validateDefaultProjectForFilesGlob({
-        allowDefaultProjectForFiles: ['./*.js'],
+        allowDefaultProject: ['./*.js'],
       }),
     ).not.toThrow();
   });
 
-  it('throws when options.allowDefaultProjectForFiles contains a * glob', () => {
+  it('throws when options.allowDefaultProject contains a * glob', () => {
     expect(() =>
       validateDefaultProjectForFilesGlob({
-        allowDefaultProjectForFiles: ['*'],
+        allowDefaultProject: ['*'],
       }),
-    ).toThrow(/allowDefaultProjectForFiles contains the overly wide '\*'\./);
+    ).toThrow(/allowDefaultProject contains the overly wide '\*'\./);
   });
 
-  it('throws when options.allowDefaultProjectForFiles contains a ** glob', () => {
+  it('throws when options.allowDefaultProject contains a ** glob', () => {
     expect(() =>
       validateDefaultProjectForFilesGlob({
-        allowDefaultProjectForFiles: ['**/*.js'],
+        allowDefaultProject: ['**/*.js'],
       }),
     ).toThrow(
-      /allowDefaultProjectForFiles glob '\*\*\/\*\.js' contains a disallowed '\*\*'\./,
+      /allowDefaultProject glob '\*\*\/\*\.js' contains a disallowed '\*\*'\./,
     );
   });
 });

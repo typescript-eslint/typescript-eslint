@@ -117,7 +117,9 @@ function getUnsubstitutedMessagePlaceholders(
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter();
+  // `configType` is hardcoded to eslintrc until switch to flat config is complete
+  // We should look to support both eslintrc and flat config for consumers of RuleTester.
+  readonly #linter: Linter = new Linter({ configType: 'eslintrc' });
 
   /**
    * Creates a new instance of RuleTester.
@@ -144,6 +146,7 @@ export class RuleTester extends TestFramework {
       try {
         // instead of creating a hard dependency, just use a soft require
         // a bit weird, but if they're using this tooling, it'll be installed
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const parser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
         parser.clearCaches();
       } catch {
@@ -256,7 +259,16 @@ export class RuleTester extends TestFramework {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
       if (!test.filename) {
-        return { ...test, filename: getFilename(test.parserOptions) };
+        return {
+          ...test,
+          filename: getFilename(test.parserOptions),
+          parserOptions: {
+            // Re-running simulates --fix mode, which implies an isolated program
+            // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+            disallowAutomaticSingleRunInference: true,
+            ...test.parserOptions,
+          },
+        };
       }
       return test;
     };
@@ -492,7 +504,7 @@ export class RuleTester extends TestFramework {
     item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): {
     messages: Linter.LintMessage[];
-    output: string;
+    outputs: string[];
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
     config: RuleTesterConfig;
@@ -501,7 +513,6 @@ export class RuleTester extends TestFramework {
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
     let code;
     let filename;
-    let output;
     let beforeAST: TSESTree.Program;
     let afterAST: TSESTree.Program;
 
@@ -587,6 +598,7 @@ export class RuleTester extends TestFramework {
 
     this.#linter.defineParser(
       config.parser,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       wrapParser(require(config.parser) as Parser.ParserModule),
     );
 
@@ -633,29 +645,47 @@ export class RuleTester extends TestFramework {
     // Verify the code.
     // @ts-expect-error -- we don't define deprecated members on our types
     const { getComments } = SourceCode.prototype as { getComments: unknown };
-    let messages;
 
-    try {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getCommentsDeprecation;
-      messages = this.#linter.verify(code, config, filename);
-    } finally {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getComments;
-    }
+    let initialMessages: Linter.LintMessage[] | null = null;
+    let messages: Linter.LintMessage[] | null = null;
+    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let passNumber = 0;
+    const outputs: string[] = [];
 
-    const fatalErrorMessage = messages.find(m => m.fatal);
+    do {
+      passNumber++;
 
-    assert(
-      !fatalErrorMessage,
-      `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
-    );
+      try {
+        // @ts-expect-error -- we don't define deprecated members on our types
+        SourceCode.prototype.getComments = getCommentsDeprecation;
+        messages = this.#linter.verify(code, config, filename);
+        if (!initialMessages) {
+          initialMessages = messages;
+        }
+      } finally {
+        // @ts-expect-error -- we don't define deprecated members on our types
+        SourceCode.prototype.getComments = getComments;
+      }
+      if (messages.length === 0) {
+        break;
+      }
 
-    // Verify if autofix makes a syntax error or not.
-    if (messages.some(m => m.fix)) {
-      output = SourceCodeFixer.applyFixes(code, messages).output;
+      const fatalErrorMessage = messages.find(m => m.fatal);
+      assert(
+        !fatalErrorMessage,
+        `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
+      );
+
+      fixedResult = SourceCodeFixer.applyFixes(code, messages);
+      if (fixedResult.output === code) {
+        break;
+      }
+      code = fixedResult.output;
+      outputs.push(code);
+
+      // Verify if autofix makes a syntax error or not.
       const errorMessageInFix = this.#linter
-        .verify(output, config, filename)
+        .verify(fixedResult.output, config, filename)
         .find(m => m.fatal);
 
       assert(
@@ -664,24 +694,22 @@ export class RuleTester extends TestFramework {
           'A fatal parsing error occurred in autofix.',
           `Error: ${errorMessageInFix?.message}`,
           'Autofix output:',
-          output,
+          fixedResult.output,
         ].join('\n'),
       );
-    } else {
-      output = code;
-    }
+    } while (fixedResult.fixed && passNumber < 10);
 
     return {
-      messages,
-      output,
+      config,
+      filename,
+      messages: initialMessages,
+      outputs,
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeAST: beforeAST!,
       // is definitely assigned within the `rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
-      config,
-      filename,
     };
   }
 
@@ -1151,25 +1179,43 @@ export class RuleTester extends TestFramework {
 
     if (hasOwnProperty(item, 'output')) {
       if (item.output == null) {
+        if (result.outputs.length) {
+          assert.strictEqual(
+            result.outputs[0],
+            item.code,
+            'Expected no autofixes to be suggested.',
+          );
+        }
+      } else if (typeof item.output === 'string') {
+        assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
         assert.strictEqual(
-          result.output,
-          item.code,
-          'Expected no autofixes to be suggested',
+          result.outputs[0],
+          item.output,
+          'Output is incorrect.',
         );
+        if (result.outputs.length) {
+          assert.deepStrictEqual(
+            result.outputs,
+            [item.output],
+            'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
+          );
+        }
       } else {
-        assert.strictEqual(result.output, item.output, 'Output is incorrect.');
+        assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
+        assert.deepStrictEqual(
+          result.outputs,
+          item.output,
+          'Outputs do not match.',
+        );
       }
     } else {
-      assert.strictEqual(
-        result.output,
-        item.code,
-        "The rule fixed the code. Please add 'output' property.",
-      );
-      assert.notStrictEqual(
-        item.code,
-        item.output,
-        "Test property 'output' matches 'code'. If no autofix is expected, then omit the 'output' property or set it to null.",
-      );
+      if (result.outputs.length) {
+        assert.strictEqual(
+          result.outputs[0],
+          item.code,
+          "The rule fixed the code. Please add 'output' property.",
+        );
+      }
     }
 
     assertASTDidntChange(result.beforeAST, result.afterAST);
