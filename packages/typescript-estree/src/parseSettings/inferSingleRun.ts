@@ -47,7 +47,7 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
         process.argv[1].endsWith(normalize(path)),
       )
     ) {
-      return true;
+      return !process.argv.includes('--fix');
     }
   }
 
