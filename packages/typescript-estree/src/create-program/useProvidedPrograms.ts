@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 
+import type { ParseSettings } from '../parseSettings';
 import type { ASTAndDefiniteProgram } from './shared';
 import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
-import { ParseSettings } from '../parseSettings';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
