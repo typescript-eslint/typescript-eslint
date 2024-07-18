@@ -140,9 +140,8 @@ async function test() {
 }
     `,
     `
+declare const promiseValue: Promise<number>;
 async function test() {
-  declare const promiseValue: Promise<number>;
-
   await promiseValue;
   promiseValue.then(
     () => {},
@@ -158,9 +157,8 @@ async function test() {
 }
     `,
     `
+declare const promiseUnion: Promise<number> | number;
 async function test() {
-  declare const promiseUnion: Promise<number> | number;
-
   await promiseUnion;
   promiseUnion.then(
     () => {},
@@ -177,9 +175,8 @@ async function test() {
 }
     `,
     `
+declare const promiseIntersection: Promise<number> & number;
 async function test() {
-  declare const promiseIntersection: Promise<number> & number;
-
   await promiseIntersection;
   promiseIntersection.then(
     () => {},
@@ -210,12 +207,12 @@ async function test() {
 }
     `,
     `
+declare const intersectionPromise: Promise<number> & number;
 async function test() {
   await (Math.random() > 0.5 ? numberPromise : 0);
   await (Math.random() > 0.5 ? foo : 0);
   await (Math.random() > 0.5 ? bar : 0);
 
-  declare const intersectionPromise: Promise<number> & number;
   await intersectionPromise;
 }
     `,
@@ -308,8 +305,8 @@ async function test() {
 
     // optional chaining
     `
+declare const returnsPromise: () => Promise<void> | null;
 async function test() {
-  declare const returnsPromise: () => Promise<void> | null;
   await returnsPromise?.();
   returnsPromise()?.then(
     () => {},
@@ -712,6 +709,42 @@ myTag\`abc\`;
     },
     {
       code: `
+declare let x: any;
+declare const promiseArray: Array<Promise<unknown>>;
+x = promiseArray;
+      `,
+    },
+    {
+      code: `
+declare let x: Promise<number>;
+x = Promise.resolve(2);
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function f() {
+  return promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function* generator() {
+  yield* promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+async function* generator() {
+  yield Promise.resolve();
+}
+      `,
+    },
+    {
+      code: `
 interface SafeThenable<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?:
@@ -732,6 +765,41 @@ promise().then(() => {});
           allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
         },
       ],
+    },
+    {
+      code: `
+interface SafePromise<T> extends Promise<T> {
+  brand: 'safe';
+}
+
+declare const createSafePromise: () => SafePromise<string>;
+createSafePromise();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }],
+          checkThenables: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const createPromise: () => PromiseLike<number>;
+createPromise();
+      `,
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+      `,
+      options: [{ checkThenables: false }],
     },
   ],
 
@@ -1711,9 +1779,9 @@ async function test() {
     },
     {
       code: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   promiseValue.then(() => {});
   promiseValue.catch();
@@ -1728,9 +1796,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   void promiseValue;
   promiseValue.then(() => {});
   promiseValue.catch();
@@ -1747,9 +1815,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   void promiseValue.then(() => {});
   promiseValue.catch();
@@ -1766,9 +1834,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   promiseValue.then(() => {});
   void promiseValue.catch();
@@ -1785,9 +1853,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseValue: Promise<number>;
+declare const promiseValue: Promise<number>;
 
+async function test() {
   promiseValue;
   promiseValue.then(() => {});
   promiseValue.catch();
@@ -1801,9 +1869,9 @@ async function test() {
     },
     {
       code: `
-async function test() {
-  declare const promiseUnion: Promise<number> | number;
+declare const promiseUnion: Promise<number> | number;
 
+async function test() {
   promiseUnion;
 }
       `,
@@ -1815,9 +1883,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseUnion: Promise<number> | number;
+declare const promiseUnion: Promise<number> | number;
 
+async function test() {
   void promiseUnion;
 }
       `,
@@ -1828,9 +1896,9 @@ async function test() {
     },
     {
       code: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   promiseIntersection;
   promiseIntersection.then(() => {});
   promiseIntersection.catch();
@@ -1844,9 +1912,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   void promiseIntersection;
   promiseIntersection.then(() => {});
   promiseIntersection.catch();
@@ -1862,9 +1930,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   promiseIntersection;
   void promiseIntersection.then(() => {});
   promiseIntersection.catch();
@@ -1880,9 +1948,9 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-async function test() {
-  declare const promiseIntersection: Promise<number> & number;
+declare const promiseIntersection: Promise<number> & number;
 
+async function test() {
   promiseIntersection;
   promiseIntersection.then(() => {});
   void promiseIntersection.catch();
@@ -2330,13 +2398,13 @@ async function test() {
     },
     {
       code: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
       options: [{ ignoreIIFE: true }],
       errors: [
@@ -2347,13 +2415,13 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          void promiseIntersection;
-          promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  void promiseIntersection;
+  promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -2365,13 +2433,13 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          void promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  void promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -2383,13 +2451,13 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          promiseIntersection.then(() => {});
-          void promiseIntersection.catch();
-          promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  promiseIntersection.then(() => {});
+  void promiseIntersection.catch();
+  promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -2401,13 +2469,13 @@ async function test() {
             {
               messageId: 'floatingFixVoid',
               output: `
-        (async function () {
-          declare const promiseIntersection: Promise<number> & number;
-          promiseIntersection;
-          promiseIntersection.then(() => {});
-          promiseIntersection.catch();
-          void promiseIntersection.finally();
-        })();
+declare const promiseIntersection: Promise<number> & number;
+(async function () {
+  promiseIntersection;
+  promiseIntersection.then(() => {});
+  promiseIntersection.catch();
+  void promiseIntersection.finally();
+})();
       `,
             },
           ],
@@ -3417,6 +3485,16 @@ void promiseArray;
     },
     {
       code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function f() {
+  await promiseArray;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [{ line: 4, messageId: 'floatingPromiseArray' }],
+    },
+    {
+      code: `
 [1, 2, Promise.reject(), 3];
       `,
       errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
@@ -3714,6 +3792,260 @@ myTag\`abc\`;
 type SafePromise = Promise<number> & { __linterBrands?: string };
 declare const myTag: (strings: TemplateStringsArray) => SafePromise;
 void myTag\`abc\`;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const createPromise: () => PromiseLike<number>;
+createPromise();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const createPromise: () => PromiseLike<number>;
+void createPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+void createMyThenable();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: true }],
+    },
+    {
+      code: `
+declare const createPromise: () => Promise<number>;
+createPromise();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const createPromise: () => Promise<number>;
+void createPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+class MyPromise<T> extends Promise<T> {}
+declare const createMyPromise: () => MyPromise<number>;
+createMyPromise();
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+class MyPromise<T> extends Promise<T> {}
+declare const createMyPromise: () => MyPromise<number>;
+void createMyPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+class MyPromise<T> extends Promise<T> {
+  additional: string;
+}
+declare const createMyPromise: () => MyPromise<number>;
+createMyPromise();
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+class MyPromise<T> extends Promise<T> {
+  additional: string;
+}
+declare const createMyPromise: () => MyPromise<number>;
+void createMyPromise();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkThenables: false }],
+    },
+    {
+      code: `
+declare const x: any;
+function* generator(): Generator<number, void, Promise<number>> {
+  yield x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const x: any;
+function* generator(): Generator<number, void, Promise<number>> {
+  void (yield x);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: Generator<number, Promise<number>, void>;
+function* generator(): Generator<number, void, void> {
+  yield* x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+declare const x: Generator<number, Promise<number>, void>;
+function* generator(): Generator<number, void, void> {
+  void (yield* x);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const value = {};
+value as Promise<number>;
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const value = {};
+void (value as Promise<number>);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+({}) as Promise<number> & number;
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void (({}) as Promise<number> & number);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+({}) as Promise<number> & { yolo?: string };
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void (({}) as Promise<number> & { yolo?: string });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+<Promise<number>>{};
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void (<Promise<number>>{});
       `,
             },
           ],
