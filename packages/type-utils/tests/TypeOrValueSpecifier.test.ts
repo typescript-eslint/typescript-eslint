@@ -369,6 +369,23 @@ describe('TypeOrValueSpecifier', () => {
       ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
+    it("does not match a `declare global` with the 'global' package name", () => {
+      runTestNegative(
+        `
+          declare global {
+            export type URL = {};
+          }
+
+          type Test = URL;
+        `,
+        {
+          from: 'package',
+          name: 'URL',
+          package: 'global',
+        },
+      );
+    });
+
     it.each<[string, TypeOrValueSpecifier]>([
       [
         'import type {Node} from "typescript"; type Test = Node;',

@@ -5,7 +5,9 @@ function findParentModuleDeclaration(
 ): ts.ModuleDeclaration | undefined {
   switch (node.kind) {
     case ts.SyntaxKind.ModuleDeclaration:
-      return node as ts.ModuleDeclaration;
+      return ts.isStringLiteral((node as ts.ModuleDeclaration).name)
+        ? (node as ts.ModuleDeclaration)
+        : undefined;
     case ts.SyntaxKind.SourceFile:
       return undefined;
     default:
