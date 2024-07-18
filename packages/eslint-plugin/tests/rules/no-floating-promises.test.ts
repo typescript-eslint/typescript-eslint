@@ -787,6 +787,38 @@ promise().then(() => {});
         },
       ],
     },
+
+    {
+      code: `
+        declare module 'abc' {
+          export function it(name: string, action: () => void): void;
+        }
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'abc' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare module 'abc' {
+          export function it(name: string, action: () => void): void;
+        }
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'abc' },
+          ],
+        },
+      ],
+    },
     {
       code: `
 interface SafePromise<T> extends Promise<T> {
