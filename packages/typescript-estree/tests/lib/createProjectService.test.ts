@@ -101,7 +101,6 @@ describe('createProjectService', () => {
     const { service } = createProjectService(
       {
         allowDefaultProjectForFiles: ['file.js'],
-        defaultProject: './tsconfig.json',
       },
       undefined,
     );
