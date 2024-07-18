@@ -15,6 +15,13 @@ import type { TSESTreeOptions } from '../parser-options';
  * @returns Whether this is part of a single run, rather than a long-running process.
  */
 export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
+  // https://github.com/typescript-eslint/typescript-eslint/issues/9504
+  // There's no support (yet?) for extraFileExtensions in single-run hosts.
+  // Only watch program hosts and project service can support that.
+  if (options?.extraFileExtensions?.length) {
+    return false;
+  }
+
   if (
     // single-run implies type-aware linting - no projects means we can't be in single-run mode
     options?.project == null ||

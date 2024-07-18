@@ -63,6 +63,30 @@ describe('inferSingleRun', () => {
     expect(actual).toBe(true);
   });
 
+  it('returns true when singleRun can be inferred and options.extraFileExtensions is an empty array', () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({
+      allowAutomaticSingleRunInference: true,
+      extraFileExtensions: [],
+      project: './tsconfig.json',
+    });
+
+    expect(actual).toBe(true);
+  });
+
+  it('returns false when singleRun can be inferred options.extraFileExtensions contains entries', () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({
+      allowAutomaticSingleRunInference: true,
+      extraFileExtensions: ['.vue'],
+      project: './tsconfig.json',
+    });
+
+    expect(actual).toBe(false);
+  });
+
   it('returns false when there is no way to infer singleRun', () => {
     const actual = inferSingleRun({
       programs: null,
