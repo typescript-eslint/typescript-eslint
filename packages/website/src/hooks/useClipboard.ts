@@ -9,7 +9,7 @@ export function useClipboard(code: () => string): useClipboardResult {
 
   const copy = useCallback(
     () =>
-      void navigator.clipboard.writeText(code()).then(() => {
+      navigator.clipboard.writeText(code()).then(() => {
         setCopied(true);
       }),
     [setCopied, code],
