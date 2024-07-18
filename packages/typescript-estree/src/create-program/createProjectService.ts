@@ -67,6 +67,12 @@ export function createProjectService(
     jsDocParsingMode,
   });
 
+  service.setHostConfiguration({
+    preferences: {
+      includePackageJsonAutoImports: 'off',
+    },
+  });
+
   if (options.defaultProject) {
     let configRead;
 
@@ -93,12 +99,6 @@ export function createProjectService(
         )}`,
       );
     }
-
-    service.setHostConfiguration({
-      preferences: {
-        includePackageJsonAutoImports: 'off',
-      },
-    });
 
     service.setCompilerOptionsForInferredProjects(
       (
