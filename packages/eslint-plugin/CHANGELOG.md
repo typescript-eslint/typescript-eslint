@@ -1,3 +1,183 @@
+## 7.16.1 (2024-07-15)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] descend into all parts of mapped types in no-unnecessary-type-parameters
+
+
+### ❤️  Thank You
+
+- Dan Vanderkam
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.16.0 (2024-07-08)
+
+
+### 🚀 Features
+
+- **rule-tester:** stricter rule test validations
+
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] add new rule
+
+- **eslint-plugin:** add support for nested namespaces to unsafe-member-access
+
+- **eslint-plugin:** [no-floating-promises] add checkThenables option
+
+
+### 🩹 Fixes
+
+- **deps:** update dependency @eslint-community/regexpp to v4.11.0
+
+- **eslint-plugin:** [no-floating-promises] add `suggestions` to tests from #9263 `checkThenables`
+
+- **website:** react key error on internal pages of website
+
+- **eslint-plugin:** [restrict-template-expressions] don't report tuples if `allowArray` option is enabled
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Josh Goldberg ✨
+- Juan Sanchez
+- Vinccool96
+- YeonJuan
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.15.0 (2024-07-01)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [array-type] detect `Readonly<string[]>` case
+
+- **eslint-plugin:** back-port new rules around empty object types from v8
+
+
+### 🩹 Fixes
+
+- disable `EXPERIMENTAL_useProjectService` in `disabled-type-checked` shared config
+
+- **eslint-plugin:** [no-unsafe-return] differentiate a types-error any from a true any
+
+- **eslint-plugin:** [no-unsafe-call] differentiate a types-error any from a true any
+
+
+### ❤️  Thank You
+
+- auvred
+- Kim Sang Du
+- rgehbt
+- Vinccool96
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.14.1 (2024-06-24)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] treat enums and literals as their underlying primitive types
+
+- **eslint-plugin:** [prefer-nullish-coalescing] ensure ternary fix does not remove parens
+
+
+### ❤️  Thank You
+
+- Jake Bailey
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.14.0 (2024-06-24)
+
+
+### 🚀 Features
+
+- support TypeScript 5.5
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-extraneous-class] handle abstract members
+
+- **eslint-plugin:** [prefer-nullish-coalescing] handle intersected primitive types
+
+- **eslint-plugin:** [no-invalid-this] support AccessorProperty
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- cm-ayf
+- Jake Bailey
+- James Zhan
+- Joshua Chen
+- yoshi2no
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.13.1 (2024-06-17)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-readonly] refine report locations
+
+- **eslint-plugin:** [return-await] support explicit resource management
+
+- **eslint-plugin:** [no-unsafe-member-access] differentiate a types-error any from a true any
+
+
+### ❤️  Thank You
+
+- Kirk Waiblinger
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.13.0 (2024-06-10)
+
+
+### 🚀 Features
+
+- **typescript-estree:** require `import = require()` argument to be a string literal
+
+- **typescript-estree:** forbid `.body`, `.async`, `.generator` on `declare function`
+
+- **eslint-plugin:** [no-dynamic-delete] allow all string literals as index
+
+
+### 🩹 Fixes
+
+- **ast-spec:** function-call-like callee should be Expression not LeftHandSideExpression
+
+- **scope-manager:** handle index signature in class
+
+- **eslint-plugin:** [init-declarations] refine report locations
+
+- **eslint-plugin:** [no-base-to-string] make error message more nuanced
+
+- **eslint-plugin:** [no-unsafe-assignment] be more specific about error types
+
+- **eslint-plugin:** [no-magic-numbers] fix implementation of the `ignore` option
+
+
+### ❤️  Thank You
+
+- Fotis Papadogeorgopoulos
+- Joshua Chen
+- Kirk Waiblinger
+- Tobiloba Adedeji
+- Vinccool96
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.12.0 (2024-06-03)
 
 

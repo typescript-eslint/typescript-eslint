@@ -77,7 +77,7 @@ replies:
       Closing this PR as it's been stale for ~6 weeks without activity. Feel free to reopen @{{ author }} if you have time - but no worries if not! If anybody wants to drive it forward, please do post your own PR - and if you use this as a start, consider adding `Co-authored-by: @{{ author }}` at the end of your PR description. Thanks! 😊
     name: Pruning Stale PR
   - body: |
-      As per [our contributing guidelines](https://typescript-eslint.io/contributing/pull-requests#addressing-feedback-and-beyond) this PR is in the queue of PRs to reviewed, and will be reviewed when we are able.
+      As per [our contributing guidelines](https://typescript-eslint.io/contributing/pull-requests#addressing-feedback-and-beyond) this PR is in the queue of PRs to review, and will be reviewed when we are able.
       \
       This project is run by volunteer maintainers, so it might be a bit before we can find the time to get to it.
     name: Review Queue
@@ -88,5 +88,5 @@ replies:
       The configurability also leads to huge fanout [making tests huge, and awful to maintain](https://github.com/typescript-eslint/typescript-eslint/blob/b814e635c1f34139c89e0176727480935dd45cac/packages/eslint-plugin/tests/rules/type-annotation-spacing.test.ts).
       \
       It's for these reasons that [eslint has frozen all stylistic lint rule options, and will not accept any new ones](https://eslint.org/blog/2020/05/changes-to-rules-policies).
-      See also our [What About Formatting?](https://typescript-eslint.io/linting/troubleshooting/formatting) docs.
+      See also our [What About Formatting?](https://typescript-eslint.io/users/what-about-formatting) docs.
     name: Use Prettier

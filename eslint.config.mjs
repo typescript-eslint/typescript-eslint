@@ -134,6 +134,7 @@ export default tseslint.config(
         'error',
         { allowConstantLoopConditions: true },
       ],
+      '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/prefer-literal-enum-member': [
         'error',
@@ -205,7 +206,13 @@ export default tseslint.config(
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
       ],
+      'no-lonely-if': 'error',
+      'no-useless-call': 'error',
+      'no-useless-computed-key': 'error',
+      'no-void': ['error', { allowAsStatement: true }],
       'one-var': ['error', 'never'],
+      'prefer-arrow-callback': 'error',
+      'prefer-rest-params': 'error',
 
       //
       // eslint-plugin-eslint-comment
@@ -430,6 +437,7 @@ export default tseslint.config(
       'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
+      'eslint-plugin/no-property-in-node': 'error',
       'eslint-plugin/require-meta-docs-description': [
         'error',
         { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },

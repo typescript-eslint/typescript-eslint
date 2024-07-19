@@ -8,7 +8,11 @@
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
-  parserOptions: { project: false, program: null },
+  parserOptions: {
+    project: false,
+    program: null,
+    EXPERIMENTAL_useProjectService: false,
+  },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',
@@ -30,8 +34,10 @@ export = {
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-unnecessary-qualifier': 'off',
+    '@typescript-eslint/no-unnecessary-template-expression': 'off',
     '@typescript-eslint/no-unnecessary-type-arguments': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    '@typescript-eslint/no-unnecessary-type-parameters': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
@@ -39,7 +45,6 @@ export = {
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
-    '@typescript-eslint/no-unnecessary-template-expression': 'off',
     '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/only-throw-error': 'off',

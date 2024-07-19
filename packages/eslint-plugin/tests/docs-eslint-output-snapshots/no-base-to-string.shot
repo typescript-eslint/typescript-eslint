@@ -5,18 +5,18 @@ exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 
 
 // Passing an object or class instance to string concatenation:
 '' + {};
-     ~~ '{}' will evaluate to '[object Object]' when stringified.
+     ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 
 class MyClass {}
 const value = new MyClass();
 value + '';
-~~~~~ 'value' will evaluate to '[object Object]' when stringified.
+~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
 
 // Interpolation and manual .toString() calls too:
 \`Value: \${value}\`;
-          ~~~~~ 'value' will evaluate to '[object Object]' when stringified.
+          ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
 ({}).toString();
- ~~ '{}' will evaluate to '[object Object]' when stringified.
+ ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 "
 `;
 

@@ -29,13 +29,13 @@ class Foo {
 
 // generic position examples
 const x: Set<string> = new Set<any>();
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Set<any> to a variable of type Set<string>.
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type \`Set<any>\` to a variable of type \`Set<string>\`.
 const x: Map<string, string> = new Map<string, any>();
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Map<string, any> to a variable of type Map<string, string>.
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type \`Map<string, any>\` to a variable of type \`Map<string, string>\`.
 const x: Set<string[]> = new Set<any[]>();
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Set<any[]> to a variable of type Set<string[]>.
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type \`Set<any[]>\` to a variable of type \`Set<string[]>\`.
 const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type Set<Set<Set<any>>> to a variable of type Set<Set<Set<string>>>.
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe assignment of type \`Set<Set<Set<any>>>\` to a variable of type \`Set<Set<Set<string>>>\`.
 "
 `;
 
