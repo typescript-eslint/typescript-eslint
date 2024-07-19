@@ -91,8 +91,8 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       },
       {
         position: 'right',
-        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
-        label: `v${version}`,
+        href: `https://github.com/blog/announcing-typescript-eslint-v8-beta`,
+        label: `v8`,
       },
       {
         to: 'play',
