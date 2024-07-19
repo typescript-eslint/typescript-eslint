@@ -91,6 +91,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       {
         position: 'right',
         href: `/blog/announcing-typescript-eslint-v8-beta`,
+        // TODO: Move back to package.json's version shortly after v8 launches
         label: `v8`,
       },
       {
