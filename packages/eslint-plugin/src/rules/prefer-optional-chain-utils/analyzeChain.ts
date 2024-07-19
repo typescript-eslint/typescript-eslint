@@ -2,7 +2,7 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type {
   ReportDescriptor,
   ReportFixFunction,
@@ -14,7 +14,9 @@ import * as ts from 'typescript';
 
 import {
   getOperatorPrecedenceForNode,
+  isClosingParenToken,
   isOpeningParenToken,
+  isParenthesized,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
@@ -195,9 +197,52 @@ const analyzeOrChainOperand: OperandAnalyzer = (
   }
 };
 
+function getFixRange(
+  left: TSESTree.Node,
+  right: TSESTree.Node,
+  node: TSESTree.Node,
+  sourceCode: SourceCode,
+): [number, number] {
+  let leftMost = nullThrows(
+    sourceCode.getFirstToken(left),
+    NullThrowsReasons.MissingToken('any token', left.type),
+  );
+  let rightMost = nullThrows(
+    sourceCode.getLastToken(right),
+    NullThrowsReasons.MissingToken('any token', right.type),
+  );
+
+  while (leftMost.range[0] > node.range[0]) {
+    const token = sourceCode.getTokenBefore(leftMost);
+    if (
+      !token ||
+      !isOpeningParenToken(token) ||
+      token.range[0] < node.range[0]
+    ) {
+      break;
+    }
+    leftMost = token;
+  }
+
+  while (rightMost.range[1] < node.range[1]) {
+    const token = sourceCode.getTokenAfter(rightMost);
+    if (
+      !token ||
+      !isClosingParenToken(token) ||
+      token.range[1] > node.range[1]
+    ) {
+      break;
+    }
+    rightMost = token;
+  }
+
+  return [leftMost.range[0], rightMost.range[1]];
+}
+
 function getFixer(
   sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
@@ -370,7 +415,7 @@ function getFixer(
 
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(
-      [chain[0].node.range[0], lastOperand.node.range[1]],
+      getFixRange(chain[0].node, lastOperand.node, node, sourceCode),
       newCode,
     );
 
@@ -475,6 +520,7 @@ export function analyzeChain(
   >,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
+  node: TSESTree.Node,
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
 ): void {
@@ -519,6 +565,7 @@ export function analyzeChain(
           ...getFixer(
             context.sourceCode,
             parserServices,
+            node,
             operator,
             options,
             subChainFlat,

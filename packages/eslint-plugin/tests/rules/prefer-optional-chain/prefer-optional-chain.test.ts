@@ -1822,6 +1822,62 @@ describe('hand-crafted cases', () => {
           },
         ],
       },
+      // parenthesis
+      {
+        code: noFormat`a && (a.b && a.b.c)`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 19,
+          },
+        ],
+      },
+      {
+        code: noFormat`(a && a.b) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 2,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`((a && a.b)) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 3,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && (a.b && a.b.c))`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 23,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && a.b && a.b.c)`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 22,
+          },
+        ],
+      },
     ],
   });
 });
