@@ -74,7 +74,7 @@ function OptionsSelectorContent({
           />
         </InputLabel>
         <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>
-        <InputLabel name="TSEslint">{process.env.TS_ESLINT_VERSION}</InputLabel>
+        <InputLabel name="TSESlint">{process.env.TS_ESLINT_VERSION}</InputLabel>
       </Expander>
       <Expander label="Options">
         <InputLabel name="File type">
