@@ -206,6 +206,7 @@ export default tseslint.config(
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
       ],
+      'no-lonely-if': 'error',
       'no-useless-call': 'error',
       'no-useless-computed-key': 'error',
       'no-void': ['error', { allowAsStatement: true }],
