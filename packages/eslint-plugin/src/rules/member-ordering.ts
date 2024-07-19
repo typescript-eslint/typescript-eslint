@@ -1,3 +1,6 @@
+// This rule was feature-frozen before we enabled no-property-in-node.
+/* eslint-disable eslint-plugin/no-property-in-node */
+
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
@@ -1064,6 +1067,11 @@ export default createRule<Options, MessageIds>({
     // https://github.com/typescript-eslint/typescript-eslint/issues/5439
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     return {
+      'ClassDeclaration, FunctionDeclaration'(node): void {
+        if ('superClass' in node) {
+          // ...
+        }
+      },
       ClassDeclaration(node): void {
         validateMembersOrder(
           node.body.body,

@@ -280,11 +280,17 @@ describe('convert', () => {
 
   describe('suppressDeprecatedPropertyWarnings', () => {
     const makeNodeGetter =
-      <S extends ts.Statement, T extends TSESTree.Node>(
+      <
+        // Small convenience for testing the nodes:
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        S extends ts.Statement,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+        TNode extends TSESTree.Node,
+      >(
         code: string,
         tsToEsNode: (statement: S) => TSNode,
       ) =>
-      (converterOptions?: ConverterOptions): T => {
+      (converterOptions?: ConverterOptions): TNode => {
         const ast = convertCode(code);
         const instance = new Converter(ast, {
           shouldPreserveNodeMaps: true,
@@ -323,7 +329,7 @@ describe('convert', () => {
       esTsEnumDeclaration.members;
 
       expect(emitWarning).toHaveBeenCalledWith(
-        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'members' property is deprecated on TSEnumDeclaration nodes. Use 'body.members' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
         'DeprecationWarning',
       );
     });
@@ -387,7 +393,7 @@ describe('convert', () => {
       tsMappedType.typeParameter;
 
       expect(emitWarning).toHaveBeenCalledWith(
-        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        `The 'typeParameter' property is deprecated on TSMappedType nodes. Use 'constraint' and 'key' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
         'DeprecationWarning',
       );
     });

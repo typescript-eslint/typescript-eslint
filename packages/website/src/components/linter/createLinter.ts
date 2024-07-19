@@ -164,10 +164,10 @@ export function createLinter(
   };
 
   const triggerLintAll = (): void => {
-    system.searchFiles('/{file,react}.*').forEach(triggerLint);
+    system.searchFiles('/input.*').forEach(triggerLint);
   };
 
-  system.watchFile('/{file,react}.*', triggerLint);
+  system.watchFile('/input.*', triggerLint);
   system.watchFile('/.eslintrc', filename => {
     applyEslintConfig(filename);
     triggerLintAll();

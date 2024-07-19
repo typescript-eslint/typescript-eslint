@@ -2,10 +2,13 @@ import type {
   CacheDurationSeconds,
   DebugLevel,
   JSDocParsingMode,
+  ProjectServiceOptions,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
+
+export { ProjectServiceOptions } from '@typescript-eslint/types';
 
 //////////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
@@ -101,31 +104,6 @@ interface ParseOptions {
   suppressDeprecatedPropertyWarnings?: boolean;
 }
 
-/**
- * Granular options to configure the project service.
- */
-export interface ProjectServiceOptions {
-  /**
-   * Globs of files to allow running with the default project compiler options
-   * despite not being matched by the project service.
-   */
-  allowDefaultProject?: string[];
-
-  /**
-   * Path to a TSConfig to use instead of TypeScript's default project configuration.
-   */
-  defaultProject?: string;
-
-  /**
-   * The maximum number of files {@link allowDefaultProject} may match.
-   * Each file match slows down linting, so if you do need to use this, please
-   * file an informative issue on typescript-eslint explaining why - so we can
-   * help you avoid using it!
-   * @default 8
-   */
-  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
-}
-
 interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Granular control of the expiry lifetime of our internal caches.
@@ -173,6 +151,8 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * When `project` is provided, this controls the non-standard file extensions which will be parsed.
    * It accepts an array of file extensions, each preceded by a `.`.
+   *
+   * NOTE: When used with {@link projectService}, full project reloads may occur.
    */
   extraFileExtensions?: string[];
 
@@ -237,6 +217,8 @@ export type TSESTreeOptions = ParseAndGenerateServicesOptions;
 // This lets us use generics to type the return value, and removes the need to
 // handle the undefined type in the get method
 export interface ParserWeakMap<Key, ValueBase> {
+  // This is unsafe internally, so it should only be exposed via safe wrappers.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   get<Value extends ValueBase>(key: Key): Value;
   has(key: unknown): boolean;
 }

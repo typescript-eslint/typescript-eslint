@@ -17,6 +17,18 @@ import TabItem from '@theme/TabItem';
 See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to set up your ESLint configuration file.
 [Packages > typescript-eslint](../packages/TypeScript_ESLint.mdx) includes more documentation on the `tseslint` helper.
 
+```js title="eslint.config.js"
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+);
+```
+
 ### Projects Without Type Checking
 
 If your project does not enable [typed linting](../getting-started/Typed_Linting.mdx), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
@@ -473,4 +485,4 @@ If you feel strongly that a specific rule should (or should not) be one of these
 
 None of the preset configs provided by typescript-eslint enable formatting rules (rules that only serve to enforce code whitespace and other trivia).
 We strongly recommend you use Prettier or an equivalent for formatting your code, not ESLint formatting rules.
-See [What About Formatting? > Suggested Usage](../troubleshooting/Formatting.mdx#suggested-usage---prettier).
+See [What About Formatting? > Suggested Usage](./What_About_Formatting.mdx#suggested-usage---prettier).

@@ -20,6 +20,7 @@ export type MinimalRuleModule<
 > = Partial<Omit<RuleModule<MessageIds, Options>, 'create'>> &
   Pick<RuleModule<MessageIds, Options>, 'create'>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class LinterBase {
   /**
    * Initialize the Linter.

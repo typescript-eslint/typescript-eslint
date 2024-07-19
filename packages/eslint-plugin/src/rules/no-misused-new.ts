@@ -50,14 +50,20 @@ export default createRule({
      * @param returnType type to be compared
      */
     function isMatchingParentType(
-      parent: TSESTree.Node | undefined,
+      parent:
+        | TSESTree.TSInterfaceDeclaration
+        | TSESTree.ClassDeclaration
+        | TSESTree.ClassExpression
+        | TSESTree.Identifier
+        | undefined,
       returnType: TSESTree.TSTypeAnnotation | undefined,
     ): boolean {
       if (
         parent &&
-        'id' in parent &&
-        parent.id &&
-        parent.id.type === AST_NODE_TYPES.Identifier
+        (parent.type === AST_NODE_TYPES.ClassDeclaration ||
+          parent.type === AST_NODE_TYPES.ClassExpression ||
+          parent.type === AST_NODE_TYPES.TSInterfaceDeclaration) &&
+        parent.id
       ) {
         return getTypeReferenceName(returnType) === parent.id.name;
       }

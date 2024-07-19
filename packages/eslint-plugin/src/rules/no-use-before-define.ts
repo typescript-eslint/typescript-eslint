@@ -3,6 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
+import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
 const SENTINEL_TYPE =
   /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
@@ -104,24 +105,6 @@ function isNamedExports(reference: TSESLint.Scope.Reference): boolean {
     identifier.parent.type === AST_NODE_TYPES.ExportSpecifier &&
     identifier.parent.local === identifier
   );
-}
-
-/**
- * Recursively checks whether or not a given reference has a type query declaration among it's parents
- */
-function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
-  switch (node.type) {
-    case AST_NODE_TYPES.TSTypeQuery:
-      return true;
-
-    case AST_NODE_TYPES.TSQualifiedName:
-    case AST_NODE_TYPES.Identifier:
-      return referenceContainsTypeQuery(node.parent);
-
-    default:
-      // if we find a different node, there's no chance that we're in a TSTypeQuery
-      return false;
-  }
 }
 
 /**

@@ -8,7 +8,6 @@ import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-com
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
 
-import { version } from './package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
@@ -91,8 +90,9 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       },
       {
         position: 'right',
-        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
-        label: `v${version}`,
+        href: `/blog/announcing-typescript-eslint-v8-beta`,
+        // TODO: Move back to package.json's version shortly after v8 launches
+        label: `v8`,
       },
       {
         to: 'play',
@@ -263,32 +263,56 @@ const pluginPwaOptions: PluginPwaOptions = {
 const redirects: PluginRedirectOptions = {
   redirects: [
     {
+      from: '/getting-started/typed-linting/monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
+    },
+    {
       from: '/linting/configs',
       to: '/users/configs',
     },
     {
       from: '/linting/troubleshooting',
-      to: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
     },
     {
       from: '/linting/troubleshooting/formatting',
-      to: '/troubleshooting/formatting',
+      to: '/users/what-about-formatting',
     },
     {
-      from: '/linting/troubleshooting/performance-troubleshooting',
-      to: '/troubleshooting/performance-troubleshooting',
+      from: '/linting/troubleshooting/typed-linting/Performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
     },
     {
       from: '/linting/troubleshooting/tslint',
-      to: '/troubleshooting/tslint',
+      to: '/users/what-about-tslint',
     },
     {
       from: '/linting/typed-linting',
       to: '/getting-started/typed-linting',
     },
     {
-      from: '/linting/typed-linting/monorepos',
-      to: '/getting-started/typed-linting/monorepos',
+      from: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/faqs',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/formatting',
+      to: '/users/what-about-formatting',
+    },
+    {
+      from: '/troubleshooting/tslint',
+      to: '/users/what-about-tslint',
+    },
+    {
+      from: '/troubleshooting/performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
+    },
+    {
+      from: '/linting/troubleshooting/typed-linting/Monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
     },
     {
       from: '/maintenance/issues/rule-deprecations',

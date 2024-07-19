@@ -8,6 +8,7 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
+  isBuiltinSymbolLike,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
@@ -16,10 +17,11 @@ import {
 
 type Options = [
   {
-    ignoreVoid?: boolean;
-    ignoreIIFE?: boolean;
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
+    checkThenables?: boolean;
+    ignoreIIFE?: boolean;
+    ignoreVoid?: boolean;
   },
 ];
 
@@ -76,6 +78,13 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
+          checkThenables: {
+            description:
+              'Whether to check all "Thenable"s, not just the built-in Promise type.',
+            type: 'boolean',
+          },
           ignoreVoid: {
             description: 'Whether to ignore `void` expressions.',
             type: 'boolean',
@@ -85,8 +94,6 @@ export default createRule<Options, MessageId>({
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
-          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
         },
         additionalProperties: false,
       },
@@ -95,16 +102,19 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      ignoreVoid: true,
-      ignoreIIFE: false,
-      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
       allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      checkThenables: false,
+      ignoreIIFE: false,
+      ignoreVoid: true,
     },
   ],
 
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const { checkThenables } = options;
+
     // TODO: #5439
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const allowForKnownSafePromises = options.allowForKnownSafePromises!;
@@ -257,6 +267,10 @@ export default createRule<Options, MessageId>({
       nonFunctionHandler?: boolean;
       promiseArray?: boolean;
     } {
+      if (node.type === AST_NODE_TYPES.AssignmentExpression) {
+        return { isUnhandled: false };
+      }
+
       // First, check expressions whose resulting types may not be promise-like
       if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Any child in a comma expression could return a potentially unhandled
@@ -286,6 +300,15 @@ export default createRule<Options, MessageId>({
 
       if (isPromiseArray(tsNode)) {
         return { isUnhandled: true, promiseArray: true };
+      }
+
+      // await expression addresses promises, but not promise arrays.
+      if (node.type === AST_NODE_TYPES.AwaitExpression) {
+        // you would think this wouldn't be strictly necessary, since we're
+        // anyway checking the type of the expression, but, unfortunately TS
+        // reports the result of `await (promise as Promise<number> & number)`
+        // as `Promise<number> & number` instead of `number`.
+        return { isUnhandled: false };
       }
 
       if (!isPromiseLike(tsNode)) {
@@ -321,8 +344,6 @@ export default createRule<Options, MessageId>({
 
         // All other cases are unhandled.
         return { isUnhandled: true };
-      } else if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
-        return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
@@ -331,15 +352,6 @@ export default createRule<Options, MessageId>({
           return alternateResult;
         }
         return isUnhandledPromise(checker, node.consequent);
-      } else if (
-        node.type === AST_NODE_TYPES.MemberExpression ||
-        node.type === AST_NODE_TYPES.Identifier ||
-        node.type === AST_NODE_TYPES.NewExpression
-      ) {
-        // If it is just a property access chain or a `new` call (e.g. `foo.bar` or
-        // `new Promise()`), the promise is not handled because it doesn't have the
-        // necessary then/catch call at the end of the chain.
-        return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
         const leftResult = isUnhandledPromise(checker, node.left);
         if (leftResult.isUnhandled) {
@@ -348,10 +360,8 @@ export default createRule<Options, MessageId>({
         return isUnhandledPromise(checker, node.right);
       }
 
-      // We conservatively return false for all other types of expressions because
-      // we don't want to accidentally fail if the promise is handled internally but
-      // we just can't tell.
-      return { isUnhandled: false };
+      // Anything else is unhandled.
+      return { isUnhandled: true };
     }
 
     function isPromiseArray(node: ts.Node): boolean {
@@ -377,14 +387,10 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    // Modified from tsutils.isThenable() to only consider thenables which can be
-    // rejected/caught via a second parameter. Original source (MIT licensed):
-    //
-    //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
     function isPromiseLike(node: ts.Node, type?: ts.Type): boolean {
       type ??= checker.getTypeAtLocation(node);
 
-      // Ignore anything specified by `allowForKnownSafePromises` option.
+      // The highest priority is to allow anything allowlisted
       if (
         allowForKnownSafePromises.some(allowedType =>
           typeMatchesSpecifier(type, allowedType, services.program),
@@ -393,7 +399,26 @@ export default createRule<Options, MessageId>({
         return false;
       }
 
-      for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
+      // Otherwise, we always consider the built-in Promise to be Promise-like...
+      const typeParts = tsutils.unionTypeParts(checker.getApparentType(type));
+      if (
+        typeParts.some(typePart =>
+          isBuiltinSymbolLike(services.program, typePart, 'Promise'),
+        )
+      ) {
+        return true;
+      }
+
+      // ...and only check all Thenables if explicitly told to
+      if (!checkThenables) {
+        return false;
+      }
+
+      // Modified from tsutils.isThenable() to only consider thenables which can be
+      // rejected/caught via a second parameter. Original source (MIT licensed):
+      //
+      //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
+      for (const ty of typeParts) {
         const then = ty.getProperty('then');
         if (then === undefined) {
           continue;

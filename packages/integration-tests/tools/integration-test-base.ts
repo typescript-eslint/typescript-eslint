@@ -128,7 +128,6 @@ function integrationTest(
 export function eslintIntegrationTest(
   testFilename: string,
   filesGlob: string,
-  flatConfig = false,
 ): void {
   integrationTest('eslint', testFilename, async testFolder => {
     // lint, outputting to a JSON file
@@ -143,8 +142,6 @@ export function eslintIntegrationTest(
           'json',
           '--output-file',
           outFile,
-          '--config',
-          flatConfig ? './eslint.config.js' : './.eslintrc.js',
           '--fix-dry-run',
           filesGlob,
         ],

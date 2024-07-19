@@ -11,14 +11,10 @@ import { CORE_COMPILER_OPTIONS } from './shared';
  * @param projectDirectory the project directory to use as the CWD, defaults to `process.cwd()`
  */
 function getParsedConfigFile(
+  tsserver: typeof ts,
   configFile: string,
   projectDirectory?: string,
-): ts.ParsedCommandLine {
-  // We import this lazily to avoid its cost for users who don't use the service
-  // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
-
+): ts.ParsedCommandLine | string {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tsserver.sys === undefined) {
     throw new Error(
@@ -26,12 +22,14 @@ function getParsedConfigFile(
     );
   }
 
+  let parsingError: string | undefined;
+
   const parsed = tsserver.getParsedCommandLineOfConfigFile(
     configFile,
     CORE_COMPILER_OPTIONS,
     {
       onUnRecoverableConfigFileDiagnostic: diag => {
-        throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
+        parsingError = formatDiagnostics([diag]); // ensures that `parsed` is defined.
       },
       fileExists: fs.existsSync,
       getCurrentDirectory: () =>
@@ -42,14 +40,18 @@ function getParsedConfigFile(
     },
   );
 
-  // parsed is not undefined, since we throw on failure.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const result = parsed!;
-  if (result.errors.length) {
-    throw new Error(formatDiagnostics(result.errors));
+  if (parsed?.errors?.length) {
+    parsingError = formatDiagnostics(parsed.errors);
   }
 
-  return result;
+  if (parsed === undefined) {
+    return (
+      parsingError ??
+      'Unknown config file parse error: no result or error diagnostic returned'
+    );
+  }
+
+  return parsed;
 
   function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
     return tsserver.formatDiagnostics(diagnostics, {

@@ -60,7 +60,7 @@ export default createRule<Options, MessageIds>({
             type: 'string',
           },
           allowObjectTypes: {
-            enum: ['always', 'in-type-alias-with-name', 'never'],
+            enum: ['always', 'never'],
             type: 'string',
           },
           allowWithName: {
