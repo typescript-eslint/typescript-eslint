@@ -47,6 +47,7 @@ import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
+import noEmptyObjectType from './no-empty-object-type';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraParens from './no-extra-parens';
@@ -80,16 +81,19 @@ import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
+import noUnnecessaryParameterPropertyAssignment from './no-unnecessary-parameter-property-assignment';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
 import noUnnecessaryTemplateExpression from './no-unnecessary-template-expression';
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
+import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
+import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
@@ -100,6 +104,7 @@ import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
 import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
+import noWrapperObjectTypes from './no-wrapper-object-types';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
 import objectCurlySpacing from './object-curly-spacing';
 import onlyThrowError from './only-throw-error';
@@ -193,6 +198,7 @@ export default {
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,
+  'no-empty-object-type': noEmptyObjectType,
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extra-parens': noExtraParens,
@@ -226,16 +232,20 @@ export default {
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
+  'no-unnecessary-parameter-property-assignment':
+    noUnnecessaryParameterPropertyAssignment,
   'no-unnecessary-qualifier': noUnnecessaryQualifier,
   'no-unnecessary-template-expression': noUnnecessaryTemplateExpression,
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
+  'no-unnecessary-type-parameters': noUnnecessaryTypeParameters,
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,
+  'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
@@ -246,6 +256,7 @@ export default {
   'no-useless-empty-export': noUselessEmptyExport,
   'no-useless-template-literals': noUselessTemplateLiterals,
   'no-var-requires': noVarRequires,
+  'no-wrapper-object-types': noWrapperObjectTypes,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
   'object-curly-spacing': objectCurlySpacing,
   'only-throw-error': onlyThrowError,

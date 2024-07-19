@@ -54,6 +54,12 @@ export default createRule<Options, MessageIds>({
       'PropertyDefinition:exit'(): void {
         thisIsValidStack.pop();
       },
+      AccessorProperty(): void {
+        thisIsValidStack.push(true);
+      },
+      'AccessorProperty:exit'(): void {
+        thisIsValidStack.pop();
+      },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
         thisIsValidStack.push(
           node.params.some(

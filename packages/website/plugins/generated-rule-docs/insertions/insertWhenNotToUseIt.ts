@@ -49,11 +49,12 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
         {
           type: 'link',
           title: null,
-          url: `/troubleshooting/performance-troubleshooting`,
+          url: `/troubleshooting/typed-linting/performance`,
           children: [
             {
               type: 'text',
-              value: 'Performance Troubleshooting',
+              value:
+                'Troubleshooting > Linting with Type Information > Performance',
             },
           ],
         },

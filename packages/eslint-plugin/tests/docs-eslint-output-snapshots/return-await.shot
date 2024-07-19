@@ -63,6 +63,12 @@ async function invalidInTryCatch6() {
   return await 'value';
          ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
 }
+
+async function invalidInTryCatch7() {
+  using x = createDisposable();
+  return Promise.reject('using in scope');
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+}
 "
 `;
 
@@ -120,6 +126,11 @@ async function validInTryCatch5() {
 async function validInTryCatch6() {
   return 'value';
 }
+
+async function validInTryCatch7() {
+  using x = createDisposable();
+  return await Promise.reject('using in scope');
+}
 "
 `;
 
@@ -167,6 +178,20 @@ async function validAlways3() {
 `;
 
 exports[`Validating rule docs return-await.mdx code examples ESLint output 5`] = `
+"Correct
+Options: "error-handling-correctness-only"
+
+async function asyncFunction(): Promise<void> {
+  if (Math.random() < 0.5) {
+    return await Promise.resolve();
+  } else {
+    return Promise.resolve();
+  }
+}
+"
+`;
+
+exports[`Validating rule docs return-await.mdx code examples ESLint output 6`] = `
 "Incorrect
 Options: "never"
 
@@ -189,7 +214,7 @@ async function invalidNever3() {
 "
 `;
 
-exports[`Validating rule docs return-await.mdx code examples ESLint output 6`] = `
+exports[`Validating rule docs return-await.mdx code examples ESLint output 7`] = `
 "Correct
 Options: "never"
 

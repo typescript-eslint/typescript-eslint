@@ -982,13 +982,11 @@ export class Converter {
               'Generators are not allowed in an ambient context.',
             );
           }
-        } else {
-          if (!node.body && isGenerator) {
-            this.#throwError(
-              node,
-              'A function signature cannot be declared as a generator.',
-            );
-          }
+        } else if (!node.body && isGenerator) {
+          this.#throwError(
+            node,
+            'A function signature cannot be declared as a generator.',
+          );
         }
 
         const result = this.createNode<
@@ -3063,6 +3061,7 @@ export class Converter {
         result.declare = isDeclare;
 
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+          // eslint-disable-next-line deprecation/deprecation
           result.global = true;
         }
 
@@ -3528,7 +3527,7 @@ export class Converter {
         : (): Properties[typeof valueKey] => {
             if (!warned) {
               process.emitWarning(
-                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
                 'DeprecationWarning',
               );
               warned = true;

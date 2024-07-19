@@ -1,4 +1,5 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import type { InvalidTestCase } from '@typescript-eslint/utils/ts-eslint';
 
 import rule from '../../src/rules/return-await';
 import { getFixturesRootDir } from '../RuleTester';
@@ -56,6 +57,25 @@ ruleTester.run('return-await', rule, {
         }
       }
     `,
+    {
+      code: `
+        async function test() {
+          if (Math.random() < 0.33) {
+            return await Promise.resolve(1);
+          } else if (Math.random() < 0.5) {
+            return Promise.resolve(2);
+          }
+        
+          try {
+          } catch (e) {
+            return await Promise.resolve(3);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['error-handling-correctness-only'],
+    },
     `
       async function test() {
         try {
@@ -293,6 +313,119 @@ async function f() {
 }
       `,
     },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  using something = bleh;
+  return await Promise.resolve(2);
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  await using something = bleh;
+  return await Promise.resolve(2);
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  using something = bleh;
+  {
+    return await Promise.resolve(2);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  return Promise.resolve(2);
+  using something = bleh;
+}
+      `,
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  return await Promise.resolve(2);
+  using something = bleh;
+}
+      `,
+      options: ['always'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function returnAwait() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  return await asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return asyncFn();
+  }
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+    },
+    {
+      // intentionally invalid AST - return is outside a function.
+      // We just want to be sure this doesn't crash.
+      code: `
+using foo = 1 as any;
+return Promise.resolve(42);
+      `,
+    },
+    {
+      // intentionally invalid AST - return is outside a function.
+      // We just want to be sure this doesn't crash.
+      code: `
+{
+  using foo = 1 as any;
+  return Promise.resolve(42);
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -435,8 +568,11 @@ async function test() {
         },
       ],
     },
-    {
-      code: `
+
+    ...['error-handling-correctness-only', 'always', 'in-try-catch'].map(
+      option =>
+        ({
+          code: `
         async function test() {
           try {
             return Promise.resolve(1);
@@ -447,15 +583,15 @@ async function test() {
           }
         }
       `,
-      output: null,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
+          output: null,
+          errors: [
             {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
+              line: 4,
+              messageId: 'requiredPromiseAwait',
+              suggestions: [
+                {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  output: `
         async function test() {
           try {
             return await Promise.resolve(1);
@@ -466,16 +602,16 @@ async function test() {
           }
         }
       `,
+                },
+              ],
             },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
             {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
+              line: 6,
+              messageId: 'requiredPromiseAwait',
+              suggestions: [
+                {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  output: `
         async function test() {
           try {
             return Promise.resolve(1);
@@ -486,11 +622,17 @@ async function test() {
           }
         }
       `,
+                },
+              ],
             },
           ],
-        },
-      ],
-    },
+          options: [option],
+        }) satisfies InvalidTestCase<
+          'requiredPromiseAwait' | 'requiredPromiseAwaitSuggestion',
+          [string]
+        >,
+    ),
+
     {
       code: `
         async function test() {
@@ -554,63 +696,6 @@ async function test() {
       options: ['in-try-catch'],
       code: `
         async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      output: null,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      options: ['in-try-catch'],
-      code: `
-        async function test() {
           return await Promise.resolve(1);
         }
       `,
@@ -737,63 +822,6 @@ async function test() {
         {
           line: 3,
           messageId: 'nonPromiseAwait',
-        },
-      ],
-    },
-    {
-      options: ['always'],
-      code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      output: null,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
         },
       ],
     },
@@ -1396,6 +1424,179 @@ async function f() {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+    if (anotherCondition) {
+      return Promise.resolve(2);
+    }
+  }
+}
+      `,
+      options: ['always'],
+      output: null,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+    if (anotherCondition) {
+      return await Promise.resolve(2);
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    await using something = bleh;
+    if (anotherCondition) {
+      return Promise.resolve(2);
+    }
+  }
+}
+      `,
+      options: ['always'],
+      output: null,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+          suggestions: [
+            {
+              messageId: 'requiredPromiseAwaitSuggestion',
+              output: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    await using something = bleh;
+    if (anotherCondition) {
+      return await Promise.resolve(2);
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+  } else if (anotherCondition) {
+    return Promise.resolve(2);
+  }
+}
+      `,
+      options: ['always'],
+      output: `
+declare const bleh: any;
+async function f() {
+  if (cond) {
+    using something = bleh;
+  } else if (anotherCondition) {
+    return await Promise.resolve(2);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'requiredPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return await asyncFn();
+  }
+}
+      `,
+      options: ['in-try-catch'],
+      output: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  async function innerFunction() {
+    return asyncFn();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'disallowedPromiseAwait',
+        },
+      ],
+    },
+    {
+      code: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => await asyncFn();
+}
+      `,
+      options: ['in-try-catch'],
+      output: `
+declare function asyncFn(): Promise<unknown>;
+async function outerFunction() {
+  using _ = {
+    [Symbol.dispose]: () => {
+      console.log('dispose');
+    },
+  };
+
+  const innerFunction = async () => asyncFn();
+}
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'disallowedPromiseAwait',
         },
       ],
     },

@@ -58,10 +58,13 @@ export default createRule<Options, MessageIds>({
       ignoreNumericLiteralTypes: false,
       ignoreEnums: false,
       ignoreReadonlyClassProperties: false,
+      ignoreTypeIndexes: false,
     },
   ],
   create(context, [options]) {
     const rules = baseRule.create(context);
+
+    const ignored = new Set((options.ignore ?? []).map(normalizeIgnoreValue));
 
     return {
       Literal(node): void {
@@ -76,8 +79,12 @@ export default createRule<Options, MessageIds>({
         // not one of our exception cases, and we’ll fall back to the base rule.
         let isAllowed: boolean | undefined;
 
+        // Check if the node is ignored
+        if (ignored.has(normalizeLiteralValue(node, node.value))) {
+          isAllowed = true;
+        }
         // Check if the node is a TypeScript enum declaration
-        if (isParentTSEnumDeclaration(node)) {
+        else if (isParentTSEnumDeclaration(node)) {
           isAllowed = options.ignoreEnums === true;
         }
         // Check TypeScript specific nodes for Numeric Literal
@@ -128,6 +135,42 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+/**
+ * Convert the value to bigint if it's a string. Otherwise, return the value as-is.
+ * @param value The value to normalize.
+ * @returns The normalized value.
+ */
+function normalizeIgnoreValue(
+  value: bigint | number | string,
+): bigint | number {
+  if (typeof value === 'string') {
+    return BigInt(value.slice(0, -1));
+  }
+
+  return value;
+}
+
+/**
+ * Converts the node to its numeric value, handling prefixed numbers (-1 / +1)
+ * @param node the node to normalize.
+ * @param value the node's value.
+ */
+function normalizeLiteralValue(
+  node: TSESTree.BigIntLiteral | TSESTree.NumberLiteral,
+  value: number | bigint,
+): bigint | number {
+  if (
+    node.parent.type === AST_NODE_TYPES.UnaryExpression &&
+    ['-', '+'].includes(node.parent.operator)
+  ) {
+    if (node.parent.operator === '-') {
+      return -value;
+    }
+  }
+
+  return value;
+}
 
 /**
  * Gets the true parent of the literal, handling prefixed numbers (-1 / +1)

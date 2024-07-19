@@ -1,16 +1,20 @@
 ---
 id: monorepos
+slug: /troubleshooting/typed-linting/monorepos
 title: Monorepo Configuration
-pagination_next: null
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-If you're using a monorepo, these docs will help you figure out how to setup typed linting.
+If you're using a monorepo with `parserOptions.project`, these docs will help you figure out how to setup typed linting.
 If you don't want to use typed linting, then you can stop here - you don't need to do anything special.
 
-Configurations will look different based on which setup you use:
+:::tip
+The [new "project service" (`parserOptions.projectService`) in v8](/blog/announcing-typescript-eslint-v8-beta#project-service) requires no additional configuration for monorepos.
+:::
+
+`parserOptions.project` configurations will look different based on which monorepo setup you use:
 
 1. [One root `tsconfig.json`](#one-root-tsconfigjson)
 2. [One `tsconfig.json` per package (and an optional one in the root)](#one-tsconfigjson-per-package-and-an-optional-one-in-the-root)
@@ -42,7 +46,7 @@ Be sure to update your ESLint configuration file to point at this new TSConfig.
 
 ## One `tsconfig.json` per package (and an optional one in the root)
 
-The `parserOptions.project` option introduced in [Linting with Type Information](../Typed_Linting.mdx) accepts an array of relative paths.
+The `parserOptions.project` option introduced in [Linting with Type Information](../typed-linting/index.mdx) accepts an array of relative paths.
 Paths may be provided as [Node globs](https://github.com/isaacs/node-glob/blob/f5a57d3d6e19b324522a3fa5bdd5075fd1aa79d1/README.md#glob-primer).
 For each file being linted, the first matching project path will be used as its backing TSConfig.
 
@@ -160,7 +164,3 @@ As an interim workaround, consider one of the following:
 
 - Switching to one root `tsconfig.eslint.json` (see [One root `tsconfig.json`](#one-root-tsconfigjson))
 - Using a shell script to only lint one package at a time, using your existing config above.
-
-## Troubleshooting
-
-If you're having problems getting this working, please have a look at our [Troubleshooting FAQ](../../troubleshooting/FAQ.mdx).

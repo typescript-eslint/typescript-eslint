@@ -37,18 +37,19 @@ const printNodeModifiers = (
 const isSupportedLiteral = (
   node: TSESTree.Node,
 ): node is TSESTree.LiteralExpression => {
-  if (node.type === AST_NODE_TYPES.Literal) {
-    return true;
-  }
+  switch (node.type) {
+    case AST_NODE_TYPES.Literal:
+      return true;
 
-  if (
-    node.type === AST_NODE_TYPES.TaggedTemplateExpression ||
-    node.type === AST_NODE_TYPES.TemplateLiteral
-  ) {
-    return ('quasi' in node ? node.quasi.quasis : node.quasis).length === 1;
-  }
+    case AST_NODE_TYPES.TaggedTemplateExpression:
+      return node.quasi.quasis.length === 1;
 
-  return false;
+    case AST_NODE_TYPES.TemplateLiteral:
+      return node.quasis.length === 1;
+
+    default:
+      return false;
+  }
 };
 
 export default createRule<Options, MessageIds>({

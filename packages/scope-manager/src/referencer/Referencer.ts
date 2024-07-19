@@ -531,10 +531,8 @@ class Referencer extends Visitor {
   protected JSXMemberExpression(node: TSESTree.JSXMemberExpression): void {
     if (node.object.type !== AST_NODE_TYPES.JSXIdentifier) {
       this.visit(node.object);
-    } else {
-      if (node.object.name !== 'this') {
-        this.visit(node.object);
-      }
+    } else if (node.object.name !== 'this') {
+      this.visit(node.object);
     }
     // we don't ever reference the property as it's always going to be a property on the thing
   }
@@ -721,7 +719,7 @@ class Referencer extends Visitor {
   }
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    if (node.id.type === AST_NODE_TYPES.Identifier && !node.global) {
+    if (node.id.type === AST_NODE_TYPES.Identifier && node.kind !== 'global') {
       this.currentScope().defineIdentifier(
         node.id,
         new TSModuleNameDefinition(node.id, node),

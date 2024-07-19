@@ -1,5 +1,5 @@
 ---
-id: formatting
+id: what-about-formatting
 title: What About Formatting?
 ---
 
@@ -94,7 +94,7 @@ Note that even if you use a formatter other than `prettier`, you can use `eslint
 - The _config_ only disables rules from core and other plugins.
 - The _plugin_ loads and runs Prettier inside ESLint.
 
-Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](./Performance.mdx#eslint-plugin-prettier).
+Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](../troubleshooting/typed-linting/Performance.mdx#eslint-plugin-prettier).
 However, because it doesn't re-implement Prettier's logic in ESLint, the caveats mentioned about using linters for formatting don't apply to `eslint-plugin-prettier` either.
 
 ## ESLint Core and Formatting
@@ -113,6 +113,11 @@ Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2
 
 We mirror the ESLint team's move away from _formatting_ and _stylistic_ rules.
 With the exception of bug fixes, no new formatting- or stylistic-related pull requests will be accepted into typescript-eslint.
+
+:::note
+The [`stylistic` configurations](../users/Shared_Configurations.mdx#stylistic) are not deprecated or recommended-against.
+We'll continue to include those configs and their rules to help enforce TypeScript-related stylistic consistency for the foreseeable future.
+:::
 
 ## `eslint-stylistic`
 

@@ -21,7 +21,7 @@ We'll keep these deprecated rules available until our next major version.
 ## Context: Formatting Rules
 
 The ESLint blog post thoroughly explains the history and tradeoffs of formatting rules.
-See also [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies/#what-are-the-changes) and our _[What About Formatting?](/troubleshooting/formatting)_ docs.
+See also [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies/#what-are-the-changes) and our _[What About Formatting?](/users/what-about-formatting)_ docs.
 The performance downsides of formatting rules are heightened when [linting with type information](/getting-started/typed-linting).
 
 ## Timelines
@@ -31,6 +31,11 @@ Deprecation is only a documentation change.
 Per semantic versioning, formatting-related rules will remain available for all releases of typescript-eslint in the current major version, v6.
 
 **Our next major version, v7, will remove all deprecated rules.**
+
+:::note
+The [`stylistic` configurations](/users/configs#stylistic) are not deprecated or recommended-against.
+We'll continue to include those configs and their rules to help enforce TypeScript-related stylistic consistency for the foreseeable future.
+:::
 
 ## Upgrading to ESLint Stylistic
 
