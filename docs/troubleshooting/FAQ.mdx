@@ -42,7 +42,7 @@ These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../packa
 To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
 For example:
 
-```diff title="eslint.config.js"
+```diff title="eslint.config.mjs"
 parserOptions: {
   EXPERIMENTAL_useProjectService: {
     allowDefaultProjectForFiles: [
@@ -82,7 +82,7 @@ These errors are caused by an ESLint config requesting type information be gener
     <Tabs groupId="eslint-config">
       <TabItem value="Flat Config">
 
-      ```js title="eslint.config.js"
+      ```js title="eslint.config.mjs"
       import tseslint from 'typescript-eslint';
 
       export default tseslint.config(
@@ -135,7 +135,7 @@ However, if no specified TSConfig includes the source file, the parser won't be 
 This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
 For example, many projects have files like:
 
-- An `.eslintrc.cjs` / `eslint.config.js` with `parserOptions.project: ["./tsconfig.json"]`
+- An `.eslintrc.cjs` / `eslint.config.mjs` with `parserOptions.project: ["./tsconfig.json"]`
 - A `tsconfig.json` with `include: ["src"]`
 
 In that case, viewing the file in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
@@ -175,7 +175,7 @@ Some examples
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   // ... the rest of your config ...
   {
@@ -246,7 +246,7 @@ You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeS
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   // ... the rest of your config ...
   {
@@ -287,7 +287,7 @@ If you are running into issues parsing .vue files, it might be because parsers l
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 // Add this line
 import vueParser from 'vue-eslint-parser';
@@ -414,7 +414,7 @@ Note, that for a mixed project including JavaScript and TypeScript, the `no-unde
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(

@@ -86,7 +86,7 @@ It's been experimentally available since v6.1.0 under the name `EXPERIMENTAL_use
 
 You can use the new project service in your configuration instead of the previous `parserOptions.project`:
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
@@ -109,14 +109,14 @@ export default tseslint.config(
 
 The project service will automatically find the closest `tsconfig.json` for each file (like `project: true`).
 It also allows enabling typed linting for files not explicitly included in a `tsconfig.json`.
-This should remove the need for custom `tsconfig.eslint.json` files to lint files like `eslint.config.js`!
+This should remove the need for custom `tsconfig.eslint.json` files to lint files like `eslint.config.mjs`!
 
 Typed linting for out-of-project files can be done by specifying two properties of a `parserOptions.projectService` object:
 
 - `allowDefaultProject`: a glob of a small number of out-of-project files to enable a slower default project on
 - `defaultProject`: path to a TypeScript configuration file to use for the slower default project
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
