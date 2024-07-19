@@ -68,22 +68,9 @@ const createProjectServiceSettings = <
   ...settings,
 });
 
-// if hasFullTypeInformation is true:
-//  do openClientFileFromProjectService
-//  ✅ did use the isDefaultProjectAllowed boolean - in openClientFileFromProjectService, to make sure not double-included
-
-// if hasFullTypeInformation is false and isDefaultProjectAllowed is true:
-//  don't openClientFileFromProjectService
-//  ✅ did use the isDefaultProjectAllowed boolean - in the if (!... && !...) { createNoProgramWithProjectService check
-//  do
-
-// if hasFullTypeInformation is false and isDefaultProjectAllowed is false:
-//  ✅ did use the isDefaultProjectAllowed boolean - in the if (!... && !...) { createNoProgramWithProjectService check
-// do createNoProgramWithProjectService
-//  - which still opens the file if service.getScriptInfo knows of it
 
 describe('useProgramFromProjectService', () => {
-  it('creates a standalone AST with no program when hasFullTypeInformation is false', () => {
+  it('creates a standalone AST with no program when hasFullTypeInformation is false and allowDefaultProject is falsy', () => {
     const { service } = createMockProjectService();
 
     const stubASTAndNoProgram = {
