@@ -29,6 +29,7 @@ export default createRule({
   meta: {
     docs: {
       description: 'Enforce consistent awaiting of returned promises',
+      recommended: 'strict',
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
     },

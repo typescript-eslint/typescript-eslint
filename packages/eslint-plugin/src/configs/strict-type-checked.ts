@@ -97,6 +97,8 @@ export = {
         allowNever: false,
       },
     ],
+    'no-return-await': 'off',
+    '@typescript-eslint/return-await': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/unified-signatures': 'error',
