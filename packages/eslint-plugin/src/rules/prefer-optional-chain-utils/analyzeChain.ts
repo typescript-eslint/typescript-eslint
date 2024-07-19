@@ -2,7 +2,7 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   ReportDescriptor,
   ReportFixFunction,
@@ -16,7 +16,6 @@ import {
   getOperatorPrecedenceForNode,
   isClosingParenToken,
   isOpeningParenToken,
-  isParenthesized,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
