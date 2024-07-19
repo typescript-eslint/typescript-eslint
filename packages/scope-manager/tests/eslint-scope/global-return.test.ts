@@ -6,8 +6,8 @@ import {
   expectToBeImportBindingDefinition,
   expectToBeModuleScope,
   getRealVariables,
-} from '../util';
-import { parseAndAnalyze } from '../util/parse';
+} from '../test-utils';
+import { parseAndAnalyze } from '../test-utils/parse';
 
 describe('gloablReturn option', () => {
   it('creates a function scope following the global scope immediately', () => {

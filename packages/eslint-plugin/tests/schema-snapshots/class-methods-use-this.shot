@@ -35,7 +35,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         ]
       },
       "ignoreOverrideMethods": {
-        "description": "Ingore members marked with the \`override\` modifier",
+        "description": "Ignore members marked with the \`override\` modifier",
         "type": "boolean"
       }
     },
@@ -60,7 +60,7 @@ type Options = [
     | boolean
       /** Ignore only the public fields of classes that implement an interface */
       | 'public-fields';
-    /** Ingore members marked with the \`override\` modifier */
+    /** Ignore members marked with the \`override\` modifier */
     ignoreOverrideMethods?: boolean;
   },
 ];

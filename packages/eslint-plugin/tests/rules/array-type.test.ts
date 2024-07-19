@@ -397,6 +397,14 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       code: 'let a: readonly Array<number>[] = [[]];',
       options: [{ default: 'generic', readonly: 'array' }],
     },
+    {
+      code: 'let a: Readonly = [];',
+      options: [{ default: 'generic', readonly: 'array' }],
+    },
+    {
+      code: "const x: Readonly<string> = 'a';",
+      options: [{ default: 'array' }],
+    },
   ],
   invalid: [
     // Base cases from https://github.com/typescript-eslint/typescript-eslint/issues/2323#issuecomment-663977655
@@ -1918,13 +1926,28 @@ interface FooInterface {
         },
       ],
     },
+    {
+      code: "const x: Readonly<string[]> = ['a', 'b'];",
+      output: "const x: readonly string[] = ['a', 'b'];",
+      options: [{ default: 'array' }],
+      errors: [
+        {
+          messageId: 'errorStringArrayReadonly',
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+        },
+      ],
+    },
   ],
 });
 
 // -- eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  const linter = new TSESLint.Linter();
+  const linter = new TSESLint.Linter({ configType: 'eslintrc' });
   linter.defineRule('array-type', rule);
   linter.defineParser('@typescript-eslint/parser', parser);
 

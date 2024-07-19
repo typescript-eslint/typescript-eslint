@@ -63,6 +63,10 @@ const x: string[] = [];
 foo(...x);
     `,
     `
+function foo(arg1: number, arg2: number) {}
+foo(...([1, 1, 1] as [number, number, number]));
+    `,
+    `
 declare function foo(arg1: Set<string>, arg2: Map<string, string>): void;
 
 const x = [new Map<string, string>()] as const;
@@ -91,6 +95,27 @@ toHaveBeenCalledWith(1 as any);
     `
 declare function acceptsMap(arg: Map<string, string>): void;
 acceptsMap(new Map());
+    `,
+    `
+type T = [number, T[]];
+declare function foo(t: T): void;
+declare const t: T;
+
+foo(t);
+    `,
+    `
+type T = Array<T>;
+declare function foo<T>(t: T): T;
+const t: T = [];
+foo(t);
+    `,
+    `
+function foo(templates: TemplateStringsArray) {}
+foo\`\`;
+    `,
+    `
+function foo(templates: TemplateStringsArray, arg: any) {}
+foo\`\${1 as any}\`;
     `,
   ],
   invalid: [
@@ -228,6 +253,20 @@ foo(...x);
     },
     {
       code: `
+declare function foo(arg1: string, arg2: number): void;
+foo(...(['foo', 1, 2] as [string, any, number]));
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTupleSpread',
+          line: 3,
+          column: 5,
+          endColumn: 48,
+        },
+      ],
+    },
+    {
+      code: `
 declare function foo(arg1: string, arg2: number, arg2: string): void;
 
 const x = [1] as const;
@@ -348,6 +387,99 @@ foo('a', 1 as any, 'a' as any, 1 as any);
           data: {
             sender: 'any',
             receiver: 'string',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type T = [number, T[]];
+declare function foo(t: T): void;
+declare const t: T;
+foo(t as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 5,
+          column: 5,
+          endColumn: 13,
+          data: {
+            sender: 'any',
+            receiver: 'T',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(
+  templates: TemplateStringsArray,
+  arg1: number,
+  arg2: any,
+  arg3: string,
+) {}
+declare const arg: any;
+foo<number>\`\${arg}\${arg}\${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 9,
+          column: 15,
+          endColumn: 18,
+          data: {
+            sender: 'any',
+            receiver: 'number',
+          },
+        },
+        {
+          messageId: 'unsafeArgument',
+          line: 9,
+          column: 27,
+          endColumn: 30,
+          data: {
+            sender: 'any',
+            receiver: 'string',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(templates: TemplateStringsArray, arg: number) {}
+declare const arg: any;
+foo\`\${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 4,
+          column: 7,
+          endColumn: 10,
+          data: {
+            sender: 'any',
+            receiver: 'number',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+type T = [number, T[]];
+function foo(templates: TemplateStringsArray, arg: T) {}
+declare const arg: any;
+foo\`\${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 5,
+          column: 7,
+          endColumn: 10,
+          data: {
+            sender: 'any',
+            receiver: 'T',
           },
         },
       ],

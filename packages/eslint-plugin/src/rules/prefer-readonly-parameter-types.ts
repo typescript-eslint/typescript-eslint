@@ -114,7 +114,7 @@ export default createRule<Options, MessageIds>({
 
           const type = services.getTypeAtLocation(actualParam);
           const isReadOnly = isTypeReadonly(services.program, type, {
-            treatMethodsAsReadonly: treatMethodsAsReadonly!,
+            treatMethodsAsReadonly: !!treatMethodsAsReadonly,
             allow,
           });
 

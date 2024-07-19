@@ -29,7 +29,7 @@ abstract class VisitorBase {
   /**
    * Default method for visiting children.
    * @param node the node whose children should be visited
-   * @param exclude a list of keys to not visit
+   * @param excludeArr a list of keys to not visit
    */
   visitChildren<T extends TSESTree.Node>(
     node: T | null | undefined,

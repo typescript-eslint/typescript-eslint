@@ -1,6 +1,6 @@
 ---
 authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+  - image_url: /img/team/joshuakgoldberg.jpg
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
@@ -16,7 +16,19 @@ They were added as part of the [ECMAScript Modules (ESM)](https://nodejs.org/api
 When writing TypeScript code with ESM, it can sometimes be desirable to import or export a type only in the type system.
 Code may wish to refer to a _type_, but not actually import or export a corresponding _value_.
 
-For that purpose, TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the TypeScript language:
+Type-only imports and exports are not emitted as runtime code when code is transpiled to JavaScript.
+This brings up two questions:
+
+- Why would you want to use these type-only imports and exports?
+- How can you enforce a project use them whenever necessary?
+
+Let's dig in!
+
+<!--truncate-->
+
+## Recap: Type-Only Imports and Exports
+
+TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the TypeScript language:
 
 ```ts
 import type { SomeThing } from './some-module.js';
@@ -40,16 +52,6 @@ TypeScript 4.5 also added [inline type qualifiers](https://www.typescriptlang.or
 ```ts
 import { type SomeType, SomeValue } from './some-module.js';
 ```
-
-Type-only imports and exports are not emitted as runtime code when code is transpiled to JavaScript.
-This brings up two questions:
-
-- Why would you want to use these type-only imports and exports?
-- How can you enforce a project use them whenever necessary?
-
-Let's Dig In!
-
-<!--truncate-->
 
 ## Benefits of Enforcing Type-only Imports/Exports
 
@@ -181,9 +183,3 @@ If it detects an import that only imports specifiers with inline `type` qualifie
 
 You can read more about the rules' configuration options in their docs pages.
 See [our Getting Started docs](/getting-started) for more information on linting your TypeScript code with typescript-eslint.
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

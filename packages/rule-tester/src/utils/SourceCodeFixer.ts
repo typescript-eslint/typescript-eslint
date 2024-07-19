@@ -29,21 +29,23 @@ function compareMessagesByLocation(a: LintMessage, b: LintMessage): number {
   return a.line - b.line || a.column - b.column;
 }
 
+export interface AppliedFixes {
+  fixed: boolean;
+  messages: readonly LintMessage[];
+  output: string;
+}
+
 /**
  * Applies the fixes specified by the messages to the given text. Tries to be
  * smart about the fixes and won't apply fixes over the same area in the text.
  * @param sourceText The text to apply the changes to.
  * @param  messages The array of messages reported by ESLint.
- * @returns {Object} An object containing the fixed text and any unfixed messages.
+ * @returns An object containing the fixed text and any unfixed messages.
  */
 export function applyFixes(
   sourceText: string,
   messages: readonly LintMessage[],
-): {
-  fixed: boolean;
-  messages: readonly LintMessage[];
-  output: string;
-} {
+): AppliedFixes {
   // clone the array
   const remainingMessages: LintMessage[] = [];
   const fixes: LintMessageWithFix[] = [];
@@ -54,8 +56,8 @@ export function applyFixes(
 
   /**
    * Try to use the 'fix' from a problem.
-   * @param {Message} problem The message object to apply fixes from
-   * @returns {boolean} Whether fix was successfully applied
+   * @param problem The message object to apply fixes from
+   * @returns Whether fix was successfully applied
    */
   function attemptFix(problem: LintMessageWithFix): boolean {
     const fix = problem.fix;

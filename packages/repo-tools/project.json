@@ -6,11 +6,7 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/repo-tools/**/*.{mts,cts,ts,tsx}"],
-        "ignorePath": ".eslintignore"
-      }
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

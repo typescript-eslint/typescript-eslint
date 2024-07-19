@@ -6,8 +6,8 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
     project: './tsconfig.noImplicitThis.json',
+    projectService: false,
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -45,6 +45,14 @@ function foo() {
 function foo(): any {
   return {} as any;
 }
+    `,
+    `
+declare function foo(arg: () => any): void;
+foo((): any => 'foo' as any);
+    `,
+    `
+declare function foo(arg: null | (() => any)): void;
+foo((): any => 'foo' as any);
     `,
     // explicit any array return type is allowed, if you want to be unsafe like that
     `
@@ -131,7 +139,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -146,7 +154,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -161,7 +169,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -172,7 +180,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any',
+            type: '`any`',
           },
         },
       ],
@@ -187,7 +195,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -202,7 +210,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -217,7 +225,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -232,7 +240,7 @@ function foo() {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -247,7 +255,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -258,7 +266,7 @@ const foo = () => {
         {
           messageId: 'unsafeReturn',
           data: {
-            type: 'any[]',
+            type: '`any[]`',
           },
         },
       ],
@@ -399,12 +407,55 @@ function bar() {
           line: 3,
           column: 3,
           endColumn: 15,
+          data: {
+            type: '`any`',
+          },
         },
         {
           messageId: 'unsafeReturnThis',
           line: 7,
           column: 16,
           endColumn: 20,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: null | (() => any)): void;
+foo(() => 'foo' as any);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 3,
+          column: 11,
+          endColumn: 23,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+
+function example() {
+  return value;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          line: 5,
+          column: 3,
+          endColumn: 16,
+          data: {
+            type: 'error',
+          },
         },
       ],
     },

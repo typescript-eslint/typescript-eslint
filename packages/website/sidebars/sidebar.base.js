@@ -1,5 +1,5 @@
 // @ts-check
-/** @type {import('@docusaurus/plugin-content-docs/lib/sidebars/types.js').SidebarsConfig} */
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
   docs: [
     {
@@ -7,33 +7,22 @@ module.exports = {
       items: [
         {
           collapsible: false,
-          items: ['linting/typed-linting/monorepos'],
-          label: 'Linting with Type Information',
+          items: ['getting-started/legacy-eslint-setup'],
+          label: 'Quickstart',
           link: {
-            id: 'linting/typed-linting',
+            id: 'getting-started/quickstart',
             type: 'doc',
           },
           type: 'category',
         },
-        'linting/configs',
         {
-          collapsible: false,
-          items: [
-            'linting/troubleshooting/performance-troubleshooting',
-            'linting/troubleshooting/formatting',
-            'linting/troubleshooting/tslint',
-          ],
-          label: 'Troubleshooting & FAQs',
-          link: {
-            id: 'linting/troubleshooting',
-            type: 'doc',
-          },
-          type: 'category',
+          id: 'getting-started/typed-linting',
+          type: 'doc',
         },
       ],
       label: 'Getting Started',
       link: {
-        id: 'getting-started',
+        id: 'getting-started/quickstart',
         type: 'doc',
       },
       type: 'category',
@@ -41,13 +30,58 @@ module.exports = {
     {
       collapsible: false,
       items: [
+        {
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'troubleshooting/faqs/general',
+            'troubleshooting/faqs/eslint',
+            'troubleshooting/faqs/frameworks',
+            'troubleshooting/faqs/javascript',
+            'troubleshooting/faqs/typescript',
+          ],
+          label: 'FAQs',
+          link: {
+            id: 'troubleshooting/faqs/general',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+        {
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'troubleshooting/typed-linting/monorepos',
+            'troubleshooting/typed-linting/performance',
+          ],
+          label: 'Typed Linting',
+          link: {
+            id: 'troubleshooting/typed-linting/index',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+      ],
+      label: 'Troubleshooting & FAQs',
+      link: {
+        id: 'troubleshooting/faqs/general',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      collapsible: false,
+      items: [
+        'users/configs',
         'users/dependency-versions',
         'users/releases',
         'users/versioning',
+        'users/what-about-formatting',
+        'users/what-about-tslint',
       ],
       label: 'Users',
       link: {
-        id: 'users',
+        id: 'users/index',
         type: 'doc',
       },
       type: 'category',
@@ -71,7 +105,9 @@ module.exports = {
         'packages/parser',
         'packages/rule-tester',
         'packages/scope-manager',
+        'packages/type-utils',
         'packages/typescript-estree',
+        'packages/typescript-eslint',
         'packages/utils',
       ],
       label: 'Packages',
@@ -111,7 +147,7 @@ module.exports = {
         'maintenance/contributor-tiers',
         {
           collapsible: true,
-          items: ['maintenance/issues/rule-deprecations'],
+          items: ['maintenance/issues/rule-deprecations-and-deletions'],
           label: 'Issues',
           link: {
             id: 'maintenance/issues',
@@ -130,6 +166,7 @@ module.exports = {
           },
           type: 'category',
         },
+        'maintenance/team',
       ],
       label: 'Maintenance',
       link: {

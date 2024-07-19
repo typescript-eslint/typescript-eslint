@@ -1,11 +1,6 @@
 import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  getFilename,
-  getScope,
-  getSourceCode,
-} from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
@@ -22,8 +17,9 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the declaration of empty interfaces',
-      recommended: 'stylistic',
     },
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/no-empty-object-type'],
     fixable: 'code',
     hasSuggestions: true,
     messages: {
@@ -51,9 +47,6 @@ export default createRule<Options, MessageIds>({
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
-        const sourceCode = getSourceCode(context);
-        const filename = getFilename(context);
-
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
           return;
@@ -71,16 +64,16 @@ export default createRule<Options, MessageIds>({
             const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
               let typeParam = '';
               if (node.typeParameters) {
-                typeParam = sourceCode.getText(node.typeParameters);
+                typeParam = context.sourceCode.getText(node.typeParameters);
               }
               return fixer.replaceText(
                 node,
-                `type ${sourceCode.getText(
+                `type ${context.sourceCode.getText(
                   node.id,
-                )}${typeParam} = ${sourceCode.getText(extend[0])}`,
+                )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
               );
             };
-            const scope = getScope(context);
+            const scope = context.sourceCode.getScope(node);
 
             const mergedWithClassDeclaration = scope.set
               .get(node.id.name)
@@ -89,7 +82,7 @@ export default createRule<Options, MessageIds>({
               );
 
             const isInAmbientDeclaration = !!(
-              isDefinitionFile(filename) &&
+              isDefinitionFile(context.filename) &&
               scope.type === ScopeType.tsModule &&
               scope.block.declare
             );

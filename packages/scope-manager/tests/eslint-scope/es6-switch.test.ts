@@ -5,7 +5,7 @@ import {
   expectToBeSwitchScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('ES6 switch', () => {
   it('materialize scope', () => {

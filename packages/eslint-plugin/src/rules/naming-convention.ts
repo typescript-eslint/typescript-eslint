@@ -1,11 +1,13 @@
+// This rule was feature-frozen before we enabled no-property-in-node.
+/* eslint-disable eslint-plugin/no-property-in-node */
+
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import type { ScriptTarget } from 'typescript';
 
 import {
-  collectUnusedVariables,
+  collectVariables,
   createRule,
   getParserServices,
   requiresQuoting as _requiresQuoting,
@@ -110,7 +112,8 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSAbstractMethodDefinitionNonComputedName
         | TSESTree.TSAbstractPropertyDefinitionNonComputedName
         | TSESTree.TSMethodSignatureNonComputedName
-        | TSESTree.TSPropertySignatureNonComputedName,
+        | TSESTree.TSPropertySignatureNonComputedName
+        | TSESTree.AccessorPropertyNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
       const key = node.key;
@@ -127,7 +130,9 @@ export default createRule<Options, MessageIds>({
         | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractMethodDefinition
         | TSESTree.TSAbstractPropertyDefinition
-        | TSESTree.TSParameterProperty,
+        | TSESTree.TSParameterProperty
+        | TSESTree.AccessorProperty
+        | TSESTree.TSAbstractAccessorProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
       if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
@@ -148,7 +153,8 @@ export default createRule<Options, MessageIds>({
       }
       if (
         node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
-        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition
+        node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+        node.type === AST_NODE_TYPES.TSAbstractAccessorProperty
       ) {
         modifiers.add(Modifiers.abstract);
       }
@@ -156,10 +162,10 @@ export default createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = collectUnusedVariables(context);
+    const { unusedVariables } = collectVariables(context);
     function isUnused(
       name: string,
-      initialScope: TSESLint.Scope.Scope | null = getScope(context),
+      initialScope: TSESLint.Scope.Scope | null,
     ): boolean {
       let variable: TSESLint.Scope.Variable | null = null;
       let scope: TSESLint.Scope.Scope | null = initialScope;
@@ -275,7 +281,7 @@ export default createRule<Options, MessageIds>({
               baseModifiers.add(Modifiers.const);
             }
 
-            if (isGlobal(getScope(context))) {
+            if (isGlobal(context.sourceCode.getScope(node))) {
               baseModifiers.add(Modifiers.global);
             }
           }
@@ -287,11 +293,12 @@ export default createRule<Options, MessageIds>({
               modifiers.add(Modifiers.destructured);
             }
 
-            if (isExported(parent, id.name, getScope(context))) {
+            const scope = context.sourceCode.getScope(id);
+            if (isExported(parent, id.name, scope)) {
               modifiers.add(Modifiers.exported);
             }
 
-            if (isUnused(id.name)) {
+            if (isUnused(id.name, scope)) {
               modifiers.add(Modifiers.unused);
             }
 
@@ -323,7 +330,7 @@ export default createRule<Options, MessageIds>({
 
           const modifiers = new Set<Modifiers>();
           // functions create their own nested scope
-          const scope = getScope(context).upper;
+          const scope = context.sourceCode.getScope(node).upper;
 
           if (isGlobal(scope)) {
             modifiers.add(Modifiers.global);
@@ -374,7 +381,7 @@ export default createRule<Options, MessageIds>({
                   modifiers.add(Modifiers.destructured);
                 }
 
-                if (isUnused(i.name)) {
+                if (isUnused(i.name, context.sourceCode.getScope(i))) {
                   modifiers.add(Modifiers.unused);
                 }
 
@@ -519,26 +526,46 @@ export default createRule<Options, MessageIds>({
       // #region accessor
 
       'Property[computed = false]:matches([kind = "get"], [kind = "set"])': {
-        validator: validators.accessor,
+        validator: validators.classicAccessor,
         handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
           const modifiers = new Set<Modifiers>([Modifiers.public]);
           handleMember(validator, node, modifiers);
         },
       },
 
-      'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])':
-        {
-          validator: validators.accessor,
-          handler: (
-            node: TSESTree.MethodDefinitionNonComputedName,
-            validator,
-          ): void => {
-            const modifiers = getMemberModifiers(node);
-            handleMember(validator, node, modifiers);
-          },
+      [[
+        'MethodDefinition[computed = false]:matches([kind = "get"], [kind = "set"])',
+        'TSAbstractMethodDefinition[computed = false]:matches([kind="get"], [kind="set"])',
+      ].join(', ')]: {
+        validator: validators.classicAccessor,
+        handler: (
+          node: TSESTree.MethodDefinitionNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
         },
+      },
 
       // #endregion accessor
+
+      // #region autoAccessor
+
+      [[
+        AST_NODE_TYPES.AccessorProperty,
+        AST_NODE_TYPES.TSAbstractAccessorProperty,
+      ].join(', ')]: {
+        validator: validators.autoAccessor,
+        handler: (
+          node: TSESTree.AccessorPropertyNonComputedName,
+          validator,
+        ): void => {
+          const modifiers = getMemberModifiers(node);
+          handleMember(validator, node, modifiers);
+        },
+      },
+
+      // #endregion autoAccessor
 
       // #region enumMember
 
@@ -577,7 +604,7 @@ export default createRule<Options, MessageIds>({
 
           const modifiers = new Set<Modifiers>();
           // classes create their own nested scope
-          const scope = getScope(context).upper;
+          const scope = context.sourceCode.getScope(node).upper;
 
           if (node.abstract) {
             modifiers.add(Modifiers.abstract);
@@ -603,7 +630,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.interface,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -625,7 +652,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.typeAlias,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -648,7 +675,7 @@ export default createRule<Options, MessageIds>({
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
           // enums create their own nested scope
-          const scope = getScope(context).upper;
+          const scope = context.sourceCode.getScope(node).upper;
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -670,7 +697,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.typeParameter,
         handler: (node: TSESTree.TSTypeParameter, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
 
           if (isUnused(node.name.name, scope)) {
             modifiers.add(Modifiers.unused);

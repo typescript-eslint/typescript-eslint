@@ -1,17 +1,13 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import {
   createRule,
+  getFunctionHeadLoc,
   getFunctionNameWithKind,
   getParserServices,
-  isArrowToken,
-  isOpeningParenToken,
-  nullThrows,
-  NullThrowsReasons,
   upperCaseFirst,
 } from '../util';
 
@@ -32,7 +28,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow async functions which have no `await` expression',
+      description:
+        'Disallow async functions which do not return promises and have no `await` expression',
       recommended: 'recommended',
       requiresTypeChecking: true,
       extendsBaseRule: true,
@@ -47,7 +44,6 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const sourceCode = getSourceCode(context);
     let scopeInfo: ScopeInfo | null = null;
 
     /**
@@ -81,7 +77,7 @@ export default createRule({
       ) {
         context.report({
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           messageId: 'missingAwait',
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
@@ -196,59 +192,6 @@ function isEmptyFunction(node: FunctionNode): boolean {
     node.body.type === AST_NODE_TYPES.BlockStatement &&
     node.body.body.length === 0
   );
-}
-
-// https://github.com/eslint/eslint/blob/03a69dbe86d5b5768a310105416ae726822e3c1c/lib/rules/utils/ast-utils.js#L382-L392
-/**
- * Gets the `(` token of the given function node.
- */
-function getOpeningParenOfParams(
-  node: FunctionNode,
-  sourceCode: TSESLint.SourceCode,
-): TSESTree.Token {
-  return nullThrows(
-    node.id
-      ? sourceCode.getTokenAfter(node.id, isOpeningParenToken)
-      : sourceCode.getFirstToken(node, isOpeningParenToken),
-    NullThrowsReasons.MissingToken('(', node.type),
-  );
-}
-
-// https://github.com/eslint/eslint/blob/03a69dbe86d5b5768a310105416ae726822e3c1c/lib/rules/utils/ast-utils.js#L1220-L1242
-/**
- * Gets the location of the given function node for reporting.
- */
-function getFunctionHeadLoc(
-  node: FunctionNode,
-  sourceCode: TSESLint.SourceCode,
-): TSESTree.SourceLocation {
-  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
-  let start = null;
-  let end = null;
-
-  if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-    const arrowToken = nullThrows(
-      sourceCode.getTokenBefore(node.body, isArrowToken),
-      NullThrowsReasons.MissingToken('=>', node.type),
-    );
-
-    start = arrowToken.loc.start;
-    end = arrowToken.loc.end;
-  } else if (
-    parent.type === AST_NODE_TYPES.Property ||
-    parent.type === AST_NODE_TYPES.MethodDefinition
-  ) {
-    start = parent.loc.start;
-    end = getOpeningParenOfParams(node, sourceCode).loc.start;
-  } else {
-    start = node.loc.start;
-    end = getOpeningParenOfParams(node, sourceCode).loc.start;
-  }
-
-  return {
-    start,
-    end,
-  };
 }
 
 function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {

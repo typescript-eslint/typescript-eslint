@@ -472,6 +472,7 @@ if (y) {
         { allowString: false, allowNumber: false, allowNullableObject: false },
       ],
       code: noFormat`if (('' && {}) || (0 && void 0)) { }`,
+      output: null,
       errors: [
         {
           messageId: 'conditionErrorString',
@@ -520,50 +521,335 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "'asd' && 123 && [] && null;",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorString', line: 1, column: 1 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
-        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "('asd'.length > 0) && 123 && [] && null;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '(\'asd\' !== "") && 123 && [] && null;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "(Boolean('asd')) && 123 && [] && null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "'asd' && (123 !== 0) && [] && null;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "'asd' && (!Number.isNaN(123)) && [] && null;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "'asd' && (Boolean(123)) && [] && null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 17,
+        },
       ],
     },
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "'asd' || 123 || [] || null;",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorString', line: 1, column: 1 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
-        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "('asd'.length > 0) || 123 || [] || null;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '(\'asd\' !== "") || 123 || [] || null;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "(Boolean('asd')) || 123 || [] || null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "'asd' || (123 !== 0) || [] || null;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "'asd' || (!Number.isNaN(123)) || [] || null;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "'asd' || (Boolean(123)) || [] || null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 17,
+        },
       ],
     },
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "let x = (1 && 'a' && null) || 0 || '' || {};",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
-        { messageId: 'conditionErrorString', line: 1, column: 15 },
-        { messageId: 'conditionErrorNullish', line: 1, column: 22 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 31 },
-        { messageId: 'conditionErrorString', line: 1, column: 36 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "let x = ((1 !== 0) && 'a' && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "let x = ((!Number.isNaN(1)) && 'a' && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = ((Boolean(1)) && 'a' && null) || 0 || '' || {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 15,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "let x = (1 && ('a'.length > 0) && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "let x = (1 && ('a' !== \"\") && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = (1 && (Boolean('a')) && null) || 0 || '' || {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 22,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 31,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "let x = (1 && 'a' && null) || (0 !== 0) || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "let x = (1 && 'a' && null) || (!Number.isNaN(0)) || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = (1 && 'a' && null) || (Boolean(0)) || '' || {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 36,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "let x = (1 && 'a' && null) || 0 || (''.length > 0) || {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "let x = (1 && 'a' && null) || 0 || ('' !== \"\") || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = (1 && 'a' && null) || 0 || (Boolean('')) || {};",
+            },
+          ],
+        },
       ],
     },
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "return (1 || 'a' || null) && 0 && '' && {};",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 9 },
-        { messageId: 'conditionErrorString', line: 1, column: 14 },
-        { messageId: 'conditionErrorNullish', line: 1, column: 21 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 30 },
-        { messageId: 'conditionErrorString', line: 1, column: 35 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "return ((1 !== 0) || 'a' || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "return ((!Number.isNaN(1)) || 'a' || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return ((Boolean(1)) || 'a' || null) && 0 && '' && {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 14,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "return (1 || ('a'.length > 0) || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "return (1 || ('a' !== \"\") || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return (1 || (Boolean('a')) || null) && 0 && '' && {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 21,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 30,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "return (1 || 'a' || null) && (0 !== 0) && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "return (1 || 'a' || null) && (!Number.isNaN(0)) && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return (1 || 'a' || null) && (Boolean(0)) && '' && {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 35,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "return (1 || 'a' || null) && 0 && (''.length > 0) && {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "return (1 || 'a' || null) && 0 && ('' !== \"\") && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return (1 || 'a' || null) && 0 && (Boolean('')) && {};",
+            },
+          ],
+        },
       ],
     },
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "console.log((1 && []) || ('a' && {}));",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 14 },
-        { messageId: 'conditionErrorObject', line: 1, column: 19 },
-        { messageId: 'conditionErrorString', line: 1, column: 27 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 14,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "console.log(((1 !== 0) && []) || ('a' && {}));",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "console.log(((!Number.isNaN(1)) && []) || ('a' && {}));",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "console.log(((Boolean(1)) && []) || ('a' && {}));",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 19,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 27,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "console.log((1 && []) || (('a'.length > 0) && {}));",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: 'console.log((1 && []) || ((\'a\' !== "") && {}));',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "console.log((1 && []) || ((Boolean('a')) && {}));",
+            },
+          ],
+        },
       ],
     },
 
@@ -571,31 +857,172 @@ if (y) {
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "if ((1 && []) || ('a' && {})) void 0;",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 6 },
-        { messageId: 'conditionErrorObject', line: 1, column: 11 },
-        { messageId: 'conditionErrorString', line: 1, column: 19 },
-        { messageId: 'conditionErrorObject', line: 1, column: 26 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 6,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "if (((1 !== 0) && []) || ('a' && {})) void 0;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "if (((!Number.isNaN(1)) && []) || ('a' && {})) void 0;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "if (((Boolean(1)) && []) || ('a' && {})) void 0;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 11,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 19,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "if ((1 && []) || (('a'.length > 0) && {})) void 0;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: 'if ((1 && []) || ((\'a\' !== "") && {})) void 0;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "if ((1 && []) || ((Boolean('a')) && {})) void 0;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 26,
+        },
       ],
     },
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "let x = null || 0 || 'a' || [] ? {} : undefined;",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorNullish', line: 1, column: 9 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 17 },
-        { messageId: 'conditionErrorString', line: 1, column: 22 },
-        { messageId: 'conditionErrorObject', line: 1, column: 29 },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 9,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 17,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output:
+                "let x = null || (0 !== 0) || 'a' || [] ? {} : undefined;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "let x = null || (!Number.isNaN(0)) || 'a' || [] ? {} : undefined;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                "let x = null || (Boolean(0)) || 'a' || [] ? {} : undefined;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 22,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "let x = null || 0 || ('a'.length > 0) || [] ? {} : undefined;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output:
+                'let x = null || 0 || (\'a\' !== "") || [] ? {} : undefined;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                "let x = null || 0 || (Boolean('a')) || [] ? {} : undefined;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 29,
+        },
       ],
     },
     {
       options: [{ allowString: false, allowNumber: false }],
       code: "return !(null || 0 || 'a' || []);",
+      output: null,
       errors: [
-        { messageId: 'conditionErrorNullish', line: 1, column: 10 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 18 },
-        { messageId: 'conditionErrorString', line: 1, column: 23 },
-        { messageId: 'conditionErrorObject', line: 1, column: 30 },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 10,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 18,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "return !(null || (0 !== 0) || 'a' || []);",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "return !(null || (!Number.isNaN(0)) || 'a' || []);",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return !(null || (Boolean(0)) || 'a' || []);",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 23,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "return !(null || 0 || ('a'.length > 0) || []);",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: 'return !(null || 0 || (\'a\' !== "") || []);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return !(null || 0 || (Boolean('a')) || []);",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 30,
+        },
       ],
     },
 
@@ -1617,6 +2044,7 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'noStrictNullCheck',
@@ -1644,6 +2072,7 @@ if (x) {
         obj || 0
         obj && 1 || 0
       `,
+      output: null,
       errors: [
         {
           messageId: 'conditionErrorNullableObject',

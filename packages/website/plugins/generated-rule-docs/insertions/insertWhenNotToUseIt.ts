@@ -1,7 +1,7 @@
 import type * as mdast from 'mdast';
 
+import { nodeIsHeading } from '../../utils/nodes';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { nodeIsHeading } from '../utils';
 
 export function insertWhenNotToUseIt(page: RuleDocsPage): void {
   if (!page.rule.meta.docs.requiresTypeChecking) {
@@ -34,7 +34,7 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
         {
           type: 'link',
           title: null,
-          url: `/linting/typed-linting`,
+          url: `/getting-started/typed-linting`,
           children: [
             {
               type: 'text',
@@ -49,11 +49,12 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
         {
           type: 'link',
           title: null,
-          url: `/linting/troubleshooting/performance-troubleshooting`,
+          url: `/troubleshooting/typed-linting/performance`,
           children: [
             {
               type: 'text',
-              value: 'Performance Troubleshooting',
+              value:
+                'Troubleshooting > Linting with Type Information > Performance',
             },
           ],
         },

@@ -1,7 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
-import { collectUnusedVariables } from '../../../src/util';
+import { collectVariables } from '../../../src/util';
 import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -14,15 +14,23 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
-  EXPERIMENTAL_useProjectService: false,
-  tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
 };
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
-ruleTester.defineRule('collect-unused-vars', context => {
-  collectUnusedVariables(context);
-  return {};
+ruleTester.defineRule('collect-unused-vars', {
+  create(context) {
+    collectVariables(context);
+    return {};
+  },
+  defaultOptions: [],
+  meta: {
+    messages: {},
+    type: 'problem',
+    schema: [],
+  },
 });
 
 ruleTester.run('no-unused-vars', rule, {
@@ -405,8 +413,7 @@ export const map: { [name in Foo]: Bar } = {
 };
     `,
     // 4.1 remapped mapped type
-    {
-      code: noFormat`
+    `
 type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
@@ -415,11 +422,7 @@ export const map: { [name in Foo as string]: Bar } = {
   b: 2,
   c: 3,
 };
-      `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
-    },
+    `,
     `
 import { Nullable } from 'nullable';
 class A<T> {
@@ -694,6 +697,18 @@ export type T = {
 };
     `,
     `
+type Foo = string;
+export class Bar {
+  [x: Foo]: any;
+}
+    `,
+    `
+type Foo = string;
+export class Bar {
+  [x: Foo]: Foo;
+}
+    `,
+    `
 namespace Foo {
   export const Foo = 1;
 }
@@ -758,17 +773,12 @@ export function foo() {
 }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
-    {
-      code: noFormat`
-function foo<T>(value: T): T {
+    `
+export function foo<T>(value: T): T {
   return { value };
 }
 export type Foo<T> = typeof foo<T>;
-      `,
-      dependencyConstraints: {
-        typescript: '4.7',
-      },
-    },
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/2331
     {
       code: `
@@ -945,20 +955,15 @@ export declare namespace Foo {
   }
 }
     `,
-    {
-      code: noFormat`
+    `
 class Foo<T> {
-    value: T;
+  value: T;
 }
 class Bar<T> {
-    foo = Foo<T>;
+  foo = Foo<T>;
 }
 new Bar();
-      `,
-      dependencyConstraints: {
-        typescript: '4.7',
-      },
-    },
+    `,
     {
       code: `
 declare namespace A {
@@ -980,9 +985,6 @@ type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 export type SeussFish = \`\${Quantity | Color} fish\`;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: noFormat`
@@ -991,18 +993,12 @@ type HorizontalAlignment = "left" | "center" | "right";
 
 export declare function setAlignment(value: \`\${VerticalAlignment}-\${HorizontalAlignment}\`): void;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     {
       code: noFormat`
 type EnthusiasticGreeting<T extends string> = \`\${Uppercase<T>} - \${Lowercase<T>} - \${Capitalize<T>} - \${Uncapitalize<T>}\`;
 export type HELLO = EnthusiasticGreeting<"heLLo">;
       `,
-      dependencyConstraints: {
-        typescript: '4.1',
-      },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2714
     {
@@ -1083,9 +1079,6 @@ export class Foo {
   }
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
     },
     `
 interface Foo {
@@ -1111,6 +1104,64 @@ foo &&= 2;
 let foo = 1;
 foo ||= 2;
     `,
+    `
+const foo = 1;
+export = foo;
+    `,
+    `
+const Foo = 1;
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+interface Foo {
+  bar: string;
+}
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = Foo;
+    `,
+    `
+type Foo = 1;
+export = {} as Foo;
+    `,
+    `
+declare module 'foo' {
+  type Foo = 1;
+  export = Foo;
+}
+    `,
+    `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  export import TheFoo = Foo;
+}
+    `,
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: false }],
+    },
+    `
+export const foo: number = 1;
+
+export type Foo = typeof foo;
+    `,
+    `
+import { foo } from 'foo';
+
+export type Foo = typeof foo;
+
+export const bar = (): Foo => foo;
+    `,
   ],
 
   invalid: [
@@ -1128,7 +1179,9 @@ export class Foo {}
             additional: '',
           },
           line: 2,
+          endLine: 2,
           column: 10,
+          endColumn: 31,
         },
       ],
     },
@@ -1732,6 +1785,8 @@ declare module 'foo' {
           messageId: 'unusedVar',
           line: 3,
           column: 8,
+          endLine: 3,
+          endColumn: 12,
           data: {
             varName: 'Test',
             action: 'defined',
@@ -1828,6 +1883,8 @@ x = foo(x);
           messageId: 'unusedVar',
           line: 3,
           column: 1,
+          endLine: 3,
+          endColumn: 2,
           data: {
             varName: 'x',
             action: 'assigned a value',
@@ -1871,6 +1928,335 @@ foo += 1;
             action: 'assigned a value',
             additional: '',
           },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Bar;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 2,
+          column: 11,
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+type Bar = 1;
+export = Foo;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 5,
+          column: 6,
+          data: {
+            varName: 'Bar',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+namespace Foo {
+  export const foo = 1;
+}
+export namespace Bar {
+  import TheFoo = Foo;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 6,
+          column: 10,
+          data: {
+            varName: 'TheFoo',
+            action: 'defined',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const foo: number = 1;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 7,
+          endLine: 2,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  B = Foo.A,
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+        },
+      ],
+    },
+
+    // reportUsedIgnorePattern
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+interface _Foo {}
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+enum _Foo {
+  A = 1,
+}
+export const x = _Foo.A;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+namespace _Foo {}
+export const x = _Foo;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const foo: number;
+
+        export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 23,
+          endLine: 2,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = typeof foo | string;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = (typeof foo | string) & { __brand: 'foo' };
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          bar: {
+            baz: 123,
+          },
+        };
+
+        export type Bar = typeof foo.bar;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          bar: {
+            baz: 123,
+          },
+        };
+
+        export type Bar = (typeof foo)['bar'];
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        import { foo } from 'foo';
+
+        export type Bar = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 18,
+          endLine: 2,
+          endColumn: 21,
         },
       ],
     },

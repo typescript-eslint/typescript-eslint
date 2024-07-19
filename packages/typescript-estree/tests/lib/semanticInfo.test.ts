@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import glob = require('glob');
+import * as glob from 'glob';
 import * as path from 'path';
 import * as ts from 'typescript';
 
@@ -9,12 +9,12 @@ import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import type { TSESTree } from '../../src/ts-estree';
+import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   createSnapshotTestBlock,
   formatSnapshotName,
   parseCodeAndGenerateServices,
-} from '../../tools/test-utils';
-import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
+} from '../test-utils/test-utils';
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`**/*.src.ts`, {
@@ -23,6 +23,7 @@ const testFiles = glob.sync(`**/*.src.ts`, {
 
 function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
   return {
+    disallowAutomaticSingleRunInference: true,
     loc: true,
     range: true,
     tokens: true,
@@ -246,7 +247,7 @@ describe('semanticInfo', () => {
     expect(parseResult.services.program).toBeDefined();
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it(`non-existent file should throw error when project provided`, () => {
       expect(() =>
         parseCodeAndGenerateServices(
@@ -259,7 +260,7 @@ describe('semanticInfo', () => {
     });
   }
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it('non-existent project file', () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
@@ -302,15 +303,6 @@ describe('semanticInfo', () => {
     });
   }
 
-  it('default program produced with option', () => {
-    const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
-      ...createOptions('<input>'),
-      DEPRECATED__createDefaultProgram: true,
-    });
-
-    expectToHaveParserServices(parseResult.services);
-  });
-
   it('empty programs array should throw', () => {
     const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
@@ -320,7 +312,7 @@ describe('semanticInfo', () => {
     );
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it(`first matching provided program instance is returned in result`, () => {
       const filename = testFiles[0];
       const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
@@ -348,8 +340,8 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
@@ -365,8 +357,8 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
 
@@ -378,8 +370,8 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithMultiplePrograms),
     ).toThrow(
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
@@ -398,7 +390,7 @@ describe('semanticInfo', () => {
 function testIsolatedFile(
   parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
 ): void {
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true') {
     return;
   }
 
@@ -445,8 +437,6 @@ function testIsolatedFile(
 
 /**
  * Verifies that the type of a TS node is number[] as expected
- * @param {ts.TypeChecker} checker
- * @param {ts.Node} tsNode
  */
 function checkNumberArrayType(checker: ts.TypeChecker, tsNode: ts.Node): void {
   const nodeType = checker.getTypeAtLocation(tsNode);

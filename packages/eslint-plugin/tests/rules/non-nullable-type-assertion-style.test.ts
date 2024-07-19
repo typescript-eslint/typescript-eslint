@@ -246,15 +246,12 @@ const b = (a || undefined)!;
 
 const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
   parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
+    project: './tsconfig.noUncheckedIndexedAccess.json',
+    projectService: false,
     sourceType: 'module',
     tsconfigRootDir: getFixturesRootDir(),
-    project: './tsconfig.noUncheckedIndexedAccess.json',
   },
   parser: '@typescript-eslint/parser',
-  dependencyConstraints: {
-    typescript: '4.1',
-  },
 });
 
 ruleTesterWithNoUncheckedIndexAccess.run(

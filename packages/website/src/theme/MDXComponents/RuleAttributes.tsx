@@ -1,6 +1,6 @@
 import Link from '@docusaurus/Link';
-import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import React from 'react';
 
 import {
@@ -20,8 +20,25 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
-  const recommendation = recommendations[docs.recommended!];
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
+  [K in Key]-?: NonNullable<Base[Key]>;
+};
+
+type RecommendedRuleMetaDataDocs = MakeRequired<
+  ESLintPluginDocs,
+  'recommended'
+>;
+
+const isRecommendedDocs = (
+  docs: ESLintPluginDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
+
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
+  const recommended = docs.recommended;
+  const recommendation =
+    recommendations[
+      typeof recommended === 'object' ? 'recommended' : recommended
+    ];
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
@@ -37,13 +54,13 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
 
   const features: FeatureProps[] = [];
 
-  if (rule.docs.recommended) {
+  if (isRecommendedDocs(rule.docs)) {
     const [emoji, recommendation] = getRecommendation(rule.docs);
     features.push({
       children: (
         <>
           Extending{' '}
-          <Link to={`/linting/configs#${recommendation}`} target="_blank">
+          <Link to={`/users/configs#${recommendation}`} target="_blank">
             <code className={styles.code}>
               "plugin:@typescript-eslint/{recommendation}"
             </code>
@@ -94,7 +111,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           This rule requires{' '}
-          <Link href="/linting/typed-linting" target="_blank">
+          <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
           to run.

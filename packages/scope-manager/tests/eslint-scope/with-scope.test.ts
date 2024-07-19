@@ -5,7 +5,7 @@ import {
   expectToBeWithScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('with', () => {
   it('creates scope', () => {

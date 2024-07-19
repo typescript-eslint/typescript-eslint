@@ -466,11 +466,11 @@ ruleTester.run('naming-convention', rule, {
         {
           const camelCaseVar = 1;
           function camelCaseFunction() {}
-          declare function camelCaseDeclaredFunction() {};
+          declare function camelCaseDeclaredFunction();
         }
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {};
+        declare function PascalCaseDeclaredFunction();
       `,
       options: [
         { selector: 'default', format: ['camelCase'] },
@@ -1507,7 +1507,7 @@ ruleTester.run('naming-convention', rule, {
       code: `
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {};
+        declare function PascalCaseDeclaredFunction();
       `,
       options: [
         { selector: 'default', format: ['snake_case'] },
@@ -2088,7 +2088,7 @@ ruleTester.run('naming-convention', rule, {
         {
           messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Accessor',
+            type: 'Classic Accessor',
             name: 'someGetterOverride',
             formats: 'snake_case',
           },
@@ -2096,7 +2096,7 @@ ruleTester.run('naming-convention', rule, {
         {
           messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Accessor',
+            type: 'Classic Accessor',
             name: 'someSetterOverride',
             formats: 'snake_case',
           },

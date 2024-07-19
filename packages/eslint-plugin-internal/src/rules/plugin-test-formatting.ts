@@ -2,7 +2,6 @@ import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -56,6 +55,7 @@ function getExpectedIndentForNode(
   sourceCodeLines: string[],
 ): number {
   const lineIdx = node.loc.start.line - 1;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const indent = START_OF_LINE_WHITESPACE_MATCHER.exec(
     sourceCodeLines[lineIdx],
   )![1];
@@ -109,7 +109,6 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: `Enforce that eslint-plugin test snippets are correctly formatted`,
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -148,7 +147,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ formatWithPrettier }]) {
-    const sourceCode = getSourceCode(context);
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -326,7 +324,10 @@ export default createRule<Options, MessageIds>({
         });
       }
 
-      const parentIndent = getExpectedIndentForNode(literal, sourceCode.lines);
+      const parentIndent = getExpectedIndentForNode(
+        literal,
+        context.sourceCode.lines,
+      );
       if (lastLine.length !== parentIndent) {
         return context.report({
           node: literal,
@@ -347,6 +348,7 @@ export default createRule<Options, MessageIds>({
       // +2 because we expect the string contents are indented one level
       const expectedIndent = parentIndent + 2;
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const firstLineIndent = START_OF_LINE_WHITESPACE_MATCHER.exec(
         lines[0],
       )![1];
@@ -369,6 +371,7 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const matches = START_OF_LINE_WHITESPACE_MATCHER.exec(line)!;
 
           const indent = matches[1];
@@ -422,9 +425,7 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isNoFormatTemplateTag(
-      tag: TSESTree.LeftHandSideExpression,
-    ): boolean {
+    function isNoFormatTemplateTag(tag: TSESTree.Expression): boolean {
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 

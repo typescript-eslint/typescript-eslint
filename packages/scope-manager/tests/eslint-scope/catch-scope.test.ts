@@ -5,7 +5,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('catch', () => {
   it('creates scope', () => {

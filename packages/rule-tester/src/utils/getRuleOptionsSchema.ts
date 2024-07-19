@@ -33,5 +33,5 @@ export function getRuleOptionsSchema(
   }
 
   // Given a full schema, leave it alone
-  return schema || null;
+  return schema ?? null;
 }

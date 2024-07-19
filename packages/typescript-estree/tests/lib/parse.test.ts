@@ -166,11 +166,12 @@ describe('parseAndGenerateServices', () => {
 
   describe('isolated parsing', () => {
     const config: TSESTreeOptions = {
-      EXPERIMENTAL_useProjectService: false,
       comment: true,
-      tokens: true,
-      range: true,
+      disallowAutomaticSingleRunInference: true,
       loc: true,
+      projectService: false,
+      range: true,
+      tokens: true,
     };
     const testParse = ({
       ext,
@@ -340,17 +341,17 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
+        disallowAutomaticSingleRunInference: true,
         tokens: true,
         range: true,
         loc: true,
         tsconfigRootDir: PROJECT_DIR,
-        project: './tsconfig.json',
       };
       const testParse =
         (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
@@ -360,9 +361,24 @@ describe('parseAndGenerateServices', () => {
               ...config,
               extraFileExtensions,
               filePath: join(PROJECT_DIR, filePath),
+              project: './tsconfig.json',
             });
           } catch (error) {
             alignErrorPath(error as Error);
+          }
+        };
+      const testExtraFileExtensions =
+        (filePath: string, extraFileExtensions: string[]) => (): void => {
+          const result = parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+            projectService: true,
+          });
+          const compilerOptions = result.services.program?.getCompilerOptions();
+
+          if (!compilerOptions?.configFilePath) {
+            throw new Error('No config file found, using inferred project');
           }
         };
 
@@ -382,7 +398,7 @@ describe('parseAndGenerateServices', () => {
             - Change ESLint's list of included files to not include this file
             - Change that TSConfig to include this file
             - Create a new TSConfig that includes this file and include it in your parserOptions.project
-            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
           `);
           expect(testParse('ts/notIncluded02.tsx'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -391,7 +407,7 @@ describe('parseAndGenerateServices', () => {
             - Change ESLint's list of included files to not include this file
             - Change that TSConfig to include this file
             - Create a new TSConfig that includes this file and include it in your parserOptions.project
-            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
           `);
           expect(testParse('js/notIncluded01.js'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -400,7 +416,7 @@ describe('parseAndGenerateServices', () => {
             - Change ESLint's list of included files to not include this file
             - Change that TSConfig to include this file
             - Create a new TSConfig that includes this file and include it in your parserOptions.project
-            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
           `);
           expect(testParse('js/notIncluded02.jsx'))
             .toThrowErrorMatchingInlineSnapshot(`
@@ -409,7 +425,7 @@ describe('parseAndGenerateServices', () => {
             - Change ESLint's list of included files to not include this file
             - Change that TSConfig to include this file
             - Create a new TSConfig that includes this file and include it in your parserOptions.project
-            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
           `);
         });
       });
@@ -442,7 +458,7 @@ describe('parseAndGenerateServices', () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
             `);
           });
 
@@ -455,7 +471,7 @@ describe('parseAndGenerateServices', () => {
               - Change ESLint's list of included files to not include this file
               - Change that TSConfig to include this file
               - Create a new TSConfig that includes this file and include it in your parserOptions.project
-              See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+              See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
             `);
           });
         });
@@ -477,15 +493,60 @@ describe('parseAndGenerateServices', () => {
           `);
         });
       });
+
+      describe('"parserOptions.extraFileExtensions" is non-empty and projectService is true', () => {
+        describe('the extension matches', () => {
+          it('the file is included', () => {
+            expect(
+              testExtraFileExtensions('other/included.vue', ['.vue']),
+            ).not.toThrow();
+          });
+
+          it("the file isn't included", () => {
+            expect(
+              testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
+            ).toThrowErrorMatchingInlineSnapshot(
+              `"No config file found, using inferred project"`,
+            );
+          });
+
+          it('duplicate extension', () => {
+            expect(
+              testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
+            ).toThrowErrorMatchingInlineSnapshot(
+              `"No config file found, using inferred project"`,
+            );
+          });
+        });
+
+        it('invalid extension', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', [
+              'unknown',
+            ]),
+          ).toThrowErrorMatchingInlineSnapshot(
+            `"No config file found, using inferred project"`,
+          );
+        });
+
+        it('the extension does not match', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
+          ).toThrowErrorMatchingInlineSnapshot(
+            `"No config file found, using inferred project"`,
+          );
+        });
+      });
     });
 
     describe('invalid project error messages', () => {
-      if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+      if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
         it('throws when none of multiple projects include the file', () => {
           const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
           const code = 'var a = true';
           const config: TSESTreeOptions = {
             comment: true,
+            disallowAutomaticSingleRunInference: true,
             tokens: true,
             range: true,
             loc: true,
@@ -512,7 +573,7 @@ describe('parseAndGenerateServices', () => {
             - Change ESLint's list of included files to not include this file
             - Change one of those TSConfigs to include this file
             - Create a new TSConfig that includes this file and include it in your parserOptions.project
-            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
           `);
         });
       }
@@ -530,6 +591,7 @@ describe('parseAndGenerateServices', () => {
     it("shouldn't turn on debugger if no options were provided", () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: [],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).not.toHaveBeenCalled();
     });
@@ -537,6 +599,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('eslint:*,-eslint:code-path');
@@ -545,6 +608,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('typescript-eslint:*');
@@ -553,6 +617,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on both eslint and typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint', 'eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith(
@@ -560,11 +625,12 @@ describe('parseAndGenerateServices', () => {
       );
     });
 
-    if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
       it('should turn on typescript debugger', () => {
         expect(() =>
           parser.parseAndGenerateServices('const x = 1;', {
             debugLevel: ['typescript'],
+            disallowAutomaticSingleRunInference: true,
             filePath: './path-that-doesnt-exist.ts',
             project: ['./tsconfig-that-doesnt-exist.json'],
           }),
@@ -580,7 +646,7 @@ describe('parseAndGenerateServices', () => {
     }
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('projectFolderIgnoreList', () => {
       beforeEach(() => {
         parser.clearCaches();
@@ -590,6 +656,7 @@ describe('parseAndGenerateServices', () => {
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
+        disallowAutomaticSingleRunInference: true,
         tokens: true,
         range: true,
         loc: true,
@@ -631,6 +698,7 @@ describe('parseAndGenerateServices', () => {
             cacheLifetime: {
               glob: lifetime,
             },
+            disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
             tsconfigRootDir: FIXTURES_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],

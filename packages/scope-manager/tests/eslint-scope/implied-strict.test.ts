@@ -5,7 +5,7 @@ import {
   expectToBeGlobalScope,
   expectToBeModuleScope,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('impliedStrict option', () => {
   it('ensures all user scopes are strict', () => {

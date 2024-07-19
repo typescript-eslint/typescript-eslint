@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "6.17.0",
+  "version": "7.16.1",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
@@ -17,7 +17,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/parser",
   "license": "BSD-2-Clause",
   "keywords": [
     "ast",
@@ -45,24 +46,25 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0 || ^8.0.0"
+    "eslint": "^8.57.0 || ^9.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "6.17.0",
-    "@typescript-eslint/types": "6.17.0",
-    "@typescript-eslint/typescript-estree": "6.17.0",
-    "@typescript-eslint/visitor-keys": "6.17.0",
+    "@typescript-eslint/scope-manager": "7.16.1",
+    "@typescript-eslint/types": "7.16.1",
+    "@typescript-eslint/typescript-estree": "7.16.1",
+    "@typescript-eslint/visitor-keys": "7.16.1",
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "@types/glob": "*",
     "downlevel-dts": "*",
     "glob": "*",
     "jest": "29.7.0",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*"
   },

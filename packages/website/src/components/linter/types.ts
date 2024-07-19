@@ -32,6 +32,7 @@ export type PlaygroundSystem = Required<
 > &
   ts.System & {
     removeFile: (fileName: string) => void;
+    searchFiles: (path: string) => string[];
   };
 
 export type LinterOnLint = (

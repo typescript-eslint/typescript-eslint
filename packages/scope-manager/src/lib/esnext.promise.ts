@@ -4,10 +4,9 @@
 // npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE, TYPE_VALUE } from './base-config';
+import { TYPE } from './base-config';
 
 export const esnext_promise = {
-  AggregateError: TYPE_VALUE,
-  AggregateErrorConstructor: TYPE,
+  PromiseWithResolvers: TYPE,
   PromiseConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

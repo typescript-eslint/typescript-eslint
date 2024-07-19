@@ -1,13 +1,9 @@
-import type {
-  Definition,
-  ImportBindingDefinition,
-} from '@typescript-eslint/scope-manager';
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
+import { isTypeImport } from '../util/isTypeImport';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';
 type Options = [
@@ -88,7 +84,7 @@ export default createRule<Options, MessageIds>({
      */
     function isGlobalAugmentation(scope: TSESLint.Scope.Scope): boolean {
       return (
-        (scope.type === ScopeType.tsModule && !!scope.block.global) ||
+        (scope.type === ScopeType.tsModule && scope.block.kind === 'global') ||
         (!!scope.upper && isGlobalAugmentation(scope.upper))
       );
     }
@@ -100,17 +96,6 @@ export default createRule<Options, MessageIds>({
       return (
         variable.defs[0].type === DefinitionType.Parameter &&
         variable.name === 'this'
-      );
-    }
-
-    function isTypeImport(
-      definition?: Definition,
-    ): definition is ImportBindingDefinition {
-      return (
-        definition?.type === DefinitionType.ImportBinding &&
-        (definition.parent.importKind === 'type' ||
-          (definition.node.type === AST_NODE_TYPES.ImportSpecifier &&
-            definition.node.importKind === 'type'))
       );
     }
 
@@ -283,6 +268,7 @@ export default createRule<Options, MessageIds>({
      * @returns Whether or not the variable name is allowed.
      */
     function isAllowed(variable: TSESLint.Scope.Variable): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return options.allow!.includes(variable.name);
     }
 
@@ -545,7 +531,7 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Checks the current context for shadowed variables.
-     * @param {Scope} scope Fixme
+     * @param scope Fixme
      */
     function checkForShadows(scope: TSESLint.Scope.Scope): void {
       // ignore global augmentation
@@ -646,11 +632,12 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      'Program:exit'(): void {
-        const globalScope = getScope(context);
+      'Program:exit'(node): void {
+        const globalScope = context.sourceCode.getScope(node);
         const stack = globalScope.childScopes.slice();
 
         while (stack.length) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const scope = stack.pop()!;
 
           stack.push(...scope.childScopes);

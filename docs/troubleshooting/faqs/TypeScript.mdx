@@ -1,0 +1,37 @@
+---
+id: typescript
+sidebar_label: TypeScript
+title: TypeScript FAQs
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Should TypeScript should be installed globally or locally?
+
+Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
+or by using `yarn add typescript`, not `yarn global add typescript`.
+See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) for more information.
+
+## Why don't I see TypeScript errors in my ESLint output?
+
+TypeScript's compiler (or whatever your build chain may be) is specifically designed and built to validate the correctness of your codebase.
+Our tooling does not reproduce the errors that TypeScript provides, because doing so would slow down the lint run [1], and duplicate the errors that TypeScript already outputs for you.
+
+Instead, our tooling exists to **_augment_** TypeScript's built in checks with lint rules that consume the type information in new ways beyond just verifying the runtime correctness of your code.
+
+[1] - TypeScript computes type information lazily, so us asking for the errors it would produce from the compiler would take an _additional_ ~100ms per file.
+This doesn't sound like a lot, but depending on the size of your codebase, it can easily add up to between several seconds to several minutes to a lint run.
+
+## How can I specify a TypeScript version / `parserOptions.typescriptLocation`?
+
+You can't, and you don't want to.
+
+You should use the same version of TypeScript for linting as the rest of your project.
+TypeScript versions often have slight differences in edge cases that can cause contradictory information between typescript-eslint rules and editor information.
+For example:
+
+- `@typescript-eslint/strict-boolean-expressions` might be operating with TypeScript version _X_ and think a variable is `string[] | undefined`
+- TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
+
+See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.

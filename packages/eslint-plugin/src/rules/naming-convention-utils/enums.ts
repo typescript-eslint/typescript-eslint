@@ -28,7 +28,7 @@ enum Selectors {
 
   // memberLike
   parameterProperty = 1 << 3,
-  accessor = 1 << 4,
+  classicAccessor = 1 << 4,
   enumMember = 1 << 5,
   classMethod = 1 << 6,
   objectLiteralMethod = 1 << 7,
@@ -36,12 +36,13 @@ enum Selectors {
   classProperty = 1 << 9,
   objectLiteralProperty = 1 << 10,
   typeProperty = 1 << 11,
+  autoAccessor = 1 << 12,
 
   // typeLike
-  class = 1 << 12,
-  interface = 1 << 13,
-  typeAlias = 1 << 14,
-  enum = 1 << 15,
+  class = 1 << 13,
+  interface = 1 << 14,
+  typeAlias = 1 << 15,
+  enum = 1 << 16,
   typeParameter = 1 << 17,
 
   // other
@@ -65,7 +66,8 @@ enum MetaSelectors {
     Selectors.classMethod |
     Selectors.objectLiteralMethod |
     Selectors.typeMethod |
-    Selectors.accessor,
+    Selectors.classicAccessor |
+    Selectors.autoAccessor,
   typeLike = 0 |
     Selectors.class |
     Selectors.interface |
@@ -80,6 +82,7 @@ enum MetaSelectors {
     Selectors.classProperty |
     Selectors.objectLiteralProperty |
     Selectors.typeProperty,
+  accessor = 0 | Selectors.classicAccessor | Selectors.autoAccessor,
   /* eslint-enable @typescript-eslint/prefer-literal-enum-member */
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;

@@ -1,9 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
-import * as tsutils from 'ts-api-utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
   name: 'no-dynamic-delete',
@@ -43,9 +41,7 @@ export default createRule({
         if (
           node.argument.type !== AST_NODE_TYPES.MemberExpression ||
           !node.argument.computed ||
-          isNecessaryDynamicAccess(
-            diveIntoWrapperExpressions(node.argument.property),
-          )
+          isAcceptableIndexExpression(node.argument.property)
         ) {
           return;
         }
@@ -67,37 +63,27 @@ export default createRule({
     }
 
     function getTokenRange(property: TSESTree.Expression): [number, number] {
-      const sourceCode = getSourceCode(context);
-
       return [
-        sourceCode.getTokenBefore(property)!.range[0],
-        sourceCode.getTokenAfter(property)!.range[1],
+        nullThrows(
+          context.sourceCode.getTokenBefore(property),
+          NullThrowsReasons.MissingToken('token before', 'property'),
+        ).range[0],
+        nullThrows(
+          context.sourceCode.getTokenAfter(property),
+          NullThrowsReasons.MissingToken('token after', 'property'),
+        ).range[1],
       ];
     }
   },
 });
 
-function diveIntoWrapperExpressions(
-  node: TSESTree.Expression,
-): TSESTree.Expression {
-  if (node.type === AST_NODE_TYPES.UnaryExpression) {
-    return diveIntoWrapperExpressions(node.argument);
-  }
-
-  return node;
-}
-
-function isNecessaryDynamicAccess(property: TSESTree.Expression): boolean {
-  if (property.type !== AST_NODE_TYPES.Literal) {
-    return false;
-  }
-
-  if (typeof property.value === 'number') {
-    return true;
-  }
-
+function isAcceptableIndexExpression(property: TSESTree.Expression): boolean {
   return (
-    typeof property.value === 'string' &&
-    !tsutils.isValidPropertyAccess(property.value)
+    (property.type === AST_NODE_TYPES.Literal &&
+      ['string', 'number'].includes(typeof property.value)) ||
+    (property.type === AST_NODE_TYPES.UnaryExpression &&
+      property.operator === '-' &&
+      property.argument.type === AST_NODE_TYPES.Literal &&
+      typeof property.argument.value === 'number')
   );
 }

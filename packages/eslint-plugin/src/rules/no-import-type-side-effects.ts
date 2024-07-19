@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -30,7 +29,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
     return {
       'ImportDeclaration[importKind!="type"]'(
         node: TSESTree.ImportDeclaration,
@@ -57,7 +55,7 @@ export default createRule<Options, MessageIds>({
             const fixes: TSESLint.RuleFix[] = [];
             for (const specifier of specifiers) {
               const qualifier = nullThrows(
-                sourceCode.getFirstToken(specifier, isTypeKeyword),
+                context.sourceCode.getFirstToken(specifier, isTypeKeyword),
                 NullThrowsReasons.MissingToken(
                   'type keyword',
                   'import specifier',
@@ -72,7 +70,7 @@ export default createRule<Options, MessageIds>({
             }
 
             const importKeyword = nullThrows(
-              sourceCode.getFirstToken(node, isImportKeyword),
+              context.sourceCode.getFirstToken(node, isImportKeyword),
               NullThrowsReasons.MissingToken('import keyword', 'import'),
             );
             fixes.push(fixer.insertTextAfter(importKeyword, ' type'));

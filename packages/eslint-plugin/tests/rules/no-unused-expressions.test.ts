@@ -325,5 +325,61 @@ Foo<string>;
         },
       ]),
     },
+    {
+      code: `
+declare const foo: number | undefined;
+foo;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 5,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo as any;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 12,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+<any>foo;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 10,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo!;
+      `,
+      errors: error([
+        {
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 6,
+        },
+      ]),
+    },
   ],
 });

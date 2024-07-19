@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -28,8 +27,6 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       requiresTypeChecking: false,
     },
-    fixable: 'code',
-    hasSuggestions: false,
     schema: [
       {
         type: 'object',
@@ -50,7 +47,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreOverrideMethods: {
             type: 'boolean',
-            description: 'Ingore members marked with the `override` modifier',
+            description: 'Ignore members marked with the `override` modifier',
           },
           ignoreClassesThatImplementAnInterface: {
             oneOf: [
@@ -111,17 +108,13 @@ export default createRule<Options, MessageIds>({
         };
     let stack: Stack | undefined;
 
-    const sourceCode = getSourceCode(context);
-
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
     ): void {
       if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
           member,
-          class: member.parent.parent as
-            | TSESTree.ClassDeclaration
-            | TSESTree.ClassExpression,
+          class: member.parent.parent,
           usesThis: false,
           parent: stack,
         };
@@ -222,7 +215,7 @@ export default createRule<Options, MessageIds>({
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           messageId: 'missingThis',
           data: {
             name: getFunctionNameWithKind(node),

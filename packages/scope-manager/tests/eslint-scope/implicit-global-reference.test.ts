@@ -4,7 +4,7 @@ import {
   expectToBeGlobalScope,
   getRealVariables,
   parseAndAnalyze,
-} from '../util';
+} from '../test-utils';
 
 describe('implicit global reference', () => {
   it('assignments global scope', () => {

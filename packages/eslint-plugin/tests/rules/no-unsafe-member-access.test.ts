@@ -6,8 +6,8 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
     project: './tsconfig.noImplicitThis.json',
+    projectService: false,
     tsconfigRootDir: getFixturesRootDir(),
   },
 });
@@ -55,20 +55,16 @@ function foo(x: string[]) {
 }
     `,
     `
-function foo(x?: string[]) {
-  x?.[1++];
-}
-    `,
-    `
-function foo(x?: string[]) {
-  x?.[(1 as any)++];
-}
-    `,
-    `
 class B implements FG.A {}
     `,
     `
 interface B extends FG.A {}
+    `,
+    `
+class B implements F.S.T.A {}
+    `,
+    `
+interface B extends F.S.T.A {}
     `,
   ],
   invalid: [
@@ -85,6 +81,7 @@ function foo(x: any) {
           column: 5,
           endColumn: 6,
           data: {
+            type: '`any`',
             property: '.a',
           },
         },
@@ -103,6 +100,7 @@ function foo(x: any) {
           column: 5,
           endColumn: 6,
           data: {
+            type: '`any`',
             property: '.a',
           },
         },
@@ -121,6 +119,7 @@ function foo(x: { a: any }) {
           column: 7,
           endColumn: 8,
           data: {
+            type: '`any`',
             property: '.b',
           },
         },
@@ -139,6 +138,7 @@ function foo(x: any) {
           column: 5,
           endColumn: 8,
           data: {
+            type: '`any`',
             property: "['a']",
           },
         },
@@ -157,7 +157,27 @@ function foo(x: any) {
           column: 5,
           endColumn: 8,
           data: {
+            type: '`any`',
             property: "['a']",
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+
+value.property;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeMemberExpression',
+          line: 4,
+          column: 7,
+          endColumn: 15,
+          data: {
+            type: '`error` typed',
+            property: '.property',
           },
         },
       ],
@@ -176,6 +196,7 @@ function foo(x: { a: number }, y: any) {
           endColumn: 6,
           data: {
             property: '[y]',
+            type: '`any`',
           },
         },
       ],
@@ -194,6 +215,7 @@ function foo(x?: { a: number }, y: any) {
           endColumn: 8,
           data: {
             property: '[y]',
+            type: '`any`',
           },
         },
       ],
@@ -212,6 +234,7 @@ function foo(x: { a: number }, y: any) {
           endColumn: 12,
           data: {
             property: '[y += 1]',
+            type: '`any`',
           },
         },
       ],
@@ -230,6 +253,7 @@ function foo(x: { a: number }, y: any) {
           endColumn: 13,
           data: {
             property: '[1 as any]',
+            type: '`any`',
           },
         },
       ],
@@ -248,6 +272,7 @@ function foo(x: { a: number }, y: any) {
           endColumn: 8,
           data: {
             property: '[y()]',
+            type: '`any`',
           },
         },
       ],
@@ -266,6 +291,26 @@ function foo(x: string[], y: any) {
           endColumn: 6,
           data: {
             property: '[y]',
+            type: '`any`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: NotKnown) {
+  x[y];
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeComputedMemberAccess',
+          line: 3,
+          column: 5,
+          endColumn: 6,
+          data: {
+            property: '[y]',
+            type: '`error` typed',
           },
         },
       ],

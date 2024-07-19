@@ -1,9 +1,9 @@
 [
   {
     "id": "ESLint",
-    "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
+    "image": "https://images.opencollective.com/eslint/48a2e5d/logo.png",
     "name": "ESLint",
-    "totalDonations": 2820000,
+    "totalDonations": 3030000,
     "website": "https://eslint.org/"
   },
   {
@@ -17,50 +17,71 @@
     "id": "Nx (by Nrwl)",
     "image": "https://images.opencollective.com/nx/0efbe42/logo.png",
     "name": "Nx (by Nrwl)",
-    "totalDonations": 825000,
+    "totalDonations": 1000000,
     "website": "https://nx.dev"
   },
   {
     "id": "Hugging Face",
     "image": "https://images.opencollective.com/huggingface/5c934ee/logo.png",
     "name": "Hugging Face",
-    "totalDonations": 400000,
+    "totalDonations": 540000,
     "website": "https://huggingface.co"
-  },
-  {
-    "id": "Codecademy",
-    "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
-    "name": "Codecademy",
-    "totalDonations": 230000,
-    "website": "https://codecademy.com"
-  },
-  {
-    "id": "Airbnb",
-    "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
-    "name": "Airbnb",
-    "totalDonations": 205800,
-    "website": "https://www.airbnb.com/"
-  },
-  {
-    "id": "Sourcegraph",
-    "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
-    "name": "Sourcegraph",
-    "totalDonations": 180000,
-    "website": "https://about.sourcegraph.com"
-  },
-  {
-    "id": "GitBook",
-    "image": "https://images.opencollective.com/gitbook/d35a8e7/logo.png",
-    "name": "GitBook",
-    "totalDonations": 150000,
-    "website": "https://www.gitbook.com"
   },
   {
     "id": "Cybozu",
     "image": "https://images.opencollective.com/cybozu/933e46d/logo.png",
     "name": "Cybozu",
-    "totalDonations": 140000,
+    "totalDonations": 385000,
     "website": "https://cybozu.co.jp/"
+  },
+  {
+    "id": "JetBrains",
+    "image": "https://images.opencollective.com/jetbrains/fe76f99/logo.png",
+    "name": "JetBrains",
+    "totalDonations": 350000,
+    "website": "https://www.jetbrains.com/"
+  },
+  {
+    "id": "Codecademy",
+    "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
+    "name": "Codecademy",
+    "totalDonations": 300000,
+    "website": "https://codecademy.com"
+  },
+  {
+    "id": "Canva",
+    "image": "https://images.opencollective.com/canvaofficial/7217c4d/logo.png",
+    "name": "Canva",
+    "totalDonations": 300000,
+    "website": "https://www.canva.com"
+  },
+  {
+    "id": "Sourcegraph",
+    "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
+    "name": "Sourcegraph",
+    "totalDonations": 250000,
+    "website": "https://about.sourcegraph.com"
+  },
+  {
+    "id": "Airbnb",
+    "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
+    "name": "Airbnb",
+    "totalDonations": 240800,
+    "website": "https://www.airbnb.com/"
+  },
+  {
+    "id": "THANKS.DEV",
+    "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
+    "name": "THANKS.DEV",
+    "totalDonations": 190518,
+    "website": "https://thanks.dev"
+  },
+  {
+    "id": "GitBook",
+    "image": "https://images.opencollective.com/gitbook/820419f/logo.png",
+    "name": "GitBook",
+    "totalDonations": 150000,
+    "website": "https://www.gitbook.com"
   },
   {
     "id": "n8n.io - n8n GmbH",
@@ -84,11 +105,25 @@
     "website": "https://sentry.io/welcome/"
   },
   {
+    "id": "Bitwarden",
+    "image": "https://images.opencollective.com/bitwarden/ebb7656/avatar.png",
+    "name": "Bitwarden",
+    "totalDonations": 111111,
+    "website": "https://bitwarden.com/"
+  },
+  {
     "id": "EY Doberman",
     "image": "https://images.opencollective.com/ey-doberman/b269462/logo.png",
     "name": "EY Doberman",
     "totalDonations": 80400,
     "website": "https://doberman.co"
+  },
+  {
+    "id": "STORIS",
+    "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
+    "name": "STORIS",
+    "totalDonations": 71000,
+    "website": "https://www.storis.com/"
   },
   {
     "id": "Codiga",
@@ -112,25 +147,11 @@
     "website": "https://www.future-processing.com/"
   },
   {
-    "id": "STORIS",
-    "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
-    "name": "STORIS",
-    "totalDonations": 53500,
-    "website": "https://www.storis.com/"
-  },
-  {
     "id": "Skunk Team",
     "image": "https://images.opencollective.com/skunk-team/3ddba2f/logo.png",
     "name": "Skunk Team",
     "totalDonations": 50000,
     "website": "https://skunk.team"
-  },
-  {
-    "id": "JetBrains",
-    "image": "https://images.opencollective.com/jetbrains/eb04ddc/logo.png",
-    "name": "JetBrains",
-    "totalDonations": 50000,
-    "website": "https://www.jetbrains.com/"
   },
   {
     "id": "Joe Alden",
@@ -145,6 +166,13 @@
     "name": "Whitebox",
     "totalDonations": 40000,
     "website": "https://whitebox.com"
+  },
+  {
+    "id": "CryptoNewsZ",
+    "image": "https://images.opencollective.com/cryptonewsz/f50c823/logo.png",
+    "name": "CryptoNewsZ",
+    "totalDonations": 32500,
+    "website": "https://www.cryptonewsz.com/"
   },
   {
     "id": "Monito",
@@ -168,11 +196,25 @@
     "website": "https://vitejs.dev"
   },
   {
+    "id": "Quicko",
+    "image": "https://images.opencollective.com/quicko/7bd1dc9/logo.png",
+    "name": "Quicko",
+    "totalDonations": 26000,
+    "website": "https://quicko.com"
+  },
+  {
     "id": "revo.js",
     "image": "https://images.opencollective.com/revojsro/82623a7/logo.png",
     "name": "revo.js",
     "totalDonations": 23000,
     "website": "https://revojs.ro"
+  },
+  {
+    "id": "Defined Networking",
+    "image": "https://images.opencollective.com/defined-networking/072920e/logo.png",
+    "name": "Defined Networking",
+    "totalDonations": 22500,
+    "website": "https://www.defined.net"
   },
   {
     "id": "Ian MacLeod",
@@ -182,11 +224,39 @@
     "website": "https://twitter.com/nevir"
   },
   {
+    "id": "WebdriverIO",
+    "image": "https://images.opencollective.com/webdriverio/bbdd5c3/logo.png",
+    "name": "WebdriverIO",
+    "totalDonations": 21000,
+    "website": "https://webdriver.io/"
+  },
+  {
     "id": "David Johnston",
-    "image": "https://images.opencollective.com/blacksheepcode/976d69a/avatar.png",
+    "image": "https://images.opencollective.com/blacksheepcode/f186c05/avatar.png",
     "name": "David Johnston",
     "totalDonations": 20500,
     "website": "https://blacksheepcode.com"
+  },
+  {
+    "id": "Evil Martians",
+    "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
+    "name": "Evil Martians",
+    "totalDonations": 20000,
+    "website": "https://evilmartians.com/"
+  },
+  {
+    "id": "Corellium",
+    "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
+    "name": "Corellium",
+    "totalDonations": 19200,
+    "website": "https://www.corellium.com"
+  },
+  {
+    "id": "0+X",
+    "image": "https://images.opencollective.com/0-x/7239aff/logo.png",
+    "name": "0+X",
+    "totalDonations": 19000,
+    "website": "https://www.0x.se"
   },
   {
     "id": "kartenmacherei",
@@ -196,25 +266,18 @@
     "website": "https://celebrate.company"
   },
   {
-    "id": "Evil Martians",
-    "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
-    "name": "Evil Martians",
-    "totalDonations": 16500,
-    "website": "https://evilmartians.com/"
+    "id": "Trevor Burnham",
+    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
+    "name": "Trevor Burnham",
+    "totalDonations": 18000,
+    "website": "https://trevorburnham.com"
   },
   {
     "id": "Balsa",
     "image": "https://images.opencollective.com/balsa/77de498/logo.png",
     "name": "Balsa",
-    "totalDonations": 16500,
+    "totalDonations": 17000,
     "website": "https://balsa.com/"
-  },
-  {
-    "id": "Corellium",
-    "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
-    "name": "Corellium",
-    "totalDonations": 15000,
-    "website": "https://www.corellium.com"
   },
   {
     "id": "THE PADDING",
@@ -224,20 +287,6 @@
     "website": "https://paddn.com/"
   },
   {
-    "id": "CryptoNewsZ",
-    "image": "https://images.opencollective.com/cryptonewsz/f50c823/logo.png",
-    "name": "CryptoNewsZ",
-    "totalDonations": 15000,
-    "website": "https://www.cryptonewsz.com/"
-  },
-  {
-    "id": "THANKS.DEV",
-    "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
-    "name": "THANKS.DEV",
-    "totalDonations": 14761,
-    "website": "https://thanks.dev"
-  },
-  {
     "id": "Now4real",
     "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
     "name": "Now4real",
@@ -245,32 +294,11 @@
     "website": "https://now4real.com/"
   },
   {
-    "id": "Quicko",
-    "image": "https://images.opencollective.com/quicko/7bd1dc9/logo.png",
-    "name": "Quicko",
-    "totalDonations": 12000,
-    "website": "https://quicko.com"
-  },
-  {
-    "id": "0+X",
-    "image": "https://images.opencollective.com/0-x/7239aff/logo.png",
-    "name": "0+X",
-    "totalDonations": 12000,
-    "website": "https://www.0x.se"
-  },
-  {
     "id": "Knowledge Work",
     "image": "https://images.opencollective.com/knowledge-work/f91b72d/logo.png",
     "name": "Knowledge Work",
     "totalDonations": 11200,
     "website": "https://kwork.studio/"
-  },
-  {
-    "id": "Trevor Burnham",
-    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
-    "name": "Trevor Burnham",
-    "totalDonations": 11000,
-    "website": "https://trevorburnham.com"
   },
   {
     "id": "Gianfranco Palumbo",
@@ -281,7 +309,7 @@
   },
   {
     "id": "The Guardian",
-    "image": "https://images.opencollective.com/gdndevelopers/0b72bf0/logo.png",
+    "image": "https://images.opencollective.com/gdndevelopers/0df8716/logo.png",
     "name": "The Guardian",
     "totalDonations": 10000,
     "website": "https://www.theguardian.com/"
@@ -292,5 +320,12 @@
     "name": "Laserhub",
     "totalDonations": 10000,
     "website": "https://laserhub.com/"
+  },
+  {
+    "id": "Anthony Fu Fund",
+    "image": "https://images.opencollective.com/antfu/9fd8171/logo.png",
+    "name": "Anthony Fu Fund",
+    "totalDonations": 10000,
+    "website": "https://antfu.me/"
   }
 ]

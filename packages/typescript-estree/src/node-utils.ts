@@ -83,7 +83,6 @@ type DeclarationKind = TSESTree.VariableDeclaration['kind'];
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
- * @returns is assignment
  */
 function isAssignmentOperator(
   operator: ts.BinaryOperatorToken,
@@ -188,7 +187,6 @@ export function isComment(node: ts.Node): boolean {
 /**
  * Returns true if the given ts.Node is a JSDoc comment
  * @param node the TypeScript node
- * @returns is JSDoc comment
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
@@ -269,7 +267,6 @@ export function getLocFor(
 
 /**
  * Check whatever node can contain directive
- * @param node
  * @returns returns true if node can contain directive
  */
 export function canContainDirective(
@@ -526,7 +523,7 @@ export function getTokenType(
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
   } else if ('originalKeywordKind' in token) {
-    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    // @ts-expect-error -- intentional fallback for older TS versions <=4.9
     keywordKind = token.originalKeywordKind;
   }
   if (keywordKind) {
@@ -771,10 +768,6 @@ export function nodeHasTokens(n: ts.Node, ast: ts.SourceFile): boolean {
 
 /**
  * Like `forEach`, but suitable for use with numbers and strings (which may be falsy).
- * @template T
- * @template U
- * @param array
- * @param callback
  */
 export function firstDefined<T, U>(
   array: readonly T[] | undefined,
@@ -795,9 +788,10 @@ export function firstDefined<T, U>(
 
 export function identifierIsThisKeyword(id: ts.Identifier): boolean {
   return (
-    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
-    (isAtLeast50 ? ts.identifierToKeywordKind(id) : id.originalKeywordKind) ===
-    SyntaxKind.ThisKeyword
+    (isAtLeast50
+      ? ts.identifierToKeywordKind(id)
+      : // @ts-expect-error -- intentional fallback for older TS versions <=4.9
+        id.originalKeywordKind) === SyntaxKind.ThisKeyword
   );
 }
 
@@ -928,6 +922,35 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   }
 
   return false;
+}
+
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  switch (node.kind) {
+    case SyntaxKind.Identifier:
+      return true;
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      if (node.flags & ts.NodeFlags.OptionalChain) {
+        return false;
+      }
+      return true;
+    case SyntaxKind.ParenthesizedExpression:
+    case SyntaxKind.TypeAssertionExpression:
+    case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.NonNullExpression:
+      return isValidAssignmentTarget(
+        (
+          node as
+            | ts.ParenthesizedExpression
+            | ts.AssertionExpression
+            | ts.SatisfiesExpression
+            | ts.NonNullExpression
+        ).expression,
+      );
+    default:
+      return false;
+  }
 }
 
 export function getNamespaceModifiers(

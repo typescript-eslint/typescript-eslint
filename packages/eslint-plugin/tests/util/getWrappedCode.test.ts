@@ -1,6 +1,5 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -37,7 +36,6 @@ const removeFunctionRule = createRule({
   },
 
   create(context) {
-    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context, true);
 
     const report = (node: TSESTree.CallExpression): void => {
@@ -61,7 +59,7 @@ const removeFunctionRule = createRule({
               : ts.SyntaxKind.Unknown,
           );
 
-          const text = sourceCode.getText(node.arguments[0]);
+          const text = context.sourceCode.getText(node.arguments[0]);
           return fixer.replaceText(
             node,
             getWrappedCode(text, nodePrecedence, parentPrecedence),

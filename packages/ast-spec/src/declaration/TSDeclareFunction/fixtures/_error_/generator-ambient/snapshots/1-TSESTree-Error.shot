@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSDeclareFunction _error_ generator-ambient TSESTree - Error 1`] = `
+"TSError
+  1 | declare module "x" {
+> 2 |   function* foo(): any;
+    |   ^^^^^^^^^^^^^^^^^^^^^ A function signature cannot be declared as a generator.
+  3 | }
+  4 |"
+`;

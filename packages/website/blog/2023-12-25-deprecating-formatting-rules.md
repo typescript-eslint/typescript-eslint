@@ -1,6 +1,6 @@
 ---
 authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
+  - image_url: /img/team/joshuakgoldberg.jpg
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
@@ -21,8 +21,8 @@ We'll keep these deprecated rules available until our next major version.
 ## Context: Formatting Rules
 
 The ESLint blog post thoroughly explains the history and tradeoffs of formatting rules.
-See also [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies/#what-are-the-changes) and our _[What About Formatting?](/linting/troubleshooting/formatting)_ docs.
-The performance downsides of formatting rules are heightened when [linting with type information](/linting/typed-linting).
+See also [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies/#what-are-the-changes) and our _[What About Formatting?](/users/what-about-formatting)_ docs.
+The performance downsides of formatting rules are heightened when [linting with type information](/getting-started/typed-linting).
 
 ## Timelines
 
@@ -31,6 +31,11 @@ Deprecation is only a documentation change.
 Per semantic versioning, formatting-related rules will remain available for all releases of typescript-eslint in the current major version, v6.
 
 **Our next major version, v7, will remove all deprecated rules.**
+
+:::note
+The [`stylistic` configurations](/users/configs#stylistic) are not deprecated or recommended-against.
+We'll continue to include those configs and their rules to help enforce TypeScript-related stylistic consistency for the foreseeable future.
+:::
 
 ## Upgrading to ESLint Stylistic
 
@@ -62,9 +67,3 @@ The equivalent stylistic rules for deprecated typescript-eslint rules are summar
 | [`@typescript-eslint/space-before-function-paren`](/rules/space-before-function-paren)         | [`@stylistic/space-before-function-paren`](https://eslint.style/rules/ts/space-before-function-paren)         |
 | [`@typescript-eslint/space-infix-ops`](/rules/space-infix-ops)                                 | [`@stylistic/space-infix-ops`](https://eslint.style/rules/ts/space-infix-ops)                                 |
 | [`@typescript-eslint/type-annotation-spacing`](/rules/type-annotation-spacing)                 | [`@stylistic/type-annotation-spacing`](https://eslint.style/rules/ts/type-annotation-spacing)                 |
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

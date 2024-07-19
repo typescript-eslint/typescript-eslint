@@ -12,6 +12,11 @@ declare module 'typescript' {
   // Added in TypeScript 5.3
   enum JSDocParsingMode {}
 }
+// https://github.com/typescript-eslint/typescript-eslint/issues/8172
+declare module 'typescript/lib/tsserverlibrary' {
+  // Added in TypeScript 5.3
+  enum JSDocParsingMode {}
+}
 
 /**
  * Internal settings used by the parser to run on a file.
@@ -43,13 +48,6 @@ export interface MutableParseSettings {
   comments: TSESTree.Comment[];
 
   /**
-   * @deprecated
-   * This is a legacy option that comes with severe performance penalties.
-   * Please do not use it.
-   */
-  DEPRECATED__createDefaultProgram: boolean;
-
-  /**
    * Which debug areas should be logged.
    */
   debugLevel: Set<DebugModule>;
@@ -63,20 +61,6 @@ export interface MutableParseSettings {
    * Whether to error if an unknown AST node type is encountered.
    */
   errorOnUnknownASTType: boolean;
-
-  /**
-   * Experimental: TypeScript server to power program creation.
-   */
-  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
-
-  /**
-   * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
-   *
-   * @remarks
-   * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
-   * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
-   */
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
 
   /**
    * Any non-standard file extensions which will be parsed.
@@ -123,7 +107,12 @@ export interface MutableParseSettings {
   /**
    * Normalized paths to provided project paths.
    */
-  projects: readonly CanonicalPath[];
+  projects: ReadonlyMap<CanonicalPath, string>;
+
+  /**
+   * TypeScript server to power program creation.
+   */
+  projectService: ProjectServiceSettings | undefined;
 
   /**
    * Whether to add the `range` property to AST nodes.

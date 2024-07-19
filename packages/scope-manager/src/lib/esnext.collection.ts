@@ -7,5 +7,8 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const esnext_collection = {
-  WeakKeyTypes: TYPE,
+  MapConstructor: TYPE,
+  ReadonlySetLike: TYPE,
+  Set: TYPE,
+  ReadonlySet: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

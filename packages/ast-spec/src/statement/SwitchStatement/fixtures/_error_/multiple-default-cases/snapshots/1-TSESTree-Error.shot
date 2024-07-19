@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement SwitchStatement _error_ multiple-default-cases TSESTree - Error 1`] = `
+"TSError
+> 1 | switch (true) {
+    | ^^^^^^^^^^^^^^^
+> 2 | 	default: default:
+    | ^^^^^^^^^^^^^^^^^^
+> 3 | }
+    | ^^ A 'default' clause cannot appear more than once in a 'switch' statement.
+  4 |"
+`;

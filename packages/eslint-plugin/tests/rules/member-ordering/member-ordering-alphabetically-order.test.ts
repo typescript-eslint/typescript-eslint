@@ -1695,9 +1695,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [
         {
           default: {
@@ -1832,114 +1829,6 @@ class FooTestGetter {
         },
       ],
     },
-
-    // default option + interface + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-interface Foo {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-}
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-};
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class Foo {
-  public static c: string = '';
-  public static b: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-}
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-        },
-      ],
-    },
-
     // default option + class expression + wrong order within group and wrong group order + alphabetically
     {
       code: `
@@ -1957,6 +1846,20 @@ const foo = class Foo {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -1999,6 +1902,13 @@ class Foo {
         },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a2',
+            beforeMember: 'a3',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -2146,6 +2056,20 @@ class Foo {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
@@ -2290,6 +2214,20 @@ const foo = class Foo {
           { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
         ],
         errors: [
+          {
+            messageId: 'incorrectOrder',
+            data: {
+              member: 'b',
+              beforeMember: 'c',
+            },
+          },
+          {
+            messageId: 'incorrectOrder',
+            data: {
+              member: 'a',
+              beforeMember: 'b',
+            },
+          },
           {
             messageId: 'incorrectGroupOrder',
             data: {
@@ -2443,6 +2381,20 @@ interface Foo {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -2603,6 +2555,20 @@ type Foo = {
         { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'b',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {

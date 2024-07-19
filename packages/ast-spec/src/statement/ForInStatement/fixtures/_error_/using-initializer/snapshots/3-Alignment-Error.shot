@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ForInStatement _error_ using-initializer Error Alignment 1`] = `"Both errored"`;

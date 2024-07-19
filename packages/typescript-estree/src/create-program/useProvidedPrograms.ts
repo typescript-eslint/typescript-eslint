@@ -78,7 +78,9 @@ function createProgramFromConfigFile(
       useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
     },
   );
-  const result = parsed!; // parsed is not undefined, since we throw on failure.
+  // parsed is not undefined, since we throw on failure.
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const result = parsed!;
   if (result.errors.length) {
     throw new Error(formatDiagnostics(result.errors));
   }

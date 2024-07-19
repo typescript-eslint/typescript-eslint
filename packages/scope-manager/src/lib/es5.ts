@@ -84,6 +84,7 @@ export const es5 = {
   Lowercase: TYPE,
   Capitalize: TYPE,
   Uncapitalize: TYPE,
+  NoInfer: TYPE,
   ThisType: TYPE,
   WeakKeyTypes: TYPE,
   WeakKey: TYPE,

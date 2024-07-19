@@ -4,7 +4,10 @@ import tmp from 'tmp';
 
 import { clearCaches } from '../../src/clear-caches';
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
-import { parseAndGenerateServices } from '../../src/parser';
+import {
+  clearDefaultProjectMatchedFiles,
+  parseAndGenerateServices,
+} from '../../src/parser';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -19,6 +22,9 @@ const CONTENTS = {
 const cwdCopy = process.cwd();
 const tmpDirs = new Set<tmp.DirResult>();
 afterEach(() => {
+  // reset project tracking
+  clearDefaultProjectMatchedFiles();
+
   // stop watching the files and folders
   clearWatchCaches();
 
@@ -59,7 +65,9 @@ function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
   fs.mkdirSync(path.join(tmpDir.name, 'src'));
   fs.mkdirSync(path.join(tmpDir.name, 'src', 'baz'));
   writeFile(tmpDir.name, 'foo');
-  writeBar && writeFile(tmpDir.name, 'bar');
+  if (writeBar) {
+    writeFile(tmpDir.name, 'bar');
+  }
 
   return tmpDir.name;
 }
@@ -71,6 +79,7 @@ function parseFile(
   ignoreTsconfigRootDir?: boolean,
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
+    disallowAutomaticSingleRunInference: true,
     project: './tsconfig.json',
     tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
     filePath: relative
@@ -87,8 +96,8 @@ function baseTests(
   tsConfigExcludeBar: Record<string, unknown>,
   tsConfigIncludeAll: Record<string, unknown>,
 ): void {
-  // The experimental project server creates a default project for files
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+  // The project service creates a default project for files
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true') {
     return;
   }
 
@@ -124,7 +133,7 @@ function baseTests(
 
   it('allows parsing of deeply nested new files', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, false);
-    const bazSlashBar = 'baz/bar' as const;
+    const bazSlashBar = 'baz/bar';
 
     // parse once to: assert the config as correct, and to make sure the program is setup
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
@@ -149,7 +158,7 @@ function baseTests(
     fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat'));
     fs.mkdirSync(path.join(PROJECT_DIR, 'src', 'bat', 'baz'));
 
-    const bazSlashBar = 'bat/baz/bar' as const;
+    const bazSlashBar = 'bat/baz/bar';
 
     // write a new file and attempt to parse it
     writeFile(PROJECT_DIR, bazSlashBar);
@@ -159,7 +168,7 @@ function baseTests(
 
   it('allows renaming of files', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll, true);
-    const bazSlashBar = 'baz/bar' as const;
+    const bazSlashBar = 'baz/bar';
 
     // parse once to: assert the config as correct, and to make sure the program is setup
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
@@ -265,7 +274,7 @@ describe('persistent parse', () => {
   If there is no includes, then typescript will ask for a slightly different set of watchers.
   */
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('tsconfig with no includes / files', () => {
       const tsConfigExcludeBar = {
         exclude: ['./src/bar.ts'],
@@ -291,7 +300,7 @@ describe('persistent parse', () => {
 
       it('handles tsconfigs with no includes/excludes (nested)', () => {
         const PROJECT_DIR = setup({}, false);
-        const bazSlashBar = 'baz/bar' as const;
+        const bazSlashBar = 'baz/bar';
 
         // parse once to: assert the config as correct, and to make sure the program is setup
         expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();

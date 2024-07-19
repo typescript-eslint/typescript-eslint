@@ -12,16 +12,14 @@ function semverCheck(version: string): boolean {
 }
 
 const versions = [
-  '4.3',
-  '4.4',
-  '4.5',
-  '4.6',
   '4.7',
   '4.8',
   '4.9',
   '5.0',
   '5.1',
   '5.2',
+  '5.3',
+  '5.4',
 ] as const;
 type Versions = typeof versions extends ArrayLike<infer U> ? U : never;
 

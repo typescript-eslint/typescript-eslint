@@ -9,6 +9,8 @@
       "typescript",
       "typescriptreact"
   ],
+  // required to make the extension pickup the flat config
+  "eslint.experimental.useFlatConfig": true,
 
   // When enabled, will trim trailing whitespace when saving a file.
   "files.trimTrailingWhitespace": true,
