@@ -207,9 +207,12 @@ export default tseslint.config(
         { commentPattern: '.*intentional fallthrough.*' },
       ],
       'no-lonely-if': 'error',
+      'no-useless-call': 'error',
       'no-useless-computed-key': 'error',
+      'no-void': ['error', { allowAsStatement: true }],
       'one-var': ['error', 'never'],
       'prefer-arrow-callback': 'error',
+      'prefer-rest-params': 'error',
 
       //
       // eslint-plugin-eslint-comment
