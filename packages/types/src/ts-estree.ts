@@ -20,6 +20,26 @@ declare module './generated/ast-spec' {
   interface AccessorPropertyNonComputedName {
     parent: TSESTree.ClassBody;
   }
+
+  interface VariableDeclaratorDefiniteAssignment {
+    parent: TSESTree.VariableDeclaration;
+  }
+
+  interface VariableDeclaratorMaybeInit {
+    parent: TSESTree.VariableDeclaration;
+  }
+
+  interface VariableDeclaratorNoInit {
+    parent: TSESTree.VariableDeclaration;
+  }
+
+  interface UsingInForOfDeclarator {
+    parent: TSESTree.VariableDeclaration;
+  }
+
+  interface UsingInNormalContextDeclarator {
+    parent: TSESTree.VariableDeclaration;
+  }
 }
 
 export * as TSESTree from './generated/ast-spec';
