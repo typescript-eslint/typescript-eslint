@@ -5806,7 +5806,7 @@ __metadata:
     "@types/tmp": ^0.2.6
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin-internal": "workspace:^"
-    console-fail-test: ^0.4.0
+    console-fail-test: ^0.4.3
     cross-fetch: ^4.0.0
     cspell: ^8.6.1
     downlevel-dts: ">=0.11.0"
@@ -7999,7 +7999,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"console-fail-test@npm:^0.4.0":
+"console-fail-test@npm:^0.4.3":
   version: 0.4.4
   resolution: "console-fail-test@npm:0.4.4"
   checksum: e61622f5ce7b7b679d5d7656d90c972ca95d4bcd93f65a763d7ebe7bb236a48d5684dfe1f3855a611f964687223cc8587218cb723a03efe5c702b705f62ebb5d
