@@ -18,15 +18,12 @@ interface TSEnumMemberBase extends BaseNode {
 /**
  * this should only really happen in semantically invalid code (errors 1164 and 2452)
  *
- * VALID:
  * @example
  * ```ts
+ * // VALID:
  * enum Foo { ['a'] }
- *```
  *
- * INVALID:
- * @example
- * ```ts
+ * // INVALID:
  * const x = 'a';
  * enum Foo { [x] }
  * enum Bar { ['a' + 'b'] }
