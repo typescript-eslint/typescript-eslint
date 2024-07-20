@@ -73,6 +73,9 @@ ruleTester.run('no-duplicate-type-constituents', rule, {
       code: 'type T = (arg: string | number) => void;',
     },
     {
+      code: 'type T = A | A;',
+    },
+    {
       code: `
 type A = 'A';
 type B = 'B';
@@ -271,19 +274,6 @@ type ActuallyDuplicated = IsArray<number>  ;
           data: {
             type: 'Union',
             previous: 'IsArray<number>',
-          },
-        },
-      ],
-    },
-    {
-      code: 'type T = Class<string> | Class<string>;',
-      output: `type T = Class<string>  ;`,
-      errors: [
-        {
-          messageId: 'duplicate',
-          data: {
-            type: 'Union',
-            previous: 'Class<string>',
           },
         },
       ],
