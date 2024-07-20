@@ -177,25 +177,23 @@ export default createRule<Options, MessageIds>({
             // definitely import type { TypeX }
             sourceImports.typeOnlyNamedImport = node;
           }
-        } else {
-          if (
-            !sourceImports.valueOnlyNamedImport &&
-            node.specifiers.length &&
-            node.specifiers.every(
-              specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
-            )
-          ) {
-            sourceImports.valueOnlyNamedImport = node;
-            sourceImports.valueImport = node;
-          } else if (
-            !sourceImports.valueImport &&
-            node.specifiers.some(
-              specifier =>
-                specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
-            )
-          ) {
-            sourceImports.valueImport = node;
-          }
+        } else if (
+          !sourceImports.valueOnlyNamedImport &&
+          node.specifiers.length &&
+          node.specifiers.every(
+            specifier => specifier.type === AST_NODE_TYPES.ImportSpecifier,
+          )
+        ) {
+          sourceImports.valueOnlyNamedImport = node;
+          sourceImports.valueImport = node;
+        } else if (
+          !sourceImports.valueImport &&
+          node.specifiers.some(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportDefaultSpecifier,
+          )
+        ) {
+          sourceImports.valueImport = node;
         }
 
         const typeSpecifiers: TSESTree.ImportClause[] = [];
@@ -732,6 +730,7 @@ export default createRule<Options, MessageIds>({
           }
         } else {
           // The import is both default and named.  Insert named on new line because can't mix default type import and named type imports
+          // eslint-disable-next-line no-lonely-if
           if (fixStyle === 'inline-type-imports') {
             yield fixer.insertTextBefore(
               node,
