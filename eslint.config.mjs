@@ -212,6 +212,7 @@ export default tseslint.config(
       'no-useless-concat': 'error',
       'no-void': ['error', { allowAsStatement: true }],
       'one-var': ['error', 'never'],
+      'operator-assignment': 'error',
       'prefer-arrow-callback': 'error',
       'prefer-const': 'error',
       'prefer-rest-params': 'error',
