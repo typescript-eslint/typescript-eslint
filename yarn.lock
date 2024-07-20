@@ -13456,8 +13456,8 @@ __metadata:
   linkType: hard
 
 "knip@npm:^5.9.4":
-  version: 5.25.1
-  resolution: "knip@npm:5.25.1"
+  version: 5.26.0
+  resolution: "knip@npm:5.26.0"
   dependencies:
     "@nodelib/fs.walk": 1.2.8
     "@snyk/github-codeowners": 1.1.0
@@ -13473,7 +13473,6 @@ __metadata:
     smol-toml: ^1.1.4
     strip-json-comments: 5.0.1
     summary: 2.1.0
-    tsconfig-paths: ^4.2.0
     zod: ^3.22.4
     zod-validation-error: ^3.0.3
   peerDependencies:
@@ -13482,7 +13481,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: a8b2955d162668535ba23090042387335bda9b77364e6c86bbf8dcc6ea077cdce02dbe9dc8b46fe707fffc7b1e0babf87552315fa9c011c256c8950a58c9b25a
+  checksum: 83f66c3077c3aa56142925e2095b22283cac0f0b09703c43973f3940e657156787895960736594e4d2acfe9def310398ae53d3f6e7360833759d4903cad169ea
   languageName: node
   linkType: hard
 
@@ -19280,7 +19279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfig-paths@npm:^4.1.2, tsconfig-paths@npm:^4.2.0":
+"tsconfig-paths@npm:^4.1.2":
   version: 4.2.0
   resolution: "tsconfig-paths@npm:4.2.0"
   dependencies:
