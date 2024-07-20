@@ -207,11 +207,10 @@ export default createRule<Options, MessageIds>({
   create(context, [options]) {
     const extendDefaults = options.extendDefaults ?? true;
     const customTypes = options.types ?? {};
-    const types = Object.assign(
-      {},
-      extendDefaults ? defaultTypes : {},
-      customTypes,
-    );
+    const types = {
+      ...(extendDefaults && defaultTypes),
+      ...customTypes,
+    };
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
     );

@@ -216,6 +216,7 @@ export default tseslint.config(
       'operator-assignment': 'error',
       'prefer-arrow-callback': 'error',
       'prefer-const': 'error',
+      'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
 
       //
