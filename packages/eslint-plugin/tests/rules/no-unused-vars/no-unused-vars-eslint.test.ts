@@ -3344,5 +3344,54 @@ try {
       ],
       errors: [usedIgnoredError('_err', '. Used args must not match /^_/u')],
     },
+    {
+      code: `
+try {
+} catch (_) {
+  _ = 'foo'
+}
+            `,
+      options: [{ caughtErrorsIgnorePattern: 'foo' }],
+      errors: [
+        usedIgnoredError(
+          '_',
+          '. Allowed unused caught errors must match /foo/u.',
+        ),
+      ],
+    },
+    {
+      code: `
+try {
+} catch (_) {
+  _ = 'foo'
+}
+            `,
+      options: [
+        {
+          caughtErrorsIgnorePattern: 'ignored',
+          varsIgnorePattern: '_',
+        },
+      ],
+      errors: [
+        usedIgnoredError(
+          '_',
+          '. Allowed unused caught errors must match /ignored/u.',
+        ),
+      ],
+    },
+    {
+      code: `
+_ => { _ = _ + 1 };
+            `,
+      options: [
+        {
+          argsIgnorePattern: 'ignored',
+          varsIgnorePattern: '_',
+        },
+      ],
+      errors: [
+        usedIgnoredError('_', '. Allowed unused args must match /ignored/u.'),
+      ],
+    },
   ],
 });
