@@ -852,7 +852,6 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
-
     {
       parserOptions: optionsWithExactOptionalPropertyTypes,
       code: `
@@ -864,7 +863,7 @@ class ConsistentRand {
     return this.#rand;
   }
 }
-    `,
+      `,
     },
   ],
   invalid: [
