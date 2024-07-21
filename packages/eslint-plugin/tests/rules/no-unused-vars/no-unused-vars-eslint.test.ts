@@ -3355,10 +3355,7 @@ try {
       `,
       options: [{ caughtErrorsIgnorePattern: 'foo' }],
       errors: [
-        {
-          message:
-            "'_' is assigned a value but never used. Allowed unused caught errors must match /foo/u.",
-        },
+        assignedError('_', '. Allowed unused caught errors must match /foo/u'),
       ],
     },
     {
@@ -3375,10 +3372,10 @@ try {
         },
       ],
       errors: [
-        {
-          message:
-            "'_' is assigned a value but never used. Allowed unused caught errors must match /ignored/u.",
-        },
+        assignedError(
+          '_',
+          '. Allowed unused caught errors must match /ignored/u',
+        ),
       ],
     },
     {
@@ -3389,14 +3386,18 @@ try {
       options: [{ caughtErrorsIgnorePattern: 'foo' }],
       errors: [
         {
-          message:
-            "'message' is defined but never used. Allowed unused caught errors must match /foo/u.",
+          ...definedError(
+            'message',
+            '. Allowed unused caught errors must match /foo/u',
+          ),
           column: 12,
           endColumn: 19,
         },
         {
-          message:
-            "'firstError' is defined but never used. Allowed unused caught errors must match /foo/u.",
+          ...definedError(
+            'firstError',
+            '. Allowed unused caught errors must match /foo/u',
+          ),
           column: 30,
           endColumn: 40,
         },
@@ -3412,8 +3413,10 @@ try {
       options: [{ caughtErrorsIgnorePattern: '\\w' }],
       errors: [
         {
-          message:
-            "'$' is assigned a value but never used. Allowed unused caught errors must match /\\w/u.",
+          ...assignedError(
+            '$',
+            '. Allowed unused caught errors must match /\\w/u',
+          ),
           column: 3,
           endColumn: 4,
         },
@@ -3432,10 +3435,7 @@ _ => {
         },
       ],
       errors: [
-        {
-          message:
-            "'_' is assigned a value but never used. Allowed unused args must match /ignored/u.",
-        },
+        assignedError('_', '. Allowed unused args must match /ignored/u'),
       ],
     },
   ],
