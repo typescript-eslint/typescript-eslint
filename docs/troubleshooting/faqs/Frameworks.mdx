@@ -14,7 +14,7 @@ You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeS
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   // ... the rest of your config ...
   {
@@ -55,7 +55,7 @@ If you are running into issues parsing .vue files, it might be because parsers l
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 // Add this line
 import vueParser from 'vue-eslint-parser';
