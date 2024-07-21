@@ -195,11 +195,10 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     };
   }
 
-  /**
-   * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
-   */
   const hasFullTypeInformation =
-    parseSettings.programs != null || parseSettings.projects.size > 0;
+    parseSettings.programs != null ||
+    parseSettings.projects.size > 0 ||
+    !!parseSettings.projectService;
 
   if (
     typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===

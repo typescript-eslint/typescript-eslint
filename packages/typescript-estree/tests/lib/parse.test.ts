@@ -369,17 +369,12 @@ describe('parseAndGenerateServices', () => {
         };
       const testExtraFileExtensions =
         (filePath: string, extraFileExtensions: string[]) => (): void => {
-          const result = parser.parseAndGenerateServices(code, {
+          parser.parseAndGenerateServices(code, {
             ...config,
             extraFileExtensions,
             filePath: join(PROJECT_DIR, filePath),
             projectService: true,
           });
-          const compilerOptions = result.services.program?.getCompilerOptions();
-
-          if (!compilerOptions?.configFilePath) {
-            throw new Error('No config file found, using inferred project');
-          }
         };
 
       describe('project includes', () => {
@@ -505,35 +500,31 @@ describe('parseAndGenerateServices', () => {
           it("the file isn't included", () => {
             expect(
               testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
-            ).toThrowErrorMatchingInlineSnapshot(
-              `"No config file found, using inferred project"`,
-            );
+            ).toThrow(/notIncluded\.vue was not found by the project service/);
           });
 
           it('duplicate extension', () => {
             expect(
               testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
-            ).toThrowErrorMatchingInlineSnapshot(
-              `"No config file found, using inferred project"`,
-            );
+            ).toThrow(/notIncluded\.ts was not found by the project service/);
           });
         });
 
-        it('invalid extension', () => {
+        it('extension matching the file name but not a file on disk', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', [
               'unknown',
             ]),
-          ).toThrowErrorMatchingInlineSnapshot(
-            `"No config file found, using inferred project"`,
+          ).toThrow(
+            /unknownFileType\.unknown was not found by the project service/,
           );
         });
 
-        it('the extension does not match', () => {
+        it('the extension does not match the file name', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
-          ).toThrowErrorMatchingInlineSnapshot(
-            `"No config file found, using inferred project"`,
+          ).toThrow(
+            /unknownFileType\.unknown was not found by the project service/,
           );
         });
       });
@@ -566,7 +557,7 @@ describe('parseAndGenerateServices', () => {
 
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
             - <tsconfigRootDir>/tsconfig.json
             - <tsconfigRootDir>/tsconfig.extra.json
             However, none of those TSConfigs include this file. Either:
