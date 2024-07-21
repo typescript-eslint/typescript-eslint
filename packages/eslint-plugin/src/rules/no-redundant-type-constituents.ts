@@ -205,6 +205,7 @@ export default createRule({
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
+      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
     },
     schema: [],
     type: 'suggestion',
@@ -423,7 +424,10 @@ export default createRule({
                   container: 'union',
                   typeName,
                 },
-                messageId: 'overrides',
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : 'overrides',
                 node: typeNode,
               });
               return true;

@@ -319,7 +319,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             container: 'union',
             typeName: 'NotKnown',
           },
-          messageId: 'overrides',
+          messageId: 'errorTypeOverrides',
         },
       ],
     },
