@@ -1941,6 +1941,21 @@ interface FooInterface {
         },
       ],
     },
+    {
+      code: 'declare function foo<E extends Readonly<string[]>>(extra: E): E;',
+      output: 'declare function foo<E extends readonly string[]>(extra: E): E;',
+      options: [{ default: 'array-simple' }],
+      errors: [
+        {
+          messageId: 'errorStringArraySimpleReadonly',
+          data: {
+            className: 'Readonly',
+            readonlyPrefix: 'readonly ',
+            type: 'string[]',
+          },
+        },
+      ],
+    },
   ],
 });
 
