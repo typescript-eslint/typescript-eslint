@@ -3348,9 +3348,9 @@ try {
       code: `
 try {
 } catch (_) {
-  _ = 'foo'
+  _ = 'foo';
 }
-            `,
+      `,
       options: [{ caughtErrorsIgnorePattern: 'foo' }],
       errors: [
         usedIgnoredError(
@@ -3363,9 +3363,9 @@ try {
       code: `
 try {
 } catch (_) {
-  _ = 'foo'
+  _ = 'foo';
 }
-            `,
+      `,
       options: [
         {
           caughtErrorsIgnorePattern: 'ignored',
@@ -3381,8 +3381,10 @@ try {
     },
     {
       code: `
-_ => { _ = _ + 1 };
-            `,
+_ => {
+  _ = _ + 1;
+};
+      `,
       options: [
         {
           argsIgnorePattern: 'ignored',
