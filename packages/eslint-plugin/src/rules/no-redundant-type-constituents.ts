@@ -297,7 +297,10 @@ export default createRule({
                   container: 'intersection',
                   typeName,
                 },
-                messageId,
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : messageId,
                 node: typeNode,
               });
               return true;

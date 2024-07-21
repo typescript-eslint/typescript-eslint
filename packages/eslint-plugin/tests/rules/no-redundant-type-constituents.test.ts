@@ -675,7 +675,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             container: 'intersection',
             typeName: 'NotKnown',
           },
-          messageId: 'overrides',
+          messageId: 'errorTypeOverrides',
         },
       ],
     },
