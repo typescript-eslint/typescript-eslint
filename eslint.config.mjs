@@ -135,6 +135,7 @@ export default tseslint.config(
         { allowConstantLoopConditions: true },
       ],
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
+      '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/prefer-literal-enum-member': [
         'error',
@@ -206,11 +207,18 @@ export default tseslint.config(
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
       ],
+      'no-lonely-if': 'error',
+      'no-unreachable-loop': 'error',
+      'no-useless-call': 'error',
       'no-useless-computed-key': 'error',
+      'no-useless-concat': 'error',
       'no-var': 'error',
       'no-void': ['error', { allowAsStatement: true }],
       'one-var': ['error', 'never'],
+      'operator-assignment': 'error',
       'prefer-arrow-callback': 'error',
+      'prefer-const': 'error',
+      'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
 
       //
