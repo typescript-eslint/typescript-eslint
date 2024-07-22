@@ -238,22 +238,14 @@ function getFixRange(
   return [leftMost.range[0], rightMost.range[1]];
 }
 
-function getFixer(
+function getReportDescriptor(
   sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
-):
-  | {
-      suggest: NonNullable<
-        ReportDescriptor<PreferOptionalChainMessageIds>['suggest']
-      >;
-    }
-  | {
-      fix: NonNullable<ReportDescriptor<PreferOptionalChainMessageIds>['fix']>;
-    } {
+): ReportDescriptor<PreferOptionalChainMessageIds> {
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -412,15 +404,22 @@ function getFixer(
     newCode = `!${newCode}`;
   }
 
-  const fix: ReportFixFunction = fixer =>
-    fixer.replaceTextRange(
-      getFixRange(chain[0].node, lastOperand.node, node, sourceCode),
-      newCode,
-    );
+  const range = getFixRange(chain[0].node, lastOperand.node, node, sourceCode);
 
-  return useSuggestionFixer
-    ? { suggest: [{ fix, messageId: 'optionalChainSuggest' }] }
-    : { fix };
+  const fix: ReportFixFunction = fixer =>
+    fixer.replaceTextRange(range, newCode);
+
+  return {
+    messageId: 'preferOptionalChain',
+    loc: {
+      start: sourceCode.getLocFromIndex(range[0]),
+      end: sourceCode.getLocFromIndex(range[1]),
+    },
+    suggest: useSuggestionFixer
+      ? [{ fix, messageId: 'optionalChainSuggest' }]
+      : undefined,
+    fix: !useSuggestionFixer ? fix : undefined,
+  };
 
   interface FlattenedChain {
     nonNull: boolean;
@@ -555,21 +554,14 @@ export function analyzeChain(
         parserServices,
         options,
         subChainFlat.slice(0, -1).map(({ node }) => node),
-        {
-          messageId: 'preferOptionalChain',
-          loc: {
-            start: subChainFlat[0].node.loc.start,
-            end: subChainFlat[subChainFlat.length - 1].node.loc.end,
-          },
-          ...getFixer(
-            context.sourceCode,
-            parserServices,
-            node,
-            operator,
-            options,
-            subChainFlat,
-          ),
-        },
+        getReportDescriptor(
+          context.sourceCode,
+          parserServices,
+          node,
+          operator,
+          options,
+          subChainFlat,
+        ),
       );
     }
 

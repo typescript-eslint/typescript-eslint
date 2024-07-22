@@ -1830,7 +1830,7 @@ describe('hand-crafted cases', () => {
           {
             messageId: 'preferOptionalChain',
             column: 1,
-            endColumn: 19,
+            endColumn: 20,
           },
         ],
       },
@@ -1840,7 +1840,7 @@ describe('hand-crafted cases', () => {
         errors: [
           {
             messageId: 'preferOptionalChain',
-            column: 2,
+            column: 1,
             endColumn: 20,
           },
         ],
@@ -1851,7 +1851,7 @@ describe('hand-crafted cases', () => {
         errors: [
           {
             messageId: 'preferOptionalChain',
-            column: 3,
+            column: 1,
             endColumn: 22,
           },
         ],
@@ -1863,7 +1863,7 @@ describe('hand-crafted cases', () => {
           {
             messageId: 'preferOptionalChain',
             column: 5,
-            endColumn: 23,
+            endColumn: 24,
           },
         ],
       },
@@ -1885,7 +1885,7 @@ describe('hand-crafted cases', () => {
           {
             messageId: 'preferOptionalChain',
             column: 1,
-            endColumn: 55,
+            endColumn: 59,
           },
         ],
       },
@@ -1896,7 +1896,7 @@ describe('hand-crafted cases', () => {
           {
             messageId: 'preferOptionalChain',
             column: 1,
-            endColumn: 42,
+            endColumn: 44,
           },
         ],
       },
