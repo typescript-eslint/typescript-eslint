@@ -1878,6 +1878,28 @@ describe('hand-crafted cases', () => {
           },
         ],
       },
+      {
+        code: noFormat`!foo || !foo.bar || ((((!foo.bar.baz || !foo.bar.baz()))));`,
+        output: '!foo?.bar?.baz?.();',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 55,
+          },
+        ],
+      },
+      {
+        code: noFormat`a !== undefined && ((a !== null && a.prop));`,
+        output: 'a?.prop;',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 42,
+          },
+        ],
+      },
     ],
   });
 });
