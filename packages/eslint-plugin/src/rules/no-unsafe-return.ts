@@ -11,7 +11,6 @@ import {
   getContextualType,
   getParserServices,
   getThisExpression,
-  isPromiseLike,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownArrayType,
@@ -29,7 +28,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeReturn: 'Unsafe return of an {{type}} typed value.',
+      unsafeReturn: 'Unsafe return of a value of type {{type}}.',
       unsafeReturnThis: [
         'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
@@ -171,13 +170,7 @@ export default createRule({
           }
         }
 
-        if (
-          anyType === AnyType.PromiseAny &&
-          callSignatures.every(
-            signature =>
-              !isPromiseLike(services.program, signature.getReturnType()),
-          )
-        ) {
+        if (anyType === AnyType.PromiseAny && !functionNode.async) {
           return;
         }
 

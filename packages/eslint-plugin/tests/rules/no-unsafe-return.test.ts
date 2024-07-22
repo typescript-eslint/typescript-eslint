@@ -152,6 +152,12 @@ function foo(): Set<number> {
         return [] as any[];
       }
     `,
+    `
+      declare const value: Promise<any>;
+      function foo() {
+        return value;
+      }
+    `,
   ],
   invalid: [
     {
@@ -505,24 +511,6 @@ async function foo() {
     {
       code: `
 declare const value: Promise<any>;
-function foo() {
-  return value;
-}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeReturn',
-          line: 4,
-          column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare const value: Promise<any>;
 async function foo(): Promise<number> {
   return value;
 }
@@ -591,25 +579,8 @@ function foo(): Promise<object> {
     },
     {
       code: `
-function foo(): Promise<object> {
+async function foo(): Promise<object> {
   return Promise.resolve<any>({});
-}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeReturn',
-          line: 3,
-          column: 3,
-          data: {
-            type: '`Promise<any>`',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-function foo(): Promise<object> {
-  return Promise.resolve<Promise<Promise<any>>>({} as any);
 }
       `,
       errors: [
@@ -732,7 +703,7 @@ interface Alias<T> extends Promise<any> {
 }
 
 declare const value: Alias<number>;
-function foo() {
+async function foo() {
   return value;
 }
       `,
