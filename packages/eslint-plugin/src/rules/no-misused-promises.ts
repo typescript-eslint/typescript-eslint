@@ -390,7 +390,7 @@ export default createRule<Options, MessageId>({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
 
       const heritageTypes = getHeritageTypes(checker, tsNode);
-      if (heritageTypes === undefined || heritageTypes.length === 0) {
+      if (!heritageTypes?.length) {
         return;
       }
 
