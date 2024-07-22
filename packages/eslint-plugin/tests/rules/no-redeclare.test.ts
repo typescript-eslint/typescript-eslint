@@ -4,10 +4,11 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/no-redeclare';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-redeclare', rule, {
@@ -30,43 +31,45 @@ if (true) {
   let b = 3;
 }
       `,
-      parserOptions: {
-        ecmaVersion: 6,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 6,
+        },
       },
     },
     { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { sourceType: 'module' },
+      languageOptions: { parserOptions: { sourceType: 'module' } },
     },
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaFeatures: { globalReturn: true } },
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
     },
     {
       code: 'var top = 0;',
-      env: { browser: true },
       options: [{ builtinGlobals: false }],
     },
     { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaFeatures: { globalReturn: true } },
-      env: { browser: true },
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
     },
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { sourceType: 'module' },
-      env: { browser: true },
+      languageOptions: { parserOptions: { sourceType: 'module' } },
     },
     {
       code: 'var self = 1;',
       options: [{ builtinGlobals: true }],
-      env: { browser: false },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/535
     `
@@ -145,7 +148,7 @@ namespace A {}
 var a = 3;
 var a = 10;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'redeclared',
@@ -293,7 +296,7 @@ var a = 15;
 var a;
 var a;
       `,
-      parserOptions: { sourceType: 'module' },
+      languageOptions: { parserOptions: { sourceType: 'module' } },
       errors: [
         {
           messageId: 'redeclared',
@@ -309,7 +312,7 @@ var a;
 export var a;
 var a;
       `,
-      parserOptions: { sourceType: 'module' },
+      languageOptions: { parserOptions: { sourceType: 'module' } },
       errors: [
         {
           messageId: 'redeclared',
@@ -345,7 +348,6 @@ var a;
           type: AST_NODE_TYPES.Identifier,
         },
       ],
-      env: { browser: true },
     },
     {
       code: `
@@ -353,7 +355,7 @@ var a;
 var { a = 0, b: Object = 0 } = {};
       `,
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'redeclared',
@@ -377,7 +379,9 @@ var a;
 var { a = 0, b: Object = 0 } = {};
       `,
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
       errors: [
         {
           messageId: 'redeclared',
@@ -394,7 +398,9 @@ var a;
 var { a = 0, b: Object = 0 } = {};
       `,
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaVersion: 6, ecmaFeatures: { globalReturn: true } },
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, ecmaFeatures: { globalReturn: true } },
+      },
       errors: [
         {
           messageId: 'redeclared',
@@ -411,7 +417,7 @@ var a;
 var { a = 0, b: Object = 0 } = {};
       `,
       options: [{ builtinGlobals: false }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'redeclared',
@@ -458,8 +464,10 @@ type T = 2;
 type NodeListOf = 1;
       `,
       options: [{ builtinGlobals: true }],
-      parserOptions: {
-        lib: ['dom'],
+      languageOptions: {
+        parserOptions: {
+          lib: ['dom'],
+        },
       },
       errors: [
         {

@@ -4,11 +4,11 @@ import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
 const rule = getESLintCoreRule('no-implicit-globals');
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-implicit-globals', rule, {

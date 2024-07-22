@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { InvalidTestCase } from '@typescript-eslint/utils/ts-eslint';
 
 import rule from '../../src/rules/return-await';
 import { getFixturesRootDir } from '../RuleTester';
@@ -7,12 +7,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 // default rule is in-try-catch
@@ -65,7 +65,7 @@ ruleTester.run('return-await', rule, {
           } else if (Math.random() < 0.5) {
             return Promise.resolve(2);
           }
-        
+
           try {
           } catch (e) {
             return await Promise.resolve(3);

@@ -6,14 +6,14 @@ import path from 'node:path';
 import util from 'node:util';
 
 import type * as ParserType from '@typescript-eslint/parser';
+import * as parser from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
-  Parser,
   ParserOptions,
-  RuleContext,
+  RuleListener,
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
@@ -37,10 +37,10 @@ import { ajvBuilder } from './utils/ajv';
 import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
 import { validate } from './utils/config-validator';
 import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
-import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
+import { omitCustomConfigProperties } from './utils/omitCustomConfigProperties';
 import { isSerializable } from './utils/serialization';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
@@ -58,6 +58,8 @@ import {
 } from './utils/validationHelpers';
 
 const ajv = ajvBuilder({ strictDefaults: true });
+const RULE_TESTER_PLUGIN = '@rule-tester';
+const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
 const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
 const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level unless you want to use a parser other than "${TYPESCRIPT_ESLINT_PARSER}"`;
 
@@ -66,9 +68,12 @@ const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level 
  * the initial default configuration
  */
 const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
-  parser: TYPESCRIPT_ESLINT_PARSER,
-  rules: {},
   defaultFilenames: { ts: 'file.ts', tsx: 'react.tsx' },
+  languageOptions: {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
+    parser: require(TYPESCRIPT_ESLINT_PARSER),
+  },
+  rules: {},
 };
 let defaultConfig = deepMerge(
   {},
@@ -115,11 +120,16 @@ function getUnsubstitutedMessagePlaceholders(
 }
 
 export class RuleTester extends TestFramework {
+  // instead of creating a hard dependency, just use a soft require
+  // a bit weird, but if they're using this tooling, it'll be installed
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  readonly #defaultParser = require(
+    TYPESCRIPT_ESLINT_PARSER,
+  ) as typeof ParserType;
+
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  // `configType` is hardcoded to eslintrc until switch to flat config is complete
-  // We should look to support both eslintrc and flat config for consumers of RuleTester.
-  readonly #linter: Linter = new Linter({ configType: 'eslintrc' });
+  readonly #linter: Linter = new Linter({ configType: 'flat' });
 
   /**
    * Creates a new instance of RuleTester.
@@ -132,11 +142,7 @@ export class RuleTester extends TestFramework {
      * configuration and the default configuration.
      */
     this.#testerConfig = merge({}, defaultConfig, testerConfig, {
-      rules: { 'rule-tester/validate-ast': 'error' },
-      // as of eslint 6 you have to provide an absolute path to the parser
-      // but that's not as clean to type, this saves us trying to manually enforce
-      // that contributors require.resolve everything
-      parser: require.resolve(testerConfig?.parser ?? defaultConfig.parser),
+      rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
@@ -144,11 +150,7 @@ export class RuleTester extends TestFramework {
     const constructor = this.constructor as typeof RuleTester;
     constructor.afterAll(() => {
       try {
-        // instead of creating a hard dependency, just use a soft require
-        // a bit weird, but if they're using this tooling, it'll be installed
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        const parser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
-        parser.clearCaches();
+        this.#defaultParser.clearCaches();
       } catch {
         // ignored on purpose
       }
@@ -234,7 +236,7 @@ export class RuleTester extends TestFramework {
     */
     const getFilename = (testOptions?: ParserOptions): string => {
       const resolvedOptions = deepMerge(
-        this.#testerConfig.parserOptions,
+        this.#testerConfig.languageOptions.parserOptions,
         testOptions,
       ) as ParserOptions;
       const filename = resolvedOptions.ecmaFeatures?.jsx
@@ -255,18 +257,22 @@ export class RuleTester extends TestFramework {
     >(
       test: T,
     ): T => {
-      if (test.parser === TYPESCRIPT_ESLINT_PARSER) {
+      const { languageOptions = {} } = test;
+      if (languageOptions.parser === parser) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
       if (!test.filename) {
         return {
           ...test,
-          filename: getFilename(test.parserOptions),
-          parserOptions: {
-            // Re-running simulates --fix mode, which implies an isolated program
-            // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
-            disallowAutomaticSingleRunInference: true,
-            ...test.parserOptions,
+          filename: getFilename(languageOptions.parserOptions),
+          languageOptions: {
+            ...languageOptions,
+            parserOptions: {
+              // Re-running simulates --fix mode, which implies an isolated program
+              // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+              disallowAutomaticSingleRunInference: true,
+              ...languageOptions.parserOptions,
+            },
           },
         };
       }
@@ -411,20 +417,6 @@ export class RuleTester extends TestFramework {
       emitLegacyRuleAPIWarning(ruleName);
     }
 
-    this.#linter.defineRule(ruleName, {
-      ...rule,
-      // Create a wrapper rule that freezes the `context` properties.
-      create(context: RuleContext<MessageIds, Options>) {
-        freezeDeeply(context.options);
-        freezeDeeply(context.settings);
-        freezeDeeply(context.parserOptions);
-
-        return (typeof rule === 'function' ? rule : rule.create)(context);
-      },
-    });
-
-    this.#linter.defineRules(this.#rules);
-
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
@@ -508,7 +500,35 @@ export class RuleTester extends TestFramework {
     config: RuleTesterConfig;
     filename?: string;
   } {
-    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
+    const prefixedRuleName = `${RULE_TESTER_PLUGIN_PREFIX}${ruleName}`;
+    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
+      files: ['**'],
+      plugins: {
+        [RULE_TESTER_PLUGIN]: {
+          rules: {
+            /**
+             * Setup AST getters.
+             * The goal is to check whether or not AST was modified when
+             * running the rule under test.
+             */
+            'validate-ast': {
+              create(): RuleListener {
+                return {
+                  Program(node: TSESTree.Program): void {
+                    beforeAST = cloneDeeplyExcludesParent(node);
+                  },
+                  'Program:exit'(node: TSESTree.Program): void {
+                    afterAST = node;
+                  },
+                };
+              },
+            },
+            [ruleName]: rule,
+            ...this.#rules,
+          },
+        },
+      },
+    });
     let code;
     let filename;
     let beforeAST: TSESTree.Program;
@@ -558,47 +578,18 @@ export class RuleTester extends TestFramework {
         typeof rule === 'object' &&
         (!rule.meta || (rule.meta && rule.meta.schema == null))
       ) {
-        emitMissingSchemaWarning(ruleName);
+        emitMissingSchemaWarning(prefixedRuleName);
       }
-      config.rules[ruleName] = ['error', ...item.options];
+      config.rules[prefixedRuleName] = ['error', ...item.options];
     } else {
-      config.rules[ruleName] = 'error';
+      config.rules[prefixedRuleName] = 'error';
     }
+
+    config.languageOptions ??= {};
+    config.languageOptions.parser ??= this.#defaultParser;
+    config.languageOptions.parser = wrapParser(config.languageOptions.parser);
 
     const schema = getRuleOptionsSchema(rule);
-
-    /*
-     * Setup AST getters.
-     * The goal is to check whether or not AST was modified when
-     * running the rule under test.
-     */
-    this.#linter.defineRule('rule-tester/validate-ast', {
-      create() {
-        return {
-          Program(node): void {
-            beforeAST = cloneDeeplyExcludesParent(node);
-          },
-          'Program:exit'(node): void {
-            afterAST = node;
-          },
-        };
-      },
-    });
-
-    if (typeof config.parser === 'string') {
-      assert(
-        path.isAbsolute(config.parser),
-        'Parsers provided as strings to RuleTester must be absolute paths',
-      );
-    } else {
-      config.parser = require.resolve(TYPESCRIPT_ESLINT_PARSER);
-    }
-
-    this.#linter.defineParser(
-      config.parser,
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      wrapParser(require(config.parser) as Parser.ParserModule),
-    );
 
     if (schema) {
       ajv.validateSchema(schema);
@@ -638,7 +629,7 @@ export class RuleTester extends TestFramework {
       }
     }
 
-    validate(config, 'rule-tester', id => (id === ruleName ? rule : null));
+    validate(config, RULE_TESTER_PLUGIN, id => (id === ruleName ? rule : null));
 
     // Verify the code.
     // @ts-expect-error -- we don't define deprecated members on our types
@@ -649,6 +640,7 @@ export class RuleTester extends TestFramework {
     let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
     let passNumber = 0;
     const outputs: string[] = [];
+    const configWithoutCustomKeys = omitCustomConfigProperties(config);
 
     do {
       passNumber++;
@@ -656,7 +648,7 @@ export class RuleTester extends TestFramework {
       try {
         // @ts-expect-error -- we don't define deprecated members on our types
         SourceCode.prototype.getComments = getCommentsDeprecation;
-        messages = this.#linter.verify(code, config, filename);
+        messages = this.#linter.verify(code, configWithoutCustomKeys, filename);
         if (!initialMessages) {
           initialMessages = messages;
         }
@@ -683,7 +675,7 @@ export class RuleTester extends TestFramework {
 
       // Verify if autofix makes a syntax error or not.
       const errorMessageInFix = this.#linter
-        .verify(fixedResult.output, config, filename)
+        .verify(fixedResult.output, configWithoutCustomKeys, filename)
         .find(m => m.fatal);
 
       assert(
@@ -702,10 +694,10 @@ export class RuleTester extends TestFramework {
       filename,
       messages: initialMessages,
       outputs,
-      // is definitely assigned within the `rule-tester/validate-ast` rule
+      // is definitely assigned within the `@rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       beforeAST: beforeAST!,
-      // is definitely assigned within the `rule-tester/validate-ast` rule
+      // is definitely assigned within the `@rule-tester/validate-ast` rule
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       afterAST: cloneDeeplyExcludesParent(afterAST!),
     };
@@ -799,7 +791,14 @@ export class RuleTester extends TestFramework {
       : null;
 
     const result = this.runRuleForItem(ruleName, rule, item);
-    const messages = result.messages;
+    const messages = result.messages.map(message => ({
+      ...message,
+      ...(message.ruleId && {
+        ruleId: message.ruleId.startsWith(RULE_TESTER_PLUGIN_PREFIX)
+          ? message.ruleId.slice(RULE_TESTER_PLUGIN_PREFIX.length)
+          : message.ruleId,
+      }),
+    }));
 
     for (const message of messages) {
       if (hasOwnProperty(message, 'suggestions')) {
@@ -1130,7 +1129,7 @@ export class RuleTester extends TestFramework {
                     const errorMessageInSuggestion = this.#linter
                       .verify(
                         codeWithAppliedSuggestion,
-                        result.config,
+                        omitCustomConfigProperties(result.config),
                         result.filename,
                       )
                       .find(m => m.fatal);

@@ -5,12 +5,11 @@ import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 const rule = getESLintCoreRule('no-restricted-globals');
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-restricted-globals', rule, {

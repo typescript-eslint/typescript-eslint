@@ -6,12 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-misused-promises', rule, {
@@ -245,9 +245,11 @@ type O = {
 const Component = (obj: O) => null;
 <Component bool func={async () => 10} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -256,9 +258,11 @@ const Component = (obj: O) => null;
 const Component: any = () => null;
 <Component func={async () => 10} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -324,9 +328,11 @@ declare function Component(props: Props): any;
 
 const _ = <Component onEvent={async () => {}} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -493,9 +499,11 @@ foo(bar);
 
         <ASTViewer onSelectNode={onSelectFn} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       options: [{ checksVoidReturn: { attributes: true } }],
@@ -954,9 +962,11 @@ type O = {
 const Component = (obj: O) => null;
 <Component func={async () => 0} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -974,9 +984,11 @@ type O = {
 const Component = (obj: O) => null;
 <Component func={async () => 0} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -996,9 +1008,11 @@ const g = async () => 'foo';
 const Component = (obj: O) => null;
 <Component func={g} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [

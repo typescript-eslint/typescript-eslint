@@ -10,7 +10,7 @@ import rule from '../../src/rules/consistent-type-assertions';
 import { dedupeTestCases } from '../dedupeTestCases';
 import { batchedSingleLineTests } from '../RuleTester';
 
-const ruleTester = new RuleTester({ parser: '@typescript-eslint/parser' });
+const ruleTester = new RuleTester();
 
 const ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE = `
 const x = <Foo>new Generic<int>();
@@ -136,7 +136,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
     {
       code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
-      parserOptions: { ecmaFeatures: { jsx: true } },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [
         {
           assertionStyle: 'as',
@@ -533,7 +533,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
       output: null,
-      parserOptions: { ecmaFeatures: { jsx: true } },
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ assertionStyle: 'never' }],
       errors: [{ messageId: 'never', line: 1 }],
     },

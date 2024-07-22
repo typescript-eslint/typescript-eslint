@@ -76,7 +76,9 @@ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
  * Wraps the given parser in order to intercept and modify return values from the `parse` and `parseForESLint` methods, for test purposes.
  * In particular, to modify ast nodes, tokens and comments to throw on access to their `start` and `end` properties.
  */
-export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
+export function wrapParser(
+  parser: Parser.LooseParserModule,
+): Parser.LooseParserModule {
   /**
    * Define `start`/`end` properties of all nodes of the given AST as throwing error.
    */
@@ -123,10 +125,10 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
       // @ts-expect-error -- see above
       [parserSymbol]: parser,
       parseForESLint(...args): Parser.ParseResult {
-        const ret = parser.parseForESLint(...args);
+        const parsed = parser.parseForESLint(...args) as Parser.ParseResult;
 
-        defineStartEndAsErrorInTree(ret.ast, ret.visitorKeys);
-        return ret;
+        defineStartEndAsErrorInTree(parsed.ast, parsed.visitorKeys);
+        return parsed;
       },
     };
   }
@@ -135,7 +137,7 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
     // @ts-expect-error -- see above
     [parserSymbol]: parser,
     parse(...args): TSESTree.Program {
-      const ast = parser.parse(...args);
+      const ast = parser.parse(...args) as TSESTree.Program;
 
       defineStartEndAsErrorInTree(ast);
       return ast;

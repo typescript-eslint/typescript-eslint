@@ -2,12 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-parameter-property-assignment';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-  },
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-parameter-property-assignment', rule, {
   valid: [
