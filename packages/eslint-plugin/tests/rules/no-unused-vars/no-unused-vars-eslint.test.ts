@@ -696,14 +696,14 @@ poster = 0;
     },
 
     // Can mark variables as used via context.markVariableAsUsed()
-    '/*eslint use-every-a:1*/ var a;',
+    '/*eslint @rule-tester/use-every-a:1*/ var a;',
     `
-/*eslint use-every-a:1*/ !function (a) {
+/*eslint @rule-tester/use-every-a:1*/ !function (a) {
   return 1;
 };
     `,
     `
-/*eslint use-every-a:1*/ !function () {
+/*eslint @rule-tester/use-every-a:1*/ !function () {
   var a;
   return 1;
 };
@@ -1273,7 +1273,7 @@ console.log(rest);
 
     // https://github.com/eslint/eslint/issues/10952
     `
-/*eslint use-every-a:1*/ !function (b, a) {
+/*eslint @rule-tester/use-every-a:1*/ !function (b, a) {
   return 1;
 };
     `,

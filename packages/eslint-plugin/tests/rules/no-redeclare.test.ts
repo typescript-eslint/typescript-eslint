@@ -7,6 +7,7 @@ const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
       ecmaVersion: 6,
+      sourceType: 'script',
     },
   },
 });
@@ -339,6 +340,9 @@ var a;
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
+      languageOptions: {
+        globals: { top: 'readonly' },
+      },
       errors: [
         {
           messageId: 'redeclaredAsBuiltin',
@@ -467,6 +471,7 @@ type NodeListOf = 1;
       languageOptions: {
         parserOptions: {
           lib: ['dom'],
+          sourceType: 'script',
         },
       },
       errors: [

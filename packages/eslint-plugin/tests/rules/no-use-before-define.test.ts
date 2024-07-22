@@ -731,6 +731,10 @@ a();
       languageOptions: {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         parser: require('espree'),
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'script',
+        },
       },
       errors: [
         {

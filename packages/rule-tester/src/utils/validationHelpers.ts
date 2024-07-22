@@ -145,41 +145,4 @@ export function wrapParser(
   };
 }
 
-/**
- * Function to replace `SourceCode.prototype.getComments`.
- */
-export function getCommentsDeprecation(): never {
-  throw new Error(
-    '`SourceCode#getComments()` is deprecated and will be removed in a future major version. Use `getCommentsBefore()`, `getCommentsAfter()`, and `getCommentsInside()` instead.',
-  );
-}
-
-const EMIT_LEGACY_RULE_API_WARNING: Record<string, boolean> = {};
-/**
- * Emit a deprecation warning if function-style format is being used.
- */
-export function emitLegacyRuleAPIWarning(ruleName: string): void {
-  if (!EMIT_LEGACY_RULE_API_WARNING[`warned-${ruleName}`]) {
-    EMIT_LEGACY_RULE_API_WARNING[`warned-${ruleName}`] = true;
-    process.emitWarning(
-      `"${ruleName}" rule is using the deprecated function-style format and will stop working in ESLint v9. Please use object-style format: https://eslint.org/docs/latest/extend/custom-rules`,
-      'DeprecationWarning',
-    );
-  }
-}
-
-const EMIT_MISSING_SCHEMA_WARNING: Record<string, boolean> = {};
-/**
- * Emit a deprecation warning if rule has options but is missing the "meta.schema" property
- */
-export function emitMissingSchemaWarning(ruleName: string): void {
-  if (!EMIT_MISSING_SCHEMA_WARNING[`warned-${ruleName}`]) {
-    EMIT_MISSING_SCHEMA_WARNING[`warned-${ruleName}`] = true;
-    process.emitWarning(
-      `"${ruleName}" rule has options but is missing the "meta.schema" property and will stop working in ESLint v9. Please add a schema: https://eslint.org/docs/latest/extend/custom-rules#options-schemas`,
-      'DeprecationWarning',
-    );
-  }
-}
-
 export const REQUIRED_SCENARIOS = ['valid', 'invalid'] as const;

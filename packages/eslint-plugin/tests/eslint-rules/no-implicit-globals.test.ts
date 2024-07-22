@@ -3,13 +3,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
 const rule = getESLintCoreRule('no-implicit-globals');
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      ecmaVersion: 6,
-    },
-  },
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-implicit-globals', rule, {
   valid: [

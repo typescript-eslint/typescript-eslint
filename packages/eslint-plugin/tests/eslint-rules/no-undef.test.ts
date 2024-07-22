@@ -4,13 +4,7 @@ import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
 const rule = getESLintCoreRule('no-undef');
 
-const ruleTester = new RuleTester({
-  languageOptions: {
-    parserOptions: {
-      ecmaVersion: 6,
-    },
-  },
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-undef', rule, {
   valid: [

@@ -37,6 +37,7 @@ import { ajvBuilder } from './utils/ajv';
 import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
 import { validate } from './utils/config-validator';
 import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
+import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
@@ -44,12 +45,9 @@ import { omitCustomConfigProperties } from './utils/omitCustomConfigProperties';
 import { isSerializable } from './utils/serialization';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
-  emitLegacyRuleAPIWarning,
-  emitMissingSchemaWarning,
   ERROR_OBJECT_PARAMETERS,
   FRIENDLY_ERROR_OBJECT_PARAMETER_LIST,
   FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST,
-  getCommentsDeprecation,
   REQUIRED_SCENARIOS,
   RULE_TESTER_PARAMETERS,
   sanitize,
@@ -75,10 +73,53 @@ const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
   },
   rules: {},
 };
+
 let defaultConfig = deepMerge(
   {},
   testerDefaultConfig,
 ) as TesterConfigWithDefaults;
+
+type ForbiddenFunction = (this: WeakKey, ...args: never[]) => unknown;
+
+const forbiddenMethods = [
+  'applyInlineConfig',
+  'applyLanguageOptions',
+  'finalize',
+] as const;
+
+type ForbiddenMethodName = (typeof forbiddenMethods)[number];
+
+const forbiddenMethodCalls = new Map(
+  forbiddenMethods.map(methodName => [methodName, new WeakSet()]),
+);
+
+/**
+ * Function to replace forbidden `SourceCode` methods. Allows just one call per method.
+ * @param methodName The name of the method to forbid.
+ * @param prototype The prototype with the original method to call.
+ * @returns The function that throws the error.
+ */
+function throwForbiddenMethodError<
+  MethodName extends ForbiddenMethodName,
+  Prototype extends Record<MethodName, ForbiddenFunction>,
+>(methodName: MethodName, prototype: Prototype): Prototype[MethodName] {
+  const original = prototype[methodName];
+
+  return function (this: WeakKey, ...args: Parameters<Prototype[MethodName]>) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const called = forbiddenMethodCalls.get(methodName)!;
+
+    if (!called.has(this)) {
+      called.add(this);
+
+      return original.apply(this, args);
+    }
+
+    throw new Error(
+      `\`SourceCode#${methodName}()\` cannot be called inside a rule.`,
+    );
+  } as Prototype[MethodName];
+}
 
 /**
  * Extracts names of {{ placeholders }} from the reported message.
@@ -217,8 +258,18 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleCreateFunction | AnyRuleModule): void {
-    this.#rules[name] = rule;
+  defineRule(name: string, rule: AnyRuleModule): void {
+    this.#rules[name] = {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context): RuleListener {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
+
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    };
   }
 
   #normalizeTests<
@@ -412,11 +463,6 @@ export class RuleTester extends TestFramework {
 
     const seenValidTestCases = new Set<string>();
     const seenInvalidTestCases = new Set<string>();
-
-    if (typeof rule === 'function') {
-      emitLegacyRuleAPIWarning(ruleName);
-    }
-
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
@@ -500,7 +546,8 @@ export class RuleTester extends TestFramework {
     config: RuleTesterConfig;
     filename?: string;
   } {
-    const prefixedRuleName = `${RULE_TESTER_PLUGIN_PREFIX}${ruleName}`;
+    this.defineRule(ruleName, rule);
+
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
       files: ['**'],
       plugins: {
@@ -523,7 +570,6 @@ export class RuleTester extends TestFramework {
                 };
               },
             },
-            [ruleName]: rule,
             ...this.#rules,
           },
         },
@@ -571,15 +617,10 @@ export class RuleTester extends TestFramework {
       filename = item.filename;
     }
 
+    const prefixedRuleName = `${RULE_TESTER_PLUGIN_PREFIX}${ruleName}`;
+
     if (hasOwnProperty(item, 'options')) {
       assert(Array.isArray(item.options), 'options must be an array');
-      if (
-        item.options.length > 0 &&
-        typeof rule === 'object' &&
-        (!rule.meta || (rule.meta && rule.meta.schema == null))
-      ) {
-        emitMissingSchemaWarning(prefixedRuleName);
-      }
       config.rules[prefixedRuleName] = ['error', ...item.options];
     } else {
       config.rules[prefixedRuleName] = 'error';
@@ -632,9 +673,6 @@ export class RuleTester extends TestFramework {
     validate(config, RULE_TESTER_PLUGIN, id => (id === ruleName ? rule : null));
 
     // Verify the code.
-    // @ts-expect-error -- we don't define deprecated members on our types
-    const { getComments } = SourceCode.prototype as { getComments: unknown };
-
     let initialMessages: Linter.LintMessage[] | null = null;
     let messages: Linter.LintMessage[] | null = null;
     let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
@@ -645,17 +683,46 @@ export class RuleTester extends TestFramework {
     do {
       passNumber++;
 
+      const { applyLanguageOptions, applyInlineConfig, finalize } =
+        SourceCode.prototype;
+
       try {
-        // @ts-expect-error -- we don't define deprecated members on our types
-        SourceCode.prototype.getComments = getCommentsDeprecation;
-        messages = this.#linter.verify(code, configWithoutCustomKeys, filename);
-        if (!initialMessages) {
-          initialMessages = messages;
-        }
+        forbiddenMethods.forEach(methodName => {
+          SourceCode.prototype[methodName] = throwForbiddenMethodError(
+            methodName,
+            SourceCode.prototype,
+          );
+        });
+
+        const actualConfig = merge(configWithoutCustomKeys, {
+          linterOptions: { reportUnusedDisableDirectives: 1 },
+          languageOptions: {
+            ...configWithoutCustomKeys.languageOptions,
+            parserOptions: {
+              ecmaVersion: 'latest',
+              sourceType: 'module',
+              ...configWithoutCustomKeys.languageOptions?.parserOptions,
+            },
+          },
+        });
+        messages = this.#linter.verify(
+          code,
+          // ESLint uses an internal FlatConfigArray that extends @humanwhocodes/config-array.
+          // Linter uses a typeof getConfig === "function" check.
+          // We mock out that check here to force it not to use Linter's cwd as basePath.
+          Object.assign([], {
+            getConfig: () => actualConfig,
+          }),
+          filename,
+        );
       } finally {
-        // @ts-expect-error -- we don't define deprecated members on our types
-        SourceCode.prototype.getComments = getComments;
+        SourceCode.prototype.applyInlineConfig = applyInlineConfig;
+        SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
+        SourceCode.prototype.finalize = finalize;
       }
+
+      initialMessages ??= messages;
+
       if (messages.length === 0) {
         break;
       }
