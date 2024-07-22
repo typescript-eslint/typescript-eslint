@@ -64,6 +64,11 @@ export = {
         allowNever: false,
       },
     ],
+    'no-return-await': 'off',
+    '@typescript-eslint/return-await': [
+      'error',
+      'error-handling-correctness-only',
+    ],
     '@typescript-eslint/unbound-method': 'error',
     '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',
   },
