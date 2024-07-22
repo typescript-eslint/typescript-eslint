@@ -575,6 +575,11 @@ export class RuleTester extends TestFramework {
         },
       },
     });
+
+    // Unlike other properties, we don't want to spread props between different parsers.
+    config.languageOptions.parser =
+      item.languageOptions?.parser ?? this.#testerConfig.languageOptions.parser;
+
     let code;
     let filename;
     let beforeAST: TSESTree.Program;

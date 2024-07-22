@@ -6,6 +6,7 @@ export function omitCustomConfigProperties(
   const copy = { ...config };
 
   delete copy.defaultFilenames;
+  delete copy.dependencyConstraints;
 
   return copy;
 }
