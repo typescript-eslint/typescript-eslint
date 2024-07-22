@@ -24,10 +24,10 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-        project: ['./tsconfig.json'],
         // Add this line
         extraFileExtensions: ['.vue'],
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
@@ -41,10 +41,10 @@ export default tseslint.config(
 module.exports = {
   // ... the rest of your config ...
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
     // Add this line
     extraFileExtensions: ['.vue'],
+    projectService: true,
+    tsconfigRootDir: __dirname,
   },
 };
 ```
