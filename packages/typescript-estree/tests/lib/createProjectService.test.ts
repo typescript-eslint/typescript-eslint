@@ -5,6 +5,7 @@ import { createProjectService } from '../../src/create-program/createProjectServ
 
 const mockReadConfigFile = jest.fn();
 const mockSetCompilerOptionsForInferredProjects = jest.fn();
+const mockSetHostConfiguration = jest.fn();
 
 jest.mock('typescript/lib/tsserverlibrary', () => ({
   ...jest.requireActual('typescript/lib/tsserverlibrary'),
@@ -27,6 +28,7 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
       }
       setCompilerOptionsForInferredProjects =
         mockSetCompilerOptionsForInferredProjects;
+      setHostConfiguration = mockSetHostConfiguration;
     },
   },
 }));
@@ -222,5 +224,20 @@ describe('createProjectService', () => {
     createProjectService(undefined, undefined);
 
     expect(process.stderr.write).toHaveBeenCalledTimes(0);
+  });
+
+  it('sets a host configuration', () => {
+    const { service } = createProjectService(
+      {
+        allowDefaultProject: ['file.js'],
+      },
+      undefined,
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      preferences: {
+        includePackageJsonAutoImports: 'off',
+      },
+    });
   });
 });

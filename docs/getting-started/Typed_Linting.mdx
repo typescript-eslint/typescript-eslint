@@ -15,7 +15,7 @@ To tap into TypeScript's additional powers, there are two small changes you need
 1. Add `TypeChecked` to the name of any preset configs you're using, namely `recommended`, `strict`, and `stylistic`.
 2. Add `languageOptions.parserOptions` to tell our parser how to find the TSConfig for each source file.
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
@@ -97,7 +97,7 @@ If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#s
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   // Removed lines start
@@ -152,7 +152,7 @@ For example, if you use a specific `tsconfig.eslint.json` for linting, you'd spe
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config({
   // ...
   languageOptions: {
@@ -195,7 +195,7 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,

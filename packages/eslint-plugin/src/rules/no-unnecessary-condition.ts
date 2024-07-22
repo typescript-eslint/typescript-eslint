@@ -211,15 +211,20 @@ export default createRule<Options, MessageId>({
       }
       const property = node.property;
 
-      if (property.type === AST_NODE_TYPES.Identifier) {
-        const propertyType = objectType.getProperty(property.name);
-        if (
-          propertyType &&
-          tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
-        ) {
-          return true;
-        }
+      // Get the actual property name, to account for private properties (this.#prop).
+      const propertyName = context.sourceCode.getText(property);
+
+      const propertyType = objectType
+        .getProperties()
+        .find(prop => prop.name === propertyName);
+
+      if (
+        propertyType &&
+        tsutils.isSymbolFlagSet(propertyType, ts.SymbolFlags.Optional)
+      ) {
+        return true;
       }
+
       return false;
     }
 

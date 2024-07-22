@@ -411,19 +411,17 @@ export class RuleTester extends TestFramework {
       emitLegacyRuleAPIWarning(ruleName);
     }
 
-    this.#linter.defineRule(
-      ruleName,
-      Object.assign({}, rule, {
-        // Create a wrapper rule that freezes the `context` properties.
-        create(context: RuleContext<MessageIds, Options>) {
-          freezeDeeply(context.options);
-          freezeDeeply(context.settings);
-          freezeDeeply(context.parserOptions);
+    this.#linter.defineRule(ruleName, {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context: RuleContext<MessageIds, Options>) {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
 
-          return (typeof rule === 'function' ? rule : rule.create)(context);
-        },
-      }),
-    );
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    });
 
     this.#linter.defineRules(this.#rules);
 
@@ -1208,14 +1206,12 @@ export class RuleTester extends TestFramework {
           'Outputs do not match.',
         );
       }
-    } else {
-      if (result.outputs.length) {
-        assert.strictEqual(
-          result.outputs[0],
-          item.code,
-          "The rule fixed the code. Please add 'output' property.",
-        );
-      }
+    } else if (result.outputs.length) {
+      assert.strictEqual(
+        result.outputs[0],
+        item.code,
+        "The rule fixed the code. Please add 'output' property.",
+      );
     }
 
     assertASTDidntChange(result.beforeAST, result.afterAST);

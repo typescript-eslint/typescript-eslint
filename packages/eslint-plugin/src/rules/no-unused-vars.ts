@@ -491,21 +491,20 @@ export default createRule<Options, MessageIds>({
           ) {
             continue;
           }
-        } else {
-          // skip ignored variables
-          if (
-            def.name.type === AST_NODE_TYPES.Identifier &&
-            options.varsIgnorePattern?.test(def.name.name)
-          ) {
-            if (options.reportUsedIgnorePattern && used) {
-              context.report({
-                node: def.name,
-                messageId: 'usedIgnoredVar',
-                data: getUsedIgnoredMessageData(variable, 'variable'),
-              });
-            }
-            continue;
+        }
+        // skip ignored variables
+        else if (
+          def.name.type === AST_NODE_TYPES.Identifier &&
+          options.varsIgnorePattern?.test(def.name.name)
+        ) {
+          if (options.reportUsedIgnorePattern && used) {
+            context.report({
+              node: def.name,
+              messageId: 'usedIgnoredVar',
+              data: getUsedIgnoredMessageData(variable, 'variable'),
+            });
           }
+          continue;
         }
 
         if (hasRestSpreadSibling(variable)) {
