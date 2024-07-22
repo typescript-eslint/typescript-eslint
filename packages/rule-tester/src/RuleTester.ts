@@ -399,19 +399,17 @@ export class RuleTester extends TestFramework {
       emitLegacyRuleAPIWarning(ruleName);
     }
 
-    this.#linter.defineRule(
-      ruleName,
-      Object.assign({}, rule, {
-        // Create a wrapper rule that freezes the `context` properties.
-        create(context: RuleContext<MessageIds, Options>) {
-          freezeDeeply(context.options);
-          freezeDeeply(context.settings);
-          freezeDeeply(context.parserOptions);
+    this.#linter.defineRule(ruleName, {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context: RuleContext<MessageIds, Options>) {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
 
-          return (typeof rule === 'function' ? rule : rule.create)(context);
-        },
-      }),
-    );
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    });
 
     this.#linter.defineRules(this.#rules);
 
@@ -971,7 +969,7 @@ export class RuleTester extends TestFramework {
             const expectsSuggestions = Array.isArray(error.suggestions)
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
-            const hasSuggestions = message.suggestions !== void 0;
+            const hasSuggestions = message.suggestions !== undefined;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const messageSuggestions = message.suggestions!;
 

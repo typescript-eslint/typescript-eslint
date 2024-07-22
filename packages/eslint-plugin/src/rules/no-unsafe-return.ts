@@ -206,7 +206,8 @@ export default createRule({
         });
       }
 
-      for (const signature of callSignatures) {
+      const signature = functionType.getCallSignatures().at(0);
+      if (signature) {
         const functionReturnType = signature.getReturnType();
         const result = isUnsafeAssignment(
           returnNodeType,
