@@ -213,6 +213,7 @@ export default tseslint.config(
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
       ],
+      'no-implicit-coercion': ['error', { boolean: false }],
       'no-lonely-if': 'error',
       'no-unreachable-loop': 'error',
       'no-useless-call': 'error',
@@ -227,6 +228,7 @@ export default tseslint.config(
       'prefer-object-has-own': 'error',
       'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
+      radix: 'error',
 
       //
       // eslint-plugin-eslint-comment
