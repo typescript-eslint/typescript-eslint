@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`flat-config-types eslint should work successfully 1`] = `
+exports[`flat-config-types-@types__eslint-v9 eslint should work successfully 1`] = `
 [
   {
     "errorCount": 3,
