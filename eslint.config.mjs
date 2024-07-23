@@ -26,6 +26,7 @@ export default tseslint.config(
   // register all of the plugins up-front
   {
     // note - intentionally uses computed syntax to make it easy to sort the keys
+    /* eslint-disable no-useless-computed-key */
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
@@ -41,6 +42,7 @@ export default tseslint.config(
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
     },
+    /* eslint-enable no-useless-computed-key */
   },
   {
     // config with just ignores is the replacement for `.eslintignore`
@@ -53,6 +55,8 @@ export default tseslint.config(
       '**/__snapshots__/**',
       '**/.docusaurus/**',
       '**/build/**',
+      '.nx/*',
+      '.yarn/*',
       // Files copied as part of the build
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
@@ -402,7 +406,6 @@ export default tseslint.config(
     files: [
       '**/tools/**/*.{ts,tsx,cts,mts}',
       '**/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/repo-tools/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
