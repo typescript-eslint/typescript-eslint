@@ -30,7 +30,7 @@ These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../pa
 To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
 For example:
 
-```diff title="eslint.config.js"
+```diff title="eslint.config.mjs"
 parserOptions: {
   EXPERIMENTAL_useProjectService: {
     allowDefaultProjectForFiles: [
@@ -70,7 +70,7 @@ These errors are caused by an ESLint config requesting type information be gener
     <Tabs groupId="eslint-config">
       <TabItem value="Flat Config">
 
-      ```js title="eslint.config.js"
+      ```js title="eslint.config.mjs"
       import tseslint from 'typescript-eslint';
 
       export default tseslint.config(
@@ -123,7 +123,7 @@ However, if no specified TSConfig includes the source file, the parser won't be 
 This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
 For example, many projects have files like:
 
-- An `.eslintrc.cjs` / `eslint.config.js` with `parserOptions.project: ["./tsconfig.json"]`
+- An `.eslintrc.cjs` / `eslint.config.mjs` with `parserOptions.project: ["./tsconfig.json"]`
 - A `tsconfig.json` with `include: ["src"]`
 
 In that case, viewing the file in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
@@ -145,7 +145,7 @@ These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../pa
 To resolve this error, narrow the glob(s) used for `allowDefaultProjectForFiles` to include fewer files.
 For example:
 
-```diff title="eslint.config.js"
+```diff title="eslint.config.mjs"
 parserOptions: {
   EXPERIMENTAL_useProjectService: {
     allowDefaultProjectForFiles: [
