@@ -196,40 +196,40 @@ const analyzeOrChainOperand: OperandAnalyzer = (
   }
 };
 
-function getFixRange(
-  left: TSESTree.Node,
-  right: TSESTree.Node,
-  node: TSESTree.Node,
+/**
+ * Returns the range that needs to be reported from the chain.
+ * @param chain The chain of logical expressions.
+ * @param boundary The boundary range that the range to report cannot fall outside.
+ * @param sourceCode The source code to get tokens.
+ * @returns The range to report.
+ */
+function getReportRange(
+  chain: ValidOperand[],
+  boundary: TSESTree.Range,
   sourceCode: SourceCode,
 ): [number, number] {
+  const leftNode = chain[0].node;
+  const rightNode = chain[chain.length - 1].node;
   let leftMost = nullThrows(
-    sourceCode.getFirstToken(left),
-    NullThrowsReasons.MissingToken('any token', left.type),
+    sourceCode.getFirstToken(leftNode),
+    NullThrowsReasons.MissingToken('any token', leftNode.type),
   );
   let rightMost = nullThrows(
-    sourceCode.getLastToken(right),
-    NullThrowsReasons.MissingToken('any token', right.type),
+    sourceCode.getLastToken(rightNode),
+    NullThrowsReasons.MissingToken('any token', rightNode.type),
   );
 
-  while (leftMost.range[0] > node.range[0]) {
+  while (leftMost.range[0] > boundary[0]) {
     const token = sourceCode.getTokenBefore(leftMost);
-    if (
-      !token ||
-      !isOpeningParenToken(token) ||
-      token.range[0] < node.range[0]
-    ) {
+    if (!token || !isOpeningParenToken(token) || token.range[0] < boundary[0]) {
       break;
     }
     leftMost = token;
   }
 
-  while (rightMost.range[1] < node.range[1]) {
+  while (rightMost.range[1] < boundary[1]) {
     const token = sourceCode.getTokenAfter(rightMost);
-    if (
-      !token ||
-      !isClosingParenToken(token) ||
-      token.range[1] > node.range[1]
-    ) {
+    if (!token || !isClosingParenToken(token) || token.range[1] > boundary[1]) {
       break;
     }
     rightMost = token;
@@ -404,16 +404,16 @@ function getReportDescriptor(
     newCode = `!${newCode}`;
   }
 
-  const range = getFixRange(chain[0].node, lastOperand.node, node, sourceCode);
+  const reportRange = getReportRange(chain, node.range, sourceCode);
 
   const fix: ReportFixFunction = fixer =>
-    fixer.replaceTextRange(range, newCode);
+    fixer.replaceTextRange(reportRange, newCode);
 
   return {
     messageId: 'preferOptionalChain',
     loc: {
-      start: sourceCode.getLocFromIndex(range[0]),
-      end: sourceCode.getLocFromIndex(range[1]),
+      start: sourceCode.getLocFromIndex(reportRange[0]),
+      end: sourceCode.getLocFromIndex(reportRange[1]),
     },
     suggest: useSuggestionFixer
       ? [{ fix, messageId: 'optionalChainSuggest' }]
