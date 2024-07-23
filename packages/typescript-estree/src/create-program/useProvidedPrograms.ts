@@ -55,10 +55,10 @@ function useProvidedPrograms(
 function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
-): ts.Program | string {
+): ts.Program {
   const parsed = getParsedConfigFile(ts, configFile, projectDirectory);
   if (typeof parsed === 'string') {
-    return parsed;
+    throw new Error(parsed);
   }
   const host = ts.createCompilerHost(parsed.options, true);
   return ts.createProgram(parsed.fileNames, parsed.options, host);

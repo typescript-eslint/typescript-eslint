@@ -18,9 +18,12 @@ function getParsedConfigFile(
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tsserver.sys === undefined) {
     throw new Error(
-      '`createProgramFromConfigFile` is only supported in a Node-like environment.',
+      '`getParsedConfigFile` is only supported in a Node-like environment.',
     );
   }
+
+  const getCurrentDirectory = (): string =>
+    (projectDirectory && path.resolve(projectDirectory)) || process.cwd();
 
   let parsingError: string | undefined;
 
@@ -32,31 +35,28 @@ function getParsedConfigFile(
         parsingError = formatDiagnostics([diag]); // ensures that `parsed` is defined.
       },
       fileExists: fs.existsSync,
-      getCurrentDirectory: () =>
-        (projectDirectory && path.resolve(projectDirectory)) || process.cwd(),
+      getCurrentDirectory,
       readDirectory: tsserver.sys.readDirectory,
       readFile: file => fs.readFileSync(file, 'utf-8'),
       useCaseSensitiveFileNames: tsserver.sys.useCaseSensitiveFileNames,
     },
   );
 
-  if (parsed?.errors?.length) {
+  if (parsed?.errors.length) {
     parsingError = formatDiagnostics(parsed.errors);
   }
 
-  if (parsed === undefined) {
-    return (
-      parsingError ??
-      'Unknown config file parse error: no result or error diagnostic returned'
-    );
+  if (parsingError !== undefined) {
+    return `Could not parse config file '${configFile}': ${parsingError}`;
   }
 
-  return parsed;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return parsed!;
 
   function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
     return tsserver.formatDiagnostics(diagnostics, {
       getCanonicalFileName: f => f,
-      getCurrentDirectory: process.cwd,
+      getCurrentDirectory,
       getNewLine: () => '\n',
     });
   }
