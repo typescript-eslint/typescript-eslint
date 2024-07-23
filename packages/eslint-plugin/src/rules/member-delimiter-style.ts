@@ -272,14 +272,12 @@ export default createRule<Options, MessageIds>({
           missingDelimiter = true;
           messageId = 'unexpectedComma';
         }
-      } else {
-        if (optsSemi) {
-          missingDelimiter = true;
-          messageId = 'expectedSemi';
-        } else if (optsComma) {
-          missingDelimiter = true;
-          messageId = 'expectedComma';
-        }
+      } else if (optsSemi) {
+        missingDelimiter = true;
+        messageId = 'expectedSemi';
+      } else if (optsComma) {
+        missingDelimiter = true;
+        messageId = 'expectedComma';
       }
 
       if (messageId) {

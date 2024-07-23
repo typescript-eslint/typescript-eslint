@@ -127,6 +127,7 @@ function foo(): Set<number> {
         return [] as any[];
       }
     `,
+    'const foo: (() => void) | undefined = () => 1;',
   ],
   invalid: [
     {
