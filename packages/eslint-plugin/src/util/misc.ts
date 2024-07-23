@@ -160,7 +160,7 @@ type RequireKeys<
 > = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
-  return Object.keys(myEnum).filter(x => isNaN(+x)) as T[];
+  return Object.keys(myEnum).filter(x => isNaN(Number(x))) as T[];
 }
 
 /**
