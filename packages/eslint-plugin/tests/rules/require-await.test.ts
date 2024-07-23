@@ -277,6 +277,7 @@ async function numberOne(): Promise<number> {
           data: {
             name: "Async function 'numberOne'",
           },
+          suggestions: [],
         },
       ],
     },
@@ -293,6 +294,7 @@ const numberOne = async function (): Promise<number> {
           data: {
             name: "Async function 'numberOne'",
           },
+          suggestions: [],
         },
       ],
     },
@@ -305,6 +307,7 @@ const numberOne = async function (): Promise<number> {
           data: {
             name: "Async arrow function 'numberOne'",
           },
+          suggestions: [],
         },
       ],
     },
@@ -323,6 +326,18 @@ const numberOne = async function (): Promise<number> {
           data: {
             name: "Async function 'foo'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        function foo() {
+          function nested() {
+            await doSomething();
+          }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -353,6 +368,16 @@ async function* foo() {
           data: {
             name: "Async generator function 'foo'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function* foo() {
+  yield 1;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -368,6 +393,16 @@ const foo = async function* () {
           data: {
             name: "Async generator function 'foo'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+const foo = function* () {
+  console.log('bar');
+};
+      `,
+            },
+          ],
         },
       ],
     },
@@ -383,6 +418,16 @@ async function* asyncGenerator() {
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function* asyncGenerator() {
+  yield 1;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -398,6 +443,16 @@ async function* asyncGenerator(source: Iterable<any>) {
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function* asyncGenerator(source: Iterable<any>) {
+  yield* source;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -418,6 +473,21 @@ async function* asyncGenerator(source: Iterable<any> | AsyncIterable<any>) {
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function isAsyncIterable(value: unknown): value is AsyncIterable<any> {
+  return true;
+}
+function* asyncGenerator(source: Iterable<any> | AsyncIterable<any>) {
+  if (!isAsyncIterable(source)) {
+    yield* source;
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -436,6 +506,19 @@ async function* asyncGenerator() {
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function* syncGenerator() {
+  yield 1;
+}
+function* asyncGenerator() {
+  yield* syncGenerator();
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -451,13 +534,23 @@ async function* asyncGenerator() {
           data: {
             name: "Async arrow function 'fn'",
           },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        const fn = () => {
+          using foo = new Bar();
+        };
+      `,
+            },
+          ],
         },
       ],
     },
   ],
 });
 // base eslint tests
-// https://github.com/eslint/eslint/blob/03a69dbe86d5b5768a310105416ae726822e3c1c/tests/lib/rules/require-await.js#L25-L132
+// https://github.com/eslint/eslint/blob/3a4eaf921543b1cd5d1df4ea9dec02fab396af2a/tests/lib/rules/require-await.js#L25-L274
 ruleTester.run('require-await', rule, {
   valid: [
     `
@@ -542,6 +635,16 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: "Async function 'foo'" },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        function foo() {
+          doSomething();
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -555,6 +658,16 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: 'Async function' },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        (function () {
+          doSomething();
+        });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -568,6 +681,16 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        () => {
+          doSomething();
+        };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -577,6 +700,9 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          suggestions: [
+            { messageId: 'removeAsync', output: '() => doSomething();' },
+          ],
         },
       ],
     },
@@ -592,6 +718,18 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        ({
+          foo() {
+            doSomething();
+          },
+        });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -607,6 +745,45 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        class A {
+          foo() {
+            doSomething();
+          }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          public async foo() {
+            doSomething();
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async method 'foo'" },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        class A {
+          public foo() {
+            doSomething();
+          }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -622,6 +799,18 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        (class {
+          foo() {
+            doSomething();
+          }
+        });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -637,6 +826,18 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: 'Async method' },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        (class {
+          ''() {
+            doSomething();
+          }
+        });
+      `,
+            },
+          ],
         },
       ],
     },
@@ -652,6 +853,18 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: "Async function 'foo'" },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        function foo() {
+          async () => {
+            await doSomething();
+          };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -667,6 +880,169 @@ for await (let num of asyncIterable) {
         {
           messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        async function foo() {
+          await (() => {
+            doSomething();
+          });
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        const obj = {
+          async: async function foo() {
+            bar();
+          },
+        };
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async method 'async'" },
+          suggestions: [
+            {
+              output: `
+        const obj = {
+          async: function foo() {
+            bar();
+          },
+        };
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // This test verifies that the async keyword and any following
+      // whitespace is removed, but not the following comments.
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+        async    /* test */ function foo() {
+          doSomething();
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: "Async function 'foo'" },
+          suggestions: [
+            {
+              output: `
+        /* test */ function foo() {
+          doSomething();
+        }
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          a = 0;
+          async [b]() {
+            return 0;
+          }
+        }
+      `,
+      languageOptions: {
+        parserOptions: { ecmaVersion: 2022 },
+      },
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async method' },
+          suggestions: [
+            {
+              output: `
+        class A {
+          a = 0;
+          [b]() {
+            return 0;
+          }
+        }
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // This test must not have a semicolon after "foo".
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+        foo
+        async () => {
+          return 0;
+        }
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2022,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async arrow function' },
+          suggestions: [
+            {
+              output: `
+        foo
+        ;() => {
+          return 0;
+        }
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          foo() {}
+          async [bar]() {
+            baz;
+          }
+        }
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaVersion: 2022,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: { name: 'Async method' },
+          suggestions: [
+            {
+              output: `
+        class A {
+          foo() {}
+          [bar]() {
+            baz;
+          }
+        }
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
         },
       ],
     },
