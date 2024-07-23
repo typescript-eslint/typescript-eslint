@@ -207,7 +207,7 @@ function getReportRange(
   chain: ValidOperand[],
   boundary: TSESTree.Range,
   sourceCode: SourceCode,
-): [number, number] {
+): TSESTree.Range {
   const leftNode = chain[0].node;
   const rightNode = chain[chain.length - 1].node;
   let leftMost = nullThrows(
