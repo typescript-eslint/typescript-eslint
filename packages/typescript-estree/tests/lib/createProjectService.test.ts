@@ -1,44 +1,16 @@
-import fs from 'node:fs';
-import { join } from 'node:path';
-
 import debug from 'debug';
 import * as ts from 'typescript';
 
-import { createProjectService } from '../../src/create-program/createProjectService';
-import { CORE_COMPILER_OPTIONS } from '../../src/create-program/shared';
-
-const FIXTURES_DIR = join(__dirname, '../fixtures/projectServicesComplex');
-
-const origSys = ts.sys;
-const origGetParsedCommandLineOfConfigFile =
-  ts.getParsedCommandLineOfConfigFile;
-
-let mockSys: typeof ts.sys;
-const mockGetParsedCommandLineOfConfigFile = jest.fn();
+const mockGetParsedConfigFile = jest.fn();
 const mockSetCompilerOptionsForInferredProjects = jest.fn();
+const mockSetHostConfiguration = jest.fn();
 
-describe('createProjectService', () => {
-  beforeEach(() => {
-    jest.resetModules();
+jest.mock('../../src/create-program/getParsedConfigFile', () => ({
+  getParsedConfigFile: mockGetParsedConfigFile,
+}));
 
-    mockSys = origSys;
-    // doMock is used over mock to handle the tsserver.sys property mock
-    jest.doMock('typescript/lib/tsserverlibrary', () => {
-      return {
-        ...jest.requireActual('typescript/lib/tsserverlibrary'),
-        sys: mockSys,
-        getParsedCommandLineOfConfigFile: mockGetParsedCommandLineOfConfigFile,
-        server: {
-          ProjectService: class {
-            setCompilerOptionsForInferredProjects =
-              mockSetCompilerOptionsForInferredProjects;
-          },
-        },
-      };
-    });
 jest.mock('typescript/lib/tsserverlibrary', () => ({
   ...jest.requireActual('typescript/lib/tsserverlibrary'),
-  readConfigFile: mockReadConfigFile,
   server: {
     ...jest.requireActual('typescript/lib/tsserverlibrary').server,
     ProjectService: class {
@@ -57,9 +29,15 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
       }
       setCompilerOptionsForInferredProjects =
         mockSetCompilerOptionsForInferredProjects;
+      setHostConfiguration = mockSetHostConfiguration;
     },
   },
 }));
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const {
+  createProjectService,
+} = require('../../src/create-program/createProjectService');
 
 describe('createProjectService', () => {
   afterEach(() => {
@@ -79,20 +57,29 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error when options.defaultProject is set and getParsedCommandLineOfConfigFile returns an error', () => {
-    mockGetParsedCommandLineOfConfigFile.mockReturnValue({
-      errors: [
+  it('throws an error when options.defaultProject is set and getParsedConfigFile returns an error', () => {
+    mockGetParsedConfigFile.mockReturnValue(
+      "Could not parse config file './tsconfig.json': ./tsconfig.json(1,1): error TS1234: Oh no!",
+    );
+
+    expect(() =>
+      createProjectService(
         {
-          category: ts.DiagnosticCategory.Error,
-          code: 1234,
-          file: ts.createSourceFile('./tsconfig.json', '', {
-            languageVersion: ts.ScriptTarget.Latest,
-          }),
-          start: 0,
-          length: 0,
-          messageText: 'Oh no!',
+          allowDefaultProject: ['file.js'],
+          defaultProject: './tsconfig.json',
         },
-      ] satisfies ts.Diagnostic[],
+        undefined,
+      ),
+    ).toThrow(
+      /Could not parse config file '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
+    );
+  });
+
+  it('throws an error when options.defaultProject is set and getParsedConfigFile throws an error', () => {
+    mockGetParsedConfigFile.mockImplementation(() => {
+      throw new Error(
+        '`getParsedConfigFile` is only supported in a Node-like environment.',
+      );
     });
 
     expect(() =>
@@ -104,149 +91,24 @@ describe('createProjectService', () => {
         undefined,
       ),
     ).toThrow(
-      /Could not parse default project '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
+      "Could not parse default project './tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
     );
   });
 
-  it('throws an error when options.defaultProject is absolute and getParsedCommandLineOfConfigFile returns an error', () => {
-    mockGetParsedCommandLineOfConfigFile.mockReturnValue({
-      errors: [
-        {
-          category: ts.DiagnosticCategory.Error,
-          code: 1234,
-          // absolute path triggers getCanonicalFileName for coverage
-          file: ts.createSourceFile('/tsconfig.json', '', {
-            languageVersion: ts.ScriptTarget.Latest,
-          }),
-          start: 0,
-          length: 0,
-          messageText: 'Oh no!',
-        },
-      ] satisfies ts.Diagnostic[],
-    });
+  it('uses the default projects compiler options when options.defaultProject is set and getParsedConfigFile succeeds', () => {
+    const compilerOptions = { strict: true };
+    mockGetParsedConfigFile.mockReturnValue({ options: compilerOptions });
 
-    expect(() =>
-      createProjectService(
-        {
-          allowDefaultProject: ['file.js'],
-          defaultProject: '/tsconfig.json',
-        },
-        undefined,
-      ),
-    ).toThrow(
-      /Could not parse default project '\/tsconfig.json': .+ error TS1234: Oh no!/,
-    );
-  });
-
-  it('throws an error when options.defaultProject is set and getParsedCommandLineOfConfigFile throws an error', () => {
-    mockGetParsedCommandLineOfConfigFile.mockImplementation(() => {
-      throw new Error('Oh no!');
-    });
-
-    expect(() => {
-      return createProjectService(
-        {
-          allowDefaultProject: ['file.js'],
-          defaultProject: './tsconfig.json',
-        },
-        undefined,
-      );
-    }).toThrow("Could not parse default project './tsconfig.json': Oh no!");
-  });
-
-  it('throws an error when options.defaultProject is set and tsserver.sys is undefined', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mockSys = undefined as any;
-    expect(() => {
-      return createProjectService(
-        {
-          allowDefaultProject: ['file.js'],
-          defaultProject: './tsconfig.json',
-        },
-        undefined,
-      );
-    }).toThrow(
-      "Could not parse default project './tsconfig.json': `createProgramFromConfigFile` is only supported in a Node-like environment.",
-    );
-  });
-
-  it('uses the default projects compiler options when options.defaultProject is set and getParsedCommandLineOfConfigFile succeeds', () => {
-    mockGetParsedCommandLineOfConfigFile.mockImplementation(
-      origGetParsedCommandLineOfConfigFile,
-    );
-
-    const base = JSON.parse(
-      fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
-    );
-    const compilerOptions = {
-      ...CORE_COMPILER_OPTIONS,
-      ...base?.compilerOptions,
-    };
     const { service } = createProjectService(
       {
-        defaultProject: join(FIXTURES_DIR, 'tsconfig.base.json'),
+        allowDefaultProject: ['file.js'],
+        defaultProject: './tsconfig.json',
       },
       undefined,
     );
 
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      // looser assertion since config parser adds metadata to track references to other files
-      expect.objectContaining(compilerOptions),
-    );
-  });
-
-  it('uses the default projects extended compiler options when options.defaultProject is set and getParsedCommandLineOfConfigFile succeeds', () => {
-    mockGetParsedCommandLineOfConfigFile.mockImplementation(
-      origGetParsedCommandLineOfConfigFile,
-    );
-
-    const base = JSON.parse(
-      fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
-    );
-    const compilerOptions = {
-      ...CORE_COMPILER_OPTIONS,
-      ...base?.compilerOptions,
-    };
-    const { service } = createProjectService(
-      {
-        defaultProject: join(FIXTURES_DIR, 'tsconfig.json'),
-      },
-      undefined,
-    );
-
-    expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      // looser assertion since config parser adds metadata to track references to other files
-      expect.objectContaining(compilerOptions),
-    );
-  });
-
-  it('uses the default projects multiple extended compiler options when options.defaultProject is set and getParsedCommandLineOfConfigFile succeeds', () => {
-    mockGetParsedCommandLineOfConfigFile.mockImplementation(
-      origGetParsedCommandLineOfConfigFile,
-    );
-
-    const base = JSON.parse(
-      fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
-    );
-    const overrides = JSON.parse(
-      fs.readFileSync(join(FIXTURES_DIR, 'tsconfig.overrides.json'), 'utf8'),
-    );
-    const compilerOptions = {
-      ...CORE_COMPILER_OPTIONS,
-      ...base?.compilerOptions,
-      ...overrides?.compilerOptions,
-    };
-    const { service } = createProjectService(
-      {
-        // extends tsconfig.base.json and tsconfig.overrides.json
-        defaultProject: join(FIXTURES_DIR, 'tsconfig.overridden.json'),
-      },
-      undefined,
-    );
-
-    expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
-      // looser assertion since config parser adds metadata to track references to other files
-      expect.objectContaining(compilerOptions),
+      compilerOptions,
     );
   });
 
@@ -363,5 +225,20 @@ describe('createProjectService', () => {
     createProjectService(undefined, undefined);
 
     expect(process.stderr.write).toHaveBeenCalledTimes(0);
+  });
+
+  it('sets a host configuration', () => {
+    const { service } = createProjectService(
+      {
+        allowDefaultProject: ['file.js'],
+      },
+      undefined,
+    );
+
+    expect(service.setHostConfiguration).toHaveBeenCalledWith({
+      preferences: {
+        includePackageJsonAutoImports: 'off',
+      },
+    });
   });
 });

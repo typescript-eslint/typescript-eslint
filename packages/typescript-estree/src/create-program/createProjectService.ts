@@ -132,7 +132,7 @@ export function createProjectService(
           // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
           // it is meant for hard coded options passed in.  Hard casting as a work around.
           // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+
           configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
         );
       }
@@ -140,9 +140,7 @@ export function createProjectService(
       defaultProjectError = `Could not parse default project '${options.defaultProject}': ${(error as Error).message}`;
     }
     if (defaultProjectError !== undefined) {
-      throw new Error(
-        `Could not parse default project '${options.defaultProject}': ${defaultProjectError}`,
-      );
+      throw new Error(defaultProjectError);
     }
   }
 
