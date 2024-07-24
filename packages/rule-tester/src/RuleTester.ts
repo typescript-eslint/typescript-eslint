@@ -61,6 +61,11 @@ const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
 const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
 const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level unless you want to use a parser other than "${TYPESCRIPT_ESLINT_PARSER}"`;
 
+// instead of creating a hard dependency, just use a soft require
+// a bit weird, but if they're using this tooling, it'll be installed
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const defaultParser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
+
 /*
  * testerDefaultConfig must not be modified as it allows to reset the tester to
  * the initial default configuration
@@ -68,8 +73,7 @@ const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level 
 const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
   defaultFilenames: { ts: 'file.ts', tsx: 'react.tsx' },
   languageOptions: {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    parser: require(TYPESCRIPT_ESLINT_PARSER) as typeof parser,
+    parser: defaultParser,
   },
   rules: {},
 };
@@ -161,13 +165,6 @@ function getUnsubstitutedMessagePlaceholders(
 }
 
 export class RuleTester extends TestFramework {
-  // instead of creating a hard dependency, just use a soft require
-  // a bit weird, but if they're using this tooling, it'll be installed
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  readonly #defaultParser = require(
-    TYPESCRIPT_ESLINT_PARSER,
-  ) as typeof ParserType;
-
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
   readonly #linter: Linter = new Linter({ configType: 'flat' });
@@ -191,7 +188,7 @@ export class RuleTester extends TestFramework {
     const constructor = this.constructor as typeof RuleTester;
     constructor.afterAll(() => {
       try {
-        this.#defaultParser.clearCaches();
+        defaultParser.clearCaches();
       } catch {
         // ignored on purpose
       }
@@ -632,7 +629,7 @@ export class RuleTester extends TestFramework {
     }
 
     config.languageOptions ??= {};
-    config.languageOptions.parser ??= this.#defaultParser;
+    config.languageOptions.parser ??= defaultParser;
     config.languageOptions.parser = wrapParser(config.languageOptions.parser);
 
     const schema = getRuleOptionsSchema(rule);
