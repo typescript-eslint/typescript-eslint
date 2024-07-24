@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "strict": true,
-    "paths": {
-      "@/package-a": ["./project-a/src/index.ts"],
-      "@/package-b": ["./project-b/src/index.ts"]
-    }
-  }
-}

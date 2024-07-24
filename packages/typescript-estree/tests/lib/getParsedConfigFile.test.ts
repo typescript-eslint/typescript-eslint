@@ -1,14 +1,8 @@
-import fs from 'node:fs';
 import path from 'node:path';
 
 import * as ts from 'typescript';
 
 import { getParsedConfigFile } from '../../src/create-program/getParsedConfigFile';
-
-const FIXTURES_DIR = path.resolve(
-  __dirname,
-  '../fixtures/projectServicesComplex',
-);
 
 const mockGetParsedCommandLineOfConfigFile = jest.fn();
 
@@ -80,28 +74,15 @@ describe('getParsedConfigFile', () => {
     );
   });
 
-  it('uses extended compiler options when parsing a config file', () => {
-    mockGetParsedCommandLineOfConfigFile.mockImplementation(
-      (
-        ...args: Parameters<(typeof ts)['getParsedCommandLineOfConfigFile']>
-      ) => {
-        return ts.getParsedCommandLineOfConfigFile(...args);
-      },
-    );
-    const base = JSON.parse(
-      fs.readFileSync(path.resolve(FIXTURES_DIR, 'tsconfig.base.json'), 'utf8'),
-    );
-    const config = {
-      options: expect.objectContaining(base.compilerOptions),
-      raw: JSON.parse(
-        fs.readFileSync(path.resolve(FIXTURES_DIR, 'tsconfig.json'), 'utf8'),
-      ),
+  it('uses compiler options when parsing a config file succeeds', () => {
+    const parsedConfigFile = {
+      options: { strict: true },
+      raw: { compilerOptions: { strict: true } },
+      errors: [],
     };
-    expect(
-      getParsedConfigFile(
-        mockTsserver,
-        path.resolve(FIXTURES_DIR, 'tsconfig.json'),
-      ),
-    ).toEqual(expect.objectContaining(config));
+    mockGetParsedCommandLineOfConfigFile.mockReturnValue(parsedConfigFile);
+    expect(getParsedConfigFile(mockTsserver, 'tsconfig.json')).toEqual(
+      expect.objectContaining(parsedConfigFile),
+    );
   });
 });

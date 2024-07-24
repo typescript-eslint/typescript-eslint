@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 import type { ParseSettings } from '../parseSettings';
 import { getParsedConfigFile } from './getParsedConfigFile';
 import type { ASTAndDefiniteProgram } from './shared';
-import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
+import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 

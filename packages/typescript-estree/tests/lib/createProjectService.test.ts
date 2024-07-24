@@ -36,6 +36,7 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
 
 const {
   createProjectService,
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
 } = require('../../src/create-program/createProjectService');
 
 describe('createProjectService', () => {
