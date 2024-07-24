@@ -5,9 +5,7 @@ import rule, {
   PACKAGES_DIR,
 } from '../../src/rules/no-relative-paths-to-internal-packages';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {
   valid: [

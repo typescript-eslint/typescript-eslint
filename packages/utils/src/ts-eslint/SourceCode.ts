@@ -226,6 +226,9 @@ declare class SourceCodeBase extends TokenStore {
    * The parsed AST for the source code.
    */
   ast: SourceCode.Program;
+  applyInlineConfig(): void;
+  applyLanguageOptions(): void;
+  finalize(): void;
   /**
    * Retrieves an array containing all comments in the source code.
    * @returns An array of comment nodes.

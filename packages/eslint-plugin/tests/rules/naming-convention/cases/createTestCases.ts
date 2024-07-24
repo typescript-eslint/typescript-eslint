@@ -1,5 +1,8 @@
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type {
   MessageIds,
@@ -80,7 +83,7 @@ const IGNORED_FILTER = {
 type Cases = { code: string[]; options: Omit<Options[0], 'format'> }[];
 
 export function createTestCases(cases: Cases): void {
-  const createValidTestCases = (): TSESLint.ValidTestCase<Options>[] =>
+  const createValidTestCases = (): ValidTestCase<Options>[] =>
     cases.flatMap(test =>
       Object.entries(formatTestNames).flatMap(([formatLoose, names]) =>
         names.valid.flatMap(name => {
@@ -88,7 +91,7 @@ export function createTestCases(cases: Cases): void {
           const createCase = (
             preparedName: string,
             options: Selector,
-          ): TSESLint.ValidTestCase<Options> => ({
+          ): ValidTestCase<Options> => ({
             options: [{ ...options, filter: IGNORED_FILTER }],
             code: `// ${JSON.stringify(options)}\n${test.code
               .map(code => code.replace(REPLACE_REGEX, preparedName))
@@ -230,11 +233,8 @@ export function createTestCases(cases: Cases): void {
       ),
     );
 
-  function createInvalidTestCases(): TSESLint.InvalidTestCase<
-    MessageIds,
-    Options
-  >[] {
-    const newCases: TSESLint.InvalidTestCase<MessageIds, Options>[] = [];
+  function createInvalidTestCases(): InvalidTestCase<MessageIds, Options>[] {
+    const newCases: InvalidTestCase<MessageIds, Options>[] = [];
 
     for (const test of cases) {
       for (const [formatLoose, names] of Object.entries(formatTestNames)) {
@@ -245,7 +245,7 @@ export function createTestCases(cases: Cases): void {
             options: Selector,
             messageId: MessageIds,
             data: Record<string, unknown> = {},
-          ): TSESLint.InvalidTestCase<MessageIds, Options> => {
+          ): InvalidTestCase<MessageIds, Options> => {
             const selectors = Array.isArray(test.options.selector)
               ? test.options.selector
               : [test.options.selector];
@@ -446,9 +446,7 @@ export function createTestCases(cases: Cases): void {
     return newCases;
   }
 
-  const ruleTester = new RuleTester({
-    parser: '@typescript-eslint/parser',
-  });
+  const ruleTester = new RuleTester();
 
   ruleTester.run('naming-convention', rule, {
     invalid: createInvalidTestCases(),

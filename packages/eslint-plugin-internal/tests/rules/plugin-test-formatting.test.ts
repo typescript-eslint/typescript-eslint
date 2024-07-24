@@ -4,11 +4,11 @@ import rule from '../../src/rules/plugin-test-formatting';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: getFixturesRootDir(),
-    sourceType: 'module',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -160,7 +160,7 @@ const test2 = {
 
     // TODO - figure out how to handle this pattern
     `
-import { TSESLint } from '@typescript-eslint/utils';
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
 const test = [
   {
@@ -169,7 +169,7 @@ const test = [
   {
     code: 'const badlyFormatted         = "code2"',
   },
-].map<TSESLint.InvalidTestCase<[]>>(test => ({
+].map<InvalidTestCase<[]>>(test => ({
   code: test.code,
   errors: [],
 }));
@@ -724,9 +724,9 @@ const test: RunTests = {
     },
     {
       code: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { RunTests } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.RunTests<'', []> = {
+const test: RunTests<'', []> = {
   valid: [
     'const badlyFormatted         = "code"',
     {
@@ -742,9 +742,9 @@ const test: TSESLint.RunTests<'', []> = {
 };
       `,
       output: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { RunTests } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.RunTests<'', []> = {
+const test: RunTests<'', []> = {
   valid: [
     "const badlyFormatted = 'code';",
     {
@@ -773,16 +773,16 @@ const test: TSESLint.RunTests<'', []> = {
     },
     {
       code: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { ValidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.ValidTestCase<[]> = {
+const test: ValidTestCase<[]> = {
   code: 'const badlyFormatted         = "code"',
 };
       `,
       output: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { ValidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.ValidTestCase<[]> = {
+const test: ValidTestCase<[]> = {
   code: "const badlyFormatted = 'code';",
 };
       `,
@@ -794,9 +794,9 @@ const test: TSESLint.ValidTestCase<[]> = {
     },
     {
       code: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.InvalidTestCase<'', []> = {
+const test: InvalidTestCase<'', []> = {
   code: 'const badlyFormatted         = "code1"',
   errors: [
     {
@@ -815,9 +815,9 @@ const test: TSESLint.InvalidTestCase<'', []> = {
 };
       `,
       output: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.InvalidTestCase<'', []> = {
+const test: InvalidTestCase<'', []> = {
   code: "const badlyFormatted = 'code1';",
   errors: [
     {

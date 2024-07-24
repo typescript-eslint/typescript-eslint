@@ -1,4 +1,4 @@
-import type { InvalidTestCase } from '@typescript-eslint/utils/ts-eslint';
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
 import type {
   PreferOptionalChainMessageIds,

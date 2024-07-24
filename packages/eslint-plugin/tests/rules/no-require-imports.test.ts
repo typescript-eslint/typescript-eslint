@@ -2,12 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-require-imports';
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-  },
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-require-imports', rule, {
   valid: [

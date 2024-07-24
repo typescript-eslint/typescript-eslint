@@ -1,14 +1,12 @@
+import type { RunTests } from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
-const grouped: TSESLint.RunTests<MessageIds, Options> = {
+const grouped: RunTests<MessageIds, Options> = {
   valid: [
     // optionalityOrder - required-first
     {

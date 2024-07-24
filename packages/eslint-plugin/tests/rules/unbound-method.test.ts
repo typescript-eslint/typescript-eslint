@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/unbound-method';
 import rule from '../../src/rules/unbound-method';
@@ -8,11 +8,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -39,7 +39,7 @@ ${code}
 }
 function addContainsMethodsClassInvalid(
   code: string[],
-): TSESLint.InvalidTestCase<MessageIds, Options>[] {
+): InvalidTestCase<MessageIds, Options>[] {
   return code.map(c => ({
     code: addContainsMethodsClass(c),
     errors: [

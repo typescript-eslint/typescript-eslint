@@ -2,12 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-constraint';
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-  },
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-type-constraint', rule, {
   valid: [
@@ -122,9 +117,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -186,9 +183,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -210,9 +209,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -234,9 +235,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -258,9 +261,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -282,9 +287,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -320,9 +327,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },

@@ -5,12 +5,13 @@ import { collectVariables } from '../../../src/util';
 import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+      sourceType: 'module',
+      ecmaFeatures: {},
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 const withMetaParserOptions = {
@@ -604,9 +605,11 @@ export interface Bar extends foo.i18n<bar> {}
 import { TypeA } from './interface';
 export const a = <GenericComponent<TypeA> />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -622,9 +625,11 @@ export function Foo() {
   );
 }
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -881,9 +886,11 @@ export type Test<U> = U extends (arg: {
           return <div>Foo Foo</div>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -895,11 +902,13 @@ export type Test<U> = U extends (arg: {
           return <div>Foo Foo</div>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
         },
-        jsxPragma: 'h',
       },
     },
     {
@@ -910,11 +919,13 @@ export type Test<U> = U extends (arg: {
           return <>Foo Foo</>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxFragmentName: 'Fragment',
         },
-        jsxFragmentName: 'Fragment',
       },
     },
     `
@@ -1035,7 +1046,7 @@ interface _Foo {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2844
     `
-/* eslint collect-unused-vars: "error" */
+/* eslint @rule-tester/collect-unused-vars: "error" */
 declare module 'next-auth' {
   interface User {
     id: string;
@@ -1055,7 +1066,7 @@ export class TestClass {
   public test(): TestGeneric<Test> {}
 }
       `,
-      parserOptions: withMetaParserOptions,
+      languageOptions: { parserOptions: withMetaParserOptions },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/5577
     `
@@ -1698,9 +1709,11 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1725,11 +1738,13 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
         },
-        jsxPragma: 'h',
       },
       errors: [
         {
@@ -1753,11 +1768,13 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: null,
         },
-        jsxPragma: null,
       },
       errors: [
         {

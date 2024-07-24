@@ -1,5 +1,8 @@
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 import * as path from 'path';
 
 import type {
@@ -12,10 +15,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -24,17 +28,14 @@ const nullishTypes = ['null', 'undefined', 'null | undefined'];
 const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
 
 function typeValidTest(
-  cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
-): (TSESLint.ValidTestCase<Options> | string)[] {
+  cb: (type: string) => ValidTestCase<Options> | string,
+): (ValidTestCase<Options> | string)[] {
   return types.map(type => cb(type));
 }
 function nullishTypeValidTest(
-  cb: (
-    nullish: string,
-    type: string,
-  ) => TSESLint.ValidTestCase<Options> | string,
-): (TSESLint.ValidTestCase<Options> | string)[] {
-  return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
+  cb: (nullish: string, type: string) => ValidTestCase<Options> | string,
+): (ValidTestCase<Options> | string)[] {
+  return nullishTypes.reduce<(ValidTestCase<Options> | string)[]>(
     (acc, nullish) => {
       types.forEach(type => {
         acc.push(cb(nullish, type));
@@ -45,12 +46,9 @@ function nullishTypeValidTest(
   );
 }
 function nullishTypeInvalidTest(
-  cb: (
-    nullish: string,
-    type: string,
-  ) => TSESLint.InvalidTestCase<MessageIds, Options>,
-): TSESLint.InvalidTestCase<MessageIds, Options>[] {
-  return nullishTypes.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
+  cb: (nullish: string, type: string) => InvalidTestCase<MessageIds, Options>,
+): InvalidTestCase<MessageIds, Options>[] {
+  return nullishTypes.reduce<InvalidTestCase<MessageIds, Options>[]>(
     (acc, nullish) => {
       types.forEach(type => {
         acc.push(cb(nullish, type));
@@ -199,28 +197,28 @@ a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: (${type} & { __brand?: any }) | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: (${type} & { __brand?: any }) | undefined;
 x || y;
@@ -589,8 +587,10 @@ if (x) {
           column: 1,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
 
