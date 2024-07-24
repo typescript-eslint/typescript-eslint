@@ -47,7 +47,7 @@ function getParsedConfigFile(
   }
 
   if (parsingError !== undefined) {
-    return `Could not parse config file '${configFile}': ${parsingError}`;
+    return parsingError;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

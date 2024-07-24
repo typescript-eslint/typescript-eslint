@@ -59,7 +59,7 @@ describe('createProjectService', () => {
 
   it('throws an error when options.defaultProject is set and getParsedConfigFile returns an error', () => {
     mockGetParsedConfigFile.mockReturnValue(
-      "Could not parse config file './tsconfig.json': ./tsconfig.json(1,1): error TS1234: Oh no!",
+      './tsconfig.json(1,1): error TS1234: Oh no!',
     );
 
     expect(() =>
@@ -71,7 +71,7 @@ describe('createProjectService', () => {
         undefined,
       ),
     ).toThrow(
-      /Could not parse config file '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
+      /Could not read default project '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
     );
   });
 

@@ -70,7 +70,7 @@ describe('getParsedConfigFile', () => {
       ] satisfies ts.Diagnostic[],
     });
     expect(getParsedConfigFile(mockTsserver, './tsconfig.json')).toMatch(
-      /Could not parse config file '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
+      /.+ error TS1234: Oh no!/,
     );
   });
 

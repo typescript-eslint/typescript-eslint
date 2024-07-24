@@ -133,14 +133,13 @@ export function createProjectService(
         path.dirname(options.defaultProject),
       );
       if (typeof configFile === 'string') {
-        defaultProjectError = configFile;
+        defaultProjectError = `Could not read default project '${options.defaultProject}': ${configFile}`;
       } else {
         service.setCompilerOptionsForInferredProjects(
           // NOTE: The inferred projects API is not intended for source files when a tsconfig
           // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
           // it is meant for hard coded options passed in.  Hard casting as a work around.
           // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
-
           configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
         );
       }
