@@ -25,32 +25,26 @@ See [ESLint does not re-compute cross-file information on file changes (microsof
 
 ## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
 
-These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProject` with an excessively wide glob.
-`allowDefaultProject` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
+These errors are caused by attempting to use the [`projectService`](../../packages/Parser.mdx#projectservice) to lint a file not explicitly included in a `tsconfig.json`.
 
-To resolve this error, narrow the glob(s) used for `allowDefaultProject` to include fewer files.
-For example:
+For each file being reported:
 
-```diff title="eslint.config.js"
-parserOptions: {
-  EXPERIMENTAL_useProjectService: {
-    allowDefaultProject: [
--      "**/*.js",
-+      "./*.js"
-    ]
-  }
-}
-```
+- If you **do not** want to lint the file:
+  - Use [one of the options ESLint offers to ignore files](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code), such an `ignores` config key.
+- If you **do** want to lint the file:
+  - If you **do not** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx): [disable type-checked linting for that file](#how-do-i-disable-type-checked-linting-for-a-file).
+  - If you **do** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
+    1. If possible, add the file to the closest `tsconfig.json`'s `include`. For example, allowing `.js` files:
+       ```diff title="tsconfig.json"
+       "include": [
+         "src",
+       + "*.js"
+       ]
+       ```
+    2. Otherwise, consider setting [`parserOptions.createProjectService.allowDefaultProject`](../../packages/parser#allowdefaultproject).
 
-You may also need to include more files in your `tsconfig.json`.
-For example:
-
-```diff title="tsconfig.json"
-"include": [
-  "src",
-+ "*.js"
-]
-```
+typescript-eslint allows up to 8 "out of project" files by default.
+Each file causes a new TypeScript "program" to be built for each file it includes, which incurs a performance overhead _for each file_.
 
 If you cannot do this, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
 Be sure to include a minimal reproduction we can work with to understand your use case!
@@ -61,54 +55,17 @@ These errors are caused by an ESLint config requesting type information be gener
 
 ### Fixing the Error
 
-<!-- prettier-ignore-start -->
-
 - If you **do not** want to lint the file:
-  - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
+  - Use [one of the options ESLint offers to ignore files](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code), namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
   - If you **do not** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) with our [`disable-type-checked`](../../users/Shared_Configurations.mdx#disable-type-checked) config to disable type checking for just that type of file.
-    <Tabs groupId="eslint-config">
-      <TabItem value="Flat Config">
-
-      ```js title="eslint.config.js"
-      import tseslint from 'typescript-eslint';
-
-      export default tseslint.config(
-        // ... the rest of your config ...
-        {
-          files: ['**/*.js'],
-          extends: [tseslint.configs.disableTypeChecked],
-        },
-      );
-      ```
-
-      </TabItem>
-      <TabItem value="Legacy Config">
-
-      ```js title=".eslintrc.cjs"
-      module.exports = {
-        // ... the rest of your config ...
-        overrides: [
-          {
-            extends: ['plugin:@typescript-eslint/disable-type-checked'],
-            files: ['./**/*.js'],
-          },
-        ],
-      };
-      ```
-
-      </TabItem>
-    </Tabs>
-    - Alternatively to disable type checking for files manually, you can set `parserOptions: { project: false }` to an override for the files you wish to exclude.
+    - Use [ESLint's configuration objects](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-with-arbitrary-extensions) with our [`disable-type-checked`](../../users/Shared_Configurations.mdx#disable-type-checked) config to disable type checking for just that type of file.
   - If you **do** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
     - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
       - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
       - [`eslint.config.mjs`](https://github.com/typescript-eslint/typescript-eslint/blob/main/eslint.config.mjs)
-
-<!-- prettier-ignore-end -->
 
 ### More Details
 
@@ -124,7 +81,7 @@ However, if no specified TSConfig includes the source file, the parser won't be 
 This error most commonly happens on config files or similar that are not included in their project TSConfig(s).
 For example, many projects have files like:
 
-- An `.eslintrc.cjs` / `eslint.config.js` with `parserOptions.project: ["./tsconfig.json"]`
+- An `.eslintrc.cjs` / `eslint.config.mjs` with `parserOptions.project: ["./tsconfig.json"]`
 - A `tsconfig.json` with `include: ["src"]`
 
 In that case, viewing the file in an IDE with the ESLint extension will show the error notice that the file couldn't be linted because it isn't included in `tsconfig.json`.
@@ -136,39 +93,46 @@ See our docs on [type aware linting](../../getting-started/Typed_Linting.mdx) fo
 You're using an outdated version of `@typescript-eslint/parser`.
 Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
 
-<HiddenHeading id="allowdefaultproject-glob-too-wide" />
+## How do I disable type-checked linting for a file?
 
-## I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
+Use [ESLint's configuration objects](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-with-arbitrary-extensions) with our [`disable-type-checked`](../../users/Shared_Configurations.mdx#disable-type-checked) config to disable type checking for a `files` match that includes that file.
 
-These errors are caused by using the [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice) `allowDefaultProject` with an excessively wide glob.
-`allowDefaultProject` causes a new TypeScript "program" to be built for each "out of project" file it includes, which incurs a performance overhead for each file.
+For example, to disable type-checked linting on all `.js` files:
 
-To resolve this error, narrow the glob(s) used for `allowDefaultProject` to include fewer files.
-For example:
+<Tabs groupId="eslint-config">
+  <TabItem value="Flat Config">
 
-```diff title="eslint.config.js"
-parserOptions: {
-  EXPERIMENTAL_useProjectService: {
-    allowDefaultProject: [
--      "**/*.js",
-+      "./*.js"
-    ]
-  }
-}
+```js title="eslint.config.mjs"
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  // ... the rest of your config ...
+  {
+    files: ['**/*.js'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+);
 ```
 
-You may also need to include more files in your `tsconfig.json`.
-For example:
+  </TabItem>
+  <TabItem value="Legacy Config">
 
-```diff title="tsconfig.json"
-"include": [
-  "src",
-+ "*.js"
-]
+```js title=".eslintrc.cjs"
+module.exports = {
+  // ... the rest of your config ...
+  overrides: [
+    {
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+      files: ['./**/*.js'],
+    },
+  ],
+};
 ```
 
-If you cannot do this, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
-Be sure to include a minimal reproduction we can work with to understand your use case!
+  </TabItem>
+</Tabs>
+
+Alternatively to disable type checking for files manually, you can set [`parserOptions: { project: false }`](../../packages/Parser.mdx#project) to an override for the files you wish to exclude.
 
 ## typescript-eslint thinks my variable is never nullish / is `any` / etc., but that is clearly not the case to me
 

@@ -370,7 +370,6 @@ describe('RuleTester', () => {
             { code: 'const x = 2;' },
             {
               code: 'const x = 3;',
-              // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
               only: true,
             },
             {
@@ -406,7 +405,6 @@ describe('RuleTester', () => {
             {
               code: 'const x = 3;',
               errors: [{ messageId: 'error' }],
-              // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
               only: true,
             },
           ],

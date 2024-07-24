@@ -1,4 +1,7 @@
-import type { ScopeVariable } from '@typescript-eslint/scope-manager';
+import type {
+  Definition,
+  ScopeVariable,
+} from '@typescript-eslint/scope-manager';
 import {
   DefinitionType,
   PatternVisitor,
@@ -182,6 +185,38 @@ export default createRule<Options, MessageIds>({
     })();
 
     /**
+     * Determines what variable type a def is.
+     * @param def the declaration to check
+     * @returns a simple name for the types of variables that this rule supports
+     */
+    function defToVariableType(def: Definition): VariableType {
+      /*
+       * This `destructuredArrayIgnorePattern` error report works differently from the catch
+       * clause and parameter error reports. _Both_ the `varsIgnorePattern` and the
+       * `destructuredArrayIgnorePattern` will be checked for array destructuring. However,
+       * for the purposes of the report, the currently defined behavior is to only inform the
+       * user of the `destructuredArrayIgnorePattern` if it's present (regardless of the fact
+       * that the `varsIgnorePattern` would also apply). If it's not present, the user will be
+       * informed of the `varsIgnorePattern`, assuming that's present.
+       */
+      if (
+        options.destructuredArrayIgnorePattern &&
+        def.name.parent.type === AST_NODE_TYPES.ArrayPattern
+      ) {
+        return 'array-destructure';
+      }
+
+      switch (def.type) {
+        case DefinitionType.CatchClause:
+          return 'catch-clause';
+        case DefinitionType.Parameter:
+          return 'parameter';
+        default:
+          return 'variable';
+      }
+    }
+
+    /**
      * Gets a given variable's description and configured ignore pattern
      * based on the provided variableType
      * @param variableType a simple name for the types of variables that this rule supports
@@ -202,7 +237,7 @@ export default createRule<Options, MessageIds>({
         case 'catch-clause':
           return {
             pattern: options.caughtErrorsIgnorePattern?.toString(),
-            variableDescription: 'args',
+            variableDescription: 'caught errors',
           };
 
         case 'parameter':
@@ -228,33 +263,13 @@ export default createRule<Options, MessageIds>({
     function getDefinedMessageData(
       unusedVar: ScopeVariable,
     ): Record<string, unknown> {
-      const def = unusedVar.defs.at(0)?.type;
+      const def = unusedVar.defs.at(0);
       let additionalMessageData = '';
 
       if (def) {
-        const { variableDescription, pattern } = (() => {
-          switch (def) {
-            case DefinitionType.CatchClause:
-              if (options.caughtErrorsIgnorePattern) {
-                return getVariableDescription('catch-clause');
-              }
-              break;
-
-            case DefinitionType.Parameter:
-              if (options.argsIgnorePattern) {
-                return getVariableDescription('parameter');
-              }
-              break;
-
-            default:
-              if (options.varsIgnorePattern) {
-                return getVariableDescription('variable');
-              }
-              break;
-          }
-
-          return { pattern: undefined, variableDescription: undefined };
-        })();
+        const { variableDescription, pattern } = getVariableDescription(
+          defToVariableType(def),
+        );
 
         if (pattern && variableDescription) {
           additionalMessageData = `. Allowed unused ${variableDescription} must match ${pattern}`;
@@ -281,18 +296,9 @@ export default createRule<Options, MessageIds>({
       let additionalMessageData = '';
 
       if (def) {
-        const { variableDescription, pattern } = (() => {
-          if (
-            def.name.parent.type === AST_NODE_TYPES.ArrayPattern &&
-            options.destructuredArrayIgnorePattern
-          ) {
-            return getVariableDescription('array-destructure');
-          } else if (options.varsIgnorePattern) {
-            return getVariableDescription('variable');
-          }
-
-          return { pattern: undefined, variableDescription: undefined };
-        })();
+        const { variableDescription, pattern } = getVariableDescription(
+          defToVariableType(def),
+        );
 
         if (pattern && variableDescription) {
           additionalMessageData = `. Allowed unused ${variableDescription} must match ${pattern}`;
@@ -491,21 +497,20 @@ export default createRule<Options, MessageIds>({
           ) {
             continue;
           }
-        } else {
-          // skip ignored variables
-          if (
-            def.name.type === AST_NODE_TYPES.Identifier &&
-            options.varsIgnorePattern?.test(def.name.name)
-          ) {
-            if (options.reportUsedIgnorePattern && used) {
-              context.report({
-                node: def.name,
-                messageId: 'usedIgnoredVar',
-                data: getUsedIgnoredMessageData(variable, 'variable'),
-              });
-            }
-            continue;
+        }
+        // skip ignored variables
+        else if (
+          def.name.type === AST_NODE_TYPES.Identifier &&
+          options.varsIgnorePattern?.test(def.name.name)
+        ) {
+          if (options.reportUsedIgnorePattern && used) {
+            context.report({
+              node: def.name,
+              messageId: 'usedIgnoredVar',
+              data: getUsedIgnoredMessageData(variable, 'variable'),
+            });
           }
+          continue;
         }
 
         if (hasRestSpreadSibling(variable)) {

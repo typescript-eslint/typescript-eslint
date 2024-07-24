@@ -41,6 +41,10 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
 beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
+  beforeEach(() => {
+    process.env.TSESTREE_SINGLE_RUN = '';
+  });
+
   // test all AST snapshots
   testFiles.forEach(filename => {
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
@@ -326,6 +330,24 @@ describe('semanticInfo', () => {
       };
       const parseResult = parseAndGenerateServices(code, optionsProjectString);
       expect(parseResult.services.program).toBe(program1);
+    });
+
+    it('file not in single provided project instance in single-run mode should throw', () => {
+      process.env.TSESTREE_SINGLE_RUN = 'true';
+      const filename = 'non-existent-file.ts';
+      const options = createOptions(filename);
+      const optionsWithProjectTrue = {
+        ...options,
+        project: true,
+        programs: undefined,
+      };
+      expect(() =>
+        parseAndGenerateServices('const foo = 5;', optionsWithProjectTrue),
+      ).toThrow(
+        process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+          ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
+          : `The file was not found in any of the provided project(s): ${filename}`,
+      );
     });
   }
 

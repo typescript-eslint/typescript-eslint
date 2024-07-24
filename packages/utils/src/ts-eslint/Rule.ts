@@ -11,7 +11,7 @@ export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 export interface RuleRecommendationAcrossConfigs<
   Options extends readonly unknown[],
 > {
-  recommended: true;
+  recommended?: true;
   strict: Partial<Options>;
 }
 

@@ -115,9 +115,17 @@ export function createProjectService(
     session: undefined,
     jsDocParsingMode,
   });
+
+  service.setHostConfiguration({
+    preferences: {
+      includePackageJsonAutoImports: 'off',
+    },
+  });
+
   if (options.defaultProject) {
     log('Enabling default project: %s', options.defaultProject);
     let defaultProjectError: string | undefined;
+
     try {
       const configFile = getParsedConfigFile(
         tsserver,

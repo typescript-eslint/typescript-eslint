@@ -2536,7 +2536,10 @@ try {
       `,
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
       errors: [
-        definedError('err', '. Allowed unused args must match /^ignore/u'),
+        definedError(
+          'err',
+          '. Allowed unused caught errors must match /^ignore/u',
+        ),
       ],
     },
     {
@@ -2566,7 +2569,10 @@ try {
       `,
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
       errors: [
-        definedError('err', '. Allowed unused args must match /^ignore/u'),
+        definedError(
+          'err',
+          '. Allowed unused caught errors must match /^ignore/u',
+        ),
       ],
     },
 
@@ -2580,8 +2586,14 @@ try {
       `,
       options: [{ caughtErrors: 'all', caughtErrorsIgnorePattern: '^ignore' }],
       errors: [
-        definedError('error', '. Allowed unused args must match /^ignore/u'),
-        definedError('err', '. Allowed unused args must match /^ignore/u'),
+        definedError(
+          'error',
+          '. Allowed unused caught errors must match /^ignore/u',
+        ),
+        definedError(
+          'err',
+          '. Allowed unused caught errors must match /^ignore/u',
+        ),
       ],
     },
 
@@ -3330,7 +3342,101 @@ try {
           reportUsedIgnorePattern: true,
         },
       ],
-      errors: [usedIgnoredError('_err', '. Used args must not match /^_/u')],
+      errors: [
+        usedIgnoredError('_err', '. Used caught errors must not match /^_/u'),
+      ],
+    },
+    {
+      code: `
+try {
+} catch (_) {
+  _ = 'foo';
+}
+      `,
+      options: [{ caughtErrorsIgnorePattern: 'foo' }],
+      errors: [
+        assignedError('_', '. Allowed unused caught errors must match /foo/u'),
+      ],
+    },
+    {
+      code: `
+try {
+} catch (_) {
+  _ = 'foo';
+}
+      `,
+      options: [
+        {
+          caughtErrorsIgnorePattern: 'ignored',
+          varsIgnorePattern: '_',
+        },
+      ],
+      errors: [
+        assignedError(
+          '_',
+          '. Allowed unused caught errors must match /ignored/u',
+        ),
+      ],
+    },
+    {
+      code: `
+try {
+} catch ({ message, errors: [firstError] }) {}
+      `,
+      options: [{ caughtErrorsIgnorePattern: 'foo' }],
+      errors: [
+        {
+          ...definedError(
+            'message',
+            '. Allowed unused caught errors must match /foo/u',
+          ),
+          column: 12,
+          endColumn: 19,
+        },
+        {
+          ...definedError(
+            'firstError',
+            '. Allowed unused caught errors must match /foo/u',
+          ),
+          column: 30,
+          endColumn: 40,
+        },
+      ],
+    },
+    {
+      code: `
+try {
+} catch ({ stack: $ }) {
+  $ = 'Something broke: ' + $;
+}
+      `,
+      options: [{ caughtErrorsIgnorePattern: '\\w' }],
+      errors: [
+        {
+          ...assignedError(
+            '$',
+            '. Allowed unused caught errors must match /\\w/u',
+          ),
+          column: 3,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+_ => {
+  _ = _ + 1;
+};
+      `,
+      options: [
+        {
+          argsIgnorePattern: 'ignored',
+          varsIgnorePattern: '_',
+        },
+      ],
+      errors: [
+        assignedError('_', '. Allowed unused args must match /ignored/u'),
+      ],
     },
   ],
 });
