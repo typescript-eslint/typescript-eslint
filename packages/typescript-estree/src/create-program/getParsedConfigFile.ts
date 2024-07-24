@@ -23,7 +23,7 @@ function getParsedConfigFile(
   }
 
   const getCurrentDirectory = (): string =>
-    (projectDirectory && path.resolve(projectDirectory)) || process.cwd();
+    projectDirectory ? path.resolve(projectDirectory) : process.cwd();
 
   let parsingError: string | undefined;
 
@@ -46,12 +46,8 @@ function getParsedConfigFile(
     parsingError = formatDiagnostics(parsed.errors);
   }
 
-  if (parsingError !== undefined) {
-    return parsingError;
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return parsed!;
+  return parsingError ?? parsed!;
 
   function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
     return tsserver.formatDiagnostics(diagnostics, {
