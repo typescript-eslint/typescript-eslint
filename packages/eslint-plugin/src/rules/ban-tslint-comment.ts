@@ -34,7 +34,7 @@ export default createRule({
     return {
       Program(): void {
         const comments = context.sourceCode.getAllComments();
-        comments.forEach(c => {
+        for (const c of comments) {
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
               data: { text: toText(c.value, c.type) },
@@ -53,7 +53,7 @@ export default createRule({
               },
             });
           }
-        });
+        }
       },
     };
   },

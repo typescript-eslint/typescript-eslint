@@ -250,7 +250,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      node.params.forEach(param => {
+      for (let param of node.params) {
         if (param.type === AST_NODE_TYPES.TSParameterProperty) {
           param = param.parameter;
         }
@@ -258,7 +258,7 @@ export default createRule<Options, MessageIds>({
         if (param.type === AST_NODE_TYPES.AssignmentPattern) {
           reportInferrableType(param, param.left.typeAnnotation, param.right);
         }
-      });
+      }
     }
 
     function inferrablePropertyVisitor(

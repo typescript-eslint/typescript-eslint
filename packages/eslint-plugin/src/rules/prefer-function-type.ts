@@ -154,7 +154,7 @@ export default createRule({
                 // comments should move before export and not between export and interface declaration
                 fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {
-                comments.forEach(comment => {
+                for (const comment of comments) {
                   let commentText =
                     comment.type === AST_TOKEN_TYPES.Line
                       ? `//${comment.value}`
@@ -167,7 +167,7 @@ export default createRule({
                     commentText += ' ';
                   }
                   suggestion = commentText + suggestion;
-                });
+                }
               }
 
               const fixStart = node.range[0];

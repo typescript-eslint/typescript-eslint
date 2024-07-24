@@ -375,10 +375,10 @@ export default createRule({
         node: TSESTree.ArrowFunctionExpression,
       ): void {
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
-          findPossiblyReturnedNodes(node.body).forEach(node => {
-            const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-            test(node, tsNode);
-          });
+          for (const childNode of findPossiblyReturnedNodes(node.body)) {
+            const tsNode = services.esTreeNodeToTSNodeMap.get(childNode);
+            test(childNode, tsNode);
+          }
         }
       },
       ReturnStatement(node): void {
@@ -386,10 +386,10 @@ export default createRule({
         if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }
-        findPossiblyReturnedNodes(node.argument).forEach(node => {
-          const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-          test(node, tsNode);
-        });
+        for (const childNode of findPossiblyReturnedNodes(node.argument)) {
+          const tsNode = services.esTreeNodeToTSNodeMap.get(childNode);
+          test(childNode, tsNode);
+        }
       },
     };
   },

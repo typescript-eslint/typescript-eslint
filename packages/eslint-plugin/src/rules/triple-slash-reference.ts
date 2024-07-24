@@ -62,7 +62,7 @@ export default createRule<Options, MessageIds>({
     }[] = [];
 
     function hasMatchingReference(source: TSESTree.Literal): void {
-      references.forEach(reference => {
+      for (const reference of references) {
         if (reference.importName === source.value) {
           context.report({
             node: reference.comment,
@@ -72,7 +72,7 @@ export default createRule<Options, MessageIds>({
             },
           });
         }
-      });
+      }
     }
     return {
       ImportDeclaration(node): void {
@@ -99,9 +99,9 @@ export default createRule<Options, MessageIds>({
         const commentsBefore =
           context.sourceCode.getCommentsBefore(programNode);
 
-        commentsBefore.forEach(comment => {
+        for (const comment of commentsBefore) {
           if (comment.type !== AST_TOKEN_TYPES.Line) {
-            return;
+            continue;
           }
           const referenceResult = referenceRegExp.exec(comment.value);
 
@@ -118,13 +118,13 @@ export default createRule<Options, MessageIds>({
                   module: referenceResult[2],
                 },
               });
-              return;
+              continue;
             }
             if (referenceResult[1] === 'types' && types === 'prefer-import') {
               references.push({ comment, importName: referenceResult[2] });
             }
           }
-        });
+        }
       },
     };
   },

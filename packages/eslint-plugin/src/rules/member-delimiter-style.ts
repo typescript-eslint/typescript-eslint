@@ -337,9 +337,9 @@ export default createRule<Options, MessageIds>({
         ? { ...typeOpts.singleline, type: 'single-line' }
         : { ...typeOpts.multiline, type: 'multi-line' };
 
-      members.forEach((member, index) => {
+      for (const [index, member] of members.entries()) {
         checkLastToken(member, opts, index === members.length - 1);
-      });
+      }
     }
 
     return {

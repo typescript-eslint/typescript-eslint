@@ -341,9 +341,9 @@ export default createRule<Options, MessageIds>({
           validateTypeAliases(types[0], true);
         } else {
           // is a composition type
-          types.forEach(type => {
+          for (const type of types) {
             validateTypeAliases(type);
-          });
+          }
         }
       },
     };

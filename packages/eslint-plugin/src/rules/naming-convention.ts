@@ -286,7 +286,7 @@ export default createRule<Options, MessageIds>({
             }
           }
 
-          identifiers.forEach(id => {
+          for (const id of identifiers) {
             const modifiers = new Set(baseModifiers);
 
             if (isDestructured(id)) {
@@ -307,7 +307,7 @@ export default createRule<Options, MessageIds>({
             }
 
             validator(id, modifiers);
-          });
+          }
         },
       },
 
@@ -367,14 +367,14 @@ export default createRule<Options, MessageIds>({
               | TSESTree.TSEmptyBodyFunctionExpression,
             validator,
           ): void => {
-            node.params.forEach(param => {
+            for (const param of node.params) {
               if (param.type === AST_NODE_TYPES.TSParameterProperty) {
-                return;
+                continue;
               }
 
               const identifiers = getIdentifiersFromPattern(param);
 
-              identifiers.forEach(i => {
+              for (const i of identifiers) {
                 const modifiers = new Set<Modifiers>();
 
                 if (isDestructured(i)) {
@@ -386,8 +386,8 @@ export default createRule<Options, MessageIds>({
                 }
 
                 validator(i, modifiers);
-              });
-            });
+              }
+            }
           },
         },
 
@@ -402,9 +402,9 @@ export default createRule<Options, MessageIds>({
 
           const identifiers = getIdentifiersFromPattern(node.parameter);
 
-          identifiers.forEach(i => {
+          for (const i of identifiers) {
             validator(i, modifiers);
-          });
+          }
         },
       },
 

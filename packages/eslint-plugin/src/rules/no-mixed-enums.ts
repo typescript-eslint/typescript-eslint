@@ -59,11 +59,14 @@ export default createRule({
       }
 
       while (scope) {
-        scope.set.get(name)?.defs.forEach(definition => {
-          if (definition.type === DefinitionType.ImportBinding) {
-            found.imports.push(definition.node);
+        const scopeWithName = scope.set.get(name);
+        if (scopeWithName) {
+          for (const definition of scopeWithName.defs) {
+            if (definition.type === DefinitionType.ImportBinding) {
+              found.imports.push(definition.node);
+            }
           }
-        });
+        }
 
         scope = scope.upper;
       }

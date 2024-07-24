@@ -183,10 +183,10 @@ export default createRule<[Options], MessageIds>({
       Program(): void {
         const comments = context.sourceCode.getAllComments();
 
-        comments.forEach(comment => {
+        for (const comment of comments) {
           const match = findDirectiveInComment(comment);
           if (!match) {
-            return;
+            continue;
           }
           const { directive, description } = match;
 
@@ -252,7 +252,7 @@ export default createRule<[Options], MessageIds>({
               });
             }
           }
-        });
+        }
       },
     };
   },

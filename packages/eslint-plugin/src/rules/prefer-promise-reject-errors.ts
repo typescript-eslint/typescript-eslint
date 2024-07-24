@@ -137,16 +137,16 @@ export default createRule<Options, MessageIds>({
           .getDeclaredVariables(executor)
           .find(variable => variable.identifiers.includes(rejectParamNode))!;
 
-        rejectVariable.references.forEach(ref => {
+        for (const ref of rejectVariable.references) {
           if (
             ref.identifier.parent.type !== AST_NODE_TYPES.CallExpression ||
             ref.identifier !== ref.identifier.parent.callee
           ) {
-            return;
+            continue;
           }
 
           checkRejectCall(ref.identifier.parent);
-        });
+        }
       },
     };
   },

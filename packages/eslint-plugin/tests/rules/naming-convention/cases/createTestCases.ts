@@ -269,11 +269,7 @@ export function createTestCases(cases: Cases): void {
                   {}),
             }));
 
-            const errors: {
-              data?: { type: string; name: string };
-              messageId: MessageIds;
-            }[] = [];
-            test.code.forEach(() => errors.push(...errorsTemplate));
+            const errors = test.code.flatMap(() => errorsTemplate);
 
             return {
               options: [

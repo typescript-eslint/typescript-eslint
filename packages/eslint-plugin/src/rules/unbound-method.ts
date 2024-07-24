@@ -188,7 +188,7 @@ export default createRule<Options, MessageIds>({
           const notImported =
             rightSymbol && isNotImported(rightSymbol, currentSourceFile);
 
-          idNode.properties.forEach(property => {
+          for (const property of idNode.properties) {
             if (
               property.type === AST_NODE_TYPES.Property &&
               property.key.type === AST_NODE_TYPES.Identifier
@@ -200,7 +200,7 @@ export default createRule<Options, MessageIds>({
                   `${initNode.name}.${property.key.name}`,
                 )
               ) {
-                return;
+                continue;
               }
 
               checkIfMethodAndReport(
@@ -208,7 +208,7 @@ export default createRule<Options, MessageIds>({
                 initTypes.getProperty(property.key.name),
               );
             }
-          });
+          }
         }
       },
     };

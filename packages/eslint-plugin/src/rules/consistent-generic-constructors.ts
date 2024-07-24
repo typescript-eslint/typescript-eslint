@@ -118,9 +118,11 @@ export default createRule<Options, MessageIds>({
           const extraComments = new Set(
             context.sourceCode.getCommentsInside(lhs.parent),
           );
-          context.sourceCode
-            .getCommentsInside(lhs.typeArguments)
-            .forEach(c => extraComments.delete(c));
+          for (const c of context.sourceCode.getCommentsInside(
+            lhs.typeArguments,
+          )) {
+            extraComments.delete(c);
+          }
           context.report({
             node,
             messageId: 'preferConstructor',

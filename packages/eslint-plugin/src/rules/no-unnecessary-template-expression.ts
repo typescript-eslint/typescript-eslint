@@ -122,7 +122,7 @@ export default createRule<[], MessageId>({
             isNaNIdentifier(expression),
         );
 
-        fixableExpressions.forEach(expression => {
+        for (const expression of fixableExpressions) {
           context.report({
             node: expression,
             messageId: 'noUnnecessaryTemplateExpression',
@@ -168,7 +168,7 @@ export default createRule<[], MessageId>({
               return fixes;
             },
           });
-        });
+        }
       },
     };
   },

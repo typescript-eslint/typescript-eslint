@@ -132,7 +132,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const types = typeAnnotation.types;
 
-      types.forEach(type => {
+      for (const type of types) {
         const skipFunctionParenthesis =
           type.type === TSESTree.AST_NODE_TYPES.TSFunctionType
             ? isNotOpeningParenToken
@@ -153,7 +153,7 @@ export default createRule<Options, MessageIds>({
             report(operator);
           }
         }
-      });
+      }
     }
 
     /**

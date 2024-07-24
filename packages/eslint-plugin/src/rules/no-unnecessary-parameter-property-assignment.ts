@@ -144,15 +144,15 @@ export default createRule({
       'ClassBody:exit'(): void {
         const { unnecessaryAssignments, assignedBeforeConstructor } =
           nullThrows(reportInfoStack.pop(), 'The top stack should exist');
-        unnecessaryAssignments.forEach(({ name, node }) => {
+        for (const { name, node } of unnecessaryAssignments) {
           if (assignedBeforeConstructor.has(name)) {
-            return;
+            continue;
           }
           context.report({
             node,
             messageId: 'unnecessaryAssign',
           });
-        });
+        }
       },
       'PropertyDefinition AssignmentExpression'(
         node: TSESTree.AssignmentExpression,

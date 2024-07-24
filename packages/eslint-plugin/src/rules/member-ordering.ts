@@ -317,53 +317,56 @@ const allMemberTypes = Array.from(
   ).reduce<Set<MemberType>>((all, type) => {
     all.add(type);
 
-    (['public', 'protected', 'private', '#private'] as const).forEach(
-      accessibility => {
-        if (
-          type !== 'readonly-signature' &&
-          type !== 'signature' &&
-          type !== 'static-initialization' &&
-          type !== 'call-signature' &&
-          !(type === 'constructor' && accessibility === '#private')
-        ) {
-          all.add(`${accessibility}-${type}`); // e.g. `public-field`
-        }
+    for (const accessibility of [
+      'public',
+      'protected',
+      'private',
+      '#private',
+    ] as const) {
+      if (
+        type !== 'readonly-signature' &&
+        type !== 'signature' &&
+        type !== 'static-initialization' &&
+        type !== 'call-signature' &&
+        !(type === 'constructor' && accessibility === '#private')
+      ) {
+        all.add(`${accessibility}-${type}`); // e.g. `public-field`
+      }
 
-        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
-        if (
-          accessibility !== '#private' &&
-          (type === 'readonly-field' ||
-            type === 'field' ||
-            type === 'method' ||
-            type === 'accessor' ||
-            type === 'get' ||
-            type === 'set')
-        ) {
-          all.add(`${accessibility}-decorated-${type}`);
-          all.add(`decorated-${type}`);
-        }
+      // Only class instance fields, methods, accessors, get and set can have decorators attached to them
+      if (
+        accessibility !== '#private' &&
+        (type === 'readonly-field' ||
+          type === 'field' ||
+          type === 'method' ||
+          type === 'accessor' ||
+          type === 'get' ||
+          type === 'set')
+      ) {
+        all.add(`${accessibility}-decorated-${type}`);
+        all.add(`decorated-${type}`);
+      }
 
-        if (
-          type !== 'constructor' &&
-          type !== 'readonly-signature' &&
-          type !== 'signature' &&
-          type !== 'call-signature'
-        ) {
-          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-          if (accessibility === '#private' || accessibility === 'private') {
-            (['static', 'instance'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          } else {
-            (['static', 'instance', 'abstract'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
+      if (
+        type !== 'constructor' &&
+        type !== 'readonly-signature' &&
+        type !== 'signature' &&
+        type !== 'call-signature'
+      ) {
+        // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+        if (accessibility === '#private' || accessibility === 'private') {
+          for (const scope of ['static', 'instance'] as const) {
+            all.add(`${scope}-${type}`);
+            all.add(`${accessibility}-${scope}-${type}`);
+          }
+        } else {
+          for (const scope of ['static', 'instance', 'abstract'] as const) {
+            all.add(`${scope}-${type}`);
+            all.add(`${accessibility}-${scope}-${type}`);
           }
         }
-      },
-    );
+      }
+    }
 
     return all;
   }, new Set<MemberType>()),
@@ -654,9 +657,9 @@ function groupMembersByType(
     getRank(member, memberTypes, supportsModifiers),
   );
   let previousRank: number | undefined = undefined;
-  members.forEach((member, index) => {
+  for (const [index, member] of members.entries()) {
     if (index === members.length - 1) {
-      return;
+      continue;
     }
     const rankOfCurrentMember = memberRanks[index];
     const rankOfNextMember = memberRanks[index + 1];
@@ -666,7 +669,7 @@ function groupMembersByType(
       groupedMembers.push([member]);
       previousRank = rankOfCurrentMember;
     }
-  });
+  }
   return groupedMembers;
 }
 
@@ -697,11 +700,11 @@ function getLowestRank(
 ): string {
   let lowest = ranks[ranks.length - 1];
 
-  ranks.forEach(rank => {
+  for (const rank of ranks) {
     if (rank > target) {
       lowest = Math.min(lowest, rank);
     }
-  });
+  }
 
   const lowestRank = order[lowest];
   const lowestRanks = Array.isArray(lowestRank) ? lowestRank : [lowestRank];
@@ -869,7 +872,7 @@ export default createRule<Options, MessageIds>({
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      for (const member of members) {
         const name = getMemberName(member, context.sourceCode);
 
         // Note: Not all members have names
@@ -889,7 +892,7 @@ export default createRule<Options, MessageIds>({
 
           previousName = name;
         }
-      });
+      }
 
       return isCorrectlySorted;
     }
@@ -998,11 +1001,13 @@ export default createRule<Options, MessageIds>({
       const checkAlphaSortForAllMembers = (memberSet: Member[]): undefined => {
         const hasAlphaSort = !!(order && order !== 'as-written');
         if (hasAlphaSort && Array.isArray(memberTypes)) {
-          groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
-            members => {
-              checkAlphaSort(members, order as AlphabeticalOrder);
-            },
-          );
+          for (const members of groupMembersByType(
+            memberSet,
+            memberTypes,
+            supportsModifiers,
+          )) {
+            checkAlphaSort(members, order as AlphabeticalOrder);
+          }
         }
       };
 

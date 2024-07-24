@@ -290,15 +290,15 @@ function collectTypeParameterUsageCounts(
       visitType(type.getNumberIndexType(), true);
       visitType(type.getStringIndexType(), true);
 
-      type.getCallSignatures().forEach(signature => {
+      for (const signature of type.getCallSignatures()) {
         functionLikeType = true;
         visitSignature(signature);
-      });
+      }
 
-      type.getConstructSignatures().forEach(signature => {
+      for (const signature of type.getConstructSignatures()) {
         functionLikeType = true;
         visitSignature(signature);
-      });
+      }
     }
 
     // Catch-all: operator types like `keyof T`

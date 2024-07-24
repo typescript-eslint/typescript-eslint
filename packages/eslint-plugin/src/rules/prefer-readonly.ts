@@ -449,13 +449,13 @@ class ClassScope {
   }
 
   public finalizeUnmodifiedPrivateNonReadonlys(): ParameterOrPropertyDeclaration[] {
-    this.memberVariableModifications.forEach(variableName => {
+    for (const variableName of this.memberVariableModifications) {
       this.privateModifiableMembers.delete(variableName);
-    });
+    }
 
-    this.staticVariableModifications.forEach(variableName => {
+    for (const variableName of this.staticVariableModifications) {
       this.privateModifiableStatics.delete(variableName);
-    });
+    }
 
     return [
       ...Array.from(this.privateModifiableMembers.values()),

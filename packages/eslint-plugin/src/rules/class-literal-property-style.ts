@@ -96,15 +96,15 @@ export default createRule<Options, MessageIds>({
         'Stack should exist on class exit',
       );
 
-      properties.forEach(node => {
+      for (const node of properties) {
         const { value } = node;
         if (!value || !isSupportedLiteral(value)) {
-          return;
+          continue;
         }
 
         const name = getStringValue(node.key);
         if (excludeSet.has(name)) {
-          return;
+          continue;
         }
 
         context.report({
@@ -126,7 +126,7 @@ export default createRule<Options, MessageIds>({
             },
           ],
         });
-      });
+      }
     }
 
     function excludeAssignedProperty(node: TSESTree.MemberExpression): void {

@@ -51,7 +51,7 @@ export default createRule<[], MessageIds>({
     return {
       Program(): void {
         const comments = context.sourceCode.getAllComments();
-        comments.forEach(comment => {
+        for (const comment of comments) {
           if (isValidTsIgnorePresent(comment)) {
             const lineCommentRuleFixer = (fixer: RuleFixer): RuleFix =>
               fixer.replaceText(
@@ -76,7 +76,7 @@ export default createRule<[], MessageIds>({
                 : blockCommentRuleFixer,
             });
           }
-        });
+        }
       },
     };
   },

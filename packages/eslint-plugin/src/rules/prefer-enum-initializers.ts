@@ -26,7 +26,7 @@ export default createRule<[], MessageIds>({
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
       const { members } = node;
 
-      members.forEach((member, index) => {
+      for (const [index, member] of members.entries()) {
         if (member.initializer == null) {
           const name = context.sourceCode.getText(member);
           context.report({
@@ -60,7 +60,7 @@ export default createRule<[], MessageIds>({
             ],
           });
         }
-      });
+      }
     }
 
     return {

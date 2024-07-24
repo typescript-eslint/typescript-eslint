@@ -40,9 +40,9 @@ export default createRule({
         const enumMembers = node.members;
         const seenValues = new Set<number | string>();
 
-        enumMembers.forEach(member => {
+        for (const member of enumMembers) {
           if (member.initializer === undefined) {
-            return;
+            continue;
           }
 
           let value: number | string | undefined;
@@ -53,7 +53,7 @@ export default createRule({
           }
 
           if (value === undefined) {
-            return;
+            continue;
           }
 
           if (seenValues.has(value)) {
@@ -67,7 +67,7 @@ export default createRule({
           } else {
             seenValues.add(value);
           }
-        });
+        }
       },
     };
   },

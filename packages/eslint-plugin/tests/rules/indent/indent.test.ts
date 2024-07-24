@@ -608,7 +608,7 @@ type Foo = string | {
       ].join('\n'),
     );
 
-    codeCases.forEach(code => {
+    for (const code of codeCases) {
       // valid test case is just the code
       validCases.push(code);
 
@@ -644,7 +644,7 @@ type Foo = string | {
       if (invalid.errors.length > 0) {
         invalidCases.push(invalid);
       }
-    });
+    }
 
     return { ...acc, valid: validCases, invalid: invalidCases };
   },

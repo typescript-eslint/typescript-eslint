@@ -101,12 +101,12 @@ export default createRule({
                   );
                 }
 
-                node.extends.forEach(heritage => {
+                for (const heritage of node.extends) {
                   const typeIdentifier = context.sourceCode.getText(heritage);
                   fixes.push(
                     fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
                   );
-                });
+                }
 
                 if (
                   node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration

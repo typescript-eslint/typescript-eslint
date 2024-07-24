@@ -36,9 +36,9 @@ function nullishTypeValidTest(
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
     (acc, nullish) => {
-      types.forEach(type => {
+      for (const type of types) {
         acc.push(cb(nullish, type));
-      });
+      }
       return acc;
     },
     [],
@@ -52,9 +52,9 @@ function nullishTypeInvalidTest(
 ): TSESLint.InvalidTestCase<MessageIds, Options>[] {
   return nullishTypes.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
     (acc, nullish) => {
-      types.forEach(type => {
+      for (const type of types) {
         acc.push(cb(nullish, type));
-      });
+      }
       return acc;
     },
     [],

@@ -457,7 +457,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
   ): Set<TSESTree.Node> {
     const functionDefinitions = new Set<TSESTree.Node>();
 
-    variable.defs.forEach(def => {
+    for (const def of variable.defs) {
       // FunctionDeclarations
       if (def.type === TSESLint.Scope.DefinitionType.FunctionName) {
         functionDefinitions.add(def.node);
@@ -471,7 +471,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       ) {
         functionDefinitions.add(def.node.init);
       }
-    });
+    }
     return functionDefinitions;
   }
 
@@ -480,14 +480,14 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
   ): Set<TSESTree.Node> {
     const nodes = new Set<TSESTree.Node>();
 
-    variable.defs.forEach(def => {
+    for (const def of variable.defs) {
       if (
         def.node.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
         def.node.type === AST_NODE_TYPES.TSTypeAliasDeclaration
       ) {
         nodes.add(def.node);
       }
-    });
+    }
 
     return nodes;
   }
@@ -497,11 +497,11 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
   ): Set<TSESTree.Node> {
     const nodes = new Set<TSESTree.Node>();
 
-    variable.defs.forEach(def => {
+    for (const def of variable.defs) {
       if (def.node.type === AST_NODE_TYPES.TSModuleDeclaration) {
         nodes.add(def.node);
       }
-    });
+    }
 
     return nodes;
   }

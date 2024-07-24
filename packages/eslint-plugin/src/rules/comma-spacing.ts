@@ -177,9 +177,9 @@ export default createRule<Options, MessageIds>({
       ArrayPattern: addNullElementsToIgnoreList,
 
       'Program:exit'(): void {
-        tokensAndComments.forEach((token, i) => {
+        for (const [i, token] of tokensAndComments.entries()) {
           if (!isCommaToken(token)) {
-            return;
+            continue;
           }
 
           const prevToken = tokensAndComments[i - 1];
@@ -194,7 +194,7 @@ export default createRule<Options, MessageIds>({
               ? null
               : nextToken ?? null,
           );
-        });
+        }
       },
     };
   },

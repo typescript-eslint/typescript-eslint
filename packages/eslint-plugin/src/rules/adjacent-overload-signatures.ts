@@ -132,11 +132,11 @@ export default createRule({
       let lastMethod: Method | null = null;
       const seenMethods: Method[] = [];
 
-      members.forEach(member => {
+      for (const member of members) {
         const method = getMemberMethod(member);
         if (method == null) {
           lastMethod = null;
-          return;
+          continue;
         }
 
         const index = seenMethods.findIndex(seenMethod =>
@@ -155,7 +155,7 @@ export default createRule({
         }
 
         lastMethod = method;
-      });
+      }
     }
 
     return {

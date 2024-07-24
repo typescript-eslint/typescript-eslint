@@ -325,10 +325,10 @@ export default createRule<Options, MessageIds>({
      * Finds and validates all variables in a given scope.
      */
     function findVariablesInScope(scope: TSESLint.Scope.Scope): void {
-      scope.references.forEach(reference => {
+      for (const reference of scope.references) {
         const variable = reference.resolved;
 
-        function report(): void {
+        const report = (): void =>
           context.report({
             node: reference.identifier,
             messageId: 'noUseBeforeDefine',
@@ -336,7 +336,6 @@ export default createRule<Options, MessageIds>({
               name: reference.identifier.name,
             },
           });
-        }
 
         // Skips when the reference is:
         // - initializations.
@@ -345,18 +344,18 @@ export default createRule<Options, MessageIds>({
         // - located preceded by the variable (except in initializers).
         // - allowed by options.
         if (reference.init) {
-          return;
+          continue;
         }
 
         if (!options.allowNamedExports && isNamedExports(reference)) {
           if (!variable || !isDefinedBeforeUse(variable, reference)) {
             report();
           }
-          return;
+          continue;
         }
 
         if (!variable) {
-          return;
+          continue;
         }
 
         if (
@@ -366,14 +365,16 @@ export default createRule<Options, MessageIds>({
           isClassRefInClassDecorator(variable, reference) ||
           reference.from.type === TSESLint.Scope.ScopeType.functionType
         ) {
-          return;
+          continue;
         }
 
         // Reports.
         report();
-      });
+      }
 
-      scope.childScopes.forEach(findVariablesInScope);
+      for (const childScope of scope.childScopes) {
+        findVariablesInScope(childScope);
+      }
     }
 
     return {

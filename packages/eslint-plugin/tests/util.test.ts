@@ -20,21 +20,21 @@ describe('isDefinitionFile', () => {
       'test.D.TSX',
     ];
 
-    invalid.forEach(f => {
+    for (const f of invalid) {
       it(f, () => {
         expect(isDefinitionFile(f)).toBe(false);
       });
-    });
+    }
   });
 
   describe('returns true for definition files', () => {
     const valid = ['test.d.ts', 'test.D.TS'];
 
-    valid.forEach(f => {
+    for (const f of valid) {
       it(f, () => {
         expect(isDefinitionFile(f)).toBe(true);
       });
-    });
+    }
   });
 });
 

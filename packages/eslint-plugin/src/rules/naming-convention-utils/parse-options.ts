@@ -18,12 +18,16 @@ import { createValidator } from './validator';
 
 function normalizeOption(option: Selector): NormalizedSelector[] {
   let weight = 0;
-  option.modifiers?.forEach(mod => {
-    weight |= Modifiers[mod];
-  });
-  option.types?.forEach(mod => {
-    weight |= TypeModifiers[mod];
-  });
+  if (option.modifiers) {
+    for (const mod of option.modifiers) {
+      weight |= Modifiers[mod];
+    }
+  }
+  if (option.types) {
+    for (const mod of option.types) {
+      weight |= TypeModifiers[mod];
+    }
+  }
 
   // give selectors with a filter the _highest_ priority
   if (option.filter) {

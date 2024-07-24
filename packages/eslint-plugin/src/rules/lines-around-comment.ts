@@ -38,12 +38,12 @@ function getEmptyLineNums(lines: string[]): number[] {
 function getCommentLineNums(comments: TSESTree.Comment[]): number[] {
   const lines: number[] = [];
 
-  comments.forEach(token => {
+  for (const token of comments) {
     const start = token.loc.start.line;
     const end = token.loc.end.line;
 
     lines.push(start, end);
-  });
+  }
   return lines;
 }
 
@@ -435,7 +435,7 @@ export default createRule<Options, MessageIds>({
       Program(): void {
         rules.Program();
 
-        comments.forEach(token => {
+        for (const token of comments) {
           if (token.type === AST_TOKEN_TYPES.Line) {
             if (options.beforeLineComment || options.afterLineComment) {
               checkForEmptyLine(token, {
@@ -449,7 +449,7 @@ export default createRule<Options, MessageIds>({
               before: options.beforeBlockComment,
             });
           }
-        });
+        }
       },
     };
   },
