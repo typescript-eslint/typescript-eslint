@@ -246,7 +246,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     ];
 
     return (): void => {
-      closable.forEach(c => c.close());
+      for (const c of closable) {
+        c.close();
+      }
     };
   }, [system, onChange]);
 

@@ -676,7 +676,9 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
     if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
       result.push(convertToken(node, ast));
     } else {
-      node.getChildren(ast).forEach(walk);
+      for (const child of node.getChildren(ast)) {
+        walk(child);
+      }
     }
   }
   walk(ast);

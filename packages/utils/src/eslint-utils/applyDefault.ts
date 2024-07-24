@@ -22,7 +22,7 @@ function applyDefault<User extends readonly unknown[], Default extends User>(
 
   // For avoiding the type error
   //   `This expression is not callable. Type 'unknown' has no call signatures.ts(2349)`
-  (options as unknown[]).forEach((opt: unknown, i: number) => {
+  for (const [i, opt] of (options as unknown[]).entries()) {
     if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];
 
@@ -32,7 +32,7 @@ function applyDefault<User extends readonly unknown[], Default extends User>(
         options[i] = userOpt;
       }
     }
-  });
+  }
 
   return options;
 }

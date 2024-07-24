@@ -80,13 +80,13 @@ export function applyFixes(
     return true;
   }
 
-  messages.forEach(problem => {
+  for (const problem of messages) {
     if (hasOwnProperty(problem, 'fix')) {
       fixes.push(problem);
     } else {
       remainingMessages.push(problem);
     }
-  });
+  }
 
   if (fixes.length) {
     let fixesWereApplied = false;

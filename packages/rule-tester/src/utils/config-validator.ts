@@ -140,7 +140,7 @@ function validateEnvironment(
     return;
   }
 
-  Object.keys(environment).forEach(id => {
+  for (const id of Object.keys(environment)) {
     const env = BuiltInEnvironments.get(id) ?? null;
 
     if (!env) {
@@ -148,7 +148,7 @@ function validateEnvironment(
 
       throw new Error(message);
     }
-  });
+  }
 }
 
 /**
@@ -166,15 +166,15 @@ function validateRules(
     return;
   }
 
-  Object.keys(rulesConfig).forEach(id => {
+  for (const id of Object.keys(rulesConfig)) {
     const rule = getAdditionalRule(id) ?? builtinRules.get(id) ?? null;
     if (rule == null) {
-      return;
+      continue;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     validateRuleOptions(rule, id, rulesConfig[id]!, source);
-  });
+  }
 }
 
 /**
@@ -190,19 +190,19 @@ function validateGlobals(
     return;
   }
 
-  Object.entries(globalsConfig).forEach(
-    ([configuredGlobal, configuredValue]) => {
-      try {
-        ConfigOps.normalizeConfigGlobal(configuredValue);
-      } catch (err) {
-        throw new Error(
-          `ESLint configuration of global '${configuredGlobal}' in ${source} is invalid:\n${
-            (err as Error).message
-          }`,
-        );
-      }
-    },
-  );
+  for (const [configuredGlobal, configuredValue] of Object.entries(
+    globalsConfig,
+  )) {
+    try {
+      ConfigOps.normalizeConfigGlobal(configuredValue);
+    } catch (err) {
+      throw new Error(
+        `ESLint configuration of global '${configuredGlobal}' in ${source} is invalid:\n${
+          (err as Error).message
+        }`,
+      );
+    }
+  }
 }
 
 /**

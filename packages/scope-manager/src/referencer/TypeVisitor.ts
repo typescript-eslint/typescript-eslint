@@ -188,7 +188,9 @@ class TypeVisitor extends Visitor {
       this.visit(node.typeParameters);
     }
 
-    node.extends.forEach(this.visit, this);
+    for (const extend of node.extends) {
+      this.visit(extend);
+    }
     this.visit(node.body);
 
     if (node.typeParameters) {

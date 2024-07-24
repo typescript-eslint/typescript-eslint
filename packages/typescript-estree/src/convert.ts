@@ -548,18 +548,18 @@ export class Converter {
       'typeParameters',
     ]);
 
-    Object.entries<any>(node)
-      .filter(([key]) => !KEYS_TO_NOT_COPY.has(key))
-      .forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          result[key] = value.map(el => this.convertChild(el as TSNode));
-        } else if (value && typeof value === 'object' && value.kind) {
-          // need to check node[key].kind to ensure we don't try to convert a symbol
-          result[key] = this.convertChild(value as TSNode);
-        } else {
-          result[key] = value;
-        }
-      });
+    for (const [key, value] of Object.entries<any>(node).filter(
+      ([key]) => !KEYS_TO_NOT_COPY.has(key),
+    )) {
+      if (Array.isArray(value)) {
+        result[key] = value.map(el => this.convertChild(el as TSNode));
+      } else if (value && typeof value === 'object' && value.kind) {
+        // need to check node[key].kind to ensure we don't try to convert a symbol
+        result[key] = this.convertChild(value as TSNode);
+      } else {
+        result[key] = value;
+      }
+    }
     return result;
   }
 
@@ -1044,7 +1044,10 @@ export class Converter {
           );
         }
         if (result.kind === 'using' || result.kind === 'await using') {
-          node.declarationList.declarations.forEach((declaration, i) => {
+          for (const [
+            i,
+            declaration,
+          ] of node.declarationList.declarations.entries()) {
             if (result.declarations[i].init == null) {
               this.#throwError(
                 declaration,
@@ -1057,7 +1060,7 @@ export class Converter {
                 `'${result.kind}' declarations may not have binding patterns.`,
               );
             }
-          });
+          }
         }
 
         /**
@@ -1080,7 +1083,7 @@ export class Converter {
         });
 
         if (result.kind === 'using' || result.kind === 'await using') {
-          node.declarations.forEach((declaration, i) => {
+          for (const [i, declaration] of node.declarations.entries()) {
             if (result.declarations[i].init != null) {
               this.#throwError(
                 declaration,
@@ -1093,7 +1096,7 @@ export class Converter {
                 `'${result.kind}' declarations may not have binding patterns.`,
               );
             }
-          });
+          }
         }
         return result;
       }
@@ -1644,14 +1647,14 @@ export class Converter {
           expressions: [],
         });
 
-        node.templateSpans.forEach(templateSpan => {
+        for (const templateSpan of node.templateSpans) {
           result.expressions.push(
             this.convertChild(templateSpan.expression) as TSESTree.Expression,
           );
           result.quasis.push(
             this.convertChild(templateSpan.literal) as TSESTree.TemplateElement,
           );
-        });
+        }
         return result;
       }
 
@@ -3203,14 +3206,14 @@ export class Converter {
           types: [],
         });
 
-        node.templateSpans.forEach(templateSpan => {
+        for (const templateSpan of node.templateSpans) {
           result.types.push(
             this.convertChild(templateSpan.type) as TSESTree.TypeNode,
           );
           result.quasis.push(
             this.convertChild(templateSpan.literal) as TSESTree.TemplateElement,
           );
-        });
+        }
         return result;
       }
 

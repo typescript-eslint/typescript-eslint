@@ -146,9 +146,9 @@ function getWatchProgramsForProjects(
     fileWatchCallbacks &&
     fileWatchCallbacks.size > 0
   ) {
-    fileWatchCallbacks.forEach(cb =>
-      cb(filePath, ts.FileWatcherEventKind.Changed),
-    );
+    for (const cb of fileWatchCallbacks) {
+      cb(filePath, ts.FileWatcherEventKind.Changed);
+    }
   }
 
   const currentProjectsFromSettings = new Map(parseSettings.projects);
@@ -405,9 +405,9 @@ function maybeInvalidateProgram(
      */
     log('tsconfig has changed - triggering program update. %s', tsconfigPath);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    fileWatchCallbackTrackingMap
-      .get(tsconfigPath)!
-      .forEach(cb => cb(tsconfigPath, ts.FileWatcherEventKind.Changed));
+    for (const cb of fileWatchCallbackTrackingMap.get(tsconfigPath)!) {
+      cb(tsconfigPath, ts.FileWatcherEventKind.Changed);
+    }
 
     // tsconfig change means that the file list more than likely changed, so clear the cache
     programFileListCache.delete(tsconfigPath);
@@ -492,9 +492,9 @@ function maybeInvalidateProgram(
   }
 
   log('Marking file as deleted. %s', deletedFile);
-  fileWatchCallbacks.forEach(cb =>
-    cb(deletedFile, ts.FileWatcherEventKind.Deleted),
-  );
+  for (const cb of fileWatchCallbacks) {
+    cb(deletedFile, ts.FileWatcherEventKind.Deleted);
+  }
 
   // deleted files means that the file list _has_ changed, so clear the cache
   programFileListCache.delete(tsconfigPath);

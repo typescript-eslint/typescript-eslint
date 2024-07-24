@@ -44,11 +44,13 @@ export function createFileSystem(
     path: string,
     type: ts.FileWatcherEventKind,
   ): void => {
-    fileWatcherCallbacks.forEach((callbacks, key) => {
+    for (const [key, callbacks] of fileWatcherCallbacks.entries()) {
       if (key.test(path)) {
-        callbacks.forEach(cb => cb(path, type));
+        for (const cb of callbacks) {
+          cb(path, type);
+        }
       }
-    });
+    }
   };
 
   system.deleteFile = (fileName): void => {

@@ -100,7 +100,7 @@ function itHasBaseRulesOverriden(
   it('has the base rules overriden by the appropriate extension rules', () => {
     expect(unfilteredConfigRules).toBeDefined();
     const ruleNames = new Set(Object.keys(unfilteredConfigRules!));
-    EXTENSION_RULES.forEach(([ruleName, extRuleName]) => {
+    for (const [ruleName, extRuleName] of EXTENSION_RULES) {
       if (ruleNames.has(ruleName)) {
         // this looks a little weird, but it provides the cleanest test output style
         expect(unfilteredConfigRules).toMatchObject({
@@ -108,7 +108,7 @@ function itHasBaseRulesOverriden(
           [extRuleName]: 'off',
         });
       }
-    });
+    }
   });
 }
 

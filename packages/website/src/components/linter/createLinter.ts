@@ -64,14 +64,14 @@ export function createLinter(
 
   linter.defineParser(PARSER_NAME, parser);
 
-  linter.getRules().forEach((item, name) => {
+  for (const [name, item] of linter.getRules().entries()) {
     rules.set(name, {
       name: name,
       description: item.meta?.docs?.description,
       url: item.meta?.docs?.url,
       schema: item.meta?.schema ?? [],
     });
-  });
+  }
 
   const triggerLint = (filename: string): void => {
     console.info('[Editor] linting triggered for file', filename);
@@ -164,7 +164,9 @@ export function createLinter(
   };
 
   const triggerLintAll = (): void => {
-    system.searchFiles('/input.*').forEach(triggerLint);
+    for (const filename of system.searchFiles('/input.*')) {
+      triggerLint(filename);
+    }
   };
 
   system.watchFile('/input.*', triggerLint);

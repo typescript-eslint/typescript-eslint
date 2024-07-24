@@ -62,7 +62,7 @@ function createProjectProgram(
 
   const { extraFileExtensions } = parseSettings;
 
-  extraFileExtensions.forEach(extraExtension => {
+  for (const extraExtension of extraFileExtensions) {
     if (!extraExtension.startsWith('.')) {
       errorLines.push(
         `Found unexpected extension \`${extraExtension}\` specified with the \`parserOptions.extraFileExtensions\` option. Did you mean \`.${extraExtension}\`?`,
@@ -73,7 +73,7 @@ function createProjectProgram(
         `You unnecessarily included the extension \`${extraExtension}\` with the \`parserOptions.extraFileExtensions\` option. This extension is already handled by the parser by default.`,
       );
     }
-  });
+  }
 
   const fileExtension = path.extname(parseSettings.filePath);
   if (!DEFAULT_EXTRA_FILE_EXTENSIONS.includes(fileExtension)) {

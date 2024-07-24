@@ -33,7 +33,7 @@ function createConfig(filename: string): ParserOptions {
 
 describe('services', () => {
   const program = createProgram(path.resolve(FIXTURES_DIR, 'tsconfig.json'));
-  testFiles.forEach(filename => {
+  for (const filename of testFiles) {
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     const config = createConfig(filename);
     const snapshotName = formatSnapshotName(filename, FIXTURES_DIR, '.ts');
@@ -44,5 +44,5 @@ describe('services', () => {
     it(`${snapshotName} services with provided program`, () => {
       testServices(code, { ...config, program });
     });
-  });
+  }
 });

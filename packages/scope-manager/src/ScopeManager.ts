@@ -52,10 +52,16 @@ class ScopeManager {
   public get variables(): Variable[] {
     const variables = new Set<Variable>();
     function recurse(scope: Scope): void {
-      scope.variables.forEach(v => variables.add(v));
-      scope.childScopes.forEach(recurse);
+      for (const v of scope.variables) {
+        variables.add(v);
+      }
+      for (const childScope of scope.childScopes) {
+        recurse(childScope);
+      }
     }
-    this.scopes.forEach(recurse);
+    for (const scope of this.scopes) {
+      recurse(scope);
+    }
     return Array.from(variables).sort((a, b) => a.$id - b.$id);
   }
 

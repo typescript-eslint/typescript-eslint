@@ -71,7 +71,7 @@ class Referencer extends Visitor {
     maybeImplicitGlobal: ReferenceImplicitGlobal | null,
     init: boolean,
   ): void {
-    assignments.forEach(assignment => {
+    for (const assignment of assignments) {
       this.currentScope().referenceValue(
         pattern,
         ReferenceFlag.Write,
@@ -79,7 +79,7 @@ class Referencer extends Visitor {
         maybeImplicitGlobal,
         init,
       );
-    });
+    }
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
@@ -267,7 +267,9 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators.forEach(d => this.visit(d));
+      for (const d of param.decorators) {
+        this.visit(d);
+      }
     }
 
     this.visitType(node.returnType);

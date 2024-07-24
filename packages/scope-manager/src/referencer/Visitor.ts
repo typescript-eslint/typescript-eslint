@@ -37,7 +37,9 @@ class Visitor extends VisitorBase {
 
     // Process the right hand nodes recursively.
     if (options.processRightHandNodes) {
-      visitor.rightHandNodes.forEach(this.visit, this);
+      for (const node1 of visitor.rightHandNodes) {
+        this.visit(node1);
+      }
     }
   }
 }

@@ -171,7 +171,9 @@ function nestDescribe(
   }
 }
 
-fixtures.forEach(f => nestDescribe(f));
+for (const f of fixtures) {
+  nestDescribe(f);
+}
 
 if (ONLY === '') {
   // ensure that the snapshots are cleaned up, because jest-specific-snapshot won't do this check

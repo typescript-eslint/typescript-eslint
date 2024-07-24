@@ -7,9 +7,9 @@ export default function prismIncludeLanguages(PrismObject) {
   const { additionalLanguages } = prism;
   globalThis.Prism = PrismObject;
 
-  additionalLanguages.forEach(lang => {
+  for (const lang of additionalLanguages) {
     require(`prismjs/components/prism-${lang}`);
-  });
+  }
 
   require(`../prism/language/jsonc`);
   delete globalThis.Prism;

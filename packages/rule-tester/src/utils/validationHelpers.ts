@@ -114,8 +114,16 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
       visitorKeys: visitorKeys,
       enter: node => defineStartEndAsError('node', node),
     });
-    ast.tokens?.forEach(token => defineStartEndAsError('token', token));
-    ast.comments?.forEach(comment => defineStartEndAsError('token', comment));
+    if (ast.tokens) {
+      for (const token of ast.tokens) {
+        defineStartEndAsError('token', token);
+      }
+    }
+    if (ast.comments) {
+      for (const comment of ast.comments) {
+        defineStartEndAsError('token', comment);
+      }
+    }
   }
 
   if ('parseForESLint' in parser) {

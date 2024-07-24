@@ -4,9 +4,9 @@ function forEach<T extends string>(
   obj: Record<T, string>,
   cb: (name: T) => void,
 ): void {
-  Object.keys(obj).forEach(name => {
+  for (const name of Object.keys(obj)) {
     cb(name as T);
-  });
+  }
 }
 
 describe('ES6 default parameters:', () => {

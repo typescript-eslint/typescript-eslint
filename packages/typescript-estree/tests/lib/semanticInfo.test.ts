@@ -41,7 +41,7 @@ beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
   // test all AST snapshots
-  testFiles.forEach(filename => {
+  for (const filename of testFiles) {
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
     it(
       formatSnapshotName(filename, FIXTURES_DIR, path.extname(filename)),
@@ -51,7 +51,7 @@ describe('semanticInfo', () => {
         /*generateServices*/ true,
       ),
     );
-  });
+  }
 
   it(`should cache the created ts.program`, () => {
     const filename = testFiles[0];

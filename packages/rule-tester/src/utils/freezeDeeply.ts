@@ -4,7 +4,9 @@
 export function freezeDeeply(x: unknown): void {
   if (typeof x === 'object' && x != null) {
     if (Array.isArray(x)) {
-      x.forEach(freezeDeeply);
+      for (const item of x) {
+        freezeDeeply(item);
+      }
     } else {
       for (const key in x) {
         if (key !== 'parent' && Object.prototype.hasOwnProperty.call(x, key)) {

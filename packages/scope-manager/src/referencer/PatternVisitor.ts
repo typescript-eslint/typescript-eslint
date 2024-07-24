@@ -56,7 +56,9 @@ class PatternVisitor extends VisitorBase {
   }
 
   protected ArrayExpression(node: TSESTree.ArrayExpression): void {
-    node.elements.forEach(this.visit, this);
+    for (const element of node.elements) {
+      this.visit(element);
+    }
   }
 
   protected ArrayPattern(pattern: TSESTree.ArrayPattern): void {
@@ -81,9 +83,9 @@ class PatternVisitor extends VisitorBase {
 
   protected CallExpression(node: TSESTree.CallExpression): void {
     // arguments are right hand nodes.
-    node.arguments.forEach(a => {
+    for (const a of node.arguments) {
       this.rightHandNodes.push(a);
-    });
+    }
     this.visit(node.callee);
   }
 

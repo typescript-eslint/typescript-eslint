@@ -29,7 +29,9 @@ afterEach(() => {
   clearWatchCaches();
 
   // clean up the temporary files and folders
-  tmpDirs.forEach(t => t.removeCallback());
+  for (const t of tmpDirs) {
+    t.removeCallback();
+  }
   tmpDirs.clear();
 
   // restore original cwd
