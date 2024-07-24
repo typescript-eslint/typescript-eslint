@@ -68,8 +68,8 @@ const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level 
 const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
   defaultFilenames: { ts: 'file.ts', tsx: 'react.tsx' },
   languageOptions: {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
-    parser: require(TYPESCRIPT_ESLINT_PARSER),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    parser: require(TYPESCRIPT_ESLINT_PARSER) as typeof parser,
   },
   rules: {},
 };
