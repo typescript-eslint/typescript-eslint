@@ -79,8 +79,7 @@ export default createRule({
         return false;
       }
 
-      for (let i = 0; i < paramsA.length; ++i) {
-        const paramA = paramsA[i];
+      for (const [i, paramA] of paramsA.entries()) {
         const paramB = paramsB[i];
 
         // Check name, type, and question token once.

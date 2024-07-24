@@ -50,10 +50,8 @@ function findInObject(
         };
       }
     } else if (Array.isArray(child)) {
-      for (let index = 0; index < child.length; ++index) {
-        const arrayChild: unknown = child[index];
-        // typescript array like elements have other iterable items
-        if (typeof index === 'number' && isRecord(arrayChild)) {
+      for (const [index, arrayChild] of child.entries()) {
+        if (isRecord(arrayChild)) {
           if (isInRange(cursorPosition, arrayChild)) {
             return {
               key: [name, String(index)],

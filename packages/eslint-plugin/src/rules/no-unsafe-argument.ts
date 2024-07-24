@@ -56,8 +56,7 @@ class FunctionSignature {
     let restType: RestType | null = null;
 
     const parameters = signature.getParameters();
-    for (let i = 0; i < parameters.length; i += 1) {
-      const param = parameters[i];
+    for (const [i, param] of parameters.entries()) {
       const type = checker.getTypeOfSymbolAtLocation(param, tsNode);
 
       const decl = param.getDeclarations()?.[0];

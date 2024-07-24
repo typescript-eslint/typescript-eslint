@@ -95,8 +95,7 @@ function isUnsafeAssignmentWorker(
     const typeArguments = type.typeArguments ?? [];
     const receiverTypeArguments = receiver.typeArguments ?? [];
 
-    for (let i = 0; i < typeArguments.length; i += 1) {
-      const arg = typeArguments[i];
+    for (const [i, arg] of typeArguments.entries()) {
       const receiverArg = receiverTypeArguments[i];
 
       const unsafe = isUnsafeAssignmentWorker(

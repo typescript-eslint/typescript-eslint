@@ -136,8 +136,7 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      for (let i = 0; i < tokens1.length; ++i) {
-        const token1 = tokens1[i];
+      for (const [i, token1] of tokens1.entries()) {
         const token2 = tokens2[i];
 
         if (token1.type !== token2.type || token1.value !== token2.value) {

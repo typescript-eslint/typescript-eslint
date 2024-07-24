@@ -777,8 +777,8 @@ export function firstDefined<T, U>(
     return undefined;
   }
 
-  for (let i = 0; i < array.length; i++) {
-    const result = callback(array[i], i);
+  for (const [i, element] of array.entries()) {
+    const result = callback(element, i);
     if (result !== undefined) {
       return result;
     }

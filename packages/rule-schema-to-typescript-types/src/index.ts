@@ -30,8 +30,8 @@ export async function compile(
 
   const refTypes: string[] = [];
   const types: AST[] = [];
-  for (let i = 0; i < schema.length; i += 1) {
-    const result = compileSchema(schema[i], i);
+  for (const [i, element] of schema.entries()) {
+    const result = compileSchema(element, i);
     refTypes.push(...result.refTypes);
     types.push(result.type);
   }

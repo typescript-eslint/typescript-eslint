@@ -533,16 +533,22 @@ describe('ES6 destructuring assignments', () => {
     expect(variables).toHaveLength(6);
     const expectedVariableNames = ['arguments', 'a', 'b', 'c', 'd', 'rest'];
 
-    for (let index = 0; index < expectedVariableNames.length; index++) {
-      expect(variables[index].name).toBe(expectedVariableNames[index]);
+    for (const [
+      index,
+      expectedVariableName,
+    ] of expectedVariableNames.entries()) {
+      expect(variables[index].name).toBe(expectedVariableName);
     }
 
     expect(scope.references).toHaveLength(6);
     const expectedReferenceNames = ['a', 'b', 'c', 'd', 'rest'];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
       expect(scope.references[index].isWrite()).toBeTruthy();
     }
@@ -639,8 +645,11 @@ describe('ES6 destructuring assignments', () => {
       'world',
     ];
 
-    for (let index = 0; index < expectedVariableNames.length; index++) {
-      expect(variables[index].name).toBe(expectedVariableNames[index]);
+    for (const [
+      index,
+      expectedVariableName,
+    ] of expectedVariableNames.entries()) {
+      expect(variables[index].name).toBe(expectedVariableName);
     }
     expect(scope.references).toHaveLength(8);
     const expectedReferenceNames = [
@@ -653,9 +662,12 @@ describe('ES6 destructuring assignments', () => {
       'world',
     ];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
       expect(scope.references[index].isWrite()).toBeTruthy();
     }
@@ -811,9 +823,12 @@ describe('ES6 destructuring assignments', () => {
     expect(scope.references).toHaveLength(6);
     const expectedReferenceNames = ['a', 'b', 'c', 'd', 'rest'];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
       expect(scope.references[index].isWrite()).toBeTruthy();
       expect(scope.references[index].resolved).toBeNull();
@@ -947,9 +962,12 @@ describe('ES6 destructuring assignments', () => {
       'world',
     ];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
       expect(scope.references[index].isWrite()).toBeTruthy();
     }
@@ -1096,8 +1114,11 @@ describe('ES6 destructuring assignments', () => {
       'world',
     ];
 
-    for (let index = 0; index < expectedVariableNames.length; index++) {
-      expect(variables[index].name).toBe(expectedVariableNames[index]);
+    for (const [
+      index,
+      expectedVariableName,
+    ] of expectedVariableNames.entries()) {
+      expect(variables[index].name).toBe(expectedVariableName);
     }
     expect(scope.references).toHaveLength(0);
   });
@@ -1124,8 +1145,11 @@ describe('ES6 destructuring assignments', () => {
     expect(variables).toHaveLength(5);
     const expectedVariableNames = ['arguments', 'a', 'b', 'c', 'd'];
 
-    for (let index = 0; index < expectedVariableNames.length; index++) {
-      expect(variables[index].name).toBe(expectedVariableNames[index]);
+    for (const [
+      index,
+      expectedVariableName,
+    ] of expectedVariableNames.entries()) {
+      expect(variables[index].name).toBe(expectedVariableName);
     }
     expect(scope.references).toHaveLength(6);
     const expectedReferenceNames = [
@@ -1137,9 +1161,12 @@ describe('ES6 destructuring assignments', () => {
       'array',
     ];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
     }
   });
@@ -1166,8 +1193,11 @@ describe('ES6 destructuring assignments', () => {
     expect(variables).toHaveLength(5);
     const expectedVariableNames = ['arguments', 'a', 'b', 'c', 'd'];
 
-    for (let index = 0; index < expectedVariableNames.length; index++) {
-      expect(variables[index].name).toBe(expectedVariableNames[index]);
+    for (const [
+      index,
+      expectedVariableName,
+    ] of expectedVariableNames.entries()) {
+      expect(variables[index].name).toBe(expectedVariableName);
     }
     expect(scope.references).toHaveLength(7);
     const expectedReferenceNames = [
@@ -1180,9 +1210,12 @@ describe('ES6 destructuring assignments', () => {
       'array',
     ];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
     }
   });
@@ -1209,8 +1242,11 @@ describe('ES6 destructuring assignments', () => {
     expect(variables).toHaveLength(5);
     const expectedVariableNames = ['arguments', 'a', 'b', 'c', 'd'];
 
-    for (let index = 0; index < expectedVariableNames.length; index++) {
-      expect(variables[index].name).toBe(expectedVariableNames[index]);
+    for (const [
+      index,
+      expectedVariableName,
+    ] of expectedVariableNames.entries()) {
+      expect(variables[index].name).toBe(expectedVariableName);
     }
     expect(scope.references).toHaveLength(10);
     const expectedReferenceNames = [
@@ -1226,9 +1262,12 @@ describe('ES6 destructuring assignments', () => {
       'array',
     ];
 
-    for (let index = 0; index < expectedReferenceNames.length; index++) {
+    for (const [
+      index,
+      expectedReferenceName,
+    ] of expectedReferenceNames.entries()) {
       expect(scope.references[index].identifier.name).toBe(
-        expectedReferenceNames[index],
+        expectedReferenceName,
       );
     }
   });

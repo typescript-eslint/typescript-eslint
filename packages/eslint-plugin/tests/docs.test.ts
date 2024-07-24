@@ -63,8 +63,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
   const output: string[] = [];
   const lines = code.split(/\r?\n/);
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+  for (const [i, line] of lines.entries()) {
     output.push(line);
 
     for (const error of errors) {
