@@ -305,7 +305,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation,@typescript-eslint/no-unused-expressions
       esCallExpression.typeParameters;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -322,10 +322,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation */
+      /* eslint-disable deprecation/deprecation,@typescript-eslint/no-unused-expressions */
       esCallExpression.typeParameters;
       esCallExpression.typeParameters;
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-enable deprecation/deprecation,@typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -338,7 +338,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line deprecation/deprecation,@typescript-eslint/no-unused-expressions
       esCallExpression.typeParameters;
 
       expect(emitWarning).not.toHaveBeenCalled();

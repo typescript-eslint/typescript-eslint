@@ -1,3 +1,28 @@
+## 7.17.0 (2024-07-22)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** don't infer single-run when --fix is in proces.argv
+
+- **typescript-estree:** disable single-run inference with extraFileExtensions
+
+
+### ❤️  Thank You
+
+- Armano
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.16.1 (2024-07-15)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.16.0 (2024-07-08)
 
 

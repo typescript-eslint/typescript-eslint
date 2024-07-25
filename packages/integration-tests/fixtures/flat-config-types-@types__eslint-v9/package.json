@@ -5,7 +5,7 @@
     "@eslint/eslintrc": "latest",
     "@types/eslint__js": "latest",
     "@eslint/js": "latest",
-    "@types/eslint": "latest",
+    "@types/eslint": "^9",
     "eslint": "latest",
     "@stylistic/eslint-plugin": "latest",
     "eslint-plugin-deprecation": "latest",

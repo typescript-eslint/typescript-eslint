@@ -24,6 +24,12 @@ interface ScopeInfo {
   owningFunc: FunctionNode;
 }
 
+type Option =
+  | 'in-try-catch'
+  | 'always'
+  | 'never'
+  | 'error-handling-correctness-only';
+
 export default createRule({
   name: 'return-await',
   meta: {
@@ -50,7 +56,12 @@ export default createRule({
     schema: [
       {
         type: 'string',
-        enum: ['in-try-catch', 'always', 'never'],
+        enum: [
+          'in-try-catch',
+          'always',
+          'never',
+          'error-handling-correctness-only',
+        ] satisfies Option[],
       },
     ],
   },
@@ -271,92 +282,70 @@ export default createRule({
       const type = checker.getTypeAtLocation(child);
       const isThenable = tsutils.isThenableType(checker, expression, type);
 
-      if (!isAwait && !isThenable) {
-        return;
-      }
+      // handle awaited _non_thenables
 
-      if (isAwait && !isThenable) {
-        // any/unknown could be thenable; do not auto-fix
-        const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
+      if (!isThenable) {
+        if (isAwait) {
+          // any/unknown could be thenable; do not auto-fix
+          const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
 
-        context.report({
-          messageId: 'nonPromiseAwait',
-          node,
-          ...fixOrSuggest(useAutoFix, {
+          context.report({
             messageId: 'nonPromiseAwait',
-            fix: fixer => removeAwait(fixer, node),
-          }),
-        });
+            node,
+            ...fixOrSuggest(useAutoFix, {
+              messageId: 'nonPromiseAwait',
+              fix: fixer => removeAwait(fixer, node),
+            }),
+          });
+        }
         return;
       }
+
+      // At this point it's definitely a thenable.
 
       const affectsErrorHandling =
         affectsExplicitErrorHandling(expression) ||
         affectsExplicitResourceManagement(node);
       const useAutoFix = !affectsErrorHandling;
 
-      if (option === 'always') {
-        if (!isAwait && isThenable) {
-          context.report({
-            messageId: 'requiredPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              fix: fixer =>
-                insertAwait(
-                  fixer,
-                  node,
-                  isHigherPrecedenceThanAwait(expression),
-                ),
-            }),
-          });
-        }
+      const ruleConfiguration = getConfiguration(option as Option);
 
-        return;
-      }
+      const shouldAwaitInCurrentContext = affectsErrorHandling
+        ? ruleConfiguration.errorHandlingContext
+        : ruleConfiguration.ordinaryContext;
 
-      if (option === 'never') {
-        if (isAwait) {
-          context.report({
-            messageId: 'disallowedPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'disallowedPromiseAwaitSuggestion',
-              fix: fixer => removeAwait(fixer, node),
-            }),
-          });
-        }
-
-        return;
-      }
-
-      if (option === 'in-try-catch') {
-        if (isAwait && !affectsErrorHandling) {
-          context.report({
-            messageId: 'disallowedPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'disallowedPromiseAwaitSuggestion',
-              fix: fixer => removeAwait(fixer, node),
-            }),
-          });
-        } else if (!isAwait && affectsErrorHandling) {
-          context.report({
-            messageId: 'requiredPromiseAwait',
-            node,
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              fix: fixer =>
-                insertAwait(
-                  fixer,
-                  node,
-                  isHigherPrecedenceThanAwait(expression),
-                ),
-            }),
-          });
-        }
-
-        return;
+      switch (shouldAwaitInCurrentContext) {
+        case "don't-care":
+          break;
+        case 'await':
+          if (!isAwait) {
+            context.report({
+              messageId: 'requiredPromiseAwait',
+              node,
+              ...fixOrSuggest(useAutoFix, {
+                messageId: 'requiredPromiseAwaitSuggestion',
+                fix: fixer =>
+                  insertAwait(
+                    fixer,
+                    node,
+                    isHigherPrecedenceThanAwait(expression),
+                  ),
+              }),
+            });
+          }
+          break;
+        case 'no-await':
+          if (isAwait) {
+            context.report({
+              messageId: 'disallowedPromiseAwait',
+              node,
+              ...fixOrSuggest(useAutoFix, {
+                messageId: 'disallowedPromiseAwaitSuggestion',
+                fix: fixer => removeAwait(fixer, node),
+              }),
+            });
+          }
+          break;
       }
     }
 
@@ -405,6 +394,38 @@ export default createRule({
     };
   },
 });
+
+type WhetherToAwait = 'await' | 'no-await' | "don't-care";
+
+interface RuleConfiguration {
+  ordinaryContext: WhetherToAwait;
+  errorHandlingContext: WhetherToAwait;
+}
+
+function getConfiguration(option: Option): RuleConfiguration {
+  switch (option) {
+    case 'always':
+      return {
+        ordinaryContext: 'await',
+        errorHandlingContext: 'await',
+      };
+    case 'never':
+      return {
+        ordinaryContext: 'no-await',
+        errorHandlingContext: 'no-await',
+      };
+    case 'error-handling-correctness-only':
+      return {
+        ordinaryContext: "don't-care",
+        errorHandlingContext: 'await',
+      };
+    case 'in-try-catch':
+      return {
+        ordinaryContext: 'no-await',
+        errorHandlingContext: 'await',
+      };
+  }
+}
 
 function fixOrSuggest<MessageId extends string>(
   useFix: boolean,
