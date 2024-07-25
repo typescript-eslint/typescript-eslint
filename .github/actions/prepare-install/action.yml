@@ -55,31 +55,25 @@ runs:
         restore-keys: |
           yarn-download-cache-
 
-    # Invalidated on yarn.lock changes
-    - name: Restore yarn install state
-      id: yarn-install-state-cache
-      uses: actions/cache@v4
-      with:
-        path: .yarn/ci-cache/
-        key: ${{ runner.os }}-yarn-install-state-cache-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
-
     - name: Check if ast-spec files changed
       id: changed-files
       uses: tj-actions/changed-files@v41
       with:
         files: packages/ast-spec/src/**
 
+    # Invalidated on yarn.lock changes
+    - name: Restore yarn install state
+      id: yarn-install-state-cache
+      if: steps.changed-files.outputs.any_changed != 'true'
+      uses: actions/cache@v4
+      with:
+        path: .yarn/ci-cache/
+        key: ${{ runner.os }}-yarn-install-state-cache-${{ hashFiles('yarn.lock', '.yarnrc.yml') }}
+
     - name: Install dependencies
       shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: |
-        if [[ "${{ steps.changed-files.outputs.any_changed }}" == 'true' ]]; then
-          echo "Changes detected in any ast-spec files. Prebuild without cache..."
-          yarn cache clear
-          yarn build
-        else
-          echo "No changes detected in any ast-spec files. Proceeding with normal install..."
-        fi
         yarn install --immutable --inline-builds
         yarn check-clean-workspace-after-install
       env:
