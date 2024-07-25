@@ -109,7 +109,7 @@
     "markdownlint-cli": "^0.41.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.14",
-    "nx": "19.4.0",
+    "nx": "19.5.1",
     "prettier": "3.3.2",
     "pretty-format": "^29.7.0",
     "rimraf": "^5.0.5",
