@@ -327,32 +327,28 @@ var a = foo
       'f\n?.();',
       'f?.\n();',
       'f\n?.\n();',
-    ].reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>((acc, code) => {
-      acc.push(
-        {
-          options: ['always', { allowNewlines: true }],
-          errors: [{ messageId: 'unexpectedWhitespace' }],
-          code,
-          // apply no fixers to it
-          output: null,
-        },
-        {
-          options: ['always'],
-          errors: [{ messageId: 'unexpectedWhitespace' }],
-          code,
-          // apply no fixers to it
-          output: null,
-        },
-        {
-          options: ['never'],
-          errors: [{ messageId: 'unexpectedWhitespace' }],
-          code,
-          // apply no fixers to it
-          output: null,
-        },
-      );
-
-      return acc;
-    }, []),
+    ].flatMap<TSESLint.InvalidTestCase<MessageIds, Options>>(code => [
+      {
+        options: ['always', { allowNewlines: true }],
+        errors: [{ messageId: 'unexpectedWhitespace' }],
+        code,
+        // apply no fixers to it
+        output: null,
+      },
+      {
+        options: ['always'],
+        errors: [{ messageId: 'unexpectedWhitespace' }],
+        code,
+        // apply no fixers to it
+        output: null,
+      },
+      {
+        options: ['never'],
+        errors: [{ messageId: 'unexpectedWhitespace' }],
+        code,
+        // apply no fixers to it
+        output: null,
+      },
+    ]),
   ],
 });
