@@ -18,6 +18,7 @@ type EcmaVersion =
   | 13
   | 14
   | 15
+  | 16
   | 2015
   | 2016
   | 2017
@@ -28,6 +29,7 @@ type EcmaVersion =
   | 2022
   | 2023
   | 2024
+  | 2025
   | 'latest'
   | undefined;
 
