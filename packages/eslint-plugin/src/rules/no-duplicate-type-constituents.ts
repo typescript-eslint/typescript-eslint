@@ -109,41 +109,39 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
-      node.types.reduce<TSESTree.TypeNode[]>(
-        (uniqueConstituents, constituentNode) => {
-          const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
-            ele => isSameAstNode(ele, constituentNode),
+      const uniqueConstituents: TSESTree.TypeNode[] = [];
+      for (const constituentNode of node.types) {
+        const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
+          ele => isSameAstNode(ele, constituentNode),
+        );
+        if (duplicatedPreviousConstituentInAst) {
+          reportDuplicate(
+            {
+              duplicated: constituentNode,
+              duplicatePrevious: duplicatedPreviousConstituentInAst,
+            },
+            node,
           );
-          if (duplicatedPreviousConstituentInAst) {
-            reportDuplicate(
-              {
-                duplicated: constituentNode,
-                duplicatePrevious: duplicatedPreviousConstituentInAst,
-              },
-              node,
-            );
-            return uniqueConstituents;
-          }
-          const constituentNodeType = checker.getTypeAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
+          continue;
+        }
+        const constituentNodeType = checker.getTypeAtLocation(
+          parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
+        );
+        const duplicatedPreviousConstituentInType =
+          cachedTypeMap.get(constituentNodeType);
+        if (duplicatedPreviousConstituentInType) {
+          reportDuplicate(
+            {
+              duplicated: constituentNode,
+              duplicatePrevious: duplicatedPreviousConstituentInType,
+            },
+            node,
           );
-          const duplicatedPreviousConstituentInType =
-            cachedTypeMap.get(constituentNodeType);
-          if (duplicatedPreviousConstituentInType) {
-            reportDuplicate(
-              {
-                duplicated: constituentNode,
-                duplicatePrevious: duplicatedPreviousConstituentInType,
-              },
-              node,
-            );
-            return uniqueConstituents;
-          }
-          cachedTypeMap.set(constituentNodeType, constituentNode);
-          return [...uniqueConstituents, constituentNode];
-        },
-        [],
-      );
+          continue;
+        }
+        cachedTypeMap.set(constituentNodeType, constituentNode);
+        uniqueConstituents.push(constituentNode);
+      }
     }
     function reportDuplicate(
       duplicateConstituent: {
