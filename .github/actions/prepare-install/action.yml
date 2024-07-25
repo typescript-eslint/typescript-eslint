@@ -75,7 +75,7 @@ runs:
       run: |
         if [[ "${{ steps.changed-files.outputs.any_changed }}" == 'true' ]]; then
           echo "Changes detected in any ast-spec files. Prebuild without cache..."
-          nx run eslint-plugin:build --skipNxCache
+          npx nx run types:build
         else
           echo "No changes detected in any ast-spec files. Proceeding with normal install..."
         fi
