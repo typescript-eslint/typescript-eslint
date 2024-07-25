@@ -31,33 +31,26 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
   }, [config]);
 
   const options = useMemo((): ConfigOptionsType[] => {
-    return Object.values(
-      getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
-        (group, item) => {
-          const category = item.category.message;
-          group[category] ??= {
-            heading: category,
-            fields: [],
-          };
-          if (item.type === 'boolean') {
-            group[category].fields.push({
-              key: item.name,
-              type: 'boolean',
-              label: item.description.message,
-            });
-          } else if (item.type instanceof Map) {
-            group[category].fields.push({
-              key: item.name,
-              type: 'string',
-              label: item.description.message,
-              enum: ['', ...Array.from<string>(item.type.keys())],
-            });
-          }
-          return group;
-        },
-        {},
-      ),
-    );
+    const group: Record<string, ConfigOptionsType> = {};
+    for (const item of getTypescriptOptions()) {
+      const category = item.category.message;
+      group[category] ??= { heading: category, fields: [] };
+      if (item.type === 'boolean') {
+        group[category].fields.push({
+          key: item.name,
+          type: 'boolean',
+          label: item.description.message,
+        });
+      } else if (item.type instanceof Map) {
+        group[category].fields.push({
+          key: item.name,
+          type: 'string',
+          label: item.description.message,
+          enum: ['', ...Array.from<string>(item.type.keys())],
+        });
+      }
+    }
+    return Object.values(group);
   }, []);
 
   const onChange = useCallback(
