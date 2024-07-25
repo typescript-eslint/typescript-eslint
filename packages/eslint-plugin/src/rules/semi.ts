@@ -38,10 +38,9 @@ export default createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const checkForSemicolon =
-      rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>;
-
-    /*
+    return {
+      ...rules,
+      /*
       The following nodes are handled by the member-delimiter-style rule
       AST_NODE_TYPES.TSCallSignatureDeclaration,
       AST_NODE_TYPES.TSConstructSignatureDeclaration,
@@ -49,22 +48,8 @@ export default createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSMethodSignature,
       AST_NODE_TYPES.TSPropertySignature,
     */
-    const nodesToCheck = [
-      AST_NODE_TYPES.PropertyDefinition,
-      AST_NODE_TYPES.TSAbstractPropertyDefinition,
-      AST_NODE_TYPES.TSDeclareFunction,
-      AST_NODE_TYPES.TSExportAssignment,
-      AST_NODE_TYPES.TSImportEqualsDeclaration,
-      AST_NODE_TYPES.TSTypeAliasDeclaration,
-      AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
-    ].reduce<TSESLint.RuleListener>((acc, node) => {
-      acc[node as string] = checkForSemicolon;
-      return acc;
-    }, {});
-
-    return {
-      ...rules,
-      ...nodesToCheck,
+      'PropertyDefinition, TSAbstractPropertyDefinition, TSDeclareFunction, TSExportAssignment, TSImportEqualsDeclaration, TSTypeAliasDeclaration, TSEmptyBodyFunctionExpression':
+        rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>,
       ExportDefaultDeclaration(node): void {
         if (node.declaration.type !== AST_NODE_TYPES.TSInterfaceDeclaration) {
           rules.ExportDefaultDeclaration(node);
