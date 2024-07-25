@@ -299,75 +299,73 @@ export const defaultOrder: MemberType[] = [
   'method',
 ];
 
-const allMemberTypes = Array.from(
-  (
-    [
-      'readonly-signature',
-      'signature',
-      'readonly-field',
-      'field',
-      'method',
-      'call-signature',
-      'constructor',
-      'accessor',
-      'get',
-      'set',
-      'static-initialization',
-    ] as const
-  ).reduce<Set<MemberType>>((all, type) => {
-    all.add(type);
+const all = new Set<MemberType>();
+for (const type of [
+  'readonly-signature',
+  'signature',
+  'readonly-field',
+  'field',
+  'method',
+  'call-signature',
+  'constructor',
+  'accessor',
+  'get',
+  'set',
+  'static-initialization',
+] as const) {
+  all.add(type);
 
-    (['public', 'protected', 'private', '#private'] as const).forEach(
-      accessibility => {
-        if (
-          type !== 'readonly-signature' &&
-          type !== 'signature' &&
-          type !== 'static-initialization' &&
-          type !== 'call-signature' &&
-          !(type === 'constructor' && accessibility === '#private')
-        ) {
-          all.add(`${accessibility}-${type}`); // e.g. `public-field`
-        }
+  for (const accessibility of [
+    'public',
+    'protected',
+    'private',
+    '#private',
+  ] as const) {
+    if (
+      type !== 'readonly-signature' &&
+      type !== 'signature' &&
+      type !== 'static-initialization' &&
+      type !== 'call-signature' &&
+      !(type === 'constructor' && accessibility === '#private')
+    ) {
+      all.add(`${accessibility}-${type}`); // e.g. `public-field`
+    }
 
-        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
-        if (
-          accessibility !== '#private' &&
-          (type === 'readonly-field' ||
-            type === 'field' ||
-            type === 'method' ||
-            type === 'accessor' ||
-            type === 'get' ||
-            type === 'set')
-        ) {
-          all.add(`${accessibility}-decorated-${type}`);
-          all.add(`decorated-${type}`);
-        }
+    // Only class instance fields, methods, accessors, get and set can have decorators attached to them
+    if (
+      accessibility !== '#private' &&
+      (type === 'readonly-field' ||
+        type === 'field' ||
+        type === 'method' ||
+        type === 'accessor' ||
+        type === 'get' ||
+        type === 'set')
+    ) {
+      all.add(`${accessibility}-decorated-${type}`);
+      all.add(`decorated-${type}`);
+    }
 
-        if (
-          type !== 'constructor' &&
-          type !== 'readonly-signature' &&
-          type !== 'signature' &&
-          type !== 'call-signature'
-        ) {
-          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-          if (accessibility === '#private' || accessibility === 'private') {
-            (['static', 'instance'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          } else {
-            (['static', 'instance', 'abstract'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          }
-        }
-      },
-    );
-
-    return all;
-  }, new Set<MemberType>()),
-);
+    if (
+      type !== 'constructor' &&
+      type !== 'readonly-signature' &&
+      type !== 'signature' &&
+      type !== 'call-signature'
+    ) {
+      // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+      for (const scope of [
+        'static',
+        'instance',
+        ...(accessibility === '#private' || accessibility === 'private'
+          ? []
+          : (['abstract'] as const)),
+      ] as const) {
+        all.add(`${scope}-${type}`);
+        all.add(`${accessibility}-${scope}-${type}`);
+      }
+    }
+  }
+}
+const allMemberTypes = [...all];
 
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
