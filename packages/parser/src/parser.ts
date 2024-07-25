@@ -42,13 +42,9 @@ function validateBoolean(
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib.reduce<Lib[]>((acc, lib) => {
+    return compilerOptions.lib.flatMap(lib => {
       const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
-      if (match) {
-        acc.push(match[1] as Lib);
-      }
-
-      return acc;
+      return match ? (match[1] as Lib) : [];
     }, []);
   }
 
