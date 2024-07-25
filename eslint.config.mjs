@@ -318,6 +318,7 @@ export default tseslint.config(
       //
 
       'jsdoc/informative-docs': 'error',
+      'unicorn/no-array-reduce': 'error',
       'unicorn/no-typeof-undefined': 'error',
     },
   },
