@@ -6564,435 +6564,426 @@ type Foo = {
 const operators = ['+?:', '-?:'];
 
 ruleTester.run('type-annotation-spacing', rule, {
-  valid: operators.reduce<TSESLint.ValidTestCase<Options>[]>(
-    (validCases, operator) =>
-      validCases.concat([
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: true }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ before: false }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: true, before: false }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [{ after: false, before: true }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ before: true }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: true, before: true }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: false }],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: false, before: false }],
-        },
-      ]),
-    [],
-  ),
-  invalid: operators.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
-    (invalidCases, operator) =>
-      invalidCases.concat([
-        // space before + after cases
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: true }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+  valid: operators.flatMap(operator => [
+    { code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`, options: [] },
+    {
+      code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+      options: [{ after: true }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+      options: [{ before: false }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+      options: [{ after: true, before: false }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+      options: [{ after: false, before: true }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+      options: [{ before: true }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+      options: [{ after: true, before: true }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+      options: [{ after: false }],
+    },
+    {
+      code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+      options: [{ after: false, before: false }],
+    },
+  ]),
+  invalid: operators.flatMap<TSESLint.InvalidTestCase<MessageIds, Options>>(
+    operator => [
+      // space before + after cases
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        options: [{ after: true }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ before: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 32,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        options: [{ before: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: true, before: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 32,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        options: [{ after: true, before: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 32,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        options: [{ after: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'unexpectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 32,
+          },
+          {
+            messageId: 'unexpectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: false, before: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        options: [{ after: false, before: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'unexpectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 32,
+          },
+          {
+            messageId: 'unexpectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          options: [{ after: false, before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        options: [{ after: false, before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        // no space cases
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: true }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      // no space cases
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        options: [{ after: true }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 31,
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        options: [{ before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 31,
+          },
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: true, before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 31,
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        options: [{ after: true, before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 31,
+          },
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: true, before: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        options: [{ after: true, before: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          options: [{ after: false, before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 31,
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        options: [{ after: false, before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceBefore',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        // space before cases
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 31,
+          },
+        ],
+      },
+      // space before cases
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        options: [],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 32,
+          },
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [{ after: true }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        options: [{ after: true }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 32,
+          },
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [{ before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        options: [{ before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [{ after: true, before: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 32,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        options: [{ after: true, before: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 32,
+          },
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          options: [{ after: true, before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 34,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        options: [{ after: true, before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        // space after cases
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 34,
+          },
+        ],
+      },
+      // space after cases
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        options: [{ after: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 31,
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        options: [{ before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceBefore',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: true, before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 31,
+            line: 1,
+            column: 31,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        options: [{ after: true, before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator} T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceBefore',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: false, before: true }],
-          output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'expectedSpaceBefore',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 31,
+            line: 1,
+            column: 31,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        options: [{ after: false, before: true }],
+        output: `type Foo<T> = { [P in keyof T] ${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'expectedSpaceBefore',
+            data: {
+              type: operator,
             },
-            {
-              messageId: 'unexpectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 31,
+          },
+          {
+            messageId: 'unexpectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-        {
-          code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
-          options: [{ after: false, before: false }],
-          output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
-          errors: [
-            {
-              messageId: 'unexpectedSpaceAfter',
-              data: {
-                type: operator,
-              },
-              line: 1,
-              column: 33,
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+      {
+        code: `type Foo<T> = { [P in keyof T]${operator} T[P] }`,
+        options: [{ after: false, before: false }],
+        output: `type Foo<T> = { [P in keyof T]${operator}T[P] }`,
+        errors: [
+          {
+            messageId: 'unexpectedSpaceAfter',
+            data: {
+              type: operator,
             },
-          ],
-        },
-      ]),
-    [],
+            line: 1,
+            column: 33,
+          },
+        ],
+      },
+    ],
   ),
 });
