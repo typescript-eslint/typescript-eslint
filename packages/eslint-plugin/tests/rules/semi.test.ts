@@ -266,18 +266,10 @@ class PanCamera extends FreeCamera {
       'export default (foo) => foo.bar();',
       'export default foo = 42;',
       'export default foo += 42;',
-    ].reduce<TSESLint.ValidTestCase<Options>[]>((acc, code) => {
-      acc.push({
-        code,
-        options: ['always'],
-      });
-      acc.push({
-        code: code.replace(/;/g, ''),
-        options: ['never'],
-      });
-
-      return acc;
-    }, []),
+    ].flatMap<TSESLint.ValidTestCase<Options>>(code => [
+      { code, options: ['always'] },
+      { code: code.replace(/;/g, ''), options: ['never'] },
+    ]),
   ],
   invalid: [
     {
@@ -1079,27 +1071,19 @@ class PanCamera extends FreeCamera {
           },
         ],
       },
-    ].reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>((acc, test) => {
-      acc.push({
+    ].flatMap<TSESLint.InvalidTestCase<MessageIds, Options>>(test => [
+      {
         code: test.code.replace(/;/g, ''),
         output: test.code,
         options: ['always'],
-        errors: test.errors.map(e => ({
-          ...e,
-          ...missingSemicolon,
-        })),
-      });
-      acc.push({
+        errors: test.errors.map(e => ({ ...e, ...missingSemicolon })),
+      },
+      {
         code: test.code,
         output: test.output ?? test.code.replace(/;/g, ''),
         options: ['never'],
-        errors: test.errors.map(e => ({
-          ...e,
-          ...extraSemicolon,
-        })),
-      });
-
-      return acc;
-    }, []),
+        errors: test.errors.map(e => ({ ...e, ...extraSemicolon })),
+      },
+    ]),
   ],
 });
