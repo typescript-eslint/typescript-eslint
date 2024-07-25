@@ -14,7 +14,7 @@ function getParsedConfigFile(
   tsserver: typeof ts,
   configFile: string,
   projectDirectory?: string,
-): ts.ParsedCommandLine | string {
+): ts.ParsedCommandLine {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tsserver.sys === undefined) {
     throw new Error(
@@ -22,17 +22,12 @@ function getParsedConfigFile(
     );
   }
 
-  const getCurrentDirectory = (): string =>
-    projectDirectory ? path.resolve(projectDirectory) : process.cwd();
-
-  let parsingError: string | undefined;
-
   const parsed = tsserver.getParsedCommandLineOfConfigFile(
     configFile,
     CORE_COMPILER_OPTIONS,
     {
       onUnRecoverableConfigFileDiagnostic: diag => {
-        parsingError = formatDiagnostics([diag]); // ensures that `parsed` is defined.
+        throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
       },
       fileExists: fs.existsSync,
       getCurrentDirectory,
@@ -43,11 +38,15 @@ function getParsedConfigFile(
   );
 
   if (parsed?.errors.length) {
-    parsingError = formatDiagnostics(parsed.errors);
+    throw new Error(formatDiagnostics(parsed.errors));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return parsingError ?? parsed!;
+  return parsed!;
+
+  function getCurrentDirectory() {
+    return projectDirectory ? path.resolve(projectDirectory) : process.cwd();
+  }
 
   function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
     return tsserver.formatDiagnostics(diagnostics, {

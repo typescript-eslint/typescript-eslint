@@ -54,7 +54,7 @@ describe('getParsedConfigFile', () => {
     expect(host.getCurrentDirectory()).toBe(__dirname);
   });
 
-  it('returns a diagnostic string when parsing a config file fails', () => {
+  it('throws a diagnostic error when getParsedCommandLineOfConfigFile returns an error', () => {
     mockGetParsedCommandLineOfConfigFile.mockReturnValue({
       errors: [
         {
@@ -69,7 +69,31 @@ describe('getParsedConfigFile', () => {
         },
       ] satisfies ts.Diagnostic[],
     });
-    expect(getParsedConfigFile(mockTsserver, './tsconfig.json')).toMatch(
+    expect(() => getParsedConfigFile(mockTsserver, './tsconfig.json')).toThrow(
+      /.+ error TS1234: Oh no!/,
+    );
+  });
+
+  it('throws a diagnostic error when getParsedCommandLineOfConfigFile throws an error', () => {
+    mockGetParsedCommandLineOfConfigFile.mockImplementation(
+      (
+        ...[_configFileName, _optionsToExtend, host]: Parameters<
+          typeof ts.getParsedCommandLineOfConfigFile
+        >
+      ) => {
+        return host.onUnRecoverableConfigFileDiagnostic({
+          category: ts.DiagnosticCategory.Error,
+          code: 1234,
+          file: ts.createSourceFile('./tsconfig.json', '', {
+            languageVersion: ts.ScriptTarget.Latest,
+          }),
+          start: 0,
+          length: 0,
+          messageText: 'Oh no!',
+        } satisfies ts.Diagnostic);
+      },
+    );
+    expect(() => getParsedConfigFile(mockTsserver, './tsconfig.json')).toThrow(
       /.+ error TS1234: Oh no!/,
     );
   });

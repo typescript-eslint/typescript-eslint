@@ -57,10 +57,10 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error when options.defaultProject is set and getParsedConfigFile returns an error', () => {
-    mockGetParsedConfigFile.mockReturnValue(
-      './tsconfig.json(1,1): error TS1234: Oh no!',
-    );
+  it('throws an error when options.defaultProject is set and getParsedConfigFile throws a diagnostic error', () => {
+    mockGetParsedConfigFile.mockImplementation(() => {
+      throw new Error('./tsconfig.json(1,1): error TS1234: Oh no!');
+    });
 
     expect(() =>
       createProjectService(
@@ -75,7 +75,7 @@ describe('createProjectService', () => {
     );
   });
 
-  it('throws an error when options.defaultProject is set and getParsedConfigFile throws an error', () => {
+  it('throws an error when options.defaultProject is set and getParsedConfigFile throws an environment error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
       throw new Error(
         '`getParsedConfigFile` is only supported in a Node-like environment.',
@@ -91,7 +91,7 @@ describe('createProjectService', () => {
         undefined,
       ),
     ).toThrow(
-      "Could not parse default project './tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
+      "Could not read default project './tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
     );
   });
 
