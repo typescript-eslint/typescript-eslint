@@ -110,13 +110,13 @@ async function main(): Promise<void> {
   /**
    * Helper function reduces records to key - value pairs.
    */
-  function reducer(
-    config: LinterConfigRules,
+  function addRule(
+    rules: LinterConfigRules,
     [key, value]: RuleEntry,
     settings: ConfigRuleSettings = {},
-  ): LinterConfigRules {
+  ): void {
     if (settings.deprecated && value.meta.deprecated) {
-      return config;
+      return;
     }
 
     // Explicitly exclude rules requiring type-checking
@@ -124,14 +124,14 @@ async function main(): Promise<void> {
       settings.typeChecked === 'exclude' &&
       value.meta.docs?.requiresTypeChecking === true
     ) {
-      return config;
+      return;
     }
 
     if (
       settings.typeChecked === 'include-only' &&
       value.meta.docs?.requiresTypeChecking !== true
     ) {
-      return config;
+      return;
     }
 
     const ruleName = `${RULE_NAME_PREFIX}${key}`;
@@ -149,7 +149,7 @@ async function main(): Promise<void> {
         '=',
         chalk.green('off'),
       );
-      config[baseRuleName] = 'off';
+      rules[baseRuleName] = 'off';
     }
     console.log(
       `${chalk.dim(RULE_NAME_PREFIX)}${key.padEnd(MAX_RULE_NAME_LENGTH)}`,
@@ -160,12 +160,10 @@ async function main(): Promise<void> {
     const ruleLevel = settings.forcedRuleLevel ?? 'error';
     const ruleOptions = settings.getOptions?.(value);
 
-    config[ruleName] =
+    rules[ruleName] =
       ruleOptions && ruleOptions !== true
         ? [ruleLevel, ...ruleOptions]
         : ruleLevel;
-
-    return config;
   }
 
   /**
@@ -271,16 +269,13 @@ async function main(): Promise<void> {
     ruleEntries,
     settings,
   }: ExtendedConfigSettings): Promise<void> {
-    await writeConfig(
-      () => ({
-        extends: [...CLASSIC_EXTENDS],
-        rules: ruleEntries.reduce(
-          (config, entry) => reducer(config, entry, settings),
-          {},
-        ),
-      }),
-      name,
-    );
+    await writeConfig(() => {
+      const rules = {};
+      for (const entry of ruleEntries) {
+        addRule(rules, entry, settings);
+      }
+      return { extends: [...CLASSIC_EXTENDS], rules };
+    }, name);
   }
 
   function filterRuleEntriesTo(
@@ -385,25 +380,24 @@ async function main(): Promise<void> {
     ruleEntries: filterRuleEntriesTo('stylistic'),
   });
 
-  await writeConfig(
-    () => ({
+  await writeConfig(() => {
+    const rules = {};
+    for (const entry of allRuleEntries) {
+      addRule(rules, entry, {
+        typeChecked: 'include-only',
+        baseRuleForExtensionRule: 'exclude',
+        forcedRuleLevel: 'off',
+      });
+    }
+    return {
       parserOptions: {
         project: false,
         program: null,
         EXPERIMENTAL_useProjectService: false,
       },
-      rules: allRuleEntries.reduce(
-        (config, entry) =>
-          reducer(config, entry, {
-            typeChecked: 'include-only',
-            baseRuleForExtensionRule: 'exclude',
-            forcedRuleLevel: 'off',
-          }),
-        {},
-      ),
-    }),
-    'disable-type-checked',
-  );
+      rules,
+    };
+  }, 'disable-type-checked');
 }
 
 main().catch((error: unknown) => {
