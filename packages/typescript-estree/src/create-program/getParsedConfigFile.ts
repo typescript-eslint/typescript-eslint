@@ -44,7 +44,7 @@ function getParsedConfigFile(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return parsed!;
 
-  function getCurrentDirectory() {
+  function getCurrentDirectory(): string {
     return projectDirectory ? path.resolve(projectDirectory) : process.cwd();
   }
 
