@@ -75,7 +75,8 @@ runs:
       run: |
         if [[ "${{ steps.changed-files.outputs.any_changed }}" == 'true' ]]; then
           echo "Changes detected in any ast-spec files. Prebuild without cache..."
-          npx nx run types:build
+          yarn cache clear
+          yarn build
         else
           echo "No changes detected in any ast-spec files. Proceeding with normal install..."
         fi
