@@ -28,22 +28,13 @@ function typeValidTest(
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return types.map(type => cb(type));
 }
-function nullishTypeValidTest(
+const nullishTypeValidTest = (
   cb: (
     nullish: string,
     type: string,
   ) => TSESLint.ValidTestCase<Options> | string,
-): (TSESLint.ValidTestCase<Options> | string)[] {
-  return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
-    (acc, nullish) => {
-      types.forEach(type => {
-        acc.push(cb(nullish, type));
-      });
-      return acc;
-    },
-    [],
-  );
-}
+): (TSESLint.ValidTestCase<Options> | string)[] =>
+  nullishTypes.flatMap(nullish => types.map(type => cb(nullish, type)));
 function nullishTypeInvalidTest(
   cb: (
     nullish: string,
