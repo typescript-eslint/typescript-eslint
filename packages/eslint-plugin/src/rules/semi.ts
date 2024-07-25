@@ -48,8 +48,20 @@ export default createRule<Options, MessageIds>({
       AST_NODE_TYPES.TSMethodSignature,
       AST_NODE_TYPES.TSPropertySignature,
     */
-      'PropertyDefinition, TSAbstractPropertyDefinition, TSDeclareFunction, TSExportAssignment, TSImportEqualsDeclaration, TSTypeAliasDeclaration, TSEmptyBodyFunctionExpression':
-        rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>,
+      ...Object.fromEntries(
+        [
+          AST_NODE_TYPES.PropertyDefinition,
+          AST_NODE_TYPES.TSAbstractPropertyDefinition,
+          AST_NODE_TYPES.TSDeclareFunction,
+          AST_NODE_TYPES.TSExportAssignment,
+          AST_NODE_TYPES.TSImportEqualsDeclaration,
+          AST_NODE_TYPES.TSTypeAliasDeclaration,
+          AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+        ].map(node => [
+          node,
+          rules.ExpressionStatement as TSESLint.RuleFunction<TSESTree.Node>,
+        ]),
+      ),
       ExportDefaultDeclaration(node): void {
         if (node.declaration.type !== AST_NODE_TYPES.TSInterfaceDeclaration) {
           rules.ExportDefaultDeclaration(node);
