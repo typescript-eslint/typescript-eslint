@@ -8,13 +8,9 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../../src/rules/indent';
-import type {
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
-} from '../../../src/util';
+import type { InferMessageIdsTypeFromRule } from '../../../src/util';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
-type Options = InferOptionsTypeFromRule<typeof rule>;
 
 /**
  * Marks a test case as a plain javascript case which should be indented the same
@@ -23,7 +19,9 @@ function nonTsTestCase(example: TemplateStringsArray): string {
   return [`// Non-TS Test Case`, example].join('\n');
 }
 
-const individualNodeTests = [
+const validCases = [];
+const invalidCases = [];
+for (const testCase of [
   {
     node: AST_NODE_TYPES.ClassDeclaration,
     code: [
@@ -593,63 +591,54 @@ type Foo = string | {
             `,
     ],
   },
-].reduce<TSESLint.RunTests<MessageIds, Options>>(
-  (acc, testCase) => {
-    const indent = '    ';
+]) {
+  const indent = '    ';
 
-    const validCases = [...acc.valid];
-    const invalidCases = [...acc.invalid];
+  const codeCases = testCase.code.map(code =>
+    [
+      '', // newline to make test error messages nicer
+      `// ${testCase.node}`, // add comment to easily identify which node a test belongs to
+      code.trim(), // remove leading/trailing spaces from the case
+    ].join('\n'),
+  );
 
-    const codeCases = testCase.code.map(code =>
-      [
-        '', // newline to make test error messages nicer
-        `// ${testCase.node}`, // add comment to easily identify which node a test belongs to
-        code.trim(), // remove leading/trailing spaces from the case
-      ].join('\n'),
-    );
+  for (const code of codeCases) {
+    // valid test case is just the code
+    validCases.push(code);
 
-    codeCases.forEach(code => {
-      // valid test case is just the code
-      validCases.push(code);
+    const invalid = {
+      // test the fixer by removing all the spaces
+      code: code.replace(new RegExp(indent, 'g'), ''),
+      output: code,
+      errors: code
+        .split('\n')
+        .map<TSESLint.TestCaseError<MessageIds> | null>((line, lineNum) => {
+          const indentCount = line.split(indent).length - 1;
+          const spaceCount = indentCount * indent.length;
 
-      const invalid = {
-        // test the fixer by removing all the spaces
-        code: code.replace(new RegExp(indent, 'g'), ''),
-        output: code,
-        errors: code
-          .split('\n')
-          .map<TSESLint.TestCaseError<MessageIds> | null>((line, lineNum) => {
-            const indentCount = line.split(indent).length - 1;
-            const spaceCount = indentCount * indent.length;
+          if (indentCount < 1) {
+            return null;
+          }
 
-            if (indentCount < 1) {
-              return null;
-            }
-
-            return {
-              messageId: 'wrongIndentation',
-              data: {
-                expected: `${spaceCount} spaces`,
-                actual: 0,
-              },
-              line: lineNum + 1,
-              column: 1,
-            };
-          })
-          .filter(
-            (error): error is TSESLint.TestCaseError<MessageIds> =>
-              error != null,
-          ),
-      };
-      if (invalid.errors.length > 0) {
-        invalidCases.push(invalid);
-      }
-    });
-
-    return { ...acc, valid: validCases, invalid: invalidCases };
-  },
-  { valid: [], invalid: [] },
-);
+          return {
+            messageId: 'wrongIndentation',
+            data: {
+              expected: `${spaceCount} spaces`,
+              actual: 0,
+            },
+            line: lineNum + 1,
+            column: 1,
+          };
+        })
+        .filter(
+          (error): error is TSESLint.TestCaseError<MessageIds> => error != null,
+        ),
+    };
+    if (invalid.errors.length > 0) {
+      invalidCases.push(invalid);
+    }
+  }
+}
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -662,7 +651,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('indent', rule, {
   valid: [
-    ...individualNodeTests.valid,
+    ...validCases,
     `
 @Component({
     components: {
@@ -765,7 +754,7 @@ const div: JQuery<HTMLElement> = $('<div>')
     },
   ],
   invalid: [
-    ...individualNodeTests.invalid,
+    ...invalidCases,
     {
       code: `
 type Foo = {
