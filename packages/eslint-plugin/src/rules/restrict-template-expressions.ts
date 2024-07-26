@@ -1,6 +1,6 @@
 import {
   typeMatchesSomeSpecifier,
-  typeOrValueSpecifierSchema,
+  typeOrValueSpecifiersSchema,
 } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -103,7 +103,7 @@ export default createRule<Options, MessageId>({
           ),
           allow: {
             description: `Types to allow in template expressions.`,
-            ...typeOrValueSpecifierSchema,
+            ...typeOrValueSpecifiersSchema,
           },
         },
       },
