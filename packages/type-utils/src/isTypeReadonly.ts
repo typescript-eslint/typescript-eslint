@@ -7,7 +7,7 @@ import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 import {
   typeMatchesSomeSpecifier,
-  typeOrValueSpecifierSchema,
+  typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
@@ -31,7 +31,7 @@ export const readonlynessOptionsSchema = {
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: typeOrValueSpecifierSchema,
+    allow: typeOrValueSpecifiersSchema,
   },
 } satisfies JSONSchema4;
 

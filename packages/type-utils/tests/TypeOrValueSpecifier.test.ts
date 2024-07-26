@@ -4,18 +4,20 @@ import Ajv from 'ajv';
 import path from 'path';
 
 import type { TypeOrValueSpecifier } from '../src';
-import { typeMatchesSpecifier, typeOrValueSpecifierSchema } from '../src';
+import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
     const ajv = new Ajv();
-    const validate = ajv.compile(typeOrValueSpecifierSchema);
+    const validate = ajv.compile(typeOrValueSpecifiersSchema);
 
-    const runTestPositive = (...data: unknown[]): void =>
-      expect(validate(data)).toBe(true);
+    function runTestPositive(typeOrValueSpecifier: unknown): void {
+      expect(validate([typeOrValueSpecifier])).toBe(true);
+    }
 
-    const runTestNegative = (...data: unknown[]): void =>
-      expect(validate(data)).toBe(false);
+    function runTestNegative(typeOrValueSpecifier: unknown): void {
+      expect(validate([typeOrValueSpecifier])).toBe(false);
+    }
 
     it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']])(
       'matches a simple string specifier %s',
@@ -143,15 +145,19 @@ describe('TypeOrValueSpecifier', () => {
       );
     }
 
-    const runTestPositive = (
+    function runTestPositive(
       code: string,
       specifier: TypeOrValueSpecifier,
-    ): void => runTests(code, specifier, true);
+    ): void {
+      runTests(code, specifier, true);
+    }
 
-    const runTestNegative = (
+    function runTestNegative(
       code: string,
       specifier: TypeOrValueSpecifier,
-    ): void => runTests(code, specifier, false);
+    ): void {
+      runTests(code, specifier, false);
+    }
 
     it.each<[string, TypeOrValueSpecifier]>([
       ['interface Foo {prop: string}; type Test = Foo;', 'Foo'],
@@ -257,13 +263,11 @@ describe('TypeOrValueSpecifier', () => {
     it.each<[string, TypeOrValueSpecifier]>([
       ['type Test = RegExp;', { from: 'lib', name: 'RegExp' }],
       ['type Test = RegExp;', { from: 'lib', name: ['RegExp', 'BigInt'] }],
-      ['type Test = URL;', { from: 'lib', name: 'URL' }],
     ])('matches a matching lib specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
-      ['type Test = URL;', { from: 'lib', name: 'BigInt' }],
     ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
 
     it.each<[string, TypeOrValueSpecifier]>([

@@ -27,7 +27,7 @@ export type TypeOrValueSpecifier =
   | PackageSpecifier
   | string;
 
-export const typeOrValueSpecifierSchema = {
+export const typeOrValueSpecifiersSchema = {
   type: 'array',
   items: {
     oneOf: [
