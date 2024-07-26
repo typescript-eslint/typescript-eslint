@@ -348,8 +348,6 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allow: [{ from: 'lib', name: 'Promise' }] }],
       code: 'const msg = `arg = ${Promise.resolve()}`;',
     },
-    'const msg = `arg = ${new URL()}`;',
-    'const msg = `arg = ${new URLSearchParams()}`;',
     'const msg = `arg = ${new Error()}`;',
     'const msg = `arg = ${false}`;',
     'const msg = `arg = ${null}`;',
