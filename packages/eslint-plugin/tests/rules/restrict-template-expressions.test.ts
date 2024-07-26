@@ -432,7 +432,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [{ messageId: 'invalidType' }],
     },
     {
-      code: 'const msg = `arg = ${new URL()}`;',
+      code: 'const msg = `arg = ${new Error()}`;',
       options: [{ allow: [] }],
       errors: [{ messageId: 'invalidType' }],
     },
