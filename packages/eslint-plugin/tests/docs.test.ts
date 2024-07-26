@@ -437,7 +437,7 @@ describe('Validating rule docs', () => {
               parser: '@typescript-eslint/parser',
               parserOptions: {
                 tsconfigRootDir: rootPath,
-                project: './tsconfig.json',
+                project: './tsconfig-withdom.json',
               },
               rules: {
                 [ruleName]: ruleConfig,

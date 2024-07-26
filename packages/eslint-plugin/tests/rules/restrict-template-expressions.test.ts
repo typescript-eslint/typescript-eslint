@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+    project: './tsconfig-withdom.json',
   },
 });
 
@@ -348,6 +348,8 @@ ruleTester.run('restrict-template-expressions', rule, {
       options: [{ allow: [{ from: 'lib', name: 'Promise' }] }],
       code: 'const msg = `arg = ${Promise.resolve()}`;',
     },
+    'const msg = `arg = ${new URL()}`;',
+    'const msg = `arg = ${new URLSearchParams()}`;',
     'const msg = `arg = ${new Error()}`;',
     'const msg = `arg = ${false}`;',
     'const msg = `arg = ${null}`;',
@@ -432,7 +434,7 @@ ruleTester.run('restrict-template-expressions', rule, {
       errors: [{ messageId: 'invalidType' }],
     },
     {
-      code: 'const msg = `arg = ${new Error()}`;',
+      code: 'const msg = `arg = ${new URL()}`;',
       options: [{ allow: [] }],
       errors: [{ messageId: 'invalidType' }],
     },
