@@ -61,10 +61,15 @@ new Promise<void>(async (resolve, reject) => {
 ~
 
 document.addEventListener('click', async () => {
+                                   ~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
   console.log('synchronous call');
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   await fetch('/');
+~~~~~~~~~~~~~~~~~~~
   console.log('synchronous call');
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
+~
 "
 `;
 
