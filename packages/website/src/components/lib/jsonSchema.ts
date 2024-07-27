@@ -177,31 +177,33 @@ export function getTypescriptOptions(): DescribedOptionDeclaration[] {
  */
 export function getTypescriptJsonSchema(): JSONSchema4 {
   const properties = Object.fromEntries(
-    getTypescriptOptions().flatMap(item => {
-      let value;
-      if (item.type === 'boolean') {
-        value = {
-          type: 'boolean',
-          description: item.description.message,
-        };
-      } else if (item.type === 'list' && item.element?.type instanceof Map) {
-        value = {
-          type: 'array',
-          items: {
+    getTypescriptOptions()
+      .map(item => {
+        let value;
+        if (item.type === 'boolean') {
+          value = {
+            type: 'boolean',
+            description: item.description.message,
+          };
+        } else if (item.type === 'list' && item.element?.type instanceof Map) {
+          value = {
+            type: 'array',
+            items: {
+              type: 'string',
+              enum: Array.from(item.element.type.keys()),
+            },
+            description: item.description.message,
+          };
+        } else if (item.type instanceof Map) {
+          value = {
             type: 'string',
-            enum: Array.from(item.element.type.keys()),
-          },
-          description: item.description.message,
-        };
-      } else if (item.type instanceof Map) {
-        value = {
-          type: 'string',
-          description: item.description.message,
-          enum: Array.from(item.type.keys()),
-        };
-      }
-      return value ? [[item.name, value]] : [];
-    }),
+            description: item.description.message,
+            enum: Array.from(item.type.keys()),
+          };
+        }
+        return [item.name, value] as const;
+      })
+      .filter(([, value]) => value),
   );
 
   return {
