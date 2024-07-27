@@ -28,14 +28,14 @@ function typeValidTest(
 ): (TSESLint.ValidTestCase<Options> | string)[] {
   return types.map(type => cb(type));
 }
-const nullishTypeTest = <
+function nullishTypeTest<
   T extends
     | TSESLint.ValidTestCase<Options>
     | TSESLint.InvalidTestCase<MessageIds, Options>
     | string,
->(
-  cb: (nullish: string, type: string) => T,
-): T[] => nullishTypes.flatMap(nullish => types.map(type => cb(nullish, type)));
+>(cb: (nullish: string, type: string) => T): T[] {
+  return nullishTypes.flatMap(nullish => types.map(type => cb(nullish, type)));
+}
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
   valid: [

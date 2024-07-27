@@ -23,24 +23,27 @@ export function deepMerge(
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 
   return Object.fromEntries(
-    Array.from(keys).map(key => {
+    Array.from(keys, key => {
       const firstHasKey = key in first;
       const secondHasKey = key in second;
       const firstValue = first[key];
       const secondValue = second[key];
 
-      return [
-        key,
-        firstHasKey && secondHasKey
-          ? isObjectNotArray(firstValue) && isObjectNotArray(secondValue)
-            ? // object type
-              deepMerge(firstValue, secondValue)
-            : // value type
-              secondValue
-          : firstHasKey
-            ? firstValue
-            : secondValue,
-      ];
+      let value;
+      if (firstHasKey && secondHasKey) {
+        if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
+          // object type
+          value = deepMerge(firstValue, secondValue);
+        } else {
+          // value type
+          value = secondValue;
+        }
+      } else if (firstHasKey) {
+        value = firstValue;
+      } else {
+        value = secondValue;
+      }
+      return [key, value];
     }),
   );
 }

@@ -45,7 +45,7 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
     return compilerOptions.lib.flatMap(lib => {
       const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
       return match ? (match[1] as Lib) : [];
-    }, []);
+    });
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;

@@ -128,8 +128,8 @@ async function main(): Promise<void> {
   const totalDonationsById: Record<string, number> = {};
   for (const member of collective.members.nodes) {
     const name = member.account.name || member.account.id;
-    totalDonationsById[name] =
-      (totalDonationsById[name] ?? 0) + member.totalDonations.valueInCents;
+    totalDonationsById[name] ||= 0;
+    totalDonationsById[name] += member.totalDonations.valueInCents;
   }
 
   const uniqueNames = new Set<string>(excludedNames);
