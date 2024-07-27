@@ -119,9 +119,9 @@ async function main(): Promise<void> {
   ]);
 
   const accountsById = Object.fromEntries(
-    account.orders.nodes.map(account => [
-      account.fromAccount.name || account.fromAccount.id,
-      account.fromAccount,
+    account.orders.nodes.map(order => [
+      order.fromAccount.name || order.fromAccount.id,
+      order.fromAccount,
     ]),
   );
 
