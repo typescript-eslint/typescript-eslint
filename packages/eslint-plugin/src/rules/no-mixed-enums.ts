@@ -170,18 +170,15 @@ export default createRule({
           .getSymbolAtLocation(tsNode)!
           .getDeclarations()!;
 
-        for (const declaration of declarations) {
-          for (const member of (declaration as ts.EnumDeclaration).members) {
-            return member.initializer
-              ? tsutils.isTypeFlagSet(
-                  typeChecker.getTypeAtLocation(member.initializer),
-                  ts.TypeFlags.StringLike,
-                )
-                ? AllowedType.String
-                : AllowedType.Number
-              : AllowedType.Number;
-          }
-        }
+        const [{ initializer }] = (declarations[0] as ts.EnumDeclaration)
+          .members;
+        return initializer &&
+          tsutils.isTypeFlagSet(
+            typeChecker.getTypeAtLocation(initializer),
+            ts.TypeFlags.StringLike,
+          )
+          ? AllowedType.String
+          : AllowedType.Number;
       }
 
       // Finally, we default to the type of the first enum member

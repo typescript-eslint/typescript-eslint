@@ -219,50 +219,44 @@ function getFixer(
   ) {
     // user has opted-in to the unsafe behavior
     useSuggestionFixer = false;
+  }
+  // optional chain specifically will union `undefined` into the final type
+  // so we need to make sure that there is at least one operand that includes
+  // `undefined`, or else we're going to change the final type - which is
+  // unsafe and might cause downstream type errors.
+  else if (
+    lastOperand.comparisonType === NullishComparisonType.EqualNullOrUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotEqualNullOrUndefined ||
+    lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotStrictEqualUndefined ||
+    (operator === '||' &&
+      lastOperand.comparisonType === NullishComparisonType.NotBoolean)
+  ) {
+    // we know the last operand is an equality check - so the change in types
+    // DOES NOT matter and will not change the runtime result or cause a type
+    // check error
+    useSuggestionFixer = false;
   } else {
-    // optional chain specifically will union `undefined` into the final type
-    // so we need to make sure that there is at least one operand that includes
-    // `undefined`, or else we're going to change the final type - which is
-    // unsafe and might cause downstream type errors.
+    useSuggestionFixer = true;
 
-    if (
-      lastOperand.comparisonType ===
-        NullishComparisonType.EqualNullOrUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.NotEqualNullOrUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.StrictEqualUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.NotStrictEqualUndefined ||
-      (operator === '||' &&
-        lastOperand.comparisonType === NullishComparisonType.NotBoolean)
-    ) {
-      // we know the last operand is an equality check - so the change in types
-      // DOES NOT matter and will not change the runtime result or cause a type
-      // check error
-      useSuggestionFixer = false;
-    } else {
-      useSuggestionFixer = true;
-
-      for (const operand of chain) {
-        if (
-          includesType(parserServices, operand.node, ts.TypeFlags.Undefined)
-        ) {
-          useSuggestionFixer = false;
-          break;
-        }
+    for (const operand of chain) {
+      if (includesType(parserServices, operand.node, ts.TypeFlags.Undefined)) {
+        useSuggestionFixer = false;
+        break;
       }
-
-      // TODO - we could further reduce the false-positive rate of this check by
-      //        checking for cases where the change in types don't matter like
-      //        the test location of an if/while/etc statement.
-      //        but it's quite complex to do this without false-negatives, so
-      //        for now we'll just be over-eager with our matching.
-      //
-      //        it's MUCH better to false-positive here and only provide a
-      //        suggestion fixer, rather than false-negative and autofix to
-      //        broken code.
     }
+
+    // TODO - we could further reduce the false-positive rate of this check by
+    //        checking for cases where the change in types don't matter like
+    //        the test location of an if/while/etc statement.
+    //        but it's quite complex to do this without false-negatives, so
+    //        for now we'll just be over-eager with our matching.
+    //
+    //        it's MUCH better to false-positive here and only provide a
+    //        suggestion fixer, rather than false-negative and autofix to
+    //        broken code.
   }
 
   // In its most naive form we could just slap `?.` for every single part of the
