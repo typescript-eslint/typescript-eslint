@@ -452,9 +452,8 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length === 0,
-                  `Expected not to contain lint errors (with skipValidation):\n${
-                    token.value
-                  }`,
+                  `Expected not to contain lint errors (with skipValidation):
+${token.value}`,
                 );
               } else {
                 assert.ok(
