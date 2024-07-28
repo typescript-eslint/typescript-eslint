@@ -1,3 +1,73 @@
+## 7.17.0 (2024-07-22)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** backport no-unsafe-function type, no-wrapper-object-types from v8 to v7 ([#9507](https://github.com/typescript-eslint/typescript-eslint/pull/9507))
+- **eslint-plugin:** [return-await] add option to report in error-handling scenarios only, and deprecate "never" ([#9364](https://github.com/typescript-eslint/typescript-eslint/pull/9364))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] check top-level type assertions (and more) ([#9043](https://github.com/typescript-eslint/typescript-eslint/pull/9043))
+- **eslint-plugin:** [strict-boolean-expressions] consider assertion function argument a boolean context ([#9074](https://github.com/typescript-eslint/typescript-eslint/pull/9074))
+- **eslint-plugin:** [no-unnecessary-condition] false positive on optional private field ([#9602](https://github.com/typescript-eslint/typescript-eslint/pull/9602))
+- **typescript-estree:** don't infer single-run when --fix is in proces.argv ([#9577](https://github.com/typescript-eslint/typescript-eslint/pull/9577))
+- **typescript-estree:** disable single-run inference with extraFileExtensions ([#9580](https://github.com/typescript-eslint/typescript-eslint/pull/9580))
+- **website:** expose ATA types to eslint instance ([#9598](https://github.com/typescript-eslint/typescript-eslint/pull/9598))
+
+### ❤️  Thank You
+
+- Armano @armano2
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- StyleShit @StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.16.1 (2024-07-15)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] descend into all parts of mapped types in no-unnecessary-type-parameters ([#9530](https://github.com/typescript-eslint/typescript-eslint/pull/9530))
+
+### ❤️  Thank You
+
+- Dan Vanderkam @danvk
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.16.0 (2024-07-08)
+
+
+### 🚀 Features
+
+- **ast-spec:** add parent property to AccessorProperty node types ([#9487](https://github.com/typescript-eslint/typescript-eslint/pull/9487))
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] add new rule ([#8903](https://github.com/typescript-eslint/typescript-eslint/pull/8903))
+- **eslint-plugin:** add support for nested namespaces to unsafe-member-access ([#9478](https://github.com/typescript-eslint/typescript-eslint/pull/9478))
+- **eslint-plugin:** [no-floating-promises] add checkThenables option ([#9263](https://github.com/typescript-eslint/typescript-eslint/pull/9263))
+- **rule-tester:** stricter rule test validations ([#9086](https://github.com/typescript-eslint/typescript-eslint/pull/9086))
+
+### 🩹 Fixes
+
+- **deps:** update dependency @eslint-community/regexpp to v4.11.0 ([#9497](https://github.com/typescript-eslint/typescript-eslint/pull/9497))
+- **eslint-plugin:** [no-floating-promises] add `suggestions` to tests from #9263 `checkThenables` ([#9515](https://github.com/typescript-eslint/typescript-eslint/pull/9515), [#9263](https://github.com/typescript-eslint/typescript-eslint/issues/9263))
+- **eslint-plugin:** [restrict-template-expressions] don't report tuples if `allowArray` option is enabled ([#9492](https://github.com/typescript-eslint/typescript-eslint/pull/9492))
+- **utils:** context.parserPath may be undefined ([#9486](https://github.com/typescript-eslint/typescript-eslint/pull/9486))
+- **website:** react key error on internal pages of website ([#9506](https://github.com/typescript-eslint/typescript-eslint/pull/9506))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Josh Goldberg ✨
+- Juan Sanchez @JSanchezIO
+- Vinccool96
+- YeonJuan @yeonjuan
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.15.0 (2024-07-01)
 
 

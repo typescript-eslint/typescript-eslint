@@ -303,6 +303,6 @@ export default createRule<Options, MessageIds>({
         }
       },
     };
-    return Object.assign({}, rules, overrides);
+    return { ...rules, ...overrides };
   },
 });

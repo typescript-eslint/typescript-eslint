@@ -181,16 +181,17 @@ export default createRule<Options, MessageIds>({
       } as TSESTree.PropertyDefinition;
     }
 
-    return Object.assign({}, rules, {
+    return {
+      ...rules,
       // overwrite the base rule here so we can use our KNOWN_NODES list instead
-      '*:exit'(node: TSESTree.Node) {
+      '*:exit'(node: TSESTree.Node): void {
         // For nodes we care about, skip the default handling, because it just marks the node as ignored...
         if (!KNOWN_NODES.has(node.type)) {
           rules['*:exit'](node);
         }
       },
 
-      VariableDeclaration(node: TSESTree.VariableDeclaration) {
+      VariableDeclaration(node: TSESTree.VariableDeclaration): void {
         // https://github.com/typescript-eslint/typescript-eslint/issues/441
         if (node.declarations.length === 0) {
           return;
@@ -199,7 +200,7 @@ export default createRule<Options, MessageIds>({
         return rules.VariableDeclaration(node);
       },
 
-      TSAsExpression(node: TSESTree.TSAsExpression) {
+      TSAsExpression(node: TSESTree.TSAsExpression): void {
         // transform it to a BinaryExpression
         return rules['BinaryExpression, LogicalExpression']({
           type: AST_NODE_TYPES.BinaryExpression,
@@ -215,7 +216,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSConditionalType(node: TSESTree.TSConditionalType) {
+      TSConditionalType(node: TSESTree.TSConditionalType): void {
         // transform it to a ConditionalExpression
         return rules.ConditionalExpression({
           type: AST_NODE_TYPES.ConditionalExpression,
@@ -245,7 +246,7 @@ export default createRule<Options, MessageIds>({
 
       'TSEnumDeclaration, TSTypeLiteral'(
         node: TSESTree.TSEnumDeclaration | TSESTree.TSTypeLiteral,
-      ) {
+      ): void {
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
           type: AST_NODE_TYPES.ObjectExpression,
@@ -263,7 +264,9 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSImportEqualsDeclaration(node: TSESTree.TSImportEqualsDeclaration) {
+      TSImportEqualsDeclaration(
+        node: TSESTree.TSImportEqualsDeclaration,
+      ): void {
         // transform it to an VariableDeclaration
         // use VariableDeclaration instead of ImportDeclaration because it's essentially the same thing
         const { id, moduleReference } = node;
@@ -317,7 +320,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSIndexedAccessType(node: TSESTree.TSIndexedAccessType) {
+      TSIndexedAccessType(node: TSESTree.TSIndexedAccessType): void {
         // convert to a MemberExpression
         return rules['MemberExpression, JSXMemberExpression, MetaProperty']({
           type: AST_NODE_TYPES.MemberExpression,
@@ -333,7 +336,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSInterfaceBody(node: TSESTree.TSInterfaceBody) {
+      TSInterfaceBody(node: TSESTree.TSInterfaceBody): void {
         // transform it to an ClassBody
         return rules['BlockStatement, ClassBody']({
           type: AST_NODE_TYPES.ClassBody,
@@ -354,7 +357,7 @@ export default createRule<Options, MessageIds>({
 
       'TSInterfaceDeclaration[extends.length > 0]'(
         node: TSESTree.TSInterfaceDeclaration,
-      ) {
+      ): void {
         // transform it to a ClassDeclaration
         return rules[
           'ClassDeclaration[superClass], ClassExpression[superClass]'
@@ -379,7 +382,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSMappedType(node: TSESTree.TSMappedType) {
+      TSMappedType(node: TSESTree.TSMappedType): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const squareBracketStart = context.sourceCode.getTokenBefore(
           node.typeParameter,
@@ -423,7 +426,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSModuleBlock(node: TSESTree.TSModuleBlock) {
+      TSModuleBlock(node: TSESTree.TSModuleBlock): void {
         // transform it to a BlockStatement
         return rules['BlockStatement, ClassBody']({
           type: AST_NODE_TYPES.BlockStatement,
@@ -436,7 +439,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSQualifiedName(node: TSESTree.TSQualifiedName) {
+      TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         return rules['MemberExpression, JSXMemberExpression, MetaProperty']({
           type: AST_NODE_TYPES.MemberExpression,
           object: node.left as any,
@@ -451,7 +454,7 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSTupleType(node: TSESTree.TSTupleType) {
+      TSTupleType(node: TSESTree.TSTupleType): void {
         // transform it to an ArrayExpression
         return rules['ArrayExpression, ArrayPattern']({
           type: AST_NODE_TYPES.ArrayExpression,
@@ -464,7 +467,9 @@ export default createRule<Options, MessageIds>({
         });
       },
 
-      TSTypeParameterDeclaration(node: TSESTree.TSTypeParameterDeclaration) {
+      TSTypeParameterDeclaration(
+        node: TSESTree.TSTypeParameterDeclaration,
+      ): void {
         if (!node.params.length) {
           return;
         }
@@ -487,6 +492,6 @@ export default createRule<Options, MessageIds>({
           loc: node.loc,
         });
       },
-    });
+    };
   },
 });

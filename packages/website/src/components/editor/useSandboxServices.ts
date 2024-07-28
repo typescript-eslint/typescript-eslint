@@ -81,6 +81,24 @@ export const useSandboxServices = (
 
         const system = createFileSystem(props, sandboxInstance.tsvfs);
 
+        // Write files in vfs when a model is created in the editor (this is used only for ATA types)
+        sandboxInstance.monaco.editor.onDidCreateModel(model => {
+          if (!model.uri.path.includes('node_modules')) {
+            return;
+          }
+          const path = model.uri.path.replace('/file:///', '/');
+          system.writeFile(path, model.getValue());
+        });
+        // Delete files in vfs when a model is disposed in the editor (this is used only for ATA types)
+        sandboxInstance.monaco.editor.onWillDisposeModel(model => {
+          if (!model.uri.path.includes('node_modules')) {
+            return;
+          }
+          const path = model.uri.path.replace('/file:///', '/');
+          system.deleteFile(path);
+        });
+
+        // Load the lib files from typescript to vfs (eg. es2020.d.ts)
         const worker = await sandboxInstance.getWorkerProcess();
         if (worker.getLibFiles) {
           const libs = await worker.getLibFiles();
