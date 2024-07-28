@@ -1,11 +1,11 @@
 import debug from 'debug';
-import * as fs from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
+import { getParsedConfigFile } from './getParsedConfigFile';
 import type { ASTAndDefiniteProgram } from './shared';
-import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
+import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
@@ -60,44 +60,9 @@ function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.Program {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (ts.sys === undefined) {
-    throw new Error(
-      '`createProgramFromConfigFile` is only supported in a Node-like environment.',
-    );
-  }
-
-  const parsed = ts.getParsedCommandLineOfConfigFile(
-    configFile,
-    CORE_COMPILER_OPTIONS,
-    {
-      onUnRecoverableConfigFileDiagnostic: diag => {
-        throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
-      },
-      fileExists: fs.existsSync,
-      getCurrentDirectory: () =>
-        (projectDirectory && path.resolve(projectDirectory)) || process.cwd(),
-      readDirectory: ts.sys.readDirectory,
-      readFile: file => fs.readFileSync(file, 'utf-8'),
-      useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
-    },
-  );
-  // parsed is not undefined, since we throw on failure.
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const result = parsed!;
-  if (result.errors.length) {
-    throw new Error(formatDiagnostics(result.errors));
-  }
-  const host = ts.createCompilerHost(result.options, true);
-  return ts.createProgram(result.fileNames, result.options, host);
-}
-
-function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
-  return ts.formatDiagnostics(diagnostics, {
-    getCanonicalFileName: f => f,
-    getCurrentDirectory: process.cwd,
-    getNewLine: () => '\n',
-  });
+  const parsed = getParsedConfigFile(ts, configFile, projectDirectory);
+  const host = ts.createCompilerHost(parsed.options, true);
+  return ts.createProgram(parsed.fileNames, parsed.options, host);
 }
 
 export { useProvidedPrograms, createProgramFromConfigFile };
