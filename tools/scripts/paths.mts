@@ -1,9 +1,8 @@
 import path from 'node:path';
-import url from 'node:url';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+import { workspaceRoot } from '@nx/devkit';
 
-export const REPO_ROOT = path.resolve(__dirname, '..', '..', '..');
+export const REPO_ROOT = workspaceRoot;
 export const PACKAGES = path.join(REPO_ROOT, 'packages');
 
 export const PACKAGES_ESLINT_PLUGIN = path.join(PACKAGES, 'eslint-plugin');

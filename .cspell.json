@@ -83,6 +83,7 @@
     "destructures",
     "discoverability",
     "dprint",
+    "dummypkg",
     "errored",
     "erroring",
     "ESLint",
