@@ -508,6 +508,14 @@ foo(bar);
       },
       options: [{ checksVoidReturn: { attributes: true } }],
     },
+    `
+      const notAFn1: string = '';
+      const notAFn2: number = 1;
+      const notAFn3: boolean = true;
+      const notAFn4: { prop: 1 } = { prop: 1 };
+      const notAFn5: {} = {};
+      const notAFn5: {} = {};
+    `,
   ],
 
   invalid: [

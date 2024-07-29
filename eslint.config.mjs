@@ -53,6 +53,8 @@ export default tseslint.config(
   {
     // config with just ignores is the replacement for `.eslintignore`
     ignores: [
+      '.nx/',
+      '.yarn/',
       '**/jest.config.js',
       '**/node_modules/**',
       '**/dist/**',
@@ -66,9 +68,9 @@ export default tseslint.config(
       // Files copied as part of the build
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
-      'packages/website/src/vendor',
+      'packages/website/src/vendor/',
       // see the file header in eslint-base.test.js for more info
-      'packages/rule-tester/tests/eslint-base',
+      'packages/rule-tester/tests/eslint-base/',
     ],
   },
 
