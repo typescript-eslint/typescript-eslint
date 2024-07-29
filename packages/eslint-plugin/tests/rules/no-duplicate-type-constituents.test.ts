@@ -73,6 +73,9 @@ ruleTester.run('no-duplicate-type-constituents', rule, {
       code: 'type T = (arg: string | number) => void;',
     },
     {
+      code: 'type T = A | A;',
+    },
+    {
       code: `
 type A = 'A';
 type B = 'B';
@@ -149,6 +152,12 @@ type T = Record<string, A | B>;
           ignoreIntersections: true,
         },
       ],
+    },
+    {
+      code: 'type T = Class<string> | Class<string>;',
+    },
+    {
+      code: 'type T = A | A | string;',
     },
   ],
   invalid: [
@@ -271,19 +280,6 @@ type ActuallyDuplicated = IsArray<number>  ;
           data: {
             type: 'Union',
             previous: 'IsArray<number>',
-          },
-        },
-      ],
-    },
-    {
-      code: 'type T = Class<string> | Class<string>;',
-      output: `type T = Class<string>  ;`,
-      errors: [
-        {
-          messageId: 'duplicate',
-          data: {
-            type: 'Union',
-            previous: 'Class<string>',
           },
         },
       ],
@@ -660,6 +656,19 @@ type T = Record<string, A  >;
           data: {
             type: 'Union',
             previous: 'A',
+          },
+        },
+      ],
+    },
+    {
+      code: 'type T = A | A | string | string;',
+      output: 'type T = A | A | string  ;',
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type: 'Union',
+            previous: 'string',
           },
         },
       ],

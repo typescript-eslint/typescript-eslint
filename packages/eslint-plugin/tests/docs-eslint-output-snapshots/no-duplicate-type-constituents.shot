@@ -6,8 +6,8 @@ exports[`Validating rule docs no-duplicate-type-constituents.mdx code examples E
 type T1 = 'A' | 'A';
                 ~~~ Union type constituent is duplicated with 'A'.
 
-type T2 = A | A | B;
-              ~ Union type constituent is duplicated with A.
+type T2 = string | string | number;
+                   ~~~~~~ Union type constituent is duplicated with string.
 
 type T3 = { a: string } & { a: string };
                           ~~~~~~~~~~~~~ Intersection type constituent is duplicated with { a: string }.
@@ -27,7 +27,7 @@ exports[`Validating rule docs no-duplicate-type-constituents.mdx code examples E
 
 type T1 = 'A' | 'B';
 
-type T2 = A | B | C;
+type T2 = string | number | boolean;
 
 type T3 = { a: string } & { b: string };
 
