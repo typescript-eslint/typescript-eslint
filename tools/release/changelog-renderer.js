@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 // @ts-check
 const {
   default: defaultChangelogRenderer,
