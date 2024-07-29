@@ -153,6 +153,12 @@ type T = Record<string, A | B>;
         },
       ],
     },
+    {
+      code: 'type T = Class<string> | Class<string>;',
+    },
+    {
+      code: 'type T = A | A | string;',
+    },
   ],
   invalid: [
     {
@@ -650,6 +656,19 @@ type T = Record<string, A  >;
           data: {
             type: 'Union',
             previous: 'A',
+          },
+        },
+      ],
+    },
+    {
+      code: 'type T = A | A | string | string;',
+      output: 'type T = A | A | string  ;',
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type: 'Union',
+            previous: 'string',
           },
         },
       ],
