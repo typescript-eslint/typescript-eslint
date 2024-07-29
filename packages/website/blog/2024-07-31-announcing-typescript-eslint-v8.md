@@ -445,69 +445,6 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
 
 </details>
 
-<details>
-<summary>Code that generated those diffs</summary>
-
-```json title="package.json"
-{
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin-7": "npm:@typescript-eslint/eslint-plugin@7",
-    "@typescript-eslint/eslint-plugin-8": "npm:@typescript-eslint/eslint-plugin@rc-v8"
-  },
-  "type": "module"
-}
-```
-
-```js
-import tseslint7 from '@typescript-eslint/eslint-plugin-7';
-import tseslint8 from '@typescript-eslint/eslint-plugin-8';
-
-function createDiffPatch(v7, v8) {
-  const v7Keys = new Set(Object.keys(v7));
-  const v8Keys = new Set(Object.keys(v8));
-  const output = ['{'];
-
-  for (const key of Array.from(new Set([...v7Keys, ...v8Keys])).sort((a, b) =>
-    trimSlash(a).localeCompare(trimSlash(b)),
-  )) {
-    const prefix = v7Keys.has(key) ? (v8Keys.has(key) ? ' ' : '-') : '+';
-
-    output.push(`${prefix}  '${key}': '...',`);
-  }
-
-  output.push('}');
-
-  return output.join('\n');
-}
-
-function trimSlash(text) {
-  return text.startsWith('@typescript-eslint/')
-    ? text.slice('@typescript-eslint/'.length)
-    : text;
-}
-
-const configNames = [
-  'recommended',
-  'recommended-type-checked',
-  'strict',
-  'strict-type-checked',
-  'stylistic',
-  'stylistic-type-checked',
-];
-
-for (const configName of configNames) {
-  console.log(configName);
-  console.log(
-    createDiffPatch(
-      tseslint7.configs[configName].rules,
-      tseslint8.configs[configName].rules,
-    ),
-  );
-}
-```
-
-</details>
-
 <!-- markdownlint-enable MD033 -->
 
 ### Rule Breaking Changes
