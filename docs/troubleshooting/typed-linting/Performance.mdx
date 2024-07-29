@@ -11,6 +11,19 @@ As mentioned in the [type-aware linting doc](../../getting-started/Typed_Linting
 
 If you're experiencing times much slower than that, then there are a few common culprits.
 
+## Slow TypeScript Types
+
+Running typed linting on a project is generally as slow as type checking that same project.
+If TypeScript's type checker runs slowly on your project, then typed linting will as well.
+
+The [TypeScript Wiki's Performance page](https://github.com/microsoft/TypeScript/wiki/Performance) includes general performance tips and steps to investigate slow type checking.
+In particular for typed linting:
+
+- [Investigating Issues](https://github.com/microsoft/TypeScript/wiki/Performance#investigating-issues) can spot slow types and type checking:
+  - [Running `tsc` alone](https://github.com/microsoft/TypeScript/wiki/Performance#running-tsc-alone) should provide a baseline for your full project's type checking speed.
+  - [Performance Tracing](https://github.com/microsoft/TypeScript/wiki/Performance#performance-tracing) can spotlight specific slow types within your project.
+- [Using Project References](https://github.com/microsoft/TypeScript/wiki/Performance#using-project-references) -which requires enabling the [new "project service" (`parserOptions.projectService`) in v8](/blog/announcing-typescript-eslint-v8-beta#project-service)- can be helpful to speed up type checking on larger projects.
+
 ## Wide includes in your `tsconfig`
 
 When using type-aware linting, you provide us with one or more tsconfigs.
@@ -30,7 +43,7 @@ Instead of globs that use `**` to recursively check all folders, prefer paths th
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';

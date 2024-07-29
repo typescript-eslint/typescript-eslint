@@ -59,14 +59,6 @@
       "options": {
         "jestConfig": "packages/scope-manager/jest.config.js"
       }
-    },
-    "generate-lib": {
-      "executor": "nx:run-commands",
-      "options": {
-        "parallel": false,
-        "cwd": "packages/repo-tools",
-        "commands": ["yarn generate-lib"]
-      }
     }
   }
 }

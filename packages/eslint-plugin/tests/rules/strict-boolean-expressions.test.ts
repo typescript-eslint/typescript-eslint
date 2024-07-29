@@ -410,6 +410,139 @@ if (y) {
         },
       ],
     },
+    `
+declare function assert(a: number, b: unknown): asserts a;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    `
+declare function assert(a: boolean, b: unknown): asserts b is string;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    // Intentional TS error - cannot assert a parameter in a binding pattern.
+    `
+declare function assert(a: boolean, b: unknown): asserts b;
+declare function assert(a: boolean, { b }: { b: unknown }): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(nullableString, boo);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(...nullableString, nullableString);
+    `,
+    `
+declare function assert(
+  this: object,
+  a: number,
+  b?: unknown,
+  c?: unknown,
+): asserts c;
+declare const nullableString: string | null;
+declare const foo: number;
+const o: { assert: typeof assert } = {
+  assert,
+};
+o.assert(foo, nullableString);
+    `,
+    {
+      code: `
+declare function assert(x: unknown): x is string;
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+    },
+    {
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+declare const lol: string | number | unknown | null;
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(lol);
+      `,
+    },
+    {
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(...args: any[]): void;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+    },
+    // Intentional TS error - A rest parameter must be last in a parameter list.
+    // This is just to test that we don't crash or falsely report.
+    `
+declare function assert(...a: boolean[], b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    // Intentional TS error - A type predicate cannot reference a rest parameter.
+    // This is just to test that we don't crash or falsely report.
+    `
+declare function assert(a: boolean, ...b: unknown[]): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    // Intentional TS error - An assertion function must have a parameter to assert.
+    // This is just to test that we don't crash or falsely report.
+    `
+declare function assert(): asserts x;
+declare const nullableString: string | null;
+assert(nullableString);
+    `,
+    `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString);
+assert('one', nullableString);
+    `,
+    // Intentional use of `any` to test a function call with no call signatures.
+    `
+declare const assert: any;
+declare const nullableString: string | null;
+assert(nullableString);
+    `,
+    // Coverage for absent "test expression".
+    // Ensure that no crash or false positive occurs
+    `
+      for (let x = 0; ; x++) {
+        break;
+      }
+    `,
   ],
 
   invalid: [
@@ -523,9 +656,49 @@ if (y) {
       code: "'asd' && 123 && [] && null;",
       output: null,
       errors: [
-        { messageId: 'conditionErrorString', line: 1, column: 1 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
-        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "('asd'.length > 0) && 123 && [] && null;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '(\'asd\' !== "") && 123 && [] && null;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "(Boolean('asd')) && 123 && [] && null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "'asd' && (123 !== 0) && [] && null;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "'asd' && (!Number.isNaN(123)) && [] && null;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "'asd' && (Boolean(123)) && [] && null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 17,
+        },
       ],
     },
     {
@@ -533,9 +706,49 @@ if (y) {
       code: "'asd' || 123 || [] || null;",
       output: null,
       errors: [
-        { messageId: 'conditionErrorString', line: 1, column: 1 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
-        { messageId: 'conditionErrorObject', line: 1, column: 17 },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "('asd'.length > 0) || 123 || [] || null;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: '(\'asd\' !== "") || 123 || [] || null;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "(Boolean('asd')) || 123 || [] || null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "'asd' || (123 !== 0) || [] || null;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "'asd' || (!Number.isNaN(123)) || [] || null;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "'asd' || (Boolean(123)) || [] || null;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 17,
+        },
       ],
     },
     {
@@ -543,11 +756,91 @@ if (y) {
       code: "let x = (1 && 'a' && null) || 0 || '' || {};",
       output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 10 },
-        { messageId: 'conditionErrorString', line: 1, column: 15 },
-        { messageId: 'conditionErrorNullish', line: 1, column: 22 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 31 },
-        { messageId: 'conditionErrorString', line: 1, column: 36 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "let x = ((1 !== 0) && 'a' && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "let x = ((!Number.isNaN(1)) && 'a' && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = ((Boolean(1)) && 'a' && null) || 0 || '' || {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 15,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "let x = (1 && ('a'.length > 0) && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "let x = (1 && ('a' !== \"\") && null) || 0 || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = (1 && (Boolean('a')) && null) || 0 || '' || {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 22,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 31,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "let x = (1 && 'a' && null) || (0 !== 0) || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "let x = (1 && 'a' && null) || (!Number.isNaN(0)) || '' || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = (1 && 'a' && null) || (Boolean(0)) || '' || {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 36,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "let x = (1 && 'a' && null) || 0 || (''.length > 0) || {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "let x = (1 && 'a' && null) || 0 || ('' !== \"\") || {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "let x = (1 && 'a' && null) || 0 || (Boolean('')) || {};",
+            },
+          ],
+        },
       ],
     },
     {
@@ -555,11 +848,91 @@ if (y) {
       code: "return (1 || 'a' || null) && 0 && '' && {};",
       output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 9 },
-        { messageId: 'conditionErrorString', line: 1, column: 14 },
-        { messageId: 'conditionErrorNullish', line: 1, column: 21 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 30 },
-        { messageId: 'conditionErrorString', line: 1, column: 35 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "return ((1 !== 0) || 'a' || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "return ((!Number.isNaN(1)) || 'a' || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return ((Boolean(1)) || 'a' || null) && 0 && '' && {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 14,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "return (1 || ('a'.length > 0) || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "return (1 || ('a' !== \"\") || null) && 0 && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return (1 || (Boolean('a')) || null) && 0 && '' && {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 21,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 30,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "return (1 || 'a' || null) && (0 !== 0) && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "return (1 || 'a' || null) && (!Number.isNaN(0)) && '' && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return (1 || 'a' || null) && (Boolean(0)) && '' && {};",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 35,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "return (1 || 'a' || null) && 0 && (''.length > 0) && {};",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: "return (1 || 'a' || null) && 0 && ('' !== \"\") && {};",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return (1 || 'a' || null) && 0 && (Boolean('')) && {};",
+            },
+          ],
+        },
       ],
     },
     {
@@ -567,9 +940,49 @@ if (y) {
       code: "console.log((1 && []) || ('a' && {}));",
       output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 14 },
-        { messageId: 'conditionErrorObject', line: 1, column: 19 },
-        { messageId: 'conditionErrorString', line: 1, column: 27 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 14,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "console.log(((1 !== 0) && []) || ('a' && {}));",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "console.log(((!Number.isNaN(1)) && []) || ('a' && {}));",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "console.log(((Boolean(1)) && []) || ('a' && {}));",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 19,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 27,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "console.log((1 && []) || (('a'.length > 0) && {}));",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: 'console.log((1 && []) || ((\'a\' !== "") && {}));',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "console.log((1 && []) || ((Boolean('a')) && {}));",
+            },
+          ],
+        },
       ],
     },
 
@@ -579,10 +992,54 @@ if (y) {
       code: "if ((1 && []) || ('a' && {})) void 0;",
       output: null,
       errors: [
-        { messageId: 'conditionErrorNumber', line: 1, column: 6 },
-        { messageId: 'conditionErrorObject', line: 1, column: 11 },
-        { messageId: 'conditionErrorString', line: 1, column: 19 },
-        { messageId: 'conditionErrorObject', line: 1, column: 26 },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 6,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "if (((1 !== 0) && []) || ('a' && {})) void 0;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "if (((!Number.isNaN(1)) && []) || ('a' && {})) void 0;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "if (((Boolean(1)) && []) || ('a' && {})) void 0;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 11,
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 19,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "if ((1 && []) || (('a'.length > 0) && {})) void 0;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: 'if ((1 && []) || ((\'a\' !== "") && {})) void 0;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "if ((1 && []) || ((Boolean('a')) && {})) void 0;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 26,
+        },
       ],
     },
     {
@@ -590,10 +1047,60 @@ if (y) {
       code: "let x = null || 0 || 'a' || [] ? {} : undefined;",
       output: null,
       errors: [
-        { messageId: 'conditionErrorNullish', line: 1, column: 9 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 17 },
-        { messageId: 'conditionErrorString', line: 1, column: 22 },
-        { messageId: 'conditionErrorObject', line: 1, column: 29 },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 9,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 17,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output:
+                "let x = null || (0 !== 0) || 'a' || [] ? {} : undefined;",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output:
+                "let x = null || (!Number.isNaN(0)) || 'a' || [] ? {} : undefined;",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                "let x = null || (Boolean(0)) || 'a' || [] ? {} : undefined;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 22,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output:
+                "let x = null || 0 || ('a'.length > 0) || [] ? {} : undefined;",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output:
+                'let x = null || 0 || (\'a\' !== "") || [] ? {} : undefined;',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                "let x = null || 0 || (Boolean('a')) || [] ? {} : undefined;",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 29,
+        },
       ],
     },
     {
@@ -601,10 +1108,54 @@ if (y) {
       code: "return !(null || 0 || 'a' || []);",
       output: null,
       errors: [
-        { messageId: 'conditionErrorNullish', line: 1, column: 10 },
-        { messageId: 'conditionErrorNumber', line: 1, column: 18 },
-        { messageId: 'conditionErrorString', line: 1, column: 23 },
-        { messageId: 'conditionErrorObject', line: 1, column: 30 },
+        {
+          messageId: 'conditionErrorNullish',
+          line: 1,
+          column: 10,
+        },
+        {
+          messageId: 'conditionErrorNumber',
+          line: 1,
+          column: 18,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: "return !(null || (0 !== 0) || 'a' || []);",
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: "return !(null || (!Number.isNaN(0)) || 'a' || []);",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return !(null || (Boolean(0)) || 'a' || []);",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorString',
+          line: 1,
+          column: 23,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: "return !(null || 0 || ('a'.length > 0) || []);",
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: 'return !(null || 0 || (\'a\' !== "") || []);',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: "return !(null || 0 || (Boolean('a')) || []);",
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorObject',
+          line: 1,
+          column: 30,
+        },
       ],
     },
 
@@ -1720,6 +2271,486 @@ if (x) {
         !obj
         obj || 0
         ;(obj != null) && 1 || 0
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 8,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(x: unknown): asserts x;
+declare const nullableString: string | null;
+assert(Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 13,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 5,
+          column: 13,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(a: number, b: unknown): asserts b;
+declare function assert(one: number, two: unknown): asserts two;
+declare const nullableString: string | null;
+assert(foo, Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 13,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(this: object, a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+assert(foo, Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(maybeString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(maybeString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(maybeString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function asserts1(x: string | number | undefined): asserts x {}
+function asserts2(x: string | number | undefined): asserts x {}
+
+const maybeString = Math.random() ? 'string'.slice() : undefined;
+
+const someAssert: typeof asserts1 | typeof asserts2 =
+  Math.random() > 0.5 ? asserts1 : asserts2;
+
+someAssert(Boolean(maybeString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // The implementation signature doesn't count towards the call signatures
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 18,
+          column: 18,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // The implementation signature doesn't count towards the call signatures
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString, 'more', 'args', 'afterwards');
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 19,
+          column: 18,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString != null, 'more', 'args', 'afterwards');
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString ?? "", 'more', 'args', 'afterwards');
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(a: any, two: unknown, ...rest: any[]): asserts two;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, Boolean(nullableString), 'more', 'args', 'afterwards');
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(a: boolean, b: unknown): asserts b;
+declare function assert({ a }: { a: boolean }, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+      `,
+      output: null,
+      errors: [
+        {
+          line: 6,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare function assert(a: boolean, b: unknown): asserts b;
+declare function assert({ a }: { a: boolean }, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare function assert(a: boolean, b: unknown): asserts b;
+declare function assert({ a }: { a: boolean }, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString ?? "");
+      `,
+            },
+
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare function assert(a: boolean, b: unknown): asserts b;
+declare function assert({ a }: { a: boolean }, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, Boolean(nullableString));
       `,
             },
           ],

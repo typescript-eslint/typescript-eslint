@@ -121,6 +121,12 @@ ruleTester.run('prefer-as-const', rule, {
           messageId: 'variableConstAssertion',
           line: 1,
           column: 9,
+          suggestions: [
+            {
+              messageId: 'variableSuggest',
+              output: "let [] = 'bar' as const;",
+            },
+          ],
         },
       ],
     },

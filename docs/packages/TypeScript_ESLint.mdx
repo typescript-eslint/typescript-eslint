@@ -43,7 +43,7 @@ For more information on migrating from a "legacy" config setup, see [ESLint's Co
 
 The simplest usage of this package would be:
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -65,7 +65,7 @@ For more information on the `tseslint.config` function [see `config(...)` below]
 
 You can declare our plugin and parser in your config via this package, for example:
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -109,7 +109,7 @@ Below is a more complex example of how you might use our tooling with flat confi
 - Disables type-aware linting on JS files
 - Enables the recommended `eslint-plugin-jest` rules on test files only
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -163,7 +163,7 @@ By using this function you will get autocomplete and documentation for all confi
 <Tabs>
 <TabItem value="With helper">
 
-```ts title="eslint.config.js"
+```ts title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -182,7 +182,7 @@ export default tseslint.config(
 </TabItem>
 <TabItem value="Without helper">
 
-```ts title="eslint.config.js"
+```ts title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -248,18 +248,16 @@ We found that this is a pretty common operation when writing ESLint configs whic
 For example in codebases with type-aware linting a config object like this is a very common way to disable TS-specific linting setups on JS files:
 
 ```js
-export default tseslint.config([
-  {
-    files: ['**/*.js'],
-    extends: [tseslint.configs.disableTypeChecked],
-    rules: {
-      // turn off other type-aware rules
-      'deprecation/deprecation': 'off',
-      '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
+export default tseslint.config({
+  files: ['**/*.js'],
+  extends: [tseslint.configs.disableTypeChecked],
+  rules: {
+    // turn off other type-aware rules
+    'deprecation/deprecation': 'off',
+    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
 
-      // turn off rules that don't apply to JS code
-      '@typescript-eslint/explicit-function-return-type': 'off',
-    },
+    // turn off rules that don't apply to JS code
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
-]);
+});
 ```
