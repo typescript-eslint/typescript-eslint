@@ -1,4 +1,4 @@
-import type { KnipConfig } from 'knip';
+import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
@@ -20,18 +20,14 @@ export default {
         '@babel/parser',
         '@babel/types',
         '@nx/workspace',
-        'cross-fetch',
         'glob',
         'husky',
         'jest-specific-snapshot',
         'make-dir',
         'ncp',
         'tmp',
-
-        // imported in eslint.config.js
-        '@typescript-eslint/utils',
       ],
-      entry: ['tools/release/changelog-renderer.js'],
+      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreBinaries: [
         // https://github.com/webpro/knip/issues/433
         'stylelint',
