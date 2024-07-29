@@ -726,7 +726,7 @@ For more details, see:
 One limitation of ESLint's `RuleTester` is that it is not possible to verify the individual applied fixes when a rule provides multiple rounds of fixes.
 [ESLint's `RuleTester` applies only the first fix](https://eslint.org/docs/latest/integrate/nodejs-api#testing-fixes) when there is conflict between two fixes.
 
-In typescript-eslint v8, the typescript-eslint `RuleTester` tries to apply all possible fixes for each test case.
+In typescript-eslint v8, our `RuleTester` tries to apply all possible fixes for each test case.
 
 If your rule tests had some test cases that required multi-pass fixes, you will see some test failures.
 To fix these failures, provide an array of strings for `output` which specifies the output after each fix pass.
