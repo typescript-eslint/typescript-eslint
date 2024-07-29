@@ -8,6 +8,7 @@ import {
   getConstrainedTypeAtLocation,
   getContextualType,
   getDeclaration,
+  getModifiers,
   getParserServices,
   isNullableType,
   isTypeFlagSet,
@@ -95,7 +96,7 @@ export default createRule<Options, MessageIds>({
             ts.isVariableDeclarationList(declaration.parent) &&
             ts.isVariableStatement(declaration.parent.parent) &&
             tsutils.includesModifier(
-              ts.getModifiers(declaration.parent.parent),
+              getModifiers(declaration.parent.parent),
               ts.SyntaxKind.DeclareKeyword,
             )
           )
