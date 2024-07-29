@@ -4,62 +4,50 @@ authors:
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
-description: Announcing the release of typescript-eslint's v8 beta, including its changes and timeline.
-slug: announcing-typescript-eslint-v8-beta
+description: Announcing the stable release of typescript-eslint's v8.
+slug: announcing-typescript-eslint-v8
 tags: [breaking changes, typescript-eslint, v7, v8]
-title: Announcing typescript-eslint v8 Beta
+title: Announcing typescript-eslint v8
 ---
-
-:::caution Newer Information Available
-This blog post is now out of date, as we've released typescript-eslint v8! 🚀
-Please see [Announcing typescript-eslint v8](./2024-07-31-announcing-typescript-eslint-v8.md) for the latest information.
-:::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
-We've been working on a set of breaking changes and general features that we're excited to get in front of users soon.
-And now, we're excited to say that typescript-eslint v8 is ready for public beta testing! 🎉
+We've been working on a set of breaking changes and general features that we're excited to get in front of users.
+And now, we're excited to say that typescript-eslint v8 is released as stable! 🎉
 
-Our plan for typescript-eslint v8 is to:
-
-1. Have users try out betas starting in May of 2024
-2. Respond to user feedback for the next ~1-2 months
-3. Release a stable version within the next ~1-2 months
-
-Nothing mentioned in this blog post is set in stone.
-If you feel passionately about any of the choices we've made here — positively or negatively — then do let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v8` channel!
+We'd previously blogged about v8 in [Announcing typescript-eslint v8 Beta](./2024-05-27-announcing-typescript-eslint-v8-beta.mdx).
+This blog post contains much of the same information as that one.
 
 <!--truncate-->
 
 ## Trying Out v8
 
-Please do try out the typescript-eslint v8 beta!
+Whether you're new to linting your TypeScript code or a returning user, please do upgrade to the latest major version of typescript-eslint!
+V8 comes with a suite of quality-of-life improvements we think you'll appreciate.
 
 ### As A New User
 
-If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](https://v8--typescript-eslint.netlify.app/getting-started).
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](/getting-started).
 It'll walk you through setting up typescript-eslint in a project.
-
-To use v8 specifically, see the following section for an updated install command.
 
 ### As An Existing User
 
-If you already use typescript-eslint, you'll need to first replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with `@rc-v8` versions:
+If you already use typescript-eslint, you'll need to first replace your package's previous versions with `@8`:
 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
 ```shell
-npm i typescript-eslint@rc-v8 --save-dev
+npm i typescript-eslint@8 --save-dev
 ```
 
 </TabItem>
 <TabItem value="Legacy Config">
 
 ```shell
-npm i @typescript-eslint/eslint-plugin@rc-v8 @typescript-eslint/parser@rc-v8 --save-dev
+npm i @typescript-eslint/eslint-plugin@8 @typescript-eslint/parser@8 --save-dev
 ```
 
 </TabItem>
@@ -153,8 +141,7 @@ We'll soon release a [dedicated `parserOptions` blog post](https://github.com/ty
 ### Updated Configuration Rules
 
 Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations and with which options.
-Because this release also includes a reworking of the configurations themselves, the list of changes is too large to put in this blog post.
-Instead see the table in [Changes to configurations for 8.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/8914) for a full list of the changes.
+See the table in [Changes to configurations for 8.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/8914) for more context on the changes.
 
 Please do try out the new rule configurations presets and let us know in that discussion!
 
@@ -169,12 +156,361 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
 
 :::
 
-### Rule Breaking Changes
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>recommended</code></em></summary>
 
-:::caution Newer Information Available
-This blog post is now out of date, as we've released typescript-eslint v8! 🚀
-Please see [Announcing typescript-eslint v8](./2024-07-31-announcing-typescript-eslint-v8.md) for the latest information.
-:::
+```diff
+{
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
++  '@typescript-eslint/no-require-imports': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
+   '@typescript-eslint/prefer-as-const': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>recommended-type-checked</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/await-thenable': '...',
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
++  '@typescript-eslint/no-array-delete': '...',
+   '@typescript-eslint/no-base-to-string': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
+   '@typescript-eslint/no-duplicate-type-constituents': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+   '@typescript-eslint/no-floating-promises': '...',
+   '@typescript-eslint/no-for-in-array': '...',
+   'no-implied-eval': '...',
+   '@typescript-eslint/no-implied-eval': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-misused-promises': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+   '@typescript-eslint/no-redundant-type-constituents': '...',
++  '@typescript-eslint/no-require-imports': '...',
+   '@typescript-eslint/no-this-alias': '...',
++  'no-throw-literal': '...',
+   '@typescript-eslint/no-unnecessary-type-assertion': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-argument': '...',
+   '@typescript-eslint/no-unsafe-assignment': '...',
+   '@typescript-eslint/no-unsafe-call': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
+   '@typescript-eslint/no-unsafe-enum-comparison': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
+   '@typescript-eslint/no-unsafe-member-access': '...',
+   '@typescript-eslint/no-unsafe-return': '...',
++  '@typescript-eslint/no-unsafe-unary-minus': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
++  '@typescript-eslint/only-throw-error': '...',
+   '@typescript-eslint/prefer-as-const': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
++  'prefer-promise-reject-errors': '...',
++  '@typescript-eslint/prefer-promise-reject-errors': '...',
+   'require-await': '...',
+   '@typescript-eslint/require-await': '...',
+   '@typescript-eslint/restrict-plus-operands': '...',
+   '@typescript-eslint/restrict-template-expressions': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unbound-method': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>strict</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
+   '@typescript-eslint/no-dynamic-delete': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+   '@typescript-eslint/no-extraneous-class': '...',
+   '@typescript-eslint/no-invalid-void-type': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-nullish-coalescing': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+   '@typescript-eslint/no-non-null-assertion': '...',
++  '@typescript-eslint/no-require-imports': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+   'no-useless-constructor': '...',
+   '@typescript-eslint/no-useless-constructor': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
+   '@typescript-eslint/prefer-as-const': '...',
+   '@typescript-eslint/prefer-literal-enum-member': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unified-signatures': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>strict-type-checked</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/await-thenable': '...',
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
+   '@typescript-eslint/no-array-delete': '...',
+   '@typescript-eslint/no-base-to-string': '...',
+   '@typescript-eslint/no-confusing-void-expression': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
+   '@typescript-eslint/no-duplicate-type-constituents': '...',
+   '@typescript-eslint/no-dynamic-delete': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+   '@typescript-eslint/no-extraneous-class': '...',
+   '@typescript-eslint/no-floating-promises': '...',
+   '@typescript-eslint/no-for-in-array': '...',
+   'no-implied-eval': '...',
+   '@typescript-eslint/no-implied-eval': '...',
+   '@typescript-eslint/no-invalid-void-type': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-meaningless-void-operator': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-misused-promises': '...',
+   '@typescript-eslint/no-mixed-enums': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-nullish-coalescing': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+   '@typescript-eslint/no-non-null-assertion': '...',
+   '@typescript-eslint/no-redundant-type-constituents': '...',
++  '@typescript-eslint/no-require-imports': '...',
++  'no-return-await': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   'no-throw-literal': '...',
+   '@typescript-eslint/no-unnecessary-boolean-literal-compare': '...',
+   '@typescript-eslint/no-unnecessary-condition': '...',
+   '@typescript-eslint/no-unnecessary-template-expression': '...',
+   '@typescript-eslint/no-unnecessary-type-arguments': '...',
+   '@typescript-eslint/no-unnecessary-type-assertion': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-argument': '...',
+   '@typescript-eslint/no-unsafe-assignment': '...',
+   '@typescript-eslint/no-unsafe-call': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
+   '@typescript-eslint/no-unsafe-enum-comparison': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
+   '@typescript-eslint/no-unsafe-member-access': '...',
+   '@typescript-eslint/no-unsafe-return': '...',
++  '@typescript-eslint/no-unsafe-unary-minus': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+   'no-useless-constructor': '...',
+   '@typescript-eslint/no-useless-constructor': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
+   '@typescript-eslint/only-throw-error': '...',
+   '@typescript-eslint/prefer-as-const': '...',
+-  '@typescript-eslint/prefer-includes': '...',
+   '@typescript-eslint/prefer-literal-enum-member': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
+   'prefer-promise-reject-errors': '...',
+   '@typescript-eslint/prefer-promise-reject-errors': '...',
+   '@typescript-eslint/prefer-reduce-type-parameter': '...',
+   '@typescript-eslint/prefer-return-this-type': '...',
+   'require-await': '...',
+   '@typescript-eslint/require-await': '...',
+   '@typescript-eslint/restrict-plus-operands': '...',
+   '@typescript-eslint/restrict-template-expressions': '...',
++  '@typescript-eslint/return-await': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unbound-method': '...',
+   '@typescript-eslint/unified-signatures': '...',
+   '@typescript-eslint/use-unknown-in-catch-callback-variable': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>stylistic</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/adjacent-overload-signatures': '...',
+   '@typescript-eslint/array-type': '...',
+   '@typescript-eslint/ban-tslint-comment': '...',
+   '@typescript-eslint/class-literal-property-style': '...',
+   '@typescript-eslint/consistent-generic-constructors': '...',
+   '@typescript-eslint/consistent-indexed-object-style': '...',
+   '@typescript-eslint/consistent-type-assertions': '...',
+   '@typescript-eslint/consistent-type-definitions': '...',
+   '@typescript-eslint/no-confusing-non-null-assertion': '...',
+   'no-empty-function': '...',
+   '@typescript-eslint/no-empty-function': '...',
+-  '@typescript-eslint/no-empty-interface': '...',
+   '@typescript-eslint/no-inferrable-types': '...',
+   '@typescript-eslint/prefer-for-of': '...',
+   '@typescript-eslint/prefer-function-type': '...',
+-  '@typescript-eslint/prefer-namespace-keyword': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>stylistic-type-checked</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/adjacent-overload-signatures': '...',
+   '@typescript-eslint/array-type': '...',
+   '@typescript-eslint/ban-tslint-comment': '...',
+   '@typescript-eslint/class-literal-property-style': '...',
+   '@typescript-eslint/consistent-generic-constructors': '...',
+   '@typescript-eslint/consistent-indexed-object-style': '...',
+   '@typescript-eslint/consistent-type-assertions': '...',
+   '@typescript-eslint/consistent-type-definitions': '...',
+   'dot-notation': '...',
+   '@typescript-eslint/dot-notation': '...',
+   '@typescript-eslint/no-confusing-non-null-assertion': '...',
+   'no-empty-function': '...',
+   '@typescript-eslint/no-empty-function': '...',
+-  '@typescript-eslint/no-empty-interface': '...',
+   '@typescript-eslint/no-inferrable-types': '...',
+   '@typescript-eslint/non-nullable-type-assertion-style': '...',
++  '@typescript-eslint/prefer-find': '...',
+   '@typescript-eslint/prefer-for-of': '...',
+   '@typescript-eslint/prefer-function-type': '...',
++  '@typescript-eslint/prefer-includes': '...',
+-  '@typescript-eslint/prefer-namespace-keyword': '...',
+   '@typescript-eslint/prefer-nullish-coalescing': '...',
+   '@typescript-eslint/prefer-optional-chain': '...',
++  '@typescript-eslint/prefer-regexp-exec': '...',
+   '@typescript-eslint/prefer-string-starts-ends-with': '...',
+}
+```
+
+</details>
+
+<details>
+<summary>Code that generated those diffs</summary>
+
+```json title="package.json"
+{
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin-7": "npm:@typescript-eslint/eslint-plugin@7",
+    "@typescript-eslint/eslint-plugin-8": "npm:@typescript-eslint/eslint-plugin@rc-v8"
+  },
+  "type": "module"
+}
+```
+
+```js
+import tseslint7 from '@typescript-eslint/eslint-plugin-7';
+import tseslint8 from '@typescript-eslint/eslint-plugin-8';
+
+function createDiffPatch(v7, v8) {
+  const v7Keys = new Set(Object.keys(v7));
+  const v8Keys = new Set(Object.keys(v8));
+  const output = ['{'];
+
+  for (const key of Array.from(new Set([...v7Keys, ...v8Keys])).sort((a, b) =>
+    trimSlash(a).localeCompare(trimSlash(b)),
+  )) {
+    const prefix = v7Keys.has(key) ? (v8Keys.has(key) ? ' ' : '-') : '+';
+
+    output.push(`${prefix}  '${key}': '...',`);
+  }
+
+  output.push('}');
+
+  return output.join('\n');
+}
+
+function trimSlash(text) {
+  return text.startsWith('@typescript-eslint/')
+    ? text.slice('@typescript-eslint/'.length)
+    : text;
+}
+
+const configNames = [
+  'recommended',
+  'recommended-type-checked',
+  'strict',
+  'strict-type-checked',
+  'stylistic',
+  'stylistic-type-checked',
+];
+
+for (const configName of configNames) {
+  console.log(configName);
+  console.log(
+    createDiffPatch(
+      tseslint7.configs[configName].rules,
+      tseslint8.configs[configName].rules,
+    ),
+  );
+}
+```
+
+</details>
+
+<!-- markdownlint-enable MD033 -->
+
+### Rule Breaking Changes
 
 Several rules are changed in significant enough ways to be considered breaking changes:
 
@@ -236,12 +572,6 @@ For more details, see the issues and pull requests that split apart the `ban-typ
 
 ### Tooling Breaking Changes
 
-:::caution Newer Information Available
-This blog post is now out of date, as we've released typescript-eslint v8! 🚀
-Please see [Announcing typescript-eslint v8](./2024-07-31-announcing-typescript-eslint-v8.md) for the latest information.
-:::
-
-- ~[Enhancement: Error if configuration options aren't provided as expected](https://github.com/typescript-eslint/typescript-eslint/issues/6403)~: postponed to a future major version
 - [fix(typescript-estree): enable dot globs for project by default](https://github.com/typescript-eslint/typescript-eslint/pull/8818)
   - This will cause any `parserOptions.project` globs to match dot (`.`) directories.
     If you don't want to match them then use a more specific set of globs, or switch to `parserOptions.projectService`.
@@ -323,10 +653,6 @@ createRule({
 See [feat(utils): allow specifying additional rule meta.docs in RuleCreator](https://github.com/typescript-eslint/typescript-eslint/pull/9025) for more details.
 
 ### Flat Configuration `RuleTester`
-
-:::note
-This breaking change was missed in the initial versions of this blog post.
-:::
 
 The `RuleTester` provided by [`@typescript-eslint/rule-tester`](/packages/rule-tester) is a fork of ESLint's `RuleTester`.
 In typescript-eslint v7 and earlier, `RuleTester`'s constructor allowed providing legacy "eslintrc" options -- mirroring ESLint v8 and earlier.
@@ -434,7 +760,6 @@ See [[rule-tester] support multipass fixes](https://github.com/typescript-eslint
 
 ### Other Developer-Facing Breaking Changes
 
-- ~[Repo: Rule [options] parameter should be non-nullable if defaultOptions exists](https://github.com/typescript-eslint/typescript-eslint/issues/5439)~: blocked on external features in ESLint and TypeScript
 - [feat(parser): always enable comment, loc, range, tokens](https://github.com/typescript-eslint/typescript-eslint/pull/8617)
   - If you were manually calling `@typescript-eslint/parser` functions, those options are no longer necessary to provide
 - [chore(type-utils)!: remove IsNullableTypeOptions interface](https://github.com/typescript-eslint/typescript-eslint/pull/8934)
@@ -466,6 +791,23 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Thomas Huchedé](https://github.com/thuchede)
   - [Victor Lin](https://github.com/yepitschunked)
   - [Yukihiro Hasegawa](https://github.com/y-hsgw)
+- Community maintainers and projects who worked with us to try out the v8 beta:
+  - [Babel](https://github.com/babel/babel/pull/16557) with [Nicolò Ribaudo](https://github.com/nicolo-ribaudo)
+  - [create-t3-app](https://github.com/t3-oss/create-t3-app/pull/1936) with [Julius Marminge](https://github.com/juliusmarminge)
+  - [postcss-plugins](https://github.com/csstools/postcss-plugins/pull/1412) with [Romain Menke](https://github.com/romainmenke)
+  - [Prettier](https://github.com/prettier/prettier/pull/16333) with [fisker Cheung](https://github.com/fisker)
+  - [RedwoodJS](https://github.com/redwoodjs/redwood/pull/10911) with [Tobbe Lundberg](https://github.com/Tobbe)
+  - [SvelteKit](https://github.com/sveltejs/kit/pull/12268) with [Ben McCann](https://github.com/benmccann)
+  - [tRPC](https://github.com/trpc/trpc/pull/5868) with [Alex Katt](https://github.com/KATT)
+  - [Vite](https://github.com/vitejs/vite/pull/17624) with [Bjorn Lu](https://github.com/bluwy)
+- Community plugins and projects who worked with us to try out the v8 beta:
+  - [eslint-plugin-functional](https://github.com/eslint-functional/eslint-plugin-functional/pull/809) with [Rebecca Stevens](https://github.com/RebeccaStevens)
+  - [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x/pull/112) with [Sukka](https://github.com/SukkaW)
+  - [eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest/pull/1623) with [Simen Bekkhus](https://github.com/SimenB)
+  - [eslint-plugin-vitest](https://github.com/veritem/eslint-plugin-vitest/pull/479) with [Verité Mugabo](https://github.com/veritem)
+  - [eslint-react](https://github.com/Rel1cx/eslint-react/pull/561) with [Eva1ent](https://github.com/Rel1cx)
+  - [eslint-angular](https://github.com/angular-eslint/angular-eslint/pull/1845) with [James Henry](https://github.com/JamesHenry)
+  - [eslint-stylistic](https://github.com/eslint-stylistic/eslint-stylistic/pull/452) with [Anthony Fu](https://github.com/antfu)
 - Members of the TypeScript team who helped with performance issues:
   - [Daniel Rosenwasser](https://github.com/DanielRosenwasser)
   - [Jake Bailey](https://github.com/jakebailey)
