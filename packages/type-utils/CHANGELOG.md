@@ -1,3 +1,20 @@
+## 7.18.0 (2024-07-29)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [unbound-method] report on destructuring in function parameters
+
+
+### ❤️  Thank You
+
+- auvred
+- Oliver Salzburg
+- Vinccool96
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.17.0 (2024-07-22)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.
