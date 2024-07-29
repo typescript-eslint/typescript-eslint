@@ -27,6 +27,7 @@
     "@typescript-eslint/website-eslint": "7.17.0",
     "@uiw/react-shields": "2.0.1",
     "clsx": "^2.1.0",
+    "docusaurus-plugin-typedoc": "^1.0.1",
     "eslint": "*",
     "json5": "^2.2.3",
     "konamimojisplosion": "^0.5.2",
@@ -37,6 +38,8 @@
     "react-dom": "^18.2.0",
     "react-resizable-panels": "^0.0.63",
     "semver": "^7.6.0",
+    "typedoc": "^0.25.13",
+    "typedoc-plugin-markdown": "^4.0.3",
     "typescript": "*"
   },
   "resolutions": {
