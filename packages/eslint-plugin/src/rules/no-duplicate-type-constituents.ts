@@ -51,13 +51,18 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
     ) {
       return false;
     }
-    return !actualNodeKeys.some(
-      actualNodeKey =>
-        !isSameAstNode(
-          actualNode[actualNodeKey as keyof typeof actualNode],
-          expectedNode[actualNodeKey as keyof typeof expectedNode],
-        ),
-    );
+    if (
+      actualNodeKeys.some(
+        actualNodeKey =>
+          !isSameAstNode(
+            actualNode[actualNodeKey as keyof typeof actualNode],
+            expectedNode[actualNodeKey as keyof typeof expectedNode],
+          ),
+      )
+    ) {
+      return false;
+    }
+    return true;
   }
   return false;
 };
