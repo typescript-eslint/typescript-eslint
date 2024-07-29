@@ -114,7 +114,7 @@ export default createRule<Options, MessageIds>({
           const constituentNodeType =
             parserServices.getTypeAtLocation(constituentNode);
           if (tsutils.isIntrinsicErrorType(constituentNodeType)) {
-            return [];
+            return uniqueConstituents;
           }
 
           const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
