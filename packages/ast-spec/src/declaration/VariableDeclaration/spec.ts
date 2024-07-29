@@ -33,13 +33,7 @@ export interface LetOrConstOrVarDeclaration extends BaseNode {
    * @example
    * ```ts
    * const x = 1;
-   * ```
-   * @example
-   * ```ts
    * let y = 2;
-   * ```
-   * @example
-   * ```ts
    * var z = 3;
    * ```
    */
