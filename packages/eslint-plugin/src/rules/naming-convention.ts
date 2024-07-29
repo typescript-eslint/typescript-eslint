@@ -276,14 +276,12 @@ export default createRule<Options, MessageIds>({
 
           const baseModifiers = new Set<Modifiers>();
           const parent = node.parent;
-          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
-            if (parent.kind === 'const') {
-              baseModifiers.add(Modifiers.const);
-            }
+          if (parent.kind === 'const') {
+            baseModifiers.add(Modifiers.const);
+          }
 
-            if (isGlobal(context.sourceCode.getScope(node))) {
-              baseModifiers.add(Modifiers.global);
-            }
+          if (isGlobal(context.sourceCode.getScope(node))) {
+            baseModifiers.add(Modifiers.global);
           }
 
           identifiers.forEach(id => {

@@ -309,7 +309,7 @@ export default createRule<Options, MessageIds>({
                 range: moduleReference.range,
                 loc: moduleReference.loc,
               },
-            } as TSESTree.VariableDeclarator,
+            } as TSESTree.VariableDeclaratorMaybeInit,
           ],
           declare: false,
 

@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ForOfStatement _error_ decl-init TSESTree - Error 1`] = `
+"TSError
+> 1 | for (const x = 1 of []) {}
+    |            ^^^^^ The variable declaration of a 'for...of' statement cannot have an initializer.
+  2 |"
+`;

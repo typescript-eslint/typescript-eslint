@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ForOfStatement _error_ decl-definite TSESTree - Error 1`] = `
+"TSError
+> 1 | for (let x! of []) {}
+    |           ^ ',' expected.
+  2 |"
+`;
