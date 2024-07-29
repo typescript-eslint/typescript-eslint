@@ -63,6 +63,8 @@ export default tseslint.config(
       '**/__snapshots__/**',
       '**/.docusaurus/**',
       '**/build/**',
+      '.nx/*',
+      '.yarn/*',
       // Files copied as part of the build
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
@@ -415,7 +417,6 @@ export default tseslint.config(
     files: [
       '**/tools/**/*.{ts,tsx,cts,mts}',
       '**/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/repo-tools/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {

@@ -1,15 +1,16 @@
 import debug from 'debug';
 import * as ts from 'typescript';
 
-import { createProjectService } from '../../src/create-program/createProjectService';
-
-const mockReadConfigFile = jest.fn();
+const mockGetParsedConfigFile = jest.fn();
 const mockSetCompilerOptionsForInferredProjects = jest.fn();
 const mockSetHostConfiguration = jest.fn();
 
+jest.mock('../../src/create-program/getParsedConfigFile', () => ({
+  getParsedConfigFile: mockGetParsedConfigFile,
+}));
+
 jest.mock('typescript/lib/tsserverlibrary', () => ({
   ...jest.requireActual('typescript/lib/tsserverlibrary'),
-  readConfigFile: mockReadConfigFile,
   server: {
     ...jest.requireActual('typescript/lib/tsserverlibrary').server,
     ProjectService: class {
@@ -33,6 +34,11 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
   },
 }));
 
+const {
+  createProjectService,
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+} = require('../../src/create-program/createProjectService');
+
 describe('createProjectService', () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -51,18 +57,9 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error when options.defaultProject is set and readConfigFile returns an error', () => {
-    mockReadConfigFile.mockReturnValue({
-      error: {
-        category: ts.DiagnosticCategory.Error,
-        code: 1234,
-        file: ts.createSourceFile('./tsconfig.json', '', {
-          languageVersion: ts.ScriptTarget.Latest,
-        }),
-        start: 0,
-        length: 0,
-        messageText: 'Oh no!',
-      } satisfies ts.Diagnostic,
+  it('throws an error when options.defaultProject is set and getParsedConfigFile throws a diagnostic error', () => {
+    mockGetParsedConfigFile.mockImplementation(() => {
+      throw new Error('./tsconfig.json(1,1): error TS1234: Oh no!');
     });
 
     expect(() =>
@@ -78,9 +75,11 @@ describe('createProjectService', () => {
     );
   });
 
-  it('throws an error when options.defaultProject is set and readConfigFile throws an error', () => {
-    mockReadConfigFile.mockImplementation(() => {
-      throw new Error('Oh no!');
+  it('throws an error when options.defaultProject is set and getParsedConfigFile throws an environment error', () => {
+    mockGetParsedConfigFile.mockImplementation(() => {
+      throw new Error(
+        '`getParsedConfigFile` is only supported in a Node-like environment.',
+      );
     });
 
     expect(() =>
@@ -91,12 +90,14 @@ describe('createProjectService', () => {
         },
         undefined,
       ),
-    ).toThrow("Could not parse default project './tsconfig.json': Oh no!");
+    ).toThrow(
+      "Could not read default project './tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
+    );
   });
 
-  it('uses the default projects compiler options when options.defaultProject is set and readConfigFile succeeds', () => {
+  it('uses the default projects compiler options when options.defaultProject is set and getParsedConfigFile succeeds', () => {
     const compilerOptions = { strict: true };
-    mockReadConfigFile.mockReturnValue({ config: { compilerOptions } });
+    mockGetParsedConfigFile.mockReturnValue({ options: compilerOptions });
 
     const { service } = createProjectService(
       {
