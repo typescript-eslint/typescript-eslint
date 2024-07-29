@@ -369,6 +369,42 @@ describe('TypeOrValueSpecifier', () => {
       ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        `
+          type Other = { __otherBrand: true };
+          type SafePromise = Promise<number> & { __safeBrand: string };
+          type JoinedPromise = SafePromise & {};
+        `,
+        { from: 'file', name: ['Other'] },
+      ],
+      // The SafePromise alias acts as an actual alias ("cut-and-paste"). I.e.:
+      // type JoinedPromise = Promise<number> & { __safeBrand: string };
+      [
+        `
+          type SafePromise = Promise<number> & { __safeBrand: string };
+          type JoinedPromise = SafePromise & {};
+        `,
+        { from: 'file', name: ['SafePromise'] },
+      ],
+    ])(
+      "doesn't match a mismatched type specifier for an intersection type: %s",
+      runTestNegative,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        `
+          type SafePromise = Promise<number> & { __safeBrand: string };
+          type JoinedPromise = SafePromise & {};
+        `,
+        { from: 'file', name: ['JoinedPromise'] },
+      ],
+    ])(
+      'matches a matching type specifier for an intersection type: %s',
+      runTestPositive,
+    );
+
     it("does not match a `declare global` with the 'global' package name", () => {
       runTestNegative(
         `
