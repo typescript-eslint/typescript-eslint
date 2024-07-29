@@ -104,7 +104,6 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
 
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
@@ -112,9 +111,8 @@ export default createRule<Options, MessageIds>({
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       node.types.reduce<TSESTree.TypeNode[]>(
         (uniqueConstituents, constituentNode) => {
-          const constituentNodeType = checker.getTypeAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
-          );
+          const constituentNodeType =
+            parserServices.getTypeAtLocation(constituentNode);
           if (tsutils.isIntrinsicErrorType(constituentNodeType)) {
             return [];
           }
