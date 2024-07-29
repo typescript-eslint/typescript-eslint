@@ -67,6 +67,12 @@ export function createProjectService(
     jsDocParsingMode,
   });
 
+  service.setHostConfiguration({
+    preferences: {
+      includePackageJsonAutoImports: 'off',
+    },
+  });
+
   if (options.defaultProject) {
     let configRead;
 

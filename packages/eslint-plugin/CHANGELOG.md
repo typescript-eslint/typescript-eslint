@@ -1,3 +1,82 @@
+## 7.17.0 (2024-07-22)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** backport no-unsafe-function type, no-wrapper-object-types from v8 to v7
+
+- **eslint-plugin:** [return-await] add option to report in error-handling scenarios only, and deprecate "never"
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] check top-level type assertions (and more)
+
+- **eslint-plugin:** [strict-boolean-expressions] consider assertion function argument a boolean context
+
+- **eslint-plugin:** [no-unnecessary-condition] false positive on optional private field
+
+
+### ❤️  Thank You
+
+- Armano
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.16.1 (2024-07-15)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] descend into all parts of mapped types in no-unnecessary-type-parameters
+
+
+### ❤️  Thank You
+
+- Dan Vanderkam
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.16.0 (2024-07-08)
+
+
+### 🚀 Features
+
+- **rule-tester:** stricter rule test validations
+
+- **eslint-plugin:** [no-unnecessary-parameter-property-assignment] add new rule
+
+- **eslint-plugin:** add support for nested namespaces to unsafe-member-access
+
+- **eslint-plugin:** [no-floating-promises] add checkThenables option
+
+
+### 🩹 Fixes
+
+- **deps:** update dependency @eslint-community/regexpp to v4.11.0
+
+- **eslint-plugin:** [no-floating-promises] add `suggestions` to tests from #9263 `checkThenables`
+
+- **website:** react key error on internal pages of website
+
+- **eslint-plugin:** [restrict-template-expressions] don't report tuples if `allowArray` option is enabled
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Josh Goldberg ✨
+- Juan Sanchez
+- Vinccool96
+- YeonJuan
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.15.0 (2024-07-01)
 
 

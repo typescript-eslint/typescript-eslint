@@ -15,6 +15,7 @@ export * from './isNullLiteral';
 export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './objectIterators';
+export * from './scopeUtils';
 export * from './types';
 export * from './isAssignee';
 

@@ -267,14 +267,13 @@ export default createRule<Options, MessageIds>({
           ) {
             continue;
           }
-        } else {
-          // skip ignored variables
-          if (
-            def.name.type === AST_NODE_TYPES.Identifier &&
-            options.varsIgnorePattern?.test(def.name.name)
-          ) {
-            continue;
-          }
+        }
+        // skip ignored variables
+        else if (
+          def.name.type === AST_NODE_TYPES.Identifier &&
+          options.varsIgnorePattern?.test(def.name.name)
+        ) {
+          continue;
         }
 
         if (hasRestSpreadSibling(variable)) {

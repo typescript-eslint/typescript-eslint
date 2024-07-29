@@ -90,7 +90,6 @@ interface MemberAccount {
   id: string;
   imageUrl: string;
   name: string;
-  twitterHandle: string;
   website: string;
 }
 
@@ -154,7 +153,6 @@ async function main(): Promise<void> {
         image: fromAccount.imageUrl,
         name: fromAccount.name,
         totalDonations,
-        twitterHandle: fromAccount.twitterHandle,
         website,
       };
     })
