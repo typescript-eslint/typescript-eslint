@@ -696,8 +696,9 @@ export class RuleTester extends TestFramework {
           );
         });
 
+        const language = getLanguageIfAvailable();
         const actualConfig = merge(configWithoutCustomKeys, {
-          linterOptions: { reportUnusedDisableDirectives: 1 },
+          ...(language && { language }),
           languageOptions: {
             ...configWithoutCustomKeys.languageOptions,
             parserOptions: {
@@ -706,6 +707,7 @@ export class RuleTester extends TestFramework {
               ...configWithoutCustomKeys.languageOptions?.parserOptions,
             },
           },
+          linterOptions: { reportUnusedDisableDirectives: 1 },
         });
         messages = this.#linter.verify(
           code,
@@ -1331,5 +1333,21 @@ function assertMessageMatches(actual: string, expected: RegExp | string): void {
     );
   } else {
     assert.strictEqual(actual, expected);
+  }
+}
+
+/** @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/9676} */
+function getLanguageIfAvailable(): object | undefined {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require(
+      path.join(
+        // Generally: "node_modules/eslint/lib/api.js"
+        path.dirname(require.resolve('eslint')),
+        'languages/js/index.js',
+      ),
+    ) as object;
+  } catch {
+    return undefined;
   }
 }
