@@ -9,7 +9,7 @@ import {
   isValidFunctionExpressionReturnType,
 } from '../util/explicitReturnTypeUtils';
 
-type Options = [
+export type Options = [
   {
     allowExpressions?: boolean;
     allowTypedFunctionExpressions?: boolean;
@@ -21,7 +21,7 @@ type Options = [
     allowIIFEs?: boolean;
   },
 ];
-type MessageIds = 'missingReturnType';
+export type MessageIds = 'missingReturnType';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression

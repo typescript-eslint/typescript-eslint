@@ -4,7 +4,7 @@ import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferExpectErrorComment';
+export type MessageIds = 'preferExpectErrorComment';
 
 export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',

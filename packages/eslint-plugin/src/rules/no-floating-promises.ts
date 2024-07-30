@@ -15,7 +15,7 @@ import {
   typeMatchesSpecifier,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
     checkThenables?: boolean;
@@ -24,7 +24,7 @@ type Options = [
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
   | 'floatingVoid'
   | 'floatingUselessRejectionHandler'

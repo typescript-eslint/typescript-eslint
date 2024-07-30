@@ -4,8 +4,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isOpeningParenToken } from '../util';
 
-type Option = 'always' | 'never';
-type FuncOption = Option | 'ignore';
+export type Option = 'always' | 'never';
+export type FuncOption = Option | 'ignore';
 
 export type Options = [
   | Option

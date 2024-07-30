@@ -13,13 +13,13 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('prefer-destructuring');
 
-type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
-type EnforcementOptions = BaseOptions[1] & {
+export type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
+export type EnforcementOptions = BaseOptions[1] & {
   enforceForDeclarationWithTypeAnnotation?: boolean;
 };
-type Options = [BaseOptions[0], EnforcementOptions];
+export type Options = [BaseOptions[0], EnforcementOptions];
 
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
   type: 'object',

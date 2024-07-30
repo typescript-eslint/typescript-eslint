@@ -17,9 +17,9 @@ export type MessageIds =
   | 'incorrectOrder'
   | 'incorrectRequiredMembersOrder';
 
-type ReadonlyType = 'readonly-field' | 'readonly-signature';
+export type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
-type MemberKind =
+export type MemberKind =
   | ReadonlyType
   | 'accessor'
   | 'call-signature'
@@ -31,7 +31,7 @@ type MemberKind =
   | 'signature'
   | 'static-initialization';
 
-type DecoratedMemberKind =
+export type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
   | 'accessor'
   | 'field'
@@ -39,16 +39,16 @@ type DecoratedMemberKind =
   | 'method'
   | 'set';
 
-type NonCallableMemberKind = Exclude<
+export type NonCallableMemberKind = Exclude<
   MemberKind,
   'constructor' | 'readonly-signature' | 'signature'
 >;
 
-type MemberScope = 'abstract' | 'instance' | 'static';
+export type MemberScope = 'abstract' | 'instance' | 'static';
 
-type Accessibility = TSESTree.Accessibility | '#private';
+export type Accessibility = TSESTree.Accessibility | '#private';
 
-type BaseMemberType =
+export type BaseMemberType =
   | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
@@ -59,26 +59,26 @@ type BaseMemberType =
   | `${MemberScope}-${NonCallableMemberKind}`
   | `decorated-${DecoratedMemberKind}`;
 
-type MemberType = BaseMemberType | BaseMemberType[];
+export type MemberType = BaseMemberType | BaseMemberType[];
 
-type AlphabeticalOrder =
+export type AlphabeticalOrder =
   | 'alphabetically-case-insensitive'
   | 'alphabetically'
   | 'natural-case-insensitive'
   | 'natural';
 
-type Order = AlphabeticalOrder | 'as-written';
+export type Order = AlphabeticalOrder | 'as-written';
 
-interface SortedOrderConfig {
+export interface SortedOrderConfig {
   memberTypes?: MemberType[] | 'never';
   optionalityOrder?: OptionalityOrder;
   order?: Order;
 }
 
-type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
-type Member = TSESTree.ClassElement | TSESTree.TypeElement;
+export type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
+export type Member = TSESTree.ClassElement | TSESTree.TypeElement;
 
-type OptionalityOrder = 'optional-first' | 'required-first';
+export type OptionalityOrder = 'optional-first' | 'required-first';
 
 export type Options = [
   {

@@ -14,8 +14,8 @@ import {
   getParameterPropertyHeadLoc,
 } from '../util/getMemberHeadLoc';
 
-type MessageIds = 'preferReadonly';
-type Options = [
+export type MessageIds = 'preferReadonly';
+export type Options = [
   {
     onlyInlineLambdas?: boolean;
   },

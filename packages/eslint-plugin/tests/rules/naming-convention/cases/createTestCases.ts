@@ -77,7 +77,7 @@ const IGNORED_FILTER = {
   regex: /.gnored/.source,
 };
 
-type Cases = { code: string[]; options: Omit<Options[0], 'format'> }[];
+export type Cases = { code: string[]; options: Omit<Options[0], 'format'> }[];
 
 export function createTestCases(cases: Cases): void {
   const createValidTestCases = (): TSESLint.ValidTestCase<Options>[] =>

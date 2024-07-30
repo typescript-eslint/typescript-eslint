@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+type Arg = string;
+type Result = number;
+
+export function strLength(arg: Arg): Result {
+                               ~~~ Expected type "Arg" to be exported
+                                     ~~~~~~ Expected type "Result" to be exported
+  return arg.length;
+}
+
+interface Fruit {
+  name: string;
+  color: string;
+}
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
+                                    ~~~~~ Expected type "Fruit" to be exported
+
+enum Color {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+
+export declare function getRandomColor(): Color;
+                                          ~~~~~ Expected type "Color" to be exported
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 2`] = `
+"Correct
+
+export type Arg = string;
+export type Result = number;
+
+export function strLength(arg: Arg): Result {
+  return arg.length;
+}
+
+export interface Fruit {
+  name: string;
+  color: string;
+}
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
+
+export enum Color {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+
+export declare function getRandomColor(): Color;
+"
+`;

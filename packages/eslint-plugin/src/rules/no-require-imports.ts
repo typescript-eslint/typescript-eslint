@@ -3,12 +3,12 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Options = [
+export type Options = [
   {
     allow: string[];
   },
 ];
-type MessageIds = 'noRequireImports';
+export type MessageIds = 'noRequireImports';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-require-imports',

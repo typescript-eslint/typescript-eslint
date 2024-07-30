@@ -5,7 +5,7 @@ import {
   ESLintUtils,
 } from '@typescript-eslint/utils';
 
-interface WrappingFixerParams {
+export interface WrappingFixerParams {
   /** Source code. */
   sourceCode: Readonly<TSESLint.SourceCode>;
   /** The node we want to modify. */

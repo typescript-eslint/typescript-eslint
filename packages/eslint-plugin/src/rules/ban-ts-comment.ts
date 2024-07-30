@@ -3,12 +3,12 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength, nullThrows } from '../util';
 
-type DirectiveConfig =
+export type DirectiveConfig =
   | boolean
   | 'allow-with-description'
   | { descriptionFormat: string };
 
-interface Options {
+export interface Options {
   'ts-expect-error'?: DirectiveConfig;
   'ts-ignore'?: DirectiveConfig;
   'ts-nocheck'?: DirectiveConfig;
@@ -18,7 +18,7 @@ interface Options {
 
 const defaultMinimumDescriptionLength = 3;
 
-type MessageIds =
+export type MessageIds =
   | 'tsDirectiveComment'
   | 'tsIgnoreInsteadOfExpectError'
   | 'tsDirectiveCommentDescriptionNotMatchPattern'

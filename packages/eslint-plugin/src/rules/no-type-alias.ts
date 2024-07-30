@@ -3,14 +3,14 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Values =
+export type Values =
   | 'always'
   | 'in-intersections'
   | 'in-unions-and-intersections'
   | 'in-unions'
   | 'never';
 
-type Options = [
+export type Options = [
   {
     allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
@@ -22,7 +22,7 @@ type Options = [
     allowGenerics?: 'always' | 'never';
   },
 ];
-type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
+export type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
   | AST_NODE_TYPES.TSIntersectionType

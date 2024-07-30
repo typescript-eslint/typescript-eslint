@@ -9,8 +9,8 @@ import {
   nullThrows,
 } from '../util';
 
-type Options = ['fields' | 'getters'];
-type MessageIds =
+export type Options = ['fields' | 'getters'];
+export type MessageIds =
   | 'preferFieldStyle'
   | 'preferFieldStyleSuggestion'
   | 'preferGetterStyle'

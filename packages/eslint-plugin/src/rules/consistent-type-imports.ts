@@ -15,10 +15,10 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Prefer = 'no-type-imports' | 'type-imports';
-type FixStyle = 'inline-type-imports' | 'separate-type-imports';
+export type Prefer = 'no-type-imports' | 'type-imports';
+export type FixStyle = 'inline-type-imports' | 'separate-type-imports';
 
-type Options = [
+export type Options = [
   {
     prefer?: Prefer;
     disallowTypeAnnotations?: boolean;
@@ -44,7 +44,7 @@ interface ReportValueImport {
   inlineTypeSpecifiers: TSESTree.ImportSpecifier[];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'typeOverValue'
   | 'someImportsAreOnlyTypes'
   | 'avoidImportType'

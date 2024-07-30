@@ -49,11 +49,11 @@ const optionTesters = (
   option: `allow${type}` as const,
   tester,
 }));
-type Options = [
+export type Options = [
   { [Type in (typeof optionTesters)[number]['option']]?: boolean },
 ];
 
-type MessageId = 'invalidType';
+export type MessageId = 'invalidType';
 
 export default createRule<Options, MessageId>({
   name: 'restrict-template-expressions',

@@ -12,7 +12,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowAny?: boolean;
     allowedPromiseNames?: string[];
@@ -22,7 +22,7 @@ type Options = [
     checkMethodDeclarations?: boolean;
   },
 ];
-type MessageIds = 'missingAsync';
+export type MessageIds = 'missingAsync';
 
 export default createRule<Options, MessageIds>({
   name: 'promise-function-async',

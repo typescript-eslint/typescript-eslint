@@ -10,12 +10,12 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-type Options = [
+export type Options = [
   {
     ignoredTypeNames?: string[];
   },
 ];
-type MessageIds = 'baseToString';
+export type MessageIds = 'baseToString';
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
