@@ -167,13 +167,18 @@ function getUnsubstitutedMessagePlaceholders(
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter({ configType: 'flat' });
+  readonly #linter: Linter;
 
   /**
    * Creates a new instance of RuleTester.
    */
   constructor(testerConfig?: RuleTesterConfig) {
     super();
+
+    this.#linter = new Linter({
+      configType: 'flat',
+      cwd: testerConfig?.languageOptions?.parserOptions?.tsconfigRootDir,
+    });
 
     /**
      * The configuration to use for this tester. Combination of the tester
@@ -707,16 +712,7 @@ export class RuleTester extends TestFramework {
             },
           },
         });
-        messages = this.#linter.verify(
-          code,
-          // ESLint uses an internal FlatConfigArray that extends @humanwhocodes/config-array.
-          // Linter uses a typeof getConfig === "function" check.
-          // We mock out that check here to force it not to use Linter's cwd as basePath.
-          Object.assign([], {
-            getConfig: () => actualConfig,
-          }),
-          filename,
-        );
+        messages = this.#linter.verify(code, actualConfig, filename);
       } finally {
         SourceCode.prototype.applyInlineConfig = applyInlineConfig;
         SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
