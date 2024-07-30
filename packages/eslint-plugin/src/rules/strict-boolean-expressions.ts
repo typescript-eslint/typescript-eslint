@@ -1039,7 +1039,7 @@ export default createRule<Options, MessageId>({
             ),
         )
       ) {
-        variantTypes.add('object');
+        variantTypes.add(types.some(isBrandedBoolean) ? 'boolean' : 'object');
       }
 
       if (
@@ -1086,4 +1086,21 @@ function isArrayLengthExpression(
   }
   const objectType = getConstrainedTypeAtLocation(services, node.object);
   return isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
+}
+
+/**
+ * Verify is the type is a branded boolean (e.g. `type Foo = boolean & { __brand: 'Foo' }`)
+ *
+ * @param type The type checked
+ */
+function isBrandedBoolean(type: ts.Type): boolean {
+  return (
+    type.isIntersection() &&
+    type.types.some(childType =>
+      tsutils.isTypeFlagSet(
+        childType,
+        ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
+      ),
+    )
+  );
 }

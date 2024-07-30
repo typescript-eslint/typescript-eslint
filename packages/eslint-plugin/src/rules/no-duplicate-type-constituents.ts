@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
 
 import {
@@ -110,7 +111,6 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
     const { sourceCode } = context;
 
     function checkDuplicate(
@@ -119,6 +119,12 @@ export default createRule<Options, MessageIds>({
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       node.types.reduce<TSESTree.TypeNode[]>(
         (uniqueConstituents, constituentNode) => {
+          const constituentNodeType =
+            parserServices.getTypeAtLocation(constituentNode);
+          if (tsutils.isIntrinsicErrorType(constituentNodeType)) {
+            return uniqueConstituents;
+          }
+
           const reportIfDuplicate = (
             duplicatePrevious?: TSESTree.TypeNode,
             // https://github.com/typescript-eslint/typescript-eslint/issues/5752
@@ -144,9 +150,6 @@ export default createRule<Options, MessageIds>({
           ) {
             return uniqueConstituents;
           }
-          const constituentNodeType = checker.getTypeAtLocation(
-            parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
-          );
           if (reportIfDuplicate(cachedTypeMap.get(constituentNodeType))) {
             return uniqueConstituents;
           }

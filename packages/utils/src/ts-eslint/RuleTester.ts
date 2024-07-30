@@ -158,7 +158,7 @@ declare class RuleTesterBase {
    * Adds a new rule test to execute.
    * @param ruleName The name of the rule to run.
    * @param rule The rule to test.
-   * @param test The collection of tests to run.
+   * @param tests The collection of tests to run.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
