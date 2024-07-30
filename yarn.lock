@@ -5877,7 +5877,7 @@ __metadata:
     eslint: ^9.3.0
     eslint-plugin-deprecation: ^2.0.0
     eslint-plugin-eslint-comments: ^3.2.0
-    eslint-plugin-eslint-plugin: ^5.5.0
+    eslint-plugin-eslint-plugin: ^6.2.0
     eslint-plugin-import: ^2.29.1
     eslint-plugin-jest: ^27.9.0
     eslint-plugin-jsdoc: ^47.0.2
@@ -9814,27 +9814,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-plugin@npm:5.5.1":
-  version: 5.5.1
-  resolution: "eslint-plugin-eslint-plugin@npm:5.5.1"
+"eslint-plugin-eslint-plugin@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "eslint-plugin-eslint-plugin@npm:6.2.0"
   dependencies:
-    eslint-utils: ^3.0.0
+    "@eslint-community/eslint-utils": ^4.4.0
     estraverse: ^5.3.0
   peerDependencies:
-    eslint: ">=7.0.0"
-  checksum: 0f0fcab3ba73d57f07d69852287563e4f7d00382f4e722011a99f58117d3f20b8fcb9dd1edc2f32ef539749b8372a2492087219f27c8a8c00e77e328b2ce8fb6
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-eslint-plugin@patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 5.5.1
-  resolution: "eslint-plugin-eslint-plugin@patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch::version=5.5.1&hash=0c6729&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
-  dependencies:
-    eslint-utils: ^3.0.0
-    estraverse: ^5.3.0
-  peerDependencies:
-    eslint: ">=7.0.0"
-  checksum: d46fb241fbcff5c7a9ec44c6f19930ad7bd2394c0cadb75a97bb151c86fc506da9dfbbcf34ec41151abf2024151945a0dd6ba9b031a3d75e87e58e7f267bf488
+    eslint: ">=8.23.0"
+  checksum: 1102e02bf0d837321b56dc297b457957679262a3d8c06738c2f5503ac0aa993ac4bd9908d965b15527e50880f21fa789ee9b5c13526f01c99a8e1eeed0b6055d
   languageName: node
   linkType: hard
 
@@ -10017,17 +10005,6 @@ __metadata:
     esrecurse: ^4.3.0
     estraverse: ^5.2.0
   checksum: 67a5a39312dadb8c9a677df0f2e8add8daf15280b08bfe07f898d5347ee2d7cd2a1f5c2760f34e46e8f5f13f7192f47c2c10abe676bfa4173ae5539365551940
-  languageName: node
-  linkType: hard
-
-"eslint-utils@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "eslint-utils@npm:3.0.0"
-  dependencies:
-    eslint-visitor-keys: ^2.0.0
-  peerDependencies:
-    eslint: ">=5"
-  checksum: 0668fe02f5adab2e5a367eee5089f4c39033af20499df88fe4e6aba2015c20720404d8c3d6349b6f716b08fdf91b9da4e5d5481f265049278099c4c836ccb619
   languageName: node
   linkType: hard
 
