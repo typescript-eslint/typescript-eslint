@@ -42,7 +42,7 @@ declare class TokenStore {
   /**
    * Gets the first token of the given node.
    * @param node The AST node.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getFirstToken<T extends SourceCode.CursorWithSkipOptions>(
@@ -53,7 +53,7 @@ declare class TokenStore {
    * Gets the first token between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getFirstTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
@@ -85,7 +85,7 @@ declare class TokenStore {
   /**
    * Gets the last token of the given node.
    * @param node The AST node.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getLastToken<T extends SourceCode.CursorWithSkipOptions>(
@@ -96,7 +96,7 @@ declare class TokenStore {
    * Gets the last token between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getLastTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
@@ -128,7 +128,7 @@ declare class TokenStore {
   /**
    * Gets the token that follows a given node or token.
    * @param node The AST node or token.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getTokenAfter<T extends SourceCode.CursorWithSkipOptions>(
@@ -148,7 +148,7 @@ declare class TokenStore {
   /**
    * Gets the token starting at the specified index.
    * @param offset Index of the start of the token's range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns The token starting at index, or null if no such token.
    */
   getTokenByRangeStart<T extends { includeComments?: boolean }>(
@@ -236,7 +236,7 @@ declare class SourceCodeBase extends TokenStore {
   getAllComments(): TSESTree.Comment[];
   /**
    * Converts a (line, column) pair into a range index.
-   * @param loc A line/column location
+   * @param location A line/column location
    * @returns The range index of the location in the file.
    */
   getIndexFromLoc(location: TSESTree.Position): number;

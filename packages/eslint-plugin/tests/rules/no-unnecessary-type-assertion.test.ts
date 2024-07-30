@@ -544,6 +544,11 @@ bar + 1;
       errors: [{ messageId: 'unnecessaryAssertion' }],
     },
     {
+      code: 'Proxy!;',
+      output: 'Proxy;',
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+    },
+    {
       code: `
 function foo<T extends string>(bar: T) {
   return bar!;
