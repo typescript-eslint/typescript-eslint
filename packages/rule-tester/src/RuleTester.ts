@@ -287,14 +287,19 @@ export class RuleTester extends TestFramework {
     Hugely helps with the string-based valid test cases as it means they don't
     need to be made objects!
     */
-    const getFilename = (testOptions?: ParserOptions): string => {
+    const getFilename = (
+      originalFilename: string | undefined,
+      testOptions: ParserOptions | undefined,
+    ): string => {
       const resolvedOptions = deepMerge(
         this.#testerConfig.languageOptions.parserOptions,
         testOptions,
       ) as ParserOptions;
-      const filename = resolvedOptions.ecmaFeatures?.jsx
-        ? this.#testerConfig.defaultFilenames.tsx
-        : this.#testerConfig.defaultFilenames.ts;
+      const filename =
+        originalFilename ??
+        (resolvedOptions.ecmaFeatures?.jsx
+          ? this.#testerConfig.defaultFilenames.tsx
+          : this.#testerConfig.defaultFilenames.ts);
       if (resolvedOptions.project) {
         return path.join(
           resolvedOptions.tsconfigRootDir ?? process.cwd(),
@@ -314,22 +319,19 @@ export class RuleTester extends TestFramework {
       if (languageOptions.parser === parser) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
-      if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(languageOptions.parserOptions),
-          languageOptions: {
-            ...languageOptions,
-            parserOptions: {
-              // Re-running simulates --fix mode, which implies an isolated program
-              // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
-              disallowAutomaticSingleRunInference: true,
-              ...languageOptions.parserOptions,
-            },
+      return {
+        ...test,
+        filename: getFilename(test.filename, languageOptions.parserOptions),
+        languageOptions: {
+          ...languageOptions,
+          parserOptions: {
+            // Re-running simulates --fix mode, which implies an isolated program
+            // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+            disallowAutomaticSingleRunInference: true,
+            ...languageOptions.parserOptions,
           },
-        };
-      }
-      return test;
+        },
+      };
     };
 
     const normalizedTests = {
