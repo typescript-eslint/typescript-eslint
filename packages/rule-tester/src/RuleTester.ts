@@ -175,17 +175,17 @@ export class RuleTester extends TestFramework {
   constructor(testerConfig?: RuleTesterConfig) {
     super();
 
-    this.#linter = new Linter({
-      configType: 'flat',
-      cwd: testerConfig?.languageOptions?.parserOptions?.tsconfigRootDir,
-    });
-
     /**
      * The configuration to use for this tester. Combination of the tester
      * configuration and the default configuration.
      */
     this.#testerConfig = merge({}, defaultConfig, testerConfig, {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
+    });
+
+    this.#linter = new Linter({
+      configType: 'flat',
+      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
