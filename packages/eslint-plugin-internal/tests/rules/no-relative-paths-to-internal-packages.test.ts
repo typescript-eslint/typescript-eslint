@@ -5,7 +5,13 @@ import rule, {
   PACKAGES_DIR,
 } from '../../src/rules/no-relative-paths-to-internal-packages';
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: PACKAGES_DIR,
+    },
+  },
+});
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {
   valid: [
