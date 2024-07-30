@@ -1,3 +1,26 @@
+## 7.18.0 (2024-07-29)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] prevent runtime error when asserting a variable declared in default TS lib
+
+- **eslint-plugin:** [unbound-method] report on destructuring in function parameters
+
+- **eslint-plugin:** [no-duplicate-type-constituents] shouldn't report on error types
+
+- **eslint-plugin:** [strict-boolean-expressions] support branded booleans
+
+
+### ❤️  Thank You
+
+- auvred
+- Oliver Salzburg
+- Vinccool96
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.17.0 (2024-07-22)
 
 

@@ -1,16 +1,13 @@
 {
   "type": "module",
-  "scripts": {
-    "// NOTE: @types/eslint has to be pinned until @stylistic/eslint-plugin latest works with latest": ""
-  },
   "devDependencies": {
     "@types/eslint__eslintrc": "latest",
     "@eslint/eslintrc": "latest",
     "@types/eslint__js": "latest",
     "@eslint/js": "latest",
-    "@types/eslint": "^8.56.10",
+    "@types/eslint": "^9",
     "eslint": "latest",
-    "@stylistic/eslint-plugin": "latest",
+    "@stylistic/eslint-plugin": "2.3.0",
     "eslint-plugin-deprecation": "latest",
     "eslint-plugin-jest": "latest"
   }

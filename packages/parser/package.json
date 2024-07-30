@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "7.17.0",
+  "version": "7.18.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
@@ -52,10 +52,10 @@
     "eslint": "^8.56.0"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "7.17.0",
-    "@typescript-eslint/types": "7.17.0",
-    "@typescript-eslint/typescript-estree": "7.17.0",
-    "@typescript-eslint/visitor-keys": "7.17.0",
+    "@typescript-eslint/scope-manager": "7.18.0",
+    "@typescript-eslint/types": "7.18.0",
+    "@typescript-eslint/typescript-estree": "7.18.0",
+    "@typescript-eslint/visitor-keys": "7.18.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {

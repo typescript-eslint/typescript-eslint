@@ -88,9 +88,9 @@ export enum AST_NODE_TYPES {
   WhileStatement = 'WhileStatement',
   WithStatement = 'WithStatement',
   YieldExpression = 'YieldExpression',
-  /**
-   * TS-prefixed nodes
-   */
+
+  // TS_prefixed nodes
+
   TSAbstractAccessorProperty = 'TSAbstractAccessorProperty',
   TSAbstractKeyword = 'TSAbstractKeyword',
   TSAbstractMethodDefinition = 'TSAbstractMethodDefinition',

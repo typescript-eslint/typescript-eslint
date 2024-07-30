@@ -9,16 +9,18 @@ export interface ExportAllDeclaration extends BaseNode {
   type: AST_NODE_TYPES.ExportAllDeclaration;
   /**
    * The assertions declared for the export.
-   * ```
-   * export * from 'mod' assert { type: 'json' };
+   * @example
+   * ```ts
+   * export * from 'mod' assert \{ type: 'json' \};
    * ```
    * @deprecated Replaced with {@link `attributes`}.
    */
   assertions: ImportAttribute[];
   /**
    * The attributes declared for the export.
-   * ```
-   * export * from 'mod' with { type: 'json' };
+   * @example
+   * ```ts
+   * export * from 'mod' with \{ type: 'json' \};
    * ```
    */
   attributes: ImportAttribute[];

@@ -1,3 +1,26 @@
+## 7.18.0 (2024-07-29)
+
+
+### 🚀 Features
+
+- **types:** update ECMA versions ([#9634](https://github.com/typescript-eslint/typescript-eslint/pull/9634))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] prevent runtime error when asserting a variable declared in default TS lib ([#9660](https://github.com/typescript-eslint/typescript-eslint/pull/9660))
+- **eslint-plugin:** [unbound-method] report on destructuring in function parameters ([#8952](https://github.com/typescript-eslint/typescript-eslint/pull/8952))
+- **eslint-plugin:** [no-duplicate-type-constituents] shouldn't report on error types ([#9600](https://github.com/typescript-eslint/typescript-eslint/pull/9600))
+- **eslint-plugin:** [strict-boolean-expressions] support branded booleans ([#9297](https://github.com/typescript-eslint/typescript-eslint/pull/9297))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Oliver Salzburg
+- Vinccool96
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.17.0 (2024-07-22)
 
 
