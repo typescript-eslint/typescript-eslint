@@ -2,6 +2,8 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
+import console from 'console';
+import ts from 'typescript';
 
 import {
   createRule,
@@ -225,7 +227,7 @@ export default createRule<Options, MessageIds>({
       ...(!ignoreIntersections && { TSIntersectionType: checkDuplicate }),
       ...(!ignoreUnions && {
         TSUnionType(node): void {
-          checkDuplicate(node);
+          let initialTypes;
           const maybeTypeAnnotation = node.parent;
           if (maybeTypeAnnotation.type === AST_NODE_TYPES.TSTypeAnnotation) {
             const maybeIdentifier = maybeTypeAnnotation.parent;
@@ -241,15 +243,13 @@ export default createRule<Options, MessageIds>({
                   type === AST_NODE_TYPES.FunctionExpression) &&
                 maybeFunction.params.includes(maybeIdentifier)
               ) {
-                const explicitUndefined = node.types.find(
-                  ({ type }) => type === AST_NODE_TYPES.TSUndefinedKeyword,
-                );
-                if (explicitUndefined) {
-                  report('unnecessary', explicitUndefined);
-                }
+                initialTypes = parserServices.program
+                  .getTypeChecker()
+                  .getUndefinedType();
               }
             }
           }
+          checkDuplicate(node, initialTypes);
         },
       }),
     };
