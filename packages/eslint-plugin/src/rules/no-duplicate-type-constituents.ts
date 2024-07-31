@@ -1,9 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import { isTypeFlagSet } from 'ts-api-utils';
 import type { Type } from 'typescript';
-import console from 'console';
-import ts from 'typescript';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -117,6 +117,10 @@ export default createRule<Options, MessageIds>({
 
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
+      forEachNodeType?: (
+        constituentNodeType: Type,
+        report: (messageId: MessageIds) => void,
+      ) => void,
     ): void {
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       node.types.reduce<TSESTree.TypeNode[]>(
@@ -127,13 +131,77 @@ export default createRule<Options, MessageIds>({
             return uniqueConstituents;
           }
 
+          const report = (
+            messageId: MessageIds,
+            data?: Record<string, unknown>,
+          ): void => {
+            const getUnionOrIntersectionToken = (
+              where: 'Before' | 'After',
+              at: number,
+            ): TSESTree.Token | undefined =>
+              sourceCode[`getTokens${where}`](constituentNode, {
+                filter: token => ['|', '&'].includes(token.value),
+              }).at(at);
+
+            const beforeUnionOrIntersectionToken = getUnionOrIntersectionToken(
+              'Before',
+              -1,
+            );
+            let afterUnionOrIntersectionToken: TSESTree.Token | undefined;
+            let bracketBeforeTokens;
+            let bracketAfterTokens;
+            if (beforeUnionOrIntersectionToken) {
+              bracketBeforeTokens = sourceCode.getTokensBetween(
+                beforeUnionOrIntersectionToken,
+                constituentNode,
+              );
+              bracketAfterTokens = sourceCode.getTokensAfter(constituentNode, {
+                count: bracketBeforeTokens.length,
+              });
+            } else {
+              afterUnionOrIntersectionToken = nullThrows(
+                getUnionOrIntersectionToken('After', 0),
+                NullThrowsReasons.MissingToken(
+                  'union or intersection token',
+                  'duplicate type constituent',
+                ),
+              );
+              bracketAfterTokens = sourceCode.getTokensBetween(
+                constituentNode,
+                afterUnionOrIntersectionToken,
+              );
+              bracketBeforeTokens = sourceCode.getTokensBefore(
+                constituentNode,
+                {
+                  count: bracketAfterTokens.length,
+                },
+              );
+            }
+            context.report({
+              data,
+              messageId,
+              node: constituentNode,
+              loc: {
+                start: constituentNode.loc.start,
+                end: (bracketAfterTokens.at(-1) ?? constituentNode).loc.end,
+              },
+              fix: fixer =>
+                [
+                  beforeUnionOrIntersectionToken,
+                  ...bracketBeforeTokens,
+                  constituentNode,
+                  ...bracketAfterTokens,
+                  afterUnionOrIntersectionToken,
+                ].flatMap(token => (token ? fixer.remove(token) : [])),
+            });
+          };
           const reportIfDuplicate = (
             duplicatePrevious?: TSESTree.TypeNode,
             // https://github.com/typescript-eslint/typescript-eslint/issues/5752
             // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
           ): true | void => {
             if (duplicatePrevious) {
-              report('duplicate', constituentNode, {
+              report('duplicate', {
                 type:
                   node.type === AST_NODE_TYPES.TSIntersectionType
                     ? 'Intersection'
@@ -155,102 +223,40 @@ export default createRule<Options, MessageIds>({
           if (reportIfDuplicate(cachedTypeMap.get(constituentNodeType))) {
             return uniqueConstituents;
           }
+          forEachNodeType?.(constituentNodeType, report);
           cachedTypeMap.set(constituentNodeType, constituentNode);
           return [...uniqueConstituents, constituentNode];
         },
         [],
       );
     }
-    function report(
-      messageId: MessageIds,
-      node: TSESTree.TypeNode,
-      data?: Record<string, unknown>,
-    ): void {
-      const getUnionOrIntersectionToken = (
-        where: 'Before' | 'After',
-        at: number,
-      ): TSESTree.Token | undefined =>
-        sourceCode[`getTokens${where}`](node, {
-          filter: token => ['|', '&'].includes(token.value),
-        }).at(at);
 
-      const beforeUnionOrIntersectionToken = getUnionOrIntersectionToken(
-        'Before',
-        -1,
-      );
-      let afterUnionOrIntersectionToken: TSESTree.Token | undefined;
-      let bracketBeforeTokens;
-      let bracketAfterTokens;
-      if (beforeUnionOrIntersectionToken) {
-        bracketBeforeTokens = sourceCode.getTokensBetween(
-          beforeUnionOrIntersectionToken,
-          node,
-        );
-        bracketAfterTokens = sourceCode.getTokensAfter(node, {
-          count: bracketBeforeTokens.length,
-        });
-      } else {
-        afterUnionOrIntersectionToken = nullThrows(
-          getUnionOrIntersectionToken('After', 0),
-          NullThrowsReasons.MissingToken(
-            'union or intersection token',
-            'duplicate type constituent',
-          ),
-        );
-        bracketAfterTokens = sourceCode.getTokensBetween(
-          node,
-          afterUnionOrIntersectionToken,
-        );
-        bracketBeforeTokens = sourceCode.getTokensBefore(node, {
-          count: bracketAfterTokens.length,
-        });
-      }
-      context.report({
-        data,
-        messageId,
-        node,
-        loc: {
-          start: node.loc.start,
-          end: (bracketAfterTokens.at(-1) ?? node).loc.end,
-        },
-        fix: fixer =>
-          [
-            beforeUnionOrIntersectionToken,
-            ...bracketBeforeTokens,
-            node,
-            ...bracketAfterTokens,
-            afterUnionOrIntersectionToken,
-          ].flatMap(token => (token ? fixer.remove(token) : [])),
-      });
-    }
     return {
       ...(!ignoreIntersections && { TSIntersectionType: checkDuplicate }),
       ...(!ignoreUnions && {
-        TSUnionType(node): void {
-          let initialTypes;
-          const maybeTypeAnnotation = node.parent;
-          if (maybeTypeAnnotation.type === AST_NODE_TYPES.TSTypeAnnotation) {
-            const maybeIdentifier = maybeTypeAnnotation.parent;
-            if (
-              maybeIdentifier.type === AST_NODE_TYPES.Identifier &&
-              maybeIdentifier.optional
-            ) {
-              const maybeFunction = maybeIdentifier.parent;
-              const { type } = maybeFunction;
+        TSUnionType: (node): void =>
+          checkDuplicate(node, (constituentNodeType, report) => {
+            const maybeTypeAnnotation = node.parent;
+            if (maybeTypeAnnotation.type === AST_NODE_TYPES.TSTypeAnnotation) {
+              const maybeIdentifier = maybeTypeAnnotation.parent;
               if (
-                (type === AST_NODE_TYPES.ArrowFunctionExpression ||
-                  type === AST_NODE_TYPES.FunctionDeclaration ||
-                  type === AST_NODE_TYPES.FunctionExpression) &&
-                maybeFunction.params.includes(maybeIdentifier)
+                maybeIdentifier.type === AST_NODE_TYPES.Identifier &&
+                maybeIdentifier.optional
               ) {
-                initialTypes = parserServices.program
-                  .getTypeChecker()
-                  .getUndefinedType();
+                const maybeFunction = maybeIdentifier.parent;
+                const { type } = maybeFunction;
+                if (
+                  (type === AST_NODE_TYPES.ArrowFunctionExpression ||
+                    type === AST_NODE_TYPES.FunctionDeclaration ||
+                    type === AST_NODE_TYPES.FunctionExpression) &&
+                  maybeFunction.params.includes(maybeIdentifier) &&
+                  isTypeFlagSet(constituentNodeType, ts.TypeFlags.Undefined)
+                ) {
+                  report('unnecessary');
+                }
               }
             }
-          }
-          checkDuplicate(node, initialTypes);
-        },
+          }),
       }),
     };
   },

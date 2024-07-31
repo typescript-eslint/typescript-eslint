@@ -690,13 +690,5 @@ type T = Record<string, A  >;
         (arg?:   string) => {};
       `,
     },
-    {
-      only: true,
-      code: `
-        type T = undefined;
-        type U = T | undefined;
-      `,
-      errors: [{ messageId: 'duplicate' }],
-    },
   ],
 });
