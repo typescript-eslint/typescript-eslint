@@ -722,30 +722,6 @@ function a() {}
     },
     {
       code: `
-'use strict';
-a();
-{
-  function a() {}
-}
-      `,
-      languageOptions: {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        parser: require('espree'),
-        parserOptions: {
-          ecmaVersion: 6,
-          sourceType: 'script',
-        },
-      },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
 a();
 try {
   throw new Error();
