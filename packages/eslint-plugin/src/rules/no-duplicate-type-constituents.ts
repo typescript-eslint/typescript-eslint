@@ -195,32 +195,18 @@ export default createRule<Options, MessageIds>({
                 ].flatMap(token => (token ? fixer.remove(token) : [])),
             });
           };
-          const reportIfDuplicate = (
-            duplicatePrevious?: TSESTree.TypeNode,
-            // https://github.com/typescript-eslint/typescript-eslint/issues/5752
-            // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-          ): true | void => {
-            if (duplicatePrevious) {
-              report('duplicate', {
-                type:
-                  node.type === AST_NODE_TYPES.TSIntersectionType
-                    ? 'Intersection'
-                    : 'Union',
-                previous: sourceCode.getText(duplicatePrevious),
-              });
-              return true;
-            }
-          };
-          if (
-            reportIfDuplicate(
-              uniqueConstituents.find(ele =>
-                isSameAstNode(ele, constituentNode),
-              ),
-            )
-          ) {
-            return uniqueConstituents;
-          }
-          if (reportIfDuplicate(cachedTypeMap.get(constituentNodeType))) {
+          const duplicatePrevious =
+            uniqueConstituents.find(ele =>
+              isSameAstNode(ele, constituentNode),
+            ) ?? cachedTypeMap.get(constituentNodeType);
+          if (duplicatePrevious) {
+            report('duplicate', {
+              type:
+                node.type === AST_NODE_TYPES.TSIntersectionType
+                  ? 'Intersection'
+                  : 'Union',
+              previous: sourceCode.getText(duplicatePrevious),
+            });
             return uniqueConstituents;
           }
           forEachNodeType?.(constituentNodeType, report);
