@@ -37,9 +37,88 @@ If you don't want to check conditionals, you can configure the rule with `"check
 
 Doing so prevents the rule from looking at code like `if (somePromise)`.
 
-Examples of code for this rule with `checksConditionals: true`:
+### `checksVoidReturn`
+
+Likewise, if you don't want to check functions that return promises where a void return is
+expected, your configuration will look like this:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": false
+    }
+  ]
+}
+```
+
+You can disable selective parts of the `checksVoidReturn` option by providing an object that disables specific checks. For example, if you don't mind that passing a `() => Promise<void>` to a `() => void` parameter or JSX attribute can lead to a floating unhandled Promise:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": {
+        "arguments": false,
+        "attributes": false
+      }
+    }
+  ]
+}
+```
+
+The following sub-options are supported:
+
+#### `arguments`
+
+Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`.
+
+#### `attributes`
+
+Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.
+
+#### `inheritedMethods`
+
+Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.
+
+:::note
+For now, `no-misused-promises` only checks _named_ methods against extended/implemented types: that is, call/construct/index signatures are ignored. Call signatures are not required in TypeScript to be consistent with one another, and construct signatures cannot be `async` in the first place. Index signature checking may be implemented in the future.
+:::
+
+#### `properties`
+
+Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`.
+
+#### `returns`
+
+Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`.
+
+#### `variables`
+
+Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`.
+
+### `checksSpreads`
+
+If you don't want to check object spreads, you can add this configuration:
+
+```json
+{
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksSpreads": false
+    }
+  ]
+}
+```
 
 ## Examples
+
+### `checksConditionals`
+
+Examples of code for this rule with `checksConditionals: true`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -81,45 +160,6 @@ while (await promise) {
 
 ### `checksVoidReturn`
 
-Likewise, if you don't want to check functions that return promises where a void return is
-expected, your configuration will look like this:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksVoidReturn": false
-    }
-  ]
-}
-```
-
-You can disable selective parts of the `checksVoidReturn` option by providing an object that disables specific checks.
-The following options are supported:
-
-- `arguments`: Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`
-- `attributes`: Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`
-- `properties`: Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`
-- `returns`: Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`
-- `variables`: Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`
-
-For example, if you don't mind that passing a `() => Promise<void>` to a `() => void` parameter or JSX attribute can lead to a floating unhandled Promise:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksVoidReturn": {
-        "arguments": false,
-        "attributes": false
-      }
-    }
-  ]
-}
-```
-
 Examples of code for this rule with `checksVoidReturn: true`:
 
 <Tabs>
@@ -140,6 +180,15 @@ document.addEventListener('click', async () => {
   await fetch('/');
   console.log('synchronous call');
 });
+
+interface MySyncInterface {
+  setThing(): void;
+}
+class MyClass implements MySyncInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
 ```
 
 </TabItem>
@@ -182,25 +231,21 @@ document.addEventListener('click', () => {
 
   handler().catch(handleError);
 });
+
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+class MyClass implements MyAsyncInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
 ```
 
 </TabItem>
 </Tabs>
 
 ### `checksSpreads`
-
-If you don't want to check object spreads, you can add this configuration:
-
-```json
-{
-  "@typescript-eslint/no-misused-promises": [
-    "error",
-    {
-      "checksSpreads": false
-    }
-  ]
-}
-```
 
 Examples of code for this rule with `checksSpreads: true`:
 

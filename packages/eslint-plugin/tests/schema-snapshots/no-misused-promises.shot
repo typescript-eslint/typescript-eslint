@@ -28,6 +28,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
               "attributes": {
                 "type": "boolean"
               },
+              "inheritedMethods": {
+                "type": "boolean"
+              },
               "properties": {
                 "type": "boolean"
               },
@@ -58,6 +61,7 @@ type Options = [
       | {
           arguments?: boolean;
           attributes?: boolean;
+          inheritedMethods?: boolean;
           properties?: boolean;
           returns?: boolean;
           variables?: boolean;
