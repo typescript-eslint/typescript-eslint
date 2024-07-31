@@ -1,5 +1,5 @@
 // @ts-check
-/* eslint-disable jsdoc/no-types */
+/* eslint-disable jsdoc/no-types, @typescript-eslint/no-require-imports */
 
 const core = require('@actions/core');
 const github = require('@actions/github');

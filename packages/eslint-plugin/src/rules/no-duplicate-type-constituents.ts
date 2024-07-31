@@ -45,8 +45,7 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
     }
     if (
       actualNodeKeys.some(
-        actualNodeKey =>
-          !Object.prototype.hasOwnProperty.call(expectedNode, actualNodeKey),
+        actualNodeKey => !Object.hasOwn(expectedNode, actualNodeKey),
       )
     ) {
       return false;

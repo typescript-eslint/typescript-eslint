@@ -6,11 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -51,19 +51,28 @@ ruleTester.run('dot-notation', rule, {
       code: "a['lots_of_snake_case'];",
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
     },
-    { code: 'a[`time${range}`];', parserOptions: { ecmaVersion: 6 } },
+    {
+      code: 'a[`time${range}`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
     {
       code: 'a[`while`];',
       options: [{ allowKeywords: false }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
-    { code: 'a[`time range`];', parserOptions: { ecmaVersion: 6 } },
+    {
+      code: 'a[`time range`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
     'a.true;',
     'a.null;',
     'a[undefined];',
     'a[void 0];',
     'a[b()];',
-    { code: 'a[/(?<zero>0)/];', parserOptions: { ecmaVersion: 2018 } },
+    {
+      code: 'a[/(?<zero>0)/];',
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+    },
 
     {
       code: `
@@ -117,7 +126,7 @@ dingus?.nested.property;
 dingus?.nested['hello'];
       `,
       options: [{ allowIndexSignaturePropertyAccess: true }],
-      parserOptions: { ecmaVersion: 2020 },
+      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
     },
     {
       code: `
@@ -198,7 +207,7 @@ x.pub_prop = 123;
     {
       code: "a['time'];",
       output: 'a.time;',
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [{ messageId: 'useDot', data: { key: '"time"' } }],
     },
     {

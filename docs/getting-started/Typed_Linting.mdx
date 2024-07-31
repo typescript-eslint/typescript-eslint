@@ -25,7 +25,7 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -42,7 +42,7 @@ For CommonJS modules and/or older versions of Node.js, [use `__dirname` or an al
 In more detail:
 
 - `tseslint.configs.recommendedTypeChecked` is another [shared configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
-- `parserOptions.project: true` indicates to find the closest `tsconfig.json` for each source file (see [Parser#project](../packages/Parser.mdx#project)).
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser#projectService](../packages/Parser.mdx#projectService)).
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
@@ -65,7 +65,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   // Added lines start
   parserOptions: {
-    project: true,
+    projectService: true,
     tsconfigRootDir: __dirname,
   },
   // Added lines end
@@ -76,7 +76,7 @@ module.exports = {
 In more detail:
 
 - `plugin:@typescript-eslint/recommended-type-checked` is another [shared configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
-- `parserOptions.project: true` indicates to find the closest `tsconfig.json` for each source file (see [Parser#project](../packages/Parser.mdx#project)).
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser#projectService](../packages/Parser.mdx#projectService)).
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
@@ -142,7 +142,11 @@ You can read more about the rules provided by typescript-eslint in our [rules do
 
 ### Can I customize the TSConfig used for typed linting?
 
-The `project` option can be turned on with either:
+Yes, but it's not recommended in most configurations.
+`parserOptions.projectService` uses the same "project service" APIs used by editors such as VS Code to generate TypeScript's type information.
+Using a different TSConfig runs the risk of providing different types for typed linting than what your editor or `tsc` see.
+
+If you absolutely must, the `parserOptions.project` option can be used instead of `parserOptions.projectService` with either:
 
 - `true`: to always use `tsconfig.json`s nearest to source files
 - `string | string[]`: any number of glob paths to match TSConfig files relative to `parserOptions.tsconfigRootDir`, or the current working directory if that is not provided
@@ -182,7 +186,7 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-See [the `@typescript-eslint/parser` docs for more details](../packages/Parser.mdx#project).
+See [the `@typescript-eslint/parser` `project` docs for more details](../packages/Parser.mdx#project).
 
 :::note
 If your project is a multi-package monorepo, see [our docs on configuring a monorepo](../troubleshooting/typed-linting/Monorepos.mdx).
@@ -203,7 +207,8 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
+        tsconfigRootDir: import.meta.name,
       },
     },
   },
@@ -254,7 +259,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 ### How is performance?
 
 Typed rules come with a catch.
-By including `parserOptions.project` in your config, you incur the performance penalty of asking TypeScript to do a build of your project before ESLint can do its linting.
+By using typed linting in your config, you incur the performance penalty of asking TypeScript to do a build of your project before ESLint can do its linting.
 For small projects this takes a negligible amount of time (a few seconds or less); for large projects, it can take longer.
 
 Most of our users do not mind this cost as the power and safety of type-aware static analysis rules is worth the tradeoff.

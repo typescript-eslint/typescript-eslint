@@ -12,10 +12,11 @@ import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -341,8 +342,10 @@ if (x) {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
 
@@ -2316,8 +2319,10 @@ if (x) {
           column: 5,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
 
