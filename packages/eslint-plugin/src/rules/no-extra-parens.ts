@@ -288,7 +288,7 @@ export default createRule<Options, MessageIds>({
       },
       // SwitchStatement
       ThrowStatement(node) {
-        if (node.argument && !isTypeAssertion(node.argument)) {
+        if (!isTypeAssertion(node.argument)) {
           return rules.ThrowStatement(node);
         }
       },
