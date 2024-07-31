@@ -1,15 +1,16 @@
+import type {
+  InvalidTestCase,
+  SuggestionOutput,
+} from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/no-explicit-any';
 import rule from '../../src/rules/no-explicit-any';
 
-type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
-type SuggestionOutput = TSESLint.SuggestionOutput<MessageIds>;
+type RuleInvalidTestCase = InvalidTestCase<MessageIds, Options>;
+type RuleSuggestionOutput = SuggestionOutput<MessageIds>;
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-explicit-any', rule, {
   valid: [
@@ -1196,9 +1197,9 @@ const test = <T extends Partial<never>>() => {};
           },
         ],
       },
-    ] as InvalidTestCase[]
-  ).reduce<InvalidTestCase[]>((acc, testCase) => {
-    const suggestions = (code: string): SuggestionOutput[] => [
+    ] as RuleInvalidTestCase[]
+  ).reduce<RuleInvalidTestCase[]>((acc, testCase) => {
+    const suggestions = (code: string): RuleSuggestionOutput[] => [
       {
         messageId: 'suggestUnknown',
         output: code.replace(/any/, 'unknown'),
@@ -1231,7 +1232,7 @@ const test = <T extends Partial<never>>() => {};
           line: err.line + 1,
           suggestions:
             err.suggestions?.map(
-              (s): SuggestionOutput => ({
+              (s): RuleSuggestionOutput => ({
                 ...s,
                 output: `// fixToUnknown: true\n${s.output}`,
               }),

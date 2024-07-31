@@ -6,7 +6,10 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isFunction,
   isRestParameterDeclaration,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -170,9 +173,77 @@ export default createRule<Options, MessageId>({
       SpreadElement: checkSpread,
     };
 
-    function checkTestConditional(node: {
-      test: TSESTree.Expression | null;
-    }): void {
+    /**
+     * A syntactic check to see if an annotated type is maybe a function type.
+     * This is a perf optimization to help avoid requesting types where possible
+     */
+    function isPossiblyFunctionType(node: TSESTree.TSTypeAnnotation): boolean {
+      switch (node.typeAnnotation.type) {
+        case AST_NODE_TYPES.TSConditionalType:
+        case AST_NODE_TYPES.TSConstructorType:
+        case AST_NODE_TYPES.TSFunctionType:
+        case AST_NODE_TYPES.TSImportType:
+        case AST_NODE_TYPES.TSIndexedAccessType:
+        case AST_NODE_TYPES.TSInferType:
+        case AST_NODE_TYPES.TSIntersectionType:
+        case AST_NODE_TYPES.TSQualifiedName:
+        case AST_NODE_TYPES.TSThisType:
+        case AST_NODE_TYPES.TSTypeOperator:
+        case AST_NODE_TYPES.TSTypeQuery:
+        case AST_NODE_TYPES.TSTypeReference:
+        case AST_NODE_TYPES.TSUnionType:
+          return true;
+
+        case AST_NODE_TYPES.TSTypeLiteral:
+          return node.typeAnnotation.members.some(
+            member =>
+              member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
+              member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration,
+          );
+
+        case AST_NODE_TYPES.TSAbstractKeyword:
+        case AST_NODE_TYPES.TSAnyKeyword:
+        case AST_NODE_TYPES.TSArrayType:
+        case AST_NODE_TYPES.TSAsyncKeyword:
+        case AST_NODE_TYPES.TSBigIntKeyword:
+        case AST_NODE_TYPES.TSBooleanKeyword:
+        case AST_NODE_TYPES.TSDeclareKeyword:
+        case AST_NODE_TYPES.TSExportKeyword:
+        case AST_NODE_TYPES.TSIntrinsicKeyword:
+        case AST_NODE_TYPES.TSLiteralType:
+        case AST_NODE_TYPES.TSMappedType:
+        case AST_NODE_TYPES.TSNamedTupleMember:
+        case AST_NODE_TYPES.TSNeverKeyword:
+        case AST_NODE_TYPES.TSNullKeyword:
+        case AST_NODE_TYPES.TSNumberKeyword:
+        case AST_NODE_TYPES.TSObjectKeyword:
+        case AST_NODE_TYPES.TSOptionalType:
+        case AST_NODE_TYPES.TSPrivateKeyword:
+        case AST_NODE_TYPES.TSProtectedKeyword:
+        case AST_NODE_TYPES.TSPublicKeyword:
+        case AST_NODE_TYPES.TSReadonlyKeyword:
+        case AST_NODE_TYPES.TSRestType:
+        case AST_NODE_TYPES.TSStaticKeyword:
+        case AST_NODE_TYPES.TSStringKeyword:
+        case AST_NODE_TYPES.TSSymbolKeyword:
+        case AST_NODE_TYPES.TSTemplateLiteralType:
+        case AST_NODE_TYPES.TSTupleType:
+        case AST_NODE_TYPES.TSTypePredicate:
+        case AST_NODE_TYPES.TSUndefinedKeyword:
+        case AST_NODE_TYPES.TSUnknownKeyword:
+        case AST_NODE_TYPES.TSVoidKeyword:
+          return false;
+      }
+    }
+
+    function checkTestConditional(
+      node:
+        | TSESTree.ConditionalExpression
+        | TSESTree.DoWhileStatement
+        | TSESTree.ForStatement
+        | TSESTree.IfStatement
+        | TSESTree.WhileStatement,
+    ): void {
       if (node.test) {
         checkConditional(node.test, true);
       }
@@ -255,9 +326,19 @@ export default createRule<Options, MessageId>({
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.initializer === undefined || node.init == null) {
+      if (
+        tsNode.initializer === undefined ||
+        node.init == null ||
+        node.id.typeAnnotation == null
+      ) {
         return;
       }
+
+      // syntactically ignore some known-good cases to avoid touching type info
+      if (!isPossiblyFunctionType(node.id.typeAnnotation)) {
+        return;
+      }
+
       const varType = services.getTypeAtLocation(node.id);
       if (!isVoidReturningFunctionType(checker, tsNode.initializer, varType)) {
         return;
@@ -352,6 +433,22 @@ export default createRule<Options, MessageId>({
       if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
+
+      // syntactically ignore some known-good cases to avoid touching type info
+      const functionNode = (() => {
+        let current: TSESTree.Node | undefined = node.parent;
+        while (current && !isFunction(current)) {
+          current = current.parent;
+        }
+        return nullThrows(current, NullThrowsReasons.MissingParent);
+      })();
+      if (
+        functionNode.returnType &&
+        !isPossiblyFunctionType(functionNode.returnType)
+      ) {
+        return;
+      }
+
       const contextualType = checker.getContextualType(tsNode.expression);
       if (
         contextualType !== undefined &&

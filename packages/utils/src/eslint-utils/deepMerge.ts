@@ -1,4 +1,4 @@
-type ObjectLike<T = unknown> = Record<string, T>;
+export type ObjectLike<T = unknown> = Record<string, T>;
 
 /**
  * Check if the variable contains an object strictly rejecting arrays

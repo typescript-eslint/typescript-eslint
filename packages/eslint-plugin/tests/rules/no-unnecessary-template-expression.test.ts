@@ -1,3 +1,4 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-template-expression';
@@ -6,11 +7,894 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
+});
+
+const invalidCases: readonly InvalidTestCase<
+  'noUnnecessaryTemplateExpression',
+  []
+>[] = [
+  {
+    code: '`${1}`;',
+    output: '`1`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 5,
+      },
+    ],
+  },
+  {
+    code: '`${1n}`;',
+    output: '`1`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 6,
+      },
+    ],
+  },
+  {
+    code: '`${0o25}`;',
+    output: '`21`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 8,
+      },
+    ],
+  },
+  {
+    code: '`${0b1010} ${0b1111}`;',
+    output: '`10 15`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 10,
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 14,
+        endColumn: 20,
+      },
+    ],
+  },
+  {
+    code: '`${0x25}`;',
+    output: '`37`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 8,
+      },
+    ],
+  },
+  {
+    code: '`${/a/}`;',
+    output: '`/a/`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 7,
+      },
+    ],
+  },
+  {
+    code: '`${/a/gim}`;',
+    output: '`/a/gim`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 10,
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    1    }\`;`,
+    output: '`1`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    'a'    }\`;`,
+    output: `'a';`,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    "a"    }\`;`,
+    output: `"a";`,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    'a' + 'b'    }\`;`,
+    output: `'a' + 'b';`,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: '`${true}`;',
+    output: '`true`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 8,
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    true    }\`;`,
+    output: '`true`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: '`${null}`;',
+    output: '`null`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 8,
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    null    }\`;`,
+    output: '`null`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: '`${undefined}`;',
+    output: '`undefined`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 13,
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${    undefined    }\`;`,
+    output: '`undefined`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: '`${Infinity}`;',
+    output: '`Infinity`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 12,
+      },
+    ],
+  },
+
+  {
+    code: '`${NaN}`;',
+    output: '`NaN`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 7,
+      },
+    ],
+  },
+
+  {
+    code: "`${'a'} ${'b'}`;",
+    output: '`a b`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 7,
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 11,
+        endColumn: 14,
+      },
+    ],
+  },
+
+  {
+    code: noFormat`\`\${   'a'   } \${   'b'   }\`;`,
+    output: '`a b`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: "`use${'less'}`;",
+    output: '`useless`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+      },
+    ],
+  },
+
+  {
+    code: '`use${`less`}`;',
+    output: '`useless`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+      },
+    ],
+  },
+  {
+    code: noFormat`
+\`u\${
+  // hopefully this comment is not needed.
+  'se'
+
+}\${
+  \`le\${  \`ss\`  }\`
+}\`;
+      `,
+    output: [
+      `
+\`use\${
+  \`less\`
+}\`;
+      `,
+      `
+\`useless\`;
+      `,
+    ],
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 4,
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 7,
+        column: 3,
+        endLine: 7,
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 7,
+        column: 10,
+        endLine: 7,
+      },
+    ],
+  },
+  {
+    code: noFormat`
+\`use\${
+  \`less\`
+}\`;
+      `,
+    output: `
+\`useless\`;
+      `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 3,
+        column: 3,
+        endColumn: 9,
+      },
+    ],
+  },
+
+  {
+    code: "`${'1 + 1 ='} ${2}`;",
+    output: '`1 + 1 = 2`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 13,
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 17,
+        endColumn: 18,
+      },
+    ],
+  },
+
+  {
+    code: "`${'a'} ${true}`;",
+    output: '`a true`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 7,
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 11,
+        endColumn: 15,
+      },
+    ],
+  },
+
+  {
+    code: "`${String(Symbol.for('test'))}`;",
+    output: "String(Symbol.for('test'));",
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+        line: 1,
+        column: 4,
+        endColumn: 30,
+      },
+    ],
+  },
+
+  {
+    code: "`${'`'}`;",
+    output: "'`';",
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: "`back${'`'}tick`;",
+    output: '`back\\`tick`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: "`dollar${'${`this is test`}'}sign`;",
+    output: '`dollar\\${\\`this is test\\`}sign`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: '`complex${\'`${"`${test}`"}`\'}case`;',
+    output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: "`some ${'\\\\${test}'} string`;",
+    output: '`some \\\\\\${test} string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: "`some ${'\\\\`'} string`;",
+    output: '`some \\\\\\` string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+
+  {
+    code: '`some ${/`/} string`;',
+    output: '`some /\\`/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/\\`/} string`;',
+    output: '`some /\\\\\\`/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/\\\\`/} string`;',
+    output: '`some /\\\\\\\\\\`/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/\\\\\\`/} string`;',
+    output: '`some /\\\\\\\\\\\\\\`/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/${}/} string`;',
+    output: '`some /\\${}/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/$ {}/} string`;',
+    output: '`some /$ {}/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/\\\\/} string`;',
+    output: '`some /\\\\\\\\/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/\\\\\\b/} string`;',
+    output: '`some /\\\\\\\\\\\\b/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: '`some ${/\\\\\\\\/} string`;',
+    output: '`some /\\\\\\\\\\\\\\\\/ string`;',
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+  },
+  {
+    code: "` ${''} `;",
+    output: '`  `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: noFormat`\` \${""} \`;`,
+    output: '`  `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${``} `;',
+    output: '`  `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: noFormat`\` \${'\\\`'} \`;`,
+    output: '` \\` `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'\\\\`'} `;",
+    output: '` \\\\\\` `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'$'}{} `;",
+    output: '` \\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: noFormat`\` \${'\\$'}{} \`;`,
+    output: '` \\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'\\\\$'}{} `;",
+    output: '` \\\\\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'\\\\$ '}{} `;",
+    output: '` \\\\$ {} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: noFormat`\` \${'\\\\\\$'}{} \`;`,
+    output: '` \\\\\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` \\\\${'\\\\$'}{} `;",
+    output: '` \\\\\\\\\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` $${'{$'}{} `;",
+    output: '` \\${\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` $${'${$'}{} `;",
+    output: '` $\\${\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'foo$'}{} `;",
+    output: '` foo\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${`$`} `;',
+    output: '` $ `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${`$`}{} `;',
+    output: '` \\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${`$`} {} `;',
+    output: '` $ {} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${`$`}${undefined}{} `;',
+    output: ['` $${undefined}{} `;', '` $undefined{} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: '` ${`foo$`}{} `;',
+    output: '` foo\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'$'}${''}{} `;",
+    output: ["` \\$${''}{} `;", '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` ${'$'}${``}{} `;",
+    output: ['` \\$${``}{} `;', '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` ${'foo$'}${''}${``}{} `;",
+    output: ["` foo\\$${''}{} `;", '` foo\\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${'{}'} `;",
+    output: '` \\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` $${undefined}${'{}'} `;",
+    output: ["` $undefined${'{}'} `;", '` $undefined{} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${''}${undefined}${'{}'} `;",
+    output: ['` $${undefined}{} `;', '` $undefined{} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` \\$${'{}'} `;",
+    output: '` \\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` $${'foo'}${'{'} `;",
+    output: ["` $foo${'{'} `;", '` $foo{ `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${'{ foo'}${'{'} `;",
+    output: ["` \\${ foo${'{'} `;", '` \\${ foo{ `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` \\\\$${'{}'} `;",
+    output: '` \\\\\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` \\\\\\$${'{}'} `;",
+    output: '` \\\\\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` foo$${'{}'} `;",
+    output: '` foo\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` $${''}${'{}'} `;",
+    output: ["` \\$${'{}'} `;", '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${''} `;",
+    output: '` $ `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` $${`{}`} `;',
+    output: '` \\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` $${``}${`{}`} `;',
+    output: ['` \\$${`{}`} `;', '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: '` $${``}${`foo{}`} `;',
+    output: ['` $${`foo{}`} `;', '` $foo{} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${`${''}${`${``}`}`}${`{a}`} `;",
+    output: [
+      "` \\$${''}${`${``}`}${`{a}`} `;",
+      '` \\$${``}{a} `;',
+      '` \\${a} `;',
+    ],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${''}${`{}`} `;",
+    output: ['` \\$${`{}`} `;', '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${``}${'{}'} `;",
+    output: ["` \\$${'{}'} `;", '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` $${''}${``}${'{}'} `;",
+    output: ['` \\$${``}{} `;', '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` ${'$'} `;",
+    output: '` $ `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'$'}${'{}'} `;",
+    output: ["` \\$${'{}'} `;", '` \\${} `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: "` ${'$'}${''}${'{'} `;",
+    output: ["` \\$${''}{ `;", '` \\${ `;'],
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+  },
+  {
+    code: '` ${`\n\\$`}{} `;',
+    output: '` \n\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${`\n\\\\$`}{} `;',
+    output: '` \n\\\\\\${} `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+
+  {
+    code: "`${'\\u00E5'}`;",
+    output: "'\\u00E5';",
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "`${'\\n'}`;",
+    output: "'\\n';",
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'\\u00E5'} `;",
+    output: '` \\u00E5 `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'\\n'} `;",
+    output: '` \\n `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: noFormat`\` \${"\\n"} \`;`,
+    output: '` \\n `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: '` ${`\\n`} `;',
+    output: '` \\n `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: noFormat`\` \${ 'A\\u0307\\u0323' } \`;`,
+    output: '` A\\u0307\\u0323 `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'👨‍👩‍👧‍👦'} `;",
+    output: '` 👨‍👩‍👧‍👦 `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+  {
+    code: "` ${'\\ud83d\\udc68'} `;",
+    output: '` \\ud83d\\udc68 `;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+  },
+];
+
+describe('fixer should not change runtime value', () => {
+  for (const { code, output } of invalidCases) {
+    if (!output) {
+      continue;
+    }
+
+    test(code, () => {
+      expect(eval(code)).toEqual(
+        eval(Array.isArray(output) ? output.at(-1)! : output),
+      );
+    });
+  }
 });
 
 ruleTester.run('no-unnecessary-template-expression', rule, {
@@ -138,425 +1022,7 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
   ],
 
   invalid: [
-    {
-      code: '`${1}`;',
-      output: '`1`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 5,
-        },
-      ],
-    },
-    {
-      code: '`${1n}`;',
-      output: '`1`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 6,
-        },
-      ],
-    },
-    {
-      code: '`${/a/}`;',
-      output: '`/a/`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 7,
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    1    }\`;`,
-      output: '`1`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    'a'    }\`;`,
-      output: `'a';`,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    "a"    }\`;`,
-      output: `"a";`,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    'a' + 'b'    }\`;`,
-      output: `'a' + 'b';`,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: '`${true}`;',
-      output: '`true`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 8,
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    true    }\`;`,
-      output: '`true`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: '`${null}`;',
-      output: '`null`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 8,
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    null    }\`;`,
-      output: '`null`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: '`${undefined}`;',
-      output: '`undefined`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 13,
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${    undefined    }\`;`,
-      output: '`undefined`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: '`${Infinity}`;',
-      output: '`Infinity`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 12,
-        },
-      ],
-    },
-
-    {
-      code: '`${NaN}`;',
-      output: '`NaN`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 7,
-        },
-      ],
-    },
-
-    {
-      code: "`${'a'} ${'b'}`;",
-      output: '`a b`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 7,
-        },
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 11,
-          endColumn: 14,
-        },
-      ],
-    },
-
-    {
-      code: noFormat`\`\${   'a'   } \${   'b'   }\`;`,
-      output: '`a b`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: `
-        declare const b: 'b';
-        \`a\${b}\${'c'}\`;
-      `,
-      output: `
-        declare const b: 'b';
-        \`a\${b}c\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 3,
-          column: 17,
-          endColumn: 20,
-        },
-      ],
-    },
-
-    {
-      code: "`use${'less'}`;",
-      output: '`useless`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-        },
-      ],
-    },
-
-    {
-      code: '`use${`less`}`;',
-      output: '`useless`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const nested: string, interpolation: string;
-\`use\${\`less\${nested}\${interpolation}\`}\`;
-      `,
-      output: `
-declare const nested: string, interpolation: string;
-\`useless\${nested}\${interpolation}\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: noFormat`
-\`u\${
-  // hopefully this comment is not needed.
-  'se'
-
-}\${
-  \`le\${  \`ss\`  }\`
-}\`;
-      `,
-      output: `
-\`use\${
-  \`less\`
-}\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 4,
-        },
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 7,
-          column: 3,
-          endLine: 7,
-        },
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 7,
-          column: 10,
-          endLine: 7,
-        },
-      ],
-    },
-    {
-      code: noFormat`
-\`use\${
-  \`less\`
-}\`;
-      `,
-      output: `
-\`useless\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 3,
-          column: 3,
-          endColumn: 9,
-        },
-      ],
-    },
-
-    {
-      code: "`${'1 + 1 ='} ${2}`;",
-      output: '`1 + 1 = 2`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 13,
-        },
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 17,
-          endColumn: 18,
-        },
-      ],
-    },
-
-    {
-      code: "`${'a'} ${true}`;",
-      output: '`a true`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 7,
-        },
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 11,
-          endColumn: 15,
-        },
-      ],
-    },
-
-    {
-      code: `
-        declare const string: 'a';
-        \`\${string}\`;
-      `,
-      output: `
-        declare const string: 'a';
-        string;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 3,
-          column: 12,
-          endColumn: 18,
-        },
-      ],
-    },
-
-    {
-      code: noFormat`
-        declare const string: 'a';
-        \`\${   string   }\`;
-      `,
-      output: `
-        declare const string: 'a';
-        string;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: "`${String(Symbol.for('test'))}`;",
-      output: "String(Symbol.for('test'));",
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 1,
-          column: 4,
-          endColumn: 30,
-        },
-      ],
-    },
-
-    {
-      code: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        \`\${intersection}\`;
-      `,
-      output: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        intersection;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-          line: 3,
-          column: 12,
-          endColumn: 24,
-        },
-      ],
-    },
-
+    ...invalidCases,
     {
       code: `
         function func<T extends string>(arg: T) {
@@ -577,63 +1043,87 @@ declare const nested: string, interpolation: string;
         },
       ],
     },
-
     {
-      code: "`${'`'}`;",
-      output: "'`';",
+      code: `
+        declare const b: 'b';
+        \`a\${b}\${'c'}\`;
+      `,
+      output: `
+        declare const b: 'b';
+        \`a\${b}c\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+          line: 3,
+          column: 17,
+          endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare const nested: string, interpolation: string;
+\`use\${\`less\${nested}\${interpolation}\`}\`;
+      `,
+      output: `
+declare const nested: string, interpolation: string;
+\`useless\${nested}\${interpolation}\`;
+      `,
       errors: [
         {
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
-
     {
-      code: "`back${'`'}tick`;",
-      output: '`back\\`tick`;',
+      code: noFormat`
+        declare const string: 'a';
+        \`\${   string   }\`;
+      `,
+      output: `
+        declare const string: 'a';
+        string;
+      `,
       errors: [
         {
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
     },
-
     {
-      code: "`dollar${'${`this is test`}'}sign`;",
-      output: '`dollar\\${\\`this is test\\`}sign`;',
+      code: `
+        declare const string: 'a';
+        \`\${string}\`;
+      `,
+      output: `
+        declare const string: 'a';
+        string;
+      `,
       errors: [
         {
           messageId: 'noUnnecessaryTemplateExpression',
+          line: 3,
+          column: 12,
+          endColumn: 18,
         },
       ],
     },
-
     {
-      code: '`complex${\'`${"`${test}`"}`\'}case`;',
-      output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
+      code: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        \`\${intersection}\`;
+      `,
+      output: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        intersection;
+      `,
       errors: [
         {
           messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: "`some ${'\\\\${test}'} string`;",
-      output: '`some \\\\\\${test} string`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-    },
-
-    {
-      code: "`some ${'\\\\`'} string`;",
-      output: '`some \\\\\\` string`;',
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
+          line: 3,
+          column: 12,
+          endColumn: 24,
         },
       ],
     },

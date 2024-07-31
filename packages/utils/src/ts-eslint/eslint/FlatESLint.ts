@@ -4,6 +4,7 @@ import { FlatESLint as ESLintFlatESLint } from 'eslint/use-at-your-own-risk';
 import type { FlatConfig } from '../Config';
 import type * as Shared from './ESLintShared';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class FlatESLintBase extends Shared.ESLintBase<
   FlatConfig.ConfigArray,
   FlatESLint.ESLintOptions

@@ -6,6 +6,7 @@ import { DefinitionType } from './DefinitionType';
 class TypeDefinition extends DefinitionBase<
   DefinitionType.Type,
   | TSESTree.TSInterfaceDeclaration
+  | TSESTree.TSMappedType
   | TSESTree.TSTypeAliasDeclaration
   | TSESTree.TSTypeParameter,
   null,

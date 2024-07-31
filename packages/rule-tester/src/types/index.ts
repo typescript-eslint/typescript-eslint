@@ -6,7 +6,9 @@ type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 export type TesterConfigWithDefaults = Mutable<
-  Required<Pick<RuleTesterConfig, 'defaultFilenames' | 'parser' | 'rules'>> &
+  Required<
+    Pick<RuleTesterConfig, 'defaultFilenames' | 'languageOptions' | 'rules'>
+  > &
     RuleTesterConfig
 >;
 
