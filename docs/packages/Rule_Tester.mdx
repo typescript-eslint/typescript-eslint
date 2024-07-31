@@ -120,26 +120,11 @@ ruleTester.run('my-rule', rule, {
 
 ### Type-Aware Testing
 
-Type-aware rules can be tested in almost exactly the same way, except you need to create some files on disk.
-We require files on disk due to a limitation with TypeScript in that it requires physical files on disk to initialize the project.
-We suggest creating a `fixture` folder nearby that contains three files:
+Type-aware rules can be tested in almost exactly the same way as regular code, using `parserOptions.projectService`.
+Most rule tests can use settings like:
 
-1. `file.ts` - this should be an empty file.
-2. `react.tsx` - this should be an empty file.
-3. `tsconfig.json` - this should be the config to use for your test, for example:
-   ```json
-   {
-     "compilerOptions": {
-       "strict": true
-     },
-     "include": ["file.ts", "react.tsx"]
-   }
-   ```
-
-:::caution
-It's important to note that both `file.ts` and `react.tsx` must both be empty files!
-The rule tester will automatically use the string content from your tests - the empty files are just there for initialization.
-:::
+- `allowDefaultProjectForFiles: ["*.ts*"]`: to include files in your tests
+- `defaultProject: "tsconfig.json"`: to use the same TSConfig as other files
 
 You can then test your rule by providing the type-aware config:
 
@@ -147,14 +132,22 @@ You can then test your rule by providing the type-aware config:
 const ruleTester = new RuleTester({
   // Added lines start
   parserOptions: {
+    projectServices: {
+      allowDefaultProject: ['*.ts*'],
+      defaultProject: 'tsconfig.json',
+    },
     tsconfigRootDir: './path/to/your/folder/fixture',
-    project: './tsconfig.json',
   },
   // Added lines end
 });
 ```
 
 With that config the parser will automatically run in type-aware mode and you can write tests just like before.
+
+When not specified with a `filename` option, `RuleTester` uses the following test file names:
+
+- `file.ts`: by default
+- `react.tsx`: if `parserOptions.ecmaFeatures.jsx` is enabled
 
 ### Test Dependency Constraints
 
