@@ -94,6 +94,14 @@ export interface MutableParseSettings {
   filePath: string;
 
   /**
+   * Sets the external module indicator on the source file.
+   * Used by Typescript to determine if a sourceFile is an external module.
+   *
+   * needed to always parsing `mjs`/`mts` files as ESM
+   */
+  setExternalModuleIndicator?: (file: ts.SourceFile) => void;
+
+  /**
    * JSDoc parsing style to pass through to TypeScript
    */
   jsDocParsingMode: ts.JSDocParsingMode;

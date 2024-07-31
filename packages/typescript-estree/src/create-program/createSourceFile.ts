@@ -23,6 +23,7 @@ function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
         {
           languageVersion: ts.ScriptTarget.Latest,
           jsDocParsingMode: parseSettings.jsDocParsingMode,
+          setExternalModuleIndicator: parseSettings.setExternalModuleIndicator,
         },
         /* setParentNodes */ true,
         getScriptKind(parseSettings.filePath, parseSettings.jsx),
