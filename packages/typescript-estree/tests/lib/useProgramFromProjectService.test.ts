@@ -57,6 +57,7 @@ const mockFileName = 'camelCaseFile.ts';
 const mockParseSettings = {
   filePath: `path/PascalCaseDirectory/${mockFileName}`,
   extraFileExtensions: [] as readonly string[],
+  tsconfigRootDir: currentDirectory,
 } as ParseSettings;
 
 const createProjectServiceSettings = <
@@ -106,10 +107,12 @@ describe('useProgramFromProjectService', () => {
     );
 
     expect(service.openClientFile).toHaveBeenCalledWith(
-      path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts'),
+      path.normalize(
+        `${currentDirectory}/path/PascalCaseDirectory/camelCaseFile.ts`,
+      ),
       undefined,
       undefined,
-      undefined,
+      currentDirectory,
     );
   });
 
@@ -184,7 +187,7 @@ See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultproje
 Matching files:
 - a
 - b
-- ${path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts')}
+- ${path.normalize(`${currentDirectory}/path/PascalCaseDirectory/camelCaseFile.ts`)}
 
 If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `);

@@ -202,8 +202,12 @@ export function useProgramFromProjectService(
     filePathAbsolute,
   );
 
+  const filePathRelative = path.relative(
+    parseSettings.tsconfigRootDir,
+    filePathAbsolute,
+  );
   const isDefaultProjectAllowed = filePathMatchedBy(
-    parseSettings.filePath,
+    filePathRelative,
     serviceSettings.allowDefaultProject,
   );
 
