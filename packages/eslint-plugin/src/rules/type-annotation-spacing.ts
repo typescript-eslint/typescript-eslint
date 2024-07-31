@@ -46,12 +46,14 @@ function createRules(options?: Config): WhitespaceRules {
   };
   const override = options?.overrides ?? {};
   const colon = {
-    ...{ before: false, after: true },
+    before: false,
+    after: true,
     ...globals,
     ...override.colon,
   };
   const arrow = {
-    ...{ before: true, after: true },
+    before: true,
+    after: true,
     ...globals,
     ...override.arrow,
   };
