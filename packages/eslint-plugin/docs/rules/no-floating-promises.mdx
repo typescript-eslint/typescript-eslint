@@ -129,10 +129,6 @@ await createMyThenable();
 </TabItem>
 </Tabs>
 
-:::info
-This option is enabled by default in v7 but will be turned off by default in v8.
-:::
-
 ### `ignoreVoid`
 
 This option, which is `true` by default, allows you to stop the rule reporting promises consumed with void operator.
@@ -220,6 +216,44 @@ function returnsSafePromise(): SafePromise {
 }
 
 returnsSafePromise();
+```
+
+</TabItem>
+</Tabs>
+
+### `allowForKnownSafeCalls`
+
+This option allows marking specific functions as "safe" to be called to create floating Promises.
+For example, you may need to do this in the case of libraries whose APIs may be called without handling the resultant Promises.
+
+This option takes the same array format as [`allowForKnownSafePromises`](#allowForKnownSafePromises).
+
+Examples of code for this rule with:
+
+```json
+{
+  "allowForKnownSafeCalls": [
+    { "from": "file", "name": "safe", "path": "input.ts" }
+  ]
+}
+```
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}'
+declare function unsafe(...args: unknown[]): Promise<void>;
+
+unsafe('...', () => {});
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{"allowForKnownSafeCalls":[{"from":"file","name":"safe","path":"input.ts"}]}' skipValidation
+declare function safe(...args: unknown[]): Promise<void>;
+
+safe('...', () => {});
 ```
 
 </TabItem>

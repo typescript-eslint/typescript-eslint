@@ -9,6 +9,7 @@ export default createRule({
     type: 'problem',
     docs: {
       description: 'Disallow using the unsafe built-in Function type',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

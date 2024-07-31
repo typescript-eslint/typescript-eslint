@@ -160,7 +160,7 @@ export default createRule({
       'TSModuleDeclaration > TSModuleBlock'(
         node: TSESTree.TSModuleBlock,
       ): void {
-        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
+        enterDeclaration(node.parent);
       },
       TSEnumDeclaration: enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':

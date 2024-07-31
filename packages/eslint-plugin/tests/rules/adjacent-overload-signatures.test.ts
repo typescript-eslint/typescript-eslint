@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/adjacent-overload-signatures';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('adjacent-overload-signatures', rule, {
   valid: [
@@ -15,7 +13,7 @@ function error(b: number);
 function error(ab: string | number) {}
 export { error };
       `,
-      parserOptions: { sourceType: 'module' },
+      languageOptions: { parserOptions: { sourceType: 'module' } },
     },
     {
       code: `
@@ -27,7 +25,7 @@ function mapStateToProps() {}
 function mapDispatchToProps() {}
 export default connect(mapStateToProps, mapDispatchToProps)(ErrorMessage);
       `,
-      parserOptions: { sourceType: 'module' },
+      languageOptions: { parserOptions: { sourceType: 'module' } },
     },
     `
 export const foo = 'a',

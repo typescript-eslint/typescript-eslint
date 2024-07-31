@@ -6,24 +6,10 @@ import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
-export interface IsNullableTypeOptions {
-  /**
-   * @deprecated - this flag no longer does anything and will be removed in the next major
-   */
-  isReceiver?: boolean;
-  /**
-   * @deprecated - this flag no longer does anything and will be removed in the next major
-   */
-  allowUndefined?: boolean;
-}
-
 /**
  * Checks if the given type is (or accepts) nullable
  */
-export function isNullableType(
-  type: ts.Type,
-  _deprecated?: IsNullableTypeOptions,
-): boolean {
+export function isNullableType(type: ts.Type): boolean {
   return isTypeFlagSet(
     type,
     ts.TypeFlags.Any |
