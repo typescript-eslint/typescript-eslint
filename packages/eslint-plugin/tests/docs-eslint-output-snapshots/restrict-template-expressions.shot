@@ -91,3 +91,13 @@ const arg = ['foo', 'bar'];
 const msg1 = \`arg = \${arg}\`;
 "
 `;
+
+exports[`Validating rule docs restrict-template-expressions.mdx code examples ESLint output 11`] = `
+"
+
+const error = new Error();
+const url = new URL('https://typescript-eslint.io');
+const urlSearchParams = new URLSearchParams();
+const msg1 = \`args = \${error}, \${url}, \${urlSearchParams}\`;
+"
+`;
