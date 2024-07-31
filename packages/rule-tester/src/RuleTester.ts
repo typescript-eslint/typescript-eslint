@@ -167,7 +167,7 @@ function getUnsubstitutedMessagePlaceholders(
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter({ configType: 'flat' });
+  readonly #linter: Linter;
 
   /**
    * Creates a new instance of RuleTester.
@@ -181,6 +181,11 @@ export class RuleTester extends TestFramework {
      */
     this.#testerConfig = merge({}, defaultConfig, testerConfig, {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
+    });
+
+    this.#linter = new Linter({
+      configType: 'flat',
+      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
@@ -282,14 +287,19 @@ export class RuleTester extends TestFramework {
     Hugely helps with the string-based valid test cases as it means they don't
     need to be made objects!
     */
-    const getFilename = (testOptions?: ParserOptions): string => {
+    const getFilename = (
+      originalFilename: string | undefined,
+      testOptions: ParserOptions | undefined,
+    ): string => {
       const resolvedOptions = deepMerge(
         this.#testerConfig.languageOptions.parserOptions,
         testOptions,
       ) as ParserOptions;
-      const filename = resolvedOptions.ecmaFeatures?.jsx
-        ? this.#testerConfig.defaultFilenames.tsx
-        : this.#testerConfig.defaultFilenames.ts;
+      const filename =
+        originalFilename ??
+        (resolvedOptions.ecmaFeatures?.jsx
+          ? this.#testerConfig.defaultFilenames.tsx
+          : this.#testerConfig.defaultFilenames.ts);
       if (resolvedOptions.project) {
         return path.join(
           resolvedOptions.tsconfigRootDir ?? process.cwd(),
@@ -309,22 +319,19 @@ export class RuleTester extends TestFramework {
       if (languageOptions.parser === parser) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
-      if (!test.filename) {
-        return {
-          ...test,
-          filename: getFilename(languageOptions.parserOptions),
-          languageOptions: {
-            ...languageOptions,
-            parserOptions: {
-              // Re-running simulates --fix mode, which implies an isolated program
-              // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
-              disallowAutomaticSingleRunInference: true,
-              ...languageOptions.parserOptions,
-            },
+      return {
+        ...test,
+        filename: getFilename(test.filename, languageOptions.parserOptions),
+        languageOptions: {
+          ...languageOptions,
+          parserOptions: {
+            // Re-running simulates --fix mode, which implies an isolated program
+            // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+            disallowAutomaticSingleRunInference: true,
+            ...languageOptions.parserOptions,
           },
-        };
-      }
-      return test;
+        },
+      };
     };
 
     const normalizedTests = {
@@ -707,16 +714,7 @@ export class RuleTester extends TestFramework {
             },
           },
         });
-        messages = this.#linter.verify(
-          code,
-          // ESLint uses an internal FlatConfigArray that extends @humanwhocodes/config-array.
-          // Linter uses a typeof getConfig === "function" check.
-          // We mock out that check here to force it not to use Linter's cwd as basePath.
-          Object.assign([], {
-            getConfig: () => actualConfig,
-          }),
-          filename,
-        );
+        messages = this.#linter.verify(code, actualConfig, filename);
       } finally {
         SourceCode.prototype.applyInlineConfig = applyInlineConfig;
         SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
@@ -917,6 +915,7 @@ export class RuleTester extends TestFramework {
 
       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
 
+      // console.log({ messages });
       for (let i = 0, l = item.errors.length; i < l; i++) {
         const error = item.errors[i];
         const message = messages[i];
