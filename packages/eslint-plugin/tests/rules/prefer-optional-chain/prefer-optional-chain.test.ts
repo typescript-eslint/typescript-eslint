@@ -119,6 +119,22 @@ describe('|| {}', () => {
         ],
       },
       {
+        code: noFormat`(foo1?.foo2 || ({})).foo3;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 26,
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo1?.foo2?.foo3;',
+              },
+            ],
+          },
+        ],
+      },
+      {
         code: '((() => foo())() || {}).bar;',
         errors: [
           {
