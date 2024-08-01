@@ -17,10 +17,6 @@ import type {
  */
 interface ValidTestCase<Options extends readonly unknown[]> {
   /**
-   * Name for the test case.
-   */
-  readonly name?: string;
-  /**
    * Code for the test case.
    */
   readonly code: string;
@@ -37,6 +33,14 @@ interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly globals?: Readonly<Linter.GlobalsConfig>;
   /**
+   * Name for the test case.
+   */
+  readonly name?: string;
+  /**
+   * Run this case exclusively for debugging in supported test frameworks.
+   */
+  readonly only?: boolean;
+  /**
    * Options for the test case.
    */
   readonly options?: Readonly<Options>;
@@ -52,10 +56,6 @@ interface ValidTestCase<Options extends readonly unknown[]> {
    * Settings for the test case.
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;
-  /**
-   * Run this case exclusively for debugging in supported test frameworks.
-   */
-  readonly only?: boolean;
 }
 
 /**
@@ -63,13 +63,13 @@ interface ValidTestCase<Options extends readonly unknown[]> {
  */
 interface SuggestionOutput<MessageIds extends string> {
   /**
-   * Reported message ID.
-   */
-  readonly messageId: MessageIds;
-  /**
    * The data used to fill the message template.
    */
   readonly data?: ReportDescriptorMessageData;
+  /**
+   * Reported message ID.
+   */
+  readonly messageId: MessageIds;
   /**
    * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
@@ -94,7 +94,7 @@ interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: string | string[] | null;
+  readonly output?: null | string | string[];
 }
 
 /**
@@ -128,7 +128,7 @@ interface TestCaseError<MessageIds extends string> {
   /**
    * Reported suggestions.
    */
-  readonly suggestions?: readonly SuggestionOutput<MessageIds>[] | null;
+  readonly suggestions?: null | readonly SuggestionOutput<MessageIds>[];
   /**
    * The type of the reported AST node.
    */
@@ -155,8 +155,8 @@ interface RunTests<
   Options extends readonly unknown[],
 > {
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: readonly (ValidTestCase<Options> | string)[];
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
+  readonly valid: readonly (string | ValidTestCase<Options>)[];
 }
 
 /**
@@ -230,11 +230,11 @@ class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
 export {
   InvalidTestCase,
-  SuggestionOutput,
   RuleTester,
   RuleTesterConfig,
   RuleTesterTestFrameworkFunction,
   RunTests,
+  SuggestionOutput,
   TestCaseError,
   ValidTestCase,
 };

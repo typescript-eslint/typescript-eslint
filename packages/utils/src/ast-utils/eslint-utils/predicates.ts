@@ -10,8 +10,9 @@ type IsNotSpecificTokenFunction<SpecificToken extends TSESTree.Token> = (
   token: TSESTree.Token,
 ) => token is Exclude<TSESTree.Token, SpecificToken>;
 
-type PunctuatorTokenWithValue<Value extends string> =
-  TSESTree.PunctuatorToken & { value: Value };
+type PunctuatorTokenWithValue<Value extends string> = {
+  value: Value;
+} & TSESTree.PunctuatorToken;
 type IsPunctuatorTokenWithValueFunction<Value extends string> =
   IsSpecificTokenFunction<PunctuatorTokenWithValue<Value>>;
 type IsNotPunctuatorTokenWithValueFunction<Value extends string> =

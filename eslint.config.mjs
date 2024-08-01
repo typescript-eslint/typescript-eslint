@@ -13,6 +13,7 @@ import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
@@ -566,6 +567,30 @@ export default tseslint.config(
     rules: {
       // mocks and declaration files have to mirror their original package
       'import/no-default-export': 'off',
+    },
+  },
+  {
+    ...perfectionistPlugin.configs['recommended-alphabetical'],
+    files: ['packages/utils/src/**/*.ts'],
+    rules: {
+      ...perfectionistPlugin.configs['recommended-alphabetical'].rules,
+      'perfectionist/sort-classes': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'simple-import-sort/imports': 'off',
     },
   },
 );

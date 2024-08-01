@@ -32,7 +32,7 @@ export namespace LegacyESLint {
      * Note: This option only applies when you pass directory paths to the eslint.lintFiles() method.
      * If you pass glob patterns, ESLint will lint all files matching the glob pattern regardless of extension.
      */
-    extensions?: string[] | null;
+    extensions?: null | string[];
     /**
      * If false is present, the eslint.lintFiles() method doesn't respect `.eslintignore` files in your configuration.
      * @default true
@@ -47,7 +47,7 @@ export namespace LegacyESLint {
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.
      */
-    overrideConfigFile?: string | null;
+    overrideConfigFile?: null | string;
     /**
      * The severity to report unused eslint-disable directives.
      * If this option is a severity, it overrides the reportUnusedDisableDirectives setting in your configurations.
@@ -59,7 +59,7 @@ export namespace LegacyESLint {
      * setting.
      * If a path is present, ESLint loads all plugins from there.
      */
-    resolvePluginsRelativeTo?: string | null;
+    resolvePluginsRelativeTo?: null | string;
     /**
      * An array of paths to directories to load custom rules from.
      */
