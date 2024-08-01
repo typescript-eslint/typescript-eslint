@@ -593,6 +593,15 @@ export default createRule<Options, MessageIds>({
               referenceContainsTypeQuery(ref.identifier),
             );
 
+            const isImportUsedOnlyAsType =
+              usedOnlyAsType &&
+              unusedVar.defs.some(
+                def => def.type === DefinitionType.ImportBinding,
+              );
+            if (isImportUsedOnlyAsType) {
+              continue;
+            }
+
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 
             const { start } = id.loc;
