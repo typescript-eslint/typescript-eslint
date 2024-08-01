@@ -579,16 +579,6 @@ export default createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
-            const writeReferences = unusedVar.references.filter(
-              ref =>
-                ref.isWrite() &&
-                ref.from.variableScope === unusedVar.scope.variableScope,
-            );
-
-            const id = writeReferences.length
-              ? writeReferences[writeReferences.length - 1].identifier
-              : unusedVar.identifiers[0];
-
             const usedOnlyAsType = unusedVar.references.some(ref =>
               referenceContainsTypeQuery(ref.identifier),
             );
@@ -601,6 +591,16 @@ export default createRule<Options, MessageIds>({
             if (isImportUsedOnlyAsType) {
               continue;
             }
+
+            const writeReferences = unusedVar.references.filter(
+              ref =>
+                ref.isWrite() &&
+                ref.from.variableScope === unusedVar.scope.variableScope,
+            );
+
+            const id = writeReferences.length
+              ? writeReferences[writeReferences.length - 1].identifier
+              : unusedVar.identifiers[0];
 
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 
