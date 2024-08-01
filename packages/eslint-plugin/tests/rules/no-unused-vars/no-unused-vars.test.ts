@@ -1173,6 +1173,16 @@ export type Foo = typeof foo;
 
 export const bar = (): Foo => foo;
     `,
+    `
+import { SomeType } from 'foo';
+
+export const value = 1234 as typeof SomeType;
+    `,
+    `
+import { foo } from 'foo';
+
+export type Bar = typeof foo;
+    `,
   ],
 
   invalid: [
@@ -2253,27 +2263,6 @@ export const x = _Foo;
           column: 15,
           endLine: 2,
           endColumn: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        import { foo } from 'foo';
-
-        export type Bar = typeof foo;
-      `,
-      errors: [
-        {
-          messageId: 'usedOnlyAsType',
-          data: {
-            varName: 'foo',
-            action: 'defined',
-            additional: '',
-          },
-          line: 2,
-          column: 18,
-          endLine: 2,
-          endColumn: 21,
         },
       ],
     },
