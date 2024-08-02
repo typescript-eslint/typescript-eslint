@@ -5,7 +5,7 @@ export * from './astUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
 export * from './discardReturnValueFix';
-export * from './getBaseClassMember';
+export * from './getBaseTypesOfClassMember';
 export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
 export * from './getRangeWithParens';

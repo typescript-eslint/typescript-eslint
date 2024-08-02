@@ -688,21 +688,6 @@ ruleTester.run('strict-void-return', rule, {
     {
       code: `
         class Foo {
-          cb() {
-            console.log('siema');
-          }
-        }
-        const method = 'cb' as const;
-        class Bar extends Foo {
-          [method]() {
-            return 'nara';
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class Foo {
           cb = () => {
             console.log('siema');
           };
@@ -2216,30 +2201,59 @@ ruleTester.run('strict-void-return', rule, {
       errors: [{ messageId: 'nonVoidFuncInExtMember', line: 6, column: 16 }],
       output: null,
     },
-    // TODO: Check anonymous classes
-    // {
-    //   code: `
-    //     class Foo {
-    //       cb() {}
-    //     }
-    //     void class extends Foo {
-    //       cb() {
-    //         return Math.random();
-    //       }
-    //     };
-    //   `,
-    //   errors: [{ messageId: 'nonVoidReturnInExtMember', line: 6, column: 16 }],
-    //   output: `
-    //     class Foo {
-    //       cb() {}
-    //     }
-    //     void class extends Foo {
-    //       cb() {
-    //         Math.random();
-    //       }
-    //     };
-    //   `,
-    // },
+    {
+      code: `
+        class Foo {
+          cb() {
+            console.log('siema');
+          }
+        }
+        const method = 'cb' as const;
+        class Bar extends Foo {
+          [method]() {
+            return 'nara';
+          }
+        }
+      `,
+      errors: [{ messageId: 'nonVoidReturnInExtMember', line: 10, column: 13 }],
+      output: `
+        class Foo {
+          cb() {
+            console.log('siema');
+          }
+        }
+        const method = 'cb' as const;
+        class Bar extends Foo {
+          [method]() {
+            \
+
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Foo {
+          cb() {}
+        }
+        void class extends Foo {
+          cb() {
+            return Math.random();
+          }
+        };
+      `,
+      errors: [{ messageId: 'nonVoidReturnInExtMember', line: 7, column: 13 }],
+      output: `
+        class Foo {
+          cb() {}
+        }
+        void class extends Foo {
+          cb() {
+            Math.random();
+          }
+        };
+      `,
+    },
     {
       code: `
         class Foo {

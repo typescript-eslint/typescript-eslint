@@ -416,7 +416,7 @@ export default util.createRule<Options, MessageId>({
      * we also check against the base class property (when the class extends another class)
      * and the implemented interfaces (when the class implements an interface).
      *
-     * This can produce 3 errors at once.
+     * This can produce multiple errors at once.
      */
     function checkClassPropertyNode(
       propNode: TSESTree.PropertyDefinition,
@@ -428,12 +428,11 @@ export default util.createRule<Options, MessageId>({
 
       // Check in comparison to the base class property.
       if (options.considerBaseClass) {
-        const basePropSymbol = util.getBaseClassMember(propTsNode, checker);
-        if (basePropSymbol != null && propTsNode.initializer != null) {
-          const basePropType = checker.getTypeOfSymbolAtLocation(
-            basePropSymbol,
-            propTsNode.initializer,
-          );
+        for (const basePropType of util.getBaseTypesOfClassMember(
+          checker,
+          propTsNode,
+          ts.SyntaxKind.ExtendsKeyword,
+        )) {
           if (isVoidReturningFunctionType(basePropType)) {
             reportIfNonVoidFunction(propNode.value, 'ExtMember');
           }
@@ -442,36 +441,13 @@ export default util.createRule<Options, MessageId>({
 
       // Check in comparison to the implemented interfaces.
       if (options.considerImplementedInterfaces) {
-        const classTsNode = propTsNode.parent;
-        if (classTsNode.heritageClauses != null) {
-          const propSymbol = checker.getSymbolAtLocation(propTsNode.name);
-          if (propSymbol != null) {
-            const valueTsNode = parserServices.esTreeNodeToTSNodeMap.get(
-              propNode.value,
-            );
-            for (const heritageTsNode of classTsNode.heritageClauses) {
-              if (heritageTsNode.token !== ts.SyntaxKind.ImplementsKeyword) {
-                continue;
-              }
-              for (const heritageTypeTsNode of heritageTsNode.types) {
-                const interfaceType =
-                  checker.getTypeAtLocation(heritageTypeTsNode);
-                const interfacePropSymbol = checker.getPropertyOfType(
-                  interfaceType,
-                  propSymbol.name,
-                );
-                if (interfacePropSymbol == null) {
-                  continue;
-                }
-                const interfacePropType = checker.getTypeOfSymbolAtLocation(
-                  interfacePropSymbol,
-                  valueTsNode,
-                );
-                if (isVoidReturningFunctionType(interfacePropType)) {
-                  reportIfNonVoidFunction(propNode.value, 'ImplMember');
-                }
-              }
-            }
+        for (const basePropType of util.getBaseTypesOfClassMember(
+          checker,
+          propTsNode,
+          ts.SyntaxKind.ImplementsKeyword,
+        )) {
+          if (isVoidReturningFunctionType(basePropType)) {
+            reportIfNonVoidFunction(propNode.value, 'ImplMember');
           }
         }
       }
@@ -486,7 +462,7 @@ export default util.createRule<Options, MessageId>({
      * We check against the base class method (when the class extends another class)
      * and the implemented interfaces (when the class implements an interface).
      *
-     * This can produce 2 errors at once.
+     * This can produce multiple errors at once.
      */
     function checkClassMethodNode(methodNode: TSESTree.MethodDefinition): void {
       if (
@@ -505,12 +481,11 @@ export default util.createRule<Options, MessageId>({
 
       // Check in comparison to the base class method.
       if (options.considerBaseClass) {
-        const baseMethodSymbol = util.getBaseClassMember(methodTsNode, checker);
-        if (baseMethodSymbol != null) {
-          const baseMethodType = checker.getTypeOfSymbolAtLocation(
-            baseMethodSymbol,
-            methodTsNode,
-          );
+        for (const baseMethodType of util.getBaseTypesOfClassMember(
+          checker,
+          methodTsNode,
+          ts.SyntaxKind.ExtendsKeyword,
+        )) {
           if (isVoidReturningFunctionType(baseMethodType)) {
             reportIfNonVoidFunction(methodNode.value, 'ExtMember');
           }
@@ -519,34 +494,13 @@ export default util.createRule<Options, MessageId>({
 
       // Check in comparison to the implemented interfaces.
       if (options.considerImplementedInterfaces) {
-        const classTsNode = methodTsNode.parent;
-        assert(ts.isClassLike(classTsNode));
-        if (classTsNode.heritageClauses != null) {
-          const methodSymbol = checker.getSymbolAtLocation(methodTsNode.name);
-          if (methodSymbol != null) {
-            for (const heritageTsNode of classTsNode.heritageClauses) {
-              if (heritageTsNode.token !== ts.SyntaxKind.ImplementsKeyword) {
-                continue;
-              }
-              for (const heritageTypeTsNode of heritageTsNode.types) {
-                const interfaceType =
-                  checker.getTypeAtLocation(heritageTypeTsNode);
-                const interfaceMethodSymbol = checker.getPropertyOfType(
-                  interfaceType,
-                  methodSymbol.name,
-                );
-                if (interfaceMethodSymbol == null) {
-                  continue;
-                }
-                const interfaceMethodType = checker.getTypeOfSymbolAtLocation(
-                  interfaceMethodSymbol,
-                  methodTsNode,
-                );
-                if (isVoidReturningFunctionType(interfaceMethodType)) {
-                  reportIfNonVoidFunction(methodNode.value, 'ImplMember');
-                }
-              }
-            }
+        for (const baseMethodType of util.getBaseTypesOfClassMember(
+          checker,
+          methodTsNode,
+          ts.SyntaxKind.ImplementsKeyword,
+        )) {
+          if (isVoidReturningFunctionType(baseMethodType)) {
+            reportIfNonVoidFunction(methodNode.value, 'ImplMember');
           }
         }
       }
