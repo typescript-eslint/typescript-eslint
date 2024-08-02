@@ -1232,7 +1232,7 @@ const test = <T extends Partial<never>>() => {};
             line: err.line + 1,
             suggestions:
               err.suggestions?.map(
-              (s): RuleSuggestionOutput => ({
+                (s): RuleSuggestionOutput => ({
                   ...s,
                   output: `// fixToUnknown: true\n${s.output}`,
                 }),

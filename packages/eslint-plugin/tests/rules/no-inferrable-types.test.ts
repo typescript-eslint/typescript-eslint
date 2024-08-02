@@ -86,7 +86,7 @@ const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
         },
       ],
     })),
-);
+  );
 
 const ruleTester = new RuleTester();
 
