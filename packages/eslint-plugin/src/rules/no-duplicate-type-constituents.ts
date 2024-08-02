@@ -110,11 +110,11 @@ export default createRule<Options, MessageIds>({
       const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       const uniqueConstituents: TSESTree.TypeNode[] = [];
       for (const constituentNode of node.types) {
-          const constituentNodeType =
-            parserServices.getTypeAtLocation(constituentNode);
-          if (tsutils.isIntrinsicErrorType(constituentNodeType)) {
-            return uniqueConstituents;
-          }
+        const constituentNodeType =
+          parserServices.getTypeAtLocation(constituentNode);
+        if (tsutils.isIntrinsicErrorType(constituentNodeType)) {
+          continue;
+        }
         const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
           ele => isSameAstNode(ele, constituentNode),
         );
