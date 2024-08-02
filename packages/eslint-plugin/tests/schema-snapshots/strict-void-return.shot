@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes strict-void-return 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowReturnAny": {
+        "type": "boolean"
+      },
+      "allowReturnNull": {
+        "type": "boolean"
+      },
+      "allowReturnPromiseIfTryCatch": {
+        "type": "boolean"
+      },
+      "allowReturnUndefined": {
+        "type": "boolean"
+      },
+      "considerBaseClass": {
+        "type": "boolean"
+      },
+      "considerImplementedInterfaces": {
+        "type": "boolean"
+      },
+      "considerOtherOverloads": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allowReturnAny?: boolean;
+    allowReturnNull?: boolean;
+    allowReturnPromiseIfTryCatch?: boolean;
+    allowReturnUndefined?: boolean;
+    considerBaseClass?: boolean;
+    considerImplementedInterfaces?: boolean;
+    considerOtherOverloads?: boolean;
+  },
+];
+"
+`;

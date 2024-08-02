@@ -1,0 +1,302 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const bad: () => void = () => 2137;
+                              ~~~~ Value returned in a context where a void return was expected.
+const func = Math.random() > 0.1 ? bad : prompt;
+const val = func();
+if (val) console.log(val.toUpperCase()); // ❌ Crash if bad was called
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 2`] = `
+"Correct
+
+const good: () => void = () => {};
+const func = Math.random() > 0.1 ? good : prompt;
+const val = func();
+if (val) console.log(val.toUpperCase()); // ✅ No crash
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(async () => {
+                       ~~ Async callback not wrapped with a try-catch block and passed as an argument where a void callback was expected.
+  const response = await fetch('https://api.example.com/');
+  const data = await response.json();
+  console.log(data);
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 4`] = `
+"Correct
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(() => {
+  (async () => {
+    const response = await fetch('https://api.example.com/');
+    const data = await response.json();
+    console.log(data);
+  })().catch(console.error);
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 5`] = `
+"Incorrect
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(function* () {
+              ~~~~~~~~~~ Generator callback passed as an argument where a void callback was expected.
+  console.log('Hello');
+  yield;
+  console.log('World');
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 6`] = `
+"Correct
+
+declare function takesCallback(cb: () => void): void;
+
+takesCallback(() => {
+  function* gen() {
+    console.log('Hello');
+    yield;
+    console.log('World');
+  }
+  for (const _ of gen());
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 7`] = `
+"Incorrect
+
+['Kazik', 'Zenek'].forEach(name => \`Hello, \${name}!\`);
+                                   ~~~~~~~~~~~~~~~~~ Value returned in a callback argument where a void callback was expected.
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 8`] = `
+"Correct
+
+['Kazik', 'Zenek'].forEach(name => console.log(\`Hello, \${name}!\`));
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 9`] = `
+"Incorrect
+Options: { "considerOtherOverloads": true }
+
+/// <reference lib="dom" />
+
+document.addEventListener('click', () => {
+  return 'Clicked';
+  ~~~~~~ Value returned in a callback argument where one of the function signatures suggests it should be a void callback.
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 10`] = `
+"Correct
+Options: { "considerOtherOverloads": true }
+
+/// <reference lib="dom" />
+
+document.addEventListener('click', () => {
+  console.log('Clicked');
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 11`] = `
+"Incorrect
+Options: { "considerBaseClass": true }
+
+/// <reference lib="dom" />
+
+class MyElement extends HTMLElement {
+  click() {
+    super.click();
+    return 'Clicked';
+    ~~~~~~ Value returned in a method which overrides a void method.
+  }
+}
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 12`] = `
+"Correct
+Options: { "considerBaseClass": true }
+
+/// <reference lib="dom" />
+
+class MyElement extends HTMLElement {
+  click() {
+    super.click();
+    console.log('Clicked');
+  }
+}
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 13`] = `
+"Incorrect
+Options: { "considerImplementedInterfaces": true }
+
+/// <reference lib="dom" />
+
+class FooListener implements EventListenerObject {
+  handleEvent() {
+    return 'Handled';
+    ~~~~~~ Value returned in a method which implements a void method.
+  }
+}
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 14`] = `
+"Correct
+Options: { "considerImplementedInterfaces": true }
+
+/// <reference lib="dom" />
+
+class FooListener implements EventListenerObject {
+  handleEvent() {
+    console.log('Handled');
+  }
+}
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 15`] = `
+"Incorrect
+Options: { "allowReturnPromiseIfTryCatch": false }
+
+const cb: () => void = async () => {
+                                ~~ Async function used in a context where a void function is expected.
+  try {
+    const response = await fetch('https://api.example.com/');
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 16`] = `
+"Correct
+Options: { "allowReturnPromiseIfTryCatch": false }
+
+const cb: () => void = () => {
+  (async () => {
+    const response = await fetch('https://api.example.com/');
+    const data = await response.json();
+    console.log(data);
+  })().catch(console.error);
+};
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 17`] = `
+"Incorrect
+Options: { "allowReturnUndefined": false }
+
+let cb: () => void;
+
+cb = () => undefined;
+           ~~~~~~~~~ Value returned in a context where a void return was expected.
+
+cb = () => {
+  return void 0;
+  ~~~~~~ Value returned in a context where a void return was expected.
+};
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 18`] = `
+"Correct
+Options: { "allowReturnUndefined": false }
+
+let cb: () => void;
+
+cb = () => {};
+
+cb = () => {
+  return;
+};
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 19`] = `
+"Incorrect
+Options: { "allowReturnNull": false }
+
+let cb: () => void;
+
+cb = () => null;
+           ~~~~ Value returned in a context where a void return was expected.
+
+cb = () => {
+  return null;
+  ~~~~~~ Value returned in a context where a void return was expected.
+};
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 20`] = `
+"Correct
+Options: { "allowReturnNull": false }
+
+let cb: () => void;
+
+cb = () => {};
+
+cb = () => {
+  return;
+};
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 21`] = `
+"Incorrect
+Options: { "allowReturnAny": false }
+
+declare function fn(cb: () => void): void;
+
+fn(() => JSON.parse('{}'));
+         ~~~~~~~~~~~~~~~~ Value returned in a callback argument where a void callback was expected.
+
+fn(() => {
+  return someUntypedApi();
+  ~~~~~~ Value returned in a callback argument where a void callback was expected.
+});
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 22`] = `
+"Correct
+Options: { "allowReturnAny": false }
+
+declare function fn(cb: () => void): void;
+
+fn(() => void JSON.parse('{}'));
+
+fn(() => {
+  someUntypedApi();
+});
+"
+`;
