@@ -1102,5 +1102,25 @@ x;
         },
       ],
     },
+    {
+      code: `
+var x = 1;
+{
+  x!;
+}
+      `,
+      output: `
+var x = 1;
+{
+  x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 4,
+        },
+      ],
+    },
   ],
 });

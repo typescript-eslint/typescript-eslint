@@ -83,12 +83,22 @@ export default createRule<Options, MessageIds>({
         // also ignore function arguments as they can't be used before defined
         ts.isVariableDeclaration(declaration)
       ) {
+        // For var declarations, we need to check whether the node
+        // is actually in a descendant of its declaration or not. If not,
+        // it may be used before defined.
+
+        // eg
+        // if (Math.random() < 0.5) {
+        //     var x: number  = 2;
+        // } else {
+        //     x!.toFixed();
+        // }
         if (
           ts.isVariableDeclarationList(declaration.parent) &&
           // var
           declaration.parent.flags === ts.NodeFlags.None
         ) {
-          const declaratorNode: TSESTree.VariableDeclarator =
+          const declaratorNode: TSESTree.VariableDeclaration =
             services.tsNodeToESTreeNodeMap.get(declaration);
           const scope = context.sourceCode.getScope(node);
           const declaratorScope = context.sourceCode.getScope(declaratorNode);
