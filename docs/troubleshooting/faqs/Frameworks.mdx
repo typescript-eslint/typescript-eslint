@@ -11,6 +11,10 @@ import TabItem from '@theme/TabItem';
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
 
+:::note
+See [Changes to `extraFileExtensions` with `projectService`](../typed-linting/Performance.mdx#changes-to-extrafileextensions-with-projectservice) to avoid performance issues.
+:::
+
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
@@ -20,10 +24,10 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-        project: ['./tsconfig.json'],
         // Add this line
         extraFileExtensions: ['.vue'],
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
@@ -37,10 +41,10 @@ export default tseslint.config(
 module.exports = {
   // ... the rest of your config ...
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
     // Add this line
     extraFileExtensions: ['.vue'],
+    projectService: true,
+    tsconfigRootDir: __dirname,
   },
 };
 ```

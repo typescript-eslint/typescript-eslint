@@ -95,6 +95,7 @@ export function resolveProjectList(
           ? []
           : globSync([...globProjects, ...projectFolderIgnoreList], {
               cwd: options.tsconfigRootDir,
+              dot: true,
             }),
       )
       .map(project => [

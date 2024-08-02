@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "Node16",
     "types": ["jest", "node"]
   },
   "exclude": ["tests/fixtures"],

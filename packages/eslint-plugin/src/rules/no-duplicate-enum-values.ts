@@ -37,7 +37,7 @@ export default createRule({
 
     return {
       TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-        const enumMembers = node.members;
+        const enumMembers = node.body.members;
         const seenValues = new Set<number | string>();
 
         enumMembers.forEach(member => {

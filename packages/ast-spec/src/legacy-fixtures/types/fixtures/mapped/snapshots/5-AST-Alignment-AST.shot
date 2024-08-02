@@ -23,48 +23,54 @@ exports[`AST Fixtures legacy-fixtures types mapped AST Alignment - AST 1`] = `
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
                   type: 'TSMappedType',
-                  nameType: null,
-                  typeAnnotation: TSNumberKeyword {
-                    type: 'TSNumberKeyword',
+-                 constraint: TSStringKeyword {
+-                   type: 'TSStringKeyword',
++                 nameType: null,
++                 typeAnnotation: TSNumberKeyword {
++                   type: 'TSNumberKeyword',
 
-                    range: [99, 105],
+-                   range: [90, 96],
++                   range: [99, 105],
                     loc: {
-                      start: { column: 26, line: 3 },
-                      end: { column: 32, line: 3 },
+-                     start: { column: 17, line: 3 },
+-                     end: { column: 23, line: 3 },
++                     start: { column: 26, line: 3 },
++                     end: { column: 32, line: 3 },
                     },
                   },
-                  typeParameter: TSTypeParameter {
-                    type: 'TSTypeParameter',
--                   const: false,
-                    constraint: TSStringKeyword {
-                      type: 'TSStringKeyword',
+-                 key: Identifier {
+-                   type: 'Identifier',
+-                   decorators: Array [],
++                 typeParameter: TSTypeParameter {
++                   type: 'TSTypeParameter',
++                   constraint: TSStringKeyword {
++                     type: 'TSStringKeyword',
++
++                     range: [90, 96],
++                     loc: {
++                       start: { column: 17, line: 3 },
++                       end: { column: 23, line: 3 },
++                     },
++                   },
+                    name: 'P',
+-                   optional: false,
 
-                      range: [90, 96],
-                      loc: {
-                        start: { column: 17, line: 3 },
-                        end: { column: 23, line: 3 },
-                      },
-                    },
--                   in: false,
--                   name: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'P',
--                     optional: false,
-+                   name: 'P',
-
--                     range: [85, 86],
--                     loc: {
--                       start: { column: 12, line: 3 },
--                       end: { column: 13, line: 3 },
--                     },
--                   },
--                   out: false,
--
-                    range: [85, 96],
+-                   range: [85, 86],
++                   range: [85, 96],
                     loc: {
                       start: { column: 12, line: 3 },
-                      end: { column: 23, line: 3 },
+-                     end: { column: 13, line: 3 },
+-                   },
+-                 },
+-                 nameType: null,
+-                 typeAnnotation: TSNumberKeyword {
+-                   type: 'TSNumberKeyword',
+-
+-                   range: [99, 105],
+-                   loc: {
+-                     start: { column: 26, line: 3 },
+-                     end: { column: 32, line: 3 },
++                     end: { column: 23, line: 3 },
                     },
                   },
 

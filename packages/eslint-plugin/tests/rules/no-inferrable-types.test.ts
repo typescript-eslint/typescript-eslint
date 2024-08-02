@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-inferrable-types';
 import type {
@@ -70,7 +70,7 @@ const testCases = [
 const validTestCases = testCases.flatMap(c =>
   c.code.map(code => `const a = ${code}`),
 );
-const invalidTestCases: TSESLint.InvalidTestCase<MessageIds, Options>[] =
+const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
   testCases.flatMap(cas =>
     cas.code.map(code => ({
       code: `const a: ${cas.type} = ${code}`,
@@ -86,11 +86,9 @@ const invalidTestCases: TSESLint.InvalidTestCase<MessageIds, Options>[] =
         },
       ],
     })),
-  );
+);
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-inferrable-types', rule, {
   valid: [

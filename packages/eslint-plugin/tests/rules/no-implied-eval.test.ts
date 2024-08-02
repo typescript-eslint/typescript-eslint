@@ -5,13 +5,12 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parserOptions: {
-    tsconfigRootDir: rootDir,
-    ecmaVersion: 2015,
-    sourceType: 'module',
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-implied-eval', rule, {

@@ -46,9 +46,7 @@ console.log(woah);
   },
 ]
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('ban-tslint-comment', rule, {
   valid: [

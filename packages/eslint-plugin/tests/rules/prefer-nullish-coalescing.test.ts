@@ -1,5 +1,8 @@
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 import * as path from 'path';
 
 import type {
@@ -12,10 +15,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -24,14 +28,14 @@ const nullishTypes = ['null', 'undefined', 'null | undefined'];
 const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
 
 function typeValidTest(
-  cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
-): (TSESLint.ValidTestCase<Options> | string)[] {
+  cb: (type: string) => ValidTestCase<Options> | string,
+): (ValidTestCase<Options> | string)[] {
   return types.map(type => cb(type));
 }
 function nullishTypeTest<
   T extends
-    | TSESLint.ValidTestCase<Options>
-    | TSESLint.InvalidTestCase<MessageIds, Options>
+    | ValidTestCase<Options>
+    | InvalidTestCase<MessageIds, Options>
     | string,
 >(cb: (nullish: string, type: string) => T): T[] {
   return nullishTypes.flatMap(nullish => types.map(type => cb(nullish, type)));
@@ -119,35 +123,30 @@ x === null ? x : y;
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
 
     // ignoreMixedLogicalExpressions
@@ -180,28 +179,28 @@ a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: (${type} & { __brand?: any }) | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: (${type} & { __brand?: any }) | undefined;
 x || y;
@@ -570,8 +569,10 @@ if (x) {
           column: 1,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
 
@@ -845,7 +846,6 @@ declare const x: ${type} | ${nullish};
 if (() => x || 'foo') {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -871,7 +871,6 @@ declare const x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',

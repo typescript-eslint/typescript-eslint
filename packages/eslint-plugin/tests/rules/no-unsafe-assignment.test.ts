@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-unsafe-assignment';
 import type {
@@ -10,7 +10,7 @@ import { getFixturesRootDir } from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
-type InvalidTest = TSESLint.InvalidTestCase<MessageIds, Options>;
+type InvalidTest = InvalidTestCase<MessageIds, Options>;
 
 const assignmentTest = (
   tests: [string, number, number, boolean?][],
@@ -59,11 +59,12 @@ const assignmentTest = (
   ]);
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
-    project: './tsconfig.noImplicitThis.json',
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.noImplicitThis.json',
+      projectService: false,
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -120,9 +121,11 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={'foo'} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -132,9 +135,11 @@ declare function Foo(props: Props): never;
 declare function Foo(props: { a: string }): never;
 <Foo a="foo" />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -143,9 +148,11 @@ declare function Foo(props: { a: string }): never;
 declare function Foo(props: { a: string }): never;
 <Foo a={} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -401,9 +408,11 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={1 as any} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
