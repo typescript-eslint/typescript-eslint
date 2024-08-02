@@ -961,6 +961,21 @@ ruleTester.run('strict-void-return', rule, {
       output: null,
     },
     {
+      code: `
+        type AnyFunc = (...args: unknown[]) => unknown;
+        declare function foo<F extends AnyFunc>(cb: F): void;
+        foo(async () => ({}));
+        foo<() => void>(async () => ({}));
+      `,
+      errors: [{ messageId: 'asyncFuncInArg', line: 5, column: 34 }],
+      output: `
+        type AnyFunc = (...args: unknown[]) => unknown;
+        declare function foo<F extends AnyFunc>(cb: F): void;
+        foo(async () => ({}));
+        foo<() => void>(() => {});
+      `,
+    },
+    {
       options: [{ allowReturnUndefined: false }],
       code: `
         function foo<T extends {}>(arg: T, cb: () => T);
@@ -1411,7 +1426,7 @@ ruleTester.run('strict-void-return', rule, {
       code: `
         [1, 2].forEach(async x => console.log(x));
       `,
-      errors: [{ messageId: 'nonVoidReturnInArg', line: 2, column: 35 }],
+      errors: [{ messageId: 'asyncFuncInArg', line: 2, column: 32 }],
       output: `
         [1, 2].forEach(x => void console.log(x));
       `,
@@ -1430,7 +1445,7 @@ ruleTester.run('strict-void-return', rule, {
       code: `
         const foo: () => void = async () => Promise.resolve(true);
       `,
-      errors: [{ messageId: 'nonVoidReturnInVar', line: 2, column: 45 }],
+      errors: [{ messageId: 'asyncFuncInVar', line: 2, column: 42 }],
       output: `
         const foo: () => void = () => { Promise.resolve(true); };
       `,
@@ -1484,7 +1499,7 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: 'const cb: () => void = async (): Promise<number> => Promise.resolve(1);',
-      errors: [{ messageId: 'nonVoidReturnInVar', line: 1, column: 53 }],
+      errors: [{ messageId: 'asyncFuncInVar', line: 1, column: 50 }],
       output: 'const cb: () => void = (): void => void Promise.resolve(1);',
     },
     {
