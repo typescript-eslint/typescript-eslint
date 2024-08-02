@@ -46,7 +46,8 @@ if (val) console.log(val.toUpperCase()); // ✅ No crash
 ### Unhandled promises
 
 If a promise is returned from a callback that should return void,
-it won't be awaited and its rejection will be silently ignored or crash the process depending on runtime.
+it probably won't be awaited and its rejection will be silently ignored
+or crash the process depending on runtime.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -80,11 +81,13 @@ takesCallback(() => {
 </Tabs>
 
 :::info
-If you only care about promises, you can use the [`no-misused-promises`](no-misused-promises.mdx) rule instead.
+If you only care about promises,
+you can use the [`no-misused-promises`](no-misused-promises.mdx) rule instead.
 :::
 
 :::tip
-Use [`no-floating-promises`](no-floating-promises.mdx) to also enforce error handling of non-awaited promises.
+Use [`no-floating-promises`](no-floating-promises.mdx)
+to also enforce error handling of non-awaited promises in statement positions.
 :::
 
 ### Ignored generators
