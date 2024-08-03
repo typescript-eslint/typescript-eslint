@@ -17,6 +17,7 @@ export * from './misc';
 export * from './objectIterators';
 export * from './types';
 export * from './isAssignee';
+export * from './getFixOrSuggest';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';

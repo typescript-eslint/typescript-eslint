@@ -13,6 +13,7 @@ import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  getFixOrSuggest,
   getOperatorPrecedenceForNode,
   isClosingParenToken,
   isOpeningParenToken,
@@ -415,10 +416,13 @@ function getReportDescriptor(
       start: sourceCode.getLocFromIndex(reportRange[0]),
       end: sourceCode.getLocFromIndex(reportRange[1]),
     },
-    suggest: useSuggestionFixer
-      ? [{ fix, messageId: 'optionalChainSuggest' }]
-      : undefined,
-    fix: !useSuggestionFixer ? fix : undefined,
+    ...getFixOrSuggest({
+      useFix: !useSuggestionFixer,
+      suggestion: {
+        messageId: 'optionalChainSuggest',
+        fix,
+      },
+    }),
   };
 
   interface FlattenedChain {
