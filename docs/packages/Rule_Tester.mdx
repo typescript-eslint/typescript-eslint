@@ -146,9 +146,11 @@ You can then test your rule by providing the type-aware config:
 ```ts
 const ruleTester = new RuleTester({
   // Added lines start
-  parserOptions: {
-    tsconfigRootDir: './path/to/your/folder/fixture',
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: './path/to/your/folder/fixture',
+      project: './tsconfig.json',
+    },
   },
   // Added lines end
 });
