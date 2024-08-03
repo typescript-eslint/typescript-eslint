@@ -36,9 +36,11 @@ ruleTester.run('my-rule', rule, {
     // you can enable JSX parsing by passing parserOptions.ecmaFeatures.jsx = true
     {
       code: 'const z = <div />;',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },

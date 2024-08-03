@@ -398,14 +398,15 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from './my-typed-rule';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    projectService: {
-      allowDefaultProjectForFiles: ['*.ts*'],
-      defaultProject: 'tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      projectService: {
+        allowDefaultProjectForFiles: ['*.ts*'],
+        defaultProject: 'tsconfig.json',
+      },
+      tsconfigRootDir: __dirname,
     },
-    tsconfigRootDir: __dirname,
-  },
+  }
 });
 
 ruleTester.run('my-typed-rule', rule, {
