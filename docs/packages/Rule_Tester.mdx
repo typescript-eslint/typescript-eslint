@@ -130,15 +130,17 @@ You can then test your rule by providing the type-aware config:
 
 ```ts
 const ruleTester = new RuleTester({
-  // Added lines start
-  parserOptions: {
-    projectServices: {
-      allowDefaultProject: ['*.ts*'],
-      defaultProject: 'tsconfig.json',
+  languageOptions: {
+    // Added lines start
+    parserOptions: {
+      projectServices: {
+        allowDefaultProject: ['*.ts*'],
+        defaultProject: 'tsconfig.json',
+      },
+      tsconfigRootDir: './path/to/your/folder/fixture',
     },
-    tsconfigRootDir: './path/to/your/folder/fixture',
+    // Added lines end
   },
-  // Added lines end
 });
 ```
 
