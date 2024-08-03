@@ -120,7 +120,7 @@ export default tseslint.config(
         project: ['packages/*/tsconfig.json', 'tsconfig.eslint.json'],
         // Added lines start
         projectService: {
-          allowDefaultProject: ['./*.js'],
+          allowDefaultProject: ['*.js'],
           defaultProject: './tsconfig.json',
         },
         // Added lines end

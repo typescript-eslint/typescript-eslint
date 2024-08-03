@@ -10,7 +10,7 @@ describe('validateDefaultProjectForFilesGlob', () => {
   it('does not throw when options.allowDefaultProject contains a non-** glob', () => {
     expect(() =>
       validateDefaultProjectForFilesGlob({
-        allowDefaultProject: ['./*.js'],
+        allowDefaultProject: ['*.js'],
       }),
     ).not.toThrow();
   });
