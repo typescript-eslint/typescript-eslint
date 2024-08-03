@@ -180,7 +180,7 @@ function collectTypeParameterUsageCounts(
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
-  const typeUsages = new Map<ts.Type, number>();
+  const typeUsages = new Map<string, number>();
   const visitedConstraints = new Set<ts.TypeNode>();
   let functionLikeType = false;
   let visitedDefault = false;
@@ -323,8 +323,11 @@ function collectTypeParameterUsageCounts(
   }
 
   function incrementTypeUsages(type: ts.Type): number {
-    const count = (typeUsages.get(type) ?? 0) + 1;
-    typeUsages.set(type, count);
+    const typeWithoutArguments = checker
+      .typeToString(type)
+      .replaceAll(/<.+?>/g, '');
+    const count = (typeUsages.get(typeWithoutArguments) ?? 0) + 1;
+    typeUsages.set(typeWithoutArguments, count);
     return count;
   }
 
