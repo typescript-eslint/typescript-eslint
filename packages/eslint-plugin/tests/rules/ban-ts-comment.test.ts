@@ -2,9 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/ban-ts-comment';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('ts-expect-error', rule, {
   valid: [

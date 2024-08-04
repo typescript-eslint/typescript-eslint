@@ -1,3 +1,52 @@
+# 8.0.0 (2024-07-31)
+
+
+### 🚀 Features
+
+- stricter parent types for the AST
+
+- **utils:** allow specifying additional rule meta.docs in RuleCreator
+
+- **rule-tester:** support multipass fixes
+
+- **typescript-estree:** stabilize EXPERIMENTAL_useProjectService as projectService
+
+- **rule-tester:** switched to flat config
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** add TSEnumBody node for TSEnumDeclaration body
+
+- **rule-tester:** re-apply updates from main
+
+- **rule-tester:** provide Linter a cwd in its constructor
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alfred Ringstad
+- auvred
+- Brad Zacher
+- Christopher Aubut
+- Collin Bachman
+- James Henry
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- StyleShit
+- Victor Lin
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.18.0 (2024-07-29)
+
+This was a version bump only for eslint-plugin-internal to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.17.0 (2024-07-22)
 
 This was a version bump only for eslint-plugin-internal to align it with other projects, there were no code changes.

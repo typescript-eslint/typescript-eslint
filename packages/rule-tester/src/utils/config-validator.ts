@@ -2,7 +2,6 @@
 
 import util from 'node:util';
 
-import { Legacy } from '@eslint/eslintrc';
 import type { AnyRuleModule, Linter } from '@typescript-eslint/utils/ts-eslint';
 import type {
   AdditionalPropertiesParams,
@@ -13,14 +12,13 @@ import { builtinRules } from 'eslint/use-at-your-own-risk';
 
 import type { TesterConfigWithDefaults } from '../types';
 import { ajvBuilder } from './ajv';
-import { configSchema } from './config-schema';
 import { emitDeprecationWarning } from './deprecation-warnings';
+import { flatConfigSchema } from './flat-config-schema';
 import { getRuleOptionsSchema } from './getRuleOptionsSchema';
 import { hasOwnProperty } from './hasOwnProperty';
 
 type GetAdditionalRule = (ruleId: string) => AnyRuleModule | null;
 
-const { ConfigOps, environments: BuiltInEnvironments } = Legacy;
 const ajv = ajvBuilder();
 const ruleValidators = new WeakMap<AnyRuleModule, ValidateFunction>();
 
@@ -127,31 +125,6 @@ function validateRuleOptions(
 }
 
 /**
- * Validates an environment object
- * @param environment The environment config object to validate.
- * @param source The name of the configuration source to report in any errors.
- */
-function validateEnvironment(
-  environment: Linter.EnvironmentConfig | undefined,
-  source: string,
-): void {
-  // not having an environment is ok
-  if (!environment) {
-    return;
-  }
-
-  Object.keys(environment).forEach(id => {
-    const env = BuiltInEnvironments.get(id) ?? null;
-
-    if (!env) {
-      const message = `${source}:\n\tEnvironment key "${id}" is unknown\n`;
-
-      throw new Error(message);
-    }
-  });
-}
-
-/**
  * Validates a rules config object
  * @param rulesConfig The rules config object to validate.
  * @param source The name of the configuration source to report in any errors.
@@ -175,34 +148,6 @@ function validateRules(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     validateRuleOptions(rule, id, rulesConfig[id]!, source);
   });
-}
-
-/**
- * Validates a `globals` section of a config file
- * @param globalsConfig The `globals` section
- * @param source The name of the configuration source to report in the event of an error.
- */
-function validateGlobals(
-  globalsConfig: Linter.GlobalsConfig | undefined,
-  source: string | null = null,
-): void {
-  if (!globalsConfig) {
-    return;
-  }
-
-  Object.entries(globalsConfig).forEach(
-    ([configuredGlobal, configuredValue]) => {
-      try {
-        ConfigOps.normalizeConfigGlobal(configuredValue);
-      } catch (err) {
-        throw new Error(
-          `ESLint configuration of global '${configuredGlobal}' in ${source} is invalid:\n${
-            (err as Error).message
-          }`,
-        );
-      }
-    },
-  );
 }
 
 /**
@@ -251,7 +196,7 @@ function validateConfigSchema(
   config: TesterConfigWithDefaults,
   source: string,
 ): void {
-  validateSchema ||= ajv.compile(configSchema);
+  validateSchema ||= ajv.compile(flatConfigSchema);
 
   if (!validateSchema(config)) {
     throw new Error(
@@ -281,12 +226,4 @@ export function validate(
 ): void {
   validateConfigSchema(config, source);
   validateRules(config.rules, source, getAdditionalRule);
-  validateEnvironment(config.env, source);
-  validateGlobals(config.globals, source);
-
-  for (const override of config.overrides ?? []) {
-    validateRules(override.rules, source, getAdditionalRule);
-    validateEnvironment(override.env, source);
-    validateGlobals(config.globals, source);
-  }
 }

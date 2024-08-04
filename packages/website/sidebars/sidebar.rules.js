@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const plugin = require('@typescript-eslint/eslint-plugin');
 
 const rules = Object.entries(plugin.rules).map(([name, rule]) => {

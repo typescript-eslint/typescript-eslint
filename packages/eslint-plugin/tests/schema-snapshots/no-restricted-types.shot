@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-types 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "banConfig": {
+        "oneOf": [
+          {
+            "description": "Bans the type with the default message",
+            "enum": [true],
+            "type": "boolean"
+          },
+          {
+            "description": "Bans the type with a custom message",
+            "type": "string"
+          },
+          {
+            "additionalProperties": false,
+            "description": "Bans a type",
+            "properties": {
+              "fixWith": {
+                "description": "Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Custom error message",
+                "type": "string"
+              },
+              "suggest": {
+                "description": "Types to suggest replacing with.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "types": {
+        "additionalProperties": {
+          "$ref": "#/items/0/$defs/banConfig"
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type BanConfig =
+  /** Bans a type */
+  | {
+      /** Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option. */
+      fixWith?: string;
+      /** Custom error message */
+      message?: string;
+      /** Types to suggest replacing with. */
+      suggest?: string[];
+    }
+  /** Bans the type with a custom message */
+  | string
+  /** Bans the type with the default message */
+  | true;
+
+type Options = [
+  {
+    types?: {
+      [k: string]: BanConfig;
+    };
+  },
+];
+"
+`;

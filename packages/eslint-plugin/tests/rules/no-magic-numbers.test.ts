@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-magic-numbers';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-magic-numbers', rule, {
   valid: [
