@@ -14,6 +14,7 @@ describe('isSymbolFromDefaultLibrary', () => {
     symbol: ts.Symbol | undefined;
   } {
     const { services, ast } = parseForESLint(code, {
+      disallowAutomaticSingleRunInference: true,
       project: './tsconfig.json',
       filePath: path.join(rootDir, 'file.ts'),
       tsconfigRootDir: rootDir,

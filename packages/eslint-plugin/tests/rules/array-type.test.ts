@@ -6,9 +6,7 @@ import type { OptionString } from '../../src/rules/array-type';
 import rule from '../../src/rules/array-type';
 import { areOptionsValid } from '../areOptionsValid';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('array-type', rule, {
   valid: [
@@ -1962,7 +1960,7 @@ interface FooInterface {
 // -- eslint rule tester is not working with multi-pass
 // https://github.com/eslint/eslint/issues/11187
 describe('array-type (nested)', () => {
-  const linter = new TSESLint.Linter();
+  const linter = new TSESLint.Linter({ configType: 'eslintrc' });
   linter.defineRule('array-type', rule);
   linter.defineParser('@typescript-eslint/parser', parser);
 

@@ -6,12 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-meaningless-void-operator', rule, {

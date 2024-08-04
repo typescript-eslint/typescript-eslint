@@ -1,3 +1,70 @@
+# 8.0.0 (2024-07-31)
+
+
+### 🚀 Features
+
+- speed up non-type-aware linting with project service
+
+- **typescript-estree:** remove slow deprecated and isolated programs
+
+- **typescript-estree:** split TSMappedType typeParameter into constraint and key
+
+- **typescript-estree:** rename automaticSingleRunInference to disallowAutomaticSingleRunInference
+
+- **parser:** always enable comment, loc, range, tokens
+
+- **eslint-plugin:** split no-empty-object-type out from ban-types and no-empty-interfaces
+
+- **ast-spec:** remove deprecated type params
+
+- **typescript-estree:** stabilize EXPERIMENTAL_useProjectService as projectService
+
+- **typescript-estree:** remove EXPERIMENTAL_useSourceOfProjectReferenceRedirect
+
+- **eslint-plugin:** apply initial config changes for v8
+
+- **typescript-estree:** also remove projectService in withoutProjectParserOptions
+
+- **typescript-estree:** exposes ProjectService logs through the plugin
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** add TSEnumBody node for TSEnumDeclaration body
+
+- **typescript-estree:** enable dot globs for project by default
+
+- **typescript-estree:** pass extraFileExtensions to projectService
+
+- **types:** allow ProjectServiceOptions for projectService
+
+- **typescript-estree:** only run projectService setHostConfiguration when needed
+
+- **typescript-estree:** specific error for parserOptions.project not including a file
+
+- **typescript-estree:** adds support for project services using extended config files
+
+- **typescript-estree:** factor tsconfigRootDir into allowDefaultProject
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alfred Ringstad
+- auvred
+- Brad Zacher
+- Christopher Aubut
+- Collin Bachman
+- James Henry
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- StyleShit
+- Victor Lin
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.18.0 (2024-07-29)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.

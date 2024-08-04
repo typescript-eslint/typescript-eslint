@@ -25,4 +25,4 @@ for (const additionalFlags of [
     },
   );
 }
-eslintIntegrationTest(__filename, 'eslint.config.js', true);
+eslintIntegrationTest(__filename, 'eslint.config.js');
