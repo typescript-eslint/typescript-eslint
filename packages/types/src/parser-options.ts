@@ -38,6 +38,31 @@ type SourceType = SourceTypeClassic | 'commonjs';
 
 type JSDocParsingMode = 'all' | 'none' | 'type-info';
 
+/**
+ * Granular options to configure the project service.
+ */
+interface ProjectServiceOptions {
+  /**
+   * Globs of files to allow running with the default project compiler options
+   * despite not being matched by the project service.
+   */
+  allowDefaultProject?: string[];
+
+  /**
+   * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   */
+  defaultProject?: string;
+
+  /**
+   * The maximum number of files {@link allowDefaultProject} may match.
+   * Each file match slows down linting, so if you do need to use this, please
+   * file an informative issue on typescript-eslint explaining why - so we can
+   * help you avoid using it!
+   * @default 8
+   */
+  maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING?: number;
+}
+
 // If you add publicly visible options here, make sure they're also documented in `docs/packages/Parser.mdx`
 interface ParserOptions {
   ecmaFeatures?:
@@ -60,19 +85,16 @@ interface ParserOptions {
   experimentalDecorators?: boolean;
 
   // typescript-estree specific
-  comment?: boolean;
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
-  EXPERIMENTAL_useProjectService?: boolean; // purposely undocumented for now
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
   jsDocParsingMode?: JSDocParsingMode;
-  loc?: boolean;
   programs?: Program[] | null;
   project?: string[] | string | boolean | null;
   projectFolderIgnoreList?: string[];
+  projectService?: boolean | ProjectServiceOptions;
   range?: boolean;
   sourceType?: SourceType | undefined;
   tokens?: boolean;
@@ -91,5 +113,6 @@ export {
   EcmaVersion,
   JSDocParsingMode,
   ParserOptions,
+  ProjectServiceOptions,
   SourceType,
 };

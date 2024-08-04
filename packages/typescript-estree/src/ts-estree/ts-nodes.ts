@@ -2,7 +2,7 @@ import type * as ts from 'typescript';
 
 // Workaround to support new TS version features for consumers on old TS versions
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
-/* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 declare module 'typescript' {
   // added in TS 4.5, deprecated in TS 5.3
   export interface AssertClause extends ts.ImportAttributes {}
@@ -15,7 +15,7 @@ declare module 'typescript' {
   export interface ImportAttribute extends ts.Node {}
   export interface ImportAttributes extends ts.Node {}
 }
-/* eslint-enable @typescript-eslint/no-empty-interface */
+/* eslint-enable @typescript-eslint/no-empty-object-type */
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
