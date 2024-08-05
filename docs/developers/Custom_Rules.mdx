@@ -369,15 +369,13 @@ Below is a quick-start guide. For more in-depth docs and examples [see the `@typ
 
 ### Testing Untyped Rules
 
-For rules that don't need type information, passing just the `parser` will do:
+For rules that don't need type information, no constructor parameters are necessary:
 
 ```ts
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from './my-rule';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('my-rule', rule, {
   valid: [
