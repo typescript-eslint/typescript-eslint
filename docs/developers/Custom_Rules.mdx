@@ -10,11 +10,12 @@ You should be familiar with [ESLint's developer guide](https://eslint.org/docs/d
 :::
 
 As long as you are using `@typescript-eslint/parser` as the `parser` in your ESLint configuration, custom ESLint rules generally work the same way for JavaScript and TypeScript code.
-The main three changes to custom rules writing are:
+The main four changes to custom rules writing are:
 
 - [Utils Package](#utils-package): we recommend using `@typescript-eslint/utils` to create custom rules
 - [AST Extensions](#ast-extensions): targeting TypeScript-specific syntax in your rule selectors
 - [Typed Rules](#typed-rules): using the TypeScript type checker to inform rule logic
+- [Testing](#testing): using `@typescript-eslint/rule-tester`'s `RuleTester` instead of ESLint core's
 
 ## Utils Package
 
