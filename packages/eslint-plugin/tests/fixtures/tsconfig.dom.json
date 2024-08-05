@@ -1,11 +1,6 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "lib": ["es2015", "es2017", "esnext", "dom"]
-  },
-  "include": ["file.ts", "react.tsx"]
+    "lib": ["es2023", "dom"]
+  }
 }

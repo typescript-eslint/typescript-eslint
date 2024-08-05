@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.dom.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.dom.json',
+    },
   },
 });
 
@@ -19,6 +20,23 @@ ruleTester.run('strict-void-return', rule, {
       code: `
         declare function foo(cb: {}): void;
         foo(() => () => []);
+      `,
+    },
+    {
+      code: `
+        declare function foo(cb: () => void): void;
+        type Void = void;
+        foo((): Void => {
+          return;
+        });
+      `,
+    },
+    {
+      code: `
+        declare function foo(cb: () => void): void;
+        foo((): ReturnType<typeof foo> => {
+          return;
+        });
       `,
     },
     {
@@ -1489,13 +1507,22 @@ ruleTester.run('strict-void-return', rule, {
         };
       `,
       errors: [{ messageId: 'nonVoidFuncInVar', line: 2, column: 42 }],
-      output: `
+      output: [
+        `
         const cb: () => void = async (): Promise<void> => {
           try {
             return Promise.resolve(1);
           } catch {}
         };
       `,
+        `
+        const cb: () => void = async (): Promise<void> => {
+          try {
+            Promise.resolve(1); return;
+          } catch {}
+        };
+      `,
+      ],
     },
     {
       code: 'const cb: () => void = async (): Promise<number> => Promise.resolve(1);',
@@ -2444,7 +2471,8 @@ ruleTester.run('strict-void-return', rule, {
         }
       `,
       errors: [{ messageId: 'genFuncInExtMember', line: 6, column: 11 }],
-      output: `
+      output: [
+        `
         class Foo {
           cb() {}
         }
@@ -2452,6 +2480,15 @@ ruleTester.run('strict-void-return', rule, {
           async cb() {}
         }
       `,
+        `
+        class Foo {
+          cb() {}
+        }
+        class Bar extends Foo {
+          cb() {}
+        }
+      `,
+      ],
     },
     {
       code: `
@@ -2580,7 +2617,8 @@ ruleTester.run('strict-void-return', rule, {
         { messageId: 'asyncFuncInImplMember', line: 9, column: 11 },
         { messageId: 'genFuncInImplMember', line: 10, column: 11 },
       ],
-      output: `
+      output: [
+        `
         interface Foo1 {
           cb1(): void;
         }
@@ -2592,6 +2630,19 @@ ruleTester.run('strict-void-return', rule, {
           async cb2() {}
         }
       `,
+        `
+        interface Foo1 {
+          cb1(): void;
+        }
+        interface Foo2 {
+          cb2: () => void;
+        }
+        class Bar implements Foo1, Foo2 {
+          cb1() {}
+          cb2() {}
+        }
+      `,
+      ],
     },
     {
       code: `
@@ -2610,7 +2661,8 @@ ruleTester.run('strict-void-return', rule, {
         { messageId: 'asyncFuncInImplMember', line: 9, column: 11 },
         { messageId: 'genFuncInImplMember', line: 10, column: 11 },
       ],
-      output: `
+      output: [
+        `
         interface Foo1 {
           cb1(): void;
         }
@@ -2622,6 +2674,19 @@ ruleTester.run('strict-void-return', rule, {
           async cb2() {}
         }
       `,
+        `
+        interface Foo1 {
+          cb1(): void;
+        }
+        interface Foo2 extends Foo1 {
+          cb2: () => void;
+        }
+        class Bar implements Foo2 {
+          cb1() {}
+          cb2() {}
+        }
+      `,
+      ],
     },
     {
       code: `
