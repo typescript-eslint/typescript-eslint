@@ -14,7 +14,7 @@ Follow the same general steps as [ESLint's plugins guide > _Creating a plugin_](
 The required differences are noted on this page.
 
 :::tip
-See [**`eslint-plugin-example-typed-linting`**](https://github.com/typescript-eslint/examples/tree/39a6f7bb310645c88382a25aa8bed719ccd61a0c/packages/eslint-plugin-example-typed-linting) for an example plugin that supports typed linting.
+See [**`eslint-plugin-example-typed-linting`**](https://github.com/typescript-eslint/examples/tree/main/packages/eslint-plugin-example-typed-linting) for an example plugin that supports typed linting.
 :::
 
 ## Package Dependencies
@@ -50,7 +50,7 @@ We recommend including at least the following three properties in your plugin's 
 - `recommended?: boolean`: whether the rule exists in your plugin's shared _"`recommended`"_ config
 - `requiresTypeChecking?: boolean`: whether the rule will use type information, for documentation generators such as [`eslint-doc-generator`](https://github.com/bmish/eslint-doc-generator)
 
-For example, from [`eslint-plugin-example-typed-linting`'s `utils.ts`](https://github.com/typescript-eslint/examples/blob/39a6f7bb310645c88382a25aa8bed719ccd61a0c/packages/eslint-plugin-example-typed-linting/src/utils.ts):
+For example, from [`eslint-plugin-example-typed-linting`'s `utils.ts`](https://github.com/typescript-eslint/examples/blob/main/packages/eslint-plugin-example-typed-linting/src/utils.ts):
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
@@ -77,8 +77,8 @@ If your plugin's rules heavily use type information, it might be difficult to en
 
 You have roughly two options:
 
-- Have your plugin's `recommended` config require enabling type information _(recommended for new plugins)_
-- Have a separate config with a name like `recommendedTypeChecked` _(for legacy support in older plugins)_
+- Have your plugin's `recommended` config require enabling type information
+- Have a separate config with a name like `recommendedTypeChecked`
 
 Either way, explicitly mention the strategy taken in your docs.
 
@@ -87,5 +87,5 @@ Per [_Custom Rules_ > _Conditional Type Information_](./Custom_Rules.mdx#conditi
 :::
 
 :::tip
-See [**`eslint-plugin-example-typed-linting`**](https://github.com/typescript-eslint/examples/tree/39a6f7bb310645c88382a25aa8bed719ccd61a0c/packages/eslint-plugin-example-typed-linting) for an example plugin that supports typed linting.
+See [**`eslint-plugin-example-typed-linting`**](https://github.com/typescript-eslint/examples/tree/main/packages/eslint-plugin-example-typed-linting) for an example plugin that supports typed linting.
 :::
