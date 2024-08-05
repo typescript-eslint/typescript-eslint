@@ -47,14 +47,14 @@ export namespace FlatESLint {
      * Ignore file patterns to use in addition to config ignores. These patterns are relative to cwd.
      * @default null
      */
-    ignorePatterns?: string[] | null;
+    ignorePatterns?: null | string[];
     /**
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.
      * Searches for default config file when falsy; doesn't do any config file lookup when `true`; considered to be a config filename when a string.
      * @default false
      */
-    overrideConfigFile?: string | boolean;
+    overrideConfigFile?: boolean | string;
     /**
      * A predicate function that filters rules to be run.
      * This function is called with an object containing `ruleId` and `severity`, and returns `true` if the rule should be run.

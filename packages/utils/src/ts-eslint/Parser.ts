@@ -30,16 +30,6 @@ export namespace Parser {
          */
         meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
         /**
-         * Parses the given text into an ESTree AST
-         */
-        parse(text: string, options?: unknown): unknown;
-      }
-    | {
-        /**
-         * Information about the parser to uniquely identify it when serializing.
-         */
-        meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
-        /**
          * Parses the given text into an AST
          */
         parseForESLint(
@@ -49,6 +39,16 @@ export namespace Parser {
           // intentionally not using a Record to preserve optionals
           [k in keyof ParseResult]: unknown;
         };
+      }
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
+        /**
+         * Parses the given text into an ESTree AST
+         */
+        parse(text: string, options?: unknown): unknown;
       };
 
   export type ParserModule =
@@ -58,9 +58,9 @@ export namespace Parser {
          */
         meta?: ParserMeta;
         /**
-         * Parses the given text into an ESTree AST
+         * Parses the given text into an AST
          */
-        parse(text: string, options?: ParserOptions): TSESTree.Program;
+        parseForESLint(text: string, options?: ParserOptions): ParseResult;
       }
     | {
         /**
@@ -68,9 +68,9 @@ export namespace Parser {
          */
         meta?: ParserMeta;
         /**
-         * Parses the given text into an AST
+         * Parses the given text into an ESTree AST
          */
-        parseForESLint(text: string, options?: ParserOptions): ParseResult;
+        parse(text: string, options?: ParserOptions): TSESTree.Program;
       };
 
   export interface ParseResult {
@@ -79,17 +79,17 @@ export namespace Parser {
      */
     ast: TSESTree.Program;
     /**
-     * Any parser-dependent services (such as type checkers for nodes).
-     * The value of the services property is available to rules as `context.sourceCode.parserServices`.
-     * The default is an empty object.
-     */
-    services?: ParserServices;
-    /**
      * A `ScopeManager` object.
      * Custom parsers can use customized scope analysis for experimental/enhancement syntaxes.
      * The default is the `ScopeManager` object which is created by `eslint-scope`.
      */
     scopeManager?: Scope.ScopeManager;
+    /**
+     * Any parser-dependent services (such as type checkers for nodes).
+     * The value of the services property is available to rules as `context.sourceCode.parserServices`.
+     * The default is an empty object.
+     */
+    services?: ParserServices;
     /**
      * An object to customize AST traversal.
      * The keys of the object are the type of AST nodes.

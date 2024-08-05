@@ -43,7 +43,7 @@ const getPropertyName = eslintUtils.getPropertyName as (
     | TSESTree.Property
     | TSESTree.PropertyDefinition,
   initialScope?: TSESLint.Scope.Scope,
-) => string | null;
+) => null | string;
 
 /**
  * Get the value of a given node if it can decide the value statically.
@@ -70,7 +70,7 @@ const getStaticValue = eslintUtils.getStaticValue as (
 const getStringIfConstant = eslintUtils.getStringIfConstant as (
   node: TSESTree.Node,
   initialScope?: TSESLint.Scope.Scope,
-) => string | null;
+) => null | string;
 
 /**
  * Check whether a given node has any side effect or not.
@@ -105,6 +105,12 @@ const hasSideEffect = eslintUtils.hasSideEffect as (
 ) => boolean;
 
 const isParenthesized = eslintUtils.isParenthesized as {
+  (
+    times: number,
+    node: TSESTree.Node,
+    sourceCode: TSESLint.SourceCode,
+  ): boolean;
+
   /**
    * Check whether a given node is parenthesized or not.
    * This function detects it correctly even if it's parenthesized by specific syntax.
@@ -115,11 +121,6 @@ const isParenthesized = eslintUtils.isParenthesized as {
    * For example, `isParenthesized(2, node, sourceCode)` returns true for `((foo))`, but not for `(foo)`.
    */
   (node: TSESTree.Node, sourceCode: TSESLint.SourceCode): boolean;
-  (
-    times: number,
-    node: TSESTree.Node,
-    sourceCode: TSESLint.SourceCode,
-  ): boolean;
 };
 
 export {
