@@ -169,17 +169,15 @@ export default createRule<Options, MessageIds>({
 
           const name = getStringValue(node.key);
 
-          if (node.parent.type === AST_NODE_TYPES.ClassBody) {
-            const hasDuplicateKeySetter = node.parent.body.some(element => {
-              return (
-                element.type === AST_NODE_TYPES.MethodDefinition &&
-                element.kind === 'set' &&
-                getStringValue(element.key) === name
-              );
-            });
-            if (hasDuplicateKeySetter) {
-              return;
-            }
+          const hasDuplicateKeySetter = node.parent.body.some(element => {
+            return (
+              element.type === AST_NODE_TYPES.MethodDefinition &&
+              element.kind === 'set' &&
+              getStringValue(element.key) === name
+            );
+          });
+          if (hasDuplicateKeySetter) {
+            return;
           }
 
           context.report({

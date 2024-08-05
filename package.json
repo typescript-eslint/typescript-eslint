@@ -50,7 +50,7 @@
     "typecheck": "nx run-many --target=typecheck"
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "devDependencies": {
     "@actions/core": "^1.10.1",
@@ -60,6 +60,7 @@
     "@babel/eslint-parser": "^7.24.1",
     "@babel/parser": "^7.24.4",
     "@babel/types": "^7.24.0",
+    "@eslint/compat": "^1.0.1",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.0",
     "@jest/types": "29.6.3",
@@ -91,10 +92,10 @@
     "cross-fetch": "^4.0.0",
     "cspell": "^8.6.1",
     "downlevel-dts": ">=0.11.0",
-    "eslint": "8.57.0",
+    "eslint": "^9.3.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-eslint-plugin": "^5.5.0",
+    "eslint-plugin-eslint-plugin": "^6.2.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^27.9.0",
     "eslint-plugin-jsdoc": "^47.0.2",
@@ -121,7 +122,7 @@
     "semver": "7.6.2",
     "tmp": "^0.2.1",
     "tsx": "*",
-    "typescript": ">=4.7.4 <5.6.0",
+    "typescript": ">=4.8.4 <5.6.0",
     "typescript-eslint": "workspace:^",
     "yargs": "17.7.2"
   },
@@ -135,7 +136,7 @@
     "@types/estree": "link:./tools/dummypkg",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.14",
-    "eslint": "8.57.0",
+    "eslint": "^9",
     "eslint-visitor-keys": "^3.4.1",
     "jest-config": "^29",
     "jest-resolve": "^29",
