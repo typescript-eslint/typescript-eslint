@@ -1,6 +1,7 @@
 import type { Reference } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import console from 'console';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -178,9 +179,10 @@ function collectTypeParameterUsageCounts(
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
 ): void {
+  let l = 0;
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
-  const typeUsages = new Map<string, number>();
+  const typeUsages = new Map<ts.Type, number>();
   const visitedConstraints = new Set<ts.TypeNode>();
   let functionLikeType = false;
   let visitedDefault = false;
@@ -323,11 +325,13 @@ function collectTypeParameterUsageCounts(
   }
 
   function incrementTypeUsages(type: ts.Type): number {
-    const typeWithoutArguments = checker
-      .typeToString(type)
-      .replaceAll(/<.+?>/g, '');
-    const count = (typeUsages.get(typeWithoutArguments) ?? 0) + 1;
-    typeUsages.set(typeWithoutArguments, count);
+    const s = checker.typeToString(type);
+    if (s.startsWith('B')) {
+      console.log(s);
+      if (++l === 10) process.exit();
+    }
+    const count = (typeUsages.get(type) ?? 0) + 1;
+    typeUsages.set(type, count);
     return count;
   }
 
