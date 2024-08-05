@@ -343,11 +343,11 @@ const allMemberTypes = [
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'call-signature'
-            ? // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-              (
+            ? (
                 [
                   'static',
                   'instance',
+                  // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
                   ...(accessibility === '#private' ||
                   accessibility === 'private'
                     ? []
