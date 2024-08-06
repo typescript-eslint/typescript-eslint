@@ -10,6 +10,10 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import baseConfig from './base';
 import eslintRecommendedConfig from './eslint-recommended';
 
+/**
+ * Contains all of `stylistic`, along with additional stylistic rules that require type information.
+ * @see {@link https://typescript-eslint.io/users/configs#stylistic-type-checked}
+ */
 export default (
   plugin: FlatConfig.Plugin,
   parser: FlatConfig.Parser,
