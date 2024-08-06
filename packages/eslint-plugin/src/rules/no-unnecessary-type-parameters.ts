@@ -21,7 +21,7 @@ export default createRule({
       recommended: 'strict',
     },
     messages: {
-      sole: 'Type parameter {{name}} is used only once.',
+      sole: 'Type parameter {{name}} is used only once in the function signature.',
     },
     schema: [],
     type: 'problem',
