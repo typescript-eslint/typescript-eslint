@@ -132,7 +132,6 @@
     "@jest/test-result": "^29",
     "@microsoft/api-extractor@^7.38.0": "patch:@microsoft/api-extractor@npm%3A7.38.0#./.yarn/patches/@microsoft-api-extractor-npm-7.38.0-955f1e0725.patch",
     "@types/eslint-scope": "link:./tools/dummypkg",
-    "@types/eslint": "link:./tools/dummypkg",
     "@types/estree": "link:./tools/dummypkg",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.14",

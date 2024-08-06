@@ -17,6 +17,7 @@ https://github.com/typescript-eslint/typescript-eslint/pull/8460
 TODO - convert this to /utils/ts-eslint
 */
 import type { TSESLint } from '@typescript-eslint/utils';
+import type { Linter } from 'eslint';
 
 export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
@@ -83,9 +84,12 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
  * ```
  */
 export function config(
-  ...configs: ConfigWithExtends[]
+  ...configs: (ConfigWithExtends | Linter.Config)[]
 ): TSESLint.FlatConfig.ConfigArray {
   return configs.flatMap(configWithExtends => {
+    if (!('extends' in configWithExtends)) {
+      return configWithExtends;
+    }
     const { extends: extendsArr, ...config } = configWithExtends;
     if (extendsArr == null || extendsArr.length === 0) {
       return config;
