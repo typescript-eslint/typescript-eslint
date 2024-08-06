@@ -203,6 +203,20 @@
     "website": "https://quicko.com"
   },
   {
+    "id": "Defined Networking",
+    "image": "https://images.opencollective.com/defined-networking/072920e/logo.png",
+    "name": "Defined Networking",
+    "totalDonations": 25000,
+    "website": "https://www.defined.net"
+  },
+  {
+    "id": "WebdriverIO",
+    "image": "https://images.opencollective.com/webdriverio/bbdd5c3/logo.png",
+    "name": "WebdriverIO",
+    "totalDonations": 24500,
+    "website": "https://webdriver.io/"
+  },
+  {
     "id": "revo.js",
     "image": "https://images.opencollective.com/revojsro/82623a7/logo.png",
     "name": "revo.js",
@@ -210,25 +224,11 @@
     "website": "https://revojs.ro"
   },
   {
-    "id": "Defined Networking",
-    "image": "https://images.opencollective.com/defined-networking/072920e/logo.png",
-    "name": "Defined Networking",
-    "totalDonations": 22500,
-    "website": "https://www.defined.net"
-  },
-  {
     "id": "Ian MacLeod",
     "image": "https://images.opencollective.com/nevir/35c52ef/avatar.png",
     "name": "Ian MacLeod",
     "totalDonations": 22000,
     "website": "https://twitter.com/nevir"
-  },
-  {
-    "id": "WebdriverIO",
-    "image": "https://images.opencollective.com/webdriverio/bbdd5c3/logo.png",
-    "name": "WebdriverIO",
-    "totalDonations": 21000,
-    "website": "https://webdriver.io/"
   },
   {
     "id": "David Johnston",
