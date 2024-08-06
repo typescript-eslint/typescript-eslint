@@ -1,5 +1,5 @@
 ---
-displayed_sidebar: someSidebar
+displayed_sidebar: rulesSidebar
 ---
 
 :::danger Deprecated
