@@ -98,6 +98,8 @@ const excludedNames = new Set([
   'Josh Goldberg', // Team member 💖
 ]);
 
+const filteredTerms = ['casino', 'deepnude', 'tiktok'];
+
 async function requestGraphql<Data>(key: keyof typeof queries): Promise<Data> {
   const response = await fetch(graphqlEndpoint, {
     method: 'POST',
@@ -156,8 +158,15 @@ async function main(): Promise<void> {
         website,
       };
     })
-    .filter(({ id, totalDonations, website }) => {
-      if (uniqueNames.has(id) || totalDonations < 10000 || !website) {
+    .filter(({ id, name, totalDonations, website }) => {
+      if (
+        filteredTerms.some(filteredTerm =>
+          name.toLowerCase().includes(filteredTerm),
+        ) ||
+        uniqueNames.has(id) ||
+        totalDonations < 10000 ||
+        !website
+      ) {
         return false;
       }
 
