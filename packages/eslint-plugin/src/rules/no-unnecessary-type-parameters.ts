@@ -21,7 +21,7 @@ export default createRule({
       recommended: 'strict',
     },
     messages: {
-      sole: 'Type parameter {{name}} is used only once in the function signature.',
+      sole: 'Type parameter {{name}} is used only once in the {{descriptor}} signature.',
     },
     schema: [],
     type: 'problem',
@@ -29,11 +29,49 @@ export default createRule({
   name: 'no-unnecessary-type-parameters',
   create(context) {
     const parserServices = getParserServices(context);
+
+    function checkNode(node: TSESTree.FunctionLike, descriptor: string): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+        node,
+      ) as NodeWithTypeParameters;
+
+      const checker = parserServices.program.getTypeChecker();
+      let counts: Map<ts.Identifier, number> | undefined;
+
+      for (const typeParameter of tsNode.typeParameters) {
+        const esTypeParameter =
+          parserServices.tsNodeToESTreeNodeMap.get<TSESTree.TSTypeParameter>(
+            typeParameter,
+          );
+        const scope = context.sourceCode.getScope(esTypeParameter);
+
+        // Quick path: if the type parameter is used multiple times in the AST,
+        // we don't need to dip into types to know it's repeated.
+        if (isTypeParameterRepeatedInAST(esTypeParameter, scope.references)) {
+          continue;
+        }
+
+        // For any inferred types, we have to dip into type checking.
+        counts ??= countTypeParameterUsage(checker, tsNode);
+        const identifierCounts = counts.get(typeParameter.name);
+        if (!identifierCounts || identifierCounts > 2) {
+          continue;
+        }
+
+        context.report({
+          data: {
+            descriptor,
+            name: typeParameter.name.text,
+          },
+          node: esTypeParameter,
+          messageId: 'sole',
+        });
+      }
+    }
+
     return {
       [[
         'ArrowFunctionExpression[typeParameters]',
-        'ClassDeclaration[typeParameters]',
-        'ClassExpression[typeParameters]',
         'FunctionDeclaration[typeParameters]',
         'FunctionExpression[typeParameters]',
         'TSCallSignatureDeclaration[typeParameters]',
@@ -43,41 +81,13 @@ export default createRule({
         'TSFunctionType[typeParameters]',
         'TSMethodSignature[typeParameters]',
       ].join(', ')](node: TSESTree.FunctionLike): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-          node,
-        ) as NodeWithTypeParameters;
-
-        const checker = parserServices.program.getTypeChecker();
-        let counts: Map<ts.Identifier, number> | undefined;
-
-        for (const typeParameter of tsNode.typeParameters) {
-          const esTypeParameter =
-            parserServices.tsNodeToESTreeNodeMap.get<TSESTree.TSTypeParameter>(
-              typeParameter,
-            );
-          const scope = context.sourceCode.getScope(esTypeParameter);
-
-          // Quick path: if the type parameter is used multiple times in the AST,
-          // we don't need to dip into types to know it's repeated.
-          if (isTypeParameterRepeatedInAST(esTypeParameter, scope.references)) {
-            continue;
-          }
-
-          // For any inferred types, we have to dip into type checking.
-          counts ??= countTypeParameterUsage(checker, tsNode);
-          const identifierCounts = counts.get(typeParameter.name);
-          if (!identifierCounts || identifierCounts > 2) {
-            continue;
-          }
-
-          context.report({
-            data: {
-              name: typeParameter.name.text,
-            },
-            node: esTypeParameter,
-            messageId: 'sole',
-          });
-        }
+        checkNode(node, 'function');
+      },
+      [[
+        'ClassDeclaration[typeParameters]',
+        'ClassExpression[typeParameters]',
+      ].join(', ')](node: TSESTree.FunctionLike): void {
+        checkNode(node, 'class');
       },
     };
   },
