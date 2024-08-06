@@ -1,3 +1,7 @@
+---
+displayed_sidebar: someSidebar
+---
+
 :::danger Deprecated
 
 This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).

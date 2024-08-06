@@ -1,3 +1,7 @@
+---
+displayed_sidebar: someSidebar
+---
+
 :::danger Deprecated
 
 The old `ban-types` rule encompassed multiple areas of functionality, and so has been split into several rules.

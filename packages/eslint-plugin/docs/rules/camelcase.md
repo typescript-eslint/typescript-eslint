@@ -1,3 +1,7 @@
+---
+displayed_sidebar: someSidebar
+---
+
 :::danger Deprecated
 
 This rule has been deprecated in favour of the [`naming-convention`](./naming-convention.mdx) rule.
