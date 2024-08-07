@@ -29,7 +29,7 @@ describe('convert', () => {
       function fakeUnknownKind(node: ts.Node): void {
         ts.forEachChild(node, fakeUnknownKind);
         // @ts-expect-error -- intentionally writing to a readonly field
-        // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+         
         node.kind = ts.SyntaxKind.UnparsedPrologue;
       }
 
@@ -373,10 +373,10 @@ describe('convert', () => {
     it('allows writing to the deprecated aliased property as a new enumerable value', () => {
       const esTsEnumDeclaration = getEsTsEnumDeclaration();
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line deprecation/deprecation
       esTsEnumDeclaration.members = [];
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line deprecation/deprecation
       expect(esTsEnumDeclaration.members).toEqual([]);
       expect(Object.keys(esTsEnumDeclaration)).toContain('members');
     });
@@ -437,10 +437,10 @@ describe('convert', () => {
     it('allows writing to the deprecated getter property as a new enumerable value', () => {
       const tsMappedType = getEsTsMappedType();
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line deprecation/deprecation
       tsMappedType.typeParameter = undefined!;
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line deprecation/deprecation
       expect(tsMappedType.typeParameter).toBeUndefined();
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });

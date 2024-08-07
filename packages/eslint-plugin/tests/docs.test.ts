@@ -1,17 +1,17 @@
 import 'jest-specific-snapshot';
 
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import * as tseslintParser from '@typescript-eslint/parser';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import fs from 'fs';
 import { marked } from 'marked';
 import type * as mdast from 'mdast';
 import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
 import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
 import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
-import path from 'path';
 import { titleCase } from 'title-case';
 import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
 

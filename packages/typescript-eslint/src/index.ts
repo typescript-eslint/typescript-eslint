@@ -70,48 +70,7 @@ const configs = {
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
 export type { ConfigWithExtends };
-/*
-eslint-disable-next-line import/no-default-export --
-we do both a default and named exports to allow people to use this package from
-both CJS and ESM in very natural ways.
-
-EG it means that all of the following are valid:
-
-```ts
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
-  ...tseslint.configs.recommended,
-);
-```
-```ts
-import { config, parser, plugin } from 'typescript-eslint';
-
-export default config(
-  {
-    languageOptions: { parser }
-    plugins: { ts: plugin },
-  }
-);
-```
-```ts
-const tseslint = require('typescript-eslint');
-
-module.exports = tseslint.config(
-  ...tseslint.configs.recommended,
-);
-```
-```ts
-const { config, parser, plugin } = require('typescript-eslint');
-
-module.exports = config(
-  {
-    languageOptions: { parser }
-    plugins: { ts: plugin },
-  }
-);
-```
-*/
+ 
 export default {
   config,
   configs,
