@@ -20,7 +20,6 @@ export default createRule({
     docs: {
       description:
         "Enforce that packages rules don't do `import ts from 'typescript';`",
-      recommended: 'recommended',
     },
     fixable: 'code',
     schema: [],
@@ -42,7 +41,7 @@ export default createRule({
       'ImportDeclaration > ImportDefaultSpecifier'(
         node: TSESTree.ImportDefaultSpecifier,
       ): void {
-        const importStatement = node.parent as TSESTree.ImportDeclaration;
+        const importStatement = node.parent;
         if (importStatement.source.value === 'typescript') {
           context.report({
             node,

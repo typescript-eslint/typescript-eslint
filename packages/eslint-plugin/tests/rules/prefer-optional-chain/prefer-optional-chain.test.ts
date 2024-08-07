@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -759,12 +760,12 @@ describe('hand-crafted cases', () => {
       'data && data.value !== null;',
       {
         code: '<div /> && (<div />).wtf;',
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       {
         code: '<></> && (<></>).wtf;',
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       'foo[x++] && foo[x++].bar;',
@@ -956,7 +957,7 @@ describe('hand-crafted cases', () => {
         code: 'foo && foo.bar(baz => <This Requires Spaces />);',
         output: 'foo?.bar(baz => <This Requires Spaces />);',
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       {
@@ -1075,7 +1076,7 @@ describe('hand-crafted cases', () => {
             suggestions: null,
           },
         ],
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       // case with this keyword at the start of expression

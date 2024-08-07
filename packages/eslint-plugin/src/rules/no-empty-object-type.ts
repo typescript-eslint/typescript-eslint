@@ -37,6 +37,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow accidentally using the "empty object" type',
+      recommended: 'recommended',
     },
     hasSuggestions: true,
     messages: {
@@ -59,7 +60,7 @@ export default createRule<Options, MessageIds>({
             type: 'string',
           },
           allowObjectTypes: {
-            enum: ['always', 'in-type-alias-with-name', 'never'],
+            enum: ['always', 'never'],
             type: 'string',
           },
           allowWithName: {

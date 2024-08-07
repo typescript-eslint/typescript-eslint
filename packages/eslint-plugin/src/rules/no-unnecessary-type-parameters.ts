@@ -18,6 +18,7 @@ export default createRule({
     docs: {
       description: 'Disallow type parameters that only appear once',
       requiresTypeChecking: true,
+      recommended: 'strict',
     },
     messages: {
       sole: 'Type parameter {{name}} is used only once.',

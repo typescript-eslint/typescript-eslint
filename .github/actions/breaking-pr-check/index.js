@@ -1,12 +1,17 @@
+// @ts-check
+/* eslint-disable jsdoc/no-types, @typescript-eslint/no-require-imports */
+
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-function raiseError(message) {
-  throw new Error(message);
-}
-
 async function getPullRequest() {
-  const client = github.getOctokit(process.env.GITHUB_TOKEN);
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
+    throw new Error(
+      'The GITHUB_TOKEN environment variable is required to run this action.',
+    );
+  }
+  const client = github.getOctokit(token);
 
   const pr = github.context.payload.pull_request;
   if (!pr) {
@@ -27,14 +32,21 @@ async function getPullRequest() {
   return data;
 }
 
+/**
+ * @param {string} title The PR title to check
+ */
 function checkTitle(title) {
   if (/^[a-z]+(\([a-z-]+\))?!: /.test(title)) {
-    raiseError(
+    throw new Error(
       `Do not use exclamation mark ('!') to indicate breaking change in the PR Title.`,
     );
   }
 }
 
+/**
+ * @param {string} body The body of the PR
+ * @param {any[]} labels The labels applied to the PR
+ */
 function checkDescription(body, labels) {
   if (!labels.some(label => label.name === 'breaking change')) {
     return;
@@ -42,12 +54,12 @@ function checkDescription(body, labels) {
   const [firstLine, secondLine] = body.split(/\r?\n/);
 
   if (!firstLine || !/^BREAKING CHANGE:/.test(firstLine)) {
-    raiseError(
+    throw new Error(
       `Breaking change PR body should start with "BREAKING CHANGE:". See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
     );
   }
   if (!secondLine) {
-    raiseError(
+    throw new Error(
       `The description of breaking change is missing. See https://typescript-eslint.io/maintenance/releases#2-merging-breaking-changes.`,
     );
   }
@@ -57,8 +69,8 @@ async function run() {
   const pullRequest = await getPullRequest();
   try {
     checkTitle(pullRequest.title);
-    checkDescription(pullRequest.body, pullRequest.labels);
-  } catch (e) {
+    checkDescription(pullRequest.body ?? '', pullRequest.labels);
+  } catch (/** @type {any} */ e) {
     core.setFailed(e.message);
   }
 }

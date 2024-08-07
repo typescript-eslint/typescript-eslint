@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-empty-object-type';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-object-type', rule, {
   valid: [
@@ -81,9 +79,9 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
-          line: 1,
           column: 11,
           data: { option: 'allowInterfaces' },
+          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {
@@ -103,9 +101,9 @@ class Derived {}
       code: 'interface Base {}',
       errors: [
         {
-          line: 1,
           column: 11,
           data: { option: 'allowInterfaces' },
+          line: 1,
           messageId: 'noEmptyInterface',
           suggestions: [
             {
@@ -134,8 +132,8 @@ class Other {}
       `,
       errors: [
         {
-          line: 6,
           column: 11,
+          line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
           suggestions: [
             {
@@ -166,8 +164,8 @@ class Derived {}
       `,
       errors: [
         {
-          line: 6,
           column: 11,
+          line: 6,
           messageId: 'noEmptyInterfaceWithSuper',
         },
       ],
@@ -548,10 +546,12 @@ let value: unknown;
           messageId: 'noEmptyObject',
           suggestions: [
             {
+              data: { replacement: 'object' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = object | null;',
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = unknown | null;',
             },
@@ -571,10 +571,12 @@ let value: unknown;
           messageId: 'noEmptyObject',
           suggestions: [
             {
+              data: { replacement: 'object' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = object;',
             },
             {
+              data: { replacement: 'unknown' },
               messageId: 'replaceEmptyObjectType',
               output: 'type Base = unknown;',
             },

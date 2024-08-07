@@ -1,3 +1,4 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/return-await';
@@ -6,12 +7,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 // default rule is in-try-catch
@@ -56,6 +57,25 @@ ruleTester.run('return-await', rule, {
         }
       }
     `,
+    {
+      code: `
+        async function test() {
+          if (Math.random() < 0.33) {
+            return await Promise.resolve(1);
+          } else if (Math.random() < 0.5) {
+            return Promise.resolve(2);
+          }
+
+          try {
+          } catch (e) {
+            return await Promise.resolve(3);
+          } finally {
+            console.log('cleanup');
+          }
+        }
+      `,
+      options: ['error-handling-correctness-only'],
+    },
     `
       async function test() {
         try {
@@ -548,8 +568,11 @@ async function test() {
         },
       ],
     },
-    {
-      code: `
+
+    ...['error-handling-correctness-only', 'always', 'in-try-catch'].map(
+      option =>
+        ({
+          code: `
         async function test() {
           try {
             return Promise.resolve(1);
@@ -560,15 +583,15 @@ async function test() {
           }
         }
       `,
-      output: null,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
+          output: null,
+          errors: [
             {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
+              line: 4,
+              messageId: 'requiredPromiseAwait',
+              suggestions: [
+                {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  output: `
         async function test() {
           try {
             return await Promise.resolve(1);
@@ -579,16 +602,16 @@ async function test() {
           }
         }
       `,
+                },
+              ],
             },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
             {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
+              line: 6,
+              messageId: 'requiredPromiseAwait',
+              suggestions: [
+                {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  output: `
         async function test() {
           try {
             return Promise.resolve(1);
@@ -599,11 +622,17 @@ async function test() {
           }
         }
       `,
+                },
+              ],
             },
           ],
-        },
-      ],
-    },
+          options: [option],
+        }) satisfies InvalidTestCase<
+          'requiredPromiseAwait' | 'requiredPromiseAwaitSuggestion',
+          [string]
+        >,
+    ),
+
     {
       code: `
         async function test() {
@@ -667,63 +696,6 @@ async function test() {
       options: ['in-try-catch'],
       code: `
         async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      output: null,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      options: ['in-try-catch'],
-      code: `
-        async function test() {
           return await Promise.resolve(1);
         }
       `,
@@ -850,63 +822,6 @@ async function test() {
         {
           line: 3,
           messageId: 'nonPromiseAwait',
-        },
-      ],
-    },
-    {
-      options: ['always'],
-      code: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-      output: null,
-      errors: [
-        {
-          line: 4,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return await Promise.resolve(1);
-          } catch (e) {
-            return Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
-        },
-        {
-          line: 6,
-          messageId: 'requiredPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'requiredPromiseAwaitSuggestion',
-              output: `
-        async function test() {
-          try {
-            return Promise.resolve(1);
-          } catch (e) {
-            return await Promise.resolve(2);
-          } finally {
-            console.log('cleanup');
-          }
-        }
-      `,
-            },
-          ],
         },
       ],
     },

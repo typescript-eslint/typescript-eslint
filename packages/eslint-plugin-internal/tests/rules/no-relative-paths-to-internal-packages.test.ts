@@ -6,7 +6,11 @@ import rule, {
 } from '../../src/rules/no-relative-paths-to-internal-packages';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: PACKAGES_DIR,
+    },
+  },
 });
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {
