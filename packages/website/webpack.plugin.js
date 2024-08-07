@@ -21,8 +21,9 @@ module.exports = function (/*context, options*/) {
             'process.env.ESLINT_VERSION': JSON.stringify(
               require('eslint/package.json').version,
             ),
-            // TODO: Move back to package.json's version shortly after v8 launches
-            'process.env.TS_ESLINT_VERSION': JSON.stringify('v8'),
+            'process.env.TS_ESLINT_VERSION': JSON.stringify(
+              require('@typescript-eslint/eslint-plugin/package.json').version,
+            ),
           }),
           new CopyPlugin({
             patterns: [
