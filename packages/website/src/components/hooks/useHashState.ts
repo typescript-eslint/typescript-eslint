@@ -46,7 +46,10 @@ function readLegacyParam(
   return undefined;
 }
 
-const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
+const parseStateFromUrl = (
+  hash: string,
+  initialState: ConfigModel,
+): Partial<ConfigModel> | undefined => {
   if (!hash) {
     return;
   }
@@ -95,7 +98,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       code,
       fileType,
       eslintrc: eslintrc ?? '',
-      tsconfig: tsconfig ?? '',
+      tsconfig: tsconfig ?? initialState.tsconfig,
       showTokens: searchParams.get('tokens') === 'true',
       esQuery,
     };
@@ -193,7 +196,7 @@ function useHashState(
   const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...retrieveStateFromLocalStorage(),
-    ...parseStateFromUrl(window.location.hash.slice(1)),
+    ...parseStateFromUrl(window.location.hash.slice(1), initialState),
   }));
 
   const updateState = useCallback(
