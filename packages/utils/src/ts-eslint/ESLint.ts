@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-namespace */
 
 export {
   // TODO(eslint@v10) - remove this in the next major
