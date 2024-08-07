@@ -1,6 +1,7 @@
+import path from 'node:path';
+
 import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
-import path from 'path';
 import type * as ts from 'typescript';
 
 import { isUnsafeAssignment } from '../src/isUnsafeAssignment';

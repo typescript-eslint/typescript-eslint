@@ -1,5 +1,6 @@
+import path from 'node:path';
+
 import debug from 'debug';
-import path from 'path';
 import * as ts from 'typescript';
 
 import { firstDefined } from '../node-utils';

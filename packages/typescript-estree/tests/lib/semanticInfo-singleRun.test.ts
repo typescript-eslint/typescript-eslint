@@ -1,5 +1,6 @@
+import * as path from 'node:path';
+
 import * as glob from 'glob';
-import * as path from 'path';
 
 import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {

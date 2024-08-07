@@ -1,7 +1,8 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { createProgram } from '@typescript-eslint/typescript-estree';
-import fs from 'fs';
 import * as glob from 'glob';
-import path from 'path';
 
 import type { ParserOptions } from '../../src/parser';
 import {

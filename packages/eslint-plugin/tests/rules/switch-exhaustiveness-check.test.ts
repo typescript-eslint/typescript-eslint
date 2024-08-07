@@ -1,5 +1,6 @@
+import path from 'node:path';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
 

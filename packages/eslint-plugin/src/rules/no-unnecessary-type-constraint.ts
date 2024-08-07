@@ -1,6 +1,7 @@
+import { extname } from 'node:path';
+
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { extname } from 'path';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';

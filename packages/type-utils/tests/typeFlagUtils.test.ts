@@ -1,6 +1,7 @@
+import path from 'node:path';
+
 import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
-import path from 'path';
 import * as ts from 'typescript';
 
 import { getTypeFlags, isTypeFlagSet } from '../src';

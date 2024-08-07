@@ -1,8 +1,9 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
-import * as fs from 'fs';
 import * as lz from 'lz-string';
-import * as path from 'path';
 import type * as unist from 'unist';
 import type { VFile } from 'vfile';
 

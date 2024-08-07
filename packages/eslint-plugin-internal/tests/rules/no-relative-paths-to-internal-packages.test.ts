@@ -1,5 +1,6 @@
+import path from 'node:path';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'path';
 
 import rule, {
   PACKAGES_DIR,
