@@ -322,6 +322,7 @@ export default tseslint.config(
       'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-regexp-test': 'error',
     },
   },
   {
