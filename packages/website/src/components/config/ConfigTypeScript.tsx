@@ -4,7 +4,6 @@ import { ensureObject, parseJSONObject, toJson } from '../lib/json';
 import { getTypescriptOptions } from '../lib/jsonSchema';
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
-import type { ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
 
 interface ConfigTypeScriptProps {
@@ -30,28 +29,31 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
     });
   }, [config]);
 
-  const options = useMemo((): ConfigOptionsType[] => {
-    const group: Record<string, ConfigOptionsType> = {};
-    for (const item of getTypescriptOptions()) {
-      const category = item.category.message;
-      group[category] ??= { heading: category, fields: [] };
-      if (item.type === 'boolean') {
-        group[category].fields.push({
-          key: item.name,
-          type: 'boolean',
-          label: item.description.message,
-        });
-      } else if (item.type instanceof Map) {
-        group[category].fields.push({
-          key: item.name,
-          type: 'string',
-          label: item.description.message,
-          enum: ['', ...Array.from<string>(item.type.keys())],
-        });
-      }
-    }
-    return Object.values(group);
-  }, []);
+  const options = useMemo(
+    () =>
+      Object.entries(
+        Object.groupBy(
+          getTypescriptOptions(),
+          ({ category }) => category.message,
+        ),
+      ).map(([heading, group]) => ({
+        heading,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        fields: group!
+          .map(({ name, description, type }) => ({
+            key: name,
+            label: description.message,
+            ...(type === 'boolean'
+              ? { type: 'boolean' as const }
+              : type instanceof Map && {
+                  type: 'string' as const,
+                  enum: ['', ...Array.from<string>(type.keys())],
+                }),
+          }))
+          .filter(item => 'type' in item),
+      })),
+    [],
+  );
 
   const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
