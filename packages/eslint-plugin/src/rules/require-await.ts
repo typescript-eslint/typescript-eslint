@@ -127,8 +127,54 @@ export default createRule({
                 isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
               needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
 
-            fix = (fixer): RuleFix =>
-              fixer.replaceTextRange(asyncRange, addSemiColon ? ';' : '');
+            const changes = [
+              { range: asyncRange, replacement: addSemiColon ? ';' : '' },
+            ];
+
+            // If there's a return type annotation and it's a
+            // `Promise<T>`, we can also change the return type
+            // annotation to just `T` as part of the suggestion.
+            if (
+              node.returnType?.typeAnnotation.type ===
+                AST_NODE_TYPES.TSTypeReference &&
+              node.returnType.typeAnnotation.typeName.type ===
+                AST_NODE_TYPES.Identifier &&
+              node.returnType.typeAnnotation.typeName.name === 'Promise' &&
+              node.returnType.typeAnnotation.typeArguments
+            ) {
+              const openAngle = context.sourceCode.getFirstToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '<',
+              );
+              const closeAngle = context.sourceCode.getLastToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '>',
+              );
+              if (openAngle && closeAngle) {
+                changes.unshift(
+                  // Remove the closing angled bracket.
+                  { range: closeAngle.range, replacement: '' },
+                  // Remove the "Promise" identifier
+                  // and the opening angled bracket.
+                  {
+                    range: [
+                      node.returnType.typeAnnotation.typeName.range[0],
+                      openAngle.range[1],
+                    ],
+                    replacement: '',
+                  },
+                );
+              }
+            }
+
+            fix = (fixer): RuleFix[] =>
+              changes.map(change =>
+                fixer.replaceTextRange(change.range, change.replacement),
+              );
           }
         }
 

@@ -280,7 +280,7 @@ async function numberOne(): Promise<number> {
           suggestions: [
             {
               output: `
-function numberOne(): Promise<number> {
+function numberOne(): number {
   return 1;
 }
       `,
@@ -306,7 +306,7 @@ const numberOne = async function (): Promise<number> {
           suggestions: [
             {
               output: `
-const numberOne = function (): Promise<number> {
+const numberOne = function (): number {
   return 1;
 };
       `,
@@ -327,7 +327,33 @@ const numberOne = function (): Promise<number> {
           },
           suggestions: [
             {
-              output: 'const numberOne = (): Promise<number> => 1;',
+              output: 'const numberOne = (): number => 1;',
+              messageId: 'removeAsync',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // Return type with nested generic type
+      code: `
+async function values(): Promise<Array<number>> {
+  return [1];
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async function 'values'",
+          },
+          suggestions: [
+            {
+              output: `
+function values(): Array<number> {
+  return [1];
+}
+      `,
               messageId: 'removeAsync',
             },
           ],
