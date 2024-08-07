@@ -86,57 +86,52 @@ export default createRule({
       ) {
         let fix: ReportFixFunction | undefined;
 
-        // Only include a suggestion if the function's return type is
-        // inferred. If it has an explicit return type, then removing
-        // the `async` keyword will cause a compilation error.
-        if (!node.returnType) {
-          // If the function belongs to a method definition or
-          // property, then the function's range may not include the
-          // `async` keyword and we should look at the parent instead.
-          const nodeWithAsyncKeyword =
-            (node.parent.type === AST_NODE_TYPES.MethodDefinition &&
-              node.parent.value === node) ||
-            (node.parent.type === AST_NODE_TYPES.Property &&
-              node.parent.method &&
-              node.parent.value === node)
-              ? node.parent
-              : node;
+        // If the function belongs to a method definition or
+        // property, then the function's range may not include the
+        // `async` keyword and we should look at the parent instead.
+        const nodeWithAsyncKeyword =
+          (node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+            node.parent.value === node) ||
+          (node.parent.type === AST_NODE_TYPES.Property &&
+            node.parent.method &&
+            node.parent.value === node)
+            ? node.parent
+            : node;
 
-          const asyncToken = context.sourceCode.getFirstToken(
-            nodeWithAsyncKeyword,
-            token => token.value === 'async',
+        const asyncToken = context.sourceCode.getFirstToken(
+          nodeWithAsyncKeyword,
+          token => token.value === 'async',
+        );
+
+        let asyncRange: Readonly<AST.Range>;
+        if (asyncToken) {
+          const nextTokenWithComments = context.sourceCode.getTokenAfter(
+            asyncToken,
+            { includeComments: true },
           );
-
-          let asyncRange: Readonly<AST.Range>;
-          if (asyncToken) {
-            const nextTokenWithComments = context.sourceCode.getTokenAfter(
-              asyncToken,
-              { includeComments: true },
-            );
-            if (nextTokenWithComments) {
-              asyncRange = [
-                asyncToken.range[0],
-                nextTokenWithComments.range[0],
-              ] as const;
-            }
+          if (nextTokenWithComments) {
+            asyncRange = [
+              asyncToken.range[0],
+              nextTokenWithComments.range[0],
+            ] as const;
           }
+        }
 
-          // Removing the `async` keyword can cause parsing errors if the current
-          // statement is relying on automatic semicolon insertion. If ASI is currently
-          // being used, then we should replace the `async` keyword with a semicolon.
-          let addSemiColon = false;
-          if (asyncToken) {
-            const nextToken = context.sourceCode.getTokenAfter(asyncToken);
-            addSemiColon =
-              nextToken?.type === AST_TOKEN_TYPES.Punctuator &&
-              (nextToken.value === '[' || nextToken.value === '(') &&
-              (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
-                isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
-              needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+        // Removing the `async` keyword can cause parsing errors if the current
+        // statement is relying on automatic semicolon insertion. If ASI is currently
+        // being used, then we should replace the `async` keyword with a semicolon.
+        let addSemiColon = false;
+        if (asyncToken) {
+          const nextToken = context.sourceCode.getTokenAfter(asyncToken);
+          addSemiColon =
+            nextToken?.type === AST_TOKEN_TYPES.Punctuator &&
+            (nextToken.value === '[' || nextToken.value === '(') &&
+            (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
+              isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
+            needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
 
-            fix = (fixer): RuleFix =>
-              fixer.replaceTextRange(asyncRange, addSemiColon ? ';' : '');
-          }
+          fix = (fixer): RuleFix =>
+            fixer.replaceTextRange(asyncRange, addSemiColon ? ';' : '');
         }
 
         context.report({

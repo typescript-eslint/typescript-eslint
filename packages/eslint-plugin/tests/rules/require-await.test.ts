@@ -277,7 +277,16 @@ async function numberOne(): Promise<number> {
           data: {
             name: "Async function 'numberOne'",
           },
-          suggestions: [],
+          suggestions: [
+            {
+              output: `
+function numberOne(): Promise<number> {
+  return 1;
+}
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
         },
       ],
     },
@@ -294,7 +303,16 @@ const numberOne = async function (): Promise<number> {
           data: {
             name: "Async function 'numberOne'",
           },
-          suggestions: [],
+          suggestions: [
+            {
+              output: `
+const numberOne = function (): Promise<number> {
+  return 1;
+};
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
         },
       ],
     },
@@ -307,7 +325,12 @@ const numberOne = async function (): Promise<number> {
           data: {
             name: "Async arrow function 'numberOne'",
           },
-          suggestions: [],
+          suggestions: [
+            {
+              output: 'const numberOne = (): Promise<number> => 1;',
+              messageId: 'removeAsync',
+            },
+          ],
         },
       ],
     },
@@ -353,6 +376,16 @@ async function* foo(): void {
           data: {
             name: "Async generator function 'foo'",
           },
+          suggestions: [
+            {
+              output: `
+function* foo(): void {
+  doSomething();
+}
+      `,
+              messageId: 'removeAsync',
+            },
+          ],
         },
       ],
     },
