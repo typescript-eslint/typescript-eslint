@@ -39,7 +39,7 @@ Please do try out the typescript-eslint v8 beta!
 
 ### As A New User
 
-If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](https://v8--typescript-eslint.netlify.app/getting-started).
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](/getting-started).
 It'll walk you through setting up typescript-eslint in a project.
 
 To use v8 specifically, see the following section for an updated install command.
@@ -220,13 +220,13 @@ typescript-eslint v8 deletes the `ban-types` rule and replaces it with several m
 
 To migrate to the new rules:
 
-- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
+- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
 - If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
 - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban:
-  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type).
-  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](https://v8--typescript-eslint.netlify.app/rules/no-unsafe-function-type).
-  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](https://v8--typescript-eslint.netlify.app/rules/no-wrapper-object-types).
-- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type).
+  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
+  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type).
+  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types).
+- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
 
 For more details, see the issues and pull requests that split apart the `ban-types` rule:
 
