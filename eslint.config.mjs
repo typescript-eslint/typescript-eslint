@@ -93,6 +93,7 @@ export default tseslint.config(
         warnOnUnsupportedTypeScriptVersion: false,
       },
     },
+    linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
       // make sure we're not leveraging any deprecated APIs
       'deprecation/deprecation': 'error',
