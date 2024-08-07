@@ -103,35 +103,33 @@ export default createRule({
           token => token.value === 'async',
         );
 
-        let asyncRange: Readonly<AST.Range>;
         if (asyncToken) {
           const nextTokenWithComments = context.sourceCode.getTokenAfter(
             asyncToken,
             { includeComments: true },
           );
+
           if (nextTokenWithComments) {
-            asyncRange = [
+            const asyncRange: Readonly<AST.Range> = [
               asyncToken.range[0],
               nextTokenWithComments.range[0],
             ] as const;
+
+            // Removing the `async` keyword can cause parsing errors if the
+            // current statement is relying on automatic semicolon insertion.
+            // If ASI is currently being used, then we should replace the
+            // `async` keyword with a semicolon.
+            const nextToken = context.sourceCode.getTokenAfter(asyncToken);
+            const addSemiColon =
+              nextToken?.type === AST_TOKEN_TYPES.Punctuator &&
+              (nextToken.value === '[' || nextToken.value === '(') &&
+              (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
+                isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
+              needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+
+            fix = (fixer): RuleFix =>
+              fixer.replaceTextRange(asyncRange, addSemiColon ? ';' : '');
           }
-        }
-
-        // Removing the `async` keyword can cause parsing errors if the current
-        // statement is relying on automatic semicolon insertion. If ASI is currently
-        // being used, then we should replace the `async` keyword with a semicolon.
-        let addSemiColon = false;
-        if (asyncToken) {
-          const nextToken = context.sourceCode.getTokenAfter(asyncToken);
-          addSemiColon =
-            nextToken?.type === AST_TOKEN_TYPES.Punctuator &&
-            (nextToken.value === '[' || nextToken.value === '(') &&
-            (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
-              isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
-            needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
-
-          fix = (fixer): RuleFix =>
-            fixer.replaceTextRange(asyncRange, addSemiColon ? ';' : '');
         }
 
         context.report({
