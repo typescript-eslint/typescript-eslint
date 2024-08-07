@@ -97,7 +97,7 @@ const parseStateFromUrl = (
         searchParams.get('sourceType') === 'script' ? 'script' : 'module',
       code,
       fileType,
-      eslintrc: eslintrc ?? '',
+      eslintrc: eslintrc ?? initialState.eslintrc,
       tsconfig: tsconfig ?? initialState.tsconfig,
       showTokens: searchParams.get('tokens') === 'true',
       esQuery,
