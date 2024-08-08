@@ -66,6 +66,7 @@ const { members } = (
 const sponsors = (
   Object.entries(
     Object.groupBy(members.nodes, ({ account }) => account.name || account.id),
+    // When using `Object.entries` to iterate the result of `Object.groupBy`, we do not get any `undefined`s
   ) as [string, MemberNodes][]
 )
   .map(([id, members]) => {
