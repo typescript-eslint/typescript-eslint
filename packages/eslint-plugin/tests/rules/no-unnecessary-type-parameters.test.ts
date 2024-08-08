@@ -18,6 +18,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
     `
       class ClassyArray<T> {
+        #arr: T[];
+        label: string;
+      }
+    `,
+    `
+      class ClassyArray<T> {
         arr: T[];
         label: string;
       }
