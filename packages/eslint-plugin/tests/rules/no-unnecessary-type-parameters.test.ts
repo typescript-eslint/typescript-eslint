@@ -18,6 +18,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
   valid: [
     `
       class ClassyArray<T> {
+        arr: T[];
+        label: string;
+      }
+    `,
+    `
+      class ClassyArray<T> {
         value1: T;
         value2: T;
       }
@@ -243,12 +249,10 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         a(x: T): void;
         b(x: T): void;
       }
-
       declare function two<T>(props: TwoMethods<T>): void;
     `,
     `
       type Obj = { a: string };
-
       declare function hasOwnProperty<K extends keyof Obj>(
         obj: Obj,
         key: K,
@@ -258,37 +262,31 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       type AsMutable<T extends readonly unknown[]> = {
         -readonly [Key in keyof T]: T[Key];
       };
-
       declare function makeMutable<T>(input: T): MakeMutable<T>;
     `,
     `
       type AsMutable<T extends readonly unknown[]> = {
         -readonly [Key in keyof T]: T[Key];
       };
-
       declare function makeMutable<T>(input: T): MakeMutable<typeof input>;
     `,
     `
       type ValueNulls<U extends string> = {} & {
         [P in U]: null;
       };
-
       declare function invert<T extends string>(obj: T): ValueNulls<T>;
     `,
     `
       interface Middle {
         inner: boolean;
       }
-
       type Conditional<T extends Middle> = {} & (T['inner'] extends true ? {} : {});
-
       function withMiddle<T extends Middle = Middle>(options: T): Conditional<T> {
         return options;
       }
     `,
     `
       import * as ts from 'typescript';
-
       declare function forEachReturnStatement<T>(
         body: ts.Block,
         visitor: (stmt: ts.ReturnStatement) => T,
@@ -296,14 +294,12 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     `,
     `
       import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-
       declare const isNodeOfType: <NodeType extends AST_NODE_TYPES>(
         nodeType: NodeType,
       ) => node is Extract<TSESTree.Node, { type: NodeType }>;
     `,
     `
       import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-
       const isNodeOfType =
         <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
         (
@@ -313,7 +309,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     `,
     `
       import type { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/types';
-
       export const isNotTokenOfTypeWithConditions =
         <
           TokenType extends AST_TOKEN_TYPES,
@@ -634,8 +629,8 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
-        class ClassyArray<T> {
-          arr: T[];
+        class Joiner<T extends string | number> {
+          join: (els: T[]) => string;
         }
       `,
       errors: [{ messageId: 'sole', data: { name: 'T' } }],
@@ -646,6 +641,16 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           join(els: T[]) {
             return els.map(el => '' + el).join(',');
           }
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        class Joiner2<T extends string | number> {
+          join = (els: T[]) => {
+            return els.map(el => '' + el).join(',');
+          };
         }
       `,
       errors: [{ messageId: 'sole', data: { name: 'T' } }],

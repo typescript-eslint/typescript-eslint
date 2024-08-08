@@ -167,10 +167,10 @@ function countTypeParameterUsage(
 
   if (ts.isClassLike(node)) {
     for (const typeParameter of node.typeParameters) {
-      collectTypeParameterUsageCounts(checker, typeParameter, counts);
+      collectTypeParameterUsageCounts(checker, typeParameter, counts, true);
     }
     for (const member of node.members) {
-      collectTypeParameterUsageCounts(checker, member, counts);
+      collectTypeParameterUsageCounts(checker, member, counts, true);
     }
   } else {
     collectTypeParameterUsageCounts(checker, node, counts);
@@ -188,6 +188,7 @@ function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
+  isNodeClassLike = false,
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -262,9 +263,26 @@ function collectTypeParameterUsageCounts(
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
+        const isntTuple = !tsutils.isTupleType(type.target);
+
+        const isntSingularNotInReturnPosition = !(
+          SINGULAR_TYPES.has(
+            (type.symbol as ts.Symbol | undefined)?.getName() ?? '',
+          ) && !isReturnType
+        );
+
+        const isntClassFunctionalAttribute =
+          isNodeClassLike &&
+          ts.isPropertyDeclaration(node) &&
+          (node.initializer
+            ? !ts.isArrowFunction(node.initializer)
+            : node.type
+              ? !ts.isFunctionTypeNode(node.type)
+              : true);
+
         const thisAssumeMultipleUses =
-          !tsutils.isTupleType(type.target) &&
-          (!SINGULAR_TYPES.has(type.symbol.getName()) || isReturnType);
+          (isntTuple && isntSingularNotInReturnPosition) ||
+          isntClassFunctionalAttribute;
 
         visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
       }
