@@ -647,7 +647,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
-        class Joiner2<T extends string | number> {
+        class Joiner<T extends string | number> {
           join = (els: T[]) => {
             return els.map(el => '' + el).join(',');
           };
