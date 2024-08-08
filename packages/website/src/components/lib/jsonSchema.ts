@@ -176,30 +176,35 @@ export function getTypescriptOptions(): DescribedOptionDeclaration[] {
  * Get the JSON schema for the typescript config
  */
 export function getTypescriptJsonSchema(): JSONSchema4 {
-  const properties = getTypescriptOptions().reduce((options, item) => {
-    if (item.type === 'boolean') {
-      options[item.name] = {
-        type: 'boolean',
-        description: item.description.message,
-      };
-    } else if (item.type === 'list' && item.element?.type instanceof Map) {
-      options[item.name] = {
-        type: 'array',
-        items: {
-          type: 'string',
-          enum: Array.from(item.element.type.keys()),
-        },
-        description: item.description.message,
-      };
-    } else if (item.type instanceof Map) {
-      options[item.name] = {
-        type: 'string',
-        description: item.description.message,
-        enum: Array.from(item.type.keys()),
-      };
-    }
-    return options;
-  }, {});
+  const properties = Object.fromEntries(
+    getTypescriptOptions()
+      .map(item => {
+        let value;
+        if (item.type === 'boolean') {
+          value = {
+            type: 'boolean',
+            description: item.description.message,
+          };
+        } else if (item.type === 'list' && item.element?.type instanceof Map) {
+          value = {
+            type: 'array',
+            items: {
+              type: 'string',
+              enum: Array.from(item.element.type.keys()),
+            },
+            description: item.description.message,
+          };
+        } else if (item.type instanceof Map) {
+          value = {
+            type: 'string',
+            description: item.description.message,
+            enum: Array.from(item.type.keys()),
+          };
+        }
+        return [item.name, value] as const;
+      })
+      .filter(([, value]) => value),
+  );
 
   return {
     type: 'object',

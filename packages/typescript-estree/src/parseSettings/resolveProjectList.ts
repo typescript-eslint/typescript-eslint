@@ -57,12 +57,7 @@ export function resolveProjectList(
   const projectFolderIgnoreList = (
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
   )
-    .reduce<string[]>((acc, folder) => {
-      if (typeof folder === 'string') {
-        acc.push(folder);
-      }
-      return acc;
-    }, [])
+    .filter(folder => typeof folder === 'string')
     // prefix with a ! for not match glob
     .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
 

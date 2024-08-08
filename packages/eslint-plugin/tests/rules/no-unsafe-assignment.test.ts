@@ -12,55 +12,51 @@ type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type InvalidTest = InvalidTestCase<MessageIds, Options>;
 
-function assignmentTest(
+const assignmentTest = (
   tests: [string, number, number, boolean?][],
-): InvalidTest[] {
-  return tests.reduce<InvalidTest[]>(
-    (acc, [assignment, column, endColumn, skipAssignmentExpression]) => {
-      // VariableDeclaration
-      acc.push({
-        code: `const ${assignment}`,
-        errors: [
-          {
-            messageId: 'unsafeArrayPatternFromTuple',
-            line: 1,
-            column: column + 6,
-            endColumn: endColumn + 6,
-          },
-        ],
-      });
-      // AssignmentPattern
-      acc.push({
-        code: `function foo(${assignment}) {}`,
-        errors: [
-          {
-            messageId: 'unsafeArrayPatternFromTuple',
-            line: 1,
-            column: column + 13,
-            endColumn: endColumn + 13,
-          },
-        ],
-      });
-      // AssignmentExpression
-      if (skipAssignmentExpression !== true) {
-        acc.push({
-          code: `(${assignment})`,
-          errors: [
-            {
-              messageId: 'unsafeArrayPatternFromTuple',
-              line: 1,
-              column: column + 1,
-              endColumn: endColumn + 1,
-            },
-          ],
-        });
-      }
-
-      return acc;
+): InvalidTest[] =>
+  tests.flatMap(([assignment, column, endColumn, skipAssignmentExpression]) => [
+    // VariableDeclaration
+    {
+      code: `const ${assignment}`,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 1,
+          column: column + 6,
+          endColumn: endColumn + 6,
+        },
+      ],
     },
-    [],
-  );
-}
+    // AssignmentPattern
+    {
+      code: `function foo(${assignment}) {}`,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          line: 1,
+          column: column + 13,
+          endColumn: endColumn + 13,
+        },
+      ],
+    },
+    // AssignmentExpression
+    ...(skipAssignmentExpression
+      ? []
+      : [
+          {
+            code: `(${assignment})`,
+            errors: [
+              {
+                messageId: 'unsafeArrayPatternFromTuple' as const,
+                line: 1,
+                column: column + 1,
+                endColumn: endColumn + 1,
+              },
+            ],
+          },
+        ]),
+  ]);
 
 const ruleTester = new RuleTester({
   languageOptions: {

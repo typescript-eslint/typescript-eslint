@@ -45,14 +45,9 @@ function validateBoolean(
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib.reduce<Lib[]>((acc, lib) => {
-      const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
-      if (match) {
-        acc.push(match[1] as Lib);
-      }
-
-      return acc;
-    }, []);
+    return compilerOptions.lib
+      .map(lib => LIB_FILENAME_REGEX.exec(lib.toLowerCase())?.[1])
+      .filter((lib): lib is Lib => !!lib);
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;

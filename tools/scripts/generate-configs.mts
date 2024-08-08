@@ -72,9 +72,8 @@ async function main(): Promise<void> {
   }
 
   const RULE_NAME_PREFIX = '@typescript-eslint/';
-  const MAX_RULE_NAME_LENGTH = Object.keys(eslintPlugin.rules).reduce(
-    (acc, name) => Math.max(acc, name.length),
-    0,
+  const MAX_RULE_NAME_LENGTH = Math.max(
+    ...Object.keys(eslintPlugin.rules).map(name => name.length),
   );
   const BASE_RULES_TO_BE_OVERRIDDEN = new Map(
     Object.entries(eslintPlugin.rules)
