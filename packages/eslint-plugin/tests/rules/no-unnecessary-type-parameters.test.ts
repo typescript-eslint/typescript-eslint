@@ -447,6 +447,46 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     },
     {
       code: `
+        function foo<T>(_: T) {
+          const x: T = null!;
+          const y: T = null!;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        function foo<T>(_: T): void {
+          const x: T = null!;
+          const y: T = null!;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        function foo<T>(_: T): <T>(input: T) => T {
+          const x: T = null!;
+          const y: T = null!;
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
+        function foo<T>(_: T) {
+          function withX(): T {
+            return null!;
+          }
+          function withY(): T {
+            return null!;
+          }
+        }
+      `,
+      errors: [{ messageId: 'sole', data: { name: 'T' } }],
+    },
+    {
+      code: `
         function parseYAML<T>(input: string): T {
           return input as any as T;
         }

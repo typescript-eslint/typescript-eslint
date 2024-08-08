@@ -59,7 +59,13 @@ export default createRule({
 
           // Quick path: if the type parameter is used multiple times in the AST,
           // we don't need to dip into types to know it's repeated.
-          if (isTypeParameterRepeatedInAST(esTypeParameter, scope.references)) {
+          if (
+            isTypeParameterRepeatedInAST(
+              esTypeParameter,
+              scope.references,
+              node.body?.range[0] ?? node.returnType?.range[1],
+            )
+          ) {
             continue;
           }
 
@@ -86,15 +92,21 @@ export default createRule({
 function isTypeParameterRepeatedInAST(
   node: TSESTree.TSTypeParameter,
   references: Reference[],
+  startOfBody = Infinity,
 ): boolean {
   let total = 0;
 
   for (const reference of references) {
-    // References inside the type parameter's definition don't count.
+    // References inside the type parameter's definition don't count...
     if (
       reference.identifier.range[0] < node.range[1] &&
       reference.identifier.range[1] > node.range[0]
     ) {
+      continue;
+    }
+
+    // ...nor references that are outside the declaring signature.
+    if (reference.identifier.range[0] > startOfBody) {
       continue;
     }
 
@@ -110,7 +122,9 @@ function isTypeParameterRepeatedInAST(
 
     // If the type parameter is being used as a type argument, then we
     // know the type parameter is being reused and can't be reported.
-    if (reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference) {
+    if (
+      reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference
+    ) {
       const grandparent = skipConstituentsUpward(
         reference.identifier.parent.parent,
       );
