@@ -227,6 +227,27 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function factoryReadonlyArray<T>(): ReadonlyArray<T>;',
     'declare function factorySyntacticArray<T>(): T[];',
     'declare function factorySyntacticReadonlyArray<T>(): readonly T[];',
+    `
+      class ArrayProducer<T> {
+        produce(): T[] {
+          return [];
+        }
+      }
+    `,
+    `
+      class ArrayProducer {
+        produce<T>(): T[] {
+          return [];
+        }
+      }
+    `,
+    `
+      class ArrayProducer {
+        static produce<T>(): T[] {
+          return [];
+        }
+      }
+    `,
     'declare function box<T>(val: T): { val: T };',
     'declare function identity<T>(param: T): T;',
     'declare function compare<T>(param1: T, param2: T): boolean;',
