@@ -59,7 +59,7 @@ export function createSnapshotTestBlock(
        * If we are deliberately throwing because of encountering an unknown
        * AST_NODE_TYPE, we rethrow to cause the test to fail
        */
-      if (/Unknown AST_NODE_TYPE/.exec((error as Error).message)) {
+      if ((error as Error).message.includes('Unknown AST_NODE_TYPE')) {
         throw error;
       }
       expect(parse).toThrowErrorMatchingSnapshot();

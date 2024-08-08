@@ -323,6 +323,7 @@ export default tseslint.config(
       'unicorn/no-array-reduce': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-regexp-test': 'error',
     },
   },
   {
