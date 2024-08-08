@@ -119,19 +119,25 @@ async function main(): Promise<void> {
     requestGraphql<CollectiveData>('collective'),
   ]);
 
-  const accountsById = Object.fromEntries(
-    account.orders.nodes.map(order => [
-      order.fromAccount.name || order.fromAccount.id,
-      order.fromAccount,
-    ]),
-  );
+  const accountsById = account.orders.nodes.reduce<
+    Record<string, MemberAccount>
+  >((accumulator, account) => {
+    const name = account.fromAccount.name || account.fromAccount.id;
+    accumulator[name] = {
+      ...accumulator[name],
+      ...account.fromAccount,
+    };
+    return accumulator;
+  }, {});
 
-  const totalDonationsById: Record<string, number> = {};
-  for (const member of collective.members.nodes) {
+  const totalDonationsById = collective.members.nodes.reduce<
+    Record<string, number>
+  >((accumulator, member) => {
     const name = member.account.name || member.account.id;
-    totalDonationsById[name] ||= 0;
-    totalDonationsById[name] += member.totalDonations.valueInCents;
-  }
+    accumulator[name] ||= 0;
+    accumulator[name] += member.totalDonations.valueInCents;
+    return accumulator;
+  }, {});
 
   const uniqueNames = new Set<string>(excludedNames);
   const allSponsorsConfig = collective.members.nodes
