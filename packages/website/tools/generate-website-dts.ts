@@ -52,10 +52,8 @@ function replaceImports(text: string, from: string, to: string): string {
 function injectImports(text: string, from: string, safeName: string): string {
   const regex = new RegExp(`import\\(["']${from}["']\\)`, 'g');
   if (regex.test(text)) {
-    return (
-      `import type * as ${safeName} from '${from}';\n` +
-      text.replace(regex, safeName)
-    );
+    return `import type * as ${safeName} from '${from}';
+${text.replace(regex, safeName)}`;
   }
   return text;
 }

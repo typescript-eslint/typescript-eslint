@@ -37,7 +37,7 @@ async function main(): Promise<void> {
     // But this is an internal-only script and it's the easiest way to convert
     // the JS raw text into a runtime object. 🤷
     let oldRulesObject!: { rules: TypeScriptESLintRules };
-    eval('oldRulesObject = ' + oldObjectText);
+    eval(`oldRulesObject = ${oldObjectText}`);
     const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
 
     // 3. Get the keys that exist in (1) (new version) and not (2) (old version)

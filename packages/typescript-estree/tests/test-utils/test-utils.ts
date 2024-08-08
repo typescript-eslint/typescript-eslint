@@ -58,7 +58,7 @@ export function formatSnapshotName(
   fileExtension = '.js',
 ): string {
   return `fixtures/${filename
-    .replace(fixturesDir + '/', '')
+    .replace(`${fixturesDir}/`, '')
     .replace(fileExtension, '')}`;
 }
 

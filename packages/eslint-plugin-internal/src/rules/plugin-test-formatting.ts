@@ -63,7 +63,7 @@ function getExpectedIndentForNode(
 }
 function doIndent(line: string, indent: number): string {
   for (let i = 0; i < indent; i += 1) {
-    line = ' ' + line;
+    line = ` ${line}`;
   }
   return line;
 }

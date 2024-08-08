@@ -33,9 +33,8 @@ const baseErrorRegex = (parser?: string): RegExp =>
   new RegExp(requiresParserServicesMessageTemplate(parser));
 const unknownParserErrorRegex = (parser?: string): RegExp =>
   new RegExp(
-    requiresParserServicesMessageTemplate(parser) +
-      '\n' +
-      'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.',
+    `${requiresParserServicesMessageTemplate(parser)}
+Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.`,
   );
 
 describe('getParserServices', () => {

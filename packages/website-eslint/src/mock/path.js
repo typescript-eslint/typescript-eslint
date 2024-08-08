@@ -73,7 +73,7 @@ export function resolve(...args) {
       continue;
     }
 
-    resolvedPath = path + '/' + resolvedPath;
+    resolvedPath = `${path}/${resolvedPath}`;
     resolvedAbsolute = path.charAt(0) === '/';
   }
 

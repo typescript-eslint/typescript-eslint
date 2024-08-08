@@ -83,11 +83,11 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
             ? Math.max(1, endColumn - startColumn)
             : line.length - startColumn,
         );
-        const squiggleWithIndent = ' '.repeat(startColumn) + squiggle + ' ';
+        const squiggleWithIndent = `${' '.repeat(startColumn)}${squiggle} `;
         const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
         output.push(
           squiggleWithIndent +
-            error.message.split('\n').join('\n' + errorMessageIndent),
+            error.message.replaceAll('\n', `\n${errorMessageIndent}`),
         );
       } else if (i === endLine) {
         output.push('~'.repeat(endColumn));
@@ -97,7 +97,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
     }
   }
 
-  return output.join('\n').trim() + '\n';
+  return `${output.join('\n').trim()}\n`;
 }
 
 const linter = new Linter({ configType: 'eslintrc' });
@@ -484,13 +484,13 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length === 0,
-                  'Expected not to contain lint errors (with skipValidation):\n' +
-                    token.value,
+                  `Expected not to contain lint errors (with skipValidation):
+${token.value}`,
                 );
               } else {
                 assert.ok(
                   messages.length > 0,
-                  'Expected to contain at least 1 lint error:\n' + token.value,
+                  `Expected to contain at least 1 lint error:\n${token.value}`,
                 );
               }
             } else {
@@ -498,13 +498,14 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length > 0,
-                  'Expected to contain at least 1 lint error (with skipValidation):\n' +
-                    token.value,
+                  `Expected to contain at least 1 lint error (with skipValidation):\n${
+                    token.value
+                  }`,
                 );
               } else {
                 assert.ok(
                   messages.length === 0,
-                  'Expected not to contain lint errors:\n' + token.value,
+                  `Expected not to contain lint errors:\n${token.value}`,
                 );
               }
             }
@@ -514,9 +515,10 @@ describe('Validating rule docs', () => {
           }
 
           expect(
-            testCaption.filter(Boolean).join('\n') +
-              '\n\n' +
-              renderLintResults(token.value, messages),
+            `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
+              token.value,
+              messages,
+            )}`,
           ).toMatchSpecificSnapshot(
             path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
           );

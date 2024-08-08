@@ -41,14 +41,13 @@ export default createRule<[], MessageIds>({
     type: 'suggestion',
     messages: {
       useUnknown: useUnknownMessageBase,
-      useUnknownArrayDestructuringPattern:
-        useUnknownMessageBase + ' The thrown error may not be iterable.',
-      useUnknownObjectDestructuringPattern:
-        useUnknownMessageBase +
-        ' The thrown error may be nullable, or may not have the expected shape.',
-      useUnknownSpreadArgs:
-        useUnknownMessageBase +
-        ' The argument list may contain a handler that does not use `unknown` for the catch callback variable.',
+      useUnknownArrayDestructuringPattern: `${useUnknownMessageBase} The thrown error may not be iterable.`,
+      useUnknownObjectDestructuringPattern: `${
+        useUnknownMessageBase
+      } The thrown error may be nullable, or may not have the expected shape.`,
+      useUnknownSpreadArgs: `${
+        useUnknownMessageBase
+      } The argument list may contain a handler that does not use \`unknown\` for the catch callback variable.`,
       addUnknownTypeAnnotationSuggestion:
         'Add an explicit `: unknown` type annotation to the catch variable.',
       addUnknownRestTypeAnnotationSuggestion:

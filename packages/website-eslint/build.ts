@@ -23,14 +23,14 @@ function makeFilter(filePath: string[] | string): { filter: RegExp } {
   const norm = paths.map(item =>
     normalizePath(item).replace(/\//g, '[\\\\/]').replace(/\./g, '\\.'),
   );
-  return { filter: new RegExp('(' + norm.join('|') + ')$') };
+  return { filter: new RegExp(`(${norm.join('|')})$`) };
 }
 
 function createResolve(
   targetPath: string,
   join: string,
 ): esbuild.OnResolveResult {
-  const resolvedPackage = requireResolved(targetPath + '/package.json');
+  const resolvedPackage = requireResolved(`${targetPath}/package.json`);
   return {
     path: path.join(resolvedPackage, '../src/', join),
   };
