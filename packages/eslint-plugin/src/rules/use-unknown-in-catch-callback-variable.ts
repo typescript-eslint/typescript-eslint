@@ -27,14 +27,14 @@ type MessageIds =
   | 'wrongRestTypeAnnotationSuggestion';
 
 const useUnknownMessageBase =
-  'Prefer the safe `: unknown` for a catch callback variable.';
+  'Prefer the safe `: unknown` for a `{{method}}`{{append}} callback variable.';
 
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
   meta: {
     docs: {
       description:
-        'Enforce typing arguments in `.catch()` callbacks as `unknown`',
+        'Enforce typing arguments in `.then()` and `.catch()` rejection callbacks as `unknown`',
       requiresTypeChecking: true,
       recommended: 'strict',
     },
@@ -48,11 +48,11 @@ export default createRule<[], MessageIds>({
         ' The thrown error may be nullable, or may not have the expected shape.',
       useUnknownSpreadArgs:
         useUnknownMessageBase +
-        ' The argument list may contain a handler that does not use `unknown` for the catch callback variable.',
+        ' The argument list may contain a handler that does not use `unknown` for the rejection callback variable.',
       addUnknownTypeAnnotationSuggestion:
-        'Add an explicit `: unknown` type annotation to the catch variable.',
+        'Add an explicit `: unknown` type annotation to the rejection callback variable.',
       addUnknownRestTypeAnnotationSuggestion:
-        'Add an explicit `: [unknown]` type annotation to the catch rest variable.',
+        'Add an explicit `: [unknown]` type annotation to the rejection callback rest variable.',
       wrongTypeAnnotationSuggestion:
         'Change existing type annotation to `: unknown`.',
       wrongRestTypeAnnotationSuggestion:
@@ -69,22 +69,38 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function isPromiseCatchAccess(node: TSESTree.Expression): boolean {
-      if (
-        !(
-          node.type === AST_NODE_TYPES.MemberExpression &&
-          isStaticMemberAccessOfValue(node, 'catch')
-        )
-      ) {
+    type ArgumentIndexToCheck = 0 | 1;
+    function getPromiseMethodInfo(node: TSESTree.Expression):
+      | {
+          argumentIndexToCheck: ArgumentIndexToCheck;
+          messageData: Record<'method' | 'append', string>;
+        }
+      | false {
+      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+        return false;
+      }
+      const methodsToCheck = [
+        { method: 'catch', append: '' },
+        { method: 'then', append: ' rejection' },
+      ] as const;
+      const argumentIndexToCheck = methodsToCheck.findIndex(({ method }) =>
+        isStaticMemberAccessOfValue(node, method),
+      ) as -1 | ArgumentIndexToCheck;
+      if (argumentIndexToCheck === -1) {
         return false;
       }
 
       const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      return tsutils.isThenableType(
-        checker,
-        tsNode,
-        checker.getTypeAtLocation(objectTsNode),
+      return (
+        tsutils.isThenableType(
+          checker,
+          tsNode,
+          checker.getTypeAtLocation(objectTsNode),
+        ) && {
+          argumentIndexToCheck,
+          messageData: methodsToCheck[argumentIndexToCheck],
+        }
       );
     }
 
@@ -146,13 +162,16 @@ export default createRule<[], MessageIds>({
       // like that, but there's no need, since this is all invalid use of `.catch`
       // anyway at the end of the day. Instead, we'll just check whether any of the
       // possible args types would violate the rule on its own.
-      return argumentsList.some(argument => shouldFlagArgument(argument));
+      return argumentsList.some(shouldFlagArgument);
+    }
+
+    function getSpreadArgsType({ argument }: TSESTree.SpreadElement): ts.Type {
+      const spreadArgs = services.esTreeNodeToTSNodeMap.get(argument);
+      return checker.getTypeAtLocation(spreadArgs);
     }
 
     function shouldFlagSingleSpreadArg(node: TSESTree.SpreadElement): boolean {
-      const spreadArgs = services.esTreeNodeToTSNodeMap.get(node.argument);
-
-      const spreadArgsType = checker.getTypeAtLocation(spreadArgs);
+      const spreadArgsType = getSpreadArgsType(node);
 
       if (checker.isArrayType(spreadArgsType)) {
         const arrayType = checker.getTypeArguments(spreadArgsType)[0];
@@ -290,24 +309,63 @@ export default createRule<[], MessageIds>({
 
     return {
       CallExpression(node): void {
-        if (node.arguments.length === 0 || !isPromiseCatchAccess(node.callee)) {
+        const args = node.arguments;
+        const promiseMethodInfo = getPromiseMethodInfo(node.callee);
+        if (!promiseMethodInfo) {
           return;
         }
+        const { argumentIndexToCheck, messageData } = promiseMethodInfo;
 
-        const firstArgument = node.arguments[0];
+        const report = (
+          descriptor: TSESLint.ReportDescriptor<MessageIds>,
+        ): void => context.report({ ...descriptor, data: messageData });
 
+        const firstArgument = args.at(0);
+        // If we are checking a .then() call, we need to check the second argument.
+        // But if the first argument is a spread argument, that could affect things, so handle that here.
+        if (
+          argumentIndexToCheck &&
+          firstArgument?.type === AST_NODE_TYPES.SpreadElement
+        ) {
+          const spreadArgsType = getSpreadArgsType(firstArgument);
+          // If it's a tuple type with a fixedLength of 1, no special handling needed.
+          if (
+            checker.isTupleType(spreadArgsType) &&
+            spreadArgsType.target.fixedLength !== 1
+          ) {
+            // If the fixed length is not 1, then check index 1 of this spread type.
+            const type = checker.getTypeArguments(spreadArgsType).at(1);
+            if (type && isFlaggableHandlerType(type)) {
+              report({
+                node: firstArgument,
+                messageId: 'useUnknownSpreadArgs',
+              });
+            }
+            // No further checks needed, as we don't need to go overboard with complex handling.
+            return;
+          }
+          // Too complex to figure out what's going on, so we'll ignore.
+          if (checker.isArrayType(spreadArgsType)) {
+            return;
+          }
+        }
+
+        const argumentToCheck = args.at(argumentIndexToCheck);
+        if (!argumentToCheck) {
+          return;
+        }
         // Deal with some special cases around spread element args.
         // promise.catch(...handlers), promise.catch(...handlers, ...moreHandlers).
-        if (firstArgument.type === AST_NODE_TYPES.SpreadElement) {
-          if (node.arguments.length === 1) {
-            if (shouldFlagSingleSpreadArg(firstArgument)) {
-              context.report({
-                node: firstArgument,
+        if (argumentToCheck.type === AST_NODE_TYPES.SpreadElement) {
+          if (args.length === 1) {
+            if (shouldFlagSingleSpreadArg(argumentToCheck)) {
+              report({
+                node: argumentToCheck,
                 messageId: 'useUnknown',
               });
             }
-          } else if (shouldFlagMultipleSpreadArgs(node.arguments)) {
-            context.report({
+          } else if (shouldFlagMultipleSpreadArgs(args)) {
+            report({
               node,
               messageId: 'useUnknownSpreadArgs',
             });
@@ -315,15 +373,15 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        // First argument is an "ordinary" argument (i.e. not a spread argument)
+        // Argument to check is an "ordinary" argument (i.e. not a spread argument)
         // promise.catch(f), promise.catch(() => {}), promise.catch(<expression>, <<other-args>>)
-        if (shouldFlagArgument(firstArgument)) {
+        if (shouldFlagArgument(argumentToCheck)) {
           // We are now guaranteed to report, but we have a bit of work to do
           // to determine exactly where, and whether we can fix it.
           const overrides =
-            refineReportForNormalArgumentIfPossible(firstArgument);
-          context.report({
-            node: firstArgument,
+            refineReportForNormalArgumentIfPossible(argumentToCheck);
+          report({
+            node: argumentToCheck,
             messageId: 'useUnknown',
             ...overrides,
           });
