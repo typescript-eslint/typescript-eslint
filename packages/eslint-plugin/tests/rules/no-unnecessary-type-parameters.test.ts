@@ -343,6 +343,24 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           tokenType in conditions;
     `,
     `
+      type Foo<T, S> = S extends 'somebody'
+        ? T extends 'once'
+          ? 'told'
+          : 'me'
+        : never;
+
+      declare function foo<T>(data: T): <S>(other: S) => Foo<T, S>;
+    `,
+    `
+      type Foo<T, S> = S extends 'somebody'
+        ? T extends 'once'
+          ? 'told'
+          : 'me'
+        : never;
+
+      declare function foo<T>(data: T): <S>(other: S) => Foo<S, T>;
+    `,
+    `
       declare function mapObj<K extends string, V>(
         obj: { [key in K]?: V },
         fn: (key: K, val: V) => number,
