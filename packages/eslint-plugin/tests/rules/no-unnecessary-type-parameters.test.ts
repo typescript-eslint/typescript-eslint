@@ -228,22 +228,22 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function factorySyntacticArray<T>(): T[];',
     'declare function factorySyntacticReadonlyArray<T>(): readonly T[];',
     `
-      class ArrayProducer<T> {
-        produce(): T[] {
+      class ArrayFactory<T> {
+        factory(): T[] {
           return [];
         }
       }
     `,
     `
-      class ArrayProducer {
-        produce<T>(): T[] {
+      class ArrayFactory {
+        factory<T>(): T[] {
           return [];
         }
       }
     `,
     `
-      class ArrayProducer {
-        static produce<T>(): T[] {
+      class ArrayFactory {
+        static factory<T>(): T[] {
           return [];
         }
       }
