@@ -1,5 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import type {
+  AST,
+  ReportFixFunction,
+  RuleFix,
+} from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -8,6 +13,8 @@ import {
   getFunctionHeadLoc,
   getFunctionNameWithKind,
   getParserServices,
+  isStartOfExpressionStatement,
+  needsPrecedingSemicolon,
   upperCaseFirst,
 } from '../util';
 
@@ -37,7 +44,9 @@ export default createRule({
     schema: [],
     messages: {
       missingAwait: "{{name}} has no 'await' expression.",
+      removeAsync: "Remove 'async'.",
     },
+    hasSuggestions: true,
   },
   defaultOptions: [],
   create(context) {
@@ -75,6 +84,100 @@ export default createRule({
         !isEmptyFunction(node) &&
         !(scopeInfo.isGen && scopeInfo.isAsyncYield)
       ) {
+        let fix: ReportFixFunction | undefined;
+
+        // If the function belongs to a method definition or
+        // property, then the function's range may not include the
+        // `async` keyword and we should look at the parent instead.
+        const nodeWithAsyncKeyword =
+          (node.parent.type === AST_NODE_TYPES.MethodDefinition &&
+            node.parent.value === node) ||
+          (node.parent.type === AST_NODE_TYPES.Property &&
+            node.parent.method &&
+            node.parent.value === node)
+            ? node.parent
+            : node;
+
+        const asyncToken = context.sourceCode.getFirstToken(
+          nodeWithAsyncKeyword,
+          token => token.value === 'async',
+        );
+
+        if (asyncToken) {
+          const nextTokenWithComments = context.sourceCode.getTokenAfter(
+            asyncToken,
+            { includeComments: true },
+          );
+
+          if (nextTokenWithComments) {
+            const asyncRange: Readonly<AST.Range> = [
+              asyncToken.range[0],
+              nextTokenWithComments.range[0],
+            ] as const;
+
+            // Removing the `async` keyword can cause parsing errors if the
+            // current statement is relying on automatic semicolon insertion.
+            // If ASI is currently being used, then we should replace the
+            // `async` keyword with a semicolon.
+            const nextToken = context.sourceCode.getTokenAfter(asyncToken);
+            const addSemiColon =
+              nextToken?.type === AST_TOKEN_TYPES.Punctuator &&
+              (nextToken.value === '[' || nextToken.value === '(') &&
+              (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
+                isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
+              needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+
+            const changes = [
+              { range: asyncRange, replacement: addSemiColon ? ';' : '' },
+            ];
+
+            // If there's a return type annotation and it's a
+            // `Promise<T>`, we can also change the return type
+            // annotation to just `T` as part of the suggestion.
+            if (
+              node.returnType?.typeAnnotation.type ===
+                AST_NODE_TYPES.TSTypeReference &&
+              node.returnType.typeAnnotation.typeName.type ===
+                AST_NODE_TYPES.Identifier &&
+              node.returnType.typeAnnotation.typeName.name === 'Promise' &&
+              node.returnType.typeAnnotation.typeArguments
+            ) {
+              const openAngle = context.sourceCode.getFirstToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '<',
+              );
+              const closeAngle = context.sourceCode.getLastToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '>',
+              );
+              if (openAngle && closeAngle) {
+                changes.unshift(
+                  // Remove the closing angled bracket.
+                  { range: closeAngle.range, replacement: '' },
+                  // Remove the "Promise" identifier
+                  // and the opening angled bracket.
+                  {
+                    range: [
+                      node.returnType.typeAnnotation.typeName.range[0],
+                      openAngle.range[1],
+                    ],
+                    replacement: '',
+                  },
+                );
+              }
+            }
+
+            fix = (fixer): RuleFix[] =>
+              changes.map(change =>
+                fixer.replaceTextRange(change.range, change.replacement),
+              );
+          }
+        }
+
         context.report({
           node,
           loc: getFunctionHeadLoc(node, context.sourceCode),
@@ -82,6 +185,7 @@ export default createRule({
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
+          suggest: fix ? [{ messageId: 'removeAsync', fix }] : [],
         });
       }
 
