@@ -280,6 +280,8 @@ function collectTypeParameterUsageCounts(
               ? !ts.isFunctionTypeNode(node.type)
               : true);
 
+        // if it's a tuple or a singular type in a return position, we don't want to assume multiple uses
+        // unless it's a class property that doesn't contain a function
         const thisAssumeMultipleUses =
           (isntTuple && isntSingularNotInReturnPosition) ||
           isntClassFunctionalAttribute;
