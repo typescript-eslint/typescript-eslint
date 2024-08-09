@@ -5,14 +5,15 @@ import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
 import {
+  addBracesToArrowFix,
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isClosingParenToken,
-  isOpeningParenToken,
-  isParenthesized,
+  isFinalReturn,
+  moveValueBeforeReturnFix,
   nullThrows,
   NullThrowsReasons,
+  removeReturnLeaveValueFix,
 } from '../util';
 
 export type Options = [
@@ -122,44 +123,18 @@ export default createRule<Options, MessageId>({
           }
 
           // handle wrapping with braces
-          const arrowFunction = invalidAncestor;
           return context.report({
             node,
             messageId: 'invalidVoidExprArrow',
             fix(fixer) {
-              if (!canFix(arrowFunction)) {
+              if (!canFix(invalidAncestor)) {
                 return null;
               }
-              const arrowBody = arrowFunction.body;
-              const arrowBodyText = context.sourceCode.getText(arrowBody);
-              const newArrowBodyText = `{ ${arrowBodyText}; }`;
-              if (isParenthesized(arrowBody, context.sourceCode)) {
-                const bodyOpeningParen = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    arrowBody,
-                    isOpeningParenToken,
-                  ),
-                  NullThrowsReasons.MissingToken(
-                    'opening parenthesis',
-                    'arrow body',
-                  ),
-                );
-                const bodyClosingParen = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    arrowBody,
-                    isClosingParenToken,
-                  ),
-                  NullThrowsReasons.MissingToken(
-                    'closing parenthesis',
-                    'arrow body',
-                  ),
-                );
-                return fixer.replaceTextRange(
-                  [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
-                  newArrowBodyText,
-                );
-              }
-              return fixer.replaceText(arrowBody, newArrowBodyText);
+              return addBracesToArrowFix(
+                fixer,
+                context.sourceCode,
+                invalidAncestor,
+              );
             },
           });
         }
@@ -185,14 +160,11 @@ export default createRule<Options, MessageId>({
                 if (!canFix(invalidAncestor)) {
                   return null;
                 }
-                const returnValue = invalidAncestor.argument;
-                const returnValueText = context.sourceCode.getText(returnValue);
-                let newReturnStmtText = `${returnValueText};`;
-                if (isPreventingASI(returnValue)) {
-                  // put a semicolon at the beginning of the line
-                  newReturnStmtText = `;${newReturnStmtText}`;
-                }
-                return fixer.replaceText(invalidAncestor, newReturnStmtText);
+                return removeReturnLeaveValueFix(
+                  fixer,
+                  context.sourceCode,
+                  invalidAncestor,
+                );
               },
             });
           }
@@ -202,21 +174,11 @@ export default createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
-              const returnValue = invalidAncestor.argument;
-              const returnValueText = context.sourceCode.getText(returnValue);
-              let newReturnStmtText = `${returnValueText}; return;`;
-              if (isPreventingASI(returnValue)) {
-                // put a semicolon at the beginning of the line
-                newReturnStmtText = `;${newReturnStmtText}`;
-              }
-              if (
-                invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
-              ) {
-                // e.g. `if (cond) return console.error();`
-                // add braces if not inside a block
-                newReturnStmtText = `{ ${newReturnStmtText} }`;
-              }
-              return fixer.replaceText(invalidAncestor, newReturnStmtText);
+              return moveValueBeforeReturnFix(
+                fixer,
+                context.sourceCode,
+                invalidAncestor,
+              );
             },
           });
         }
@@ -311,56 +273,6 @@ export default createRule<Options, MessageId>({
       // Any other parent is invalid.
       // We can assume a return statement will have an argument.
       return parent as InvalidAncestor;
-    }
-
-    /** Checks whether the return statement is the last statement in a function body. */
-    function isFinalReturn(node: TSESTree.ReturnStatement): boolean {
-      // the parent must be a block
-      const block = nullThrows(node.parent, NullThrowsReasons.MissingParent);
-      if (block.type !== AST_NODE_TYPES.BlockStatement) {
-        // e.g. `if (cond) return;` (not in a block)
-        return false;
-      }
-
-      // the block's parent must be a function
-      const blockParent = nullThrows(
-        block.parent,
-        NullThrowsReasons.MissingParent,
-      );
-      if (
-        ![
-          AST_NODE_TYPES.FunctionDeclaration,
-          AST_NODE_TYPES.FunctionExpression,
-          AST_NODE_TYPES.ArrowFunctionExpression,
-        ].includes(blockParent.type)
-      ) {
-        // e.g. `if (cond) { return; }`
-        // not in a top-level function block
-        return false;
-      }
-
-      // must be the last child of the block
-      if (block.body.indexOf(node) < block.body.length - 1) {
-        // not the last statement in the block
-        return false;
-      }
-
-      return true;
-    }
-
-    /**
-     * Checks whether the given node, if placed on its own line,
-     * would prevent automatic semicolon insertion on the line before.
-     *
-     * This happens if the line begins with `(`, `[` or `` ` ``
-     */
-    function isPreventingASI(node: TSESTree.Expression): boolean {
-      const startToken = nullThrows(
-        context.sourceCode.getFirstToken(node),
-        NullThrowsReasons.MissingToken('first token', node.type),
-      );
-
-      return ['(', '[', '`'].includes(startToken.value);
     }
 
     function canFix(
