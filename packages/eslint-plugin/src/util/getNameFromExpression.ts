@@ -6,7 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
  * that refers to the value of the expression,
  * if any.
  */
-export function getIdentifierFromExpression(
+function getIdentifierFromExpression(
   node: TSESTree.Expression | TSESTree.PrivateIdentifier,
 ):
   | TSESTree.Literal
@@ -45,11 +45,8 @@ export function getIdentifierFromExpression(
  */
 export function getNameFromExpression(
   sourceCode: TSESLint.SourceCode,
-  node: TSESTree.Expression | TSESTree.PrivateIdentifier | null,
+  node: TSESTree.Expression | TSESTree.PrivateIdentifier,
 ): string | null {
-  if (node == null) {
-    return null;
-  }
   const nameNode = getIdentifierFromExpression(node);
   if (nameNode == null) {
     return null;

@@ -27,7 +27,7 @@ export function discardReturnValueFix(
   fixer: TSESLint.RuleFixer,
   sourceCode: Readonly<TSESLint.SourceCode>,
   returnNode: TSESTree.ReturnStatement,
-  useVoidOperator = false,
+  useVoidOperator?: boolean,
 ): TSESLint.RuleFix {
   const argumentNode = nullThrows(
     returnNode.argument,

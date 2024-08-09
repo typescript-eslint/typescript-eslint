@@ -720,6 +720,13 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        class Foo extends Wtf {
+          [unknown] = () => 1;
+        }
+      `,
+    },
+    {
+      code: `
         class Foo {
           cb = () => {
             console.log('siema');
@@ -1737,6 +1744,17 @@ ruleTester.run('strict-void-return', rule, {
           \
 
         };
+      `,
+    },
+    {
+      code: `
+        declare const foo: Record<string, () => void>;
+        foo['a' + 'b'] = () => true;
+      `,
+      errors: [{ messageId: 'nonVoidReturnInOther', line: 3, column: 32 }],
+      output: `
+        declare const foo: Record<string, () => void>;
+        foo['a' + 'b'] = () => {};
       `,
     },
     {
@@ -2812,6 +2830,26 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
+        const foo = () =>
+          class {
+            cb = () => {};
+          };
+        class Bar extends foo() {
+          cb = Math.random;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'nonVoidFuncInExtMember',
+          data: { memberName: 'cb', className: 'Bar', baseName: '__class' },
+          line: 7,
+          column: 16,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
         class Foo {
           cb() {
             console.log('siema');
@@ -3079,6 +3117,24 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInImplMember',
           data: { memberName: 'cb', className: 'Bar', baseName: 'Foo' },
           line: 6,
+          column: 16,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        const o = { cb() {} };
+        type O = typeof o;
+        class Bar implements O {
+          cb = Math.random;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'nonVoidFuncInImplMember',
+          data: { memberName: 'cb', className: 'Bar', baseName: '__object' },
+          line: 5,
           column: 16,
         },
       ],
