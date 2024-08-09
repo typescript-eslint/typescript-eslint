@@ -19,19 +19,27 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     `
       class ClassyArray<T> {
         arr: T[];
-        label: string;
       }
     `,
     `
       class ClassyTuple<T> {
         arr: [T];
-        label: string;
+      }
+    `,
+    `
+      class ClassyArrayPrivate<T> {
+        #arr: T[];
       }
     `,
     `
       class LabeledArray<T> {
-        #arr: T[];
+        arr: T[] | undefined;
         label: string;
+
+        constructor(label: string) {
+          this.arr = [];
+          this.label = label;
+        }
       }
     `,
     `
