@@ -5,13 +5,13 @@ import rule from '../../src/rules/no-unnecessary-type-assertion';
 
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
-  parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
-    sourceType: 'module',
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      projectService: false,
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 const optionsWithOnUncheckedIndexedAccess = {
@@ -201,9 +201,11 @@ function Test(props: { id?: null | string | number }) {
   return <div key={props.id!} />;
 }
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -288,7 +290,7 @@ function bar(items: string[]) {
   }
 }
       `,
-      parserOptions: optionsWithOnUncheckedIndexedAccess,
+      languageOptions: { parserOptions: optionsWithOnUncheckedIndexedAccess },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
@@ -308,7 +310,7 @@ declare const foo: {
 };
 const bar = foo.a as string;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -317,7 +319,7 @@ declare const foo: {
 };
 const bar = foo.a as string;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -326,7 +328,7 @@ declare const foo: {
 };
 const bar = foo.a as string | undefined;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -335,7 +337,7 @@ declare const foo: {
 };
 const bar = foo.a as string | undefined;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -344,7 +346,7 @@ declare const foo: {
 };
 const bar = foo.a as string | undefined | bigint;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
   ],
 
@@ -542,6 +544,11 @@ bar + 1;
       errors: [{ messageId: 'unnecessaryAssertion' }],
     },
     {
+      code: 'Proxy!;',
+      output: 'Proxy;',
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+    },
+    {
       code: `
 function foo<T extends string>(bar: T) {
   return bar!;
@@ -684,9 +691,11 @@ function Test(props: { id?: string | number }) {
           line: 9,
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -1043,7 +1052,7 @@ const bar = foo.a;
           column: 13,
         },
       ],
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -1065,7 +1074,7 @@ const bar = foo.a;
           column: 13,
         },
       ],
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
   ],
 });

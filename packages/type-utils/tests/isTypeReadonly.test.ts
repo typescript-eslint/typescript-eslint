@@ -16,6 +16,7 @@ describe('isTypeReadonly', () => {
       program: ts.Program;
     } {
       const { ast, services } = parseForESLint(code, {
+        disallowAutomaticSingleRunInference: true,
         project: './tsconfig.json',
         filePath: path.join(rootDir, 'file.ts'),
         tsconfigRootDir: rootDir,

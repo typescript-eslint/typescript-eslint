@@ -504,11 +504,6 @@ export class Converter {
               node,
             )
           : null;
-      this.#withDeprecatedAliasGetter(
-        result,
-        'typeParameters',
-        'typeArguments',
-      );
     }
     if ('typeParameters' in node) {
       result.typeParameters =
@@ -982,13 +977,11 @@ export class Converter {
               'Generators are not allowed in an ambient context.',
             );
           }
-        } else {
-          if (!node.body && isGenerator) {
-            this.#throwError(
-              node,
-              'A function signature cannot be declared as a generator.',
-            );
-          }
+        } else if (!node.body && isGenerator) {
+          this.#throwError(
+            node,
+            'A function signature cannot be declared as a generator.',
+          );
         }
 
         const result = this.createNode<
@@ -1658,24 +1651,17 @@ export class Converter {
       }
 
       case SyntaxKind.TaggedTemplateExpression:
-        return this.createNode<TSESTree.TaggedTemplateExpression>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.TaggedTemplateExpression,
-              typeArguments:
-                node.typeArguments &&
-                this.convertTypeArgumentsToTypeParameterInstantiation(
-                  node.typeArguments,
-                  node,
-                ),
-              tag: this.convertChild(node.tag),
-              quasi: this.convertChild(node.template),
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
+          type: AST_NODE_TYPES.TaggedTemplateExpression,
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
+          tag: this.convertChild(node.tag),
+          quasi: this.convertChild(node.template),
+        });
 
       case SyntaxKind.TemplateHead:
       case SyntaxKind.TemplateMiddle:
@@ -1852,39 +1838,32 @@ export class Converter {
 
         const result = this.createNode<
           TSESTree.ClassDeclaration | TSESTree.ClassExpression
-        >(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: classNodeType,
-              abstract: hasModifier(SyntaxKind.AbstractKeyword, node),
-              body: this.createNode<TSESTree.ClassBody>(node, {
-                type: AST_NODE_TYPES.ClassBody,
-                body: node.members
-                  .filter(isESTreeClassMember)
-                  .map(el => this.convertChild(el)),
-                range: [node.members.pos - 1, node.end],
-              }),
-              declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-              decorators:
-                getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
-              id: this.convertChild(node.name),
-              implements:
-                implementsClause?.types.map(el => this.convertChild(el)) ?? [],
-              superClass: extendsClause?.types[0]
-                ? this.convertChild(extendsClause.types[0].expression)
-                : null,
-              superTypeArguments: undefined,
-              typeParameters:
-                node.typeParameters &&
-                this.convertTSTypeParametersToTypeParametersDeclaration(
-                  node.typeParameters,
-                ),
-            },
-            'superTypeParameters',
-            'superTypeArguments',
-          ),
-        );
+        >(node, {
+          type: classNodeType,
+          abstract: hasModifier(SyntaxKind.AbstractKeyword, node),
+          body: this.createNode<TSESTree.ClassBody>(node, {
+            type: AST_NODE_TYPES.ClassBody,
+            body: node.members
+              .filter(isESTreeClassMember)
+              .map(el => this.convertChild(el)),
+            range: [node.members.pos - 1, node.end],
+          }),
+          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+          decorators:
+            getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
+          id: this.convertChild(node.name),
+          implements:
+            implementsClause?.types.map(el => this.convertChild(el)) ?? [],
+          superClass: extendsClause?.types[0]
+            ? this.convertChild(extendsClause.types[0].expression)
+            : null,
+          superTypeArguments: undefined,
+          typeParameters:
+            node.typeParameters &&
+            this.convertTSTypeParametersToTypeParametersDeclaration(
+              node.typeParameters,
+            ),
+        });
 
         if (extendsClause?.types[0]?.typeArguments) {
           result.superTypeArguments =
@@ -2225,20 +2204,13 @@ export class Converter {
             node,
           );
 
-        const result = this.createNode<TSESTree.CallExpression>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.CallExpression,
-              callee,
-              arguments: args,
-              optional: node.questionDotToken !== undefined,
-              typeArguments,
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        const result = this.createNode<TSESTree.CallExpression>(node, {
+          type: AST_NODE_TYPES.CallExpression,
+          callee,
+          arguments: args,
+          optional: node.questionDotToken !== undefined,
+          typeArguments,
+        });
 
         return this.convertChainExpression(result, node);
       }
@@ -2252,21 +2224,14 @@ export class Converter {
           );
 
         // NOTE - NewExpression cannot have an optional chain in it
-        return this.createNode<TSESTree.NewExpression>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.NewExpression,
-              arguments: node.arguments
-                ? node.arguments.map(el => this.convertChild(el))
-                : [],
-              callee: this.convertChild(node.expression),
-              typeArguments,
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        return this.createNode<TSESTree.NewExpression>(node, {
+          type: AST_NODE_TYPES.NewExpression,
+          arguments: node.arguments
+            ? node.arguments.map(el => this.convertChild(el))
+            : [],
+          callee: this.convertChild(node.expression),
+          typeArguments,
+        });
       }
 
       case SyntaxKind.ConditionalExpression:
@@ -2421,55 +2386,41 @@ export class Converter {
            * Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
            * TypeScript does not seem to have the idea of openingElement when tag is self-closing
            */
-          openingElement: this.createNode<TSESTree.JSXOpeningElement>(
-            node,
-            this.#withDeprecatedAliasGetter(
-              {
-                type: AST_NODE_TYPES.JSXOpeningElement,
-                typeArguments: node.typeArguments
-                  ? this.convertTypeArgumentsToTypeParameterInstantiation(
-                      node.typeArguments,
-                      node,
-                    )
-                  : undefined,
-                selfClosing: true,
-                name: this.convertJSXTagName(node.tagName, node),
-                attributes: node.attributes.properties.map(el =>
-                  this.convertChild(el),
-                ),
-                range: getRange(node, this.ast),
-              },
-              'typeParameters',
-              'typeArguments',
+          openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
+            type: AST_NODE_TYPES.JSXOpeningElement,
+            typeArguments: node.typeArguments
+              ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                  node.typeArguments,
+                  node,
+                )
+              : undefined,
+            selfClosing: true,
+            name: this.convertJSXTagName(node.tagName, node),
+            attributes: node.attributes.properties.map(el =>
+              this.convertChild(el),
             ),
-          ),
+            range: getRange(node, this.ast),
+          }),
           closingElement: null,
           children: [],
         });
       }
 
       case SyntaxKind.JsxOpeningElement: {
-        return this.createNode<TSESTree.JSXOpeningElement>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.JSXOpeningElement,
-              typeArguments:
-                node.typeArguments &&
-                this.convertTypeArgumentsToTypeParameterInstantiation(
-                  node.typeArguments,
-                  node,
-                ),
-              selfClosing: false,
-              name: this.convertJSXTagName(node.tagName, node),
-              attributes: node.attributes.properties.map(el =>
-                this.convertChild(el),
-              ),
-            },
-            'typeParameters',
-            'typeArguments',
+        return this.createNode<TSESTree.JSXOpeningElement>(node, {
+          type: AST_NODE_TYPES.JSXOpeningElement,
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
+          selfClosing: false,
+          name: this.convertJSXTagName(node.tagName, node),
+          attributes: node.attributes.properties.map(el =>
+            this.convertChild(el),
           ),
-        );
+        });
       }
 
       case SyntaxKind.JsxClosingElement:
@@ -2546,23 +2497,16 @@ export class Converter {
       // TypeScript specific
 
       case SyntaxKind.TypeReference:
-        return this.createNode<TSESTree.TSTypeReference>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.TSTypeReference,
-              typeName: this.convertChild(node.typeName),
-              typeArguments:
-                node.typeArguments &&
-                this.convertTypeArgumentsToTypeParameterInstantiation(
-                  node.typeArguments,
-                  node,
-                ),
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        return this.createNode<TSESTree.TSTypeReference>(node, {
+          type: AST_NODE_TYPES.TSTypeReference,
+          typeName: this.convertChild(node.typeName),
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
+        });
 
       case SyntaxKind.TypeParameter: {
         return this.createNode<TSESTree.TSTypeParameter>(node, {
@@ -2640,23 +2584,16 @@ export class Converter {
       }
 
       case SyntaxKind.TypeQuery:
-        return this.createNode<TSESTree.TSTypeQuery>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.TSTypeQuery,
-              exprName: this.convertChild(node.exprName),
-              typeArguments:
-                node.typeArguments &&
-                this.convertTypeArgumentsToTypeParameterInstantiation(
-                  node.typeArguments,
-                  node,
-                ),
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        return this.createNode<TSESTree.TSTypeQuery>(node, {
+          type: AST_NODE_TYPES.TSTypeQuery,
+          exprName: this.convertChild(node.exprName),
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
+        });
 
       case SyntaxKind.MappedType: {
         if (node.members && node.members.length > 0) {
@@ -2666,20 +2603,29 @@ export class Converter {
           );
         }
 
-        return this.createNode<TSESTree.TSMappedType>(node, {
-          type: AST_NODE_TYPES.TSMappedType,
-          nameType: this.convertChild(node.nameType) ?? null,
-          optional:
-            node.questionToken &&
-            (node.questionToken.kind === SyntaxKind.QuestionToken ||
-              getTextForTokenKind(node.questionToken.kind)),
-          readonly:
-            node.readonlyToken &&
-            (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
-              getTextForTokenKind(node.readonlyToken.kind)),
-          typeAnnotation: node.type && this.convertChild(node.type),
-          typeParameter: this.convertChild(node.typeParameter),
-        });
+        return this.createNode<TSESTree.TSMappedType>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSMappedType,
+              constraint: this.convertChild(node.typeParameter.constraint),
+              key: this.convertChild(node.typeParameter.name),
+              nameType: this.convertChild(node.nameType) ?? null,
+              optional:
+                node.questionToken &&
+                (node.questionToken.kind === SyntaxKind.QuestionToken ||
+                  getTextForTokenKind(node.questionToken.kind)),
+              readonly:
+                node.readonlyToken &&
+                (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
+                  getTextForTokenKind(node.readonlyToken.kind)),
+              typeAnnotation: node.type && this.convertChild(node.type),
+            },
+            'typeParameter',
+            "'constraint' and 'key'",
+            this.convertChild(node.typeParameter),
+          ),
+        );
       }
 
       case SyntaxKind.ParenthesizedExpression:
@@ -2803,23 +2749,16 @@ export class Converter {
           | TSESTree.TSClassImplements
           | TSESTree.TSInstantiationExpression
           | TSESTree.TSInterfaceHeritage
-        >(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type,
-              expression: this.convertChild(node.expression),
-              typeArguments:
-                node.typeArguments &&
-                this.convertTypeArgumentsToTypeParameterInstantiation(
-                  node.typeArguments,
-                  node,
-                ),
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        >(node, {
+          type,
+          expression: this.convertChild(node.expression),
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
+        });
       }
 
       case SyntaxKind.InterfaceDeclaration: {
@@ -2891,45 +2830,50 @@ export class Converter {
           const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
           range[0] = token.getStart(this.ast);
         }
-        const result = this.createNode<TSESTree.TSImportType>(
-          node,
-          this.#withDeprecatedAliasGetter(
-            {
-              type: AST_NODE_TYPES.TSImportType,
-              argument: this.convertChild(node.argument),
-              qualifier: this.convertChild(node.qualifier),
-              typeArguments: node.typeArguments
-                ? this.convertTypeArgumentsToTypeParameterInstantiation(
-                    node.typeArguments,
-                    node,
-                  )
-                : null,
-              range: range,
-            },
-            'typeParameters',
-            'typeArguments',
-          ),
-        );
+        const result = this.createNode<TSESTree.TSImportType>(node, {
+          type: AST_NODE_TYPES.TSImportType,
+          argument: this.convertChild(node.argument),
+          qualifier: this.convertChild(node.qualifier),
+          typeArguments: node.typeArguments
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                node.typeArguments,
+                node,
+              )
+            : null,
+          range: range,
+        });
 
         if (node.isTypeOf) {
           return this.createNode<TSESTree.TSTypeQuery>(node, {
             type: AST_NODE_TYPES.TSTypeQuery,
             exprName: result,
             typeArguments: undefined,
-            typeParameters: undefined,
           });
         }
         return result;
       }
 
       case SyntaxKind.EnumDeclaration: {
-        const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
-          type: AST_NODE_TYPES.TSEnumDeclaration,
-          const: hasModifier(SyntaxKind.ConstKeyword, node),
-          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          id: this.convertChild(node.name),
-          members: node.members.map(el => this.convertChild(el)),
-        });
+        const members = node.members.map(el => this.convertChild(el));
+        const result = this.createNode<TSESTree.TSEnumDeclaration>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSEnumDeclaration,
+              body: this.createNode<TSESTree.TSEnumBody>(node, {
+                type: AST_NODE_TYPES.TSEnumBody,
+                members,
+                range: [node.members.pos - 1, node.end],
+              }),
+              const: hasModifier(SyntaxKind.ConstKeyword, node),
+              declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+              id: this.convertChild(node.name),
+            },
+            'members',
+            `'body.members'`,
+            node.members.map(el => this.convertChild(el)),
+          ),
+        );
 
         return this.fixExports(node, result);
       }
@@ -3547,6 +3491,45 @@ export class Converter {
     });
 
     return node as Properties & Record<AliasKey, Properties[ValueKey]>;
+  }
+
+  #withDeprecatedGetter<
+    Properties extends { type: string },
+    Key extends string,
+    Value,
+  >(
+    node: Properties,
+    deprecatedKey: Key,
+    preferredKey: string,
+    value: Value,
+  ): Properties & Record<Key, Value> {
+    let warned = false;
+
+    Object.defineProperty(node, deprecatedKey, {
+      configurable: true,
+      get: this.options.suppressDeprecatedPropertyWarnings
+        ? (): Value => value
+        : (): Value => {
+            if (!warned) {
+              process.emitWarning(
+                `The '${deprecatedKey}' property is deprecated on ${node.type} nodes. Use ${preferredKey} instead. See https://typescript-eslint.io/troubleshooting/faqs/general#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                'DeprecationWarning',
+              );
+              warned = true;
+            }
+
+            return value;
+          },
+      set(value): void {
+        Object.defineProperty(node, deprecatedKey, {
+          enumerable: true,
+          writable: true,
+          value,
+        });
+      },
+    });
+
+    return node as Properties & Record<Key, Value>;
   }
 
   #throwError(node: ts.Node | number, message: string): asserts node is never {

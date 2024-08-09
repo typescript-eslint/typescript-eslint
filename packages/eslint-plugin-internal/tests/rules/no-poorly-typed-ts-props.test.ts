@@ -5,11 +5,11 @@ import rule from '../../src/rules/no-poorly-typed-ts-props';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: getFixturesRootDir(),
-    sourceType: 'module',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 

@@ -6,14 +6,14 @@ import path from 'node:path';
 import util from 'node:util';
 
 import type * as ParserType from '@typescript-eslint/parser';
+import * as parser from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
-  Parser,
   ParserOptions,
-  RuleContext,
+  RuleListener,
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
@@ -41,15 +41,13 @@ import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
 import { getPlaceholderMatcher, interpolate } from './utils/interpolate';
+import { omitCustomConfigProperties } from './utils/omitCustomConfigProperties';
 import { isSerializable } from './utils/serialization';
 import * as SourceCodeFixer from './utils/SourceCodeFixer';
 import {
-  emitLegacyRuleAPIWarning,
-  emitMissingSchemaWarning,
   ERROR_OBJECT_PARAMETERS,
   FRIENDLY_ERROR_OBJECT_PARAMETER_LIST,
   FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST,
-  getCommentsDeprecation,
   REQUIRED_SCENARIOS,
   RULE_TESTER_PARAMETERS,
   sanitize,
@@ -58,22 +56,74 @@ import {
 } from './utils/validationHelpers';
 
 const ajv = ajvBuilder({ strictDefaults: true });
+const RULE_TESTER_PLUGIN = '@rule-tester';
+const RULE_TESTER_PLUGIN_PREFIX = `${RULE_TESTER_PLUGIN}/`;
 const TYPESCRIPT_ESLINT_PARSER = '@typescript-eslint/parser';
 const DUPLICATE_PARSER_ERROR_MESSAGE = `Do not set the parser at the test level unless you want to use a parser other than "${TYPESCRIPT_ESLINT_PARSER}"`;
+
+// instead of creating a hard dependency, just use a soft require
+// a bit weird, but if they're using this tooling, it'll be installed
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const defaultParser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
 
 /*
  * testerDefaultConfig must not be modified as it allows to reset the tester to
  * the initial default configuration
  */
 const testerDefaultConfig: Readonly<TesterConfigWithDefaults> = {
-  parser: TYPESCRIPT_ESLINT_PARSER,
-  rules: {},
   defaultFilenames: { ts: 'file.ts', tsx: 'react.tsx' },
+  languageOptions: {
+    parser: defaultParser,
+  },
+  rules: {},
 };
+
 let defaultConfig = deepMerge(
   {},
   testerDefaultConfig,
 ) as TesterConfigWithDefaults;
+
+type ForbiddenFunction = (this: WeakKey, ...args: never[]) => unknown;
+
+const forbiddenMethods = [
+  'applyInlineConfig',
+  'applyLanguageOptions',
+  'finalize',
+] as const;
+
+type ForbiddenMethodName = (typeof forbiddenMethods)[number];
+
+const forbiddenMethodCalls = new Map(
+  forbiddenMethods.map(methodName => [methodName, new WeakSet()]),
+);
+
+/**
+ * Function to replace forbidden `SourceCode` methods. Allows just one call per method.
+ * @param methodName The name of the method to forbid.
+ * @param prototype The prototype with the original method to call.
+ * @returns The function that throws the error.
+ */
+function throwForbiddenMethodError<
+  MethodName extends ForbiddenMethodName,
+  Prototype extends Record<MethodName, ForbiddenFunction>,
+>(methodName: MethodName, prototype: Prototype): Prototype[MethodName] {
+  const original = prototype[methodName];
+
+  return function (this: WeakKey, ...args: Parameters<Prototype[MethodName]>) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const called = forbiddenMethodCalls.get(methodName)!;
+
+    if (!called.has(this)) {
+      called.add(this);
+
+      return original.apply(this, args);
+    }
+
+    throw new Error(
+      `\`SourceCode#${methodName}()\` cannot be called inside a rule.`,
+    );
+  } as Prototype[MethodName];
+}
 
 /**
  * Extracts names of {{ placeholders }} from the reported message.
@@ -117,7 +167,7 @@ function getUnsubstitutedMessagePlaceholders(
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
   readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
-  readonly #linter: Linter = new Linter();
+  readonly #linter: Linter;
 
   /**
    * Creates a new instance of RuleTester.
@@ -130,11 +180,12 @@ export class RuleTester extends TestFramework {
      * configuration and the default configuration.
      */
     this.#testerConfig = merge({}, defaultConfig, testerConfig, {
-      rules: { 'rule-tester/validate-ast': 'error' },
-      // as of eslint 6 you have to provide an absolute path to the parser
-      // but that's not as clean to type, this saves us trying to manually enforce
-      // that contributors require.resolve everything
-      parser: require.resolve(testerConfig?.parser ?? defaultConfig.parser),
+      rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
+    });
+
+    this.#linter = new Linter({
+      configType: 'flat',
+      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
@@ -142,10 +193,7 @@ export class RuleTester extends TestFramework {
     const constructor = this.constructor as typeof RuleTester;
     constructor.afterAll(() => {
       try {
-        // instead of creating a hard dependency, just use a soft require
-        // a bit weird, but if they're using this tooling, it'll be installed
-        const parser = require(TYPESCRIPT_ESLINT_PARSER) as typeof ParserType;
-        parser.clearCaches();
+        defaultParser.clearCaches();
       } catch {
         // ignored on purpose
       }
@@ -212,8 +260,18 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleCreateFunction | AnyRuleModule): void {
-    this.#rules[name] = rule;
+  defineRule(name: string, rule: AnyRuleModule): void {
+    this.#rules[name] = {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context): RuleListener {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
+
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    };
   }
 
   #normalizeTests<
@@ -229,14 +287,19 @@ export class RuleTester extends TestFramework {
     Hugely helps with the string-based valid test cases as it means they don't
     need to be made objects!
     */
-    const getFilename = (testOptions?: ParserOptions): string => {
+    const getFilename = (
+      originalFilename: string | undefined,
+      testOptions: ParserOptions | undefined,
+    ): string => {
       const resolvedOptions = deepMerge(
-        this.#testerConfig.parserOptions,
+        this.#testerConfig.languageOptions.parserOptions,
         testOptions,
       ) as ParserOptions;
-      const filename = resolvedOptions.ecmaFeatures?.jsx
-        ? this.#testerConfig.defaultFilenames.tsx
-        : this.#testerConfig.defaultFilenames.ts;
+      const filename =
+        originalFilename ??
+        (resolvedOptions.ecmaFeatures?.jsx
+          ? this.#testerConfig.defaultFilenames.tsx
+          : this.#testerConfig.defaultFilenames.ts);
       if (resolvedOptions.project) {
         return path.join(
           resolvedOptions.tsconfigRootDir ?? process.cwd(),
@@ -252,13 +315,23 @@ export class RuleTester extends TestFramework {
     >(
       test: T,
     ): T => {
-      if (test.parser === TYPESCRIPT_ESLINT_PARSER) {
+      const { languageOptions = {} } = test;
+      if (languageOptions.parser === parser) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
-      if (!test.filename) {
-        return { ...test, filename: getFilename(test.parserOptions) };
-      }
-      return test;
+      return {
+        ...test,
+        filename: getFilename(test.filename, languageOptions.parserOptions),
+        languageOptions: {
+          ...languageOptions,
+          parserOptions: {
+            // Re-running simulates --fix mode, which implies an isolated program
+            // (i.e. parseAndGenerateServicesCalls[test.filename] > 1).
+            disallowAutomaticSingleRunInference: true,
+            ...languageOptions.parserOptions,
+          },
+        },
+      };
     };
 
     const normalizedTests = {
@@ -394,27 +467,6 @@ export class RuleTester extends TestFramework {
 
     const seenValidTestCases = new Set<string>();
     const seenInvalidTestCases = new Set<string>();
-
-    if (typeof rule === 'function') {
-      emitLegacyRuleAPIWarning(ruleName);
-    }
-
-    this.#linter.defineRule(
-      ruleName,
-      Object.assign({}, rule, {
-        // Create a wrapper rule that freezes the `context` properties.
-        create(context: RuleContext<MessageIds, Options>) {
-          freezeDeeply(context.options);
-          freezeDeeply(context.settings);
-          freezeDeeply(context.parserOptions);
-
-          return (typeof rule === 'function' ? rule : rule.create)(context);
-        },
-      }),
-    );
-
-    this.#linter.defineRules(this.#rules);
-
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
@@ -492,16 +544,48 @@ export class RuleTester extends TestFramework {
     item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): {
     messages: Linter.LintMessage[];
-    output: string;
+    outputs: string[];
     beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
     config: RuleTesterConfig;
     filename?: string;
   } {
-    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig);
+    this.defineRule(ruleName, rule);
+
+    let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
+      files: ['**'],
+      plugins: {
+        [RULE_TESTER_PLUGIN]: {
+          rules: {
+            /**
+             * Setup AST getters.
+             * The goal is to check whether or not AST was modified when
+             * running the rule under test.
+             */
+            'validate-ast': {
+              create(): RuleListener {
+                return {
+                  Program(node: TSESTree.Program): void {
+                    beforeAST = cloneDeeplyExcludesParent(node);
+                  },
+                  'Program:exit'(node: TSESTree.Program): void {
+                    afterAST = node;
+                  },
+                };
+              },
+            },
+            ...this.#rules,
+          },
+        },
+      },
+    });
+
+    // Unlike other properties, we don't want to spread props between different parsers.
+    config.languageOptions.parser =
+      item.languageOptions?.parser ?? this.#testerConfig.languageOptions.parser;
+
     let code;
     let filename;
-    let output;
     let beforeAST: TSESTree.Program;
     let afterAST: TSESTree.Program;
 
@@ -542,53 +626,20 @@ export class RuleTester extends TestFramework {
       filename = item.filename;
     }
 
+    const prefixedRuleName = `${RULE_TESTER_PLUGIN_PREFIX}${ruleName}`;
+
     if (hasOwnProperty(item, 'options')) {
       assert(Array.isArray(item.options), 'options must be an array');
-      if (
-        item.options.length > 0 &&
-        typeof rule === 'object' &&
-        (!rule.meta || (rule.meta && rule.meta.schema == null))
-      ) {
-        emitMissingSchemaWarning(ruleName);
-      }
-      config.rules[ruleName] = ['error', ...item.options];
+      config.rules[prefixedRuleName] = ['error', ...item.options];
     } else {
-      config.rules[ruleName] = 'error';
+      config.rules[prefixedRuleName] = 'error';
     }
+
+    config.languageOptions ??= {};
+    config.languageOptions.parser ??= defaultParser;
+    config.languageOptions.parser = wrapParser(config.languageOptions.parser);
 
     const schema = getRuleOptionsSchema(rule);
-
-    /*
-     * Setup AST getters.
-     * The goal is to check whether or not AST was modified when
-     * running the rule under test.
-     */
-    this.#linter.defineRule('rule-tester/validate-ast', {
-      create() {
-        return {
-          Program(node): void {
-            beforeAST = cloneDeeplyExcludesParent(node);
-          },
-          'Program:exit'(node): void {
-            afterAST = node;
-          },
-        };
-      },
-    });
-
-    if (typeof config.parser === 'string') {
-      assert(
-        path.isAbsolute(config.parser),
-        'Parsers provided as strings to RuleTester must be absolute paths',
-      );
-    } else {
-      config.parser = require.resolve(TYPESCRIPT_ESLINT_PARSER);
-    }
-
-    this.#linter.defineParser(
-      config.parser,
-      wrapParser(require(config.parser) as Parser.ParserModule),
-    );
 
     if (schema) {
       ajv.validateSchema(schema);
@@ -628,34 +679,70 @@ export class RuleTester extends TestFramework {
       }
     }
 
-    validate(config, 'rule-tester', id => (id === ruleName ? rule : null));
+    validate(config, RULE_TESTER_PLUGIN, id => (id === ruleName ? rule : null));
 
     // Verify the code.
-    // @ts-expect-error -- we don't define deprecated members on our types
-    const { getComments } = SourceCode.prototype as { getComments: unknown };
-    let messages;
+    let initialMessages: Linter.LintMessage[] | null = null;
+    let messages: Linter.LintMessage[] | null = null;
+    let fixedResult: SourceCodeFixer.AppliedFixes | null = null;
+    let passNumber = 0;
+    const outputs: string[] = [];
+    const configWithoutCustomKeys = omitCustomConfigProperties(config);
 
-    try {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getCommentsDeprecation;
-      messages = this.#linter.verify(code, config, filename);
-    } finally {
-      // @ts-expect-error -- we don't define deprecated members on our types
-      SourceCode.prototype.getComments = getComments;
-    }
+    do {
+      passNumber++;
 
-    const fatalErrorMessage = messages.find(m => m.fatal);
+      const { applyLanguageOptions, applyInlineConfig, finalize } =
+        SourceCode.prototype;
 
-    assert(
-      !fatalErrorMessage,
-      `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
-    );
+      try {
+        forbiddenMethods.forEach(methodName => {
+          SourceCode.prototype[methodName] = throwForbiddenMethodError(
+            methodName,
+            SourceCode.prototype,
+          );
+        });
 
-    // Verify if autofix makes a syntax error or not.
-    if (messages.some(m => m.fix)) {
-      output = SourceCodeFixer.applyFixes(code, messages).output;
+        const actualConfig = merge(configWithoutCustomKeys, {
+          linterOptions: { reportUnusedDisableDirectives: 1 },
+          languageOptions: {
+            ...configWithoutCustomKeys.languageOptions,
+            parserOptions: {
+              ecmaVersion: 'latest',
+              sourceType: 'module',
+              ...configWithoutCustomKeys.languageOptions?.parserOptions,
+            },
+          },
+        });
+        messages = this.#linter.verify(code, actualConfig, filename);
+      } finally {
+        SourceCode.prototype.applyInlineConfig = applyInlineConfig;
+        SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
+        SourceCode.prototype.finalize = finalize;
+      }
+
+      initialMessages ??= messages;
+
+      if (messages.length === 0) {
+        break;
+      }
+
+      const fatalErrorMessage = messages.find(m => m.fatal);
+      assert(
+        !fatalErrorMessage,
+        `A fatal parsing error occurred: ${fatalErrorMessage?.message}`,
+      );
+
+      fixedResult = SourceCodeFixer.applyFixes(code, messages);
+      if (fixedResult.output === code) {
+        break;
+      }
+      code = fixedResult.output;
+      outputs.push(code);
+
+      // Verify if autofix makes a syntax error or not.
       const errorMessageInFix = this.#linter
-        .verify(output, config, filename)
+        .verify(fixedResult.output, configWithoutCustomKeys, filename)
         .find(m => m.fatal);
 
       assert(
@@ -664,24 +751,22 @@ export class RuleTester extends TestFramework {
           'A fatal parsing error occurred in autofix.',
           `Error: ${errorMessageInFix?.message}`,
           'Autofix output:',
-          output,
+          fixedResult.output,
         ].join('\n'),
       );
-    } else {
-      output = code;
-    }
+    } while (fixedResult.fixed && passNumber < 10);
 
     return {
-      messages,
-      output,
-      // is definitely assigned within the `rule-tester/validate-ast` rule
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      beforeAST: beforeAST!,
-      // is definitely assigned within the `rule-tester/validate-ast` rule
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      afterAST: cloneDeeplyExcludesParent(afterAST!),
       config,
       filename,
+      messages: initialMessages,
+      outputs,
+      // is definitely assigned within the `@rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      beforeAST: beforeAST!,
+      // is definitely assigned within the `@rule-tester/validate-ast` rule
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      afterAST: cloneDeeplyExcludesParent(afterAST!),
     };
   }
 
@@ -773,7 +858,14 @@ export class RuleTester extends TestFramework {
       : null;
 
     const result = this.runRuleForItem(ruleName, rule, item);
-    const messages = result.messages;
+    const messages = result.messages.map(message => ({
+      ...message,
+      ...(message.ruleId && {
+        ruleId: message.ruleId.startsWith(RULE_TESTER_PLUGIN_PREFIX)
+          ? message.ruleId.slice(RULE_TESTER_PLUGIN_PREFIX.length)
+          : message.ruleId,
+      }),
+    }));
 
     for (const message of messages) {
       if (hasOwnProperty(message, 'suggestions')) {
@@ -823,6 +915,7 @@ export class RuleTester extends TestFramework {
 
       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
 
+      // console.log({ messages });
       for (let i = 0, l = item.errors.length; i < l; i++) {
         const error = item.errors[i];
         const message = messages[i];
@@ -971,7 +1064,7 @@ export class RuleTester extends TestFramework {
             const expectsSuggestions = Array.isArray(error.suggestions)
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
-            const hasSuggestions = message.suggestions !== void 0;
+            const hasSuggestions = message.suggestions !== undefined;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const messageSuggestions = message.suggestions!;
 
@@ -1104,7 +1197,7 @@ export class RuleTester extends TestFramework {
                     const errorMessageInSuggestion = this.#linter
                       .verify(
                         codeWithAppliedSuggestion,
-                        result.config,
+                        omitCustomConfigProperties(result.config),
                         result.filename,
                       )
                       .find(m => m.fatal);
@@ -1151,24 +1244,40 @@ export class RuleTester extends TestFramework {
 
     if (hasOwnProperty(item, 'output')) {
       if (item.output == null) {
+        if (result.outputs.length) {
+          assert.strictEqual(
+            result.outputs[0],
+            item.code,
+            'Expected no autofixes to be suggested.',
+          );
+        }
+      } else if (typeof item.output === 'string') {
+        assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
         assert.strictEqual(
-          result.output,
-          item.code,
-          'Expected no autofixes to be suggested',
+          result.outputs[0],
+          item.output,
+          'Output is incorrect.',
         );
+        if (result.outputs.length) {
+          assert.deepStrictEqual(
+            result.outputs,
+            [item.output],
+            'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
+          );
+        }
       } else {
-        assert.strictEqual(result.output, item.output, 'Output is incorrect.');
+        assert(result.outputs.length > 0, 'Expected autofix to be suggested.');
+        assert.deepStrictEqual(
+          result.outputs,
+          item.output,
+          'Outputs do not match.',
+        );
       }
-    } else {
+    } else if (result.outputs.length) {
       assert.strictEqual(
-        result.output,
+        result.outputs[0],
         item.code,
         "The rule fixed the code. Please add 'output' property.",
-      );
-      assert.notStrictEqual(
-        item.code,
-        item.output,
-        "Test property 'output' matches 'code'. If no autofix is expected, then omit the 'output' property or set it to null.",
       );
     }
 

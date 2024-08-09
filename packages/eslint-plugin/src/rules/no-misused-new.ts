@@ -99,14 +99,7 @@ export default createRule({
         node: TSESTree.MethodDefinition,
       ): void {
         if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
-          if (
-            isMatchingParentType(
-              node.parent.parent as
-                | TSESTree.ClassDeclaration
-                | TSESTree.ClassExpression,
-              node.value.returnType,
-            )
-          ) {
+          if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
             context.report({
               node,
               messageId: 'errorMessageClass',
