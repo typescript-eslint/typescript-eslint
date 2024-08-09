@@ -7,6 +7,7 @@ export * from './createRule';
 export * from './discardReturnValueFix';
 export * from './getBaseTypesOfClassMember';
 export * from './getFunctionHeadLoc';
+export * from './getNameFromExpression';
 export * from './getOperatorPrecedence';
 export * from './getRangeWithParens';
 export * from './getStaticStringValue';
