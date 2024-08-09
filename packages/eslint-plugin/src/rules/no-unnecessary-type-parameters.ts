@@ -263,15 +263,14 @@ function collectTypeParameterUsageCounts(
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        const isntTuple = !tsutils.isTupleType(type.target);
+        const isTuple = tsutils.isTupleType(type.target);
 
-        const isntSingularNotInReturnPosition = !(
+        const isSingularInInputPosition =
           SINGULAR_TYPES.has(
             (type.symbol as ts.Symbol | undefined)?.getName() ?? '',
-          ) && !isReturnType
-        );
+          ) && !isReturnType;
 
-        const isntClassFunctionalAttribute =
+        const isNonFunctionalClassProperty =
           isNodeClassLike &&
           ts.isPropertyDeclaration(node) &&
           (node.initializer
@@ -283,8 +282,8 @@ function collectTypeParameterUsageCounts(
         // if it's a tuple or a singular type in a input position, we don't want to assume multiple uses
         // unless it's a class property that doesn't contain a function
         const thisAssumeMultipleUses =
-          (isntTuple && isntSingularNotInReturnPosition) ||
-          isntClassFunctionalAttribute;
+          (!isTuple && !isSingularInInputPosition) ||
+          isNonFunctionalClassProperty;
 
         visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
       }
