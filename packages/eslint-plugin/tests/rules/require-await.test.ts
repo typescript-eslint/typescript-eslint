@@ -335,7 +335,7 @@ const numberOne = function (): number {
       ],
     },
     {
-      // Return type with nested generic type
+      // Return type with nested type argument
       code: `
 async function values(): Promise<Array<number>> {
   return [1];
