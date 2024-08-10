@@ -65,41 +65,6 @@ export default createRule<[], MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    type ArgumentIndexToCheck = 0 | 1;
-    function getPromiseMethodInfo(node: TSESTree.Expression):
-      | {
-          argumentIndexToCheck: ArgumentIndexToCheck;
-          messageData: Record<'method' | 'append', string>;
-        }
-      | undefined {
-      if (node.type !== AST_NODE_TYPES.MemberExpression) {
-        return;
-      }
-      const methodsToCheck = [
-        { method: 'catch', append: '' },
-        { method: 'then', append: ' rejection' },
-      ] as const;
-      const argumentIndexToCheck = methodsToCheck.findIndex(({ method }) =>
-        isStaticMemberAccessOfValue(node, method),
-      ) as -1 | ArgumentIndexToCheck;
-      if (argumentIndexToCheck === -1) {
-        return;
-      }
-
-      const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      return tsutils.isThenableType(
-        checker,
-        tsNode,
-        checker.getTypeAtLocation(objectTsNode),
-      )
-        ? {
-            argumentIndexToCheck,
-            messageData: methodsToCheck[argumentIndexToCheck],
-          }
-        : undefined;
-    }
-
     function isFlaggableHandlerType(type: ts.Type): boolean {
       for (const unionPart of tsutils.unionTypeParts(type)) {
         const callSignatures = tsutils.getCallSignaturesOfType(unionPart);
@@ -269,13 +234,28 @@ export default createRule<[], MessageIds>({
     }
 
     return {
-      CallExpression(node): void {
-        const args = node.arguments;
-        const promiseMethodInfo = getPromiseMethodInfo(node.callee);
+      CallExpression({ arguments: args, callee }): void {
+        const promiseMethodInfo =
+          callee.type === AST_NODE_TYPES.MemberExpression &&
+          tsutils.isThenableType(
+            checker,
+            services.esTreeNodeToTSNodeMap.get(callee),
+            checker.getTypeAtLocation(
+              services.esTreeNodeToTSNodeMap.get(callee.object),
+            ),
+          ) &&
+          [
+            ...[
+              { method: 'catch', append: '' },
+              { method: 'then', append: ' rejection' },
+            ].entries(),
+          ].find(([, { method }]) =>
+            isStaticMemberAccessOfValue(callee, method),
+          );
         if (!promiseMethodInfo) {
           return;
         }
-        const { argumentIndexToCheck, messageData } = promiseMethodInfo;
+        const [argumentIndexToCheck, messageData] = promiseMethodInfo;
 
         for (const [i, argument] of args.entries()) {
           if (argument.type === AST_NODE_TYPES.SpreadElement) {
