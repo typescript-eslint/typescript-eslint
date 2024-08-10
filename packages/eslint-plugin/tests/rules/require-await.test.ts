@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/require-await';
 import { getFixturesRootDir } from '../RuleTester';
@@ -984,8 +984,7 @@ for await (let num of asyncIterable) {
     {
       // This test verifies that the async keyword and any following
       // whitespace is removed, but not the following comments.
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: `
+      code: noFormat`
         async    /* test */ function foo() {
           doSomething();
         }
@@ -1041,8 +1040,7 @@ for await (let num of asyncIterable) {
     },
     {
       // This test must not have a semicolon after "foo".
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: `
+      code: noFormat`
         foo
         async () => {
           return 0;
