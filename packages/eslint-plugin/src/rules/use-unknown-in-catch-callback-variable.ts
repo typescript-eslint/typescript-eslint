@@ -246,8 +246,8 @@ export default createRule<[], MessageIds>({
           ) &&
           [
             ...[
-              { method: 'catch', append: '' },
-              { method: 'then', append: ' rejection' },
+              { method: 'catch', append: '' }, // argumentIndexToCheck: 0
+              { method: 'then', append: ' rejection' }, // argumentIndexToCheck: 1
             ].entries(),
           ].find(([, { method }]) =>
             isStaticMemberAccessOfValue(callee, method),
@@ -255,22 +255,22 @@ export default createRule<[], MessageIds>({
         if (!promiseMethodInfo) {
           return;
         }
-        const [argumentIndexToCheck, messageData] = promiseMethodInfo;
+        const [argumentIndexToCheck, data] = promiseMethodInfo;
 
-        for (const [i, argument] of args.entries()) {
-          if (argument.type === AST_NODE_TYPES.SpreadElement) {
+        for (const [i, node] of args.entries()) {
+          if (node.type === AST_NODE_TYPES.SpreadElement) {
             return;
           }
           // Argument to check, and all arguments before it, are an "ordinary" argument (i.e. not a spread argument)
           // promise.catch(f), promise.catch(() => {}), promise.catch(<expression>, <<other-args>>)
-          if (i === argumentIndexToCheck && shouldFlagArgument(argument)) {
+          if (i === argumentIndexToCheck && shouldFlagArgument(node)) {
             // We are now guaranteed to report, but we have a bit of work to do
             // to determine exactly where, and whether we can fix it.
-            const overrides = refineReportForNormalArgumentIfPossible(argument);
+            const overrides = refineReportForNormalArgumentIfPossible(node);
             context.report({
-              node: argument,
+              node,
               messageId: 'useUnknown',
-              data: messageData,
+              data,
               ...overrides,
             });
           }
