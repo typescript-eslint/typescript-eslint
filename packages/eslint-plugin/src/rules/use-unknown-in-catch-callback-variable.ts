@@ -71,9 +71,9 @@ export default createRule<[], MessageIds>({
           argumentIndexToCheck: ArgumentIndexToCheck;
           messageData: Record<'method' | 'append', string>;
         }
-      | false {
+      | undefined {
       if (node.type !== AST_NODE_TYPES.MemberExpression) {
-        return false;
+        return;
       }
       const methodsToCheck = [
         { method: 'catch', append: '' },
@@ -83,21 +83,21 @@ export default createRule<[], MessageIds>({
         isStaticMemberAccessOfValue(node, method),
       ) as -1 | ArgumentIndexToCheck;
       if (argumentIndexToCheck === -1) {
-        return false;
+        return;
       }
 
       const objectTsNode = services.esTreeNodeToTSNodeMap.get(node.object);
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      return (
-        tsutils.isThenableType(
-          checker,
-          tsNode,
-          checker.getTypeAtLocation(objectTsNode),
-        ) && {
-          argumentIndexToCheck,
-          messageData: methodsToCheck[argumentIndexToCheck],
-        }
-      );
+      return tsutils.isThenableType(
+        checker,
+        tsNode,
+        checker.getTypeAtLocation(objectTsNode),
+      )
+        ? {
+            argumentIndexToCheck,
+            messageData: methodsToCheck[argumentIndexToCheck],
+          }
+        : undefined;
     }
 
     function isFlaggableHandlerType(type: ts.Type): boolean {
