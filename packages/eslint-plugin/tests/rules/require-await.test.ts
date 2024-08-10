@@ -136,14 +136,6 @@ async function testFunction(): Promise<void> {
   );
 }
     `,
-    'async function* run() {}',
-    `
-async function* run() {
-  await new Promise(resolve => setTimeout(resolve, 100));
-  yield 'Hello';
-  console.log('World');
-}
-    `,
     `
 function* test6() {
   yield* syncGenerator();
@@ -214,7 +206,6 @@ async function* test(source: MyType) {
   yield* source;
 }
     `,
-    'const foo: () => void = async function* () {};',
     `
 async function* foo(): Promise<string> {
   return new Promise(res => res(\`hello\`));
@@ -391,6 +382,8 @@ function values(): Array<number> {
       ],
     },
     {
+      // Note: This code is considered a valid case in the ESLint tests,
+      // but because we have type information we can say that it's invalid.
       code: `
 async function* foo(): void {
   doSomething();
@@ -441,6 +434,8 @@ function* foo() {
       ],
     },
     {
+      // Note: This code is considered a valid case in the ESLint tests,
+      // but because we have type information we can say that it's invalid.
       code: `
 const foo = async function* () {
   console.log('bar');
@@ -582,6 +577,33 @@ function* asyncGenerator() {
       ],
     },
     {
+      // Note: This code is considered a valid case in the ESLint tests,
+      // but because we have type information we can say that it's invalid.
+      code: `
+async function* asyncGenerator() {
+  yield* anotherAsyncGenerator(); // Unknown function.
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'asyncGenerator'",
+          },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+function* asyncGenerator() {
+  yield* anotherAsyncGenerator(); // Unknown function.
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
         const fn = async () => {
           using foo = new Bar();
@@ -682,6 +704,44 @@ for await (let num of asyncIterable) {
 }
       `,
     },
+    {
+      code: `
+        async function* run() {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          yield 'Hello';
+          console.log('World');
+        }
+      `,
+    },
+    {
+      code: 'async function* run() {}',
+    },
+    {
+      code: 'const foo = async function* () {};',
+    },
+    // Note: There are three test cases for async generators in the
+    // ESLint repository that are considered valid. Because we have
+    // type information, we can consider those cases to be invalid.
+    // There are test cases in here to confirm that they are invalid.
+    //
+    // See https://github.com/typescript-eslint/typescript-eslint/pull/1782
+    //
+    // The cases are:
+    //
+    //  1.
+    //  async function* run() {
+    //    yield* anotherAsyncGenerator();
+    //  }
+    //
+    //  2.
+    //  const foo = async function* () {
+    //   console.log('bar');
+    //  };
+    //
+    //  3.
+    //  async function* run() {
+    //    console.log('bar');
+    //  }
   ],
   invalid: [
     {
