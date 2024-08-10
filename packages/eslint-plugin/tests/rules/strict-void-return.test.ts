@@ -9,7 +9,7 @@ const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
       tsconfigRootDir: rootDir,
-      project: './tsconfig.dom.json',
+      project: './tsconfig.json',
     },
   },
 });
@@ -254,7 +254,26 @@ ruleTester.run('strict-void-return', rule, {
     {
       options: [{ considerOtherOverloads: false }],
       code: `
-        document.addEventListener('click', async () => {});
+        interface Ev {}
+        interface EvMap {
+          DOMContentLoaded: Ev;
+        }
+        type EvListOrEvListObj = EvList | EvListObj;
+        interface EvList {
+          (evt: Event): void;
+        }
+        interface EvListObj {
+          handleEvent(object: Ev): void;
+        }
+        interface Win {
+          addEventListener<K extends keyof EvMap>(
+            type: K,
+            listener: (ev: EvMap[K]) => any,
+          ): void;
+          addEventListener(type: string, listener: EvListOrEvListObj): void;
+        }
+        declare const win: Win;
+        win.addEventListener('DOMContentLoaded', ev => ev);
       `,
     },
     {
@@ -1629,18 +1648,64 @@ ruleTester.run('strict-void-return', rule, {
     },
     {
       code: `
-        document.addEventListener('click', async () => {});
+        interface Ev {}
+        interface EvMap {
+          DOMContentLoaded: Ev;
+        }
+        type EvListOrEvListObj = EvList | EvListObj;
+        interface EvList {
+          (evt: Event): void;
+        }
+        interface EvListObj {
+          handleEvent(object: Ev): void;
+        }
+        interface Win {
+          addEventListener<K extends keyof EvMap>(
+            type: K,
+            listener: (ev: EvMap[K]) => any,
+          ): void;
+          addEventListener(type: string, listener: EvListOrEvListObj): void;
+        }
+        declare const win: Win;
+        win.addEventListener('DOMContentLoaded', ev => ev);
+        win.addEventListener('custom', ev => ev);
       `,
       errors: [
         {
-          messageId: 'asyncFuncInArgOverload',
-          data: { funcName: 'document.addEventListener' },
-          line: 2,
-          column: 53,
+          messageId: 'nonVoidReturnInArgOverload',
+          data: { funcName: 'win.addEventListener' },
+          line: 21,
+          column: 56,
+        },
+        {
+          messageId: 'nonVoidReturnInArg',
+          data: { funcName: 'win.addEventListener' },
+          line: 22,
+          column: 46,
         },
       ],
       output: `
-        document.addEventListener('click', () => {});
+        interface Ev {}
+        interface EvMap {
+          DOMContentLoaded: Ev;
+        }
+        type EvListOrEvListObj = EvList | EvListObj;
+        interface EvList {
+          (evt: Event): void;
+        }
+        interface EvListObj {
+          handleEvent(object: Ev): void;
+        }
+        interface Win {
+          addEventListener<K extends keyof EvMap>(
+            type: K,
+            listener: (ev: EvMap[K]) => any,
+          ): void;
+          addEventListener(type: string, listener: EvListOrEvListObj): void;
+        }
+        declare const win: Win;
+        win.addEventListener('DOMContentLoaded', ev => {});
+        win.addEventListener('custom', ev => {});
       `,
     },
     {
