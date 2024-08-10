@@ -390,7 +390,9 @@ function getNodeType(node: Member): MemberKind | null {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
+    case AST_NODE_TYPES.TSAbstractAccessorProperty:
     case AST_NODE_TYPES.AccessorProperty:
       return 'accessor';
     case AST_NODE_TYPES.PropertyDefinition:
@@ -399,8 +401,6 @@ function getNodeType(node: Member): MemberKind | null {
         : node.readonly
           ? 'readonly-field'
           : 'field';
-    case AST_NODE_TYPES.TSPropertySignature:
-      return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
       return node.readonly ? 'readonly-signature' : 'signature';
     case AST_NODE_TYPES.StaticBlock:
@@ -416,9 +416,11 @@ function getNodeType(node: Member): MemberKind | null {
 function getMemberRawName(
   member:
     | TSESTree.MethodDefinition
+    | TSESTree.AccessorProperty
     | TSESTree.Property
     | TSESTree.PropertyDefinition
     | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
@@ -447,7 +449,9 @@ function getMemberName(
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
+    case AST_NODE_TYPES.TSAbstractAccessorProperty:
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.AccessorProperty:
     case AST_NODE_TYPES.PropertyDefinition:
       return getMemberRawName(node, sourceCode);
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
