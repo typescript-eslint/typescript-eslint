@@ -1,5 +1,5 @@
 ---
-description: 'Enforce typing arguments in `.then()` and `.catch()` rejection callbacks as `unknown`.'
+description: 'Enforce typing arguments in Promise rejection callbacks as `unknown`.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/use-unknown-in-catch-callback-variable** for documentation.
 
-This rule enforces that you always use the `unknown` type for the parameter of a `Promise.prototype.catch()` callback or `Promise.prototype.then()` rejection callback.
+This rule enforces that you always use the `unknown` type for the parameter of a Promise rejection callback.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -90,4 +90,4 @@ For further reading on this, you may also want to look into
 
 If your codebase is not yet able to enable `useUnknownInCatchVariables`, it likely would be similarly difficult to enable this rule.
 
-If you have modified the global type declarations in order to make `catch()` callbacks use the `unknown` type without an explicit type annotation, you do not need this rule.
+If you have modified the global type declarations in order to make `then()` and `catch()` callbacks use the `unknown` type without an explicit type annotation, you do not need this rule.

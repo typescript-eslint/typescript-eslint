@@ -33,7 +33,7 @@ export default createRule<[], MessageIds>({
   meta: {
     docs: {
       description:
-        'Enforce typing arguments in `.then()` and `.catch()` rejection callbacks as `unknown`',
+        'Enforce typing arguments in Promise rejection callbacks as `unknown`',
       requiresTypeChecking: true,
       recommended: 'strict',
     },
