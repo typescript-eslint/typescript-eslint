@@ -65,7 +65,7 @@ export function getWrappingFixer(params: WrappingFixerParams) {
     }
 
     // check if we need to insert semicolon
-    if (/^[-+`<([]/.exec(code) && isMissingSemicolonBefore(node, sourceCode)) {
+    if (/^[-+`<([]/.test(code) && isMissingSemicolonBefore(node, sourceCode)) {
       code = `;${code}`;
     }
 
