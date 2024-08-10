@@ -628,6 +628,83 @@ function* asyncGenerator() {
         },
       ],
     },
+    {
+      code: `
+        // intentional TS error
+        async function* foo(): Promise<number> {
+          yield 1;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'foo'",
+          },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        // intentional TS error
+        function* foo(): Promise<number> {
+          yield 1;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        async function* foo(): AsyncGenerator {
+          yield 1;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'foo'",
+          },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        function* foo(): Generator {
+          yield 1;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        async function* foo(): AsyncGenerator<number> {
+          yield 1;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async generator function 'foo'",
+          },
+          suggestions: [
+            {
+              messageId: 'removeAsync',
+              output: `
+        function* foo(): Generator<number> {
+          yield 1;
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
 // base eslint tests

@@ -134,40 +134,50 @@ export default createRule({
             // If there's a return type annotation and it's a
             // `Promise<T>`, we can also change the return type
             // annotation to just `T` as part of the suggestion.
-            if (
-              node.returnType?.typeAnnotation.type ===
-                AST_NODE_TYPES.TSTypeReference &&
-              node.returnType.typeAnnotation.typeName.type ===
-                AST_NODE_TYPES.Identifier &&
-              node.returnType.typeAnnotation.typeName.name === 'Promise' &&
-              node.returnType.typeAnnotation.typeArguments
-            ) {
-              const openAngle = context.sourceCode.getFirstToken(
-                node.returnType.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '<',
-              );
-              const closeAngle = context.sourceCode.getLastToken(
-                node.returnType.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '>',
-              );
-              if (openAngle && closeAngle) {
-                changes.unshift(
-                  // Remove the closing angled bracket.
-                  { range: closeAngle.range, replacement: '' },
-                  // Remove the "Promise" identifier
-                  // and the opening angled bracket.
-                  {
-                    range: [
-                      node.returnType.typeAnnotation.typeName.range[0],
-                      openAngle.range[1],
-                    ],
-                    replacement: '',
-                  },
+            // Alternatively, if the function is a generator and
+            // the return type annotation is `AsyncGenerator<T>`,
+            // then we can change it to `Generator<T>`.
+            if (node.returnType) {
+              if (scopeInfo.isGen) {
+                if (
+                  hasTypeName(node.returnType.typeAnnotation, 'AsyncGenerator')
+                ) {
+                  changes.unshift({
+                    range: node.returnType.typeAnnotation.typeName.range,
+                    replacement: 'Generator',
+                  });
+                }
+              } else if (
+                hasTypeName(node.returnType.typeAnnotation, 'Promise') &&
+                !!node.returnType.typeAnnotation.typeArguments
+              ) {
+                const openAngle = context.sourceCode.getFirstToken(
+                  node.returnType.typeAnnotation,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '<',
                 );
+                const closeAngle = context.sourceCode.getLastToken(
+                  node.returnType.typeAnnotation,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '>',
+                );
+                if (openAngle && closeAngle) {
+                  changes.unshift(
+                    // Remove the closing angled bracket.
+                    { range: closeAngle.range, replacement: '' },
+                    // Remove the "Promise" identifier
+                    // and the opening angled bracket.
+                    {
+                      range: [
+                        node.returnType.typeAnnotation.typeName.range[0],
+                        openAngle.range[1],
+                      ],
+                      replacement: '',
+                    },
+                  );
+                }
               }
             }
 
@@ -303,4 +313,15 @@ function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
     return type.types.flatMap(expandUnionOrIntersectionType);
   }
   return [type];
+}
+
+function hasTypeName(
+  typeAnnotation: TSESTree.TypeNode,
+  typeName: string,
+): typeAnnotation is TSESTree.TSTypeReference {
+  return (
+    typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
+    typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
+    typeAnnotation.typeName.name === typeName
+  );
 }
