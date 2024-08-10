@@ -1007,17 +1007,15 @@ for await (let num of asyncIterable) {
       ],
     },
     {
-      code: `
+      // This test must not have a semicolon after "a = 0".
+      code: noFormat`
         class A {
-          a = 0;
+          a = 0
           async [b]() {
             return 0;
           }
         }
       `,
-      languageOptions: {
-        parserOptions: { ecmaVersion: 2022 },
-      },
       errors: [
         {
           messageId: 'missingAwait',
@@ -1026,8 +1024,8 @@ for await (let num of asyncIterable) {
             {
               output: `
         class A {
-          a = 0;
-          [b]() {
+          a = 0
+          ;[b]() {
             return 0;
           }
         }
@@ -1046,11 +1044,6 @@ for await (let num of asyncIterable) {
           return 0;
         }
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaVersion: 2022,
-        },
-      },
       errors: [
         {
           messageId: 'missingAwait',
@@ -1078,11 +1071,6 @@ for await (let num of asyncIterable) {
           }
         }
       `,
-      languageOptions: {
-        parserOptions: {
-          ecmaVersion: 2022,
-        },
-      },
       errors: [
         {
           messageId: 'missingAwait',
