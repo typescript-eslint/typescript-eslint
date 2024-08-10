@@ -1,3 +1,16 @@
+## 8.0.1 (2024-08-05)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] ignore imports used only as types ([#9694](https://github.com/typescript-eslint/typescript-eslint/pull/9694))
+
+### ❤️  Thank You
+
+- Jake Bailey @jakebailey
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 # 8.0.0 (2024-07-31)
 
 
