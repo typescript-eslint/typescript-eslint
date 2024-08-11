@@ -348,13 +348,10 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         fn: (key: K, val: V) => number,
       ): number[];
     `,
-    {
-      only: true,
-      code: `
-        export type A<T> = B<T>;
-        export type B<T> = <V>() => A<T | V>;
-      `,
-    },
+    `
+      export type A<T> = B<T>;
+      export type B<T> = <V>() => A<T | V>;
+    `,
   ],
 
   invalid: [
