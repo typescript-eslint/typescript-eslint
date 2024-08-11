@@ -483,7 +483,9 @@ function isMemberOptional(node: Member): boolean {
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
+    case AST_NODE_TYPES.TSAbstractAccessorProperty:
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.AccessorProperty:
     case AST_NODE_TYPES.PropertyDefinition:
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -553,6 +555,7 @@ function getRank(
   }
 
   const abstract =
+    node.type === AST_NODE_TYPES.TSAbstractAccessorProperty ||
     node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
     node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
 
