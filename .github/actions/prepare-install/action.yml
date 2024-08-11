@@ -55,16 +55,9 @@ runs:
         restore-keys: |
           yarn-download-cache-
 
-    - name: Check if ast-spec files changed
-      id: changed-files
-      uses: tj-actions/changed-files@v41
-      with:
-        files: packages/ast-spec/src/**
-
     # Invalidated on yarn.lock changes
     - name: Restore yarn install state
       id: yarn-install-state-cache
-      if: steps.changed-files.outputs.any_changed != 'true'
       uses: actions/cache@v4
       with:
         path: .yarn/ci-cache/
