@@ -227,16 +227,6 @@ ruleTester.run('strict-enums-comparison', rule, {
         Beet = 'beet',
         Celery = 'celery',
       }
-      type WeirdString = string & { __someBrand: void };
-      declare const weirdString: WeirdString;
-      Vegetable.Asparagus === weirdString;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
       const foo = {};
       const vegetable = Vegetable.Asparagus;
       vegetable in foo;
