@@ -1212,5 +1212,16 @@ ruleTester.run('strict-enums-comparison', rule, {
         },
       ],
     },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const foo: number & {};
+        if (foo === Fruit.Apple) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
   ],
 });
