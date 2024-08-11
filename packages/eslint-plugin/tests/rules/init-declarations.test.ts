@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/init-declarations';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('init-declarations', rule, {
   valid: [
@@ -34,17 +32,17 @@ for (var foo in []) {
 for (var foo of []) {
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'let a = true;',
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'const a = {};',
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -58,7 +56,7 @@ function foo() {
 }
       `,
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -72,7 +70,7 @@ function foo() {
 }
       `,
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -83,17 +81,17 @@ function foo() {
 }
       `,
       options: ['always'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'var foo;',
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'var foo, bar, baz;',
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -103,17 +101,17 @@ function foo() {
 }
       `,
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'let a;',
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'const a = 1;',
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -125,7 +123,7 @@ function foo() {
 }
       `,
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -139,7 +137,7 @@ function foo() {
 }
       `,
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -150,7 +148,7 @@ function foo() {
 }
       `,
       options: ['never'],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: 'for (var i = 0; i < 1; i++) {}',
@@ -169,7 +167,7 @@ for (var foo of []) {
 }
       `,
       options: ['never', { ignoreForLoopInit: true }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -312,11 +310,6 @@ interface IEmployee {
       `,
       options: ['never'],
     },
-    {
-      code: "declare const foo: number = 'asd';",
-      options: ['always'],
-    },
-
     {
       code: "const foo: number = 'asd';",
       options: ['always'],
@@ -786,20 +779,6 @@ const class1 = class NAME {
           column: 5,
           endLine: 1,
           endColumn: 8,
-        },
-      ],
-    },
-    {
-      code: "declare var foo: number = 'asd';",
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          line: 1,
-          column: 13,
-          endLine: 1,
-          endColumn: 32,
         },
       ],
     },

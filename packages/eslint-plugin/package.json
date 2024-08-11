@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "7.17.0",
+  "version": "8.0.1",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -28,7 +28,7 @@
     }
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "tsx tools/generate-breaking-changes.mts",
-    "generate:configs": "npx nx run repo-tools:generate-configs",
+    "generate:configs": "npx nx generate-configs repo",
     "lint": "npx nx lint",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
@@ -60,10 +60,10 @@
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",
-    "@typescript-eslint/scope-manager": "7.17.0",
-    "@typescript-eslint/type-utils": "7.17.0",
-    "@typescript-eslint/utils": "7.17.0",
-    "@typescript-eslint/visitor-keys": "7.17.0",
+    "@typescript-eslint/scope-manager": "8.0.1",
+    "@typescript-eslint/type-utils": "8.0.1",
+    "@typescript-eslint/utils": "8.0.1",
+    "@typescript-eslint/visitor-keys": "8.0.1",
     "graphemer": "^1.4.0",
     "ignore": "^5.3.1",
     "natural-compare": "^1.4.0",
@@ -74,13 +74,12 @@
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "7.17.0",
-    "@typescript-eslint/rule-tester": "7.17.0",
+    "@typescript-eslint/rule-schema-to-typescript-types": "8.0.1",
+    "@typescript-eslint/rule-tester": "8.0.1",
     "ajv": "^6.12.6",
     "cross-env": "^7.0.3",
     "cross-fetch": "*",
     "eslint": "*",
-    "espree": "^10.0.1",
     "jest": "29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "json-schema": "*",
@@ -97,8 +96,8 @@
     "unist-util-visit": "^5.0.0"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^7.0.0",
-    "eslint": "^8.56.0"
+    "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
+    "eslint": "^8.57.0 || ^9.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {

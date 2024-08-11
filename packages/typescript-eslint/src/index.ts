@@ -71,7 +71,6 @@ const configs = {
 export type Config = TSESLint.FlatConfig.ConfigFile;
 export type { ConfigWithExtends };
 /*
-eslint-disable-next-line import/no-default-export --
 we do both a default and named exports to allow people to use this package from
 both CJS and ESM in very natural ways.
 

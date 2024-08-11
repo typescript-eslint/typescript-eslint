@@ -2,12 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-invalid-this';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-  },
-});
+const ruleTester = new RuleTester();
 
 const errors = [
   { messageId: 'unexpectedThis' as const },
@@ -458,8 +453,10 @@ z(x => console.log(x, this));
 console.log(this);
 z(x => console.log(x, this));
       `,
-      parserOptions: {
-        ecmaFeatures: { globalReturn: true },
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { globalReturn: true },
+        },
       },
       errors,
     },
@@ -533,8 +530,10 @@ return function () {
   z(x => console.log(x, this));
 };
       `,
-      parserOptions: {
-        ecmaFeatures: { globalReturn: true },
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { globalReturn: true },
+        },
       },
       errors,
     },

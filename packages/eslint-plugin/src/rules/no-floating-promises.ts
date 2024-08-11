@@ -18,6 +18,7 @@ import {
 type Options = [
   {
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
+    allowForKnownSafeCalls?: TypeOrValueSpecifier[];
     checkThenables?: boolean;
     ignoreIIFE?: boolean;
     ignoreVoid?: boolean;
@@ -78,6 +79,7 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
           checkThenables: {
             description:
               'Whether to check all "Thenable"s, not just the built-in Promise type.',
@@ -100,10 +102,11 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
       allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
-      checkThenables: true,
-      ignoreVoid: true,
+      checkThenables: false,
       ignoreIIFE: false,
+      ignoreVoid: true,
     },
   ],
 
@@ -113,8 +116,10 @@ export default createRule<Options, MessageId>({
     const { checkThenables } = options;
 
     // TODO: #5439
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const allowForKnownSafePromises = options.allowForKnownSafePromises!;
+    const allowForKnownSafeCalls = options.allowForKnownSafeCalls!;
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
     return {
       ExpressionStatement(node): void {
@@ -126,6 +131,10 @@ export default createRule<Options, MessageId>({
 
         if (expression.type === AST_NODE_TYPES.ChainExpression) {
           expression = expression.expression;
+        }
+
+        if (isKnownSafePromiseReturn(expression)) {
+          return;
         }
 
         const { isUnhandled, nonFunctionHandler, promiseArray } =
@@ -164,6 +173,11 @@ export default createRule<Options, MessageId>({
                     ];
                   },
                 },
+                {
+                  messageId: 'floatingFixAwait',
+                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                    addAwait(fixer, expression, node),
+                },
               ],
             });
           } else {
@@ -175,30 +189,8 @@ export default createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'floatingFixAwait',
-                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    if (
-                      expression.type === AST_NODE_TYPES.UnaryExpression &&
-                      expression.operator === 'void'
-                    ) {
-                      return fixer.replaceTextRange(
-                        [expression.range[0], expression.range[0] + 4],
-                        'await',
-                      );
-                    }
-                    const tsNode = services.esTreeNodeToTSNodeMap.get(
-                      node.expression,
-                    );
-                    if (isHigherPrecedenceThanUnary(tsNode)) {
-                      return fixer.insertTextBefore(node, 'await ');
-                    }
-                    return [
-                      fixer.insertTextBefore(node, 'await ('),
-                      fixer.insertTextAfterRange(
-                        [expression.range[1], expression.range[1]],
-                        ')',
-                      ),
-                    ];
-                  },
+                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                    addAwait(fixer, expression, node),
                 },
               ],
             });
@@ -206,6 +198,45 @@ export default createRule<Options, MessageId>({
         }
       },
     };
+
+    function addAwait(
+      fixer: TSESLint.RuleFixer,
+      expression: TSESTree.Expression,
+      node: TSESTree.ExpressionStatement,
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      if (
+        expression.type === AST_NODE_TYPES.UnaryExpression &&
+        expression.operator === 'void'
+      ) {
+        return fixer.replaceTextRange(
+          [expression.range[0], expression.range[0] + 4],
+          'await',
+        );
+      }
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.expression);
+      if (isHigherPrecedenceThanUnary(tsNode)) {
+        return fixer.insertTextBefore(node, 'await ');
+      }
+      return [
+        fixer.insertTextBefore(node, 'await ('),
+        fixer.insertTextAfterRange(
+          [expression.range[1], expression.range[1]],
+          ')',
+        ),
+      ];
+    }
+
+    function isKnownSafePromiseReturn(node: TSESTree.Node): boolean {
+      if (node.type !== AST_NODE_TYPES.CallExpression) {
+        return false;
+      }
+
+      const type = services.getTypeAtLocation(node.callee);
+
+      return allowForKnownSafeCalls.some(allowedType =>
+        typeMatchesSpecifier(type, allowedType, services.program),
+      );
+    }
 
     function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
       const operator = ts.isBinaryExpression(node)

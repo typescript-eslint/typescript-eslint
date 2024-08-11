@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import type {
@@ -16,10 +16,11 @@ type Options = InferOptionsTypeFromRule<typeof rule>;
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -477,7 +478,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     // arrays
     // Removing readonly causes duplicates
     ...dedupeTestCases(
-      arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
+      arrays.map<InvalidTestCase<MessageIds, Options>>(baseType => {
         const type = baseType
           .replace(/readonly /g, '')
           .replace(/Readonly<(.+?)>/g, '$1')
@@ -527,7 +528,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // objects
-    ...objects.map<TSESLint.InvalidTestCase<MessageIds, Options>>(type => {
+    ...objects.map<InvalidTestCase<MessageIds, Options>>(type => {
       return {
         code: `function foo(arg: ${type}) {}`,
         errors: [
@@ -588,7 +589,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // weird intersections
-    ...weirdIntersections.map<TSESLint.InvalidTestCase<MessageIds, Options>>(
+    ...weirdIntersections.map<InvalidTestCase<MessageIds, Options>>(
       baseCode => {
         const code = baseCode.replace(/readonly /g, '');
         return {

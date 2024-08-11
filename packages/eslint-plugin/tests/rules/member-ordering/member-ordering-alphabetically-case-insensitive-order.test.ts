@@ -4,9 +4,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 const sortedCiWithoutGrouping: RunTests<MessageIds, Options> = {
   valid: [
