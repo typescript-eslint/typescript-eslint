@@ -578,6 +578,7 @@ function getRank(
       (type === 'readonly-field' ||
         type === 'field' ||
         type === 'method' ||
+        type === 'accessor' ||
         type === 'get' ||
         type === 'set')
     ) {
