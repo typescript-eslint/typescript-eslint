@@ -6,10 +6,11 @@ import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-che
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 

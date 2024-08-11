@@ -1,6 +1,6 @@
 {
   "name": "typescript-eslint",
-  "version": "7.16.1",
+  "version": "8.0.1",
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
@@ -18,7 +18,7 @@
   },
   "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -51,13 +51,10 @@
     "test": "jest --coverage --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "eslint": "^8.56.0"
-  },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "7.16.1",
-    "@typescript-eslint/parser": "7.16.1",
-    "@typescript-eslint/utils": "7.16.1"
+    "@typescript-eslint/eslint-plugin": "8.0.1",
+    "@typescript-eslint/parser": "8.0.1",
+    "@typescript-eslint/utils": "8.0.1"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",

@@ -10,9 +10,9 @@ export interface FunctionBase extends BaseNode {
   /**
    * Whether the function is async:
    * ```
-   * async function foo(...) {...}
-   * const x = async function (...) {...}
-   * const x = async (...) => {...}
+   * async function foo() {}
+   * const x = async function () {}
+   * const x = async () => {}
    * ```
    */
   async: boolean;
@@ -27,7 +27,7 @@ export interface FunctionBase extends BaseNode {
   /**
    * This is only `true` if and only if the node is a `TSDeclareFunction` and it has `declare`:
    * ```
-   * declare function foo(...) {...}
+   * declare function foo() {}
    * ```
    */
   declare: boolean;
@@ -42,8 +42,8 @@ export interface FunctionBase extends BaseNode {
   /**
    * Whether the function is a generator function:
    * ```
-   * function *foo(...) {...}
-   * const x = function *(...) {...}
+   * function *foo() {}
+   * const x = function *() {}
    * ```
    * This is always `false` for arrow functions as they cannot be generators.
    */

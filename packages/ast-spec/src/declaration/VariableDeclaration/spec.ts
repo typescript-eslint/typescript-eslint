@@ -14,7 +14,8 @@ interface LetOrConstOrVarDeclarationBase extends BaseNode {
   /**
    * The variables declared by this declaration.
    * Always non-empty.
-   * ```
+   * @example
+   * ```ts
    * let x;
    * let y, z;
    * ```
@@ -22,14 +23,16 @@ interface LetOrConstOrVarDeclarationBase extends BaseNode {
   declarations: LetOrConstOrVarDeclarator[];
   /**
    * Whether the declaration is `declare`d
-   * ```
+   * @example
+   * ```ts
    * declare const x = 1;
    * ```
    */
   declare: boolean;
   /**
    * The keyword used to declare the variable(s)
-   * ```
+   * @example
+   * ```ts
    * const x = 1;
    * let y = 2;
    * var z = 3;
@@ -45,9 +48,11 @@ export interface LetOrVarDeclaredDeclaration
   /**
    * In a `declare let` declaration, the declarators must not have definite assignment
    * assertions or initializers.
-   * ```
-   * declare let x: number;
-   * declare let y, z;
+   *
+   * @example
+   * ```ts
+   * using x = 1;
+   * using y =1, z = 2;
    * ```
    */
   declarations: VariableDeclaratorNoInit[];
@@ -94,7 +99,8 @@ interface UsingDeclarationBase extends BaseNode {
   declare: false;
   /**
    * The keyword used to declare the variable(s)
-   * ```
+   * @example
+   * ```ts
    * using x = 1;
    * await using y = 2;
    * ```
@@ -106,7 +112,8 @@ export interface UsingInNormalContextDeclaration extends UsingDeclarationBase {
   /**
    * The variables declared by this declaration.
    * Always non-empty.
-   * ```
+   * @example
+   * ```ts
    * using x = 1;
    * using y = 1, z = 2;
    * ```
@@ -118,7 +125,8 @@ export interface UsingInForOfDeclaration extends UsingDeclarationBase {
   /**
    * The variables declared by this declaration.
    * Always has exactly one element.
-   * ```
+   * @example
+   * ```ts
    * for (using x of y) {}
    * ```
    */

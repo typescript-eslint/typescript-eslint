@@ -1,4 +1,4 @@
-import type { InvalidTestCase } from '@typescript-eslint/utils/ts-eslint';
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
 import type {
   PreferOptionalChainMessageIds,
@@ -229,10 +229,6 @@ const RawBaseCases = (operator: '&&' | '||') =>
   ] as const;
 
 export const identity: MutateFn = c => c;
-/*
-eslint-disable-next-line eslint-plugin/prefer-message-ids, eslint-plugin/prefer-object-rule, eslint-plugin/require-meta-type, eslint-plugin/require-meta-schema --
-TODO - bug in hte rules - https://github.com/eslint-community/eslint-plugin-eslint-plugin/issues/455
-*/
 export const BaseCases: BaseCaseCreator = ({
   operator,
   mutateCode = identity,

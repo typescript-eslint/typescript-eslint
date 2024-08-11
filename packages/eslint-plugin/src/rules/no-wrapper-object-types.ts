@@ -20,6 +20,7 @@ export default createRule({
     type: 'problem',
     docs: {
       description: 'Disallow using confusing built-in primitive class wrappers',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

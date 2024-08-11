@@ -1,8 +1,5 @@
-import type {
-  RuleMetaData,
-  RuleMetaDataDocs,
-  RuleModule,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import * as fs from 'fs';
 import * as lz from 'lz-string';
 import * as path from 'path';
@@ -56,17 +53,9 @@ export function getUrlForRuleTest(ruleName: string): string {
   throw new Error(`Could not find test file for ${ruleName}.`);
 }
 
-export type RuleMetaDataWithDocs = RuleMetaData<string, readonly unknown[]> & {
-  docs: RuleMetaDataDocs<readonly unknown[]>;
-};
-
-export type RuleModuleWithMetaDocs = RuleModule<string, unknown[]> & {
-  meta: RuleMetaDataWithDocs;
-};
-
-export function isRuleModuleWithMetaDocs(
-  rule: RuleModule<string, unknown[]> | undefined,
-): rule is RuleModuleWithMetaDocs {
+export function isESLintPluginRuleModule(
+  rule: RuleModule<string, readonly unknown[]> | undefined,
+): rule is ESLintPluginRuleModule {
   return !!rule?.meta.docs;
 }
 

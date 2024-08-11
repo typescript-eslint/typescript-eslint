@@ -8,6 +8,7 @@ import {
   getConstrainedTypeAtLocation,
   getContextualType,
   getDeclaration,
+  getModifiers,
   getParserServices,
   isNullableType,
   isTypeFlagSet,
@@ -92,9 +93,13 @@ export default createRule<Options, MessageIds>({
           declarationType === type &&
           // `declare`s are never narrowed, so never skip them
           !(
-            services.tsNodeToESTreeNodeMap.get(declaration)
-              .parent as TSESTree.VariableDeclaration
-          ).declare
+            ts.isVariableDeclarationList(declaration.parent) &&
+            ts.isVariableStatement(declaration.parent.parent) &&
+            tsutils.includesModifier(
+              getModifiers(declaration.parent.parent),
+              ts.SyntaxKind.DeclareKeyword,
+            )
+          )
         ) {
           // possibly used before assigned, so just skip it
           // better to false negative and skip it, than false positive and fix to compile erroring code
