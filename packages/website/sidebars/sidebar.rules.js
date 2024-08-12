@@ -26,7 +26,7 @@ function createCategory(label, rules, additionalItems = []) {
 }
 
 module.exports = {
-  someSidebar: [
+  rulesSidebar: [
     'README',
     {
       ...createCategory('Rules', rules),

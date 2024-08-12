@@ -213,7 +213,12 @@ describe('RuleTester', () => {
           },
           {
             "code": "explicit filename shouldn't be overwritten",
-            "filename": "/set/in/the/test.ts",
+            "filename": "/some/path/that/totally/exists/set/in/the/test.ts",
+            "languageOptions": {
+              "parserOptions": {
+                "disallowAutomaticSingleRunInference": true,
+              },
+            },
           },
           {
             "code": "jsx should have the correct filename",
