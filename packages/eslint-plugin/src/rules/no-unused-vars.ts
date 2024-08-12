@@ -579,6 +579,19 @@ export default createRule<Options, MessageIds>({
         for (const unusedVar of unusedVars) {
           // Report the first declaration.
           if (unusedVar.defs.length > 0) {
+            const usedOnlyAsType = unusedVar.references.some(ref =>
+              referenceContainsTypeQuery(ref.identifier),
+            );
+
+            const isImportUsedOnlyAsType =
+              usedOnlyAsType &&
+              unusedVar.defs.some(
+                def => def.type === DefinitionType.ImportBinding,
+              );
+            if (isImportUsedOnlyAsType) {
+              continue;
+            }
+
             const writeReferences = unusedVar.references.filter(
               ref =>
                 ref.isWrite() &&
@@ -588,10 +601,6 @@ export default createRule<Options, MessageIds>({
             const id = writeReferences.length
               ? writeReferences[writeReferences.length - 1].identifier
               : unusedVar.identifiers[0];
-
-            const usedOnlyAsType = unusedVar.references.some(ref =>
-              referenceContainsTypeQuery(ref.identifier),
-            );
 
             const messageId = usedOnlyAsType ? 'usedOnlyAsType' : 'unusedVar';
 

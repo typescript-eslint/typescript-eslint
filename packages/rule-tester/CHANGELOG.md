@@ -1,3 +1,50 @@
+## 8.0.1 (2024-08-05)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# 8.0.0 (2024-07-31)
+
+
+### 🚀 Features
+
+- **typescript-estree:** rename automaticSingleRunInference to disallowAutomaticSingleRunInference
+
+- **rule-tester:** support multipass fixes
+
+- **typescript-estree:** stabilize EXPERIMENTAL_useProjectService as projectService
+
+- **rule-tester:** switched to flat config
+
+
+### 🩹 Fixes
+
+- **rule-tester:** set configType to eslintrc in Linter options
+
+- **rule-tester:** re-apply updates from main
+
+- **rule-tester:** provide Linter a cwd in its constructor
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alfred Ringstad
+- auvred
+- Brad Zacher
+- Christopher Aubut
+- Collin Bachman
+- James Henry
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- StyleShit
+- Victor Lin
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.18.0 (2024-07-29)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.
