@@ -14,7 +14,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('strict-enums-comparison', rule, {
+ruleTester.run('no-unsafe-enum-comparison', rule, {
   valid: [
     "'a' > 'b';",
     "'a' < 'b';",
