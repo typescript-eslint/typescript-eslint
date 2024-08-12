@@ -5746,7 +5746,6 @@ __metadata:
     source-map-support: ^0.5.21
     typescript: "*"
   peerDependencies:
-    "@eslint/eslintrc": ">=2"
     eslint: ^8.57.0 || ^9.0.0
   languageName: unknown
   linkType: soft
