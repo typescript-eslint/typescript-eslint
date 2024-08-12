@@ -122,9 +122,7 @@ function isTypeParameterRepeatedInAST(
 
     // If the type parameter is being used as a type argument, then we
     // know the type parameter is being reused and can't be reported.
-    if (
-      reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference
-    ) {
+    if (reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference) {
       const grandparent = skipConstituentsUpward(
         reference.identifier.parent.parent,
       );
