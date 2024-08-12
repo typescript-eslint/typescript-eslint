@@ -1,6 +1,7 @@
 import type { Reference } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import console from 'console';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -197,6 +198,8 @@ function collectTypeParameterUsageCounts(
     visitType(type, false);
   }
 
+  console.log([...typeUsages].map(([type, count]) => [type?.getName(), count]));
+
   function visitType(
     type: ts.Type | undefined,
     assumeMultipleUses: boolean,
@@ -322,7 +325,7 @@ function collectTypeParameterUsageCounts(
     foundIdentifierUsages.set(id, identifierCount + value);
   }
 
-  function incrementTypeUsages({ symbol }: ts.Type): number {
+  function incrementTypeUsages(symbol: ts.Type): number {
     const count = (typeUsages.get(symbol) ?? 0) + 1;
     typeUsages.set(symbol, count);
     return count;

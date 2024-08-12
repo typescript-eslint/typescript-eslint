@@ -300,14 +300,17 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return options;
       }
     `,
-    `
-      import * as ts from 'typescript';
-
-      declare function forEachReturnStatement<T>(
-        body: ts.Block,
-        visitor: (stmt: ts.ReturnStatement) => T,
-      ): T | undefined;
-    `,
+    {
+      only: true,
+      code: `
+        import * as ts from 'typescript';
+        
+        declare function forEachReturnStatement<T>(
+          body: ts.Block,
+          visitor: (stmt: ts.ReturnStatement) => T,
+        ): T | undefined;
+      `,
+    },
     `
       import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 
