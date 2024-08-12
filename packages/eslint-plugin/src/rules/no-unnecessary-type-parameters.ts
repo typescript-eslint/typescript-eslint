@@ -288,7 +288,9 @@ function collectTypeParameterUsageCounts(
     else if (tsutils.isConditionalType(type)) {
       visitType(type.checkType, assumeMultipleUses);
       visitType(type.extendsType, assumeMultipleUses);
-      type.aliasTypeArguments?.forEach(typeArgument => visitType(typeArgument, false));
+      type.aliasTypeArguments?.forEach(typeArgument =>
+        visitType(typeArgument, false),
+      );
     }
 
     // Catch-all: inferred object types like `{ K: V }`.
