@@ -1213,5 +1213,38 @@ ruleTester.run('no-unsafe-enum-comparison', rule, {
       `,
       errors: [{ messageId: 'mismatchedCondition' }],
     },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const foo: number & { __someBrand: void };
+        if (foo === Fruit.Apple) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+        declare const foo: string & {};
+        if (foo === Vegetable.Asparagus) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+        declare const foo: string & { __someBrand: void };
+        if (foo === Vegetable.Asparagus) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
   ],
 });
