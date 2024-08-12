@@ -17,7 +17,7 @@ export namespace SharedConfig {
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
   export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
-  export type GlobalVariableOption = boolean | GlobalVariableOptionBase;
+  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
 
   export interface GlobalsConfig {
     [name: string]: GlobalVariableOption;
@@ -187,9 +187,9 @@ export namespace FlatConfig {
      * @default "off"
      */
     reportUnusedDisableDirectives?:
-      | boolean
       | SharedConfig.Severity
-      | SharedConfig.SeverityString;
+      | SharedConfig.SeverityString
+      | boolean;
   }
 
   export interface LanguageOptions {

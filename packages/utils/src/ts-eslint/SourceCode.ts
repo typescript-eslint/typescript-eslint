@@ -48,7 +48,7 @@ declare class TokenStore {
   getFirstToken<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets the first token between two non-overlapping nodes.
    * @param left Node before the desired token range.
@@ -60,7 +60,7 @@ declare class TokenStore {
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets the first `count` tokens of the given node.
    * @param node The AST node.
@@ -91,7 +91,7 @@ declare class TokenStore {
   getLastToken<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets the last token between two non-overlapping nodes.
    * @param left Node before the desired token range.
@@ -103,7 +103,7 @@ declare class TokenStore {
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets the last `count` tokens of the given node.
    * @param node The AST node.
@@ -134,7 +134,7 @@ declare class TokenStore {
   getTokenAfter<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node | TSESTree.Token,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets the token that precedes a given node or token.
    * @param node The AST node or token.
@@ -144,7 +144,7 @@ declare class TokenStore {
   getTokenBefore<T extends SourceCode.CursorWithSkipOptions>(
     node: TSESTree.Node | TSESTree.Token,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets the token starting at the specified index.
    * @param offset Index of the start of the token's range.
@@ -154,7 +154,7 @@ declare class TokenStore {
   getTokenByRangeStart<T extends { includeComments?: boolean }>(
     offset: number,
     options?: T,
-  ): null | SourceCode.ReturnTypeFromOptions<T>;
+  ): SourceCode.ReturnTypeFromOptions<T> | null;
   /**
    * Gets all tokens that are related to the given node.
    * @param node The AST node.
@@ -184,7 +184,7 @@ declare class TokenStore {
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: number | T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
@@ -193,7 +193,7 @@ declare class TokenStore {
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: number | T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
@@ -205,7 +205,7 @@ declare class TokenStore {
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    options?: number | T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
@@ -256,7 +256,7 @@ declare class SourceCodeBase extends TokenStore {
    * @param index Range index of the desired node.
    * @returns The node if found or `null` if not found.
    */
-  getNodeByRangeIndex(index: number): null | TSESTree.Node;
+  getNodeByRangeIndex(index: number): TSESTree.Node | null;
   /**
    * Gets the source code for the given node.
    * @param node The AST node to get the text for.
@@ -335,7 +335,7 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * The scope of this source code.
    */
-  scopeManager: null | Scope.ScopeManager;
+  scopeManager: Scope.ScopeManager | null;
   /**
    * The original text source code. BOM was stripped from this text.
    */
@@ -377,11 +377,11 @@ namespace SourceCode {
     /**
      * The parser services.
      */
-    parserServices: null | ParserServices;
+    parserServices: ParserServices | null;
     /**
      * The scope of this source code.
      */
-    scopeManager: null | Scope.ScopeManager;
+    scopeManager: Scope.ScopeManager | null;
     /**
      * The source code text.
      */
@@ -389,7 +389,7 @@ namespace SourceCode {
     /**
      * The visitor keys to traverse AST.
      */
-    visitorKeys: null | VisitorKeys;
+    visitorKeys: VisitorKeys | null;
   }
 
   export type VisitorKeys = Parser.VisitorKeys;

@@ -590,6 +590,14 @@ export default tseslint.config(
           type: 'natural',
         },
       ],
+      'perfectionist/sort-union-types': [
+        'error',
+        {
+          order: 'asc',
+          ignoreCase: false,
+          type: 'natural',
+        },
+      ],
       'simple-import-sort/imports': 'off',
     },
   },

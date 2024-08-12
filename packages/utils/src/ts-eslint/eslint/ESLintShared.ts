@@ -177,7 +177,7 @@ export interface ESLintOptions<Config extends Linter.ConfigType> {
    * This is a map-like object. Those keys are plugin IDs and each value is implementation.
    * @default null
    */
-  plugins?: null | Record<string, Linter.Plugin>;
+  plugins?: Record<string, Linter.Plugin> | null;
 }
 
 export interface DeprecatedRuleInfo {

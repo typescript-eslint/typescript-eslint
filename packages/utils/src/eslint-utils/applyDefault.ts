@@ -9,7 +9,7 @@ import { deepMerge, isObjectNotArray } from './deepMerge';
  */
 function applyDefault<User extends readonly unknown[], Default extends User>(
   defaultOptions: Readonly<Default>,
-  userOptions: null | Readonly<User>,
+  userOptions: Readonly<User> | null,
 ): Default {
   // clone defaults
   const options = JSON.parse(

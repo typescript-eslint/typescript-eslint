@@ -238,7 +238,7 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4
    */
-  additionalProperties?: boolean | JSONSchema4 | undefined;
+  additionalProperties?: JSONSchema4 | boolean | undefined;
 
   /**
    * The `dependencies` keyword conditionally applies a sub-schema when a given
@@ -302,7 +302,7 @@ export interface JSONSchema4ArraySchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.6
    */
-  additionalItems?: boolean | JSONSchema4 | undefined;
+  additionalItems?: JSONSchema4 | boolean | undefined;
 
   /**
    * This attribute defines the allowed items in an instance array, and
@@ -361,20 +361,20 @@ export interface JSONSchema4StringSchema extends JSONSchema4Base {
    * to throw during schema compilation
    */
   format?:
-    | 'date-time'
     | 'date'
+    | 'date-time'
     | 'email'
     | 'hostname'
     | 'ipv4'
     | 'ipv6'
-    | 'json-pointer-uri-fragment'
     | 'json-pointer'
+    | 'json-pointer-uri-fragment'
     | 'regex'
     | 'relative-json-pointer'
     | 'time'
+    | 'uri'
     | 'uri-reference'
     | 'uri-template'
-    | 'uri'
     | 'url'
     | 'uuid'
     | undefined;

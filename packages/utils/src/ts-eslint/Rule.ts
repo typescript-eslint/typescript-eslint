@@ -116,7 +116,7 @@ export interface SuggestionReportDescriptor<MessageIds extends string>
 
 export type ReportFixFunction = (
   fixer: RuleFixer,
-) => IterableIterator<RuleFix> | null | readonly RuleFix[] | RuleFix;
+) => IterableIterator<RuleFix> | RuleFix | null | readonly RuleFix[];
 
 export type ReportSuggestionArray<MessageIds extends string> =
   SuggestionReportDescriptor<MessageIds>[];
@@ -131,7 +131,7 @@ interface ReportDescriptorBase<MessageIds extends string> {
   /**
    * The fixer function.
    */
-  readonly fix?: null | ReportFixFunction;
+  readonly fix?: ReportFixFunction | null;
   /**
    * The messageId which is being reported.
    */
@@ -145,7 +145,7 @@ interface ReportDescriptorWithSuggestion<MessageIds extends string>
   /**
    * 6.7's Suggestions API
    */
-  readonly suggest?: null | Readonly<ReportSuggestionArray<MessageIds>>;
+  readonly suggest?: Readonly<ReportSuggestionArray<MessageIds>> | null;
 }
 
 interface ReportDescriptorNodeOptionalLoc {

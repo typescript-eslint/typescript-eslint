@@ -183,7 +183,7 @@ namespace Linter {
     /**
      * Adds reported errors for unused `eslint-disable` directives.
      */
-    reportUnusedDisableDirectives?: boolean | SeverityString;
+    reportUnusedDisableDirectives?: SeverityString | boolean;
   }
 
   export interface FixOptions extends VerifyOptions {

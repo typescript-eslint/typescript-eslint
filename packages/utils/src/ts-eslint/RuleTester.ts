@@ -156,7 +156,7 @@ interface RunTests<
 > {
   // RuleTester.run also accepts strings for valid cases
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
-  readonly valid: readonly (string | ValidTestCase<Options>)[];
+  readonly valid: readonly (ValidTestCase<Options> | string)[];
 }
 
 /**

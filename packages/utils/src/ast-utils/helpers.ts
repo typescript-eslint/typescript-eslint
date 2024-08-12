@@ -8,14 +8,14 @@ type ObjectEntries<BaseType> = ObjectEntry<BaseType>[];
 export const isNodeOfType =
   <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>
   (
-    node: null | TSESTree.Node | undefined,
+    node: TSESTree.Node | null | undefined,
   ): node is Extract<TSESTree.Node, { type: NodeType }> =>
     node?.type === nodeType;
 
 export const isNodeOfTypes =
   <NodeTypes extends readonly AST_NODE_TYPES[]>(nodeTypes: NodeTypes) =>
   (
-    node: null | TSESTree.Node | undefined,
+    node: TSESTree.Node | null | undefined,
   ): node is Extract<TSESTree.Node, { type: NodeTypes[number] }> =>
     !!node && nodeTypes.includes(node.type);
 
@@ -27,12 +27,12 @@ export const isNodeOfTypeWithConditions = <
   nodeType: NodeType,
   conditions: Conditions,
 ): ((
-  node: null | TSESTree.Node | undefined,
+  node: TSESTree.Node | null | undefined,
 ) => node is Conditions & ExtractedNode) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Node>;
 
   return (
-    node: null | TSESTree.Node | undefined,
+    node: TSESTree.Node | null | undefined,
   ): node is Conditions & ExtractedNode =>
     node?.type === nodeType &&
     entries.every(([key, value]) => node[key as keyof TSESTree.Node] === value);
@@ -48,12 +48,12 @@ export const isTokenOfTypeWithConditions = <
   tokenType: TokenType,
   conditions: Conditions,
 ): ((
-  token: null | TSESTree.Token | undefined,
+  token: TSESTree.Token | null | undefined,
 ) => token is Conditions & ExtractedToken) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
-    token: null | TSESTree.Token | undefined,
+    token: TSESTree.Token | null | undefined,
   ): token is Conditions & ExtractedToken =>
     token?.type === tokenType &&
     entries.every(
@@ -70,7 +70,7 @@ export const isNotTokenOfTypeWithConditions =
     tokenType: TokenType,
     conditions: Conditions,
   ): ((
-    token: null | TSESTree.Token | undefined,
+    token: TSESTree.Token | null | undefined,
   ) => token is Exclude<TSESTree.Token, Conditions & ExtractedToken>) =>
   (token): token is Exclude<TSESTree.Token, Conditions & ExtractedToken> =>
     !isTokenOfTypeWithConditions(tokenType, conditions)(token);

@@ -10,8 +10,8 @@ import type { TSESTree } from '../../ts-estree';
  */
 const findVariable = eslintUtils.findVariable as (
   initialScope: TSESLint.Scope.Scope,
-  nameOrNode: string | TSESTree.Identifier,
-) => null | TSESLint.Scope.Variable;
+  nameOrNode: TSESTree.Identifier | string,
+) => TSESLint.Scope.Variable | null;
 
 /**
  * Get the innermost scope which contains a given node.
