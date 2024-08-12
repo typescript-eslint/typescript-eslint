@@ -16,12 +16,12 @@ export default createRule({
   defaultOptions: [],
   meta: {
     docs: {
-      description: 'Disallow type parameters that only appear once',
+      description: 'Disallow type parameters that aren\'t used multiple times',
       requiresTypeChecking: true,
       recommended: 'strict',
     },
     messages: {
-      sole: 'Type parameter {{name}} is used only once in the {{descriptor}} signature.',
+      sole: 'Type parameter {{name}} is {{uses}} in the {{descriptor}} signature.',
     },
     schema: [],
     type: 'problem',
@@ -42,7 +42,7 @@ export default createRule({
         const esTypeParameter =
           parserServices.tsNodeToESTreeNodeMap.get<TSESTree.TSTypeParameter>(
             typeParameter,
-          );
+        );
         const scope = context.sourceCode.getScope(esTypeParameter);
 
         // Quick path: if the type parameter is used multiple times in the AST,
@@ -61,6 +61,7 @@ export default createRule({
         context.report({
           data: {
             descriptor,
+            uses: identifierCounts === 1 ? 'never used' : 'used only once',
             name: typeParameter.name.text,
           },
           node: esTypeParameter,
