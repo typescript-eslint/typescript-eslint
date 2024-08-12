@@ -3398,10 +3398,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:*, @eslint/js@npm:^8.57.0":
-  version: 8.57.0
-  resolution: "@eslint/js@npm:8.57.0"
-  checksum: 315dc65b0e9893e2bff139bddace7ea601ad77ed47b4550e73da8c9c2d2766c7a575c3cddf17ef85b8fd6a36ff34f91729d0dcca56e73ca887c10df91a41b0bb
+"@eslint/js@npm:*":
+  version: 10.0.0
+  resolution: "@eslint/js@npm:10.0.0"
+  checksum: 3f8a040c4bd69faa9d5b77ac009234833ddcc44ca1c6cf8e3ad556d47eecd65cfb6dc4514881b097460e0426bbbc0ae6992cc4dba7781a7724b9cbeec0144e62
   languageName: node
   linkType: hard
 
@@ -3409,6 +3409,13 @@ __metadata:
   version: 9.3.0
   resolution: "@eslint/js@npm:9.3.0"
   checksum: 5af317c8bcfef660efc17624b825c71bac16770f8866bfdc2922e1fcc2010af96e4f896e91724b81550e5dba6db6983c221b5be9a1294c9e727dee9ada15c9f8
+  languageName: node
+  linkType: hard
+
+"@eslint/js@npm:^8.57.0":
+  version: 8.57.0
+  resolution: "@eslint/js@npm:8.57.0"
+  checksum: 315dc65b0e9893e2bff139bddace7ea601ad77ed47b4550e73da8c9c2d2766c7a575c3cddf17ef85b8fd6a36ff34f91729d0dcca56e73ca887c10df91a41b0bb
   languageName: node
   linkType: hard
 
@@ -5888,7 +5895,7 @@ __metadata:
     execa: 7.2.0
     glob: ^10.3.12
     globals: ^15.0.0
-    husky: ^9.0.0
+    husky: ^9.1.4
     jest: 29.7.0
     jest-specific-snapshot: ^8.0.0
     knip: ^5.9.4
@@ -7468,8 +7475,8 @@ __metadata:
   linkType: hard
 
 "chai@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "chai@npm:4.4.1"
+  version: 4.5.0
+  resolution: "chai@npm:4.5.0"
   dependencies:
     assertion-error: ^1.1.0
     check-error: ^1.0.3
@@ -7477,8 +7484,8 @@ __metadata:
     get-func-name: ^2.0.2
     loupe: ^2.3.6
     pathval: ^1.1.1
-    type-detect: ^4.0.8
-  checksum: 9ab84f36eb8e0b280c56c6c21ca4da5933132cd8a0c89c384f1497f77953640db0bc151edd47f81748240a9fab57b78f7d925edfeedc8e8fc98016d71f40c36e
+    type-detect: ^4.1.0
+  checksum: 70e5a8418a39e577e66a441cc0ce4f71fd551a650a71de30dd4e3e31e75ed1f5aa7119cf4baf4a2cb5e85c0c6befdb4d8a05811fad8738c1a6f3aa6a23803821
   languageName: node
   linkType: hard
 
@@ -11836,12 +11843,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.0.0":
-  version: 9.1.1
-  resolution: "husky@npm:9.1.1"
+"husky@npm:^9.1.4":
+  version: 9.1.4
+  resolution: "husky@npm:9.1.4"
   bin:
     husky: bin.js
-  checksum: d907eee996353b0b6da8e40b6cf6c1274d57470cd984f028a8baf3e17b7bbab57d796345d552971c6629521685297a1ee093128e4bd45c8fc1867c0dbf38086b
+  checksum: 7608a6dfac264876a2ff37f2db8520e0f9f0ea2b810a9ca151548327e9eca0b7ed58a63e0a208d20d3f43b191d8f111edcab46c3c8132c95e10ef7bd7115ee9b
   languageName: node
   linkType: hard
 
@@ -19297,10 +19304,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-detect@npm:4.0.8, type-detect@npm:^4.0.0, type-detect@npm:^4.0.8":
+"type-detect@npm:4.0.8":
   version: 4.0.8
   resolution: "type-detect@npm:4.0.8"
   checksum: 62b5628bff67c0eb0b66afa371bd73e230399a8d2ad30d852716efcc4656a7516904570cd8631a49a3ce57c10225adf5d0cbdcb47f6b0255fe6557c453925a15
+  languageName: node
+  linkType: hard
+
+"type-detect@npm:^4.0.0, type-detect@npm:^4.0.8, type-detect@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "type-detect@npm:4.1.0"
+  checksum: 3b32f873cd02bc7001b00a61502b7ddc4b49278aabe68d652f732e1b5d768c072de0bc734b427abf59d0520a5f19a2e07309ab921ef02018fa1cb4af155cdb37
   languageName: node
   linkType: hard
 

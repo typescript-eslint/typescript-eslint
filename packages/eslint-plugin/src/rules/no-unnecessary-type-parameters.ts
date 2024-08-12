@@ -16,7 +16,7 @@ export default createRule({
   defaultOptions: [],
   meta: {
     docs: {
-      description: 'Disallow type parameters that aren\'t used multiple times',
+      description: "Disallow type parameters that aren't used multiple times",
       requiresTypeChecking: true,
       recommended: 'strict',
     },
@@ -42,12 +42,18 @@ export default createRule({
         const esTypeParameter =
           parserServices.tsNodeToESTreeNodeMap.get<TSESTree.TSTypeParameter>(
             typeParameter,
-        );
+          );
         const scope = context.sourceCode.getScope(esTypeParameter);
 
         // Quick path: if the type parameter is used multiple times in the AST,
         // we don't need to dip into types to know it's repeated.
-        if (isTypeParameterRepeatedInAST(esTypeParameter, scope.references)) {
+        if (
+          isTypeParameterRepeatedInAST(
+            esTypeParameter,
+            scope.references,
+            node.body?.range[0] ?? node.returnType?.range[1],
+          )
+        ) {
           continue;
         }
 
@@ -97,15 +103,21 @@ export default createRule({
 function isTypeParameterRepeatedInAST(
   node: TSESTree.TSTypeParameter,
   references: Reference[],
+  startOfBody = Infinity,
 ): boolean {
   let total = 0;
 
   for (const reference of references) {
-    // References inside the type parameter's definition don't count.
+    // References inside the type parameter's definition don't count...
     if (
       reference.identifier.range[0] < node.range[1] &&
       reference.identifier.range[1] > node.range[0]
     ) {
+      continue;
+    }
+
+    // ...nor references that are outside the declaring signature.
+    if (reference.identifier.range[0] > startOfBody) {
       continue;
     }
 

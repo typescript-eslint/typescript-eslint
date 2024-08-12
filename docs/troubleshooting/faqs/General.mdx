@@ -140,6 +140,53 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
 Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-assignment`](/rules/no-unsafe-assignment), and [`no-unsafe-call`](/rules/no-unsafe-call) are often impacted.
 
+## How does typescript-eslint compare to native-speed linters?
+
+"Native-speed" linters such as [Biome linter](https://biomejs.dev/linter), [Deno linter](https://docs.deno.com/runtime/manual/tools/linter), and [oxlint](https://oxc.rs/docs/guide/usage/linter.html) run in very fast languages such as Go or Rust, and so can generally run significantly faster than ESLint in non-type-aware-linting.
+They can also be easier to configure because they don't need to support the full ecosystem and legacy trail of ESLint.
+
+However, until they support [typed linting](../../getting-started/Typed_Linting.mdx), they aren't a full replacement for typescript-eslint.
+If you plan on using them, we recommend "dual linting": using those linters for what they support, then adding in ESLint for typed linting in a parallel or second step.
+Our `*-type-checked-only` [Shared Configs](../../users/Shared_Configurations.mdx) will enable only type-checked rules in your ESLint config.
+
+For example, the following config enables only the recommended config's type-checked rules with [`recommendedTypeCheckedOnly`](../../users/Shared_Configurations.mdx#recommended-type-checked-only):
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(...tseslint.configs.recommendedTypeCheckedOnly, {
+  languageOptions: {
+    parserOptions: {
+      project: true,
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+});
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+module.exports = {
+  extends: ['plugin:@typescript-eslint/recommended-type-checked-only'],
+  parserOptions: {
+    project: true,
+    tsconfigRootDir: __dirname,
+  },
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+For example, [oxlint's Integration > ESLint documentation](https://oxc.rs/docs/guide/usage/linter#eslint) describes how to turn off ESLint rules that are already supported by oxlint.
+
 ## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
 
 If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.

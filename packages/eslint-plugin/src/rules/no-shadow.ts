@@ -407,8 +407,8 @@ export default createRule<Options, MessageIds>({
             return true;
           }
           if (
-            (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
-              node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
+            (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+              node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
             isInRange(node.parent.parent.right, location)
           ) {
             return true;
