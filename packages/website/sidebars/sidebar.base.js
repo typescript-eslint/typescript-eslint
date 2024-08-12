@@ -88,7 +88,7 @@ module.exports = {
     },
     {
       collapsible: false,
-      items: ['developers/custom-rules'],
+      items: ['developers/custom-rules', 'developers/eslint-plugins'],
       label: 'Developers',
       link: {
         id: 'developers',

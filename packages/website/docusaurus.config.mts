@@ -8,6 +8,7 @@ import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-com
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
 
+import { version } from './package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
@@ -90,9 +91,8 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       },
       {
         position: 'right',
-        href: `/blog/announcing-typescript-eslint-v8-beta`,
-        // TODO: Move back to package.json's version shortly after v8 launches
-        label: `v8`,
+        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
+        label: `v${version}`,
       },
       {
         to: 'play',
