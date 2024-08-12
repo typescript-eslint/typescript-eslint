@@ -16,8 +16,18 @@ export namespace SharedConfig {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
-  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
+  export type GlobalVariableOptionBase =
+    | 'off'
+    | 'readonly'
+    | 'writable'
+    | /** @deprecated use `'writable'` */ 'writeable'
+    | /** @deprecated use `'readonly'` */ 'readable';
+  export type GlobalVariableOptionBoolean =
+    | /** @deprecated use `'writable'` */ true
+    | /** @deprecated use `'readonly'` */ false;
+  export type GlobalVariableOption =
+    | GlobalVariableOptionBase
+    | GlobalVariableOptionBoolean;
 
   export interface GlobalsConfig {
     [name: string]: GlobalVariableOption;
@@ -199,7 +209,7 @@ export namespace FlatConfig {
      * Set to `"latest"` for the most recent supported version.
      * @default "latest"
      */
-    ecmaVersion?: EcmaVersion;
+    ecmaVersion?: EcmaVersion | undefined;
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
@@ -212,7 +222,7 @@ export namespace FlatConfig {
      * require('espree')
      * ```
      */
-    parser?: Parser;
+    parser?: Parser | undefined;
     /**
      * An object specifying additional options that are passed directly to the parser.
      * The available options are parser-dependent.
@@ -229,18 +239,8 @@ export namespace FlatConfig {
      * "commonjs"
      * ```
      */
-    sourceType?: SourceType;
+    sourceType?: SourceType | undefined;
   }
-
-  // The function form is undocumented but allowed:
-  // https://github.com/eslint/eslint/issues/18118
-  //
-  // We have to support it as well because the DefinitelyTyped configs define it
-  // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/e26919eb3426f5ba85fed394c90c39efb217037a/types/eslint/index.d.ts#L1208-L1223
-  //
-  // If we don't then users can't use shareable configs defined using the DT types
-  // https://github.com/typescript-eslint/typescript-eslint/issues/8467
-  export type FileSpec = string | ((filePath: string) => boolean);
 
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
@@ -254,15 +254,15 @@ export namespace FlatConfig {
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
-      | FileSpec
+      | string
       // yes, a single layer of array nesting is supported
-      | FileSpec[]
+      | string[]
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
      * If not specified, the configuration object applies to all files matched by files.
      */
-    ignores?: FileSpec[];
+    ignores?: string[];
     /**
      * An object containing settings related to how JavaScript is configured for linting.
      */

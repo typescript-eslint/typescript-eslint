@@ -61,13 +61,24 @@ const analyzeAndChainOperand: OperandAnalyzer = (
   chain,
 ) => {
   switch (operand.comparisonType) {
-    case NullishComparisonType.Boolean:
+    case NullishComparisonType.Boolean: {
+      const nextOperand = chain.at(index + 1);
+      if (
+        nextOperand?.comparisonType ===
+          NullishComparisonType.NotStrictEqualNull &&
+        operand.comparedName.type === AST_NODE_TYPES.Identifier
+      ) {
+        return null;
+      }
+      return [operand];
+    }
+
     case NullishComparisonType.NotEqualNullOrUndefined:
       return [operand];
 
     case NullishComparisonType.NotStrictEqualNull: {
       // handle `x !== null && x !== undefined`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualUndefined &&
@@ -94,7 +105,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.NotStrictEqualUndefined: {
       // handle `x !== undefined && x !== null`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.NotStrictEqualNull &&
@@ -132,7 +143,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.StrictEqualNull: {
       // handle `x === null || x === undefined`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType ===
           NullishComparisonType.StrictEqualUndefined &&
@@ -159,7 +170,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
 
     case NullishComparisonType.StrictEqualUndefined: {
       // handle `x === undefined || x === null`
-      const nextOperand = chain[index + 1] as ValidOperand | undefined;
+      const nextOperand = chain.at(index + 1);
       if (
         nextOperand?.comparisonType === NullishComparisonType.StrictEqualNull &&
         compareNodes(operand.comparedName, nextOperand.comparedName) ===
@@ -208,50 +219,44 @@ function getFixer(
   ) {
     // user has opted-in to the unsafe behavior
     useSuggestionFixer = false;
+  }
+  // optional chain specifically will union `undefined` into the final type
+  // so we need to make sure that there is at least one operand that includes
+  // `undefined`, or else we're going to change the final type - which is
+  // unsafe and might cause downstream type errors.
+  else if (
+    lastOperand.comparisonType === NullishComparisonType.EqualNullOrUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotEqualNullOrUndefined ||
+    lastOperand.comparisonType === NullishComparisonType.StrictEqualUndefined ||
+    lastOperand.comparisonType ===
+      NullishComparisonType.NotStrictEqualUndefined ||
+    (operator === '||' &&
+      lastOperand.comparisonType === NullishComparisonType.NotBoolean)
+  ) {
+    // we know the last operand is an equality check - so the change in types
+    // DOES NOT matter and will not change the runtime result or cause a type
+    // check error
+    useSuggestionFixer = false;
   } else {
-    // optional chain specifically will union `undefined` into the final type
-    // so we need to make sure that there is at least one operand that includes
-    // `undefined`, or else we're going to change the final type - which is
-    // unsafe and might cause downstream type errors.
+    useSuggestionFixer = true;
 
-    if (
-      lastOperand.comparisonType ===
-        NullishComparisonType.EqualNullOrUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.NotEqualNullOrUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.StrictEqualUndefined ||
-      lastOperand.comparisonType ===
-        NullishComparisonType.NotStrictEqualUndefined ||
-      (operator === '||' &&
-        lastOperand.comparisonType === NullishComparisonType.NotBoolean)
-    ) {
-      // we know the last operand is an equality check - so the change in types
-      // DOES NOT matter and will not change the runtime result or cause a type
-      // check error
-      useSuggestionFixer = false;
-    } else {
-      useSuggestionFixer = true;
-
-      for (const operand of chain) {
-        if (
-          includesType(parserServices, operand.node, ts.TypeFlags.Undefined)
-        ) {
-          useSuggestionFixer = false;
-          break;
-        }
+    for (const operand of chain) {
+      if (includesType(parserServices, operand.node, ts.TypeFlags.Undefined)) {
+        useSuggestionFixer = false;
+        break;
       }
-
-      // TODO - we could further reduce the false-positive rate of this check by
-      //        checking for cases where the change in types don't matter like
-      //        the test location of an if/while/etc statement.
-      //        but it's quite complex to do this without false-negatives, so
-      //        for now we'll just be over-eager with our matching.
-      //
-      //        it's MUCH better to false-positive here and only provide a
-      //        suggestion fixer, rather than false-negative and autofix to
-      //        broken code.
     }
+
+    // TODO - we could further reduce the false-positive rate of this check by
+    //        checking for cases where the change in types don't matter like
+    //        the test location of an if/while/etc statement.
+    //        but it's quite complex to do this without false-negatives, so
+    //        for now we'll just be over-eager with our matching.
+    //
+    //        it's MUCH better to false-positive here and only provide a
+    //        suggestion fixer, rather than false-negative and autofix to
+    //        broken code.
   }
 
   // In its most naive form we could just slap `?.` for every single part of the

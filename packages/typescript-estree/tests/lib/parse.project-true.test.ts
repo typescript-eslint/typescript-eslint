@@ -35,7 +35,7 @@ describe('parseAndGenerateServices', () => {
       });
     });
 
-    if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
       it('throws an error when a parent project does not exist', () => {
         expect(() =>
           parser.parseAndGenerateServices('const a = true', {

@@ -109,7 +109,6 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: `Enforce that eslint-plugin test snippets are correctly formatted`,
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -426,9 +425,7 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isNoFormatTemplateTag(
-      tag: TSESTree.LeftHandSideExpression,
-    ): boolean {
+    function isNoFormatTemplateTag(tag: TSESTree.Expression): boolean {
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 

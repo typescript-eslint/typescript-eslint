@@ -100,7 +100,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
   return output.join('\n').trim() + '\n';
 }
 
-const linter = new Linter();
+const linter = new Linter({ configType: 'eslintrc' });
 linter.defineParser('@typescript-eslint/parser', tseslintParser);
 
 const eslintOutputSnapshotFolder = path.resolve(
@@ -125,17 +125,84 @@ describe('Validating rule docs', () => {
     unistUtilVisit = await dynamicImport('unist-util-visit');
   });
 
+  const oldStylisticRules = [
+    'block-spacing.md',
+    'brace-style.md',
+    'camelcase.md',
+    'comma-dangle.md',
+    'comma-spacing.md',
+    'func-call-spacing.md',
+    'indent.md',
+    'key-spacing.md',
+    'keyword-spacing.md',
+    'lines-around-comment.md',
+    'lines-between-class-members.md',
+    'member-delimiter-style.md',
+    'no-extra-parens.md',
+    'no-extra-semi.md',
+    'object-curly-spacing.md',
+    'padding-line-between-statements.md',
+    'quotes.md',
+    'semi.md',
+    'space-before-blocks.md',
+    'space-before-function-paren.md',
+    'space-infix-ops.md',
+    'type-annotation-spacing.md',
+  ];
+
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
-    'camelcase.md',
+    'ban-types.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'no-useless-template-literals.mdx',
+    'sort-type-union-intersection-members.mdx',
+    ...oldStylisticRules,
   ]);
 
-  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+  const rulesWithComplexOptions = new Set([
+    'array-type',
+    'member-ordering',
+    'no-restricted-types',
+  ]);
+
+  // TODO: whittle this list down to as few as possible
+  const rulesWithComplexOptionHeadings = new Set([
+    'ban-ts-comment',
+    'ban-types',
+    'consistent-type-exports',
+    'consistent-type-imports',
+    'explicit-function-return-type',
+    'explicit-member-accessibility',
+    'explicit-module-boundary-types',
+    'no-base-to-string',
+    'no-confusing-void-expression',
+    'no-duplicate-type-constituents',
+    'no-empty-interface',
+    'no-empty-object-type',
+    'no-explicit-any',
+    'no-floating-promises',
+    'no-inferrable-types',
+    'no-invalid-void-type',
+    'no-meaningless-void-operator',
+    'no-misused-promises',
+    'no-type-alias',
+    'no-unnecessary-condition',
+    'no-unnecessary-type-assertion',
+    'parameter-properties',
+    'prefer-nullish-coalescing',
+    'prefer-optional-chain',
+    'prefer-string-starts-ends-with',
+    'promise-function-async',
+    'restrict-template-expressions',
+    'strict-boolean-expressions',
+    'switch-exhaustiveness-check',
+    'switch-exhaustiveness-check',
+    'unbound-method',
+  ]);
 
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
@@ -235,25 +302,57 @@ describe('Validating rule docs', () => {
       if (
         !rulesWithComplexOptions.has(ruleName) &&
         Array.isArray(schema) &&
-        !rule.meta.docs?.extendsBaseRule &&
-        rule.meta.type !== 'layout'
+        !rule.meta.docs?.extendsBaseRule
       ) {
-        test('each rule option should be mentioned in a heading', () => {
-          const headingTextAfterOptions = headings
-            .slice(headings.findIndex(header => header.text === 'Options'))
-            .map(header => header.text)
-            .join('\n');
+        describe('rule options', () => {
+          const headingsAfterOptions = headings.slice(
+            headings.findIndex(header => header.text === 'Options'),
+          );
 
           for (const schemaItem of schema) {
             if (schemaItem.type === 'object') {
               for (const property of Object.keys(
                 schemaItem.properties as object,
               )) {
-                if (!headingTextAfterOptions.includes(`\`${property}\``)) {
-                  throw new Error(
-                    `At least one header should include \`${property}\`.`,
+                test(property, () => {
+                  const correspondingHeadingIndex =
+                    headingsAfterOptions.findIndex(heading =>
+                      heading.text.includes(`\`${property}\``),
+                    );
+
+                  if (correspondingHeadingIndex === -1) {
+                    throw new Error(
+                      `At least one header should include \`${property}\`.`,
+                    );
+                  }
+
+                  if (rulesWithComplexOptionHeadings.has(ruleName)) {
+                    return;
+                  }
+
+                  const relevantChildren = tokens.slice(
+                    tokens.indexOf(
+                      headingsAfterOptions[correspondingHeadingIndex],
+                    ),
+                    tokens.indexOf(
+                      headingsAfterOptions[correspondingHeadingIndex + 1],
+                    ),
                   );
-                }
+
+                  for (const rawTab of [
+                    `<TabItem value="✅ Correct">`,
+                    `<TabItem value="❌ Incorrect">`,
+                  ]) {
+                    if (
+                      !relevantChildren.some(
+                        child =>
+                          child.type === 'html' && child.raw.includes(rawTab),
+                      )
+                    ) {
+                      throw new Error(`Missing option example tab: ${rawTab}`);
+                    }
+                  }
+                });
               }
             }
           }
@@ -367,6 +466,7 @@ describe('Validating rule docs', () => {
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
+                disallowAutomaticSingleRunInference: true,
                 tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
               },
@@ -448,7 +548,7 @@ describe('Validating rule metadata', () => {
     describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
-        // there is no way to access this field but its used only in generation of docs url
+        // there is no way to access this field but it's used only in generation of docs url
         expect(rule.meta.docs?.url).toBe(
           `https://typescript-eslint.io/rules/${ruleName}`,
         );

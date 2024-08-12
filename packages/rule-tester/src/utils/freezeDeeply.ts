@@ -7,7 +7,7 @@ export function freezeDeeply(x: unknown): void {
       x.forEach(freezeDeeply);
     } else {
       for (const key in x) {
-        if (key !== 'parent' && Object.prototype.hasOwnProperty.call(x, key)) {
+        if (key !== 'parent' && Object.hasOwn(x, key)) {
           freezeDeeply((x as Record<string, unknown>)[key]);
         }
       }

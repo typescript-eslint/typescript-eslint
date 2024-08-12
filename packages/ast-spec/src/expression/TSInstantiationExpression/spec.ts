@@ -7,7 +7,4 @@ export interface TSInstantiationExpression extends BaseNode {
   type: AST_NODE_TYPES.TSInstantiationExpression;
   expression: Expression;
   typeArguments: TSTypeParameterInstantiation;
-
-  /** @deprecated Use {@link `typeArguments`} instead. */
-  typeParameters?: TSTypeParameterInstantiation;
 }

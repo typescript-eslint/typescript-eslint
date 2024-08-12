@@ -6,15 +6,15 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('strict-enums-comparison', rule, {
+ruleTester.run('no-unsafe-enum-comparison', rule, {
   valid: [
     "'a' > 'b';",
     "'a' < 'b';",
@@ -409,7 +409,23 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple === 0;
       `,
-      errors: [{ messageId: 'mismatchedCondition' }],
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Fruit {
+          Apple = 0,
+          Banana = 'banana',
+        }
+        Fruit.Apple === Fruit.Apple;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -584,10 +600,126 @@ ruleTester.run('strict-enums-comparison', rule, {
         mixed === 1;
       `,
       errors: [
-        { messageId: 'mismatchedCondition' },
-        { messageId: 'mismatchedCondition' },
-        { messageId: 'mismatchedCondition' },
-        { messageId: 'mismatchedCondition' },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === Str.A;
+        num === 1;
+        mixed === 'a';
+        mixed === 1;
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === 'a';
+        num === Num.B;
+        mixed === 'a';
+        mixed === 1;
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === 'a';
+        num === 1;
+        mixed === Mixed.A;
+        mixed === 1;
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+        }
+        enum Num {
+          B = 1,
+        }
+        enum Mixed {
+          A = 'a',
+          B = 1,
+        }
+
+        declare const str: Str;
+        declare const num: Num;
+        declare const mixed: Mixed;
+
+        // following are all errors because the value might be an enum value
+        str === 'a';
+        num === 1;
+        mixed === 'a';
+        mixed === Mixed.B;
+      `,
+            },
+          ],
+        },
       ],
     },
     {

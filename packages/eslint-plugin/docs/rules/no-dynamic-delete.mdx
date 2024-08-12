@@ -11,9 +11,13 @@ import TabItem from '@theme/TabItem';
 
 Deleting dynamically computed keys can be dangerous and in some cases not well optimized.
 Using the `delete` operator on keys that aren't runtime constants could be a sign that you're using the wrong data structures.
-Using `Object`s with added and removed keys can cause occasional edge case bugs, such as if a key is named `"hasOwnProperty"`.
+Consider using a `Map` or `Set` if you’re using an object as a key-value collection.
 
-> Consider using a `Map` or `Set` if you’re storing collections of objects.
+Dynamically adding and removing keys from objects can cause occasional edge case bugs. For example, some objects use "hidden properties" (such as `__data`) for private storage, and deleting them can break the object's internal state. Furthermore, [`delete`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete) cannot remove inherited properties or non-configurable properties. This makes it interact badly with anything more complicated than a plain object:
+
+- The [`length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length) of an array is non-configurable, and deleting it is a runtime error.
+- You can't remove properties on the prototype of an object, such as deleting methods from class instances.
+- Sometimes, `delete` only removes the own property, leaving the inherited property intact. For example, deleting the [`name`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name) property of a function only removes the own property, but there's also a `Function.prototype.name` property that remains.
 
 ## Examples
 
@@ -21,10 +25,6 @@ Using `Object`s with added and removed keys can cause occasional edge case bugs,
 <TabItem value="❌ Incorrect">
 
 ```ts
-// Can be replaced with the constant equivalents, such as container.aaa
-delete container['aaa'];
-delete container['Infinity'];
-
 // Dynamic, difficult-to-reason-about lookups
 const name = 'name';
 delete container[name];
@@ -44,7 +44,12 @@ delete container.aaa;
 
 // Constants that must be accessed by []
 delete container[7];
-delete container['-Infinity'];
+delete container[-1];
+
+// All strings are allowed, to be compatible with the noPropertyAccessFromIndexSignature
+// TS compiler option
+delete container['aaa'];
+delete container['Infinity'];
 ```
 
 </TabItem>

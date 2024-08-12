@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/explicit-function-return-type';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-function-return-type', rule, {
   valid: [
@@ -185,45 +183,55 @@ class App {
     {
       code: 'const foo = <button onClick={() => {}} />;',
       options: [{ allowTypedFunctionExpressions: true }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
     {
       code: 'const foo = <button on={{ click: () => {} }} />;',
       options: [{ allowTypedFunctionExpressions: true }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
     {
       code: 'const foo = <Bar>{() => {}}</Bar>;',
       options: [{ allowTypedFunctionExpressions: true }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
     {
       code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
       options: [{ allowTypedFunctionExpressions: true }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
     {
       code: 'const foo = <button {...{ onClick: () => {} }} />;',
       options: [{ allowTypedFunctionExpressions: true }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -770,7 +778,32 @@ class Bar {
 }
       `,
     },
+    {
+      code: `
+type CallBack = () => void;
+
+function f(gotcha: CallBack = () => {}): void {}
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+const f = (gotcha: CallBack = () => {}): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
+    {
+      code: `
+type ObjectWithCallback = { callback: () => void };
+
+const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+    },
   ],
+
   invalid: [
     {
       code: `
@@ -1152,9 +1185,11 @@ const x: Foo = {
     {
       code: 'const foo = <button onClick={() => {}} />;',
       options: [{ allowTypedFunctionExpressions: false }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1170,9 +1205,11 @@ const x: Foo = {
     {
       code: 'const foo = <button on={{ click: () => {} }} />;',
       options: [{ allowTypedFunctionExpressions: false }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1188,9 +1225,11 @@ const x: Foo = {
     {
       code: 'const foo = <Bar>{() => {}}</Bar>;',
       options: [{ allowTypedFunctionExpressions: false }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1206,9 +1245,11 @@ const x: Foo = {
     {
       code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
       options: [{ allowTypedFunctionExpressions: false }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1224,9 +1265,11 @@ const x: Foo = {
     {
       code: 'const foo = <button {...{ onClick: () => {} }} />;',
       options: [{ allowTypedFunctionExpressions: false }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1937,6 +1980,55 @@ let foo = (() => () => {})()();
           endLine: 2,
           column: 21,
           endColumn: 23,
+        },
+      ],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+function f(gotcha: CallBack = () => {}): void {}
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          column: 34,
+          endLine: 4,
+          endColumn: 36,
+        },
+      ],
+    },
+    {
+      code: `
+type CallBack = () => void;
+
+const f = (gotcha: CallBack = () => {}): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          column: 34,
+          endLine: 4,
+          endColumn: 36,
+        },
+      ],
+    },
+    {
+      code: `
+type ObjectWithCallback = { callback: () => void };
+
+const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 4,
+          column: 43,
         },
       ],
     },

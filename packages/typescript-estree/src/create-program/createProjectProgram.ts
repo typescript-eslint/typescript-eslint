@@ -28,16 +28,15 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
 function createProjectProgram(
   parseSettings: ParseSettings,
   programsForProjects: readonly ts.Program[],
-): ASTAndDefiniteProgram | undefined {
+): ASTAndDefiniteProgram {
   log('Creating project program for: %s', parseSettings.filePath);
 
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
     getAstFromProgram(currentProgram, parseSettings.filePath),
   );
 
-  // The file was either matched within the tsconfig, or we allow creating a default program
-  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-  if (astAndProgram || parseSettings.DEPRECATED__createDefaultProgram) {
+  // The file was matched within the tsconfig
+  if (astAndProgram) {
     return astAndProgram;
   }
 
@@ -48,13 +47,15 @@ function createProjectProgram(
     parseSettings.filePath,
     parseSettings.tsconfigRootDir,
   );
-  const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
+  const relativeProjects = Array.from(parseSettings.projects.values()).map(
+    describeProjectFilePath,
+  );
   const describedPrograms =
     relativeProjects.length === 1
-      ? relativeProjects[0]
+      ? ` ${relativeProjects[0]}`
       : `\n${relativeProjects.map(project => `- ${project}`).join('\n')}`;
   const errorLines = [
-    `ESLint was configured to run on \`${describedFilePath}\` using \`parserOptions.project\`: ${describedPrograms}`,
+    `ESLint was configured to run on \`${describedFilePath}\` using \`parserOptions.project\`:${describedPrograms}`,
   ];
   let hasMatchedAnError = false;
 
@@ -93,7 +94,7 @@ function createProjectProgram(
 
   if (!hasMatchedAnError) {
     const [describedInclusions, describedSpecifiers] =
-      parseSettings.projects.length === 1
+      parseSettings.projects.size === 1
         ? ['that TSConfig does not', 'that TSConfig']
         : ['none of those TSConfigs', 'one of those TSConfigs'];
     errorLines.push(
@@ -101,7 +102,7 @@ function createProjectProgram(
       `- Change ESLint's list of included files to not include this file`,
       `- Change ${describedSpecifiers} to include this file`,
       `- Create a new TSConfig that includes this file and include it in your parserOptions.project`,
-      `See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file`,
+      `See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file`,
     );
   }
 

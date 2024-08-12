@@ -2,6 +2,7 @@
 
 import url from 'node:url';
 
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
@@ -26,25 +27,34 @@ export default tseslint.config(
   // register all of the plugins up-front
   {
     // note - intentionally uses computed syntax to make it easy to sort the keys
+    /* eslint-disable no-useless-computed-key */
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      ['deprecation']: deprecationPlugin,
+      // https://github.com/gund/eslint-plugin-deprecation/issues/78
+      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
+      ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      ['import']: importPlugin,
+      // https://github.com/import-js/eslint-plugin-import/issues/2948
+      ['import']: fixupPluginRules(importPlugin),
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
       ['jsx-a11y']: jsxA11yPlugin,
-      ['react-hooks']: reactHooksPlugin,
-      ['react']: reactPlugin,
+      // https://github.com/facebook/react/issues/28313
+      ['react-hooks']: fixupPluginRules(reactHooksPlugin),
+      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
+      ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
       ['unicorn']: unicornPlugin,
     },
+    /* eslint-enable no-useless-computed-key */
   },
   {
     // config with just ignores is the replacement for `.eslintignore`
     ignores: [
+      '.nx/',
+      '.yarn/',
       '**/jest.config.js',
       '**/node_modules/**',
       '**/dist/**',
@@ -53,12 +63,14 @@ export default tseslint.config(
       '**/__snapshots__/**',
       '**/.docusaurus/**',
       '**/build/**',
+      '.nx/*',
+      '.yarn/*',
       // Files copied as part of the build
       'packages/types/src/generated/**/*.ts',
       // Playground types downloaded from the web
-      'packages/website/src/vendor',
+      'packages/website/src/vendor/',
       // see the file header in eslint-base.test.js for more info
-      'packages/rule-tester/tests/eslint-base',
+      'packages/rule-tester/tests/eslint-base/',
     ],
   },
 
@@ -76,36 +88,18 @@ export default tseslint.config(
         ...globals.node,
       },
       parserOptions: {
-        allowAutomaticSingleRunInference: true,
-        cacheLifetime: {
-          // we pretty well never create/change tsconfig structure - so no need to ever evict the cache
-          // in the rare case that we do - just need to manually restart their IDE.
-          glob: 'Infinity',
-        },
-        project: [
-          'tsconfig.json',
-          'packages/*/tsconfig.json',
-          /**
-           * We are currently in the process of transitioning to nx's out of the box structure and
-           * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
-           * files here for now in addition to the tsconfig.json glob pattern.
-           *
-           * TODO(#4665): Clean this up once all packages have been transitioned.
-           */
-          'packages/scope-manager/tsconfig.build.json',
-          'packages/scope-manager/tsconfig.spec.json',
-        ],
+        projectService: true,
         tsconfigRootDir: __dirname,
         warnOnUnsupportedTypeScriptVersion: false,
       },
     },
+    linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
       // make sure we're not leveraging any deprecated APIs
       'deprecation/deprecation': 'error',
 
-      // TODO(#7130): Investigate changing these in or removing these from presets
+      // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
       '@typescript-eslint/no-confusing-void-expression': 'off',
-      '@typescript-eslint/prefer-string-starts-ends-with': 'off',
 
       //
       // our plugin :D
@@ -135,11 +129,19 @@ export default tseslint.config(
         'error',
         { allowConstantLoopConditions: true },
       ],
+      '@typescript-eslint/no-unnecessary-type-parameters': 'error',
+      '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/no-var-requires': 'off',
       '@typescript-eslint/prefer-literal-enum-member': [
         'error',
         {
           allowBitwiseExpressions: true,
+        },
+      ],
+      '@typescript-eslint/prefer-string-starts-ends-with': [
+        'error',
+        {
+          allowSingleElementEquality: 'always',
         },
       ],
       '@typescript-eslint/unbound-method': 'off',
@@ -166,6 +168,12 @@ export default tseslint.config(
         {
           ignoreConditionalTests: true,
           ignorePrimitives: true,
+        },
+      ],
+      '@typescript-eslint/no-require-imports': [
+        'error',
+        {
+          allow: ['/package\\.json$'],
         },
       ],
 
@@ -200,7 +208,22 @@ export default tseslint.config(
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
       ],
+      'no-implicit-coercion': ['error', { boolean: false }],
+      'no-lonely-if': 'error',
+      'no-unreachable-loop': 'error',
+      'no-useless-call': 'error',
+      'no-useless-computed-key': 'error',
+      'no-useless-concat': 'error',
+      'no-var': 'error',
+      'no-void': ['error', { allowAsStatement: true }],
       'one-var': ['error', 'never'],
+      'operator-assignment': 'error',
+      'prefer-arrow-callback': 'error',
+      'prefer-const': 'error',
+      'prefer-object-has-own': 'error',
+      'prefer-object-spread': 'error',
+      'prefer-rest-params': 'error',
+      radix: 'error',
 
       //
       // eslint-plugin-eslint-comment
@@ -298,6 +321,8 @@ export default tseslint.config(
 
       'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-regexp-test': 'error',
     },
   },
   {
@@ -383,7 +408,6 @@ export default tseslint.config(
     files: [
       '**/tools/**/*.{ts,tsx,cts,mts}',
       '**/tests/**/*.{ts,tsx,cts,mts}',
-      'packages/repo-tools/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
@@ -425,6 +449,14 @@ export default tseslint.config(
       'packages/eslint-plugin/src/rules/**/*.{ts,tsx,cts,mts}',
     ],
     rules: {
+      'eslint-plugin/no-property-in-node': [
+        'error',
+        {
+          additionalNodeTypeFiles: [
+            'packages[\\/]types[\\/]src[\\/]generated[\\/]ast-spec.ts',
+          ],
+        },
+      ],
       'eslint-plugin/require-meta-docs-description': [
         'error',
         { pattern: '^(Enforce|Require|Disallow) .+[^. ]$' },
@@ -504,8 +536,8 @@ export default tseslint.config(
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     extends: [
       ...compat.config(jsxA11yPlugin.configs.recommended),
-      ...compat.config(reactPlugin.configs.recommended),
-      ...compat.config(reactHooksPlugin.configs.recommended),
+      ...fixupConfigRules(compat.config(reactPlugin.configs.recommended)),
+      ...fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     rules: {
       '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
@@ -513,6 +545,7 @@ export default tseslint.config(
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
+      'react/prop-types': 'off',
     },
     settings: {
       react: {

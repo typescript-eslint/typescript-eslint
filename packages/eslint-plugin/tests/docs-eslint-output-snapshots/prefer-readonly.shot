@@ -6,17 +6,17 @@ exports[`Validating rule docs prefer-readonly.mdx code examples ESLint output 1`
 class Container {
   // These member variables could be marked as readonly
   private neverModifiedMember = true;
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedMember' is never reassigned; mark it as \`readonly\`.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedMember' is never reassigned; mark it as \`readonly\`.
   private onlyModifiedInConstructor: number;
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'onlyModifiedInConstructor' is never reassigned; mark it as \`readonly\`.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'onlyModifiedInConstructor' is never reassigned; mark it as \`readonly\`.
   #neverModifiedPrivateField = 3;
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member '#neverModifiedPrivateField' is never reassigned; mark it as \`readonly\`.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Member '#neverModifiedPrivateField' is never reassigned; mark it as \`readonly\`.
 
   public constructor(
     onlyModifiedInConstructor: number,
     // Private parameter properties can also be marked as readonly
     private neverModifiedParameter: string,
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedParameter: string' is never reassigned; mark it as \`readonly\`.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'neverModifiedParameter: string' is never reassigned; mark it as \`readonly\`.
   ) {
     this.onlyModifiedInConstructor = onlyModifiedInConstructor;
   }
@@ -57,11 +57,9 @@ Options: { "onlyInlineLambdas": true }
 
 class Container {
   private onClick = () => {
-  ~~~~~~~~~~~~~~~~~~~~~~~~~ Member 'onClick' is never reassigned; mark it as \`readonly\`.
+  ~~~~~~~~~~~~~~~ Member 'onClick' is never reassigned; mark it as \`readonly\`.
     /* ... */
-~~~~~~~~~~~~~
   };
-~~~~
 }
 "
 `;

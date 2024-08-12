@@ -1,7 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE, TYPE_VALUE } from './base-config';
@@ -54,6 +54,7 @@ export const dom = {
   ConstrainDOMStringParameters: TYPE,
   ConstrainDoubleRange: TYPE,
   ConstrainULongRange: TYPE,
+  ContentVisibilityAutoStateChangeEventInit: TYPE,
   ConvolverOptions: TYPE,
   CredentialCreationOptions: TYPE,
   CredentialPropertiesOutput: TYPE,
@@ -260,6 +261,7 @@ export const dom = {
   RTCTrackEventInit: TYPE,
   RTCTransportStats: TYPE,
   ReadableStreamGetReaderOptions: TYPE,
+  ReadableStreamIteratorOptions: TYPE,
   ReadableStreamReadDoneResult: TYPE,
   ReadableStreamReadValueResult: TYPE,
   ReadableWritablePair: TYPE,
@@ -418,9 +420,11 @@ export const dom = {
   CSSRule: TYPE_VALUE,
   CSSRuleList: TYPE_VALUE,
   CSSScale: TYPE_VALUE,
+  CSSScopeRule: TYPE_VALUE,
   CSSSkew: TYPE_VALUE,
   CSSSkewX: TYPE_VALUE,
   CSSSkewY: TYPE_VALUE,
+  CSSStartingStyleRule: TYPE_VALUE,
   CSSStyleDeclaration: TYPE_VALUE,
   CSSStyleRule: TYPE_VALUE,
   CSSStyleSheet: TYPE_VALUE,
@@ -468,6 +472,7 @@ export const dom = {
   CompositionEvent: TYPE_VALUE,
   CompressionStream: TYPE_VALUE,
   ConstantSourceNode: TYPE_VALUE,
+  ContentVisibilityAutoStateChangeEvent: TYPE_VALUE,
   ConvolverNode: TYPE_VALUE,
   CountQueuingStrategy: TYPE_VALUE,
   Credential: TYPE_VALUE,
@@ -476,6 +481,7 @@ export const dom = {
   CryptoKey: TYPE_VALUE,
   CustomElementRegistry: TYPE_VALUE,
   CustomEvent: TYPE_VALUE,
+  CustomStateSet: TYPE_VALUE,
   DOMException: TYPE_VALUE,
   DOMImplementation: TYPE_VALUE,
   DOMMatrix: TYPE_VALUE,
@@ -690,6 +696,7 @@ export const dom = {
   KHR_parallel_shader_compile: TYPE,
   KeyboardEvent: TYPE_VALUE,
   KeyframeEffect: TYPE_VALUE,
+  LargestContentfulPaint: TYPE_VALUE,
   LinkStyle: TYPE,
   Location: TYPE_VALUE,
   Lock: TYPE_VALUE,
@@ -1315,7 +1322,6 @@ export const dom = {
   FontFaceLoadStatus: TYPE,
   FontFaceSetLoadStatus: TYPE,
   FullscreenNavigationUI: TYPE,
-  GamepadHapticActuatorType: TYPE,
   GamepadHapticEffectType: TYPE,
   GamepadHapticsResult: TYPE,
   GamepadMappingType: TYPE,

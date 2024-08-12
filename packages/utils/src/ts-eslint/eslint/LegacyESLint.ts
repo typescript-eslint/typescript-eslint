@@ -6,6 +6,7 @@ import type { ClassicConfig } from '../Config';
 import type { Linter } from '../Linter';
 import type * as Shared from './ESLintShared';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class LegacyESLintBase extends Shared.ESLintBase<
   ClassicConfig.Config,
   LegacyESLint.ESLintOptions

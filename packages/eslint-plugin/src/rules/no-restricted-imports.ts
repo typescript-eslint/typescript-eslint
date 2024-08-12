@@ -172,13 +172,13 @@ const schema: JSONSchema4AnyOfSchema = {
 function isObjectOfPaths(
   obj: unknown,
 ): obj is { paths: ArrayOfStringOrObject } {
-  return Object.prototype.hasOwnProperty.call(obj, 'paths');
+  return !!obj && Object.hasOwn(obj, 'paths');
 }
 
 function isObjectOfPatterns(
   obj: unknown,
 ): obj is { patterns: ArrayOfStringOrObjectPatterns } {
-  return Object.prototype.hasOwnProperty.call(obj, 'patterns');
+  return !!obj && Object.hasOwn(obj, 'patterns');
 }
 
 function isOptionsArrayOfStringOrObject(
@@ -312,12 +312,9 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.TSImportEqualsDeclaration,
       ): void {
         if (
-          node.moduleReference.type ===
-            AST_NODE_TYPES.TSExternalModuleReference &&
-          node.moduleReference.expression.type === AST_NODE_TYPES.Literal &&
-          typeof node.moduleReference.expression.value === 'string'
+          node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference
         ) {
-          const synthesizedImport = {
+          const synthesizedImport: TSESTree.ImportDeclaration = {
             ...node,
             type: AST_NODE_TYPES.ImportDeclaration,
             source: node.moduleReference.expression,
@@ -328,9 +325,11 @@ export default createRule<Options, MessageIds>({
                 ...node.id,
                 type: AST_NODE_TYPES.ImportDefaultSpecifier,
                 local: node.id,
+                // @ts-expect-error -- parent types are incompatible but it's fine for the purposes of this extension
+                parent: node.id.parent,
               },
             ],
-          } satisfies TSESTree.ImportDeclaration;
+          };
           return checkImportNode(synthesizedImport);
         }
       },

@@ -44,7 +44,7 @@ export function createSnapshotTestBlock(
        * If we are deliberately throwing because of encountering an unknown
        * AST_NODE_TYPE, we rethrow to cause the test to fail
        */
-      if (/Unknown AST_NODE_TYPE/.exec((error as Error).message)) {
+      if ((error as Error).message.includes('Unknown AST_NODE_TYPE')) {
         throw error;
       }
       expect(parse).toThrowErrorMatchingSnapshot();
@@ -77,7 +77,7 @@ export function isJSXFileType(fileType: string): boolean {
  * @param ast the AST object
  * @returns copy of the AST object
  */
-export function deeplyCopy<T>(ast: T): T {
+export function deeplyCopy<T extends NonNullable<unknown>>(ast: T): T {
   return omitDeep(ast) as T;
 }
 
@@ -96,8 +96,8 @@ function isObjectLike(value: unknown): value is UnknownObject {
  * @param selectors advance ast modifications
  * @returns formatted object
  */
-export function omitDeep<T = UnknownObject>(
-  root: T,
+export function omitDeep(
+  root: UnknownObject,
   keysToOmit: { key: string; predicate: (value: unknown) => boolean }[] = [],
   selectors: Record<
     string,
@@ -124,7 +124,7 @@ export function omitDeep<T = UnknownObject>(
     const node = { ...oNode };
 
     for (const prop in node) {
-      if (Object.prototype.hasOwnProperty.call(node, prop)) {
+      if (Object.hasOwn(node, prop)) {
         if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
           // Filter out omitted and undefined props from the node
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
@@ -152,5 +152,5 @@ export function omitDeep<T = UnknownObject>(
     return node;
   }
 
-  return visit(root as UnknownObject, null);
+  return visit(root, null);
 }

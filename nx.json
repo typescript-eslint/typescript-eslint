@@ -2,14 +2,14 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
-    "projects": ["*"],
+    "projects": ["*", "!repo"],
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",
-        "renderer": "tools/release/changelog-renderer"
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer"
       },
       "projectChangelogs": {
-        "renderer": "tools/release/changelog-renderer"
+        "renderer": "{workspaceRoot}/tools/release/changelog-renderer"
       }
     },
     "version": {
@@ -53,7 +53,11 @@
       }
     },
     "lint": {
-      "dependsOn": ["eslint-plugin:build"],
+      "dependsOn": [
+        "eslint-plugin:build",
+        "eslint-plugin-internal:build",
+        "typescript-eslint:build"
+      ],
       "inputs": [
         "default",
         "{workspaceRoot}/eslint.config.js",
