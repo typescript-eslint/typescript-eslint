@@ -769,7 +769,6 @@ type T = Record<string, A  >;
       output: 'type fn = (a?: string  ) => void;',
     },
     {
-      only: true,
       code: `
         abstract class cc {
           abstract f(a?: string | undefined): void;
