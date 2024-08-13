@@ -5,12 +5,13 @@ import { collectVariables } from '../../../src/util';
 import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+      sourceType: 'module',
+      ecmaFeatures: {},
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 const withMetaParserOptions = {
@@ -604,9 +605,11 @@ export interface Bar extends foo.i18n<bar> {}
 import { TypeA } from './interface';
 export const a = <GenericComponent<TypeA> />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -622,9 +625,11 @@ export function Foo() {
   );
 }
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -849,9 +854,9 @@ declare class Clazz {}
 declare function func();
 declare enum Enum {}
 declare namespace Name {}
-declare const v1 = 1;
-declare var v2 = 1;
-declare let v3 = 1;
+declare const v1;
+declare var v2;
+declare let v3;
 declare const { v4 };
 declare const { v4: v5 };
 declare const [v6];
@@ -881,9 +886,11 @@ export type Test<U> = U extends (arg: {
           return <div>Foo Foo</div>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -895,11 +902,13 @@ export type Test<U> = U extends (arg: {
           return <div>Foo Foo</div>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
         },
-        jsxPragma: 'h',
       },
     },
     {
@@ -910,11 +919,13 @@ export type Test<U> = U extends (arg: {
           return <>Foo Foo</>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxFragmentName: 'Fragment',
         },
-        jsxFragmentName: 'Fragment',
       },
     },
     `
@@ -1035,7 +1046,7 @@ interface _Foo {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2844
     `
-/* eslint collect-unused-vars: "error" */
+/* eslint @rule-tester/collect-unused-vars: "error" */
 declare module 'next-auth' {
   interface User {
     id: string;
@@ -1055,7 +1066,7 @@ export class TestClass {
   public test(): TestGeneric<Test> {}
 }
       `,
-      parserOptions: withMetaParserOptions,
+      languageOptions: { parserOptions: withMetaParserOptions },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/5577
     `
@@ -1161,6 +1172,16 @@ import { foo } from 'foo';
 export type Foo = typeof foo;
 
 export const bar = (): Foo => foo;
+    `,
+    `
+import { SomeType } from 'foo';
+
+export const value = 1234 as typeof SomeType;
+    `,
+    `
+import { foo } from 'foo';
+
+export type Bar = typeof foo;
     `,
   ],
 
@@ -1698,9 +1719,11 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1725,11 +1748,13 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
         },
-        jsxPragma: 'h',
       },
       errors: [
         {
@@ -1753,11 +1778,13 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: null,
         },
-        jsxPragma: null,
       },
       errors: [
         {
@@ -2236,27 +2263,6 @@ export const x = _Foo;
           column: 15,
           endLine: 2,
           endColumn: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        import { foo } from 'foo';
-
-        export type Bar = typeof foo;
-      `,
-      errors: [
-        {
-          messageId: 'usedOnlyAsType',
-          data: {
-            varName: 'foo',
-            action: 'defined',
-            additional: '',
-          },
-          line: 2,
-          column: 18,
-          endLine: 2,
-          endColumn: 21,
         },
       ],
     },

@@ -7,9 +7,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../../src/rules/no-shadow';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow', rule, {
   valid: [
@@ -44,9 +42,12 @@ setTimeout(() => {
   b(a);
 }, 0);
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
-    { code: 'class A {}', parserOptions: { ecmaVersion: 6 } },
+    {
+      code: 'class A {}',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
     {
       code: `
 class A {
@@ -55,7 +56,7 @@ class A {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -63,7 +64,7 @@ class A {
   var A = class A {};
 })();
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -72,7 +73,7 @@ class A {
 }
 var a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     }, // this case reports `no-redeclare`, not shadowing.
     {
       code: `
@@ -82,7 +83,7 @@ var a;
 let a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -92,7 +93,7 @@ let a;
 var a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -102,7 +103,7 @@ var a;
 function a() {}
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -112,7 +113,7 @@ function a() {}
 const a = 1;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -122,7 +123,7 @@ const a = 1;
 var a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -132,7 +133,7 @@ var a;
 function a() {}
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -142,7 +143,7 @@ function foo() {
 let a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -152,7 +153,7 @@ function foo() {
 var a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -162,7 +163,7 @@ function foo() {
 function a() {}
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -172,7 +173,7 @@ function foo() {
 let a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -182,7 +183,7 @@ function foo() {
 var a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -192,7 +193,7 @@ function foo() {
 function a() {}
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -200,7 +201,7 @@ function foo(a) {}
 let a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -208,7 +209,7 @@ function foo(a) {}
 var a;
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -216,7 +217,7 @@ function foo(a) {}
 function a() {}
       `,
       options: [{ hoist: 'never' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -225,7 +226,7 @@ function a() {}
 }
 let a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -234,7 +235,7 @@ let a;
 }
 var a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -243,7 +244,7 @@ var a;
 }
 const a = 1;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -252,7 +253,7 @@ const a = 1;
 }
 var a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -261,7 +262,7 @@ function foo() {
 }
 let a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -270,7 +271,7 @@ function foo() {
 }
 var a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -279,7 +280,7 @@ function foo() {
 }
 let a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -288,21 +289,21 @@ function foo() {
 }
 var a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
 function foo(a) {}
 let a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
 function foo(a) {}
 var a;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     `
 function foo() {
@@ -315,13 +316,10 @@ function foo() {
   var top = 0;
 }
       `,
-      env: { browser: true },
     },
-    { code: 'var Object = 0;', options: [{ builtinGlobals: true }] },
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
-      env: { browser: true },
     },
     {
       code: `
@@ -363,7 +361,7 @@ var a = x => {
   };
 };
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -495,7 +493,7 @@ var x = 1;
   let x = 2;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -515,7 +513,7 @@ let x = 1;
   const x = 2;
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -535,7 +533,7 @@ let x = 1;
 }
 function a() {}
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -555,7 +553,7 @@ function a() {}
 }
 function a() {}
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -575,7 +573,7 @@ function foo() {
 }
 function a() {}
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -595,7 +593,7 @@ function foo() {
 }
 function a() {}
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -613,7 +611,7 @@ function a() {}
 function foo(a) {}
 function a() {}
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -634,7 +632,7 @@ function a() {}
 let a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -655,7 +653,7 @@ let a;
 var a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -676,7 +674,7 @@ var a;
 function a() {}
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -697,7 +695,7 @@ function a() {}
 const a = 1;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -718,7 +716,7 @@ const a = 1;
 var a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -739,7 +737,7 @@ var a;
 function a() {}
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -760,7 +758,7 @@ function foo() {
 let a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -781,7 +779,7 @@ function foo() {
 var a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -802,7 +800,7 @@ function foo() {
 function a() {}
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -823,7 +821,7 @@ function foo() {
 let a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -844,7 +842,7 @@ function foo() {
 var a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -865,7 +863,7 @@ function foo() {
 function a() {}
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -884,7 +882,7 @@ function foo(a) {}
 let a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -903,7 +901,7 @@ function foo(a) {}
 var a;
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -922,7 +920,7 @@ function foo(a) {}
 function a() {}
       `,
       options: [{ hoist: 'all' }],
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -959,7 +957,7 @@ function a() {}
   class a {}
 })();
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -996,7 +994,7 @@ function a() {}
   (class a {});
 })();
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -1055,7 +1053,7 @@ function a() {}
   };
 })();
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -1096,7 +1094,7 @@ function a() {}
   };
 })();
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -1119,7 +1117,7 @@ function a() {}
   };
 })();
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -1140,7 +1138,7 @@ class A {
   }
 }
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
           messageId: 'noShadow',
@@ -1206,7 +1204,7 @@ function foo() {
 }
       `,
       options: [{ builtinGlobals: true }],
-      env: { browser: true },
+      languageOptions: { globals: { top: 'readonly' } },
       errors: [
         {
           messageId: 'noShadowGlobal',
@@ -1220,7 +1218,9 @@ function foo() {
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
       errors: [
         {
           messageId: 'noShadowGlobal',
@@ -1234,8 +1234,10 @@ function foo() {
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      env: { browser: true },
+      languageOptions: {
+        globals: { top: 'readonly' },
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
       errors: [
         {
           messageId: 'noShadowGlobal',
@@ -1249,7 +1251,9 @@ function foo() {
     {
       code: 'var Object = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaFeatures: { globalReturn: true } },
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
       errors: [
         {
           messageId: 'noShadowGlobal',
@@ -1263,8 +1267,10 @@ function foo() {
     {
       code: 'var top = 0;',
       options: [{ builtinGlobals: true }],
-      parserOptions: { ecmaFeatures: { globalReturn: true } },
-      env: { browser: true },
+      languageOptions: {
+        globals: { top: 'readonly' },
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
       errors: [
         {
           messageId: 'noShadowGlobal',

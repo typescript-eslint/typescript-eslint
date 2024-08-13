@@ -18,16 +18,16 @@ See [Changes to `extraFileExtensions` with `projectService`](../typed-linting/Pe
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   // ... the rest of your config ...
   {
     languageOptions: {
       parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-        project: ['./tsconfig.json'],
         // Add this line
         extraFileExtensions: ['.vue'],
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
@@ -41,10 +41,10 @@ export default tseslint.config(
 module.exports = {
   // ... the rest of your config ...
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
     // Add this line
     extraFileExtensions: ['.vue'],
+    projectService: true,
+    tsconfigRootDir: __dirname,
   },
 };
 ```
@@ -59,7 +59,7 @@ If you are running into issues parsing .vue files, it might be because parsers l
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 import tseslint from 'typescript-eslint';
 // Add this line
 import vueParser from 'vue-eslint-parser';

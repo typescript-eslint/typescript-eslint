@@ -1,18 +1,26 @@
+import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 export function specifierNameMatches(
   type: ts.Type,
-  name: string[] | string,
+  names: string[] | string,
 ): boolean {
-  if (typeof name === 'string') {
-    name = [name];
+  if (typeof names === 'string') {
+    names = [names];
   }
-  if (name.some(item => item === type.intrinsicName)) {
+
+  const symbol = type.aliasSymbol ?? type.getSymbol();
+  const candidateNames = symbol
+    ? [symbol.escapedName as string, type.intrinsicName]
+    : [type.intrinsicName];
+
+  if (names.some(item => candidateNames.includes(item))) {
     return true;
   }
-  const symbol = type.aliasSymbol ?? type.getSymbol();
-  if (symbol === undefined) {
-    return false;
+
+  if (tsutils.isIntersectionType(type)) {
+    return type.types.some(subType => specifierNameMatches(subType, names));
   }
-  return name.some(item => (item as ts.__String) === symbol.escapedName);
+
+  return false;
 }

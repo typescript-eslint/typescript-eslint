@@ -116,7 +116,6 @@ describe('inferSingleRun', () => {
     process.env.CI = 'true';
 
     const actual = inferSingleRun({
-      allowAutomaticSingleRunInference: true,
       extraFileExtensions: [],
       project: './tsconfig.json',
     });
@@ -128,7 +127,6 @@ describe('inferSingleRun', () => {
     process.env.CI = 'true';
 
     const actual = inferSingleRun({
-      allowAutomaticSingleRunInference: true,
       extraFileExtensions: ['.vue'],
       project: './tsconfig.json',
     });

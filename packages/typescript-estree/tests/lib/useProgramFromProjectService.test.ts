@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'path';
-import { ScriptKind } from 'typescript';
+import * as ts from 'typescript';
 
 import type {
   ProjectServiceSettings,
@@ -8,6 +8,14 @@ import type {
 } from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
+
+const mockCreateNoProgram = jest.fn();
+
+jest.mock('../../src/create-program/createSourceFile', () => ({
+  get createNoProgram() {
+    return mockCreateNoProgram;
+  },
+}));
 
 const mockCreateProjectProgram = jest.fn();
 
@@ -44,9 +52,12 @@ function createMockProjectService() {
   };
 }
 
+const mockFileName = 'camelCaseFile.ts';
+
 const mockParseSettings = {
-  filePath: 'path/PascalCaseDirectory/camelCaseFile.ts',
+  filePath: `path/PascalCaseDirectory/${mockFileName}`,
   extraFileExtensions: [] as readonly string[],
+  tsconfigRootDir: currentDirectory,
 } as ParseSettings;
 
 const createProjectServiceSettings = <
@@ -59,6 +70,29 @@ const createProjectServiceSettings = <
 });
 
 describe('useProgramFromProjectService', () => {
+  it('creates a standalone AST with no program when hasFullTypeInformation is false and allowDefaultProject is falsy', () => {
+    const { service } = createMockProjectService();
+
+    const stubASTAndNoProgram = {
+      ast: ts.createSourceFile(mockFileName, '', ts.ScriptTarget.Latest),
+      program: null,
+    };
+
+    mockCreateNoProgram.mockReturnValueOnce(stubASTAndNoProgram);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: undefined,
+        service,
+      }),
+      mockParseSettings,
+      false,
+      new Set(),
+    );
+
+    expect(actual).toBe(stubASTAndNoProgram);
+  });
+
   it('passes an absolute, case-matching file path to service.openClientFile', () => {
     const { service } = createMockProjectService();
 
@@ -73,10 +107,12 @@ describe('useProgramFromProjectService', () => {
     );
 
     expect(service.openClientFile).toHaveBeenCalledWith(
-      path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts'),
+      path.normalize(
+        `${currentDirectory}/path/PascalCaseDirectory/camelCaseFile.ts`,
+      ),
       undefined,
       undefined,
-      undefined,
+      currentDirectory,
     );
   });
 
@@ -123,7 +159,7 @@ describe('useProgramFromProjectService', () => {
     );
   });
 
-  it('throws an error when called more than the maximum allowed file count', () => {
+  it('throws an error when more than the maximum allowed file count is matched to the default project', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
@@ -151,7 +187,7 @@ See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultproje
 Matching files:
 - a
 - b
-- ${path.normalize('/repos/repo/path/PascalCaseDirectory/camelCaseFile.ts')}
+- ${path.normalize(`${currentDirectory}/path/PascalCaseDirectory/camelCaseFile.ts`)}
 
 If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
 `);
@@ -255,7 +291,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     expect(actual).toBe(program);
   });
 
-  it('returns a created program when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProject, and the service has a matching program', () => {
+  it('returns undefined when hasFullTypeInformation is disabled, the file is neither in the project service nor allowDefaultProject, and the service has a matching program', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
@@ -274,10 +310,10 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBe(program);
+    expect(actual).toBeUndefined();
   });
 
-  it('returns a created program when hasFullTypeInformation is disabled, the file is in the project service, the service has a matching program, and no out-of-project files are allowed', () => {
+  it('returns undefined when hasFullTypeInformation is disabled, the file is in the project service, the service has a matching program, and no out', () => {
     const { service } = createMockProjectService();
     const program = { getSourceFile: jest.fn() };
 
@@ -299,7 +335,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
       new Set(),
     );
 
-    expect(actual).toBe(program);
+    expect(actual).toBeUndefined();
   });
 
   it('does not call setHostConfiguration on the service with default extensions if extraFileExtensions are not provided', () => {
@@ -358,7 +394,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         {
           extension: '.vue',
           isMixedContent: false,
-          scriptKind: ScriptKind.Deferred,
+          scriptKind: ts.ScriptKind.Deferred,
         },
       ],
     });
@@ -387,7 +423,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         {
           extension: '.vue',
           isMixedContent: false,
-          scriptKind: ScriptKind.Deferred,
+          scriptKind: ts.ScriptKind.Deferred,
         },
       ],
     });
@@ -427,7 +463,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         {
           extension: '.vue',
           isMixedContent: false,
-          scriptKind: ScriptKind.Deferred,
+          scriptKind: ts.ScriptKind.Deferred,
         },
       ],
     });
@@ -471,7 +507,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
         {
           extension: '.vue',
           isMixedContent: false,
-          scriptKind: ScriptKind.Deferred,
+          scriptKind: ts.ScriptKind.Deferred,
         },
       ],
     });

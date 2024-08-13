@@ -10,6 +10,10 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import baseConfig from './base';
 import eslintRecommendedConfig from './eslint-recommended';
 
+/**
+ * A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.
+ * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked-only}
+ */
 export default (
   plugin: FlatConfig.Plugin,
   parser: FlatConfig.Parser,
@@ -37,6 +41,7 @@ export default (
       '@typescript-eslint/no-unnecessary-template-expression': 'error',
       '@typescript-eslint/no-unnecessary-type-arguments': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unsafe-argument': 'error',
       '@typescript-eslint/no-unsafe-assignment': 'error',
       '@typescript-eslint/no-unsafe-call': 'error',
@@ -72,6 +77,11 @@ export default (
           allowRegExp: false,
           allowNever: false,
         },
+      ],
+      'no-return-await': 'off',
+      '@typescript-eslint/return-await': [
+        'error',
+        'error-handling-correctness-only',
       ],
       '@typescript-eslint/unbound-method': 'error',
       '@typescript-eslint/use-unknown-in-catch-callback-variable': 'error',

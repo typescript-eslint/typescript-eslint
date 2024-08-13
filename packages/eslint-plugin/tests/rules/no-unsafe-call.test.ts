@@ -4,11 +4,12 @@ import rule from '../../src/rules/no-unsafe-call';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.noImplicitThis.json',
-    projectService: false,
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.noImplicitThis.json',
+      projectService: false,
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 

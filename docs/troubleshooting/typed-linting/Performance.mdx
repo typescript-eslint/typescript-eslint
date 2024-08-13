@@ -35,65 +35,9 @@ Additionally, if you provide no `include` in your tsconfig, then it is the same 
 Wide globs can cause TypeScript to parse things like build artifacts, which can heavily impact performance.
 Always ensure you provide globs targeted at the folders you are specifically wanting to lint.
 
-## Wide includes in your ESLint options
+## Project Service Issues
 
-Specifying `tsconfig.json` paths in your ESLint commands is also likely to cause much more disk IO than expected.
-Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
-
-<Tabs groupId="eslint-config">
-<TabItem value="Flat Config">
-
-```js title="eslint.config.js"
-// @ts-check
-
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedRequiringTypeChecking,
-  {
-    languageOptions: {
-      parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-        // Remove this line
-        project: ['./**/tsconfig.json'],
-        // Add this line
-        project: ['./packages/*/tsconfig.json'],
-      },
-    },
-  },
-);
-```
-
-</TabItem>
-<TabItem value="Legacy Config">
-
-```js title=".eslintrc.js"
-module.exports = {
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: __dirname,
-    // Remove this line
-    project: ['./**/tsconfig.json'],
-    // Add this line
-    project: ['./packages/*/tsconfig.json'],
-  },
-  plugins: ['@typescript-eslint'],
-  root: true,
-};
-```
-
-</TabItem>
-</Tabs>
-
-See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
-
-## Changes to `extraFileExtensions` with `projectService`
+### Changes to `extraFileExtensions` with `projectService`
 
 Using a different [`extraFileExtensions`](../../packages/Parser.mdx#extrafileextensions) between files in the same project with
 the [`projectService`](../../packages/Parser.mdx#projectservice) option may cause performance degradations.
@@ -193,9 +137,76 @@ typescript-estree:tsserver:info reload projects.
 typescript-estree:useProgramFromProjectService Extra file extensions updated: [ '.vue' ]
 ```
 
-## The `indent` / `@typescript-eslint/indent` rules
+## Traditional Project issues
 
-This rule helps ensure your codebase follows a consistent indentation pattern.
+### Wide includes in your ESLint options
+
+:::tip
+The [new "project service" in v8](/blog/announcing-typescript-eslint-v8-beta#project-service) requires no additional configuration for wide TSConfig includes.
+If you're using `parserOptions.projectService`, this problem is solved for you.
+:::
+
+Specifying `tsconfig.json` paths in an ESLint `parserOptions.project` configuration is also likely to cause much more disk IO than expected.
+Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedRequiringTypeChecking,
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        // Remove this line
+        project: ['./**/tsconfig.json'],
+        // Add this line
+        project: ['./packages/*/tsconfig.json'],
+      },
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: __dirname,
+    // Remove this line
+    project: ['./**/tsconfig.json'],
+    // Add this line
+    project: ['./packages/*/tsconfig.json'],
+  },
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+See [Glob pattern in parser's option "project" slows down linting](https://github.com/typescript-eslint/typescript-eslint/issues/2611) for more details.
+
+## Third-Party Plugins
+
+### `@stylistic/ts/indent` and other stylistic rules rules
+
+The [`@stylisic/ts/indent` rule](https://eslint.style/rules/ts/indent#ts-indent) helps ensure your codebase follows a consistent indentation pattern.
 However this involves a _lot_ of computations across every single token in a file.
 Across a large codebase, these can add up, and severely impact performance.
 
@@ -203,7 +214,7 @@ We recommend not using this rule, and instead using a tool like [`prettier`](htt
 
 See our [documentation on formatting](../../users/What_About_Formatting.mdx) for more information.
 
-## `eslint-plugin-prettier`
+### `eslint-plugin-prettier`
 
 This plugin surfaces Prettier formatting problems at lint time, helping to ensure your code is always formatted.
 However this comes at a quite a large cost - in order to figure out if there is a difference, it has to do a Prettier format on every file being linted.
@@ -219,7 +230,7 @@ npm run prettier --check .
 
 See [Prettier's `--check` docs](https://prettier.io/docs/en/cli#--check) for more details.
 
-## `eslint-plugin-import`
+### `eslint-plugin-import`
 
 This is another great plugin that we use ourselves in this project.
 However there are a few rules which can cause your lints to be really slow, because they cause the plugin to do its own parsing, and file tracking.
@@ -242,15 +253,13 @@ The following rules do not have equivalent checks in TypeScript, so we recommend
 - `import/no-unused-modules`
 - `import/no-deprecated`
 
-### `import/extensions`
-
-#### Enforcing extensions are used
+#### `import/extensions` enforcing extensions are used
 
 If you want to enforce file extensions are always used and you're **NOT** using `moduleResolution` `node16` or `nodenext`, then there's not really a good alternative for you, and you should continue using the `import/extensions` lint rule.
 
 If you want to enforce file extensions are always used and you **ARE** using `moduleResolution` `node16` or `nodenext`, then you don't need to use the lint rule at all because TypeScript will automatically enforce that you include extensions!
 
-#### Enforcing extensions are not used
+#### `import/extensions` enforcing extensions are not used
 
 On the surface `import/extensions` seems like it should be fast for this use case, however the rule isn't just a pure AST-check - it has to resolve modules on disk so that it doesn't false positive on cases where you are importing modules with an extension as part of their name (eg `foo.js` resolves to `node_modules/foo.js/index.js`, so the `.js` is required). This disk lookup is costly and thus makes the rule slow.
 

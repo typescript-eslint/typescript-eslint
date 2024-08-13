@@ -19,8 +19,7 @@ const PARSER_OPTION_COMBOS = [
 for (const parserOptions of PARSER_OPTION_COMBOS) {
   describe(`experimentalDecorators: ${parserOptions.experimentalDecorators} + emitDecoratorMetadata: ${parserOptions.emitDecoratorMetadata}`, () => {
     const ruleTester = new RuleTester({
-      parser: '@typescript-eslint/parser',
-      parserOptions,
+      languageOptions: { parserOptions },
     });
 
     ruleTester.run('consistent-type-imports', rule, {
@@ -290,9 +289,11 @@ export const ComponentFoo: React.FC = () => {
   return <div>Foo Foo</div>;
 };
           `,
-          parserOptions: {
-            ecmaFeatures: {
-              jsx: true,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
             },
           },
         },
@@ -304,11 +305,13 @@ export const ComponentFoo: h.FC = () => {
   return <div>Foo Foo</div>;
 };
           `,
-          parserOptions: {
-            ecmaFeatures: {
-              jsx: true,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+              jsxPragma: 'h',
             },
-            jsxPragma: 'h',
           },
         },
         {
@@ -319,11 +322,13 @@ export const ComponentFoo: Fragment = () => {
   return <>Foo Foo</>;
 };
           `,
-          parserOptions: {
-            ecmaFeatures: {
-              jsx: true,
+          languageOptions: {
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
+              jsxFragmentName: 'Fragment',
             },
-            jsxFragmentName: 'Fragment',
           },
         },
         `
@@ -1946,10 +1951,11 @@ function test(foo: Foo) {}
 // the special ignored config case
 describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
   const ruleTester = new RuleTester({
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-      experimentalDecorators: true,
-      emitDecoratorMetadata: true,
+    languageOptions: {
+      parserOptions: {
+        experimentalDecorators: true,
+        emitDecoratorMetadata: true,
+      },
     },
   });
 

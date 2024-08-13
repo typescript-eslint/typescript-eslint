@@ -1,3 +1,184 @@
+## 8.1.0 (2024-08-12)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-floating-promises] enable "add await" suggestion if ignoreVoid is true ([#9703](https://github.com/typescript-eslint/typescript-eslint/pull/9703))
+- **eslint-plugin:** [no-unsafe-return] check promise any ([#8693](https://github.com/typescript-eslint/typescript-eslint/pull/8693))
+- **eslint-plugin:** [no-misused-promises] check subtype methods against heritage type methods ([#8765](https://github.com/typescript-eslint/typescript-eslint/pull/8765))
+- **typescript-eslint:** add JSDoc comments on generated configs ([#9672](https://github.com/typescript-eslint/typescript-eslint/pull/9672))
+- **typescript-estree:** restrict variable declarator definite/init combinations ([#9228](https://github.com/typescript-eslint/typescript-eslint/pull/9228))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-enum-comparison] typo in test ([#9779](https://github.com/typescript-eslint/typescript-eslint/pull/9779))
+- **eslint-plugin:** [no-unnecessary-type-parameters] skip checking function bodies for AST references ([#9738](https://github.com/typescript-eslint/typescript-eslint/pull/9738))
+- **eslint-plugin:** [member-ordering] get accessor member name & take into account `abstract` and decorator ([#9775](https://github.com/typescript-eslint/typescript-eslint/pull/9775))
+- **eslint-plugin:** [prefer-optional-chain] wrong parenthesis fix output ([#9597](https://github.com/typescript-eslint/typescript-eslint/pull/9597))
+- **eslint-plugin:** [no-unnecessary-type-parameters] clarify message ([#9737](https://github.com/typescript-eslint/typescript-eslint/pull/9737))
+- **utils:** correct types to align with @types/eslint v9 ([#9657](https://github.com/typescript-eslint/typescript-eslint/pull/9657))
+- **website:** tsconfig is blank ([#9745](https://github.com/typescript-eslint/typescript-eslint/pull/9745))
+
+### ❤️  Thank You
+
+- Aly Thobani
+- Brad Zacher @bradzacher
+- James @Zamiell
+- Josh Goldberg ✨
+- Joshua Chen
+- Olivier Zalmanski @OlivierZal
+- YeonJuan @yeonjuan
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.0.1 (2024-08-05)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] ignore imports used only as types ([#9694](https://github.com/typescript-eslint/typescript-eslint/pull/9694))
+
+### ❤️  Thank You
+
+- Jake Bailey @jakebailey
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+# 8.0.0 (2024-07-31)
+
+
+### 🚀 Features
+
+- stricter parent types for the AST ([#9560](https://github.com/typescript-eslint/typescript-eslint/pull/9560))
+- speed up non-type-aware linting with project service ([#8322](https://github.com/typescript-eslint/typescript-eslint/pull/8322))
+- v8 integration branch ([#9165](https://github.com/typescript-eslint/typescript-eslint/pull/9165))
+- **ast-spec:** remove deprecated type params ([#8933](https://github.com/typescript-eslint/typescript-eslint/pull/8933))
+- **eslint-plugin:** remove formatting/layout rules ([#8833](https://github.com/typescript-eslint/typescript-eslint/pull/8833))
+- **eslint-plugin:** [prefer-nullish-coalescing] change ignoreConditionalTests default to true ([#8872](https://github.com/typescript-eslint/typescript-eslint/pull/8872))
+- **eslint-plugin:** deprecate no-loss-of-precision extension rule ([#8832](https://github.com/typescript-eslint/typescript-eslint/pull/8832))
+- **eslint-plugin:** [no-unused-vars] align catch behavior to ESLint 9 ([#8971](https://github.com/typescript-eslint/typescript-eslint/pull/8971))
+- **eslint-plugin:** split no-empty-object-type out from ban-types and no-empty-interfaces ([#8977](https://github.com/typescript-eslint/typescript-eslint/pull/8977))
+- **eslint-plugin:** remove deprecated no-throw-literal rule ([#9092](https://github.com/typescript-eslint/typescript-eslint/pull/9092))
+- **eslint-plugin:** apply initial config changes for v8 ([#9079](https://github.com/typescript-eslint/typescript-eslint/pull/9079))
+- **eslint-plugin:** remove no-useless-template-literals ([#9207](https://github.com/typescript-eslint/typescript-eslint/pull/9207))
+- **eslint-plugin:** [no-floating-promises] add 'allowForKnownSafeCalls' option ([#9234](https://github.com/typescript-eslint/typescript-eslint/pull/9234))
+- **eslint-plugin:** replace ban-types with no-restricted-types, no-unsafe-function-type, no-wrapper-object-types ([#9102](https://github.com/typescript-eslint/typescript-eslint/pull/9102))
+- **eslint-plugin:** [no-unused-vars] add `reportUnusedIgnorePattern` option ([#9324](https://github.com/typescript-eslint/typescript-eslint/pull/9324))
+- **eslint-plugin:** [no-unused-vars] support `ignoreClassWithStaticInitBlock` ([#9325](https://github.com/typescript-eslint/typescript-eslint/pull/9325))
+- **eslint-plugin:** [no-unused-vars] handle comma operator for assignments, treat for-of the same as for-in ([#9326](https://github.com/typescript-eslint/typescript-eslint/pull/9326))
+- **eslint-plugin:** [no-unused-vars] report if var used only in typeof ([#9330](https://github.com/typescript-eslint/typescript-eslint/pull/9330))
+- **eslint-plugin:** [no-floating-promises] disable checkThenables by default for v8 ([#9559](https://github.com/typescript-eslint/typescript-eslint/pull/9559))
+- **eslint-plugin:** [return-await] add return-await to strict-type-checked preset ([#9604](https://github.com/typescript-eslint/typescript-eslint/pull/9604))
+- **eslint-plugin:** [no-unnecessary-type-parameters] promote to strict ([#9662](https://github.com/typescript-eslint/typescript-eslint/pull/9662))
+- **parser:** always enable comment, loc, range, tokens ([#8617](https://github.com/typescript-eslint/typescript-eslint/pull/8617))
+- **rule-tester:** support multipass fixes ([#8883](https://github.com/typescript-eslint/typescript-eslint/pull/8883))
+- **rule-tester:** switched to flat config ([#9603](https://github.com/typescript-eslint/typescript-eslint/pull/9603))
+- **type-utils:** remove getTokenAtPosition ([#9444](https://github.com/typescript-eslint/typescript-eslint/pull/9444))
+- **type-utils:** support intersection types in TypeOrValueSpecifier ([#9633](https://github.com/typescript-eslint/typescript-eslint/pull/9633))
+- **typescript-estree:** remove slow deprecated and isolated programs ([#8834](https://github.com/typescript-eslint/typescript-eslint/pull/8834))
+- **typescript-estree:** split TSMappedType typeParameter into constraint and key ([#7065](https://github.com/typescript-eslint/typescript-eslint/pull/7065))
+- **typescript-estree:** rename automaticSingleRunInference to disallowAutomaticSingleRunInference ([#8922](https://github.com/typescript-eslint/typescript-eslint/pull/8922))
+- **typescript-estree:** stabilize EXPERIMENTAL_useProjectService as projectService ([#9084](https://github.com/typescript-eslint/typescript-eslint/pull/9084))
+- **typescript-estree:** remove EXPERIMENTAL_useSourceOfProjectReferenceRedirect ([#9104](https://github.com/typescript-eslint/typescript-eslint/pull/9104))
+- **typescript-estree:** also remove projectService in withoutProjectParserOptions ([#9287](https://github.com/typescript-eslint/typescript-eslint/pull/9287))
+- **typescript-estree:** exposes ProjectService logs through the plugin ([#9337](https://github.com/typescript-eslint/typescript-eslint/pull/9337))
+- **utils:** add Linter configType constructor option ([#8999](https://github.com/typescript-eslint/typescript-eslint/pull/8999))
+- **utils:** swap LegacyESLint out for FlatESLint as ESLint export ([#8972](https://github.com/typescript-eslint/typescript-eslint/pull/8972))
+- **utils:** remove deprecated context helpers ([#9000](https://github.com/typescript-eslint/typescript-eslint/pull/9000))
+- **utils:** allow specifying additional rule meta.docs in RuleCreator ([#9025](https://github.com/typescript-eslint/typescript-eslint/pull/9025))
+
+### 🩹 Fixes
+
+- correct eslint-plugin's peerDependency on parser@8 ([#9089](https://github.com/typescript-eslint/typescript-eslint/pull/9089))
+- bring back in allowdefaultprojectforfiles rename ([7dfceeeea](https://github.com/typescript-eslint/typescript-eslint/commit/7dfceeeea))
+- disable `projectService` in `disabled-type-checked` shared config ([#9460](https://github.com/typescript-eslint/typescript-eslint/pull/9460))
+- **eslint-plugin:** include alpha pre-releases in parser peer dependency ([#9099](https://github.com/typescript-eslint/typescript-eslint/pull/9099))
+- **eslint-plugin:** correct rules.d.ts types to not rely on non-existent imports ([#9339](https://github.com/typescript-eslint/typescript-eslint/pull/9339))
+- **eslint-plugin:** remove duplicate import `RuleModuleWithMetaDocs` ([#9465](https://github.com/typescript-eslint/typescript-eslint/pull/9465))
+- **eslint-plugin:** [no-unnecessary-template-expression] do not render escaped strings in autofixes ([#8688](https://github.com/typescript-eslint/typescript-eslint/pull/8688))
+- **eslint-plugin:** [no-unused-vars] incorporate upstream changes around caught errors report messages ([#9532](https://github.com/typescript-eslint/typescript-eslint/pull/9532))
+- **eslint-plugin:** [no-misused-promises] perf: avoid getting types of variables/functions if the annotated type is obviously not a function ([#9656](https://github.com/typescript-eslint/typescript-eslint/pull/9656))
+- **rule-tester:** set configType to eslintrc in Linter options ([#9178](https://github.com/typescript-eslint/typescript-eslint/pull/9178))
+- **rule-tester:** re-apply updates from main ([#9180](https://github.com/typescript-eslint/typescript-eslint/pull/9180))
+- **rule-tester:** provide Linter a cwd in its constructor ([#9678](https://github.com/typescript-eslint/typescript-eslint/pull/9678))
+- **type-utils:** also check declared modules for package names in TypeOrValueSpecifier ([#9500](https://github.com/typescript-eslint/typescript-eslint/pull/9500))
+- **types:** allow ProjectServiceOptions for projectService ([#9318](https://github.com/typescript-eslint/typescript-eslint/pull/9318))
+- **typescript-estree:** add TSEnumBody node for TSEnumDeclaration body ([#8920](https://github.com/typescript-eslint/typescript-eslint/pull/8920))
+- **typescript-estree:** enable dot globs for project by default ([#8818](https://github.com/typescript-eslint/typescript-eslint/pull/8818))
+- **typescript-estree:** pass extraFileExtensions to projectService ([#9051](https://github.com/typescript-eslint/typescript-eslint/pull/9051))
+- **typescript-estree:** only run projectService setHostConfiguration when needed ([#9336](https://github.com/typescript-eslint/typescript-eslint/pull/9336))
+- **typescript-estree:** specific error for parserOptions.project not including a file ([#9584](https://github.com/typescript-eslint/typescript-eslint/pull/9584))
+- **typescript-estree:** adds support for project services using extended config files ([#9306](https://github.com/typescript-eslint/typescript-eslint/pull/9306))
+- **typescript-estree:** factor tsconfigRootDir into allowDefaultProject ([#9675](https://github.com/typescript-eslint/typescript-eslint/pull/9675))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Alfred Ringstad @alfredringstad
+- auvred @auvred
+- Brad Zacher @bradzacher
+- Christopher Aubut @higherorderfunctor
+- Collin Bachman @bachmacintosh
+- James Henry @JamesHenry
+- Josh Goldberg
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- StyleShit @StyleShit
+- Victor Lin @yepitschunked
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.18.0 (2024-07-29)
+
+
+### 🚀 Features
+
+- **types:** update ECMA versions ([#9634](https://github.com/typescript-eslint/typescript-eslint/pull/9634))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] prevent runtime error when asserting a variable declared in default TS lib ([#9660](https://github.com/typescript-eslint/typescript-eslint/pull/9660))
+- **eslint-plugin:** [unbound-method] report on destructuring in function parameters ([#8952](https://github.com/typescript-eslint/typescript-eslint/pull/8952))
+- **eslint-plugin:** [no-duplicate-type-constituents] shouldn't report on error types ([#9600](https://github.com/typescript-eslint/typescript-eslint/pull/9600))
+- **eslint-plugin:** [strict-boolean-expressions] support branded booleans ([#9297](https://github.com/typescript-eslint/typescript-eslint/pull/9297))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Oliver Salzburg
+- Vinccool96
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 7.17.0 (2024-07-22)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** backport no-unsafe-function type, no-wrapper-object-types from v8 to v7 ([#9507](https://github.com/typescript-eslint/typescript-eslint/pull/9507))
+- **eslint-plugin:** [return-await] add option to report in error-handling scenarios only, and deprecate "never" ([#9364](https://github.com/typescript-eslint/typescript-eslint/pull/9364))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-floating-promises] check top-level type assertions (and more) ([#9043](https://github.com/typescript-eslint/typescript-eslint/pull/9043))
+- **eslint-plugin:** [strict-boolean-expressions] consider assertion function argument a boolean context ([#9074](https://github.com/typescript-eslint/typescript-eslint/pull/9074))
+- **eslint-plugin:** [no-unnecessary-condition] false positive on optional private field ([#9602](https://github.com/typescript-eslint/typescript-eslint/pull/9602))
+- **typescript-estree:** don't infer single-run when --fix is in proces.argv ([#9577](https://github.com/typescript-eslint/typescript-eslint/pull/9577))
+- **typescript-estree:** disable single-run inference with extraFileExtensions ([#9580](https://github.com/typescript-eslint/typescript-eslint/pull/9580))
+- **website:** expose ATA types to eslint instance ([#9598](https://github.com/typescript-eslint/typescript-eslint/pull/9598))
+
+### ❤️  Thank You
+
+- Armano @armano2
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- StyleShit @StyleShit
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 7.16.1 (2024-07-15)
 
 

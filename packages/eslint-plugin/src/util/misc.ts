@@ -110,9 +110,11 @@ enum MemberNameType {
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
+    | TSESTree.AccessorProperty
     | TSESTree.Property
     | TSESTree.PropertyDefinition
     | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
@@ -160,7 +162,7 @@ type RequireKeys<
 > = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
-  return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
+  return Object.keys(myEnum).filter(x => isNaN(Number(x))) as T[];
 }
 
 /**

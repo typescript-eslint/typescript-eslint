@@ -4,9 +4,7 @@ import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
 const rule = getESLintCoreRule('prefer-const');
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-const', rule, {
   valid: [

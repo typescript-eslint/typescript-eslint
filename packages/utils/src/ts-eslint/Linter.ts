@@ -142,7 +142,10 @@ namespace Linter {
 
   /** @deprecated use Linter.ConfigType instead */
   export type Config = ClassicConfig.Config;
-  export type ConfigType = ClassicConfig.Config | FlatConfig.ConfigArray;
+  export type ConfigType =
+    | ClassicConfig.Config
+    | FlatConfig.Config
+    | FlatConfig.ConfigArray;
   /** @deprecated use ClassicConfig.ConfigOverride instead */
   export type ConfigOverride = ClassicConfig.ConfigOverride;
 

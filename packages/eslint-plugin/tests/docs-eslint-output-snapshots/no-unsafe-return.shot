@@ -5,44 +5,49 @@ exports[`Validating rule docs no-unsafe-return.mdx code examples ESLint output 1
 
 function foo1() {
   return 1 as any;
-  ~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+  ~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any\`.
 }
 function foo2() {
   return Object.create(null);
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any\`.
 }
 const foo3 = () => {
   return 1 as any;
-  ~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+  ~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any\`.
 };
 const foo4 = () => Object.create(null);
-                   ~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any\` typed value.
+                   ~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any\`.
 
 function foo5() {
   return [] as any[];
-  ~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+  ~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
 }
 function foo6() {
   return [] as Array<any>;
-  ~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+  ~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
 }
 function foo7() {
   return [] as readonly any[];
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
 }
 function foo8() {
   return [] as Readonly<any[]>;
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
 }
 const foo9 = () => {
   return [] as any[];
-  ~~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+  ~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
 };
 const foo10 = () => [] as any[];
-                    ~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+                    ~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
 
 const foo11 = (): string[] => [1, 2, 3] as any[];
-                              ~~~~~~~~~~~~~~~~~~ Unsafe return of an \`any[]\` typed value.
+                              ~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`any[]\`.
+
+async function foo13() {
+  return Promise.resolve({} as any);
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unsafe return of a value of type \`Promise<any>\`.
+}
 
 // generic position examples
 function assignability1(): Set<string> {
@@ -67,6 +72,10 @@ function foo2() {
 
 const foo3 = () => [];
 const foo4 = () => ['a'];
+
+async function foo5() {
+  return Promise.resolve(1);
+}
 
 function assignability1(): Set<string> {
   return new Set<string>(['foo']);
