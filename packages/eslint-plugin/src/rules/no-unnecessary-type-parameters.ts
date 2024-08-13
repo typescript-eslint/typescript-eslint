@@ -123,9 +123,7 @@ function isTypeParameterRepeatedInAST(
 
     // If the type parameter is being used as a type argument, then we
     // know the type parameter is being reused and can't be reported.
-    if (
-      reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference
-    ) {
+    if (reference.identifier.parent.type === AST_NODE_TYPES.TSTypeReference) {
       const grandparent = skipConstituentsUpward(
         reference.identifier.parent.parent,
       );
@@ -195,7 +193,11 @@ function collectTypeParameterUsageCounts(
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
-  const typeUsages = new Map<ts.Symbol, number>();
+  const typeUsages = new Map<ts.Type, number>();
+  const typeUsagesByDeclarations = new Map<
+    ts.Declaration[] | undefined,
+    number
+  >();
   const visitedConstraints = new Set<ts.TypeNode>();
   let functionLikeType = false;
   let visitedDefault = false;
@@ -212,7 +214,33 @@ function collectTypeParameterUsageCounts(
     visitType(type, false);
   }
 
-  console.log([...typeUsages].map(([type, count]) => [type?.getName(), count]));
+  // console.log(
+  //   ...(
+  //     [
+  //       [...typeUsages].map(([type, count]) => [
+  //         checker.typeToString(type),
+  //         count,
+  //       ]),
+  //       [...typeUsagesByDeclarations].map(([symbol, count]) => [
+  //         `${symbol?.getName()}`,
+  //         count,
+  //       ]),
+  //     ] satisfies [string, number][][]
+  //   ).map(arr =>
+  //     /*arr.sort(([a], [b]) => a.localeCompare(b))*/ Object.fromEntries(
+  //       Object.entries(
+  //         (
+  //           Object as typeof Object & {
+  //             groupBy: <T>(
+  //               arr: T[],
+  //               fn: (item: T) => number,
+  //             ) => Record<string, T[]>;
+  //           }
+  //         ).groupBy(arr, ([, count]) => count),
+  //       ).map(([count, { length }]) => [count, length]),
+  //     ),
+  //   ),
+  // );
 
   function visitType(
     type: ts.Type | undefined,
@@ -339,10 +367,23 @@ function collectTypeParameterUsageCounts(
     foundIdentifierUsages.set(id, identifierCount + value);
   }
 
-  function incrementTypeUsages(symbol: ts.Type): number {
-    const count = (typeUsages.get(symbol) ?? 0) + 1;
-    typeUsages.set(symbol, count);
-    return count;
+  function incrementTypeUsages(type: ts.Type): number {
+    const count = (typeUsages.get(type) ?? 0) + 1;
+    typeUsages.set(type, count);
+    const declarations = type.getSymbol()?.declarations;
+    const symbolCount = (typeUsagesByDeclarations.get(declarations) ?? 0) + 1;
+    typeUsagesByDeclarations.set(declarations, symbolCount);
+    /*if (symbolCount > 9)
+      console.log(declarations?.getName(), checker.typeToString(type));*/
+    const typeThresh = count > 9;
+    const symbolThresh = symbolCount > 9;
+    if (typeThresh !== symbolThresh)
+      console.log(checker.typeToString(type), {
+        typeThresh,
+        symbolThresh,
+        symbol: declarations,
+      });
+    return symbolCount;
   }
 
   function visitSignature(signature: ts.Signature | undefined): void {
