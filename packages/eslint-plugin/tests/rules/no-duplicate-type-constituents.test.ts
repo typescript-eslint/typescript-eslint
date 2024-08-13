@@ -691,5 +691,96 @@ type T = Record<string, A  >;
         (arg?:   string) => {};
       `,
     },
+    {
+      code: `
+        interface F {
+          (a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        interface F {
+          (a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: 'type fn = new (a?: string | undefined) => void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'type fn = new (a?: string  ) => void;',
+    },
+    {
+      code: 'function f(a?: string | undefined) {}',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'function f(a?: string  ) {}',
+    },
+    {
+      code: 'f = function (a?: string | undefined) {};',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'f = function (a?: string  ) {};',
+    },
+    {
+      code: 'declare function f(a?: string | undefined): void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'declare function f(a?: string  ): void;',
+    },
+    {
+      code: `
+        declare class bb {
+          f(a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        declare class bb {
+          f(a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: `
+        interface ee {
+          f(a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        interface ee {
+          f(a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: `
+        interface ee {
+          new (a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        interface ee {
+          new (a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: 'type fn = (a?: string | undefined) => void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'type fn = (a?: string  ) => void;',
+    },
+    {
+      only: true,
+      code: `
+        abstract class cc {
+          abstract f(a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        abstract class cc {
+          abstract f(a?: string  ): void;
+        }
+      `,
+    },
   ],
 });

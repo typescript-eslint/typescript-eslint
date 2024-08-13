@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isFunctionOrFunctionType,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -230,11 +231,9 @@ export default createRule<Options, MessageIds>({
                 maybeIdentifier.optional
               ) {
                 const maybeFunction = maybeIdentifier.parent;
-                const { type } = maybeFunction;
                 if (
-                  (type === AST_NODE_TYPES.ArrowFunctionExpression ||
-                    type === AST_NODE_TYPES.FunctionDeclaration ||
-                    type === AST_NODE_TYPES.FunctionExpression) &&
+                  (isFunctionOrFunctionType(maybeFunction) ||
+                    maybeFunction.type === AST_NODE_TYPES.TSDeclareFunction) &&
                   maybeFunction.params.includes(maybeIdentifier) &&
                   tsutils.isTypeFlagSet(
                     constituentNodeType,
