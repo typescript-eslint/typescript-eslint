@@ -56,7 +56,6 @@
     "semver": "^7.6.0"
   },
   "peerDependencies": {
-    "@eslint/eslintrc": ">=2",
     "eslint": "^8.57.0 || ^9.0.0"
   },
   "devDependencies": {
