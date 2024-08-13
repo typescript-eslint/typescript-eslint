@@ -570,10 +570,9 @@ export default tseslint.config(
     },
   },
   {
-    ...perfectionistPlugin.configs['recommended-alphabetical'],
+    extends: [perfectionistPlugin.configs['recommended-alphabetical']],
     files: ['packages/utils/src/**/*.ts'],
     rules: {
-      ...perfectionistPlugin.configs['recommended-alphabetical'].rules,
       'perfectionist/sort-classes': [
         'error',
         {
