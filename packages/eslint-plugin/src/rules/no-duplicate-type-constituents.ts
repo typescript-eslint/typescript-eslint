@@ -1,7 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import { isTypeFlagSet } from 'ts-api-utils';
 import type { Type } from 'typescript';
 import * as ts from 'typescript';
 
@@ -217,7 +216,9 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      ...(!ignoreIntersections && { TSIntersectionType: checkDuplicate }),
+      ...(!ignoreIntersections && {
+        TSIntersectionType: checkDuplicate,
+      }),
       ...(!ignoreUnions && {
         TSUnionType: (node): void =>
           checkDuplicate(node, (constituentNodeType, report) => {
@@ -235,7 +236,10 @@ export default createRule<Options, MessageIds>({
                     type === AST_NODE_TYPES.FunctionDeclaration ||
                     type === AST_NODE_TYPES.FunctionExpression) &&
                   maybeFunction.params.includes(maybeIdentifier) &&
-                  isTypeFlagSet(constituentNodeType, ts.TypeFlags.Undefined)
+                  tsutils.isTypeFlagSet(
+                    constituentNodeType,
+                    ts.TypeFlags.Undefined,
+                  )
                 ) {
                   report('unnecessary');
                 }
