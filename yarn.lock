@@ -5618,10 +5618,10 @@ __metadata:
   dependencies:
     "@jest/types": 29.6.3
     "@prettier/sync": ^0.5.1
-    "@typescript-eslint/rule-tester": 8.1.0
-    "@typescript-eslint/scope-manager": 8.1.0
-    "@typescript-eslint/type-utils": 8.1.0
-    "@typescript-eslint/utils": 8.1.0
+    "@typescript-eslint/rule-tester": "workspace:*"
+    "@typescript-eslint/scope-manager": "workspace:*"
+    "@typescript-eslint/type-utils": "workspace:*"
+    "@typescript-eslint/utils": "workspace:*"
     jest: 29.7.0
     prettier: ^3.2.5
     rimraf: "*"
@@ -5723,7 +5723,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@8.1.0, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@8.1.0, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
@@ -5787,7 +5787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@8.1.0, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/type-utils@8.1.0, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
