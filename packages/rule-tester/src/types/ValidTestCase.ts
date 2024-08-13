@@ -1,10 +1,30 @@
 import type {
   Linter,
+  Parser,
   ParserOptions,
   SharedConfigurationSettings,
 } from '@typescript-eslint/utils/ts-eslint';
 
 import type { DependencyConstraint } from './DependencyConstraint';
+
+export interface TestLanguageOptions {
+  /**
+   * Environments for the test case.
+   */
+  readonly env?: Readonly<Linter.EnvironmentConfig>;
+  /**
+   * The additional global variables.
+   */
+  readonly globals?: Readonly<Linter.GlobalsConfig>;
+  /**
+   * The absolute path for the parser.
+   */
+  readonly parser?: Readonly<Parser.LooseParserModule>;
+  /**
+   * Options for the parser.
+   */
+  readonly parserOptions?: Readonly<ParserOptions>;
+}
 
 export interface ValidTestCase<Options extends readonly unknown[]> {
   /**
@@ -16,29 +36,17 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly code: string;
   /**
-   * Environments for the test case.
-   */
-  readonly env?: Readonly<Linter.EnvironmentConfig>;
-  /**
    * The fake filename for the test case. Useful for rules that make assertion about filenames.
    */
   readonly filename?: string;
   /**
-   * The additional global variables.
+   * Language options for the test case.
    */
-  readonly globals?: Readonly<Linter.GlobalsConfig>;
+  readonly languageOptions?: TestLanguageOptions;
   /**
    * Options for the test case.
    */
   readonly options?: Readonly<Options>;
-  /**
-   * The absolute path for the parser.
-   */
-  readonly parser?: string;
-  /**
-   * Options for the parser.
-   */
-  readonly parserOptions?: Readonly<ParserOptions>;
   /**
    * Settings for the test case.
    */

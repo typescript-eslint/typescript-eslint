@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - v8
   pull_request:
     branches:
       - '**'
@@ -148,7 +147,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
 
-      - name: Run integrations tests
+      - name: Run integration tests
         run: yarn test-integration
         env:
           CI: true
@@ -220,8 +219,8 @@ jobs:
           # Sadly 1 day is the minimum
           retention-days: 1
 
-  unit_tests_tsserver:
-    name: Run Unit Tests with Experimental TSServer
+  unit_tests_project_service:
+    name: Run Unit Tests with Project Service
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -245,7 +244,7 @@ jobs:
         run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
-          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+          TYPESCRIPT_ESLINT_PROJECT_SERVICE: true
 
   upload_coverage:
     name: Upload Codecov Coverage
@@ -296,39 +295,6 @@ jobs:
       - name: Publish all packages to npm with the canary tag
         # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
         run: npx nx release publish --tag canary --verbose
-        env:
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
-
-  publish_canary_version_v8:
-    name: Publish the latest v8 code as a canary version
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
-    if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/v8'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # we need the tags to be available
-
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
-      - name: Figure out and apply the next canary version
-        run: OVERRIDE_MAJOR_VERSION=8 npx tsx tools/release/apply-canary-version.mts
-
-      - name: Publish all packages to npm with the canary tag
-        # NOTE: this needs to be npx, rather than yarn, to make sure the authenticated npm registry is used
-        run: npx nx release publish --tag rc-v8 --verbose
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

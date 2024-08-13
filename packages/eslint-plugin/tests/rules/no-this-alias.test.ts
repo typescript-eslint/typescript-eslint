@@ -16,9 +16,7 @@ const arrayDestructureError = {
   type: AST_NODE_TYPES.ArrayPattern,
 };
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-this-alias', rule, {
   valid: [

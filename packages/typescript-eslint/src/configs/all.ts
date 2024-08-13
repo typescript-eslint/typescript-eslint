@@ -10,6 +10,10 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import baseConfig from './base';
 import eslintRecommendedConfig from './eslint-recommended';
 
+/**
+ * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
+ * @see {@link https://typescript-eslint.io/users/configs#all}
+ */
 export default (
   plugin: FlatConfig.Plugin,
   parser: FlatConfig.Parser,
@@ -24,7 +28,6 @@ export default (
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/ban-tslint-comment': 'error',
-      '@typescript-eslint/ban-types': 'error',
       '@typescript-eslint/class-literal-property-style': 'error',
       'class-methods-use-this': 'off',
       '@typescript-eslint/class-methods-use-this': 'error',
@@ -63,7 +66,6 @@ export default (
       '@typescript-eslint/no-dynamic-delete': 'error',
       'no-empty-function': 'off',
       '@typescript-eslint/no-empty-function': 'error',
-      '@typescript-eslint/no-empty-interface': 'error',
       '@typescript-eslint/no-empty-object-type': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
@@ -79,8 +81,6 @@ export default (
       '@typescript-eslint/no-invalid-void-type': 'error',
       'no-loop-func': 'off',
       '@typescript-eslint/no-loop-func': 'error',
-      'no-loss-of-precision': 'off',
-      '@typescript-eslint/no-loss-of-precision': 'error',
       'no-magic-numbers': 'off',
       '@typescript-eslint/no-magic-numbers': 'error',
       '@typescript-eslint/no-meaningless-void-operator': 'error',
@@ -97,6 +97,7 @@ export default (
       '@typescript-eslint/no-require-imports': 'error',
       'no-restricted-imports': 'off',
       '@typescript-eslint/no-restricted-imports': 'error',
+      '@typescript-eslint/no-restricted-types': 'error',
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-this-alias': 'error',
@@ -128,7 +129,6 @@ export default (
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
-      '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',
       'no-throw-literal': 'off',

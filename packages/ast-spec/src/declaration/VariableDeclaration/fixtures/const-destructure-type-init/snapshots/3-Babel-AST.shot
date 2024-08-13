@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration const-destructure-type-init Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: ObjectPattern {
+            type: "ObjectPattern",
+            properties: [
+              Property {
+                type: "Property",
+                computed: false,
+                key: Identifier {
+                  type: "Identifier",
+                  name: "foo",
+
+                  range: [8, 11],
+                  loc: {
+                    start: { column: 8, line: 1 },
+                    end: { column: 11, line: 1 },
+                  },
+                },
+                kind: "init",
+                method: false,
+                shorthand: true,
+                value: Identifier {
+                  type: "Identifier",
+                  name: "foo",
+
+                  range: [8, 11],
+                  loc: {
+                    start: { column: 8, line: 1 },
+                    end: { column: 11, line: 1 },
+                  },
+                },
+
+                range: [8, 11],
+                loc: {
+                  start: { column: 8, line: 1 },
+                  end: { column: 11, line: 1 },
+                },
+              },
+            ],
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSAnyKeyword {
+                type: "TSAnyKeyword",
+
+                range: [15, 18],
+                loc: {
+                  start: { column: 15, line: 1 },
+                  end: { column: 18, line: 1 },
+                },
+              },
+
+              range: [13, 18],
+              loc: {
+                start: { column: 13, line: 1 },
+                end: { column: 18, line: 1 },
+              },
+            },
+
+            range: [6, 18],
+            loc: {
+              start: { column: 6, line: 1 },
+              end: { column: 18, line: 1 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [21, 22],
+            loc: {
+              start: { column: 21, line: 1 },
+              end: { column: 22, line: 1 },
+            },
+          },
+
+          range: [6, 22],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 22, line: 1 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 23, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 24],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

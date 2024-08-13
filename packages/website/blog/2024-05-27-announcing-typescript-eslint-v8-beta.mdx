@@ -10,6 +10,11 @@ tags: [breaking changes, typescript-eslint, v7, v8]
 title: Announcing typescript-eslint v8 Beta
 ---
 
+:::caution Newer Information Available
+This blog post is now out of date, as we've released typescript-eslint v8! 🚀
+Please see [Announcing typescript-eslint v8](./2024-07-31-announcing-typescript-eslint-v8.md) for the latest information.
+:::
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -34,7 +39,7 @@ Please do try out the typescript-eslint v8 beta!
 
 ### As A New User
 
-If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](https://v8--typescript-eslint.netlify.app/getting-started).
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](/getting-started).
 It'll walk you through setting up typescript-eslint in a project.
 
 To use v8 specifically, see the following section for an updated install command.
@@ -127,7 +132,7 @@ export default tseslint.config(
         project: ['packages/*/tsconfig.json', 'tsconfig.eslint.json'],
         // Added lines start
         projectService: {
-          allowDefaultProject: ['./*.js'],
+          allowDefaultProject: ['*.js'],
           defaultProject: './tsconfig.json',
         },
         // Added lines end
@@ -166,6 +171,11 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
 
 ### Rule Breaking Changes
 
+:::caution Newer Information Available
+This blog post is now out of date, as we've released typescript-eslint v8! 🚀
+Please see [Announcing typescript-eslint v8](./2024-07-31-announcing-typescript-eslint-v8.md) for the latest information.
+:::
+
 Several rules are changed in significant enough ways to be considered breaking changes:
 
 - [Rules: Deprecate prefer-ts-expect-error in favor of ban-ts-comment](https://github.com/typescript-eslint/typescript-eslint/issues/8333)
@@ -201,21 +211,22 @@ On the other hand, there are legitimate uses for `{}`, and banning it by default
 
 typescript-eslint v8 deletes the `ban-types` rule and replaces it with several more targeted rules:
 
-- [`@typescript-eslint/no-restricted-types`](https://v8--typescript-eslint.netlify.app/rules/no-restricted-types) is the new rule for banning a configurable list of type names.
+- [`@typescript-eslint/no-restricted-types`](/rules/no-restricted-types) is the new rule for banning a configurable list of type names.
   It has no options enabled by default.
-- [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type) bans the built-in `{}` type in confusing locations.
-- [`@typescript-eslint/no-unsafe-function-type`](https://v8--typescript-eslint.netlify.app/rules/no-unsafe-function-type) bans the built-in `Function` type
-- [`@typescript-eslint/no-wrapper-object-types`](https://v8--typescript-eslint.netlify.app/rules/no-wrapper-object-types) bans `Object` and built-in class wrappers such as `Number`.
+  It has no options enabled by default.
+- [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type) bans the built-in `{}` type in confusing locations.
+- [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type) bans the built-in `Function` type.
+- [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types) bans `Object` and built-in class wrappers such as `Number`.
 
 To migrate to the new rules:
 
-- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
-- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](https://v8--typescript-eslint.netlify.app/rules/no-restricted-types).
+- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
+- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
 - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban:
-  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type).
-  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](https://v8--typescript-eslint.netlify.app/rules/no-unsafe-function-type).
-  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](https://v8--typescript-eslint.netlify.app/rules/no-wrapper-object-types).
-- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type).
+  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
+  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type).
+  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types).
+- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
 
 For more details, see the issues and pull requests that split apart the `ban-types` rule:
 
@@ -225,6 +236,11 @@ For more details, see the issues and pull requests that split apart the `ban-typ
 - [feat(eslint-plugin): replace ban-types with no-restricted-types, no-unsafe-function-type, no-wrapper-object-types](https://github.com/typescript-eslint/typescript-eslint/pull/9102)
 
 ### Tooling Breaking Changes
+
+:::caution Newer Information Available
+This blog post is now out of date, as we've released typescript-eslint v8! 🚀
+Please see [Announcing typescript-eslint v8](./2024-07-31-announcing-typescript-eslint-v8.md) for the latest information.
+:::
 
 - ~[Enhancement: Error if configuration options aren't provided as expected](https://github.com/typescript-eslint/typescript-eslint/issues/6403)~: postponed to a future major version
 - [fix(typescript-estree): enable dot globs for project by default](https://github.com/typescript-eslint/typescript-eslint/pull/8818)
@@ -385,7 +401,7 @@ For more details, see:
 One limitation of ESLint's `RuleTester` is that it is not possible to verify the individual applied fixes when a rule provides multiple rounds of fixes.
 [ESLint's `RuleTester` applies only the first fix](https://eslint.org/docs/latest/integrate/nodejs-api#testing-fixes) when there is conflict between two fixes.
 
-In typescript-eslint v8, the typescript-eslint `RuleTester` tries to apply all possible fixes for each test case.
+In typescript-eslint v8, our `RuleTester` tries to apply all possible fixes for each test case.
 
 If your rule tests had some test cases that required multi-pass fixes, you will see some test failures.
 To fix these failures, provide an array of strings for `output` which specifies the output after each fix pass.
@@ -452,8 +468,8 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Victor Lin](https://github.com/yepitschunked)
   - [Yukihiro Hasegawa](https://github.com/y-hsgw)
 - Members of the TypeScript team who helped with performance issues:
+  - [Daniel Rosenwasser](https://github.com/DanielRosenwasser)
   - [Jake Bailey](https://github.com/jakebailey)
   - [Sheetal Nandi](https://github.com/sheetalkamat)
-  - [Daniel Rosenwasser](https://github.com/DanielRosenwasser)
 
 See the [v8.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/9) for the list of issues and associated merged pull requests.

@@ -22,14 +22,7 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
     case 'private':
       return false;
     case 'public':
-      if (
-        node.parent.type === AST_NODE_TYPES.ClassBody &&
-        (
-          node.parent.parent as
-            | TSESTree.ClassDeclaration
-            | TSESTree.ClassExpression
-        ).superClass
-      ) {
+      if (node.parent.parent.superClass) {
         return false;
       }
       break;

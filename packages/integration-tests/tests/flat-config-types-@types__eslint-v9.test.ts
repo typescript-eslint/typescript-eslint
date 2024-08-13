@@ -18,9 +18,7 @@ for (const additionalFlags of [
           line &&
           // error TS18028: Private identifiers are only available when targeting ECMAScript 2015 and higher.
           // this is fine for us to ignore in this context
-          !line.includes('error TS18028') &&
-          // currently expected errors from @stylistic/eslint-plugin as it doesn't support ESLint v9 types yet
-          !line.startsWith('node_modules/@stylistic/eslint-plugin/'),
+          !line.includes('error TS18028'),
       );
 
       // The types should not error (e.g. https://github.com/eslint-stylistic/eslint-stylistic/issues/276)
@@ -28,4 +26,4 @@ for (const additionalFlags of [
     },
   );
 }
-eslintIntegrationTest(__filename, 'eslint.config.js', true);
+eslintIntegrationTest(__filename, 'eslint.config.js');

@@ -1,12 +1,9 @@
-import type {
-  Definition,
-  ImportBindingDefinition,
-} from '@typescript-eslint/scope-manager';
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
+import { isTypeImport } from '../util/isTypeImport';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';
 type Options = [
@@ -99,17 +96,6 @@ export default createRule<Options, MessageIds>({
       return (
         variable.defs[0].type === DefinitionType.Parameter &&
         variable.name === 'this'
-      );
-    }
-
-    function isTypeImport(
-      definition?: Definition,
-    ): definition is ImportBindingDefinition {
-      return (
-        definition?.type === DefinitionType.ImportBinding &&
-        (definition.parent.importKind === 'type' ||
-          (definition.node.type === AST_NODE_TYPES.ImportSpecifier &&
-            definition.node.importKind === 'type'))
       );
     }
 
@@ -421,8 +407,8 @@ export default createRule<Options, MessageIds>({
             return true;
           }
           if (
-            (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
-              node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
+            (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+              node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
             isInRange(node.parent.parent.right, location)
           ) {
             return true;

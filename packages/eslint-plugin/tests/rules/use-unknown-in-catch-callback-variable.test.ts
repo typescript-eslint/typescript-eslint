@@ -6,11 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('use-unknown-in-catch-callback-variable', rule, {

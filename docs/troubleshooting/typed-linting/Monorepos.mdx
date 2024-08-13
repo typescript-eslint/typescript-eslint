@@ -7,12 +7,14 @@ title: Monorepo Configuration
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::tip
+**The [new "project service" in v8](/blog/announcing-typescript-eslint-v8-beta#project-service) requires no additional configuration for monorepos.**
+
+If you're using `parserOptions.projectService`, you don't need this guide.
+:::
+
 If you're using a monorepo with `parserOptions.project`, these docs will help you figure out how to setup typed linting.
 If you don't want to use typed linting, then you can stop here - you don't need to do anything special.
-
-:::tip
-The [new "project service" (`parserOptions.projectService`) in v8](/blog/announcing-typescript-eslint-v8-beta#project-service) requires no additional configuration for monorepos.
-:::
 
 `parserOptions.project` configurations will look different based on which monorepo setup you use:
 
