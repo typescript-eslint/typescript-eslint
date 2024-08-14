@@ -23,7 +23,7 @@ For example, given `type A = string` and `type T = string | A`, this rule would 
 ```ts
 type T1 = 'A' | 'A';
 
-type T2 = A | A | B;
+type T2 = string | string | number;
 
 type T3 = { a: string } & { a: string };
 
@@ -40,7 +40,7 @@ type T5 = StringA | StringB;
 ```ts
 type T1 = 'A' | 'B';
 
-type T2 = A | B | C;
+type T2 = string | number | boolean;
 
 type T3 = { a: string } & { b: string };
 
@@ -70,3 +70,7 @@ It can sometimes be useful for the sake of documentation to include aliases for 
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 > In some of those cases, [branded types](https://basarat.gitbook.io/typescript/main-1/nominaltyping#using-interfaces) might be a type-safe way to represent the underlying data types.
+
+## Related To
+
+- [no-redundant-type-constituents](./no-redundant-type-constituents.mdx)

@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to set up your ESLint configuration file.
 [Packages > typescript-eslint](../packages/TypeScript_ESLint.mdx) includes more documentation on the `tseslint` helper.
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -36,7 +36,7 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -69,7 +69,7 @@ If your project enables [typed linting](../getting-started/Typed_Linting.mdx), w
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -125,7 +125,7 @@ These rules are those whose reports are almost always for a bad practice and/or 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.recommended);
 ```
 
@@ -151,7 +151,7 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.recommendedTypeChecked);
 ```
 
@@ -177,7 +177,7 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.strict);
 ```
 
@@ -213,7 +213,7 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.strictTypeChecked);
 ```
 
@@ -249,7 +249,7 @@ These rules are generally opinionated about enforcing simpler code patterns.
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.stylistic);
 ```
 
@@ -278,7 +278,7 @@ Rules newly added in this configuration are similarly opinionated to those in `s
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.stylisticTypeChecked);
 ```
 
@@ -343,7 +343,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -407,7 +407,7 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   tseslint.configs.eslintRecommended,

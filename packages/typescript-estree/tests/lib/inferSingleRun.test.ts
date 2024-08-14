@@ -1,16 +1,54 @@
-import * as path from 'path';
+import path from 'path';
 
 import { inferSingleRun } from '../../src/parseSettings/inferSingleRun';
 
 describe('inferSingleRun', () => {
-  const originalEnvCI = process.env.CI;
-  const originalProcessArgv = process.argv;
-  const originalTSESTreeSingleRun = process.env.TSESTREE_SINGLE_RUN;
+  beforeEach(() => {
+    process.argv = ['node', 'eslint'];
+    process.env.CI = undefined;
+    process.env.TSESTREE_SINGLE_RUN = undefined;
+  });
 
-  afterEach(() => {
-    process.env.CI = originalEnvCI;
-    process.argv = originalProcessArgv;
-    process.env.TSESTREE_SINGLE_RUN = originalTSESTreeSingleRun;
+  it('returns false when options is undefined', () => {
+    const actual = inferSingleRun(undefined);
+
+    expect(actual).toBe(false);
+  });
+
+  it('returns false when options.project is null', () => {
+    const actual = inferSingleRun({ project: null });
+
+    expect(actual).toBe(false);
+  });
+
+  it('returns false when options.program is defined', () => {
+    const actual = inferSingleRun({ programs: [], project: true });
+
+    expect(actual).toBe(false);
+  });
+
+  it("returns false when TSESTREE_SINGLE_RUN is 'false'", () => {
+    process.env.TSESTREE_SINGLE_RUN = 'false';
+
+    const actual = inferSingleRun({ project: true });
+
+    expect(actual).toBe(false);
+  });
+
+  it("returns true when TSESTREE_SINGLE_RUN is 'true'", () => {
+    process.env.TSESTREE_SINGLE_RUN = 'true';
+
+    const actual = inferSingleRun({ project: true });
+
+    expect(actual).toBe(true);
+  });
+
+  it("returns true when CI is 'true'", () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({ project: true });
+
+    expect(actual).toBe(true);
   });
 
   it.each(['project', 'programs'])(
@@ -36,20 +74,32 @@ describe('inferSingleRun', () => {
     expect(actual).toBe(expected);
   });
 
-  it.each(['node_modules/.bin/eslint', 'node_modules/eslint/bin/eslint.js'])(
-    'returns true when singleRun is inferred from process.argv',
-    pathName => {
+  describe.each([
+    'node_modules/.bin/eslint',
+    'node_modules/eslint/bin/eslint.js',
+  ])('%s', pathName => {
+    it('returns false when singleRun is inferred from process.argv with --fix', () => {
+      process.argv = ['', path.normalize(pathName), '', '--fix'];
+
+      const actual = inferSingleRun({
+        programs: null,
+        project: './tsconfig.json',
+      });
+
+      expect(actual).toBe(false);
+    });
+
+    it('returns true when singleRun is inferred from process.argv without --fix', () => {
       process.argv = ['', path.normalize(pathName), ''];
 
       const actual = inferSingleRun({
         programs: null,
         project: './tsconfig.json',
-        allowAutomaticSingleRunInference: true,
       });
 
       expect(actual).toBe(true);
-    },
-  );
+    });
+  });
 
   it('returns true when singleRun is inferred from CI=true', () => {
     process.env.CI = 'true';
@@ -57,10 +107,31 @@ describe('inferSingleRun', () => {
     const actual = inferSingleRun({
       programs: null,
       project: './tsconfig.json',
-      allowAutomaticSingleRunInference: true,
     });
 
     expect(actual).toBe(true);
+  });
+
+  it('returns true when singleRun can be inferred and options.extraFileExtensions is an empty array', () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({
+      extraFileExtensions: [],
+      project: './tsconfig.json',
+    });
+
+    expect(actual).toBe(true);
+  });
+
+  it('returns false when singleRun can be inferred options.extraFileExtensions contains entries', () => {
+    process.env.CI = 'true';
+
+    const actual = inferSingleRun({
+      extraFileExtensions: ['.vue'],
+      project: './tsconfig.json',
+    });
+
+    expect(actual).toBe(false);
   });
 
   it('returns false when there is no way to infer singleRun', () => {
@@ -72,28 +143,9 @@ describe('inferSingleRun', () => {
     expect(actual).toBe(false);
   });
 
-  it('returns false even if CI=true when allowAutomaticSingleRunInference is not true', () => {
-    process.env.CI = 'true';
-
-    const actual = inferSingleRun({
-      programs: null,
-      project: './tsconfig.json',
-    });
+  it('returns false when none of the known cases are true', () => {
+    const actual = inferSingleRun({ project: true });
 
     expect(actual).toBe(false);
   });
-
-  it.each(['node_modules/.bin/eslint', 'node_modules/eslint/bin/eslint.js'])(
-    'returns false even if singleRun is inferred from process.argv when allowAutomaticSingleRunInference is not true',
-    pathName => {
-      process.argv = ['', path.normalize(pathName), ''];
-
-      const actual = inferSingleRun({
-        programs: null,
-        project: './tsconfig.json',
-      });
-
-      expect(actual).toBe(false);
-    },
-  );
 });

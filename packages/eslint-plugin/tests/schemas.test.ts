@@ -169,7 +169,7 @@ describe('Rules should only define valid keys on schemas', () => {
           // definition keys and property keys should not be validated, only the values
           return Object.values(value as object);
         }
-        if (parseInt(key).toString() === key) {
+        if (`${Number(key)}` === key) {
           // hack to detect arrays as JSON.stringify will traverse them and stringify the number
           return value;
         }

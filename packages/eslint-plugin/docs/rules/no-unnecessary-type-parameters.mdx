@@ -1,5 +1,5 @@
 ---
-description: 'Disallow type parameters that only appear once.'
+description: "Disallow type parameters that aren't used multiple times."
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,19 +9,18 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-parameters** for documentation.
 
-This rule forbids type parameters that only appear once in a function, method, or class definition.
+This rule forbids type parameters that aren't used multiple times in a function, method, or class definition.
 
 Type parameters relate two types.
-If a type parameter only appears once, then it is not relating anything.
+If a type parameter is only used once, then it is not relating anything.
 It can usually be replaced with explicit types such as `unknown`.
 
 At best unnecessary type parameters make code harder to read.
 At worst they can be used to disguise unsafe type assertions.
 
-:::warning Early Stage
-This rule was recently added to typescript-eslint and still considered experimental.
-It might change significantly between minor versions.
-Please try it out and give us feedback!
+:::warning
+This rule was recently added, and has a surprising amount of hidden complexity compared to most of our rules. If you encounter unexpected behavior with it, please check closely the [Limitations](#limitations) section below and our [issue tracker](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+no-unnecessary-type-parameters).
+If you don't see your case covered, please [reach out to us](https://typescript-eslint.io/contributing/issues)!
 :::
 
 ## Examples

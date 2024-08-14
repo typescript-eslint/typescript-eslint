@@ -23,14 +23,14 @@ function makeFilter(filePath: string[] | string): { filter: RegExp } {
   const norm = paths.map(item =>
     normalizePath(item).replace(/\//g, '[\\\\/]').replace(/\./g, '\\.'),
   );
-  return { filter: new RegExp('(' + norm.join('|') + ')$') };
+  return { filter: new RegExp(`(${norm.join('|')})$`) };
 }
 
 function createResolve(
   targetPath: string,
   join: string,
 ): esbuild.OnResolveResult {
-  const resolvedPackage = requireResolved(targetPath + '/package.json');
+  const resolvedPackage = requireResolved(`${targetPath}/package.json`);
   return {
     path: path.join(resolvedPackage, '../src/', join),
   };
@@ -75,16 +75,21 @@ async function buildPackage(name: string, file: string): Promise<void> {
       'define.amd': 'false',
       global: 'window',
     },
-    alias: {
-      util: requireResolved('./src/mock/util.js'),
-      assert: requireResolved('./src/mock/assert.js'),
-      path: requireResolved('./src/mock/path.js'),
-      typescript: requireResolved('./src/mock/typescript.js'),
-      'typescript/lib/tsserverlibrary': requireResolved(
-        './src/mock/typescript.js',
-      ),
-      'lru-cache': requireResolved('./src/mock/lru-cache.js'),
-    },
+    alias: Object.fromEntries(
+      [
+        // built-in Node packages — alias each twice — both with and without the `node:` prefix
+        ...['util', 'assert', 'path'].flatMap(from => [from, `node:${from}`]),
+        // other NPM packages
+        'typescript',
+        'typescript/lib/tsserverlibrary',
+        'lru-cache',
+      ].map(from => [
+        from,
+        requireResolved(
+          `./src/mock/${from.split('/')[0].split(':').at(-1)}.js`,
+        ),
+      ]),
+    ),
     plugins: [
       {
         name: 'replace-plugin',
@@ -134,7 +139,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
           );
           const anyAlias = /^(@typescript-eslint\/[a-z-]+)\/([a-z-]+)$/;
           build.onResolve({ filter: anyAlias }, args => {
-            const parts = args.path.match(anyAlias);
+            const parts = anyAlias.exec(args.path);
             if (parts) {
               return createResolve(parts[1], `${parts[2]}/index.ts`);
             }

@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../../RuleTester';
 import { BaseCases, identity } from './base-cases';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -109,6 +110,22 @@ describe('|| {}', () => {
             messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 24,
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo1?.foo2?.foo3;',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: noFormat`(foo1?.foo2 || ({})).foo3;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 26,
             suggestions: [
               {
                 messageId: 'optionalChainSuggest',
@@ -759,12 +776,12 @@ describe('hand-crafted cases', () => {
       'data && data.value !== null;',
       {
         code: '<div /> && (<div />).wtf;',
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       {
         code: '<></> && (<></>).wtf;',
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       'foo[x++] && foo[x++].bar;',
@@ -956,7 +973,7 @@ describe('hand-crafted cases', () => {
         code: 'foo && foo.bar(baz => <This Requires Spaces />);',
         output: 'foo?.bar(baz => <This Requires Spaces />);',
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       {
@@ -1075,7 +1092,7 @@ describe('hand-crafted cases', () => {
             suggestions: null,
           },
         ],
-        parserOptions: { ecmaFeatures: { jsx: true } },
+        languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         filename: 'react.tsx',
       },
       // case with this keyword at the start of expression
@@ -1819,6 +1836,84 @@ describe('hand-crafted cases', () => {
         `,
               },
             ],
+          },
+        ],
+      },
+      // parenthesis
+      {
+        code: noFormat`a && (a.b && a.b.c)`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`(a && a.b) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`((a && a.b)) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && (a.b && a.b.c))`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 24,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && a.b && a.b.c)`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`!foo || !foo.bar || ((((!foo.bar.baz || !foo.bar.baz()))));`,
+        output: '!foo?.bar?.baz?.();',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 59,
+          },
+        ],
+      },
+      {
+        code: noFormat`a !== undefined && ((a !== null && a.prop));`,
+        output: 'a?.prop;',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 44,
           },
         ],
       },

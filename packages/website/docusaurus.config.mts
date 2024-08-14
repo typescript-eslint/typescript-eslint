@@ -7,8 +7,8 @@ import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
+import { version } from '@typescript-eslint/parser/package.json';
 
-import { version } from './package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
@@ -342,6 +342,28 @@ const config: Config = {
     rules: rulesMeta,
   },
   plugins: [
+    ...['ast-spec', 'type-utils'].map(packageName => [
+      'docusaurus-plugin-typedoc',
+      {
+        entryPoints: [`../${packageName}/src/index.ts`],
+        enumMembersFormat: 'table',
+        exclude: '**/*.d.ts',
+        excludeExternals: true,
+        groupOrder: ['Functions', 'Variables', '*'],
+        hidePageTitle: true,
+        id: `typedoc-generated-${packageName}`,
+        indexFormat: 'table',
+        out: `../../docs/packages/${packageName}/generated`,
+        outputFileStrategy: 'modules',
+        parametersFormat: 'table',
+        plugin: [require.resolve('./tools/typedoc-plugin-no-inherit-fork.mjs')],
+        propertiesFormat: 'table',
+        readme: 'none',
+        tsconfig: `../${packageName}/tsconfig.json`,
+        typeDeclarationFormat: 'table',
+        useCodeBlocks: true,
+      },
+    ]),
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],

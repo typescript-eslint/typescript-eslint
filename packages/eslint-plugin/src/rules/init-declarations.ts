@@ -28,7 +28,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['always'],
   create(context, [mode]) {
-    // Make a custom context to adjust the the loc of reports where the base
+    // Make a custom context to adjust the loc of reports where the base
     // rule's behavior is a bit too aggressive with TS-specific syntax (namely,
     // type annotations).
     function getBaseContextOverride(): typeof context {

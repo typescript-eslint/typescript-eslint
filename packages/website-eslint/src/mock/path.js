@@ -73,7 +73,7 @@ export function resolve(...args) {
       continue;
     }
 
-    resolvedPath = path + '/' + resolvedPath;
+    resolvedPath = `${path}/${resolvedPath}`;
     resolvedAbsolute = path.charAt(0) === '/';
   }
 
@@ -92,8 +92,8 @@ export function resolve(...args) {
 // path.normalize(path)
 // posix version
 export function normalize(path) {
-  let isPathAbsolute = isAbsolute(path);
-  let trailingSlash = path.endsWith('/');
+  const isPathAbsolute = isAbsolute(path);
+  const trailingSlash = path.endsWith('/');
 
   // Normalize the path
   path = normalizeArray(
@@ -142,7 +142,7 @@ export function relative(from, to) {
       }
     }
 
-    var end = arr.length - 1;
+    let end = arr.length - 1;
     for (; end >= 0; end--) {
       if (arr[end] !== '') {
         break;

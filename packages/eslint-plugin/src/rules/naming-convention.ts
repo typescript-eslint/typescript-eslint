@@ -7,7 +7,7 @@ import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import type { ScriptTarget } from 'typescript';
 
 import {
-  collectUnusedVariables,
+  collectVariables,
   createRule,
   getParserServices,
   requiresQuoting as _requiresQuoting,
@@ -162,7 +162,7 @@ export default createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = collectUnusedVariables(context);
+    const { unusedVariables } = collectVariables(context);
     function isUnused(
       name: string,
       initialScope: TSESLint.Scope.Scope | null,
@@ -276,14 +276,12 @@ export default createRule<Options, MessageIds>({
 
           const baseModifiers = new Set<Modifiers>();
           const parent = node.parent;
-          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
-            if (parent.kind === 'const') {
-              baseModifiers.add(Modifiers.const);
-            }
+          if (parent.kind === 'const') {
+            baseModifiers.add(Modifiers.const);
+          }
 
-            if (isGlobal(context.sourceCode.getScope(node))) {
-              baseModifiers.add(Modifiers.global);
-            }
+          if (isGlobal(context.sourceCode.getScope(node))) {
+            baseModifiers.add(Modifiers.global);
           }
 
           identifiers.forEach(id => {

@@ -5,13 +5,8 @@ import arrayType from './array-type';
 import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
-import banTypes from './ban-types';
-import blockSpacing from './block-spacing';
-import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import classMethodsUseThis from './class-methods-use-this';
-import commaDangle from './comma-dangle';
-import commaSpacing from './comma-spacing';
 import consistentGenericConstructors from './consistent-generic-constructors';
 import consistentIndexedObjectStyle from './consistent-indexed-object-style';
 import consistentReturn from './consistent-return';
@@ -24,15 +19,8 @@ import dotNotation from './dot-notation';
 import explicitFunctionReturnType from './explicit-function-return-type';
 import explicitMemberAccessibility from './explicit-member-accessibility';
 import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
-import funcCallSpacing from './func-call-spacing';
-import indent from './indent';
 import initDeclarations from './init-declarations';
-import keySpacing from './key-spacing';
-import keywordSpacing from './keyword-spacing';
-import linesAroundComment from './lines-around-comment';
-import linesBetweenClassMembers from './lines-between-class-members';
 import maxParams from './max-params';
-import memberDelimiterStyle from './member-delimiter-style';
 import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
 import namingConvention from './naming-convention';
@@ -50,8 +38,6 @@ import noEmptyInterface from './no-empty-interface';
 import noEmptyObjectType from './no-empty-object-type';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
-import noExtraParens from './no-extra-parens';
-import noExtraSemi from './no-extra-semi';
 import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
@@ -75,9 +61,9 @@ import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
+import noRestrictedTypes from './no-restricted-types';
 import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
-import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
 import noUnnecessaryCondition from './no-unnecessary-condition';
@@ -93,6 +79,7 @@ import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
 import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
+import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
@@ -101,12 +88,10 @@ import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
 import noUselessEmptyExport from './no-useless-empty-export';
-import noUselessTemplateLiterals from './no-useless-template-literals';
 import noVarRequires from './no-var-requires';
+import noWrapperObjectTypes from './no-wrapper-object-types';
 import nonNullableTypeAssertionStyle from './non-nullable-type-assertion-style';
-import objectCurlySpacing from './object-curly-spacing';
 import onlyThrowError from './only-throw-error';
-import paddingLineBetweenStatements from './padding-line-between-statements';
 import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
 import preferDestructuring from './prefer-destructuring';
@@ -128,21 +113,15 @@ import preferReturnThisType from './prefer-return-this-type';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
-import quotes from './quotes';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
-import semi from './semi';
 import sortTypeConstituents from './sort-type-constituents';
-import spaceBeforeBlocks from './space-before-blocks';
-import spaceBeforeFunctionParen from './space-before-function-paren';
-import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
 import tripleSlashReference from './triple-slash-reference';
-import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
@@ -154,13 +133,8 @@ export default {
   'await-thenable': awaitThenable,
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
-  'ban-types': banTypes,
-  'block-spacing': blockSpacing,
-  'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'class-methods-use-this': classMethodsUseThis,
-  'comma-dangle': commaDangle,
-  'comma-spacing': commaSpacing,
   'consistent-generic-constructors': consistentGenericConstructors,
   'consistent-indexed-object-style': consistentIndexedObjectStyle,
   'consistent-return': consistentReturn,
@@ -173,15 +147,8 @@ export default {
   'explicit-function-return-type': explicitFunctionReturnType,
   'explicit-member-accessibility': explicitMemberAccessibility,
   'explicit-module-boundary-types': explicitModuleBoundaryTypes,
-  'func-call-spacing': funcCallSpacing,
-  indent: indent,
   'init-declarations': initDeclarations,
-  'key-spacing': keySpacing,
-  'keyword-spacing': keywordSpacing,
-  'lines-around-comment': linesAroundComment,
-  'lines-between-class-members': linesBetweenClassMembers,
   'max-params': maxParams,
-  'member-delimiter-style': memberDelimiterStyle,
   'member-ordering': memberOrdering,
   'method-signature-style': methodSignatureStyle,
   'naming-convention': namingConvention,
@@ -199,8 +166,6 @@ export default {
   'no-empty-object-type': noEmptyObjectType,
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
-  'no-extra-parens': noExtraParens,
-  'no-extra-semi': noExtraSemi,
   'no-extraneous-class': noExtraneousClass,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
@@ -224,9 +189,9 @@ export default {
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
+  'no-restricted-types': noRestrictedTypes,
   'no-shadow': noShadow,
   'no-this-alias': noThisAlias,
-  'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
   'no-unnecessary-condition': noUnnecessaryCondition,
@@ -243,6 +208,7 @@ export default {
   'no-unsafe-call': noUnsafeCall,
   'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-enum-comparison': noUnsafeEnumComparison,
+  'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
@@ -251,12 +217,10 @@ export default {
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
   'no-useless-empty-export': noUselessEmptyExport,
-  'no-useless-template-literals': noUselessTemplateLiterals,
   'no-var-requires': noVarRequires,
+  'no-wrapper-object-types': noWrapperObjectTypes,
   'non-nullable-type-assertion-style': nonNullableTypeAssertionStyle,
-  'object-curly-spacing': objectCurlySpacing,
   'only-throw-error': onlyThrowError,
-  'padding-line-between-statements': paddingLineBetweenStatements,
   'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
   'prefer-destructuring': preferDestructuring,
@@ -278,21 +242,15 @@ export default {
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
-  quotes: quotes,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
-  semi: semi,
   'sort-type-constituents': sortTypeConstituents,
-  'space-before-blocks': spaceBeforeBlocks,
-  'space-before-function-paren': spaceBeforeFunctionParen,
-  'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
-  'type-annotation-spacing': typeAnnotationSpacing,
   typedef: typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,

@@ -63,7 +63,7 @@ function getExpectedIndentForNode(
 }
 function doIndent(line: string, indent: number): string {
   for (let i = 0; i < indent; i += 1) {
-    line = ' ' + line;
+    line = ` ${line}`;
   }
   return line;
 }
@@ -109,7 +109,6 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: `Enforce that eslint-plugin test snippets are correctly formatted`,
-      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',

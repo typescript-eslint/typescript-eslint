@@ -4,9 +4,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 const sortedWithoutGroupingDefaultOption: RunTests<MessageIds, Options> = {
   valid: [
     // default option + interface + multiple types
@@ -2608,6 +2606,86 @@ class Foo {
           messageId: 'incorrectOrder',
           line: 5,
           column: 3,
+        },
+      ],
+    },
+    // default option + accessors
+    {
+      code: `
+class Foo {
+  @Dec() accessor b;
+  @Dec() accessor a;
+
+  accessor d;
+  accessor c;
+
+  abstract accessor f;
+  abstract accessor e;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'c',
+            beforeMember: 'd',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'e',
+            beforeMember: 'f',
+          },
+        },
+      ],
+    },
+    // accessors with wrong group order
+    {
+      code: `
+class Foo {
+  accessor a;
+  abstract accessor b;
+  accessor c;
+  @Dec() accessor d;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-accessor',
+              'accessor',
+              'abstract-accessor',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'c',
+            rank: 'abstract accessor',
+          },
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'd',
+            rank: 'accessor',
+          },
         },
       ],
     },

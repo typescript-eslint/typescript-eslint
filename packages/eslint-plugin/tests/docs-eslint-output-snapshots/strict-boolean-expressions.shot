@@ -4,15 +4,16 @@ exports[`Validating rule docs strict-boolean-expressions.mdx code examples ESLin
 "Incorrect
 
 // nullable numbers are considered unsafe by default
-let num: number | undefined = 0;
+declare const num: number | undefined;
 if (num) {
+    ~~~ Unexpected nullable number value in conditional. Please handle the nullish/zero/NaN cases explicitly.
   console.log('num is defined');
 }
 
 // nullable strings are considered unsafe by default
-let str: string | null = null;
+declare const str: string | null;
 if (!str) {
-     ~~~ Unexpected nullish value in conditional. The condition is always false.
+     ~~~ Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.
   console.log('str is empty');
 }
 
@@ -34,6 +35,12 @@ while (obj) {
        ~~~ Unexpected object value in conditional. The condition is always true.
   obj = getObj();
 }
+
+// assertion functions without an \`is\` are boolean contexts.
+declare function assert(value: unknown): asserts value;
+let maybeString = Math.random() > 0.5 ? '' : undefined;
+assert(maybeString);
+       ~~~~~~~~~~~ Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.
 "
 `;
 
