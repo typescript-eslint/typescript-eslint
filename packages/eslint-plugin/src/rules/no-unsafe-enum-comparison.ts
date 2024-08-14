@@ -171,14 +171,7 @@ export default createRule({
 
         const { parent } = node;
 
-        /**
-         * @see https://github.com/typescript-eslint/typescript-eslint/issues/6225
-         */
-        const switchStatement = parent as TSESTree.SwitchStatement;
-
-        const leftType = parserServices.getTypeAtLocation(
-          switchStatement.discriminant,
-        );
+        const leftType = parserServices.getTypeAtLocation(parent.discriminant);
         const rightType = parserServices.getTypeAtLocation(node.test);
 
         if (isMismatchedComparison(leftType, rightType)) {

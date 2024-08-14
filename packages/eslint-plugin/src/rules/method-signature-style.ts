@@ -133,9 +133,7 @@ export default createRule<Options, MessageIds>({
           const members =
             parent.type === AST_NODE_TYPES.TSInterfaceBody
               ? parent.body
-              : parent.type === AST_NODE_TYPES.TSTypeLiteral
-                ? parent.members
-                : [];
+              : parent.members;
 
           const duplicatedKeyMethodNodes: TSESTree.TSMethodSignature[] =
             members.filter(

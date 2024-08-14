@@ -4,17 +4,17 @@ exports[`Validating rule docs no-unnecessary-type-parameters.mdx code examples E
 "Incorrect
 
 function second<A, B>(a: A, b: B): B {
-                ~ Type parameter A is used only once.
+                ~ Type parameter A is used only once in the function signature.
   return b;
 }
 
 function parseJSON<T>(input: string): T {
-                   ~ Type parameter T is used only once.
+                   ~ Type parameter T is used only once in the function signature.
   return JSON.parse(input);
 }
 
 function printProperty<T, K extends keyof T>(obj: T, key: K) {
-                          ~~~~~~~~~~~~~~~~~ Type parameter K is used only once.
+                          ~~~~~~~~~~~~~~~~~ Type parameter K is used only once in the function signature.
   console.log(obj[key]);
 }
 "

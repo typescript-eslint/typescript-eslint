@@ -37,6 +37,9 @@ export default createRule({
       description: 'Enforce consistent awaiting of returned promises',
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
+      recommended: {
+        strict: ['error-handling-correctness-only'],
+      },
     },
     fixable: 'code',
     hasSuggestions: true,

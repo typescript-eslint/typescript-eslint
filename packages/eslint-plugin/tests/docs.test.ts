@@ -100,7 +100,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
   return output.join('\n').trim() + '\n';
 }
 
-const linter = new Linter();
+const linter = new Linter({ configType: 'eslintrc' });
 linter.defineParser('@typescript-eslint/parser', tseslintParser);
 
 const eslintOutputSnapshotFolder = path.resolve(
@@ -125,19 +125,50 @@ describe('Validating rule docs', () => {
     unistUtilVisit = await dynamicImport('unist-util-visit');
   });
 
+  const oldStylisticRules = [
+    'block-spacing.md',
+    'brace-style.md',
+    'camelcase.md',
+    'comma-dangle.md',
+    'comma-spacing.md',
+    'func-call-spacing.md',
+    'indent.md',
+    'key-spacing.md',
+    'keyword-spacing.md',
+    'lines-around-comment.md',
+    'lines-between-class-members.md',
+    'member-delimiter-style.md',
+    'no-extra-parens.md',
+    'no-extra-semi.md',
+    'object-curly-spacing.md',
+    'padding-line-between-statements.md',
+    'quotes.md',
+    'semi.md',
+    'space-before-blocks.md',
+    'space-before-function-paren.md',
+    'space-infix-ops.md',
+    'type-annotation-spacing.md',
+  ];
+
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
     'shared',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
-    'camelcase.md',
+    'ban-types.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'no-useless-template-literals.mdx',
     'sort-type-union-intersection-members.mdx',
+    ...oldStylisticRules,
   ]);
 
-  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+  const rulesWithComplexOptions = new Set([
+    'array-type',
+    'member-ordering',
+    'no-restricted-types',
+  ]);
 
   // TODO: whittle this list down to as few as possible
   const rulesWithComplexOptionHeadings = new Set([
@@ -152,6 +183,7 @@ describe('Validating rule docs', () => {
     'no-confusing-void-expression',
     'no-duplicate-type-constituents',
     'no-empty-interface',
+    'no-empty-object-type',
     'no-explicit-any',
     'no-floating-promises',
     'no-inferrable-types',
@@ -271,8 +303,7 @@ describe('Validating rule docs', () => {
       if (
         !rulesWithComplexOptions.has(ruleName) &&
         Array.isArray(schema) &&
-        !rule.meta.docs?.extendsBaseRule &&
-        rule.meta.type !== 'layout'
+        !rule.meta.docs?.extendsBaseRule
       ) {
         describe('rule options', () => {
           const headingsAfterOptions = headings.slice(
@@ -436,6 +467,7 @@ describe('Validating rule docs', () => {
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
+                disallowAutomaticSingleRunInference: true,
                 tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
               },
