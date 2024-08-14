@@ -68,7 +68,7 @@ export function createTwoslashInlayProvider(
         const inspectionOff = model.getOffsetAt(inspectionPos);
 
         const hint = await (worker.getQuickInfoAtPosition(
-          'file://' + model.uri.path,
+          `file://${model.uri.path}`,
           inspectionOff,
         ) as Promise<ts.QuickInfo | undefined>);
         if (!hint?.displayParts) {
@@ -80,7 +80,7 @@ export function createTwoslashInlayProvider(
           .join('')
           .replace(/\r?\n\s*/g, ' ');
         if (text.length > 120) {
-          text = text.slice(0, 119) + '...';
+          text = `${text.slice(0, 119)}...`;
         }
 
         return {
