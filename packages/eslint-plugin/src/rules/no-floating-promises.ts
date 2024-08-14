@@ -231,8 +231,10 @@ export default createRule<Options, MessageId>({
 
       const type = services.getTypeAtLocation(node.callee);
 
-      return allowForKnownSafeCalls.some(allowedType =>
-        typeMatchesSpecifier(type, allowedType, services.program),
+      return typeMatchesSomeSpecifier(
+        type,
+        allowForKnownSafeCalls,
+        services.program,
       );
     }
 
