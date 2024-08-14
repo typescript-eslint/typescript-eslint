@@ -5875,7 +5875,7 @@ __metadata:
     "@typescript-eslint/types": "workspace:^"
     "@typescript-eslint/typescript-estree": "workspace:^"
     "@typescript-eslint/utils": "workspace:^"
-    console-fail-test: ^0.2.3
+    console-fail-test: ^0.5.0
     cross-fetch: ^4.0.0
     cspell: ^8.6.1
     downlevel-dts: ">=0.11.0"
@@ -8063,10 +8063,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"console-fail-test@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "console-fail-test@npm:0.2.3"
-  checksum: bc86389b8900672921e18105a30f79aa86db4c0fa4a6f4728bfdafb97af5945c3faec1d82bd9e63b6a5451ddae34554881216f9884281b01bc79d3c4f4c1c625
+"console-fail-test@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "console-fail-test@npm:0.5.0"
+  checksum: 61ccd9f6c034dbbba8acb0dcfe8c9dec1e5c6da69e1f365786468065a209fc1ee4acca70048e48d6149d5f0e89ae3c835c0b4c2698300f334614f65029c63484
   languageName: node
   linkType: hard
 
