@@ -13,7 +13,9 @@ import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  getFixOrSuggest,
   getOperatorPrecedenceForNode,
+  isClosingParenToken,
   isOpeningParenToken,
   isTypeFlagSet,
   nullThrows,
@@ -195,21 +197,56 @@ const analyzeOrChainOperand: OperandAnalyzer = (
   }
 };
 
-function getFixer(
+/**
+ * Returns the range that needs to be reported from the chain.
+ * @param chain The chain of logical expressions.
+ * @param boundary The boundary range that the range to report cannot fall outside.
+ * @param sourceCode The source code to get tokens.
+ * @returns The range to report.
+ */
+function getReportRange(
+  chain: ValidOperand[],
+  boundary: TSESTree.Range,
+  sourceCode: SourceCode,
+): TSESTree.Range {
+  const leftNode = chain[0].node;
+  const rightNode = chain[chain.length - 1].node;
+  let leftMost = nullThrows(
+    sourceCode.getFirstToken(leftNode),
+    NullThrowsReasons.MissingToken('any token', leftNode.type),
+  );
+  let rightMost = nullThrows(
+    sourceCode.getLastToken(rightNode),
+    NullThrowsReasons.MissingToken('any token', rightNode.type),
+  );
+
+  while (leftMost.range[0] > boundary[0]) {
+    const token = sourceCode.getTokenBefore(leftMost);
+    if (!token || !isOpeningParenToken(token) || token.range[0] < boundary[0]) {
+      break;
+    }
+    leftMost = token;
+  }
+
+  while (rightMost.range[1] < boundary[1]) {
+    const token = sourceCode.getTokenAfter(rightMost);
+    if (!token || !isClosingParenToken(token) || token.range[1] > boundary[1]) {
+      break;
+    }
+    rightMost = token;
+  }
+
+  return [leftMost.range[0], rightMost.range[1]];
+}
+
+function getReportDescriptor(
   sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
-):
-  | {
-      suggest: NonNullable<
-        ReportDescriptor<PreferOptionalChainMessageIds>['suggest']
-      >;
-    }
-  | {
-      fix: NonNullable<ReportDescriptor<PreferOptionalChainMessageIds>['fix']>;
-    } {
+): ReportDescriptor<PreferOptionalChainMessageIds> {
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -339,7 +376,7 @@ function getFixer(
       if (lastOperand.isYoda) {
         const unaryOperator =
           lastOperand.node.right.type === AST_NODE_TYPES.UnaryExpression
-            ? lastOperand.node.right.operator + ' '
+            ? `${lastOperand.node.right.operator} `
             : '';
 
         return {
@@ -349,7 +386,7 @@ function getFixer(
       }
       const unaryOperator =
         lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
-          ? lastOperand.node.left.operator + ' '
+          ? `${lastOperand.node.left.operator} `
           : '';
       return {
         left: unaryOperator + newCode,
@@ -362,15 +399,25 @@ function getFixer(
     newCode = `!${newCode}`;
   }
 
-  const fix: ReportFixFunction = fixer =>
-    fixer.replaceTextRange(
-      [chain[0].node.range[0], lastOperand.node.range[1]],
-      newCode,
-    );
+  const reportRange = getReportRange(chain, node.range, sourceCode);
 
-  return useSuggestionFixer
-    ? { suggest: [{ fix, messageId: 'optionalChainSuggest' }] }
-    : { fix };
+  const fix: ReportFixFunction = fixer =>
+    fixer.replaceTextRange(reportRange, newCode);
+
+  return {
+    messageId: 'preferOptionalChain',
+    loc: {
+      start: sourceCode.getLocFromIndex(reportRange[0]),
+      end: sourceCode.getLocFromIndex(reportRange[1]),
+    },
+    ...getFixOrSuggest({
+      useFix: !useSuggestionFixer,
+      suggestion: {
+        messageId: 'optionalChainSuggest',
+        fix,
+      },
+    }),
+  };
 
   interface FlattenedChain {
     nonNull: boolean;
@@ -469,6 +516,7 @@ export function analyzeChain(
   >,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
+  node: TSESTree.Node,
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
 ): void {
@@ -504,20 +552,14 @@ export function analyzeChain(
         parserServices,
         options,
         subChainFlat.slice(0, -1).map(({ node }) => node),
-        {
-          messageId: 'preferOptionalChain',
-          loc: {
-            start: subChainFlat[0].node.loc.start,
-            end: subChainFlat[subChainFlat.length - 1].node.loc.end,
-          },
-          ...getFixer(
-            context.sourceCode,
-            parserServices,
-            operator,
-            options,
-            subChainFlat,
-          ),
-        },
+        getReportDescriptor(
+          context.sourceCode,
+          parserServices,
+          node,
+          operator,
+          options,
+          subChainFlat,
+        ),
       );
     }
 

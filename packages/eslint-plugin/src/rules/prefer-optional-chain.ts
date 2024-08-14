@@ -183,7 +183,6 @@ export default createRule<
           context.sourceCode,
           options,
         );
-
         for (const logical of newlySeenLogicals) {
           seenLogicals.add(logical);
         }
@@ -195,6 +194,7 @@ export default createRule<
               context,
               parserServices,
               options,
+              node,
               node.operator,
               currentChain,
             );
@@ -210,6 +210,7 @@ export default createRule<
             context,
             parserServices,
             options,
+            node,
             node.operator,
             currentChain,
           );
