@@ -6,8 +6,7 @@ import {
   arrayGroupByToMap,
   createRule,
   getParserServices,
-  isFunction,
-  isFunctionType,
+  isFunctionOrFunctionType,
   isTypeAnyType,
   isTypeBigIntLiteralType,
   isTypeNeverType,
@@ -171,7 +170,7 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   return !!(
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
-    (isFunctionType(node.parent.parent) || isFunction(node.parent.parent))
+    isFunctionOrFunctionType(node.parent.parent)
   );
 }
 
