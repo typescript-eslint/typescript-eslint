@@ -20,6 +20,7 @@ export default {
         '@babel/parser',
         '@babel/types',
         '@nx/workspace',
+        'console-fail-test',
         'glob',
         'husky',
         'jest-specific-snapshot',
