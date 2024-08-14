@@ -55,11 +55,13 @@ if (workspaceVersion === null) {
   console.log(
     '⏭️ No changes detected across any package, skipping publish step altogether',
   );
-} else {
-  const publishStatus = await releasePublish({
-    dryRun: options.dryRun,
-    verbose: options.verbose,
-  });
   // eslint-disable-next-line no-process-exit
-  process.exit(publishStatus);
+  process.exit(0);
 }
+
+const publishStatus = await releasePublish({
+  dryRun: options.dryRun,
+  verbose: options.verbose,
+});
+// eslint-disable-next-line no-process-exit
+process.exit(publishStatus);
