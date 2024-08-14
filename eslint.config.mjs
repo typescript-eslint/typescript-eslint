@@ -223,6 +223,7 @@ export default tseslint.config(
       'prefer-object-has-own': 'error',
       'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
+      'prefer-template': 'error',
       radix: 'error',
 
       //
