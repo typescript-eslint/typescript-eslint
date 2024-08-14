@@ -301,7 +301,6 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       }
     `,
     {
-      only: true,
       code: `
         import * as ts from 'typescript';
         
@@ -352,9 +351,23 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       ): number[];
     `,
     `
-      export type A<T> = B<T>;
-      export type B<T> = <V>() => A<T | V>;
+      type A<T> = B<T>;
+      type B<T> = <V>() => A<T | V>;
     `,
+    `
+      type A<T> = B<T>;
+      type B<T> = <V>() => A<T[]>;
+    `,
+    {
+      only: true,
+      code: `
+        import type { TSESTree } from '@typescript-eslint/types';
+        declare function visitChildren<T extends TSESTree.Node>(
+          node: T | null | undefined,
+          excludeArr: (keyof T)[] = [],
+        ): void;
+      `,
+    },
   ],
 
   invalid: [
