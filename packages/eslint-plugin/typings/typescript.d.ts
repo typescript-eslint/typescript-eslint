@@ -20,5 +20,12 @@ declare module 'typescript' {
      * - `readonly [foo]`
      */
     isTupleType(type: Type): type is TupleTypeReference;
+    /**
+     * Return the awaited type of the given type.
+     *
+     * TODO: Remove when it's exposed as a public API.
+     * https://github.com/microsoft/TypeScript/issues/59256
+     */
+    getAwaitedType(type: Type): Type | undefined;
   }
 }
