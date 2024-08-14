@@ -70,6 +70,18 @@ document.addEventListener('click', async () => {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 });
 ~
+
+interface MySyncInterface {
+  setThing(): void;
+}
+class MyClass implements MySyncInterface {
+  async setThing(): Promise<void> {
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise-returning method provided where a void return was expected by extended/implemented type 'MySyncInterface'.
+    this.thing = await fetchThing();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}
 "
 `;
 
@@ -113,6 +125,15 @@ document.addEventListener('click', () => {
 
   handler().catch(handleError);
 });
+
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+class MyClass implements MyAsyncInterface {
+  async setThing(): Promise<void> {
+    this.thing = await fetchThing();
+  }
+}
 "
 `;
 

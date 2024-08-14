@@ -13,9 +13,7 @@ const onlyConstructor = {
   messageId: 'onlyConstructor' as const,
 };
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-extraneous-class', rule, {
   valid: [

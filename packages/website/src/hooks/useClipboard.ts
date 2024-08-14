@@ -7,11 +7,13 @@ export type useClipboardResult = [copied: boolean, copy: () => void];
 export function useClipboard(code: () => string): useClipboardResult {
   const [copied, setCopied] = useDebouncedToggle(false);
 
-  const copy = useCallback(() => {
-    void navigator.clipboard.writeText(code()).then(() => {
-      setCopied(true);
-    });
-  }, [setCopied, code]);
+  const copy = useCallback(
+    () =>
+      navigator.clipboard.writeText(code()).then(() => {
+        setCopied(true);
+      }),
+    [setCopied, code],
+  );
 
   return [copied, copy];
 }

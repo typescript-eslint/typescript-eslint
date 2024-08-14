@@ -580,7 +580,7 @@ class Referencer extends Visitor {
   }
 
   protected PrivateIdentifier(): void {
-    // private identifiers are members on classes and thus have no variables to to reference
+    // private identifiers are members on classes and thus have no variables to reference
   }
 
   protected Program(node: TSESTree.Program): void {
@@ -667,14 +667,7 @@ class Referencer extends Visitor {
     // enum members can be referenced within the enum body
     this.scopeManager.nestTSEnumScope(node);
 
-    // define the enum name again inside the new enum scope
-    // references to the enum should not resolve directly to the enum
-    this.currentScope().defineIdentifier(
-      node.id,
-      new TSEnumNameDefinition(node.id, node),
-    );
-
-    for (const member of node.members) {
+    for (const member of node.body.members) {
       // TS resolves literal named members to be actual names
       // enum Foo {
       //   'a' = 1,

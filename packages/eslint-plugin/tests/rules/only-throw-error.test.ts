@@ -4,13 +4,12 @@ import rule from '../../src/rules/only-throw-error';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    tsconfigRootDir: getFixturesRootDir(),
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: getFixturesRootDir(),
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('only-throw-error', rule, {

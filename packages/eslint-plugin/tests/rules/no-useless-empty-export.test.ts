@@ -7,11 +7,12 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../src/rules/no-useless-empty-export';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: 'module',
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 const error = {

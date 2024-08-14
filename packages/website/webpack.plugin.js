@@ -1,5 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const webpack = require('webpack');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = function (/*context, options*/) {

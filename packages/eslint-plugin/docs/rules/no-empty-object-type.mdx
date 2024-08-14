@@ -89,19 +89,9 @@ Whether to allow empty interfaces, as one of:
 - `'never'` _(default)_: to never allow interfaces with no fields
 - `'with-single-extends'`: to allow empty interfaces that `extend` from a single base interface
 
-Examples of code for this rule with `{ allowInterfaces: 'with-single-extends' }`:
+Examples of **correct** code for this rule with `{ allowInterfaces: 'with-single-extends' }`:
 
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowInterfaces": "with-single-extends" }'
-interface Foo {}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowInterfaces": "with-single-extends" }'
+```ts option='{ "allowInterfaces": "with-single-extends" }' showPlaygroundButton
 interface Base {
   value: boolean;
 }
@@ -109,34 +99,12 @@ interface Base {
 interface Derived extends Base {}
 ```
 
-</TabItem>
-</Tabs>
-
 ### `allowObjectTypes`
 
 Whether to allow empty object type literals, as one of:
 
 - `'always'`: to always allow object type literals with no fields
 - `'never'` _(default)_: to never allow object type literals with no fields
-
-Examples of code for this rule with `{ allowObjectTypes: 'always' }`:
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowObjectTypes": "always" }'
-interface Base {}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowObjectTypes": "always" }'
-type Base = {};
-```
-
-</TabItem>
-</Tabs>
 
 ### `allowWithName`
 
@@ -148,7 +116,7 @@ Examples of code for this rule with `{ allowWithName: 'Props$' }`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowWithName": "Props$" }'
+```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
 interface InterfaceValue {}
 
 type TypeValue = {};
@@ -157,7 +125,7 @@ type TypeValue = {};
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "allowWithName": "Props$" }'
+```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
 interface InterfaceProps {}
 
 type TypeProps = {};
