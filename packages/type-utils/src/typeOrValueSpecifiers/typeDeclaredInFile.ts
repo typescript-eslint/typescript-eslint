@@ -1,5 +1,6 @@
+import path from 'node:path';
+
 import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
-import path from 'path';
 import type * as ts from 'typescript';
 
 export function typeDeclaredInFile(
