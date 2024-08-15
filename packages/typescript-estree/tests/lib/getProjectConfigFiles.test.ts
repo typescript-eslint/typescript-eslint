@@ -5,7 +5,7 @@ import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigF
 
 const mockExistsSync = jest.fn<boolean, [string]>();
 
-jest.mock('fs', () => ({
+jest.mock('node:fs', () => ({
   ...jest.requireActual('fs'),
   existsSync: (filePath: string): boolean => mockExistsSync(filePath),
 }));
