@@ -111,6 +111,16 @@ ruleTester.run('no-deprecated', rule, {
 
       import { value } from 'deprecations';
     `,
+    `
+      /** @deprecated Use ts directly. */
+      export * as ts from 'typescript';
+    `,
+    `
+      export {
+        /** @deprecated Use ts directly. */
+        default as ts,
+      } from 'typescript';
+    `,
 
     // TODO: Can anybody figure out how to get this to report on `b`?
     // getContextualType retrieves the union type, but it has no symbol...

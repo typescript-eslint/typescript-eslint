@@ -78,11 +78,14 @@ export default createRule({
       }
     }
 
-    function isInsideImport(node: TSESTree.Node): boolean {
+    function isInsideExportOrImport(node: TSESTree.Node): boolean {
       return context.sourceCode
         .getAncestors(node)
         .some(ancestor =>
           [
+            AST_NODE_TYPES.ExportAllDeclaration,
+            AST_NODE_TYPES.ExportDefaultDeclaration,
+            AST_NODE_TYPES.ExportNamedDeclaration,
             AST_NODE_TYPES.ImportDeclaration,
             AST_NODE_TYPES.ImportExpression,
           ].includes(ancestor.type),
@@ -192,7 +195,7 @@ export default createRule({
     }
 
     function checkIdentifier(node: IdentifierLike): void {
-      if (isDeclaration(node) || isInsideImport(node)) {
+      if (isDeclaration(node) || isInsideExportOrImport(node)) {
         return;
       }
 
