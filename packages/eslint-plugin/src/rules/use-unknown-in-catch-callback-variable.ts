@@ -1,9 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type {
-  ReportDescriptor,
-  Scope,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { ReportDescriptor } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -27,6 +24,19 @@ type MessageIds =
 
 const useUnknownMessageBase =
   'Prefer the safe `: unknown` for a `{{method}}`{{append}} callback variable.';
+
+/**
+ * `x.memberName` => 'memberKey'
+ *
+ * `const mk = 'memberKey'; x[mk]` => 'memberKey'
+ *
+ * `const mk = 1234; x[mk]` => 1234
+ */
+const getStaticMemberAccessKey = ({
+  computed,
+  property,
+}: TSESTree.MemberExpression): { value: unknown } | null =>
+  computed ? getStaticValue(property) : { value: property.name };
 
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
@@ -61,8 +71,8 @@ export default createRule<[], MessageIds>({
   defaultOptions: [],
 
   create(context) {
-    const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const checker = program.getTypeChecker();
 
     function isFlaggableHandlerType(type: ts.Type): boolean {
       for (const unionPart of tsutils.unionTypeParts(type)) {
@@ -102,15 +112,8 @@ export default createRule<[], MessageIds>({
       return false;
     }
 
-    /**
-     * If passed an ordinary expression, this will check it as expected.
-     *
-     * If passed a spread element, it treats it as the union of unwrapped array/tuple type.
-     */
-    function shouldFlagArgument(
-      node: TSESTree.Expression | TSESTree.SpreadElement,
-    ): boolean {
-      const argument = services.esTreeNodeToTSNodeMap.get(node);
+    function shouldFlagArgument(node: TSESTree.Expression): boolean {
+      const argument = esTreeNodeToTSNodeMap.get(node);
       const typeOfArgument = checker.getTypeAtLocation(argument);
       return isFlaggableHandlerType(typeOfArgument);
     }
@@ -122,7 +125,7 @@ export default createRule<[], MessageIds>({
      * This function is explicitly operating under the assumption that the
      * rule _is reporting_, so it is not guaranteed to be sound to call otherwise.
      */
-    function refineReportForNormalArgumentIfPossible(
+    function refineReportIfPossible(
       argument: TSESTree.Expression,
     ): undefined | Partial<ReportDescriptor<MessageIds>> {
       // Only know how to be helpful if a function literal has been provided.
@@ -234,69 +237,65 @@ export default createRule<[], MessageIds>({
 
     return {
       CallExpression({ arguments: args, callee }): void {
-        const promiseMethodInfo =
-          callee.type === AST_NODE_TYPES.MemberExpression &&
-          tsutils.isThenableType(
-            checker,
-            services.esTreeNodeToTSNodeMap.get(callee),
-            checker.getTypeAtLocation(
-              services.esTreeNodeToTSNodeMap.get(callee.object),
-            ),
-          ) &&
-          [
-            ...[
-              { method: 'catch', append: '' }, // argumentIndexToCheck: 0
-              { method: 'then', append: ' rejection' }, // argumentIndexToCheck: 1
-            ].entries(),
-          ].find(([, { method }]) =>
-            isStaticMemberAccessOfValue(callee, method),
-          );
+        if (callee.type !== AST_NODE_TYPES.MemberExpression) {
+          return;
+        }
+
+        const staticMemberAccessKey = getStaticMemberAccessKey(callee);
+        if (!staticMemberAccessKey) {
+          return;
+        }
+
+        const promiseMethodInfo = [
+          { method: 'catch', append: '', argIndexToCheck: 0 },
+          { method: 'then', append: ' rejection', argIndexToCheck: 1 },
+        ].find(({ method }) => staticMemberAccessKey.value === method);
         if (!promiseMethodInfo) {
           return;
         }
-        const [argumentIndexToCheck, data] = promiseMethodInfo;
 
-        for (const [i, node] of args.entries()) {
-          if (node.type === AST_NODE_TYPES.SpreadElement) {
-            return;
-          }
-          // Argument to check, and all arguments before it, are an "ordinary" argument (i.e. not a spread argument)
-          // promise.catch(f), promise.catch(() => {}), promise.catch(<expression>, <<other-args>>)
-          if (i === argumentIndexToCheck && shouldFlagArgument(node)) {
-            // We are now guaranteed to report, but we have a bit of work to do
-            // to determine exactly where, and whether we can fix it.
-            const overrides = refineReportForNormalArgumentIfPossible(node);
-            context.report({
-              node,
-              messageId: 'useUnknown',
-              data,
-              ...overrides,
-            });
-          }
+        // Need to be enough args to check
+        const { argIndexToCheck, ...data } = promiseMethodInfo;
+        if (args.length < promiseMethodInfo.argIndexToCheck + 1) {
+          return;
+        }
+
+        // Argument to check, and all arguments before it, must be "ordinary" arguments (i.e. no spread arguments)
+        // promise.catch(f), promise.catch(() => {}), promise.catch(<expression>, <<other-args>>)
+        const argsToCheck = args.slice(0, argIndexToCheck + 1);
+        if (
+          argsToCheck.some(({ type }) => type === AST_NODE_TYPES.SpreadElement)
+        ) {
+          return;
+        }
+
+        if (
+          !tsutils.isThenableType(
+            checker,
+            esTreeNodeToTSNodeMap.get(callee),
+            checker.getTypeAtLocation(esTreeNodeToTSNodeMap.get(callee.object)),
+          )
+        ) {
+          return;
+        }
+
+        // the `some` check above has already excluded SpreadElement
+        const node = argsToCheck[argIndexToCheck] as Exclude<
+          (typeof argsToCheck)[number],
+          TSESTree.SpreadElement
+        >;
+        if (shouldFlagArgument(node)) {
+          // We are now guaranteed to report, but we have a bit of work to do
+          // to determine exactly where, and whether we can fix it.
+          const overrides = refineReportIfPossible(node);
+          context.report({
+            node,
+            messageId: 'useUnknown',
+            data,
+            ...overrides,
+          });
         }
       },
     };
   },
 });
-
-/**
- * Answers whether the member expression looks like
- * `x.memberName`, `x['memberName']`,
- * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
- */
-function isStaticMemberAccessOfValue(
-  memberExpression:
-    | TSESTree.MemberExpressionComputedName
-    | TSESTree.MemberExpressionNonComputedName,
-  value: string,
-  scope?: Scope.Scope | undefined,
-): boolean {
-  if (!memberExpression.computed) {
-    // x.memberName case.
-    return memberExpression.property.name === value;
-  }
-
-  // x['memberName'] cases.
-  const staticValueResult = getStaticValue(memberExpression.property, scope);
-  return staticValueResult != null && value === staticValueResult.value;
-}
