@@ -223,6 +223,7 @@ export default tseslint.config(
       'prefer-object-has-own': 'error',
       'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
+      'prefer-template': 'error',
       radix: 'error',
 
       //
@@ -322,6 +323,7 @@ export default tseslint.config(
       'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
     },
   },

@@ -1,8 +1,9 @@
+import { EOL } from 'node:os';
+import * as path from 'node:path';
+
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
-import { EOL } from 'os';
-import * as path from 'path';
 import prettier from 'prettier';
 
 import { nodeIsHeading } from '../../utils/nodes';

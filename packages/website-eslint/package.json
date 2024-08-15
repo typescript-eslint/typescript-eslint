@@ -1,6 +1,5 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "8.0.1",
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
@@ -24,11 +23,11 @@
   },
   "devDependencies": {
     "@eslint/js": "*",
-    "@typescript-eslint/eslint-plugin": "8.0.1",
-    "@typescript-eslint/parser": "8.0.1",
-    "@typescript-eslint/scope-manager": "8.0.1",
-    "@typescript-eslint/typescript-estree": "8.0.1",
-    "@typescript-eslint/visitor-keys": "8.0.1",
+    "@typescript-eslint/eslint-plugin": "workspace:*",
+    "@typescript-eslint/parser": "workspace:*",
+    "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/typescript-estree": "workspace:*",
+    "@typescript-eslint/visitor-keys": "workspace:*",
     "esbuild": "~0.23.0",
     "eslint": "*",
     "esquery": "*",
