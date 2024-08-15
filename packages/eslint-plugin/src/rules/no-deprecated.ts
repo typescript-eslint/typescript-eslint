@@ -13,12 +13,12 @@ const functionLikeSymbolKinds = new Set<ts.SyntaxKind | undefined>([
   ts.SyntaxKind.MethodSignature,
 ]);
 
-const importTypes = new Set([
+const importNodeTypes = new Set([
   AST_NODE_TYPES.ImportDeclaration,
   AST_NODE_TYPES.ImportExpression,
 ]);
 
-const parentDeclarationTypes = new Set([
+const parentDeclarationNodeTypes = new Set([
   AST_NODE_TYPES.ArrowFunctionExpression,
   AST_NODE_TYPES.FunctionDeclaration,
   AST_NODE_TYPES.FunctionExpression,
@@ -40,11 +40,12 @@ export default createRule({
   meta: {
     docs: {
       description: 'Disallow using code marked as `@deprecated`',
-      recommended: 'recommended',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
-      deprecated: `\`{{name}}\` is deprecated.{{reason}}`,
+      deprecated: `\`{{name}}\` is deprecated.`,
+      deprecatedWithReason: `\`{{name}}\` is deprecated. {{reason}}`,
     },
     schema: [],
     type: 'problem',
@@ -74,7 +75,7 @@ export default createRule({
         case AST_NODE_TYPES.Property:
           return (
             (parent.shorthand && parent.value === node) ||
-            parent.parent.type === AST_NODE_TYPES.ObjectPattern
+            parent.parent.type === AST_NODE_TYPES.ObjectExpression
           );
 
         case AST_NODE_TYPES.AssignmentPattern:
@@ -87,14 +88,14 @@ export default createRule({
           );
 
         default:
-          return parentDeclarationTypes.has(parent.type);
+          return parentDeclarationNodeTypes.has(parent.type);
       }
     }
 
     function isInsideImport(node: TSESTree.Node): boolean {
       return context.sourceCode
         .getAncestors(node)
-        .some(ancestor => importTypes.has(ancestor.type));
+        .some(ancestor => importNodeTypes.has(ancestor.type));
     }
 
     function isFunctionLikeSymbol(symbol: ts.Symbol): boolean {
@@ -102,7 +103,7 @@ export default createRule({
     }
 
     function getJsDocDeprecation(
-      symbol: ts.Symbol | undefined,
+      symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
       const tag = symbol
         ?.getJsDocTags(checker)
@@ -143,11 +144,7 @@ export default createRule({
     function getCallExpressionDeprecation(
       node: IdentifierLike,
     ): string | undefined {
-      if (!isCallLike(node.parent)) {
-        return undefined;
-      }
-
-      const symbol = services.getSymbolAtLocation(node.parent);
+      const symbol = services.getSymbolAtLocation(node);
       if (!symbol || !isFunctionLikeSymbol(symbol)) {
         return undefined;
       }
@@ -155,31 +152,34 @@ export default createRule({
       return getJsDocDeprecation(symbol);
     }
 
-    function getSymbol(node: IdentifierLike): ts.Symbol | undefined {
-      // Todo: search for other ts.BindingElement in estree-to-ts-node-types.ts?
-      if (node.parent.type === AST_NODE_TYPES.AssignmentPattern) {
+    function getSymbol(
+      node: IdentifierLike,
+    ): ts.Signature | ts.Symbol | undefined {
+      if (
+        node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
+        node.parent.type === AST_NODE_TYPES.Property
+      ) {
         return services
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
       }
 
-      // Todo: middle parts of getSymbol
+      // Identifier CallExpression
+      if (node.parent.type === AST_NODE_TYPES.CallExpression && node === node.parent.callee) {
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
+        const signature = checker.getResolvedSignature(tsNode);
+        if (signature) {
+          return signature;
+        }
+      }
+
       return services.getSymbolAtLocation(node);
     }
 
-    function getSymbolDeprecation(node: IdentifierLike): string | undefined {
-      const symbol = getSymbol(node);
-
-      return getJsDocDeprecation(
-        // Todo: is this necessary?
-        symbol /* && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
-          ? checker.getAliasedSymbol(symbol)
-          : symbol, */,
-      );
-    }
-
     function getDeprecationReason(node: IdentifierLike): string | undefined {
-      return getCallExpressionDeprecation(node) ?? getSymbolDeprecation(node);
+      return isCallLike(node.parent)
+        ? getCallExpressionDeprecation(node)
+        : getJsDocDeprecation(getSymbol(node));
     }
 
     function checkIdentifier(node: IdentifierLike): void {
@@ -193,11 +193,15 @@ export default createRule({
       }
 
       context.report({
-        data: {
-          name: node.name,
-          reason: reason && ` ${reason}`,
-        },
-        messageId: 'deprecated',
+        ...(reason
+          ? {
+              data: { name: node.name, reason },
+              messageId: 'deprecatedWithReason',
+            }
+          : {
+              data: { name: node.name },
+              messageId: 'deprecated',
+            }),
         node,
       });
     }
