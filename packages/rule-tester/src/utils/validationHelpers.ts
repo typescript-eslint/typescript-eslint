@@ -61,7 +61,7 @@ export function sanitize(text: string): string {
   if (typeof text !== 'string') {
     return '';
   }
-  return text.replace(
+  return text.replaceAll(
     // eslint-disable-next-line no-control-regex
     /[\u0000-\u0009\u000b-\u001a]/gu,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
