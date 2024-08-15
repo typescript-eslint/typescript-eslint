@@ -1,10 +1,11 @@
+import assert from 'node:assert';
+
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   ASTUtils,
 } from '@typescript-eslint/utils';
-import assert from 'assert';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
