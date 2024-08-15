@@ -6,35 +6,6 @@ import { createRule, getParserServices } from '../util';
 
 type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
 
-const functionLikeSymbolKinds = new Set<ts.SyntaxKind | undefined>([
-  ts.SyntaxKind.FunctionDeclaration,
-  ts.SyntaxKind.FunctionExpression,
-  ts.SyntaxKind.MethodDeclaration,
-  ts.SyntaxKind.MethodSignature,
-]);
-
-const importNodeTypes = new Set([
-  AST_NODE_TYPES.ImportDeclaration,
-  AST_NODE_TYPES.ImportExpression,
-]);
-
-const parentDeclarationNodeTypes = new Set([
-  AST_NODE_TYPES.ArrowFunctionExpression,
-  AST_NODE_TYPES.FunctionDeclaration,
-  AST_NODE_TYPES.FunctionExpression,
-  AST_NODE_TYPES.MethodDefinition,
-  AST_NODE_TYPES.TSDeclareFunction,
-  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
-  AST_NODE_TYPES.TSEnumDeclaration,
-  AST_NODE_TYPES.TSInterfaceDeclaration,
-  AST_NODE_TYPES.TSMethodSignature,
-  AST_NODE_TYPES.TSModuleDeclaration,
-  AST_NODE_TYPES.TSParameterProperty,
-  AST_NODE_TYPES.TSPropertySignature,
-  AST_NODE_TYPES.TSTypeAliasDeclaration,
-  AST_NODE_TYPES.TSTypeParameter,
-]);
-
 export default createRule({
   name: 'no-deprecated',
   meta: {
@@ -87,21 +58,47 @@ export default createRule({
             )
           );
 
+        case AST_NODE_TYPES.ArrowFunctionExpression:
+        case AST_NODE_TYPES.FunctionDeclaration:
+        case AST_NODE_TYPES.FunctionExpression:
+        case AST_NODE_TYPES.TSDeclareFunction:
+        case AST_NODE_TYPES.TSEmptyBodyFunctionExpression:
+        case AST_NODE_TYPES.TSEnumDeclaration:
+        case AST_NODE_TYPES.TSInterfaceDeclaration:
+        case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.TSModuleDeclaration:
+        case AST_NODE_TYPES.TSParameterProperty:
+        case AST_NODE_TYPES.TSPropertySignature:
+        case AST_NODE_TYPES.TSTypeAliasDeclaration:
+        case AST_NODE_TYPES.TSTypeParameter:
+          return true;
+
         default:
-          return parentDeclarationNodeTypes.has(parent.type);
+          return false;
       }
     }
 
     function isInsideImport(node: TSESTree.Node): boolean {
       return context.sourceCode
         .getAncestors(node)
-        .some(ancestor => importNodeTypes.has(ancestor.type));
+        .some(ancestor =>
+          [
+            AST_NODE_TYPES.ImportDeclaration,
+            AST_NODE_TYPES.ImportExpression,
+          ].includes(ancestor.type),
+        );
     }
 
-    function isFunctionLikeSymbol(symbol: ts.Symbol): boolean {
-      return functionLikeSymbolKinds.has(symbol.getDeclarations()?.at(0)?.kind);
-    }
+    const classLikeSymbolKinds = new Set<ts.SyntaxKind | undefined>([
+      ts.SyntaxKind.ClassDeclaration,
+      ts.SyntaxKind.ClassExpression,
+    ]);
 
+    function isClassLikeSymbol(symbol: ts.Symbol): boolean {
+      return !!symbol
+        .getDeclarations()
+        ?.some(symbol => classLikeSymbolKinds.has(symbol.kind));
+    }
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
@@ -118,38 +115,59 @@ export default createRule({
       return displayParts ? ts.displayPartsToString(displayParts) : '';
     }
 
-    function isCallLike(node: TSESTree.Node): boolean {
-      const [callee, parent] =
-        node.parent?.type === AST_NODE_TYPES.MemberExpression &&
-        node.parent.property === node
-          ? [node.parent, node.parent.parent]
-          : [node, node.parent];
+    type CallLikeNode =
+      | TSESTree.CallExpression
+      | TSESTree.JSXOpeningElement
+      | TSESTree.NewExpression
+      | TSESTree.TaggedTemplateExpression;
 
-      switch (parent?.type) {
+    function isNodeCalleeOfParent(node: TSESTree.Node): node is CallLikeNode {
+      switch (node.parent?.type) {
         case AST_NODE_TYPES.NewExpression:
         case AST_NODE_TYPES.CallExpression:
-          return parent.callee === callee;
+          return node.parent.callee === node;
 
         case AST_NODE_TYPES.TaggedTemplateExpression:
-          return parent.tag === callee;
+          return node.parent.tag === node;
 
         case AST_NODE_TYPES.JSXOpeningElement:
-          return parent.name === callee;
+          return node.parent.name === node;
 
         default:
           return false;
       }
     }
 
-    function getCallExpressionDeprecation(
-      node: IdentifierLike,
-    ): string | undefined {
-      const symbol = services.getSymbolAtLocation(node);
-      if (!symbol || !isFunctionLikeSymbol(symbol)) {
-        return undefined;
+    function getCallLikeNode(node: TSESTree.Node): CallLikeNode | undefined {
+      let callee = node;
+
+      while (
+        callee.parent?.type === AST_NODE_TYPES.MemberExpression &&
+        callee.parent.property === callee
+      ) {
+        callee = callee.parent;
       }
 
-      return getJsDocDeprecation(symbol);
+      return isNodeCalleeOfParent(callee) ? callee : undefined;
+    }
+
+    function getCallLikeDeprecation(node: CallLikeNode): string | undefined {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
+      const signature = checker.getResolvedSignature(
+        tsNode as ts.CallLikeExpression,
+      );
+
+      if (signature) {
+        const signatureDeprecation = getJsDocDeprecation(signature);
+        if (signatureDeprecation !== undefined) {
+          return signatureDeprecation;
+        }
+      }
+
+      const symbol = services.getSymbolAtLocation(node);
+      return symbol && isClassLikeSymbol(symbol)
+        ? getJsDocDeprecation(symbol)
+        : undefined;
     }
 
     function getSymbol(
@@ -163,25 +181,13 @@ export default createRule({
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
       }
-
-      // Identifier CallExpression
-      if (
-        node.parent.type === AST_NODE_TYPES.CallExpression &&
-        node === node.parent.callee
-      ) {
-        const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
-        const signature = checker.getResolvedSignature(tsNode);
-        if (signature) {
-          return signature;
-        }
-      }
-
       return services.getSymbolAtLocation(node);
     }
 
     function getDeprecationReason(node: IdentifierLike): string | undefined {
-      return isCallLike(node.parent)
-        ? getCallExpressionDeprecation(node)
+      const callLikeNode = getCallLikeNode(node);
+      return callLikeNode
+        ? getCallLikeDeprecation(callLikeNode)
         : getJsDocDeprecation(getSymbol(node));
     }
 

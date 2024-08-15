@@ -96,10 +96,6 @@ export function createParser(
             compilerOptions.experimentalDecorators ?? false,
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
           tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
-          getResolvedSignature: node =>
-            checker.getResolvedSignature(
-              converted.astMaps.esTreeNodeToTSNodeMap.get(node),
-            ),
           getSymbolAtLocation: node =>
             checker.getSymbolAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),

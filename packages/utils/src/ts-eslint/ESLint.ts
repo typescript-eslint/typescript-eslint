@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 export {
   // TODO(eslint@v10) - remove this in the next major
   /**

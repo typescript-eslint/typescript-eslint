@@ -242,9 +242,6 @@ export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps,
     ParserServicesBase {
   program: ts.Program;
-  getResolvedSignature: (
-    node: TSESTree.CallExpression,
-  ) => ts.Signature | undefined;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }

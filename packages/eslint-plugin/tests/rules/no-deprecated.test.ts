@@ -84,10 +84,32 @@ ruleTester.run('no-deprecated', rule, {
       /** @deprecated */
       function a(value: 'c' | undefined): void;
       function a(value: string | undefined): void {
-        value?.toUpperCase();
+        // ...
       }
 
       a('b');
+    `,
+    `
+      namespace assert {
+        export function fail(message?: string | Error): never;
+        /** @deprecated since v10.0.0 - use fail([message]) or other assert functions instead. */
+        export function fail(actual: unknown, expected: unknown): never;
+      }
+
+      assert.fail('');
+    `,
+    `
+      import assert from 'node:assert';
+
+      assert.fail('');
+    `,
+    `
+      declare module 'deprecations' {
+        /** @deprecated */
+        export const value = true;
+      }
+
+      import { value } from 'deprecations';
     `,
 
     // TODO: Can anybody figure out how to get this to report on `b`?
@@ -684,6 +706,52 @@ ruleTester.run('no-deprecated', rule, {
           endLine: 7,
           data: { name: 'b' },
           messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        namespace assert {
+          export function fail(message?: string | Error): never;
+          /** @deprecated since v10.0.0 - use fail([message]) or other assert functions instead. */
+          export function fail(actual: unknown, expected: unknown): never;
+        }
+
+        assert.fail({}, {});
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 20,
+          line: 8,
+          endLine: 8,
+          data: {
+            name: 'fail',
+            reason:
+              'since v10.0.0 - use fail([message]) or other assert functions instead.',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import assert from 'node:assert';
+
+        assert.fail({}, {});
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 20,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'fail',
+            reason:
+              'since v10.0.0 - use fail([message]) or other assert functions instead.',
+          },
+          messageId: 'deprecatedWithReason',
         },
       ],
     },

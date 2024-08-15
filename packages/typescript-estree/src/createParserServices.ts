@@ -28,8 +28,6 @@ export function createParserServices(
     emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
     experimentalDecorators: compilerOptions.experimentalDecorators ?? false,
     ...astMaps,
-    getResolvedSignature: node =>
-      checker.getResolvedSignature(astMaps.esTreeNodeToTSNodeMap.get(node)),
     getSymbolAtLocation: node =>
       checker.getSymbolAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),
     getTypeAtLocation: node =>
