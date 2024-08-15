@@ -1,6 +1,7 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
 import fetch from 'cross-fetch';
-import * as fs from 'fs';
-import * as path from 'path';
 import prettier from 'prettier';
 
 import { PACKAGES_WEBSITE } from './paths.mts';
