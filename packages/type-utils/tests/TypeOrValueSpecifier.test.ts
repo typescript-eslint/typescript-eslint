@@ -1,7 +1,8 @@
+import path from 'node:path';
+
 import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import Ajv from 'ajv';
-import path from 'path';
 
 import type { TypeOrValueSpecifier } from '../src';
 import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
