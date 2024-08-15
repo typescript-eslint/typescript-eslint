@@ -1,7 +1,8 @@
+import path from 'node:path';
+
 import * as scopeManager from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
-import path from 'path';
 import { ScriptTarget } from 'typescript';
 
 import { parse, parseForESLint } from '../../src/parser';
