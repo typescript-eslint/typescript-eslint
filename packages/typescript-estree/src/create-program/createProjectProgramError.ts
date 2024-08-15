@@ -1,4 +1,5 @@
-import path from 'path';
+import path from 'node:path';
+
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
