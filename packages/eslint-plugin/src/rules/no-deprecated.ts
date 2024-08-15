@@ -165,7 +165,10 @@ export default createRule({
       }
 
       // Identifier CallExpression
-      if (node.parent.type === AST_NODE_TYPES.CallExpression && node === node.parent.callee) {
+      if (
+        node.parent.type === AST_NODE_TYPES.CallExpression &&
+        node === node.parent.callee
+      ) {
         const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
         const signature = checker.getResolvedSignature(tsNode);
         if (signature) {
