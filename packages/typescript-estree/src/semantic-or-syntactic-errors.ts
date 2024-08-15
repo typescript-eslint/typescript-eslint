@@ -48,7 +48,7 @@ export function getFirstSemanticOrSyntacticError(
      * "Debug Failure. Shouldn't ever directly check a JsxOpeningElement"
      *
      * For our current use-cases this is undesired behavior, so we just suppress it
-     * and log a a warning.
+     * and log a warning.
      */
     /* istanbul ignore next */
     console.warn(`Warning From TSC: "${(e as Error).message}`); // eslint-disable-line no-console

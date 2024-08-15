@@ -120,6 +120,22 @@ describe('|| {}', () => {
         ],
       },
       {
+        code: noFormat`(foo1?.foo2 || ({})).foo3;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 26,
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo1?.foo2?.foo3;',
+              },
+            ],
+          },
+        ],
+      },
+      {
         code: '((() => foo())() || {}).bar;',
         errors: [
           {
@@ -1820,6 +1836,84 @@ describe('hand-crafted cases', () => {
         `,
               },
             ],
+          },
+        ],
+      },
+      // parenthesis
+      {
+        code: noFormat`a && (a.b && a.b.c)`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`(a && a.b) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`((a && a.b)) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && (a.b && a.b.c))`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 24,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && a.b && a.b.c)`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`!foo || !foo.bar || ((((!foo.bar.baz || !foo.bar.baz()))));`,
+        output: '!foo?.bar?.baz?.();',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 59,
+          },
+        ],
+      },
+      {
+        code: noFormat`a !== undefined && ((a !== null && a.prop));`,
+        output: 'a?.prop;',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 44,
           },
         ],
       },
