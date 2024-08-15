@@ -1088,6 +1088,20 @@ const bar = foo.a;
     },
     {
       code: `
+varDeclarationFromFixture!;
+      `,
+      output: `
+varDeclarationFromFixture;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
 var x = 1;
 x!;
       `,

@@ -96,7 +96,10 @@ export default createRule<Options, MessageIds>({
         if (
           ts.isVariableDeclarationList(declaration.parent) &&
           // var
-          declaration.parent.flags === ts.NodeFlags.None
+          declaration.parent.flags === ts.NodeFlags.None &&
+          // If they are not in the same file it will not exist.
+          // This situation must not occur using before defined.
+          services.tsNodeToESTreeNodeMap.has(declaration)
         ) {
           const declaratorNode: TSESTree.VariableDeclaration =
             services.tsNodeToESTreeNodeMap.get(declaration);
