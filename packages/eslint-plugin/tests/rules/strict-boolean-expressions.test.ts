@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 /* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
 
 import * as path from 'node:path';

@@ -247,6 +247,8 @@ export default createRule<Options, MessageIds>({
      */
     function parseRegExpText(pattern: string, unicode: boolean): string | null {
       // Parse it.
+      // TODO: Move to the newer parsePattern usage
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const ast = regexpp.parsePattern(pattern, undefined, undefined, {
         unicode,
       });
