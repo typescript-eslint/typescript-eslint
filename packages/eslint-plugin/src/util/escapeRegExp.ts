@@ -7,6 +7,6 @@ const reHasRegExpChar = RegExp(reRegExpChar.source);
 
 export function escapeRegExp(string = ''): string {
   return string && reHasRegExpChar.test(string)
-    ? string.replace(reRegExpChar, '\\$&')
+    ? string.replaceAll(reRegExpChar, '\\$&')
     : string;
 }
