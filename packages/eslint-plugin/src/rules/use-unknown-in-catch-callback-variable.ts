@@ -256,7 +256,7 @@ export default createRule<[], MessageIds>({
 
         // Need to be enough args to check
         const { argIndexToCheck, ...data } = promiseMethodInfo;
-        if (args.length < promiseMethodInfo.argIndexToCheck + 1) {
+        if (args.length < argIndexToCheck + 1) {
           return;
         }
 
@@ -279,7 +279,7 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        // the `some` check above has already excluded SpreadElement
+        // the `some` check above has already excluded `SpreadElement`, so we are safe to assert the same
         const node = argsToCheck[argIndexToCheck] as Exclude<
           (typeof argsToCheck)[number],
           TSESTree.SpreadElement
