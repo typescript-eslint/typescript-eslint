@@ -1,10 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import type {
-  AST,
-  ReportFixFunction,
-  RuleFix,
-} from '@typescript-eslint/utils/ts-eslint';
+import type { AST, RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -15,6 +11,7 @@ import {
   getParserServices,
   isStartOfExpressionStatement,
   needsPrecedingSemicolon,
+  nullThrows,
   upperCaseFirst,
 } from '../util';
 
@@ -84,8 +81,6 @@ export default createRule({
         !isEmptyFunction(node) &&
         !(scopeInfo.isGen && scopeInfo.isAsyncYield)
       ) {
-        let fix: ReportFixFunction | undefined;
-
         // If the function belongs to a method definition or
         // property, then the function's range may not include the
         // `async` keyword and we should look at the parent instead.
@@ -98,93 +93,92 @@ export default createRule({
             ? node.parent
             : node;
 
-        const asyncToken = context.sourceCode.getFirstToken(
-          nodeWithAsyncKeyword,
-          token => token.value === 'async',
+        const asyncToken = nullThrows(
+          context.sourceCode.getFirstToken(
+            nodeWithAsyncKeyword,
+            token => token.value === 'async',
+          ),
+          'The node is an async function, so it must have an "async" token.',
         );
 
-        if (asyncToken) {
-          const nextTokenWithComments = context.sourceCode.getTokenAfter(
-            asyncToken,
-            { includeComments: true },
-          );
+        const asyncRange: Readonly<AST.Range> = [
+          asyncToken.range[0],
+          nullThrows(
+            context.sourceCode.getTokenAfter(asyncToken, {
+              includeComments: true,
+            }),
+            'There will always be a token after the "async" keyword.',
+          ).range[0],
+        ] as const;
 
-          if (nextTokenWithComments) {
-            const asyncRange: Readonly<AST.Range> = [
-              asyncToken.range[0],
-              nextTokenWithComments.range[0],
-            ] as const;
+        // Removing the `async` keyword can cause parsing errors if the
+        // current statement is relying on automatic semicolon insertion.
+        // If ASI is currently being used, then we should replace the
+        // `async` keyword with a semicolon.
+        const nextToken = nullThrows(
+          context.sourceCode.getTokenAfter(asyncToken),
+          'There will always be a token after the "async" keyword.',
+        );
+        const addSemiColon =
+          nextToken.type === AST_TOKEN_TYPES.Punctuator &&
+          (nextToken.value === '[' || nextToken.value === '(') &&
+          (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
+            isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
+          needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
 
-            // Removing the `async` keyword can cause parsing errors if the
-            // current statement is relying on automatic semicolon insertion.
-            // If ASI is currently being used, then we should replace the
-            // `async` keyword with a semicolon.
-            const nextToken = context.sourceCode.getTokenAfter(asyncToken);
-            const addSemiColon =
-              nextToken?.type === AST_TOKEN_TYPES.Punctuator &&
-              (nextToken.value === '[' || nextToken.value === '(') &&
-              (nodeWithAsyncKeyword.type === AST_NODE_TYPES.MethodDefinition ||
-                isStartOfExpressionStatement(nodeWithAsyncKeyword)) &&
-              needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
+        const changes = [
+          { range: asyncRange, replacement: addSemiColon ? ';' : '' },
+        ];
 
-            const changes = [
-              { range: asyncRange, replacement: addSemiColon ? ';' : '' },
-            ];
-
-            // If there's a return type annotation and it's a
-            // `Promise<T>`, we can also change the return type
-            // annotation to just `T` as part of the suggestion.
-            // Alternatively, if the function is a generator and
-            // the return type annotation is `AsyncGenerator<T>`,
-            // then we can change it to `Generator<T>`.
-            if (node.returnType) {
-              if (scopeInfo.isGen) {
-                if (
-                  hasTypeName(node.returnType.typeAnnotation, 'AsyncGenerator')
-                ) {
-                  changes.unshift({
-                    range: node.returnType.typeAnnotation.typeName.range,
-                    replacement: 'Generator',
-                  });
-                }
-              } else if (
-                hasTypeName(node.returnType.typeAnnotation, 'Promise') &&
-                !!node.returnType.typeAnnotation.typeArguments
-              ) {
-                const openAngle = context.sourceCode.getFirstToken(
-                  node.returnType.typeAnnotation,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Punctuator &&
-                    token.value === '<',
-                );
-                const closeAngle = context.sourceCode.getLastToken(
-                  node.returnType.typeAnnotation,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Punctuator &&
-                    token.value === '>',
-                );
-                if (openAngle && closeAngle) {
-                  changes.unshift(
-                    // Remove the closing angled bracket.
-                    { range: closeAngle.range, replacement: '' },
-                    // Remove the "Promise" identifier
-                    // and the opening angled bracket.
-                    {
-                      range: [
-                        node.returnType.typeAnnotation.typeName.range[0],
-                        openAngle.range[1],
-                      ],
-                      replacement: '',
-                    },
-                  );
-                }
-              }
+        // If there's a return type annotation and it's a
+        // `Promise<T>`, we can also change the return type
+        // annotation to just `T` as part of the suggestion.
+        // Alternatively, if the function is a generator and
+        // the return type annotation is `AsyncGenerator<T>`,
+        // then we can change it to `Generator<T>`.
+        if (node.returnType) {
+          if (scopeInfo.isGen) {
+            if (hasTypeName(node.returnType.typeAnnotation, 'AsyncGenerator')) {
+              changes.unshift({
+                range: node.returnType.typeAnnotation.typeName.range,
+                replacement: 'Generator',
+              });
             }
-
-            fix = (fixer): RuleFix[] =>
-              changes.map(change =>
-                fixer.replaceTextRange(change.range, change.replacement),
-              );
+          } else if (
+            hasTypeName(node.returnType.typeAnnotation, 'Promise') &&
+            !!node.returnType.typeAnnotation.typeArguments
+          ) {
+            const openAngle = nullThrows(
+              context.sourceCode.getFirstToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '<',
+              ),
+              'There are type arguments, so the angle bracket will exist.',
+            );
+            const closeAngle = nullThrows(
+              context.sourceCode.getLastToken(
+                node.returnType.typeAnnotation,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '>',
+              ),
+              'There are type arguments, so the angle bracket will exist.',
+            );
+            changes.unshift(
+              // Remove the closing angled bracket.
+              { range: closeAngle.range, replacement: '' },
+              // Remove the "Promise" identifier
+              // and the opening angled bracket.
+              {
+                range: [
+                  node.returnType.typeAnnotation.typeName.range[0],
+                  openAngle.range[1],
+                ],
+                replacement: '',
+              },
+            );
           }
         }
 
@@ -195,7 +189,15 @@ export default createRule({
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
-          suggest: fix ? [{ messageId: 'removeAsync', fix }] : [],
+          suggest: [
+            {
+              messageId: 'removeAsync',
+              fix: (fixer): RuleFix[] =>
+                changes.map(change =>
+                  fixer.replaceTextRange(change.range, change.replacement),
+                ),
+            },
+          ],
         });
       }
 
