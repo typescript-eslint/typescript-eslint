@@ -5479,5 +5479,89 @@ await (<Promise<number>>{});
         },
       ],
     },
+    {
+      code: `
+const emptyResolvers: Array<() => void> = [];
+Promise.reject().then(...emptyResolvers);
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const emptyResolvers: Array<() => void> = [];
+void Promise.reject().then(...emptyResolvers);
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const emptyResolvers: Array<() => void> = [];
+await Promise.reject().then(...emptyResolvers);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const emptyResolvers: Array<() => void> = [];
+Promise.reject().then(...emptyResolvers, ...emptyResolvers);
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+const emptyResolvers: Array<() => void> = [];
+void Promise.reject().then(...emptyResolvers, ...emptyResolvers);
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+const emptyResolvers: Array<() => void> = [];
+await Promise.reject().then(...emptyResolvers, ...emptyResolvers);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // In principle, this could/should be valid, since the spread arg is
+      // empty. But this is an explicitly unhandled edge case. If this changes
+      // in the future, this can be moved to the valid cases.
+      code: `
+Promise.reject('falafel').catch(...[], () => {});
+      `,
+      errors: [
+        {
+          messageId: 'floatingVoid',
+          line: 2,
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+void Promise.reject('falafel').catch(...[], () => {});
+      `,
+            },
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+await Promise.reject('falafel').catch(...[], () => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

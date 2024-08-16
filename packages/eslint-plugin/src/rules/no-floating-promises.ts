@@ -486,7 +486,8 @@ function getRejectionHandlerFromCatchCall(
     expression.callee.type === AST_NODE_TYPES.MemberExpression &&
     expression.callee.property.type === AST_NODE_TYPES.Identifier &&
     expression.callee.property.name === 'catch' &&
-    expression.arguments.length >= 1
+    expression.arguments.length >= 1 &&
+    expression.arguments[0].type !== AST_NODE_TYPES.SpreadElement
   ) {
     return expression.arguments[0];
   }
@@ -500,7 +501,10 @@ function getRejectionHandlerFromThenCall(
     expression.callee.type === AST_NODE_TYPES.MemberExpression &&
     expression.callee.property.type === AST_NODE_TYPES.Identifier &&
     expression.callee.property.name === 'then' &&
-    expression.arguments.length >= 2
+    expression.arguments.length >= 2 &&
+    expression.arguments
+      .slice(0, 2)
+      .every(arg => arg.type !== AST_NODE_TYPES.SpreadElement)
   ) {
     return expression.arguments[1];
   }
