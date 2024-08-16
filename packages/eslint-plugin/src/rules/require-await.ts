@@ -146,7 +146,7 @@ export default createRule({
             }
           } else if (
             hasTypeName(node.returnType.typeAnnotation, 'Promise') &&
-            !!node.returnType.typeAnnotation.typeArguments
+            node.returnType.typeAnnotation.typeArguments != null
           ) {
             const openAngle = nullThrows(
               context.sourceCode.getFirstToken(
