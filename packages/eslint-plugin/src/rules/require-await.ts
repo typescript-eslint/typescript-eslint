@@ -136,7 +136,10 @@ export default createRule({
         // Alternatively, if the function is a generator and
         // the return type annotation is `AsyncGenerator<T>`,
         // then we can change it to `Generator<T>`.
-        if (node.returnType) {
+        if (
+          node.returnType?.typeAnnotation.type ===
+          AST_NODE_TYPES.TSTypeReference
+        ) {
           if (scopeInfo.isGen) {
             if (hasTypeName(node.returnType.typeAnnotation, 'AsyncGenerator')) {
               changes.push({
@@ -320,12 +323,11 @@ function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
 }
 
 function hasTypeName(
-  typeAnnotation: TSESTree.TypeNode,
+  typeReference: TSESTree.TSTypeReference,
   typeName: string,
-): typeAnnotation is TSESTree.TSTypeReference {
+): boolean {
   return (
-    typeAnnotation.type === AST_NODE_TYPES.TSTypeReference &&
-    typeAnnotation.typeName.type === AST_NODE_TYPES.Identifier &&
-    typeAnnotation.typeName.name === typeName
+    typeReference.typeName.type === AST_NODE_TYPES.Identifier &&
+    typeReference.typeName.name === typeName
   );
 }
