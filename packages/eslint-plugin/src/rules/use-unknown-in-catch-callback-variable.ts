@@ -1,3 +1,4 @@
+import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { ReportDescriptor } from '@typescript-eslint/utils/ts-eslint';
@@ -32,11 +33,11 @@ const useUnknownMessageBase =
  *
  * `const mk = 1234; x[mk]` => 1234
  */
-const getStaticMemberAccessKey = ({
-  computed,
-  property,
-}: TSESTree.MemberExpression): { value: unknown } | null =>
-  computed ? getStaticValue(property) : { value: property.name };
+const getStaticMemberAccessKey = (
+  { computed, property }: TSESTree.MemberExpression,
+  scope: Scope,
+): { value: unknown } | null =>
+  computed ? getStaticValue(property, scope) : { value: property.name };
 
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
@@ -241,7 +242,10 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        const staticMemberAccessKey = getStaticMemberAccessKey(callee);
+        const staticMemberAccessKey = getStaticMemberAccessKey(
+          callee,
+          context.sourceCode.getScope(callee),
+        );
         if (!staticMemberAccessKey) {
           return;
         }

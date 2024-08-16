@@ -22,6 +22,10 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
       });
     `,
     `
+      let x = Math.random() ? 'ca' + 'tch' : 'catch';
+      Promise.resolve()[x]((err: Error) => {});
+    `,
+    `
       Promise.resolve().then(
         () => {},
         (err: unknown) => {
@@ -159,10 +163,6 @@ Promise.resolve().catch(...x);
 declare const thenArgs: [() => {}, (err: any) => {}];
 Promise.resolve().then(...thenArgs);
     `,
-    `
-      let method = 'catch';
-      Promise.resolve()[method]((error: Error) => {});
-    `,
   ],
 
   invalid: [
@@ -183,6 +183,27 @@ Promise.resolve().catch((err: Error) => {
 Promise.resolve().catch((err: unknown) => {
   throw err;
 });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+        let method = 'catch';
+        Promise.resolve()[method]((error: Error) => {});
+      `,
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongTypeAnnotationSuggestion',
+              output: `
+        let method = 'catch';
+        Promise.resolve()[method]((error: unknown) => {});
       `,
             },
           ],
