@@ -147,7 +147,6 @@ export default createRule({
       }
     }
 
-    // Todo: ChainExpression
     function getCallLikeNode(node: TSESTree.Node): CallLikeNode | undefined {
       let callee = node;
 
