@@ -159,6 +159,10 @@ Promise.resolve().catch(...x);
 declare const thenArgs: [() => {}, (err: any) => {}];
 Promise.resolve().then(...thenArgs);
     `,
+    `
+      let method = 'catch';
+      Promise.resolve()[method]((error: Error) => {});
+    `,
   ],
 
   invalid: [

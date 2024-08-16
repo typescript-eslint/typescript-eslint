@@ -246,10 +246,16 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        const promiseMethodInfo = [
-          { method: 'catch', append: '', argIndexToCheck: 0 },
-          { method: 'then', append: ' rejection', argIndexToCheck: 1 },
-        ].find(({ method }) => staticMemberAccessKey.value === method);
+        const promiseMethodInfo = (
+          [
+            { method: 'catch', append: '', argIndexToCheck: 0 },
+            { method: 'then', append: ' rejection', argIndexToCheck: 1 },
+          ] satisfies {
+            method: string;
+            append: string;
+            argIndexToCheck: number;
+          }[]
+        ).find(({ method }) => staticMemberAccessKey.value === method);
         if (!promiseMethodInfo) {
           return;
         }
