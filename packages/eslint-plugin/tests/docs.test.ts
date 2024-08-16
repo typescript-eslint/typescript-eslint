@@ -1,17 +1,17 @@
 import 'jest-specific-snapshot';
 
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import * as tseslintParser from '@typescript-eslint/parser';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import fs from 'fs';
 import { marked } from 'marked';
 import type * as mdast from 'mdast';
 import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
 import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
 import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
-import path from 'path';
 import { titleCase } from 'title-case';
 import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
 
@@ -83,11 +83,11 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
             ? Math.max(1, endColumn - startColumn)
             : line.length - startColumn,
         );
-        const squiggleWithIndent = ' '.repeat(startColumn) + squiggle + ' ';
+        const squiggleWithIndent = `${' '.repeat(startColumn)}${squiggle} `;
         const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
         output.push(
           squiggleWithIndent +
-            error.message.split('\n').join('\n' + errorMessageIndent),
+            error.message.replaceAll('\n', `\n${errorMessageIndent}`),
         );
       } else if (i === endLine) {
         output.push('~'.repeat(endColumn));
@@ -97,7 +97,7 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
     }
   }
 
-  return output.join('\n').trim() + '\n';
+  return `${output.join('\n').trim()}\n`;
 }
 
 const linter = new Linter({ configType: 'eslintrc' });
@@ -484,13 +484,13 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length === 0,
-                  'Expected not to contain lint errors (with skipValidation):\n' +
-                    token.value,
+                  `Expected not to contain lint errors (with skipValidation):
+${token.value}`,
                 );
               } else {
                 assert.ok(
                   messages.length > 0,
-                  'Expected to contain at least 1 lint error:\n' + token.value,
+                  `Expected to contain at least 1 lint error:\n${token.value}`,
                 );
               }
             } else {
@@ -498,13 +498,14 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length > 0,
-                  'Expected to contain at least 1 lint error (with skipValidation):\n' +
-                    token.value,
+                  `Expected to contain at least 1 lint error (with skipValidation):\n${
+                    token.value
+                  }`,
                 );
               } else {
                 assert.ok(
                   messages.length === 0,
-                  'Expected not to contain lint errors:\n' + token.value,
+                  `Expected not to contain lint errors:\n${token.value}`,
                 );
               }
             }
@@ -514,9 +515,10 @@ describe('Validating rule docs', () => {
           }
 
           expect(
-            testCaption.filter(Boolean).join('\n') +
-              '\n\n' +
-              renderLintResults(token.value, messages),
+            `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
+              token.value,
+              messages,
+            )}`,
           ).toMatchSpecificSnapshot(
             path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
           );

@@ -1,3 +1,24 @@
+## 8.1.0 (2024-08-12)
+
+
+### 🩹 Fixes
+
+- **utils:** correct types to align with @types/eslint v9
+
+
+### ❤️  Thank You
+
+- Aly Thobani
+- Brad Zacher
+- James
+- Josh Goldberg ✨
+- Joshua Chen
+- Olivier Zalmanski
+- YeonJuan
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.0.1 (2024-08-05)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.

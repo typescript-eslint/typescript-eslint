@@ -1,8 +1,9 @@
+import * as path from 'node:path';
+
 import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
 
 export function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');

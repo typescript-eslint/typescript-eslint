@@ -1,7 +1,7 @@
-import childProcess from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { promisify } from 'util';
+import childProcess from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { promisify } from 'node:util';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);

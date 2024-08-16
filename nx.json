@@ -2,7 +2,13 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
-    "projects": ["*", "!repo"],
+    "projects": [
+      "*",
+      "!repo",
+      "!website*",
+      "!integration-tests",
+      "!eslint-plugin-internal"
+    ],
     "changelog": {
       "workspaceChangelog": {
         "createRelease": "github",

@@ -110,9 +110,11 @@ enum MemberNameType {
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
+    | TSESTree.AccessorProperty
     | TSESTree.Property
     | TSESTree.PropertyDefinition
     | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
