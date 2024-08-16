@@ -139,7 +139,7 @@ export default createRule({
         if (node.returnType) {
           if (scopeInfo.isGen) {
             if (hasTypeName(node.returnType.typeAnnotation, 'AsyncGenerator')) {
-              changes.unshift({
+              changes.push({
                 range: node.returnType.typeAnnotation.typeName.range,
                 replacement: 'Generator',
               });
@@ -166,7 +166,7 @@ export default createRule({
               ),
               'There are type arguments, so the angle bracket will exist.',
             );
-            changes.unshift(
+            changes.push(
               // Remove the closing angled bracket.
               { range: closeAngle.range, replacement: '' },
               // Remove the "Promise" identifier
