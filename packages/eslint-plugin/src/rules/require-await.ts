@@ -127,7 +127,7 @@ export default createRule({
           needsPrecedingSemicolon(context.sourceCode, nodeWithAsyncKeyword);
 
         const changes = [
-          { range: asyncRange, replacement: addSemiColon ? ';' : '' },
+          { range: asyncRange, replacement: addSemiColon ? ';' : undefined },
         ];
 
         // If there's a return type annotation and it's a
@@ -168,7 +168,7 @@ export default createRule({
             );
             changes.push(
               // Remove the closing angled bracket.
-              { range: closeAngle.range, replacement: '' },
+              { range: closeAngle.range, replacement: undefined },
               // Remove the "Promise" identifier
               // and the opening angled bracket.
               {
@@ -176,7 +176,7 @@ export default createRule({
                   node.returnType.typeAnnotation.typeName.range[0],
                   openAngle.range[1],
                 ],
-                replacement: '',
+                replacement: undefined,
               },
             );
           }
@@ -194,7 +194,9 @@ export default createRule({
               messageId: 'removeAsync',
               fix: (fixer): RuleFix[] =>
                 changes.map(change =>
-                  fixer.replaceTextRange(change.range, change.replacement),
+                  change.replacement !== undefined
+                    ? fixer.replaceTextRange(change.range, change.replacement)
+                    : fixer.removeRange(change.range),
                 ),
             },
           ],
