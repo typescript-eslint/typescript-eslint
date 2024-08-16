@@ -25,5 +25,11 @@ async function returnsPromise1() {
   return Promise.resolve(1);
 }
 
+async function* asyncGenerator() {
+  const num = await Promise.resolve(1);
+  yield 1 + num;
+}
+
 const returnsPromise2 = () => returnsPromise1();
+const callAsyncGenerator = () => asyncGenerator();
 ```
