@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices } from '../util';
@@ -79,29 +80,34 @@ export default createRule({
     }
 
     function isInsideExportOrImport(node: TSESTree.Node): boolean {
-      return context.sourceCode
-        .getAncestors(node)
-        .some(ancestor =>
-          [
-            AST_NODE_TYPES.ExportAllDeclaration,
-            AST_NODE_TYPES.ExportDefaultDeclaration,
-            AST_NODE_TYPES.ExportNamedDeclaration,
-            AST_NODE_TYPES.ImportDeclaration,
-            AST_NODE_TYPES.ImportExpression,
-          ].includes(ancestor.type),
-        );
+      let current = node;
+
+      while (true) {
+        switch (current.type) {
+          case AST_NODE_TYPES.ExportAllDeclaration:
+          case AST_NODE_TYPES.ExportDefaultDeclaration:
+          case AST_NODE_TYPES.ExportNamedDeclaration:
+          case AST_NODE_TYPES.ImportDeclaration:
+          case AST_NODE_TYPES.ImportExpression:
+            return true;
+
+          case AST_NODE_TYPES.ArrowFunctionExpression:
+          case AST_NODE_TYPES.BlockStatement:
+          case AST_NODE_TYPES.ClassBody:
+          case AST_NODE_TYPES.TSInterfaceDeclaration:
+          case AST_NODE_TYPES.FunctionDeclaration:
+          case AST_NODE_TYPES.FunctionExpression:
+          case AST_NODE_TYPES.Program:
+          case AST_NODE_TYPES.TSUnionType:
+          case AST_NODE_TYPES.VariableDeclarator:
+            return false;
+
+          default:
+            current = current.parent;
+        }
+      }
     }
 
-    const classLikeSymbolKinds = new Set<ts.SyntaxKind | undefined>([
-      ts.SyntaxKind.ClassDeclaration,
-      ts.SyntaxKind.ClassExpression,
-    ]);
-
-    function isClassLikeSymbol(symbol: ts.Symbol): boolean {
-      return !!symbol
-        .getDeclarations()
-        ?.some(symbol => classLikeSymbolKinds.has(symbol.kind));
-    }
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
@@ -141,6 +147,7 @@ export default createRule({
       }
     }
 
+    // Todo: ChainExpression
     function getCallLikeNode(node: TSESTree.Node): CallLikeNode | undefined {
       let callee = node;
 
@@ -156,10 +163,11 @@ export default createRule({
 
     function getCallLikeDeprecation(node: CallLikeNode): string | undefined {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
+
+      // If the node is a direct function call, we look for its signature.
       const signature = checker.getResolvedSignature(
         tsNode as ts.CallLikeExpression,
       );
-
       if (signature) {
         const signatureDeprecation = getJsDocDeprecation(signature);
         if (signatureDeprecation !== undefined) {
@@ -167,9 +175,14 @@ export default createRule({
         }
       }
 
+      // Or it could be a ClassDeclaration or a variable set to a ClassExpression.
       const symbol = services.getSymbolAtLocation(node);
-      return symbol && isClassLikeSymbol(symbol)
-        ? getJsDocDeprecation(symbol)
+      const symbolAtLocation =
+        symbol && checker.getTypeOfSymbolAtLocation(symbol, tsNode).getSymbol();
+
+      return symbolAtLocation &&
+        tsutils.isSymbolFlagSet(symbolAtLocation, ts.SymbolFlags.Class)
+        ? getJsDocDeprecation(symbolAtLocation)
         : undefined;
     }
 
@@ -184,6 +197,7 @@ export default createRule({
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
       }
+
       return services.getSymbolAtLocation(node);
     }
 

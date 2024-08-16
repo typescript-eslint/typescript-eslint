@@ -26,6 +26,9 @@ ruleTester.run('no-deprecated', rule, {
     '/** @deprecated */ declare var a: number;',
     '/** @deprecated */ declare let a: number;',
     '/** @deprecated */ declare const a: number;',
+    '/** @deprecated */ export var a = 1;',
+    '/** @deprecated */ export let a = 1;',
+    '/** @deprecated */ export const a = 1;',
     'const [/** @deprecated */ a] = [b];',
     'const [/** @deprecated */ a] = b;',
     `
@@ -35,6 +38,14 @@ ruleTester.run('no-deprecated', rule, {
       };
 
       a.b;
+    `,
+    `
+      const a = {
+        b: 1,
+        /** @deprecated */ c: 2,
+      };
+
+      a?.b;
     `,
     `
       declare const a: {
@@ -136,11 +147,69 @@ ruleTester.run('no-deprecated', rule, {
 
       const a = <A b="" />;
     `,
+    `
+      namespace A {
+        /** @deprecated */
+        export type B = string;
+        export type C = string;
+        export type D = string;
+      }
+
+      export type D = A.C | A.D;
+    `,
   ],
   invalid: [
     {
       code: `
+        /** @deprecated */ var a = undefined;
+        a;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ export var a = undefined;
+        a;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         /** @deprecated */ let a = undefined;
+        a;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ export let a = undefined;
         a;
       `,
       errors: [
@@ -255,8 +324,56 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        /** @deprecated */ const a = { b: 1 };
+        console.log(a?.b);
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         /** @deprecated */ const a = { b: { c: 1 } };
         a.b.c;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = { b: { c: 1 } };
+        a.b?.c;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 10,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = { b: { c: 1 } };
+        a?.b?.c;
       `,
       errors: [
         {
@@ -407,6 +524,42 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
         /** @deprecated */
+        export class A {}
+
+        new A();
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          line: 5,
+          endLine: 5,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        const A = class {};
+
+        new A();
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          line: 5,
+          endLine: 5,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
         declare class A {}
 
         new A();
@@ -417,6 +570,26 @@ ruleTester.run('no-deprecated', rule, {
           endColumn: 14,
           line: 5,
           endLine: 5,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        const A = class {
+          /** @deprecated */
+          constructor() {}
+        };
+
+        new A();
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          line: 7,
+          endLine: 7,
           data: { name: 'A' },
           messageId: 'deprecated',
         },
@@ -595,6 +768,28 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        export interface A {
+          /** @deprecated */
+          b: string;
+        }
+
+        declare const a: A;
+
+        a.b;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         interface A {
           /** @deprecated */
           b: string;
@@ -618,6 +813,28 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
         type A = {
+          /** @deprecated */
+          b: string;
+        };
+
+        declare const a: A;
+
+        const { b } = a;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 18,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export type A = {
           /** @deprecated */
           b: string;
         };
@@ -682,6 +899,26 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
         namespace A {
+          /** @deprecated */
+          export const b = '';
+        }
+
+        A.b;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 7,
+          endLine: 7,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export namespace A {
           /** @deprecated */
           export const b = '';
         }
@@ -864,6 +1101,57 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        function a(
+          /** @deprecated */
+          b?: boolean,
+        ) {
+          return b;
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 19,
+          line: 6,
+          endLine: 6,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        export function isTypeFlagSet(
+          type: ts.Type,
+          flagsToCheck: ts.TypeFlags,
+          /** @deprecated This param is not used and will be removed in the future. */
+          isReceiver?: boolean,
+        ): boolean {
+          const flags = getTypeFlags(type);
+
+          if (isReceiver && flags & ANY_OR_UNKNOWN) {
+            return true;
+          }
+
+          return (flags & flagsToCheck) !== 0;
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 25,
+          line: 10,
+          endLine: 10,
+          data: {
+            name: 'isReceiver',
+            reason: 'This param is not used and will be removed in the future.',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
         /** @deprecated */
         declare function a(...args: unknown[]): string;
 
@@ -952,6 +1240,48 @@ ruleTester.run('no-deprecated', rule, {
           line: 7,
           endLine: 7,
           data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        export type A = string;
+        export type B = string;
+        export type C = string;
+
+        export type D = A | B | C;
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 26,
+          line: 7,
+          endLine: 7,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        namespace A {
+          /** @deprecated */
+          export type B = string;
+          export type C = string;
+          export type D = string;
+        }
+
+        export type D = A.B | A.C | A.D;
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 28,
+          line: 9,
+          endLine: 9,
+          data: { name: 'B' },
           messageId: 'deprecated',
         },
       ],
