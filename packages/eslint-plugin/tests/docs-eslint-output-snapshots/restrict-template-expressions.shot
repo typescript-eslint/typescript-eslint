@@ -96,8 +96,6 @@ exports[`Validating rule docs restrict-template-expressions.mdx code examples ES
 "
 
 const error = new Error();
-const url = new URL('https://typescript-eslint.io');
-const urlSearchParams = new URLSearchParams();
-const msg1 = \`args = \${error}, \${url}, \${urlSearchParams}\`;
+const msg1 = \`arg = \${error}\`;
 "
 `;
