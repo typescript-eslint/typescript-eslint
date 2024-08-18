@@ -1,5 +1,8 @@
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type {
   MessageIds,
@@ -7,11 +10,9 @@ import type {
 } from '../../src/rules/sort-type-constituents';
 import rule from '../../src/rules/sort-type-constituents';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
-const valid = (operator: '&' | '|'): TSESLint.ValidTestCase<Options>[] => [
+const valid = (operator: '&' | '|'): ValidTestCase<Options>[] => [
   {
     code: `type T = A ${operator} B;`,
   },
@@ -87,7 +88,7 @@ type T =
 ];
 const invalid = (
   operator: '&' | '|',
-): TSESLint.InvalidTestCase<MessageIds, Options>[] => {
+): InvalidTestCase<MessageIds, Options>[] => {
   const type = operator === '|' ? 'Union' : 'Intersection';
   return [
     {
@@ -327,6 +328,22 @@ ruleTester.run('sort-type-constituents', rule, {
         },
       ],
     },
+    {
+      code: "type T = 'DeleteForever' | 'DeletedAt';",
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+    },
+    {
+      code: 'type T = { A: string } | { B: string } | { a: string };',
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+    },
 
     ...valid('&'),
     {
@@ -334,6 +351,14 @@ ruleTester.run('sort-type-constituents', rule, {
       options: [
         {
           checkIntersections: false,
+        },
+      ],
+    },
+    {
+      code: "type T = 'DeleteForever' & 'DeleteForever';",
+      options: [
+        {
+          caseSensitive: true,
         },
       ],
     },
@@ -387,6 +412,42 @@ type T = 1 | string | {} | A;
             type: 'Union',
             name: 'A',
           },
+        },
+      ],
+    },
+    {
+      code: "type T = 'DeletedAt' | 'DeleteForever';",
+      output: "type T = 'DeleteForever' | 'DeletedAt';",
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Union',
+            name: 'T',
+          },
+        },
+      ],
+      options: [
+        {
+          caseSensitive: true,
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: string } | { A: string } | { B: string };',
+      output: 'type T = { A: string } | { B: string } | { a: string };',
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Union',
+            name: 'T',
+          },
+        },
+      ],
+      options: [
+        {
+          caseSensitive: true,
         },
       ],
     },

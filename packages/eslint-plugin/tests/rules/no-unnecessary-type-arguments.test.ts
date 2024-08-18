@@ -6,11 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -66,6 +66,14 @@ g<string, string>();
     `
 declare const g: unknown;
 g<string, string>();
+    `,
+    `
+declare const f: unknown;
+f<string>\`\`;
+    `,
+    `
+function f<T = number>(template: TemplateStringsArray) {}
+f<string>\`\`;
     `,
     `
 class C<T = number> {}
@@ -179,6 +187,22 @@ g<string, string>();
       output: `
 function g<T = number, U = string>() {}
 g<string>();
+      `,
+    },
+    {
+      code: `
+function f<T = number>(templates: TemplateStringsArray, arg: T) {}
+f<number>\`\${1}\`;
+      `,
+      errors: [
+        {
+          column: 3,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+function f<T = number>(templates: TemplateStringsArray, arg: T) {}
+f\`\${1}\`;
       `,
     },
     {

@@ -33,7 +33,7 @@ async function getFileAndStoreLocally(
 
   const config = await prettier.resolveConfig(path);
 
-  let contents = await response.text();
+  let contents = (await response.text()) as string;
   contents = [...banner, '', editFunc(contents)].join('\n');
   contents = await prettier.format(contents, {
     parser: 'typescript',
@@ -52,10 +52,8 @@ function replaceImports(text: string, from: string, to: string): string {
 function injectImports(text: string, from: string, safeName: string): string {
   const regex = new RegExp(`import\\(["']${from}["']\\)`, 'g');
   if (regex.test(text)) {
-    return (
-      `import type * as ${safeName} from '${from}';\n` +
-      text.replace(regex, safeName)
-    );
+    return `import type * as ${safeName} from '${from}';
+${text.replace(regex, safeName)}`;
   }
   return text;
 }
@@ -102,7 +100,7 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

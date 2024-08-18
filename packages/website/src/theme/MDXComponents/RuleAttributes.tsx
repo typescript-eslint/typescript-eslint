@@ -1,6 +1,6 @@
 import Link from '@docusaurus/Link';
-import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import React from 'react';
 
 import {
@@ -20,14 +20,25 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-type RecommendedRuleMetaDataDocs = RuleMetaDataDocs & { recommended: string };
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
+  [K in Key]-?: NonNullable<Base[Key]>;
+};
+
+type RecommendedRuleMetaDataDocs = MakeRequired<
+  ESLintPluginDocs,
+  'recommended'
+>;
 
 const isRecommendedDocs = (
-  docs: RuleMetaDataDocs,
+  docs: ESLintPluginDocs,
 ): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
 
 const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
-  const recommendation = recommendations[docs.recommended];
+  const recommended = docs.recommended;
+  const recommendation =
+    recommendations[
+      typeof recommended === 'object' ? 'recommended' : recommended
+    ];
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]

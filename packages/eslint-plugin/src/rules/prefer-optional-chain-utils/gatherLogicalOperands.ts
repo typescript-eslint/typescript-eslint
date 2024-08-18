@@ -13,7 +13,7 @@ import {
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isReferenceToGlobalFunction, isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 const enum ComparisonValueType {
@@ -61,17 +61,13 @@ type Operand = ValidOperand | InvalidOperand;
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
-  operator: TSESTree.LogicalExpression['operator'],
-  checkType: 'true' | 'false',
+  disallowFalseyLiteral: boolean,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  const disallowFalseyLiteral =
-    (operator === '||' && checkType === 'false') ||
-    (operator === '&&' && checkType === 'true');
   if (disallowFalseyLiteral) {
     /*
     ```
@@ -92,10 +88,6 @@ function isValidFalseBooleanCheckType(
     ) {
       return false;
     }
-  }
-
-  if (options.requireNullish === true) {
-    return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
@@ -133,6 +125,7 @@ export function gatherLogicalOperands(
   const { operands, newlySeenLogicals } = flattenLogicalOperands(node);
 
   for (const operand of operands) {
+    const areMoreOperands = operand !== operands.at(-1);
     switch (operand.type) {
       case AST_NODE_TYPES.BinaryExpression: {
         // check for "yoda" style logical: null != x
@@ -160,16 +153,13 @@ export function gatherLogicalOperands(
             comparedExpression.operator === 'typeof'
           ) {
             const argument = comparedExpression.argument;
-            if (argument.type === AST_NODE_TYPES.Identifier) {
-              const reference = sourceCode
-                .getScope(argument)
-                .references.find(ref => ref.identifier.name === argument.name);
-
-              if (!reference?.resolved?.defs.length) {
-                // typeof window === 'undefined'
-                result.push({ type: OperandValidity.Invalid });
-                continue;
-              }
+            if (
+              argument.type === AST_NODE_TYPES.Identifier &&
+              // typeof window === 'undefined'
+              isReferenceToGlobalFunction(argument.name, argument, sourceCode)
+            ) {
+              result.push({ type: OperandValidity.Invalid });
+              continue;
             }
 
             // typeof x.y === 'undefined'
@@ -258,8 +248,7 @@ export function gatherLogicalOperands(
           operand.operator === '!' &&
           isValidFalseBooleanCheckType(
             operand.argument,
-            node.operator,
-            'false',
+            areMoreOperands && node.operator === '||',
             parserServices,
             options,
           )
@@ -285,8 +274,7 @@ export function gatherLogicalOperands(
         if (
           isValidFalseBooleanCheckType(
             operand,
-            node.operator,
-            'true',
+            areMoreOperands && node.operator === '&&',
             parserServices,
             options,
           )

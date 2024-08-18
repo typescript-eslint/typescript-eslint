@@ -1,7 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE, TYPE_VALUE } from './base-config';
@@ -79,7 +79,6 @@ export const webworker = {
   MessageEventInit: TYPE,
   MultiCacheQueryOptions: TYPE,
   NavigationPreloadState: TYPE,
-  NotificationAction: TYPE,
   NotificationEventInit: TYPE,
   NotificationOptions: TYPE,
   Pbkdf2Params: TYPE,
@@ -98,6 +97,7 @@ export const webworker = {
   RTCEncodedAudioFrameMetadata: TYPE,
   RTCEncodedVideoFrameMetadata: TYPE,
   ReadableStreamGetReaderOptions: TYPE,
+  ReadableStreamIteratorOptions: TYPE,
   ReadableStreamReadDoneResult: TYPE,
   ReadableStreamReadValueResult: TYPE,
   ReadableWritablePair: TYPE,
@@ -333,6 +333,8 @@ export const webworker = {
   PushSubscriptionOptions: TYPE_VALUE,
   RTCEncodedAudioFrame: TYPE_VALUE,
   RTCEncodedVideoFrame: TYPE_VALUE,
+  RTCRtpScriptTransformer: TYPE_VALUE,
+  RTCTransformEvent: TYPE_VALUE,
   ReadableByteStreamController: TYPE_VALUE,
   ReadableStream: TYPE_VALUE,
   ReadableStreamBYOBReader: TYPE_VALUE,
@@ -505,7 +507,6 @@ export const webworker = {
   TimerHandler: TYPE,
   Transferable: TYPE,
   Uint32List: TYPE,
-  VibratePattern: TYPE,
   XMLHttpRequestBodyInit: TYPE,
   AlphaOption: TYPE,
   AvcBitstreamFormat: TYPE,
@@ -567,6 +568,7 @@ export const webworker = {
   RequestCredentials: TYPE,
   RequestDestination: TYPE,
   RequestMode: TYPE,
+  RequestPriority: TYPE,
   RequestRedirect: TYPE,
   ResizeQuality: TYPE,
   ResponseType: TYPE,

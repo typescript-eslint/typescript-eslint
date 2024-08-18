@@ -3,11 +3,9 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-array-constructor';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
-const messageId = 'useLiteral' as const;
+const messageId = 'useLiteral';
 
 ruleTester.run('no-array-constructor', rule, {
   valid: [

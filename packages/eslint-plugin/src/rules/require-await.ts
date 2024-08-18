@@ -28,7 +28,8 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Disallow async functions which have no `await` expression',
+      description:
+        'Disallow async functions which do not return promises and have no `await` expression',
       recommended: 'recommended',
       requiresTypeChecking: true,
       extendsBaseRule: true,

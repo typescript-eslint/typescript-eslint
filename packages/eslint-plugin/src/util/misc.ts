@@ -7,6 +7,8 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
+import { isParenthesized } from './astUtils';
+
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
   ts.Extension.Dcts,
@@ -108,9 +110,11 @@ enum MemberNameType {
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
+    | TSESTree.AccessorProperty
     | TSESTree.Property
     | TSESTree.PropertyDefinition
     | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
@@ -158,7 +162,7 @@ type RequireKeys<
 > = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
-  return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
+  return Object.keys(myEnum).filter(x => isNaN(Number(x))) as T[];
 }
 
 /**
@@ -215,6 +219,19 @@ function typeNodeRequiresParentheses(
   );
 }
 
+function isRestParameterDeclaration(decl: ts.Declaration): boolean {
+  return ts.isParameter(decl) && decl.dotDotDotToken != null;
+}
+
+function isParenlessArrowFunction(
+  node: TSESTree.ArrowFunctionExpression,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  return (
+    node.params.length === 1 && !isParenthesized(node.params[0], sourceCode)
+  );
+}
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -226,6 +243,8 @@ export {
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  isRestParameterDeclaration,
+  isParenlessArrowFunction,
   MemberNameType,
   RequireKeys,
   typeNodeRequiresParentheses,

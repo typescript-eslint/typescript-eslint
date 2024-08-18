@@ -7,12 +7,12 @@ const rootDir = getFixturesRootDir();
 const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('promise-function-async', rule, {
@@ -190,6 +190,7 @@ function returnsAny(): any {
   return 0;
 }
       `,
+      output: null,
       options: [
         {
           allowAny: false,
@@ -207,6 +208,7 @@ function returnsUnknown(): unknown {
   return 0;
 }
       `,
+      output: null,
       options: [
         {
           allowAny: false,

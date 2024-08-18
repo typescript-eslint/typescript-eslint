@@ -8,12 +8,12 @@ import plugin from '../src/index';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
-  .filter(([, rule]) => rule.meta.docs?.extendsBaseRule)
+  .filter(([, rule]) => rule.meta.docs.extendsBaseRule)
   .map(
     ([ruleName, rule]) =>
       [
         `${RULE_NAME_PREFIX}${ruleName}`,
-        typeof rule.meta.docs?.extendsBaseRule === 'string'
+        typeof rule.meta.docs.extendsBaseRule === 'string'
           ? rule.meta.docs.extendsBaseRule
           : ruleName,
       ] as const,
@@ -45,7 +45,7 @@ function filterAndMapRuleConfigs({
   excludeDeprecated,
   typeChecked,
   recommendations,
-}: FilterAndMapRuleConfigsSettings = {}): [string, string][] {
+}: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
   let result = Object.entries(rules);
 
   if (excludeDeprecated) {
@@ -55,18 +55,43 @@ function filterAndMapRuleConfigs({
   if (typeChecked) {
     result = result.filter(([, rule]) =>
       typeChecked === 'exclude'
-        ? !rule.meta.docs?.requiresTypeChecking
-        : rule.meta.docs?.requiresTypeChecking,
+        ? !rule.meta.docs.requiresTypeChecking
+        : rule.meta.docs.requiresTypeChecking,
     );
   }
 
   if (recommendations) {
-    result = result.filter(([, rule]) =>
-      recommendations.includes(rule.meta.docs?.recommended),
-    );
+    result = result.filter(([, rule]) => {
+      switch (typeof rule.meta.docs.recommended) {
+        case 'object':
+          return Object.keys(rule.meta.docs.recommended).some(recommended =>
+            recommendations.includes(recommended as RuleRecommendation),
+          );
+        case 'string':
+          return recommendations.includes(rule.meta.docs.recommended);
+        default:
+          return false;
+      }
+    });
   }
 
-  return result.map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'error']);
+  const highestRecommendation = recommendations?.filter(Boolean).at(-1);
+
+  return result.map(([name, rule]) => {
+    const customRecommendation =
+      highestRecommendation &&
+      typeof rule.meta.docs.recommended === 'object' &&
+      rule.meta.docs.recommended[
+        highestRecommendation as 'recommended' | 'strict'
+      ];
+
+    return [
+      `${RULE_NAME_PREFIX}${name}`,
+      customRecommendation && typeof customRecommendation !== 'boolean'
+        ? ['error', customRecommendation[0]]
+        : 'error',
+    ];
+  });
 }
 
 function itHasBaseRulesOverriden(
@@ -110,7 +135,7 @@ describe('disable-type-checked.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
 
     const ruleConfigs: [string, string][] = Object.entries(rules)
-      .filter(([, rule]) => rule.meta.docs?.requiresTypeChecking)
+      .filter(([, rule]) => rule.meta.docs.requiresTypeChecking)
       .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off']);
 
     expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));

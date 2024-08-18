@@ -1,7 +1,6 @@
 ---
 id: typed-linting
 title: Linting with Type Information
-pagination_next: getting-started/typed-linting/monorepos
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,7 +12,10 @@ To tap into TypeScript's additional powers, there are two small changes you need
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+1. Add `TypeChecked` to the name of any preset configs you're using, namely `recommended`, `strict`, and `stylistic`.
+2. Add `languageOptions.parserOptions` to tell our parser how to find the TSConfig for each source file.
+
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
@@ -23,7 +25,7 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -39,12 +41,15 @@ For CommonJS modules and/or older versions of Node.js, [use `__dirname` or an al
 
 In more detail:
 
-- `tseslint.configs.recommendedTypeChecked` is another [recommended configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
-- `parserOption.project` tells our parser how to find the TSConfig for each source file (`true` indicates to find the closest `tsconfig.json` for each source file)
-  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
+- `tseslint.configs.recommendedTypeChecked` is another [shared configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser#projectService](../packages/Parser.mdx#projectService)).
+- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
 <TabItem value="Legacy Config">
+
+1. Add `-type-checked` to the name of any preset configs you're using, namely `recommended`, `strict`, and `stylistic`.
+2. Add `parserOptions` to tell our parser how to find the TSConfig for each source file.
 
 ```js title=".eslintrc.cjs"
 /* eslint-env node */
@@ -60,7 +65,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   // Added lines start
   parserOptions: {
-    project: true,
+    projectService: true,
     tsconfigRootDir: __dirname,
   },
   // Added lines end
@@ -70,9 +75,8 @@ module.exports = {
 
 In more detail:
 
-- `plugin:@typescript-eslint/recommended-type-checked` is another [recommended configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
-- `parserOptions.project` tells our parser how to find the TSConfig for each source file (`true` indicates to find the closest `tsconfig.json` for each source file)
-  - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
+- `plugin:@typescript-eslint/recommended-type-checked` is another [shared configuration](../users/Shared_Configurations.mdx) we provide. This one contains recommended rules that additionally require type information.
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser#projectService](../packages/Parser.mdx#projectService)).
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
@@ -80,15 +84,69 @@ In more detail:
 
 :::caution
 Your ESLint config file may start receiving a parsing error about type information.
-See [our TSConfig inclusion FAQ](../troubleshooting/FAQ.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+See [our TSConfig inclusion FAQ](../troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 :::
 
 With that done, run the same lint command you ran before.
 You may see new rules reporting errors based on type information!
 
-## Specifying TSConfigs
+## Shared Configurations
 
-The `project` option can be turned on with either:
+If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#strict) and/or [`stylistic` shared config](../users/Shared_Configurations.mdx#stylistic) in a previous step, be sure to replace them with [`strictTypeChecked`](../users/Shared_Configurations.mdx#strict-type-checked) and [`stylisticTypeChecked`](../users/Shared_Configurations.mdx#stylistic-type-checked) respectively to add their type-checked rules.
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```js title="eslint.config.mjs"
+export default tseslint.config(
+  eslint.configs.recommended,
+  // Removed lines start
+  ...tseslint.configs.strict,
+  ...tseslint.configs.stylistic,
+  // Removed lines end
+  // Added lines start
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
+  // Added lines end
+  // ...
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+/* eslint-env node */
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    // Removed lines start
+    'plugin:@typescript-eslint/strict',
+    'plugin:@typescript-eslint/stylistic',
+    // Removed lines end
+    // Added lines start
+    'plugin:@typescript-eslint/strict-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    // Added lines end
+  ],
+  // ...
+};
+```
+
+</TabItem>
+</Tabs>
+
+You can read more about the rules provided by typescript-eslint in our [rules docs](/rules) and [shared configurations docs](../users/Shared_Configurations.mdx).
+
+## FAQs
+
+### Can I customize the TSConfig used for typed linting?
+
+Yes, but it's not recommended in most configurations.
+`parserOptions.projectService` uses the same "project service" APIs used by editors such as VS Code to generate TypeScript's type information.
+Using a different TSConfig runs the risk of providing different types for typed linting than what your editor or `tsc` see.
+
+If you absolutely must, the `parserOptions.project` option can be used instead of `parserOptions.projectService` with either:
 
 - `true`: to always use `tsconfig.json`s nearest to source files
 - `string | string[]`: any number of glob paths to match TSConfig files relative to `parserOptions.tsconfigRootDir`, or the current working directory if that is not provided
@@ -98,7 +156,7 @@ For example, if you use a specific `tsconfig.eslint.json` for linting, you'd spe
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config({
   // ...
   languageOptions: {
@@ -128,13 +186,11 @@ module.exports = {
 </TabItem>
 </Tabs>
 
-See [the `@typescript-eslint/parser` docs for more details](../packages/Parser.mdx#project).
+See [the `@typescript-eslint/parser` `project` docs for more details](../packages/Parser.mdx#project).
 
 :::note
-If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
+If your project is a multi-package monorepo, see [our docs on configuring a monorepo](../troubleshooting/typed-linting/Monorepos.mdx).
 :::
-
-## FAQs
 
 ### How can I disable type-aware linting for a subset of files?
 
@@ -143,20 +199,22 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
   {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
+        tsconfigRootDir: import.meta.name,
       },
     },
   },
   // Added lines start
   {
-    files: ['*.js'],
+    files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
   },
   // Added lines end
@@ -171,6 +229,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
   ],
   plugins: ['@typescript-eslint'],
   parser: '@typescript-eslint/parser',
@@ -200,7 +259,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 ### How is performance?
 
 Typed rules come with a catch.
-By including `parserOptions.project` in your config, you incur the performance penalty of asking TypeScript to do a build of your project before ESLint can do its linting.
+By using typed linting in your config, you incur the performance penalty of asking TypeScript to do a build of your project before ESLint can do its linting.
 For small projects this takes a negligible amount of time (a few seconds or less); for large projects, it can take longer.
 
 Most of our users do not mind this cost as the power and safety of type-aware static analysis rules is worth the tradeoff.
@@ -209,11 +268,6 @@ This means that generally they usually only run a complete lint before a push, o
 
 **We strongly recommend you do use type-aware linting**, but the above information is included so that you can make your own, informed decision.
 
-### I get errors telling me "The file must be included in at least one of the projects provided"
-
-You're using an outdated version of `@typescript-eslint/parser`.
-Update to the latest version to see a more informative version of this error message, explained in our [Troubleshooting and FAQs page](../troubleshooting/FAQ.mdx#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
-
 ## Troubleshooting
 
-If you're having problems getting this working, please have a look at our [Troubleshooting and FAQs page](../troubleshooting/FAQ.mdx).
+If you're having problems getting this working, please have a look at our [Troubleshooting FAQs](../troubleshooting/faqs/General.mdx).

@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -82,6 +83,28 @@ function test(str: string) {
   str.match('[a-z');
 }
     `,
+    {
+      code: `
+const text = 'something';
+declare const search: RegExp;
+text.match(search);
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8614
+    {
+      code: `
+const text = 'something';
+declare const obj: { search: RegExp };
+text.match(obj.search);
+      `,
+    },
+    {
+      code: `
+const text = 'something';
+declare function returnsRegexp(): RegExp;
+text.match(returnsRegexp());
+      `,
+    },
   ],
   invalid: [
     {

@@ -29,7 +29,6 @@ interface ReferencerOptions extends VisitorOptions {
   jsxPragma: string | null;
   jsxFragmentName: string | null;
   lib: Lib[];
-  emitDecoratorMetadata: boolean;
 }
 
 // Referencing variables and creating bindings.
@@ -39,7 +38,6 @@ class Referencer extends Visitor {
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
   #lib: Lib[];
-  readonly #emitDecoratorMetadata: boolean;
   public readonly scopeManager: ScopeManager;
 
   constructor(options: ReferencerOptions, scopeManager: ScopeManager) {
@@ -48,7 +46,6 @@ class Referencer extends Visitor {
     this.#jsxPragma = options.jsxPragma;
     this.#jsxFragmentName = options.jsxFragmentName;
     this.#lib = options.lib;
-    this.#emitDecoratorMetadata = options.emitDecoratorMetadata;
   }
 
   public currentScope(): Scope;
@@ -152,7 +149,7 @@ class Referencer extends Visitor {
   protected visitClass(
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
   ): void {
-    ClassVisitor.visit(this, node, this.#emitDecoratorMetadata);
+    ClassVisitor.visit(this, node);
   }
 
   protected visitForIn(
@@ -445,6 +442,11 @@ class Referencer extends Visitor {
 
   protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
     if (node.expression.type === AST_NODE_TYPES.Identifier) {
+      // this is a special case - you can `export = T` where `T` is a type OR a
+      // value however `T[U]` is illegal when `T` is a type and `T.U` is illegal
+      // when `T.U` is a type
+      // i.e. if the expression is JUST an Identifier - it could be either ref
+      // kind; otherwise the standard rules apply
       this.currentScope().referenceDualValueType(node.expression);
     } else {
       this.visit(node.expression);
@@ -529,10 +531,8 @@ class Referencer extends Visitor {
   protected JSXMemberExpression(node: TSESTree.JSXMemberExpression): void {
     if (node.object.type !== AST_NODE_TYPES.JSXIdentifier) {
       this.visit(node.object);
-    } else {
-      if (node.object.name !== 'this') {
-        this.visit(node.object);
-      }
+    } else if (node.object.name !== 'this') {
+      this.visit(node.object);
     }
     // we don't ever reference the property as it's always going to be a property on the thing
   }
@@ -580,7 +580,7 @@ class Referencer extends Visitor {
   }
 
   protected PrivateIdentifier(): void {
-    // private identifiers are members on classes and thus have no variables to to reference
+    // private identifiers are members on classes and thus have no variables to reference
   }
 
   protected Program(node: TSESTree.Program): void {
@@ -667,14 +667,7 @@ class Referencer extends Visitor {
     // enum members can be referenced within the enum body
     this.scopeManager.nestTSEnumScope(node);
 
-    // define the enum name again inside the new enum scope
-    // references to the enum should not resolve directly to the enum
-    this.currentScope().defineIdentifier(
-      node.id,
-      new TSEnumNameDefinition(node.id, node),
-    );
-
-    for (const member of node.members) {
+    for (const member of node.body.members) {
       // TS resolves literal named members to be actual names
       // enum Foo {
       //   'a' = 1,
@@ -719,7 +712,7 @@ class Referencer extends Visitor {
   }
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
-    if (node.id.type === AST_NODE_TYPES.Identifier && !node.global) {
+    if (node.id.type === AST_NODE_TYPES.Identifier && node.kind !== 'global') {
       this.currentScope().defineIdentifier(
         node.id,
         new TSModuleNameDefinition(node.id, node),

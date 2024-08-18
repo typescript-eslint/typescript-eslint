@@ -2,9 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/method-signature-style';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('method-signature-style', rule, {
   valid: [
@@ -585,6 +583,7 @@ interface Foo {
           }
         }
       `,
+      output: null,
       errors: [
         {
           messageId: 'errorMethod',

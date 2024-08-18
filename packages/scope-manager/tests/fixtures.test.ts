@@ -1,7 +1,8 @@
-import fs from 'fs';
-import glob = require('glob');
+import fs from 'node:fs';
+import path from 'node:path';
+
+import * as glob from 'glob';
 import makeDir from 'make-dir';
-import path from 'path';
 
 import type { AnalyzeOptions } from './test-utils';
 import { parseAndAnalyze } from './test-utils';
@@ -47,7 +48,6 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   ['jsxPragma', ['string']],
   ['jsxFragmentName', ['string']],
   ['sourceType', ['string', new Set(['module', 'script'])]],
-  ['emitDecoratorMetadata', ['boolean']],
 ]);
 
 function nestDescribe(

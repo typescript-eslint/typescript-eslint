@@ -7,6 +7,7 @@ export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
 export * from './getStaticStringValue';
 export * from './getStringLength';
+export * from './getTextWithParentheses';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
 export * from './isNodeEqual';
@@ -14,7 +15,10 @@ export * from './isNullLiteral';
 export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './objectIterators';
+export * from './scopeUtils';
 export * from './types';
+export * from './isAssignee';
+export * from './getFixOrSuggest';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';

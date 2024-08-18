@@ -1,28 +1,37 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/no-unused-vars';
-import { collectUnusedVariables } from '../../../src/util';
+import { collectVariables } from '../../../src/util';
 import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+      sourceType: 'module',
+      ecmaFeatures: {},
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 const withMetaParserOptions = {
-  EXPERIMENTAL_useProjectService: false,
-  tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
 };
 
 // this is used to ensure that the caching the utility does does not impact the results done by no-unused-vars
-ruleTester.defineRule('collect-unused-vars', context => {
-  collectUnusedVariables(context);
-  return {};
+ruleTester.defineRule('collect-unused-vars', {
+  create(context) {
+    collectVariables(context);
+    return {};
+  },
+  defaultOptions: [],
+  meta: {
+    messages: {},
+    type: 'problem',
+    schema: [],
+  },
 });
 
 ruleTester.run('no-unused-vars', rule, {
@@ -596,9 +605,11 @@ export interface Bar extends foo.i18n<bar> {}
 import { TypeA } from './interface';
 export const a = <GenericComponent<TypeA> />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -614,9 +625,11 @@ export function Foo() {
   );
 }
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -689,6 +702,18 @@ export type T = {
 };
     `,
     `
+type Foo = string;
+export class Bar {
+  [x: Foo]: any;
+}
+    `,
+    `
+type Foo = string;
+export class Bar {
+  [x: Foo]: Foo;
+}
+    `,
+    `
 namespace Foo {
   export const Foo = 1;
 }
@@ -754,7 +779,7 @@ export function foo() {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
     `
-function foo<T>(value: T): T {
+export function foo<T>(value: T): T {
   return { value };
 }
 export type Foo<T> = typeof foo<T>;
@@ -829,9 +854,9 @@ declare class Clazz {}
 declare function func();
 declare enum Enum {}
 declare namespace Name {}
-declare const v1 = 1;
-declare var v2 = 1;
-declare let v3 = 1;
+declare const v1;
+declare var v2;
+declare let v3;
 declare const { v4 };
 declare const { v4: v5 };
 declare const [v6];
@@ -861,9 +886,11 @@ export type Test<U> = U extends (arg: {
           return <div>Foo Foo</div>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -875,11 +902,13 @@ export type Test<U> = U extends (arg: {
           return <div>Foo Foo</div>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
         },
-        jsxPragma: 'h',
       },
     },
     {
@@ -890,11 +919,13 @@ export type Test<U> = U extends (arg: {
           return <>Foo Foo</>;
         };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxFragmentName: 'Fragment',
         },
-        jsxFragmentName: 'Fragment',
       },
     },
     `
@@ -1015,7 +1046,7 @@ interface _Foo {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2844
     `
-/* eslint collect-unused-vars: "error" */
+/* eslint @rule-tester/collect-unused-vars: "error" */
 declare module 'next-auth' {
   interface User {
     id: string;
@@ -1035,7 +1066,7 @@ export class TestClass {
   public test(): TestGeneric<Test> {}
 }
       `,
-      parserOptions: withMetaParserOptions,
+      languageOptions: { parserOptions: withMetaParserOptions },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/5577
     `
@@ -1123,6 +1154,35 @@ export namespace Bar {
   export import TheFoo = Foo;
 }
     `,
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: false }],
+    },
+    `
+export const foo: number = 1;
+
+export type Foo = typeof foo;
+    `,
+    `
+import { foo } from 'foo';
+
+export type Foo = typeof foo;
+
+export const bar = (): Foo => foo;
+    `,
+    `
+import { SomeType } from 'foo';
+
+export const value = 1234 as typeof SomeType;
+    `,
+    `
+import { foo } from 'foo';
+
+export type Bar = typeof foo;
+    `,
   ],
 
   invalid: [
@@ -1140,7 +1200,9 @@ export class Foo {}
             additional: '',
           },
           line: 2,
+          endLine: 2,
           column: 10,
+          endColumn: 31,
         },
       ],
     },
@@ -1657,9 +1719,11 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -1684,11 +1748,13 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: 'h',
         },
-        jsxPragma: 'h',
       },
       errors: [
         {
@@ -1712,11 +1778,13 @@ export const ComponentFoo = () => {
   return <div>Foo Foo</div>;
 };
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          jsxPragma: null,
         },
-        jsxPragma: null,
       },
       errors: [
         {
@@ -1744,6 +1812,8 @@ declare module 'foo' {
           messageId: 'unusedVar',
           line: 3,
           column: 8,
+          endLine: 3,
+          endColumn: 12,
           data: {
             varName: 'Test',
             action: 'defined',
@@ -1840,6 +1910,8 @@ x = foo(x);
           messageId: 'unusedVar',
           line: 3,
           column: 1,
+          endLine: 3,
+          endColumn: 2,
           data: {
             varName: 'x',
             action: 'assigned a value',
@@ -1947,6 +2019,250 @@ export namespace Bar {
             action: 'defined',
             additional: '',
           },
+        },
+      ],
+    },
+    {
+      code: `
+const foo: number = 1;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 7,
+          endLine: 2,
+          endColumn: 10,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+  B = Foo.A,
+}
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          data: {
+            varName: 'Foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+        },
+      ],
+    },
+
+    // reportUsedIgnorePattern
+    {
+      code: `
+type _Foo = 1;
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+interface _Foo {}
+export const x: _Foo = 1;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+enum _Foo {
+  A = 1,
+}
+export const x = _Foo.A;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+namespace _Foo {}
+export const x = _Foo;
+      `,
+      options: [{ varsIgnorePattern: '^_', reportUsedIgnorePattern: true }],
+      errors: [
+        {
+          messageId: 'usedIgnoredVar',
+          data: {
+            varName: '_Foo',
+            additional: '. Used vars must not match /^_/u',
+          },
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const foo: number;
+
+        export type Foo = typeof foo;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'defined',
+            additional: '',
+          },
+          line: 2,
+          column: 23,
+          endLine: 2,
+          endColumn: 26,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = typeof foo | string;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo: number = 1;
+
+        export type Foo = (typeof foo | string) & { __brand: 'foo' };
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          bar: {
+            baz: 123,
+          },
+        };
+
+        export type Bar = typeof foo.bar;
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          bar: {
+            baz: 123,
+          },
+        };
+
+        export type Bar = (typeof foo)['bar'];
+      `,
+      errors: [
+        {
+          messageId: 'usedOnlyAsType',
+          data: {
+            varName: 'foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+          line: 2,
+          column: 15,
+          endLine: 2,
+          endColumn: 18,
         },
       ],
     },

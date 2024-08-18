@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-meaningless-void-operator.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+void (() => {})();
+~~~~~~~~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
+
+function foo() {}
+void foo();
+~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
+"
+`;
+
+exports[`Validating rule docs no-meaningless-void-operator.mdx code examples ESLint output 2`] = `
+"Correct
+
+(() => {})();
+
+function foo() {}
+foo(); // nothing to discard
+
+function bar(x: number) {
+  void x; // discarding a number
+  return 2;
+}
+void bar(1); // discarding a number
+"
+`;

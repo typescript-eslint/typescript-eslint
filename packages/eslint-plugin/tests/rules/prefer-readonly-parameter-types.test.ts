@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/prefer-readonly-parameter-types';
 import type {
@@ -7,6 +7,7 @@ import type {
   InferOptionsTypeFromRule,
 } from '../../src/util';
 import { readonlynessOptionsDefaults } from '../../src/util';
+import { dedupeTestCases } from '../dedupeTestCases';
 import { getFixturesRootDir } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -15,10 +16,11 @@ type Options = InferOptionsTypeFromRule<typeof rule>;
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -256,11 +258,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: true,
-        },
-      ],
+      options: [{ checkParameterProperties: true }],
     },
     {
       code: `
@@ -273,11 +271,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: false,
-        },
-      ],
+      options: [{ checkParameterProperties: false }],
     },
 
     // type functions
@@ -482,22 +476,25 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
   ],
   invalid: [
     // arrays
-    ...arrays.map<TSESLint.InvalidTestCase<MessageIds, Options>>(baseType => {
-      const type = baseType
-        .replace(/readonly /g, '')
-        .replace(/Readonly<(.+?)>/g, '$1')
-        .replace(/ReadonlyArray/g, 'Array');
-      return {
-        code: `function foo(arg: ${type}) {}`,
-        errors: [
-          {
-            messageId: 'shouldBeReadonly',
-            column: 14,
-            endColumn: 19 + type.length,
-          },
-        ],
-      };
-    }),
+    // Removing readonly causes duplicates
+    ...dedupeTestCases(
+      arrays.map<InvalidTestCase<MessageIds, Options>>(baseType => {
+        const type = baseType
+          .replace(/readonly /g, '')
+          .replace(/Readonly<(.+?)>/g, '$1')
+          .replace(/ReadonlyArray/g, 'Array');
+        return {
+          code: `function foo(arg: ${type}) {}`,
+          errors: [
+            {
+              messageId: 'shouldBeReadonly',
+              column: 14,
+              endColumn: 19 + type.length,
+            },
+          ],
+        };
+      }),
+    ),
     // nested arrays
     {
       code: 'function foo(arg: readonly string[][]) {}',
@@ -531,7 +528,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // objects
-    ...objects.map<TSESLint.InvalidTestCase<MessageIds, Options>>(type => {
+    ...objects.map<InvalidTestCase<MessageIds, Options>>(type => {
       return {
         code: `function foo(arg: ${type}) {}`,
         errors: [
@@ -592,7 +589,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
 
     // weird intersections
-    ...weirdIntersections.map<TSESLint.InvalidTestCase<MessageIds, Options>>(
+    ...weirdIntersections.map<InvalidTestCase<MessageIds, Options>>(
       baseCode => {
         const code = baseCode.replace(/readonly /g, '');
         return {
@@ -648,11 +645,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: true,
-        },
-      ],
+      options: [{ checkParameterProperties: true }],
       errors: [
         {
           messageId: 'shouldBeReadonly',
@@ -696,11 +689,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [
-        {
-          checkParameterProperties: false,
-        },
-      ],
+      options: [{ checkParameterProperties: false }],
       errors: [
         {
           messageId: 'shouldBeReadonly',

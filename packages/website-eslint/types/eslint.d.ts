@@ -9,7 +9,11 @@ it just uses `any` for the import - marking it as an untyped export. So adding t
 cannot use VSCode's cache ever - stubbing it out permanently.
 */
 declare module 'eslint' {
+  export interface LinterOptions {
+    configType?: 'eslintrc';
+  }
   export class Linter {
+    constructor(options: LinterOptions);
     defineRule(name: string, rule: unknown): void;
   }
 }

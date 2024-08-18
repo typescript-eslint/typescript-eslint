@@ -93,9 +93,8 @@ export default createRule({
         accessedSymbol.flags,
         context.sourceCode.getText(name),
       );
-      return (
-        fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
-      );
+
+      return !!fromScope && symbolsAreEqual(accessedSymbol, fromScope);
     }
 
     function visitNamespaceAccess(
@@ -161,7 +160,7 @@ export default createRule({
       'TSModuleDeclaration > TSModuleBlock'(
         node: TSESTree.TSModuleBlock,
       ): void {
-        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
+        enterDeclaration(node.parent);
       },
       TSEnumDeclaration: enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':

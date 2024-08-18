@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  width="420"
-  height="420"
   stroke="#000"
   fill="none"
+  viewBox="0 0 420 420"
 >
   <path stroke-width="35" d="M209,15a195,195 0 1,0 2,0z" />
   <path

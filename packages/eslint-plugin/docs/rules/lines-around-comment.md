@@ -1,25 +1,15 @@
 ---
-description: 'Require empty lines around comments.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/lines-around-comment** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/lines-around-comment`](https://eslint.org/docs/rules/lines-around-comment) rule.
-It adds support for TypeScript syntax.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-See the [ESLint documentation](https://eslint.org/docs/rules/lines-around-comment) for more details on the `lines-around-comment` rule.
+:::
 
-## Options
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
 
-In addition to the options supported by the `lines-around-comment` rule in ESLint core, the rule adds the following options:
-
-- `allowEnumEnd: true` doesn't require a blank line after an enum body block end
-- `allowEnumStart: true` doesn't require a blank line before an enum body block start
-- `allowInterfaceEnd: true` doesn't require a blank line before an interface body block end
-- `allowInterfaceStart: true` doesn't require a blank line after an interface body block start
-- `allowModuleEnd: true` doesn't require a blank line before a module body block end
-- `allowModuleStart: true` doesn't require a blank line after a module body block start
-- `allowTypeEnd: true` doesn't require a blank line before a type literal block end
-- `allowTypeStart: true` doesn't require a blank line after a type literal block start
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

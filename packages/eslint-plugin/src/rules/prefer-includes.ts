@@ -1,4 +1,3 @@
-import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -19,7 +18,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -119,9 +118,7 @@ export default createRule({
       }
 
       // To string.
-      return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value),
-      );
+      return String.fromCodePoint(...chars.map(c => c.value));
     }
 
     function escapeString(str: string): string {

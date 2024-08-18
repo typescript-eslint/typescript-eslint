@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -58,15 +59,6 @@
       "options": {
         "jestConfig": "packages/scope-manager/jest.config.js"
       }
-    },
-    "generate-lib": {
-      "executor": "nx:run-commands",
-      "options": {
-        "parallel": false,
-        "cwd": "packages/repo-tools",
-        "commands": ["yarn generate-lib"]
-      }
     }
-  },
-  "tags": []
+  }
 }

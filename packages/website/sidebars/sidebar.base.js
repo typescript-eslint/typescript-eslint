@@ -1,26 +1,24 @@
 // @ts-check
-/** @type {import('@docusaurus/plugin-content-docs/lib/sidebars/types.js').SidebarsConfig} */
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
   docs: [
     {
       collapsible: false,
       items: [
         {
-          label: 'Quickstart',
-          id: 'getting-started/quickstart',
-          type: 'doc',
-        },
-        {
           collapsible: false,
-          items: ['getting-started/typed-linting/monorepos'],
-          label: 'Linting with Type Information',
+          items: ['getting-started/legacy-eslint-setup'],
+          label: 'Quickstart',
           link: {
-            id: 'getting-started/typed-linting',
+            id: 'getting-started/quickstart',
             type: 'doc',
           },
           type: 'category',
         },
-        'getting-started/legacy-eslint-setup',
+        {
+          id: 'getting-started/typed-linting',
+          type: 'doc',
+        },
       ],
       label: 'Getting Started',
       link: {
@@ -29,45 +27,68 @@ module.exports = {
       },
       type: 'category',
     },
-
-    {
-      collapsible: false,
-      items: [
-        'troubleshooting/faqs',
-        'troubleshooting/performance-troubleshooting',
-        'troubleshooting/formatting',
-        'troubleshooting/tslint',
-      ],
-      label: 'Troubleshooting & FAQs',
-      link: {
-        id: 'troubleshooting/faqs',
-        type: 'doc',
-      },
-      type: 'category',
-    },
     {
       collapsible: false,
       items: [
         {
-          label: 'Rules',
-          href: '/rules/',
-          type: 'link',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'troubleshooting/faqs/general',
+            'troubleshooting/faqs/eslint',
+            'troubleshooting/faqs/frameworks',
+            'troubleshooting/faqs/javascript',
+            'troubleshooting/faqs/typescript',
+          ],
+          label: 'FAQs',
+          link: {
+            id: 'troubleshooting/faqs/general',
+            type: 'doc',
+          },
+          type: 'category',
         },
-        'users/configs',
-        'users/dependency-versions',
-        'users/releases',
-        'users/versioning',
+        {
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'troubleshooting/typed-linting/monorepos',
+            'troubleshooting/typed-linting/performance',
+          ],
+          label: 'Typed Linting',
+          link: {
+            id: 'troubleshooting/typed-linting/index',
+            type: 'doc',
+          },
+          type: 'category',
+        },
       ],
-      label: 'Users',
+      label: 'Troubleshooting & FAQs',
       link: {
-        id: 'users',
+        id: 'troubleshooting/faqs/general',
         type: 'doc',
       },
       type: 'category',
     },
     {
       collapsible: false,
-      items: ['developers/custom-rules'],
+      items: [
+        'users/configs',
+        'users/dependency-versions',
+        'users/releases',
+        'users/versioning',
+        'users/what-about-formatting',
+        'users/what-about-tslint',
+      ],
+      label: 'Users',
+      link: {
+        id: 'users/index',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      collapsible: false,
+      items: ['developers/custom-rules', 'developers/eslint-plugins'],
       label: 'Developers',
       link: {
         id: 'developers',
@@ -84,7 +105,17 @@ module.exports = {
         'packages/parser',
         'packages/rule-tester',
         'packages/scope-manager',
-        'packages/typescript-estree',
+        'packages/type-utils',
+        {
+          collapsible: false,
+          items: ['packages/typescript-estree/ast-spec'],
+          label: 'typescript-estree',
+          link: {
+            id: 'packages/typescript-estree',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         'packages/typescript-eslint',
         'packages/utils',
       ],
@@ -125,7 +156,7 @@ module.exports = {
         'maintenance/contributor-tiers',
         {
           collapsible: true,
-          items: ['maintenance/issues/rule-deprecations'],
+          items: ['maintenance/issues/rule-deprecations-and-deletions'],
           label: 'Issues',
           link: {
             id: 'maintenance/issues',

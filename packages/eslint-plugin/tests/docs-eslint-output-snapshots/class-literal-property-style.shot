@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 1`] = `
+"Incorrect
+Options: "fields"
+
+class Mx {
+  public static get myField1() {
+                    ~~~~~~~~ Literals should be exposed using readonly fields.
+    return 1;
+  }
+
+  private get ['myField2']() {
+               ~~~~~~~~~~ Literals should be exposed using readonly fields.
+    return 'hello world';
+  }
+}
+"
+`;
+
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 2`] = `
+"Correct
+Options: "fields"
+
+class Mx {
+  public readonly myField1 = 1;
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  private readonly ['myField3'] = 'hello world';
+
+  public get myField4() {
+    return \`hello from \${window.location.href}\`;
+  }
+}
+"
+`;
+
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: "getters"
+
+class Mx {
+  readonly myField1 = 1;
+           ~~~~~~~~ Literals should be exposed using getters.
+  readonly myField2 = \`hello world\`;
+           ~~~~~~~~ Literals should be exposed using getters.
+  private readonly myField3 = 'hello world';
+                   ~~~~~~~~ Literals should be exposed using getters.
+}
+"
+`;
+
+exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 4`] = `
+"Correct
+Options: "getters"
+
+class Mx {
+  // no readonly modifier
+  public myField1 = 'hello';
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  public static get myField3() {
+    return 1;
+  }
+
+  private get ['myField4']() {
+    return 'hello world';
+  }
+}
+"
+`;

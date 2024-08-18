@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs consistent-return.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function foo(): undefined {}
+function bar(flag: boolean): undefined {
+  if (flag) return foo();
+  return;
+  ~~~~~~~ Function 'bar' expected a return value.
+}
+
+async function baz(flag: boolean): Promise<undefined> {
+  if (flag) return;
+  return foo();
+  ~~~~~~~~~~~~~ Async function 'baz' expected no return value.
+}
+"
+`;
+
+exports[`Validating rule docs consistent-return.mdx code examples ESLint output 2`] = `
+"Correct
+
+function foo(): void {}
+function bar(flag: boolean): void {
+  if (flag) return foo();
+  return;
+}
+
+async function baz(flag: boolean): Promise<void | number> {
+  if (flag) return 42;
+  return;
+}
+"
+`;

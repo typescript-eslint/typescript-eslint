@@ -1,7 +1,8 @@
-import fs from 'fs';
-import glob = require('glob');
+import fs from 'node:fs';
+import path from 'node:path';
+
+import * as glob from 'glob';
 import makeDir from 'make-dir';
-import path from 'path';
 
 import { parseBabel } from './util/parsers/babel';
 import type {
@@ -66,6 +67,7 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       absolute,
       config: ((): ASTFixtureConfig => {
         try {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           return require(configPath).default;
         } catch {
           return {};

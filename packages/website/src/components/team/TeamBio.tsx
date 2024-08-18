@@ -31,13 +31,12 @@ export function TeamBio({
           .sort(([a], [b]) => a.localeCompare(b))
           .map(([service, url]) => (
             <li key={service}>
-              <a className={styles.serviceIconLink} href={url} target="_blank">
-                <img
-                  alt={service}
-                  className={styles.serviceIcon}
-                  src={`/img/${service}.svg`}
-                />
-              </a>
+              <a
+                className={`image-link ${service}-link social-link-icon ${styles.serviceIconLink}`}
+                href={url}
+                target="_blank"
+                aria-label={`${service}-link`}
+              />
             </li>
           ))}
       </ol>

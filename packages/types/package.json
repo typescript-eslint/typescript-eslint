@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "7.1.1",
+  "version": "8.1.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -19,7 +19,7 @@
   },
   "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -44,7 +45,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-lib": "npx nx run scope-manager:generate-lib",
     "lint": "npx nx lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "nx": {
     "targets": {
@@ -66,8 +67,9 @@
     }
   },
   "devDependencies": {
+    "@jest/types": "29.6.3",
     "downlevel-dts": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "tsx": "*",
     "typescript": "*"

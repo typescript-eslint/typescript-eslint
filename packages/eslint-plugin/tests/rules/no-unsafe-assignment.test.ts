@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-unsafe-assignment';
 import type {
@@ -10,7 +10,7 @@ import { getFixturesRootDir } from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
-type InvalidTest = TSESLint.InvalidTestCase<MessageIds, Options>;
+type InvalidTest = InvalidTestCase<MessageIds, Options>;
 
 function assignmentTest(
   tests: [string, number, number, boolean?][],
@@ -63,11 +63,12 @@ function assignmentTest(
 }
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
-    project: './tsconfig.noImplicitThis.json',
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.noImplicitThis.json',
+      projectService: false,
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -124,20 +125,25 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={'foo'} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
+
     {
       code: `
 declare function Foo(props: { a: string }): never;
 <Foo a="foo" />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -146,9 +152,11 @@ declare function Foo(props: { a: string }): never;
 declare function Foo(props: { a: string }): never;
 <Foo a={} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -157,6 +165,11 @@ declare function Foo(props: { a: string }): never;
     'const x: Set<unknown> = y as Set<any>;',
     // https://github.com/typescript-eslint/typescript-eslint/issues/2109
     'const x: Map<string, string> = new Map();',
+    `
+type Foo = { bar: unknown };
+const bar: any = 1;
+const foo: Foo = { bar };
+    `,
   ],
   invalid: [
     {
@@ -190,7 +203,60 @@ class Foo {
       `,
       errors: [{ messageId: 'anyAssignment' }],
     },
+    {
+      code: `
+const [x] = spooky;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
+    },
+    {
+      code: `
+const [[[x]]] = [spooky];
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
+    },
+    {
+      code: `
+const {
+  x: { y: z },
+} = { x: spooky };
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArrayPatternFromTuple',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+        {
+          messageId: 'anyAssignment',
+          data: { sender: 'error typed', receiver: 'error typed' },
+        },
+      ],
+    },
+    {
+      code: `
+let value: number;
 
+value = spooky;
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          data: {
+            sender: 'error typed',
+          },
+        },
+      ],
+    },
     {
       code: `
 const [x] = 1 as any;
@@ -210,8 +276,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<any>',
-            receiver: 'Set<string>',
+            sender: '`Set<any>`',
+            receiver: '`Set<string>`',
           },
         },
       ],
@@ -222,8 +288,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Map<string, any>',
-            receiver: 'Map<string, string>',
+            sender: '`Map<string, any>`',
+            receiver: '`Map<string, string>`',
           },
         },
       ],
@@ -234,8 +300,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<any[]>',
-            receiver: 'Set<string[]>',
+            sender: '`Set<any[]>`',
+            receiver: '`Set<string[]>`',
           },
         },
       ],
@@ -246,8 +312,8 @@ const [x] = [] as any[];
         {
           messageId: 'unsafeAssignment',
           data: {
-            sender: 'Set<Set<Set<any>>>',
-            receiver: 'Set<Set<Set<string>>>',
+            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`Set<Set<Set<string>>>`',
           },
         },
       ],
@@ -322,8 +388,8 @@ const x = [...([] as any[])];
           column: 43,
           endColumn: 70,
           data: {
-            sender: 'Set<Set<Set<any>>>',
-            receiver: 'Set<Set<Set<string>>>',
+            sender: '`Set<Set<Set<any>>>`',
+            receiver: '`Set<Set<Set<string>>>`',
           },
         },
       ],
@@ -346,9 +412,11 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={1 as any} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -386,6 +454,21 @@ const test: T = ['string', []] as any;
           line: 3,
           column: 7,
           endColumn: 38,
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = { bar: number };
+const bar: any = 1;
+const foo: Foo = { bar };
+      `,
+      errors: [
+        {
+          messageId: 'anyAssignment',
+          line: 4,
+          column: 20,
+          endColumn: 23,
         },
       ],
     },

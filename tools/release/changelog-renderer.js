@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
+// @ts-check
 const {
   default: defaultChangelogRenderer,
 } = require('nx/release/changelog-renderer');
@@ -10,6 +13,8 @@ const changelogRenderer = async ({
   entryWhenNoChanges,
   changelogRenderOptions,
   repoSlug,
+  conventionalCommitsConfig,
+  changes,
 }) => {
   const defaultChangelog = await defaultChangelogRenderer({
     projectGraph,
@@ -19,6 +24,8 @@ const changelogRenderer = async ({
     entryWhenNoChanges,
     changelogRenderOptions,
     repoSlug,
+    conventionalCommitsConfig,
+    changes,
   });
 
   // Append our custom messaging to the generated changelog entry

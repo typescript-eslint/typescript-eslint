@@ -1,0 +1,3 @@
+switch (true) {
+	default: default:
+}

@@ -10,10 +10,22 @@ interface FunctionDeclarationBase extends FunctionBase {
   expression: false;
 }
 
+/**
+ * A normal function declaration:
+ * ```
+ * function f() {}
+ * ```
+ */
 export interface FunctionDeclarationWithName extends FunctionDeclarationBase {
   id: Identifier;
 }
 
+/**
+ * Default-exported function declarations have optional names:
+ * ```
+ * export default function () {}
+ * ```
+ */
 export interface FunctionDeclarationWithOptionalName
   extends FunctionDeclarationBase {
   id: Identifier | null;
