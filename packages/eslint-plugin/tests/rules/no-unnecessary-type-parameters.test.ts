@@ -348,6 +348,33 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         fn: (key: K, val: V) => number,
       ): number[];
     `,
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return mappedReturnType(x);
+      }
+    `,
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return () => mappedReturnType(x);
+      }
+    `,
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return [{ value: () => mappedReturnType(x) }];
+      }
+    `,
   ],
 
   invalid: [
