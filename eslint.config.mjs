@@ -30,7 +30,6 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       // https://github.com/import-js/eslint-plugin-import/issues/2948
