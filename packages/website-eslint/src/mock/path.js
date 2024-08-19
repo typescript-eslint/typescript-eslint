@@ -59,12 +59,12 @@ const splitPath = function (filename) {
 
 // path.resolve([from ...], to)
 // posix version
-export function resolve() {
+export function resolve(...args) {
   let resolvedPath = '';
   let resolvedAbsolute = false;
 
-  for (let i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    const path = i >= 0 ? arguments[i] : '/';
+  for (let i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    const path = i >= 0 ? args[i] : '/';
 
     // Skip empty and invalid entries
     if (typeof path !== 'string') {
@@ -73,7 +73,7 @@ export function resolve() {
       continue;
     }
 
-    resolvedPath = path + '/' + resolvedPath;
+    resolvedPath = `${path}/${resolvedPath}`;
     resolvedAbsolute = path.charAt(0) === '/';
   }
 
@@ -82,9 +82,7 @@ export function resolve() {
 
   // Normalize the path
   resolvedPath = normalizeArray(
-    filter(resolvedPath.split('/'), function (p) {
-      return !!p;
-    }),
+    filter(resolvedPath.split('/'), p => !!p),
     !resolvedAbsolute,
   ).join('/');
 
@@ -94,14 +92,12 @@ export function resolve() {
 // path.normalize(path)
 // posix version
 export function normalize(path) {
-  let isPathAbsolute = isAbsolute(path);
-  let trailingSlash = path.endsWith('/');
+  const isPathAbsolute = isAbsolute(path);
+  const trailingSlash = path.endsWith('/');
 
   // Normalize the path
   path = normalizeArray(
-    filter(path.split('/'), function (p) {
-      return !!p;
-    }),
+    filter(path.split('/'), p => !!p),
     !isPathAbsolute,
   ).join('/');
 
@@ -121,10 +117,9 @@ export function isAbsolute(path) {
 }
 
 // posix version
-export function join() {
-  const paths = Array.prototype.slice.call(arguments, 0);
+export function join(...paths) {
   return normalize(
-    filter(paths, function (p) {
+    filter(paths, p => {
       if (typeof p !== 'string') {
         throw new TypeError('Arguments to path.join must be strings');
       }
@@ -147,7 +142,7 @@ export function relative(from, to) {
       }
     }
 
-    var end = arr.length - 1;
+    let end = arr.length - 1;
     for (; end >= 0; end--) {
       if (arr[end] !== '') {
         break;

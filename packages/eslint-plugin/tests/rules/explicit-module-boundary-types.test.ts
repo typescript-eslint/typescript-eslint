@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/explicit-module-boundary-types';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-module-boundary-types', rule, {
   valid: [
@@ -455,8 +453,10 @@ export const Foo: FC = () => (
   <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
 );
       `,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
       },
     },
     {
@@ -465,8 +465,10 @@ export const Foo: JSX.Element = (
   <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
 );
       `,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
       },
     },
     {

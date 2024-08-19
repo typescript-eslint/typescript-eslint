@@ -6,13 +6,15 @@ type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 export type TesterConfigWithDefaults = Mutable<
-  Required<Pick<RuleTesterConfig, 'defaultFilenames' | 'parser' | 'rules'>> &
+  Required<
+    Pick<RuleTesterConfig, 'defaultFilenames' | 'languageOptions' | 'rules'>
+  > &
     RuleTesterConfig
 >;
 
 export interface RunTests<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > {
   // RuleTester.run also accepts strings for valid cases
   readonly valid: readonly (ValidTestCase<Options> | string)[];
@@ -21,7 +23,7 @@ export interface RunTests<
 
 export interface NormalizedRunTests<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > {
   readonly valid: readonly ValidTestCase<Options>[];
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];

@@ -61,7 +61,7 @@ export function sanitize(text: string): string {
   if (typeof text !== 'string') {
     return '';
   }
-  return text.replace(
+  return text.replaceAll(
     // eslint-disable-next-line no-control-regex
     /[\u0000-\u0009\u000b-\u001a]/gu,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -76,7 +76,9 @@ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
  * Wraps the given parser in order to intercept and modify return values from the `parse` and `parseForESLint` methods, for test purposes.
  * In particular, to modify ast nodes, tokens and comments to throw on access to their `start` and `end` properties.
  */
-export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
+export function wrapParser(
+  parser: Parser.LooseParserModule,
+): Parser.LooseParserModule {
   /**
    * Define `start`/`end` properties of all nodes of the given AST as throwing error.
    */
@@ -123,10 +125,10 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
       // @ts-expect-error -- see above
       [parserSymbol]: parser,
       parseForESLint(...args): Parser.ParseResult {
-        const ret = parser.parseForESLint(...args);
+        const parsed = parser.parseForESLint(...args) as Parser.ParseResult;
 
-        defineStartEndAsErrorInTree(ret.ast, ret.visitorKeys);
-        return ret;
+        defineStartEndAsErrorInTree(parsed.ast, parsed.visitorKeys);
+        return parsed;
       },
     };
   }
@@ -135,49 +137,12 @@ export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
     // @ts-expect-error -- see above
     [parserSymbol]: parser,
     parse(...args): TSESTree.Program {
-      const ast = parser.parse(...args);
+      const ast = parser.parse(...args) as TSESTree.Program;
 
       defineStartEndAsErrorInTree(ast);
       return ast;
     },
   };
-}
-
-/**
- * Function to replace `SourceCode.prototype.getComments`.
- */
-export function getCommentsDeprecation(): never {
-  throw new Error(
-    '`SourceCode#getComments()` is deprecated and will be removed in a future major version. Use `getCommentsBefore()`, `getCommentsAfter()`, and `getCommentsInside()` instead.',
-  );
-}
-
-const EMIT_LEGACY_RULE_API_WARNING: Record<string, boolean> = {};
-/**
- * Emit a deprecation warning if function-style format is being used.
- */
-export function emitLegacyRuleAPIWarning(ruleName: string): void {
-  if (!EMIT_LEGACY_RULE_API_WARNING[`warned-${ruleName}`]) {
-    EMIT_LEGACY_RULE_API_WARNING[`warned-${ruleName}`] = true;
-    process.emitWarning(
-      `"${ruleName}" rule is using the deprecated function-style format and will stop working in ESLint v9. Please use object-style format: https://eslint.org/docs/latest/extend/custom-rules`,
-      'DeprecationWarning',
-    );
-  }
-}
-
-const EMIT_MISSING_SCHEMA_WARNING: Record<string, boolean> = {};
-/**
- * Emit a deprecation warning if rule has options but is missing the "meta.schema" property
- */
-export function emitMissingSchemaWarning(ruleName: string): void {
-  if (!EMIT_MISSING_SCHEMA_WARNING[`warned-${ruleName}`]) {
-    EMIT_MISSING_SCHEMA_WARNING[`warned-${ruleName}`] = true;
-    process.emitWarning(
-      `"${ruleName}" rule has options but is missing the "meta.schema" property and will stop working in ESLint v9. Please add a schema: https://eslint.org/docs/latest/extend/custom-rules#options-schemas`,
-      'DeprecationWarning',
-    );
-  }
 }
 
 export const REQUIRED_SCENARIOS = ['valid', 'invalid'] as const;

@@ -63,7 +63,7 @@ export interface TestCaseError<MessageIds extends string> {
 
 export interface InvalidTestCase<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > extends ValidTestCase<Options> {
   /**
    * Expected errors.
@@ -72,7 +72,7 @@ export interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: string | null;
+  readonly output?: string | string[] | null;
   /**
    * Constraints that must pass in the current environment for the test to run
    */

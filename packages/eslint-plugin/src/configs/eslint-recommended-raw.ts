@@ -28,7 +28,9 @@ export default (
     'no-dupe-keys': 'off', // ts(1117)
     'no-func-assign': 'off', // ts(2630)
     'no-import-assign': 'off', // ts(2632) & ts(2540)
+    // TODO - remove this once we no longer support ESLint v8
     'no-new-symbol': 'off', // ts(7009)
+    'no-new-native-nonconstructor': 'off', // ts(7009)
     'no-obj-calls': 'off', // ts(2349)
     'no-redeclare': 'off', // ts(2451)
     'no-setter-return': 'off', // ts(2408)

@@ -4,9 +4,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../src/rules/member-ordering';
 import rule from '../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 const grouped: RunTests<MessageIds, Options> = {
   valid: [
@@ -2119,6 +2117,32 @@ class Foo {
       options: [
         {
           default: ['accessor', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      options: [
+        {
+          default: ['method', 'get'],
         },
       ],
     },
@@ -5189,6 +5213,54 @@ class Foo {
             rank: 'accessor',
           },
           line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'x',
+            rank: 'method',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      options: [
+        {
+          default: ['method', 'get'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'y',
+            rank: 'get',
+          },
+          line: 4,
           column: 3,
         },
       ],

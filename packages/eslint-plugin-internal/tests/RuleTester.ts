@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');

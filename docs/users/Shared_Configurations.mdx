@@ -14,6 +14,21 @@ import TabItem from '@theme/TabItem';
 
 ## Getting Started
 
+See [Getting Started > Quickstart](../getting-started/Quickstart.mdx) first to set up your ESLint configuration file.
+[Packages > typescript-eslint](../packages/TypeScript_ESLint.mdx) includes more documentation on the `tseslint` helper.
+
+```js title="eslint.config.mjs"
+// @ts-check
+
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+);
+```
+
 ### Projects Without Type Checking
 
 If your project does not enable [typed linting](../getting-started/Typed_Linting.mdx), we suggest enabling the [`recommended`](#recommended) and [`stylistic`](#stylistic) configurations to start:
@@ -21,7 +36,7 @@ If your project does not enable [typed linting](../getting-started/Typed_Linting
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -54,7 +69,7 @@ If your project enables [typed linting](../getting-started/Typed_Linting.mdx), w
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -110,7 +125,7 @@ These rules are those whose reports are almost always for a bad practice and/or 
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.recommended);
 ```
 
@@ -136,7 +151,7 @@ Rules newly added in this configuration are similarly useful to those in `recomm
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.recommendedTypeChecked);
 ```
 
@@ -162,7 +177,7 @@ Rules added in `strict` are more opinionated than recommended rules and might no
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.strict);
 ```
 
@@ -181,8 +196,13 @@ module.exports = {
 Some rules also enabled in `recommended` default to more strict settings in this configuration.
 See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
 
-:::caution
+:::tip
 We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
+
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
 :::
 
 ### `strict-type-checked`
@@ -193,7 +213,7 @@ Rules newly added in this configuration are similarly useful (and opinionated) t
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.strictTypeChecked);
 ```
 
@@ -212,8 +232,13 @@ module.exports = {
 Some rules also enabled in `recommended-type-checked` default to more strict settings in this configuration.
 See [`configs/strict-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked.ts) for the exact contents of this config.
 
-:::caution
+:::tip
 We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict-type-checked` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
+
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
 :::
 
 ### `stylistic`
@@ -224,7 +249,7 @@ These rules are generally opinionated about enforcing simpler code patterns.
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.stylistic);
 ```
 
@@ -240,6 +265,9 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+Note that `stylistic` does not replace `recommended` or `strict`.
+`stylistic` adds additional rules.
+
 See [`configs/stylistic.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic.ts) for the exact contents of this config.
 
 ### `stylistic-type-checked`
@@ -250,7 +278,7 @@ Rules newly added in this configuration are similarly opinionated to those in `s
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(...tseslint.configs.stylisticTypeChecked);
 ```
 
@@ -265,6 +293,9 @@ module.exports = {
 
 </TabItem>
 </Tabs>
+
+Note that `stylistic-type-checked` does not replace `recommended-type-checked` or `strict-type-checked`.
+`stylistic-type-checked` adds additional rules.
 
 See [`configs/stylistic-type-checked.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/stylistic-type-checked.ts) for the exact contents of this config.
 
@@ -282,6 +313,11 @@ See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/bl
 :::warning
 We do not recommend TypeScript projects extend from `plugin:@typescript-eslint/all`.
 Many rules conflict with each other and/or are intended to be configured per-project.
+:::
+
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
 :::
 
 ### `base`
@@ -307,7 +343,7 @@ If you use type-aware rules from other plugins, you will need to manually disabl
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -321,7 +357,7 @@ export default tseslint.config(
   },
   // Added lines start
   {
-    files: ['*.js'],
+    files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
   },
   // Added lines end
@@ -346,7 +382,7 @@ module.exports = {
   // Added lines start
   overrides: [
     {
-      files: ['*.js'],
+      files: ['**/*.js'],
       extends: ['plugin:@typescript-eslint/disable-type-checked'],
     },
   ],
@@ -357,6 +393,11 @@ module.exports = {
 </TabItem>
 </Tabs>
 
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
+:::
+
 ### `eslint-recommended`
 
 This ruleset is meant to be used after extending `eslint:recommended`.
@@ -366,10 +407,10 @@ Additionally, it enables rules that promote using the more modern constructs Typ
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.eslintRecommended,
+  tseslint.configs.eslintRecommended,
 );
 ```
 
@@ -418,6 +459,11 @@ module.exports = {
 
 See [`configs/strict-type-checked-only.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict-type-checked-only.ts) for the exact contents of this config.
 
+:::warning
+This configuration is not considered "stable" under Semantic Versioning (semver).
+Its enabled rules and/or their options may change outside of major version updates.
+:::
+
 ### `stylistic-type-checked-only`
 
 A version of `stylistic` that _only_ contains type-checked rules and disables of any corresponding core ESLint rules.
@@ -439,4 +485,4 @@ If you feel strongly that a specific rule should (or should not) be one of these
 
 None of the preset configs provided by typescript-eslint enable formatting rules (rules that only serve to enforce code whitespace and other trivia).
 We strongly recommend you use Prettier or an equivalent for formatting your code, not ESLint formatting rules.
-See [What About Formatting? > Suggested Usage](../troubleshooting/Formatting.mdx#suggested-usage---prettier).
+See [What About Formatting? > Suggested Usage](./What_About_Formatting.mdx#suggested-usage---prettier).

@@ -4,9 +4,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../../src/rules/naming-convention';
 import { getFixturesRootDir } from '../../RuleTester';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 // only need parserOptions for the `type` option tests
 const rootDir = getFixturesRootDir();
@@ -21,7 +19,7 @@ ruleTester.run('naming-convention', rule, {
       code: `
         const child_process = require('child_process');
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'default',
@@ -58,7 +56,7 @@ ruleTester.run('naming-convention', rule, {
         declare const boolean_camelCase: false | null | undefined;
         declare const boolean_camelCase: true | false | null | undefined;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'variable',
@@ -238,7 +236,7 @@ ruleTester.run('naming-convention', rule, {
           shouldBoo: number;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['variable', 'parameter', 'property', 'accessor'],
@@ -254,7 +252,7 @@ ruleTester.run('naming-convention', rule, {
           private readonly FooBoo: boolean;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['property', 'accessor'],
@@ -286,7 +284,7 @@ ruleTester.run('naming-convention', rule, {
           private VanFooBar: number;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['property', 'accessor'],
@@ -346,7 +344,7 @@ ruleTester.run('naming-convention', rule, {
           readonly FOO: string;
         };
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'typeProperty',
@@ -466,11 +464,11 @@ ruleTester.run('naming-convention', rule, {
         {
           const camelCaseVar = 1;
           function camelCaseFunction() {}
-          declare function camelCaseDeclaredFunction() {};
+          declare function camelCaseDeclaredFunction();
         }
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {};
+        declare function PascalCaseDeclaredFunction();
       `,
       options: [
         { selector: 'default', format: ['camelCase'] },
@@ -797,7 +795,7 @@ ruleTester.run('naming-convention', rule, {
           },
         };
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -840,7 +838,7 @@ ruleTester.run('naming-convention', rule, {
           }
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -863,7 +861,7 @@ ruleTester.run('naming-convention', rule, {
         async function async_bar2() {}
         const async_bar3 = async function async_bar4() {};
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -899,7 +897,7 @@ ruleTester.run('naming-convention', rule, {
           public abstract override some_method_override2(): string;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -922,7 +920,7 @@ ruleTester.run('naming-convention', rule, {
           #some_method() {}
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -937,7 +935,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import * as FooBar from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],
@@ -952,7 +950,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import fooBar from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],
@@ -967,7 +965,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import { default as fooBar } from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],
@@ -982,7 +980,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import { foo_bar } from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],
@@ -1012,7 +1010,7 @@ ruleTester.run('naming-convention', rule, {
       code: `
         const child_process = require('child_process');
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'default',
@@ -1073,7 +1071,7 @@ ruleTester.run('naming-convention', rule, {
           prefix: ['boolean_'],
         },
       ],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
@@ -1095,7 +1093,7 @@ ruleTester.run('naming-convention', rule, {
           prefix: ['function_'],
         },
       ],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
@@ -1126,7 +1124,7 @@ ruleTester.run('naming-convention', rule, {
           prefix: ['array_'],
         },
       ],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
@@ -1336,7 +1334,7 @@ ruleTester.run('naming-convention', rule, {
           prefix: ['my', 'My'],
         },
       ],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: Array(3).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
@@ -1358,7 +1356,7 @@ ruleTester.run('naming-convention', rule, {
       code: `
         function my_foo_bar() {}
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['variable', 'function'],
@@ -1377,7 +1375,7 @@ ruleTester.run('naming-convention', rule, {
 
         export const { otherConstant } = SomeClass;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         { selector: 'property', format: ['PascalCase'] },
         { selector: 'variable', format: ['camelCase'] },
@@ -1395,7 +1393,7 @@ ruleTester.run('naming-convention', rule, {
           Bar(Baz: string): void;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [{ selector: 'parameter', format: ['camelCase'] }],
       errors: [
         {
@@ -1507,7 +1505,7 @@ ruleTester.run('naming-convention', rule, {
       code: `
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {};
+        declare function PascalCaseDeclaredFunction();
       `,
       options: [
         { selector: 'default', format: ['snake_case'] },
@@ -1785,7 +1783,7 @@ ruleTester.run('naming-convention', rule, {
           public abstract async ASYNC_BAR(): number;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -1859,7 +1857,7 @@ ruleTester.run('naming-convention', rule, {
           },
         };
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -1916,7 +1914,7 @@ ruleTester.run('naming-convention', rule, {
         // ❌ error
         const asyncBar5 = async function async_bar6() {};
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'variableLike',
@@ -1961,7 +1959,7 @@ ruleTester.run('naming-convention', rule, {
         // ❌ error
         const async_bar3 = async function ASYNC_BAR4() {};
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'variableLike',
@@ -2001,7 +1999,7 @@ ruleTester.run('naming-convention', rule, {
           public override someAttributeOverride = 1;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -2036,7 +2034,7 @@ ruleTester.run('naming-convention', rule, {
           }
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -2072,7 +2070,7 @@ ruleTester.run('naming-convention', rule, {
           public override set someSetterOverride(val: string);
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -2114,7 +2112,7 @@ ruleTester.run('naming-convention', rule, {
           #second_private_field = 1;
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -2156,7 +2154,7 @@ ruleTester.run('naming-convention', rule, {
           #second_private_method() {}
         }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: 'memberLike',
@@ -2189,7 +2187,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import * as fooBar from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],
@@ -2214,7 +2212,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import FooBar from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],
@@ -2239,7 +2237,7 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: "import { default as foo_bar } from 'foo_bar';",
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [
         {
           selector: ['import'],

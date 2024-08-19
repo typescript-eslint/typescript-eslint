@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 import { createRule } from '../util';
 
@@ -10,7 +10,6 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: 'recommended',
       description: 'Disallow relative paths to internal packages',
     },
     messages: {

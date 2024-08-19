@@ -5,12 +5,12 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2021,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-redundant-type-constituents', rule, {
@@ -307,6 +307,19 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             typeName: 'unknown',
           },
           messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown | 0;',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'union',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
         },
       ],
     },
@@ -650,6 +663,19 @@ ruleTester.run('no-redundant-type-constituents', rule, {
             typeName: 'any',
           },
           messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown & 0;',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'intersection',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
         },
       ],
     },

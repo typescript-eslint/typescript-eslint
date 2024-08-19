@@ -114,9 +114,7 @@ export default createRule<Options, MessageIds>({
       if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
           member,
-          class: member.parent.parent as
-            | TSESTree.ClassDeclaration
-            | TSESTree.ClassExpression,
+          class: member.parent.parent,
           usesThis: false,
           parent: stack,
         };
