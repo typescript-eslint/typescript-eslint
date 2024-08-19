@@ -27,7 +27,7 @@ However, TypeScript doesn't report type errors for deprecated code on its own.
 /** @deprecated Use @see {@link apiV2} instead. */
 declare function apiV1(): Promise<string>;
 
-declare function apiV1(): Promise<string>;
+declare function apiV2(): Promise<string>;
 
 await apiV1();
 ```
@@ -46,7 +46,7 @@ const url = parse('/foo');
 /** @deprecated Use @see {@link apiV2} instead. */
 declare function apiV1(): Promise<string>;
 
-declare function apiV1(): Promise<string>;
+declare function apiV2(): Promise<string>;
 
 await apiV2();
 ```
