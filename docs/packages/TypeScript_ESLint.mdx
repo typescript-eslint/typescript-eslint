@@ -81,7 +81,8 @@ export default tseslint.config({
     // highlight-next-line
     parser: tseslint.parser,
     parserOptions: {
-      project: true,
+      projectService: true,
+      tsconfigRootDir: import.meta.dirname,
     },
   },
   rules: {

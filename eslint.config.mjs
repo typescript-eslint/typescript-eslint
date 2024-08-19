@@ -319,6 +319,7 @@ export default tseslint.config(
       'unicorn/no-useless-spread': 'error',
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-string-replace-all': 'error',
     },
   },
   {

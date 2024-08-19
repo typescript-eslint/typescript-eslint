@@ -22,6 +22,18 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
       });
     `,
     `
+      let x = Math.random() ? 'ca' + 'tch' : 'catch';
+      Promise.resolve()[x]((err: Error) => {});
+    `,
+    `
+      Promise.resolve().then(
+        () => {},
+        (err: unknown) => {
+          throw err;
+        },
+      );
+    `,
+    `
       Promise.resolve().catch(() => {
         throw new Error();
       });
@@ -104,6 +116,53 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
         console.log(find);
       });
     `,
+    'Promise.resolve.then();',
+    'Promise.resolve().then(() => {});',
+    `
+      declare const singleTupleArg: [() => void];
+      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
+    `,
+    `
+      declare const arrayArg: (() => void)[];
+      Promise.resolve().then(...arrayArg, error => {});
+    `,
+    `
+declare let iPromiseImAPromise: Promise<any>;
+declare const catchArgs: [(x: any) => void];
+iPromiseImAPromise.catch(...catchArgs);
+    `,
+    `
+declare const catchArgs: [
+  string | (() => never) | ((x: string) => void),
+  number,
+];
+Promise.reject(new Error()).catch(...catchArgs);
+    `,
+    `
+declare const you: [];
+declare const cannot: [];
+declare const fool: [];
+declare const me: [(x: Error) => void] | undefined;
+Promise.resolve(undefined).catch(...you, ...cannot, ...fool, ...me!);
+    `,
+    `
+declare const really: undefined[];
+declare const dumb: [];
+declare const code: (x: Error) => void;
+Promise.resolve(undefined).catch(...really, ...dumb, code);
+    `,
+    `
+declare const x: ((x: any) => string)[];
+Promise.resolve('string promise').catch(...x);
+    `,
+    `
+declare const x: any;
+Promise.resolve().catch(...x);
+    `,
+    `
+declare const thenArgs: [() => {}, (err: any) => {}];
+Promise.resolve().then(...thenArgs);
+    `,
   ],
 
   invalid: [
@@ -124,6 +183,27 @@ Promise.resolve().catch((err: Error) => {
 Promise.resolve().catch((err: unknown) => {
   throw err;
 });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+        let method = 'catch';
+        Promise.resolve()[method]((error: Error) => {});
+      `,
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongTypeAnnotationSuggestion',
+              output: `
+        let method = 'catch';
+        Promise.resolve()[method]((error: unknown) => {});
       `,
             },
           ],
@@ -336,6 +416,31 @@ Promise.resolve().catch((err: unknown) => {
 
     {
       code: `
+Promise.resolve().then(
+  () => {},
+  error => {},
+);
+      `,
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().then(
+  () => {},
+  (error: unknown) => {},
+);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
 Promise.resolve().catch((err?) => {
   throw err;
 });
@@ -508,67 +613,6 @@ Promise.reject(new Error('I will reject!')).catch(yoloHandler);
 
     {
       code: `
-declare let iPromiseImAPromise: Promise<any>;
-declare const catchArgs: [(x: any) => void];
-iPromiseImAPromise.catch(...catchArgs);
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'useUnknown',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const catchArgs: [
-  string | (() => never) | ((shouldFlag: string) => void),
-  number,
-];
-Promise.reject(new Error()).catch(...catchArgs);
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'useUnknown',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const you: [];
-declare const cannot: [];
-declare const fool: [];
-declare const me: [(shouldFlag: Error) => void] | undefined;
-Promise.resolve(undefined).catch(...you, ...cannot, ...fool, ...me!);
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'useUnknownSpreadArgs',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const really: undefined[];
-declare const dumb: [];
-declare const code: (shouldFlag: Error) => void;
-Promise.resolve(undefined).catch(...really, ...dumb, code);
-      `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'useUnknownSpreadArgs',
-        },
-      ],
-    },
-
-    {
-      code: `
 Promise.resolve(' a string ').catch(
   (a: any, b: () => any, c: (x: string & number) => void) => {},
 );
@@ -633,34 +677,6 @@ Promise.resolve()['catch']((x: unknown) => 'return');
       `,
             },
           ],
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const x: any;
-Promise.resolve().catch(...x);
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'useUnknown',
-          suggestions: null,
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const x: ((x: any) => string)[];
-Promise.resolve('string promise').catch(...x);
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'useUnknown',
-          suggestions: null,
         },
       ],
     },
