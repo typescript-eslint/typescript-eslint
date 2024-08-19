@@ -16,6 +16,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -46,6 +47,7 @@ export default tseslint.config(
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
+      ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
     },
     /* eslint-enable no-useless-computed-key */
@@ -309,6 +311,7 @@ export default tseslint.config(
       'jsdoc/check-tag-names': 'off',
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/1169
       'jsdoc/check-param-names': 'off',
+      'jsdoc/informative-docs': 'error',
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/1175
       'jsdoc/require-jsdoc': 'off',
       'jsdoc/require-param': 'off',
@@ -316,11 +319,11 @@ export default tseslint.config(
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
 
+      'sonarjs/no-duplicated-branches': 'error',
+
       //
       // eslint-plugin-unicorn
       //
-
-      'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
       'unicorn/prefer-node-protocol': 'error',

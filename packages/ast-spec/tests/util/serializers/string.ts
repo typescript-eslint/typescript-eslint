@@ -14,24 +14,7 @@ const serializer: NewPlugin = {
     // refs,
     // printer,
   ) {
-    const characters: string[] = [];
-
-    characters.push("'");
-    for (const character of str) {
-      switch (character) {
-        case "'":
-          characters.push('\\');
-          break;
-
-        case '\\':
-          characters.push('\\');
-          break;
-      }
-      characters.push(character);
-    }
-    characters.push("'");
-
-    return characters.join('');
+    return `'${str.replaceAll(/'|\\/g, '\\$&')}'`;
   },
 };
 
