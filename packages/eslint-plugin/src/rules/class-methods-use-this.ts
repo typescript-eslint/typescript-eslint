@@ -182,7 +182,7 @@ export default createRule<Options, MessageIds>({
 
       const hashIfNeeded =
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
-      const name = getStaticKeyValue(node);
+      const name = getStaticKeyValue(node, context);
 
       return !exceptMethods.has(hashIfNeeded + (name ?? ''));
     }

@@ -5,10 +5,10 @@
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
 import { getStaticValue, isParenthesized } from './astUtils';
-import type { Scope } from '@typescript-eslint/utils/ts-eslint';
 import { getStaticStringValue } from './getStaticStringValue';
 
 const DEFINITION_EXTENSIONS = [
@@ -243,12 +243,12 @@ type NodeWithKey =
   | TSESTree.TSAbstractPropertyDefinition;
 function getStaticKeyValue(
   node: NodeWithKey,
-  scope?: Scope.Scope | undefined,
+  { sourceCode }: RuleContext<string, unknown[]>,
 ): string | null {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   return node.computed
-    ? (getStaticValue(key, scope)?.value as string | null)
+    ? (getStaticValue(key, sourceCode.getScope(node))?.value as string | null)
     : key.type === AST_NODE_TYPES.Literal
       ? getStaticStringValue(key)
       : 'name' in key
@@ -264,8 +264,8 @@ function getStaticKeyValue(
 const isStaticKeyOfValue = (
   memberExpression: NodeWithKey,
   value: string,
-  scope?: Scope.Scope | undefined,
-): boolean => value === getStaticKeyValue(memberExpression, scope);
+  context: RuleContext<string, unknown[]>,
+): boolean => value === getStaticKeyValue(memberExpression, context);
 
 export {
   arrayGroupByToMap,

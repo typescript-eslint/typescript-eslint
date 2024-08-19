@@ -268,7 +268,7 @@ export default createRule<Options, MessageIds>({
         (node.type === AST_NODE_TYPES.Property && node.method) ||
         node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
-        const value = getStaticKeyValue(node, scope);
+        const value = getStaticKeyValue(node, context);
         if (typeof value === 'string') {
           return options.allowedNames.includes(value);
         }
