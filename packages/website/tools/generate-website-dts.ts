@@ -74,7 +74,7 @@ function processFiles(text: string): string {
     'import TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
   );
   // replace all imports with import type
-  result = result.replace(/^import\s+(?!type)/gm, 'import type ');
+  result = result.replaceAll(/^import\s+(?!type)/gm, 'import type ');
   return result;
 }
 

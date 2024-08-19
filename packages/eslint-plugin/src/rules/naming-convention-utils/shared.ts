@@ -7,7 +7,7 @@ import type {
 import { MetaSelectors } from './enums';
 
 function selectorTypeToMessageString(selectorType: SelectorsString): string {
-  const notCamelCase = selectorType.replace(/([A-Z])/g, ' $1');
+  const notCamelCase = selectorType.replaceAll(/([A-Z])/g, ' $1');
   return notCamelCase.charAt(0).toUpperCase() + notCamelCase.slice(1);
 }
 
