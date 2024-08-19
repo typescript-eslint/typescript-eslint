@@ -89,7 +89,7 @@ async function formatCode(code: string[]): Promise<string> {
 }
 
 function sanitize(name: string): string {
-  return name.replace(/\./g, '_');
+  return name.replaceAll('.', '_');
 }
 
 function getVariablesFromScope(scopeManager: ScopeManager): Variable[] {

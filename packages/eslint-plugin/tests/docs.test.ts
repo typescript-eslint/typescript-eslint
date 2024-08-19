@@ -272,7 +272,7 @@ describe('Validating rule docs', () => {
 
       test('important headings must be h2s', () => {
         for (const heading of headings) {
-          if (importantHeadings.has(heading.raw.replace(/#/g, '').trim())) {
+          if (importantHeadings.has(heading.raw.replaceAll('#', '').trim())) {
             expect(heading.depth).toBe(2);
           }
         }

@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import path from 'node:path';
-
 import debug from 'debug';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
@@ -41,6 +39,7 @@ export interface ProjectServiceSettings {
 export function createProjectService(
   optionsRaw: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
+  tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {
   const options = typeof optionsRaw === 'object' ? optionsRaw : {};
   validateDefaultProjectForFilesGlob(options);
@@ -130,7 +129,7 @@ export function createProjectService(
       configFile = getParsedConfigFile(
         tsserver,
         options.defaultProject,
-        path.dirname(options.defaultProject),
+        tsconfigRootDir,
       );
     } catch (error) {
       throw new Error(
