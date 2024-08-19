@@ -95,7 +95,7 @@ export function parseMarkers(
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     result[group] ||= {
-      group: group,
+      group,
       uri: code.target,
       items: [],
     };

@@ -143,7 +143,7 @@ function JsonObject(
   const computed = useMemo(() => {
     const nodeType = getNodeType(props.value);
     return {
-      nodeType: nodeType,
+      nodeType,
       typeName: getTypeName(props.value, nodeType),
       value: Object.entries(props.value).filter(item =>
         filterProperties(item[0], item[1], nodeType, props.showTokens),

@@ -163,7 +163,7 @@ export function createParseSettings(
       project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
       projectFolderIgnoreList: tsestreeOptions.projectFolderIgnoreList,
       singleRun: parseSettings.singleRun,
-      tsconfigRootDir: tsconfigRootDir,
+      tsconfigRootDir,
     });
   }
 
