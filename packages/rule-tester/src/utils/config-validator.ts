@@ -50,8 +50,8 @@ function validateRuleSeverity(options: Linter.RuleEntry): number | string {
   throw new Error(
     `\tSeverity should be one of the following: 0 = off, 1 = warn, 2 = error (you passed '${util
       .inspect(severity)
-      .replace(/'/gu, '"')
-      .replace(/\n/gu, '')}').\n`,
+      .replaceAll("'", '"')
+      .replaceAll('\n', '')}').\n`,
   );
 }
 

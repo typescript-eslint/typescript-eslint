@@ -20,7 +20,7 @@ export function generateUnionType(
           case 'string':
             return {
               type: 'literal',
-              code: `'${memberSchema.replace(/'/g, "\\'")}'`,
+              code: `'${memberSchema.replaceAll("'", "\\'")}'`,
               commentLines: [],
             };
 

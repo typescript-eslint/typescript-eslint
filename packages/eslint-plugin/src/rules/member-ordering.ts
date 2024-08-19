@@ -713,7 +713,7 @@ function getLowestRank(
 
   const lowestRank = order[lowest];
   const lowestRanks = Array.isArray(lowestRank) ? lowestRank : [lowestRank];
-  return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
+  return lowestRanks.map(rank => rank.replaceAll('-', ' ')).join(', ');
 }
 
 export default createRule<Options, MessageIds>({

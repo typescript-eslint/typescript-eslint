@@ -2352,7 +2352,7 @@ export class Converter {
           .slice(0, -1)
           // `BigInt` doesn't accept numeric separator
           // and `bigint` property should not include numeric separator
-          .replace(/_/g, '');
+          .replaceAll('_', '');
         const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
         return this.createNode<TSESTree.BigIntLiteral>(node, {
           type: AST_NODE_TYPES.Literal,

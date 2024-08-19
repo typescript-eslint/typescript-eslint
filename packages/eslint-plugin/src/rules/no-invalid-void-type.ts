@@ -103,11 +103,11 @@ export default createRule<[Options], MessageIds>({
       if (Array.isArray(allowInGenericTypeArguments)) {
         const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)
-          .replace(/ /gu, '');
+          .replaceAll(' ', '');
 
         if (
           !allowInGenericTypeArguments
-            .map(s => s.replace(/ /gu, ''))
+            .map(s => s.replaceAll(' ', ''))
             .includes(fullyQualifiedName)
         ) {
           context.report({

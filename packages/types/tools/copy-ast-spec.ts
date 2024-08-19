@@ -78,7 +78,7 @@ async function main(): Promise<void> {
 
   await Promise.all([
     copyFile('dist', 'ast-spec.ts', code =>
-      code.replace(/export declare enum/g, 'export enum'),
+      code.replaceAll('export declare enum', 'export enum'),
     ),
   ]);
 }
