@@ -2609,6 +2609,86 @@ class Foo {
         },
       ],
     },
+    // default option + accessors
+    {
+      code: `
+class Foo {
+  @Dec() accessor b;
+  @Dec() accessor a;
+
+  accessor d;
+  accessor c;
+
+  abstract accessor f;
+  abstract accessor e;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'c',
+            beforeMember: 'd',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'e',
+            beforeMember: 'f',
+          },
+        },
+      ],
+    },
+    // accessors with wrong group order
+    {
+      code: `
+class Foo {
+  accessor a;
+  abstract accessor b;
+  accessor c;
+  @Dec() accessor d;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-accessor',
+              'accessor',
+              'abstract-accessor',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'c',
+            rank: 'abstract accessor',
+          },
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'd',
+            rank: 'accessor',
+          },
+        },
+      ],
+    },
   ],
 };
 

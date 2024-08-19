@@ -1,5 +1,6 @@
+import fs from 'node:fs';
+
 import debug from 'debug';
-import fs from 'fs';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';

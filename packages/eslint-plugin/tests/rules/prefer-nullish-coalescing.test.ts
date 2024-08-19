@@ -1,9 +1,10 @@
+import * as path from 'node:path';
+
 import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
 
 import type {
   MessageIds,
@@ -434,7 +435,7 @@ x ?? 'foo';
         ],
       },
       {
-        code: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]'),
+        code: code.replaceAll('x', 'x.z[1][this[this.o]]["3"][a.b.c]'),
         output: null,
         options: [{ ignoreTernaryTests: false }] as const,
         errors: [
@@ -443,7 +444,7 @@ x ?? 'foo';
             line: 1,
             column: 1,
             endLine: 1,
-            endColumn: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]')
+            endColumn: code.replaceAll('x', 'x.z[1][this[this.o]]["3"][a.b.c]')
               .length,
             suggestions: [
               {
@@ -455,7 +456,7 @@ x ?? 'foo';
         ],
       },
       {
-        code: code.replace(/y/g, '(z = y)'),
+        code: code.replaceAll('y', '(z = y)'),
         output: null,
         options: [{ ignoreTernaryTests: false }] as const,
         errors: [
@@ -464,7 +465,7 @@ x ?? 'foo';
             line: 1,
             column: 1,
             endLine: 1,
-            endColumn: code.replace(/y/g, '(z = y)').length,
+            endColumn: code.replaceAll('y', '(z = y)').length,
             suggestions: [
               {
                 messageId: 'suggestNullish' as const,

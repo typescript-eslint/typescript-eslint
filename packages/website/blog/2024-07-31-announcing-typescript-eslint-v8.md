@@ -346,6 +346,7 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
    '@typescript-eslint/no-unnecessary-type-arguments': '...',
    '@typescript-eslint/no-unnecessary-type-assertion': '...',
    '@typescript-eslint/no-unnecessary-type-constraint': '...',
++  '@typescript-eslint/no-unnecessary-type-parameters': '...',
    '@typescript-eslint/no-unsafe-argument': '...',
    '@typescript-eslint/no-unsafe-assignment': '...',
    '@typescript-eslint/no-unsafe-call': '...',

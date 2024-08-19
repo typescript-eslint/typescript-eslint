@@ -168,13 +168,20 @@ async function main(): Promise<void> {
     return config;
   }
 
+  interface WriteConfigSettings {
+    getConfig: () => LinterConfig;
+    name: string;
+    description: string;
+  }
+
   /**
-   * Helper function writes configuration.
+   * Helper function that writes configuration.
    */
-  async function writeConfig(
-    getConfig: () => LinterConfig,
-    name: string,
-  ): Promise<void> {
+  async function writeConfig({
+    description,
+    getConfig,
+    name,
+  }: WriteConfigSettings): Promise<void> {
     const hyphens = '-'.repeat(35 - Math.ceil(name.length / 2));
     console.log(chalk.blueBright(`\n${hyphens} ${name}.ts ${hyphens}`));
 
@@ -237,9 +244,14 @@ async function main(): Promise<void> {
       flatConfig.languageOptions.parserOptions = config.parserOptions;
     }
 
+    const docComment = `/**
+      * ${description}
+      * @see {@link https://typescript-eslint.io/users/configs#${name}}
+      */`;
     const flatConfigJson = JSON.stringify(flatConfig);
     if (flatExtends.length > 0) {
       flatCode.push(
+        docComment,
         'export default (plugin: FlatConfig.Plugin, parser: FlatConfig.Parser): FlatConfig.ConfigArray => [',
         ...flatExtends.map(ext => `${ext}(plugin, parser),`),
         flatConfigJson,
@@ -247,6 +259,7 @@ async function main(): Promise<void> {
       );
     } else {
       flatCode.push(
+        docComment,
         `export default (_plugin: FlatConfig.Plugin, _parser: FlatConfig.Parser): FlatConfig.Config => (${flatConfigJson});`,
       );
     }
@@ -261,18 +274,21 @@ async function main(): Promise<void> {
   }
 
   interface ExtendedConfigSettings {
+    description: string;
     name: string;
     ruleEntries: readonly RuleEntry[];
     settings?: ConfigRuleSettings;
   }
 
   async function writeExtendedConfig({
+    description,
     name,
     ruleEntries,
     settings,
   }: ExtendedConfigSettings): Promise<void> {
-    await writeConfig(
-      () => ({
+    await writeConfig({
+      description,
+      getConfig: () => ({
         extends: [...CLASSIC_EXTENDS],
         rules: ruleEntries.reduce(
           (config, entry) => reducer(config, entry, settings),
@@ -280,7 +296,7 @@ async function main(): Promise<void> {
         ),
       }),
       name,
-    );
+    });
   }
 
   function filterRuleEntriesTo(
@@ -305,6 +321,8 @@ async function main(): Promise<void> {
   }
 
   await writeExtendedConfig({
+    description:
+      'Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.',
     name: 'all',
     settings: {
       deprecated: 'exclude',
@@ -313,6 +331,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'Recommended rules for code correctness that you can drop in without additional configuration.',
     settings: {
       getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'exclude',
@@ -322,6 +342,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'Contains all of `recommended` along with additional recommended rules that require type information.',
     name: 'recommended-type-checked',
     ruleEntries: filterRuleEntriesTo('recommended'),
     settings: {
@@ -330,6 +352,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'A version of `recommended` that only contains type-checked rules and disables of any corresponding core ESLint rules.',
     settings: {
       getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'include-only',
@@ -339,6 +363,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'Contains all of `recommended`, as well as additional strict rules that can also catch bugs. ',
     settings: {
       getOptions: createGetOptionsForLevel('strict'),
       typeChecked: 'exclude',
@@ -348,6 +374,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'Contains all of `recommended`, `recommended-type-checked`, and `strict`, along with additional strict rules that require type information.',
     settings: {
       getOptions: createGetOptionsForLevel('strict'),
     },
@@ -356,6 +384,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.',
     settings: {
       getOptions: createGetOptionsForLevel('strict'),
       typeChecked: 'include-only',
@@ -365,6 +395,8 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'Rules considered to be best practice for modern TypeScript codebases, but that do not impact program logic.',
     settings: {
       typeChecked: 'exclude',
     },
@@ -373,11 +405,15 @@ async function main(): Promise<void> {
   });
 
   await writeExtendedConfig({
+    description:
+      'Contains all of `stylistic`, along with additional stylistic rules that require type information.',
     name: 'stylistic-type-checked',
     ruleEntries: filterRuleEntriesTo('stylistic'),
   });
 
   await writeExtendedConfig({
+    description:
+      'A version of `stylistic` that only contains type-checked rules and disables of any corresponding core ESLint rules.',
     settings: {
       typeChecked: 'include-only',
     },
@@ -385,8 +421,10 @@ async function main(): Promise<void> {
     ruleEntries: filterRuleEntriesTo('stylistic'),
   });
 
-  await writeConfig(
-    () => ({
+  await writeConfig({
+    description:
+      'A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.',
+    getConfig: () => ({
       parserOptions: {
         project: false,
         program: null,
@@ -402,8 +440,8 @@ async function main(): Promise<void> {
         {},
       ),
     }),
-    'disable-type-checked',
-  );
+    name: 'disable-type-checked',
+  });
 }
 
 main().catch((error: unknown) => {

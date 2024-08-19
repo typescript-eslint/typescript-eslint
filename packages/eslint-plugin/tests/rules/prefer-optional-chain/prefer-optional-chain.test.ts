@@ -120,6 +120,22 @@ describe('|| {}', () => {
         ],
       },
       {
+        code: noFormat`(foo1?.foo2 || ({})).foo3;`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 26,
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: 'foo1?.foo2?.foo3;',
+              },
+            ],
+          },
+        ],
+      },
+      {
         code: '((() => foo())() || {}).bar;',
         errors: [
           {
@@ -1823,6 +1839,84 @@ describe('hand-crafted cases', () => {
           },
         ],
       },
+      // parenthesis
+      {
+        code: noFormat`a && (a.b && a.b.c)`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`(a && a.b) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 20,
+          },
+        ],
+      },
+      {
+        code: noFormat`((a && a.b)) && a.b.c`,
+        output: 'a?.b?.c',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && (a.b && a.b.c))`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 24,
+          },
+        ],
+      },
+      {
+        code: noFormat`foo(a && a.b && a.b.c)`,
+        output: 'foo(a?.b?.c)',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 5,
+            endColumn: 22,
+          },
+        ],
+      },
+      {
+        code: noFormat`!foo || !foo.bar || ((((!foo.bar.baz || !foo.bar.baz()))));`,
+        output: '!foo?.bar?.baz?.();',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 59,
+          },
+        ],
+      },
+      {
+        code: noFormat`a !== undefined && ((a !== null && a.prop));`,
+        output: 'a?.prop;',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            column: 1,
+            endColumn: 44,
+          },
+        ],
+      },
     ],
   });
 });
@@ -1854,16 +1948,16 @@ describe('base cases', () => {
           // `undefined` case - so optional chaining is not a valid conversion
           valid: BaseCases({
             operator: '&&',
-            mutateCode: c => c.replace(/&&/g, '!== null &&'),
+            mutateCode: c => c.replaceAll('&&', '!== null &&'),
             mutateOutput: identity,
           }),
           // but if the type is just `| null` - then it covers the cases and is
           // a valid conversion
           invalid: BaseCases({
             operator: '&&',
-            mutateCode: c => c.replace(/&&/g, '!== null &&'),
+            mutateCode: c => c.replaceAll('&&', '!== null &&'),
             mutateOutput: identity,
-            mutateDeclaration: c => c.replace(/\| undefined/g, ''),
+            mutateDeclaration: c => c.replaceAll('| undefined', ''),
             useSuggestionFixer: true,
           }),
         });
@@ -1874,7 +1968,7 @@ describe('base cases', () => {
           valid: [],
           invalid: BaseCases({
             operator: '&&',
-            mutateCode: c => c.replace(/&&/g, '!= null &&'),
+            mutateCode: c => c.replaceAll('&&', '!= null &&'),
             mutateOutput: identity,
             useSuggestionFixer: true,
           }),
@@ -1887,16 +1981,16 @@ describe('base cases', () => {
           // `null` case - so optional chaining is not a valid conversion
           valid: BaseCases({
             operator: '&&',
-            mutateCode: c => c.replace(/&&/g, '!== undefined &&'),
+            mutateCode: c => c.replaceAll('&&', '!== undefined &&'),
             mutateOutput: identity,
           }),
           // but if the type is just `| undefined` - then it covers the cases and is
           // a valid conversion
           invalid: BaseCases({
             operator: '&&',
-            mutateCode: c => c.replace(/&&/g, '!== undefined &&'),
+            mutateCode: c => c.replaceAll('&&', '!== undefined &&'),
             mutateOutput: identity,
-            mutateDeclaration: c => c.replace(/\| null/g, ''),
+            mutateDeclaration: c => c.replaceAll('| null', ''),
             useSuggestionFixer: true,
           }),
         });
@@ -1907,7 +2001,7 @@ describe('base cases', () => {
           valid: [],
           invalid: BaseCases({
             operator: '&&',
-            mutateCode: c => c.replace(/&&/g, '!= undefined &&'),
+            mutateCode: c => c.replaceAll('&&', '!= undefined &&'),
             mutateOutput: identity,
             useSuggestionFixer: true,
           }),
@@ -1922,7 +2016,7 @@ describe('base cases', () => {
         valid: [],
         invalid: BaseCases({
           operator: '||',
-          mutateCode: c => `!${c.replace(/\|\|/g, '|| !')}`,
+          mutateCode: c => `!${c.replaceAll('||', '|| !')}`,
           mutateOutput: c => `!${c}`,
         }),
       });
@@ -1935,7 +2029,7 @@ describe('base cases', () => {
           // `undefined` case - so optional chaining is not a valid conversion
           valid: BaseCases({
             operator: '||',
-            mutateCode: c => c.replace(/\|\|/g, '=== null ||'),
+            mutateCode: c => c.replaceAll('||', '=== null ||'),
             mutateOutput: identity,
           }),
           // but if the type is just `| null` - then it covers the cases and is
@@ -1944,12 +2038,12 @@ describe('base cases', () => {
             operator: '||',
             mutateCode: c =>
               c
-                .replace(/\|\|/g, '=== null ||')
+                .replaceAll('||', '=== null ||')
                 // SEE TODO AT THE BOTTOM OF THE RULE
                 // We need to ensure the final operand is also a "valid" `||` check
                 .replace(/;$/, ' === null;'),
             mutateOutput: c => c.replace(/;$/, ' === null;'),
-            mutateDeclaration: c => c.replace(/\| undefined/g, ''),
+            mutateDeclaration: c => c.replaceAll('| undefined', ''),
             useSuggestionFixer: true,
           }),
         });
@@ -1962,7 +2056,7 @@ describe('base cases', () => {
             operator: '||',
             mutateCode: c =>
               c
-                .replace(/\|\|/g, '== null ||')
+                .replaceAll('||', '== null ||')
                 // SEE TODO AT THE BOTTOM OF THE RULE
                 // We need to ensure the final operand is also a "valid" `||` check
                 .replace(/;$/, ' == null;'),
@@ -1977,7 +2071,7 @@ describe('base cases', () => {
           // `null` case - so optional chaining is not a valid conversion
           valid: BaseCases({
             operator: '||',
-            mutateCode: c => c.replace(/\|\|/g, '=== undefined ||'),
+            mutateCode: c => c.replaceAll('||', '=== undefined ||'),
             mutateOutput: identity,
           }),
           // but if the type is just `| undefined` - then it covers the cases and is
@@ -1986,12 +2080,12 @@ describe('base cases', () => {
             operator: '||',
             mutateCode: c =>
               c
-                .replace(/\|\|/g, '=== undefined ||')
+                .replaceAll('||', '=== undefined ||')
                 // SEE TODO AT THE BOTTOM OF THE RULE
                 // We need to ensure the final operand is also a "valid" `||` check
                 .replace(/;$/, ' === undefined;'),
             mutateOutput: c => c.replace(/;$/, ' === undefined;'),
-            mutateDeclaration: c => c.replace(/\| null/g, ''),
+            mutateDeclaration: c => c.replaceAll('| null', ''),
           }),
         });
       });
@@ -2003,7 +2097,7 @@ describe('base cases', () => {
             operator: '||',
             mutateCode: c =>
               c
-                .replace(/\|\|/g, '== undefined ||')
+                .replaceAll('||', '== undefined ||')
                 // SEE TODO AT THE BOTTOM OF THE RULE
                 // We need to ensure the final operand is also a "valid" `||` check
                 .replace(/;$/, ' == undefined;'),
@@ -2022,18 +2116,18 @@ describe('base cases', () => {
         // it should ignore whitespace in the expressions
         BaseCases({
           operator: '&&',
-          mutateCode: c => c.replace(/\./g, '.      '),
+          mutateCode: c => c.replaceAll('.', '.      '),
           // note - the rule will use raw text for computed expressions - so we
           //        need to ensure that the spacing for the computed member
           //        expressions is retained for correct fixer matching
           mutateOutput: c =>
-            c.replace(/(\[.+])/g, m => m.replace(/\./g, '.      ')),
+            c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.      ')),
         }),
         BaseCases({
           operator: '&&',
-          mutateCode: c => c.replace(/\./g, '.\n'),
+          mutateCode: c => c.replaceAll('.', '.\n'),
           mutateOutput: c =>
-            c.replace(/(\[.+])/g, m => m.replace(/\./g, '.\n')),
+            c.replaceAll(/(\[.+])/g, m => m.replaceAll('.', '.\n')),
         }),
       ),
     });

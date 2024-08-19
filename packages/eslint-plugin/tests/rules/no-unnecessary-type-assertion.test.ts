@@ -1,5 +1,6 @@
+import path from 'node:path';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 
@@ -347,6 +348,16 @@ declare const foo: {
 const bar = foo.a as string | undefined | bigint;
       `,
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+if (Math.random()) {
+  {
+    var x = 1;
+  }
+}
+x!;
+      `,
     },
   ],
 
@@ -1075,6 +1086,56 @@ const bar = foo.a;
         },
       ],
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+varDeclarationFromFixture!;
+      `,
+      output: `
+varDeclarationFromFixture;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+x!;
+      `,
+      output: `
+var x = 1;
+x;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+{
+  x!;
+}
+      `,
+      output: `
+var x = 1;
+{
+  x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 4,
+        },
+      ],
     },
   ],
 });

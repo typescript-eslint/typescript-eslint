@@ -7,8 +7,8 @@ import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
+import { version } from '@typescript-eslint/parser/package.json';
 
-import { version } from './package.json';
 import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';

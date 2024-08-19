@@ -934,7 +934,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
-        this.#checkForStatementDeclaration(node.initializer);
+        this.#checkForStatementDeclaration(node.initializer, node.kind);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           left: this.convertPattern(node.initializer),
@@ -942,7 +942,8 @@ export class Converter {
           body: this.convertChild(node.statement),
         });
 
-      case SyntaxKind.ForOfStatement:
+      case SyntaxKind.ForOfStatement: {
+        this.#checkForStatementDeclaration(node.initializer, node.kind);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
           left: this.convertPattern(node.initializer),
@@ -953,6 +954,7 @@ export class Converter {
               node.awaitModifier.kind === SyntaxKind.AwaitKeyword,
           ),
         });
+      }
 
       // Declarations
 
@@ -1010,15 +1012,34 @@ export class Converter {
       }
 
       case SyntaxKind.VariableDeclaration: {
+        const definite = !!node.exclamationToken;
+        const init = this.convertChild(node.initializer);
+        const id = this.convertBindingNameWithTypeAnnotation(
+          node.name,
+          node.type,
+          node,
+        );
+        if (definite) {
+          if (init) {
+            this.#throwError(
+              node,
+              'Declarations with initializers cannot also have definite assignment assertions.',
+            );
+          } else if (
+            id.type !== AST_NODE_TYPES.Identifier ||
+            !id.typeAnnotation
+          ) {
+            this.#throwError(
+              node,
+              'Declarations with definite assignment assertions must also have type annotations.',
+            );
+          }
+        }
         return this.createNode<TSESTree.VariableDeclarator>(node, {
           type: AST_NODE_TYPES.VariableDeclarator,
-          definite: !!node.exclamationToken,
-          id: this.convertBindingNameWithTypeAnnotation(
-            node.name,
-            node.type,
-            node,
-          ),
-          init: this.convertChild(node.initializer),
+          definite,
+          id,
+          init,
         });
       }
 
@@ -1054,6 +1075,41 @@ export class Converter {
             }
           });
         }
+        // Definite assignment only allowed for non-declare let and var
+        if (
+          result.declare ||
+          ['using', 'await using', 'const'].includes(result.kind)
+        ) {
+          node.declarationList.declarations.forEach((declaration, i) => {
+            if (result.declarations[i].definite) {
+              this.#throwError(
+                declaration,
+                `A definite assignment assertion '!' is not permitted in this context.`,
+              );
+            }
+          });
+        }
+        if (result.declare) {
+          node.declarationList.declarations.forEach((declaration, i) => {
+            if (
+              result.declarations[i].init &&
+              (['let', 'var'].includes(result.kind) ||
+                result.declarations[i].id.typeAnnotation)
+            ) {
+              this.#throwError(
+                declaration,
+                `Initializers are not permitted in ambient contexts.`,
+              );
+            }
+          });
+          // Theoretically, only certain initializers are allowed for declare const,
+          // (TS1254: A 'const' initializer in an ambient context must be a string
+          // or numeric literal or literal enum reference.) but we just allow
+          // all expressions
+        }
+        // Note! No-declare does not mean the variable is not ambient, because
+        // it can be further nested in other declare contexts. Therefore we cannot
+        // check for const initializers.
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
@@ -2296,7 +2352,7 @@ export class Converter {
           .slice(0, -1)
           // `BigInt` doesn't accept numeric separator
           // and `bigint` property should not include numeric separator
-          .replace(/_/g, '');
+          .replaceAll('_', '');
         const value = typeof BigInt !== 'undefined' ? BigInt(bigint) : null;
         return this.createNode<TSESTree.BigIntLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
@@ -3544,14 +3600,49 @@ export class Converter {
 
     throw createError(message, this.ast, start, end);
   }
-  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
+  #checkForStatementDeclaration(
+    initializer: ts.ForInitializer,
+    kind: ts.SyntaxKind.ForInStatement | ts.SyntaxKind.ForOfStatement,
+  ): void {
+    const loop =
+      kind === ts.SyntaxKind.ForInStatement ? 'for...in' : 'for...of';
     if (ts.isVariableDeclarationList(initializer)) {
-      if ((initializer.flags & ts.NodeFlags.Using) !== 0) {
+      if (initializer.declarations.length !== 1) {
+        this.#throwError(
+          initializer,
+          `Only a single variable declaration is allowed in a '${loop}' statement.`,
+        );
+      }
+      const declaration = initializer.declarations[0];
+      if (declaration.initializer) {
+        this.#throwError(
+          declaration,
+          `The variable declaration of a '${loop}' statement cannot have an initializer.`,
+        );
+      } else if (declaration.type) {
+        this.#throwError(
+          declaration,
+          `The variable declaration of a '${loop}' statement cannot have a type annotation.`,
+        );
+      }
+      if (
+        kind === ts.SyntaxKind.ForInStatement &&
+        initializer.flags & ts.NodeFlags.Using
+      ) {
         this.#throwError(
           initializer,
           "The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
         );
       }
+    } else if (
+      !isValidAssignmentTarget(initializer) &&
+      initializer.kind !== ts.SyntaxKind.ObjectLiteralExpression &&
+      initializer.kind !== ts.SyntaxKind.ArrayLiteralExpression
+    ) {
+      this.#throwError(
+        initializer,
+        `The left-hand side of a '${loop}' statement must be a variable or a property access.`,
+      );
     }
   }
 }

@@ -63,7 +63,7 @@ function getExpectedIndentForNode(
 }
 function doIndent(line: string, indent: number): string {
   for (let i = 0; i < indent; i += 1) {
-    line = ' ' + line;
+    line = ` ${line}`;
   }
   return line;
 }
@@ -81,8 +81,8 @@ function getQuote(code: string): '"' | "'" | null {
 
 function escapeTemplateString(code: string): string {
   let fixed = code;
-  fixed = fixed.replace(BACKTICK_REGEX, '\\`');
-  fixed = fixed.replace(TEMPLATE_EXPR_OPENER, '\\${');
+  fixed = fixed.replaceAll(BACKTICK_REGEX, '\\`');
+  fixed = fixed.replaceAll(TEMPLATE_EXPR_OPENER, '\\${');
   return fixed;
 }
 
