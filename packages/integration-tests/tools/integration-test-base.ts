@@ -163,7 +163,7 @@ export function eslintIntegrationTest(
     // assert the linting state is consistent
     const lintOutputRAW = (await readFile(outFile, 'utf8'))
       // clean the output to remove any changing facets so tests are stable
-      .replace(
+      .replaceAll(
         new RegExp(`"filePath": ?"(/private)?${testFolder}`, 'g'),
         '"filePath": "<root>',
       );

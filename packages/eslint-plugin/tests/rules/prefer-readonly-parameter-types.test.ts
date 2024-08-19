@@ -480,9 +480,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     ...dedupeTestCases(
       arrays.map<InvalidTestCase<MessageIds, Options>>(baseType => {
         const type = baseType
-          .replace(/readonly /g, '')
-          .replace(/Readonly<(.+?)>/g, '$1')
-          .replace(/ReadonlyArray/g, 'Array');
+          .replaceAll('readonly ', '')
+          .replaceAll(/Readonly<(.+?)>/g, '$1')
+          .replaceAll('ReadonlyArray', 'Array');
         return {
           code: `function foo(arg: ${type}) {}`,
           errors: [
@@ -591,7 +591,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     // weird intersections
     ...weirdIntersections.map<InvalidTestCase<MessageIds, Options>>(
       baseCode => {
-        const code = baseCode.replace(/readonly /g, '');
+        const code = baseCode.replaceAll('readonly ', '');
         return {
           code,
           errors: [{ messageId: 'shouldBeReadonly' }],

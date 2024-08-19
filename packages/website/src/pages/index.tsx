@@ -112,7 +112,7 @@ function Feature({ title, description }: FeatureItem): React.JSX.Element {
       <div className="text--center">
         <Heading
           as="h2"
-          id={title.replace(/,/g, '').toLowerCase().replace(/\s|_/g, '-')}
+          id={title.replaceAll(',', '').toLowerCase().replaceAll(/\s|_/g, '-')}
         >
           {title}
         </Heading>

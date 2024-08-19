@@ -81,8 +81,8 @@ function getQuote(code: string): '"' | "'" | null {
 
 function escapeTemplateString(code: string): string {
   let fixed = code;
-  fixed = fixed.replace(BACKTICK_REGEX, '\\`');
-  fixed = fixed.replace(TEMPLATE_EXPR_OPENER, '\\${');
+  fixed = fixed.replaceAll(BACKTICK_REGEX, '\\`');
+  fixed = fixed.replaceAll(TEMPLATE_EXPR_OPENER, '\\${');
   return fixed;
 }
 

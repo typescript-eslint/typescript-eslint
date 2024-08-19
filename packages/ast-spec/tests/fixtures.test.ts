@@ -77,7 +77,7 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       isError: /[\\/]_error_[\\/]/.test(absolute),
       isJSX: ext.endsWith('x'),
       name,
-      relative: path.relative(SRC_DIR, absolute).replace(/\\/g, '/'),
+      relative: path.relative(SRC_DIR, absolute).replaceAll('\\', '/'),
       segments,
       snapshotFiles: {
         success: {

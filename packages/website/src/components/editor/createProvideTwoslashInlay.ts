@@ -78,7 +78,7 @@ export function createTwoslashInlayProvider(
         let text = hint.displayParts
           .map(d => d.text)
           .join('')
-          .replace(/\r?\n\s*/g, ' ');
+          .replaceAll(/\r?\n\s*/g, ' ');
         if (text.length > 120) {
           text = `${text.slice(0, 119)}...`;
         }

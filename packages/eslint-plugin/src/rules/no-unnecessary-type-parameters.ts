@@ -303,7 +303,7 @@ function collectTypeParameterUsageCounts(
         if (properties.length === 0) {
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
-          visitType(type.templateType, false);
+          visitType(type.templateType ?? type.constraintType, false);
         }
       }
 

@@ -154,7 +154,7 @@ export default createRule<[], MessageId>({
                   expression.raw.slice(1, -1)
                 : // The value may be one of number | bigint | boolean | RegExp | null.
                   // In regular expressions, we escape every backslash
-                  String(expression.value).replace(/\\/g, '\\\\')
+                  String(expression.value).replaceAll('\\', '\\\\')
             )
               // The string or RegExp may contain ` or ${.
               // We want both of these to be escaped in the final template expression.
@@ -169,7 +169,7 @@ export default createRule<[], MessageId>({
               // \\` -> \\\`
               // \${ -> \${
               // \\${ -> \\\${
-              .replace(
+              .replaceAll(
                 new RegExp(
                   `${String(evenNumOfBackslashesRegExp.source)}(\`|\\\${)`,
                   'g',
