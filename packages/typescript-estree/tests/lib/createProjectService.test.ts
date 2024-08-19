@@ -66,7 +66,7 @@ describe('createProjectService', () => {
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
-          defaultProject: './tsconfig.json',
+          defaultProject: 'tsconfig.json',
         },
         undefined,
       ),
@@ -86,7 +86,7 @@ describe('createProjectService', () => {
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
-          defaultProject: './tsconfig.json',
+          defaultProject: 'tsconfig.json',
         },
         undefined,
       ),
@@ -102,7 +102,7 @@ describe('createProjectService', () => {
     const { service } = createProjectService(
       {
         allowDefaultProject: ['file.js'],
-        defaultProject: './tsconfig.json',
+        defaultProject: 'tsconfig.json',
       },
       undefined,
     );
