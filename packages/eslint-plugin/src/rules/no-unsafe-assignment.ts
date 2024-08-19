@@ -401,7 +401,7 @@ export default createRule({
         const restType = services.getTypeAtLocation(node.argument);
         if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
           context.report({
-            node: node,
+            node,
             messageId: 'unsafeArraySpread',
             data: createData(restType),
           });

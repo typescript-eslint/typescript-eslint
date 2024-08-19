@@ -285,7 +285,7 @@ export function createTestCases(cases: Cases): void {
               code: `// ${JSON.stringify(options)}\n${test.code
                 .map(code => code.replace(REPLACE_REGEX, preparedName))
                 .join('\n')}`,
-              errors: errors,
+              errors,
             };
           };
 

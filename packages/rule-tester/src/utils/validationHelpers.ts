@@ -113,7 +113,7 @@ export function wrapParser(
     }
 
     simpleTraverse(ast, {
-      visitorKeys: visitorKeys,
+      visitorKeys,
       enter: node => defineStartEndAsError('node', node),
     });
     ast.tokens?.forEach(token => defineStartEndAsError('token', token));
