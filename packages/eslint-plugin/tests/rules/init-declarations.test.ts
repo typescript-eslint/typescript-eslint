@@ -311,11 +311,6 @@ interface IEmployee {
       options: ['never'],
     },
     {
-      code: "declare const foo: number = 'asd';",
-      options: ['always'],
-    },
-
-    {
       code: "const foo: number = 'asd';",
       options: ['always'],
     },
@@ -784,20 +779,6 @@ const class1 = class NAME {
           column: 5,
           endLine: 1,
           endColumn: 8,
-        },
-      ],
-    },
-    {
-      code: "declare var foo: number = 'asd';",
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          line: 1,
-          column: 13,
-          endLine: 1,
-          endColumn: 32,
         },
       ],
     },

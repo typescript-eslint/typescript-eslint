@@ -109,24 +109,43 @@ export function isTypeUnknownArrayType(
 
 export enum AnyType {
   Any,
+  PromiseAny,
   AnyArray,
   Safe,
 }
 /**
- * @returns `AnyType.Any` if the type is `any`, `AnyType.AnyArray` if the type is `any[]` or `readonly any[]`,
+ * @returns `AnyType.Any` if the type is `any`, `AnyType.AnyArray` if the type is `any[]` or `readonly any[]`, `AnyType.PromiseAny` if the type is `Promise<any>`,
  *          otherwise it returns `AnyType.Safe`.
  */
-export function isAnyOrAnyArrayTypeDiscriminated(
-  node: ts.Node,
+export function discriminateAnyType(
+  type: ts.Type,
   checker: ts.TypeChecker,
+  program: ts.Program,
+  tsNode: ts.Node,
 ): AnyType {
-  const type = checker.getTypeAtLocation(node);
   if (isTypeAnyType(type)) {
     return AnyType.Any;
   }
   if (isTypeAnyArrayType(type, checker)) {
     return AnyType.AnyArray;
   }
+  for (const part of tsutils.typeParts(type)) {
+    if (tsutils.isThenableType(checker, tsNode, type)) {
+      const awaitedType = checker.getAwaitedType(part);
+      if (awaitedType) {
+        const awaitedAnyType = discriminateAnyType(
+          awaitedType,
+          checker,
+          program,
+          tsNode,
+        );
+        if (awaitedAnyType === AnyType.Any) {
+          return AnyType.PromiseAny;
+        }
+      }
+    }
+  }
+
   return AnyType.Safe;
 }
 
