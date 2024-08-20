@@ -67,11 +67,11 @@ class AssertionError extends Error {
 
 function fail(actual, expected, message, operator, stackStartFunction) {
   throw new AssertionError({
-    message: message,
-    actual: actual,
-    expected: expected,
-    operator: operator,
-    stackStartFunction: stackStartFunction,
+    message,
+    actual,
+    expected,
+    operator,
+    stackStartFunction,
   });
 }
 
