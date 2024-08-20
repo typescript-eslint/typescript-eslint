@@ -2357,7 +2357,7 @@ export class Converter {
         return this.createNode<TSESTree.BigIntLiteral>(node, {
           type: AST_NODE_TYPES.Literal,
           raw: rawValue,
-          value: value,
+          value,
           bigint: value == null ? bigint : String(value),
           range,
         });
@@ -2896,7 +2896,7 @@ export class Converter {
                 node,
               )
             : null,
-          range: range,
+          range,
         });
 
         if (node.isTypeOf) {
@@ -3044,7 +3044,7 @@ export class Converter {
 
               name = this.createNode<TSESTree.TSQualifiedName>(nextName, {
                 left: name,
-                right: right,
+                right,
                 range: [name.range[0], right.range[1]],
                 type: AST_NODE_TYPES.TSQualifiedName,
               });
