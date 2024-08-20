@@ -43,7 +43,7 @@ const getPropertyName = eslintUtils.getPropertyName as (
     | TSESTree.Property
     | TSESTree.PropertyDefinition,
   initialScope?: TSESLint.Scope.Scope,
-) => null | string;
+) => string | null;
 
 /**
  * Get the value of a given node if it can decide the value statically.
@@ -70,7 +70,7 @@ const getStaticValue = eslintUtils.getStaticValue as (
 const getStringIfConstant = eslintUtils.getStringIfConstant as (
   node: TSESTree.Node,
   initialScope?: TSESLint.Scope.Scope,
-) => null | string;
+) => string | null;
 
 /**
  * Check whether a given node has any side effect or not.

@@ -25,7 +25,7 @@ export type JSONSchema4TypeName =
 /**
  * @see https://tools.ietf.org/html/draft-zyp-json-schema-04#section-3.5
  */
-export type JSONSchema4Type = boolean | null | number | string;
+export type JSONSchema4Type = boolean | number | string | null;
 
 export type JSONSchema4TypeExtended =
   | JSONSchema4Array

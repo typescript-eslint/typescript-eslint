@@ -233,12 +233,12 @@ namespace Linter {
     /**
      * The ID of the rule which makes this message.
      */
-    ruleId: null | string;
+    ruleId: string | null;
     /**
      * The severity of this message.
      */
     severity: Severity;
-    source: null | string;
+    source: string | null;
     /**
      * Information for suggestions
      */

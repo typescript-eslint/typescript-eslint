@@ -47,7 +47,7 @@ export namespace FlatESLint {
      * Ignore file patterns to use in addition to config ignores. These patterns are relative to cwd.
      * @default null
      */
-    ignorePatterns?: null | string[];
+    ignorePatterns?: string[] | null;
     /**
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.

@@ -94,7 +94,7 @@ interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: null | string | string[];
+  readonly output?: string | string[] | null;
 }
 
 /**
@@ -128,7 +128,7 @@ interface TestCaseError<MessageIds extends string> {
   /**
    * Reported suggestions.
    */
-  readonly suggestions?: null | readonly SuggestionOutput<MessageIds>[];
+  readonly suggestions?: readonly SuggestionOutput<MessageIds>[] | null;
   /**
    * The type of the reported AST node.
    */

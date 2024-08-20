@@ -18,13 +18,13 @@ export namespace SharedConfig {
 
   export type GlobalVariableOptionBase =
     | 'off'
+    | 'readable'
     | 'readonly'
-    | 'writable'
-    | /** @deprecated use `'writable'` */ 'writeable'
-    | /** @deprecated use `'readonly'` */ 'readable';
+    | /** @deprecated use `'writable'` */ 'writable'
+    | /** @deprecated use `'readonly'` */ 'writeable';
   export type GlobalVariableOptionBoolean =
-    | /** @deprecated use `'writable'` */ true
-    | /** @deprecated use `'readonly'` */ false;
+    | /** @deprecated use `'writable'` */ false
+    | /** @deprecated use `'readonly'` */ true;
   export type GlobalVariableOption =
     | GlobalVariableOptionBase
     | GlobalVariableOptionBoolean;
@@ -89,7 +89,7 @@ export namespace ClassicConfig {
     /**
      * The path to a parser or the package name of a parser.
      */
-    parser?: null | string;
+    parser?: string | null;
     /**
      * The parser options.
      */
