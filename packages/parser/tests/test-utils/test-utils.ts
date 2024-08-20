@@ -1,16 +1,17 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 
 import type { ParserOptions } from '../../src/parser';
+
 import * as parser from '../../src/parser';
 
 const defaultConfig = {
+  comment: true,
+  errorOnUnknownASTType: true,
   loc: true,
   range: true,
   raw: true,
-  tokens: true,
-  comment: true,
-  errorOnUnknownASTType: true,
   sourceType: 'module' as const,
+  tokens: true,
 };
 
 /**
