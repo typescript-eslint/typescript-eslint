@@ -579,7 +579,7 @@ export default tseslint.config(
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
     files: [
-      'packages/rule-tester/{src,tests,typing}/**/*.ts',
+      'packages/rule-tester/{src,tests,typings}/**/*.ts',
       'packages/utils/src/**/*.ts',
     ],
     rules: {
