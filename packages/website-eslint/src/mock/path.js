@@ -167,14 +167,10 @@ export function relative(from, to) {
     }
   }
 
-  let outputParts = [];
-  for (let i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = [...outputParts, ...toParts.slice(samePartsLength)];
-
-  return outputParts.join('/');
+  return [
+    ...Array(fromParts.length - samePartsLength).fill('..'),
+    ...toParts.slice(samePartsLength),
+  ].join('/');
 }
 
 export const sep = '/';

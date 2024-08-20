@@ -1982,12 +1982,11 @@ export class Converter {
                 );
                 break;
               case SyntaxKind.NamedImports:
-                result.specifiers = [
-                  ...result.specifiers,
+                result.specifiers.push(
                   ...node.importClause.namedBindings.elements.map(el =>
                     this.convertChild(el),
                   ),
-                ];
+                );
                 break;
             }
           }
