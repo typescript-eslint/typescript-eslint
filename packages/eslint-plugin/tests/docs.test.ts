@@ -497,6 +497,7 @@ ${token.value}`,
               testCaption.push('Correct');
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
+                  messages.length > 0,
                   `Expected to contain at least 1 lint error (with skipValidation):\n${
                     token.value
                   }`,
