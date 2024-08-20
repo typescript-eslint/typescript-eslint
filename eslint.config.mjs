@@ -1,4 +1,18 @@
 // @ts-check
+/// <reference types="./typings/eslint__compat" />
+/// <reference types="./typings/eslint__eslintrc" />
+/// <reference types="./typings/eslint__js" />
+/// <reference types="./typings/eslint-plugin-deprecation" />
+/// <reference types="./typings/eslint-plugin-eslint-comments" />
+/// <reference types="./typings/eslint-plugin-eslint-plugin" />
+/// <reference types="./typings/eslint-plugin-import" />
+/// <reference types="./typings/eslint-plugin-jest" />
+/// <reference types="./typings/eslint-plugin-jsdoc" />
+/// <reference types="./typings/eslint-plugin-jsx-a11y" />
+/// <reference types="./typings/eslint-plugin-react-hooks" />
+/// <reference types="./typings/eslint-plugin-react" />
+/// <reference types="./typings/eslint-plugin-simple-import-sort" />
+/// <reference types="./typings/eslint-plugin-unicorn" />
 
 import url from 'node:url';
 

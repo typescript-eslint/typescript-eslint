@@ -5,7 +5,7 @@ declare module 'eslint-plugin-jsdoc' {
     Linter,
   } from '@typescript-eslint/utils/ts-eslint';
 
-  declare const exprt: {
+  const exprt: {
     configs: {
       'flat/recommended': FlatConfig.Config;
       'flat/recommended-error': FlatConfig.Config;

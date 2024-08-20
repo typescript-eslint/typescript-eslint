@@ -4,7 +4,7 @@ declare module 'eslint-plugin-jest' {
     Linter,
   } from '@typescript-eslint/utils/ts-eslint';
 
-  declare const exprt: {
+  const exprt: {
     configs: {
       all: ClassicConfig.Config;
       recommended: ClassicConfig.Config;

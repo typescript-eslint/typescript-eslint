@@ -4,7 +4,7 @@ declare module 'eslint-plugin-react-hooks' {
     Linter,
   } from '@typescript-eslint/utils/ts-eslint';
 
-  declare const exprt: {
+  const exprt: {
     configs: {
       recommended: ClassicConfig.Config;
     };
