@@ -10,15 +10,13 @@ import { applyDefault } from './applyDefault';
 export type { RuleListener, RuleModule };
 
 // we automatically add the url
-export type NamedCreateRuleMetaDocs<Options extends readonly unknown[]> = Omit<
-  RuleMetaDataDocs<Options>,
-  'url'
->;
+export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
+
 export type NamedCreateRuleMeta<
   MessageIds extends string,
-  Options extends readonly unknown[],
-> = Omit<RuleMetaData<MessageIds, Options>, 'docs'> & {
-  docs: NamedCreateRuleMetaDocs<Options>;
+  PluginDocs = unknown,
+> = Omit<RuleMetaData<MessageIds, PluginDocs>, 'docs'> & {
+  docs: RuleMetaDataDocs & PluginDocs;
 };
 
 export interface RuleCreateAndOptions<
@@ -35,15 +33,17 @@ export interface RuleCreateAndOptions<
 export interface RuleWithMeta<
   Options extends readonly unknown[],
   MessageIds extends string,
+  Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: RuleMetaData<MessageIds, Options>;
+  meta: RuleMetaData<MessageIds, Docs>;
 }
 
 export interface RuleWithMetaAndName<
   Options extends readonly unknown[],
   MessageIds extends string,
+  Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: NamedCreateRuleMeta<MessageIds, Options>;
+  meta: NamedCreateRuleMeta<MessageIds, Docs>;
   name: string;
 }
 
@@ -53,7 +53,9 @@ export interface RuleWithMetaAndName<
  * @param urlCreator Creates a documentation URL for a given rule name.
  * @returns Function to create a rule with the docs URL format.
  */
-export function RuleCreator(urlCreator: (ruleName: string) => string) {
+export function RuleCreator<PluginDocs = unknown>(
+  urlCreator: (ruleName: string) => string,
+) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createNamedRule<
@@ -63,11 +65,10 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
     name,
     meta,
     ...rule
-  }: Readonly<RuleWithMetaAndName<Options, MessageIds>>): RuleModule<
-    MessageIds,
-    Options
-  > {
-    return createRule<Options, MessageIds>({
+  }: Readonly<
+    RuleWithMetaAndName<Options, MessageIds, PluginDocs>
+  >): RuleModule<MessageIds, Options, PluginDocs> {
+    return createRule<Options, MessageIds, PluginDocs>({
       meta: {
         ...meta,
         docs: {
@@ -80,22 +81,18 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   };
 }
 
-/**
- * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
- *
- * @returns Well-typed TSESLint custom ESLint rule.
- * @remarks It is generally better to provide a docs URL function to RuleCreator.
- */
 function createRule<
   Options extends readonly unknown[],
   MessageIds extends string,
+  PluginDocs = unknown,
 >({
   create,
   defaultOptions,
   meta,
-}: Readonly<RuleWithMeta<Options, MessageIds>>): RuleModule<
+}: Readonly<RuleWithMeta<Options, MessageIds, PluginDocs>>): RuleModule<
   MessageIds,
-  Options
+  Options,
+  PluginDocs
 > {
   return {
     create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
@@ -107,4 +104,17 @@ function createRule<
   };
 }
 
-RuleCreator.withoutDocs = createRule;
+/**
+ * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
+ *
+ * @returns Well-typed TSESLint custom ESLint rule.
+ * @remarks It is generally better to provide a docs URL function to RuleCreator.
+ */
+RuleCreator.withoutDocs = function withoutDocs<
+  Options extends readonly unknown[],
+  MessageIds extends string,
+>(
+  args: Readonly<RuleWithMeta<Options, MessageIds>>,
+): RuleModule<MessageIds, Options> {
+  return createRule(args);
+};

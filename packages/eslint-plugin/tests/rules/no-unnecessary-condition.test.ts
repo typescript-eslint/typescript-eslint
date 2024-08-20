@@ -1,9 +1,10 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
+
 import type {
   InvalidTestCase,
   TestCaseError,
-} from '@typescript-eslint/utils/ts-eslint';
-import * as path from 'path';
+} from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageId,
@@ -15,10 +16,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -591,10 +593,12 @@ declare const foo: Foo;
 const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -606,10 +610,12 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key].trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -624,10 +630,12 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -643,10 +651,12 @@ function Foo(outer: Outer, key: Foo): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -658,10 +668,12 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key]?.trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     `
@@ -721,8 +733,10 @@ if (x) {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
     `
@@ -775,14 +789,14 @@ foo[key] ??= 1;
 declare const foo: { bar?: number };
 foo.bar ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
 declare const foo: { bar: { baz?: number } };
 foo['bar'].baz ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -791,7 +805,7 @@ type Key = 'baz' | 'qux';
 declare const key: Key;
 foo.bar[key] ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     `
 declare let foo: number;
@@ -824,10 +838,12 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
   }
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     `
@@ -852,6 +868,19 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    {
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+      code: `
+class ConsistentRand {
+  #rand?: number;
+
+  getCachedRand() {
+    this.#rand ??= Math.random();
+    return this.#rand;
+  }
+}
+      `,
+    },
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1923,8 +1952,10 @@ if (x) {
           column: 5,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
     {
@@ -2123,7 +2154,7 @@ declare const foo: { bar: number };
 foo.bar ??= 1;
       `,
       output: null,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
       errors: [
         {
           messageId: 'neverNullish',

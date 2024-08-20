@@ -160,7 +160,7 @@ export default createRule({
       'TSModuleDeclaration > TSModuleBlock'(
         node: TSESTree.TSModuleBlock,
       ): void {
-        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
+        enterDeclaration(node.parent);
       },
       TSEnumDeclaration: enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
@@ -176,7 +176,7 @@ export default createRule({
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         visitNamespaceAccess(node, node.left, node.right);
       },
-      'MemberExpression[computed=false]': function (
+      'MemberExpression[computed=false]'(
         node: TSESTree.MemberExpression,
       ): void {
         const property = node.property as TSESTree.Identifier;

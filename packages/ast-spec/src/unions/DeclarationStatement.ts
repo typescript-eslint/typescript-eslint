@@ -13,6 +13,10 @@ import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclarati
 import type { ClassExpression } from '../expression/ClassExpression/spec';
 
 // TODO - breaking change remove this
+/**
+ * @deprecated
+ * Note that this is neither up to date nor fully correct.
+ */
 export type DeclarationStatement =
   | ClassDeclaration
   | ClassExpression

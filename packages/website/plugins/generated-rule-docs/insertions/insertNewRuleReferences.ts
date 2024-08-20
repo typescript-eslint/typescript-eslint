@@ -1,12 +1,14 @@
+import { EOL } from 'node:os';
+import * as path from 'node:path';
+
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
-import { EOL } from 'os';
-import * as path from 'path';
 import prettier from 'prettier';
 
+import { nodeIsHeading } from '../../utils/nodes';
+import { convertToPlaygroundHash } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { convertToPlaygroundHash, nodeIsHeading } from '../utils';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -17,14 +19,6 @@ import { convertToPlaygroundHash, nodeIsHeading } from '../utils';
 const COMPLICATED_RULE_OPTIONS = new Set([
   'member-ordering',
   'naming-convention',
-]);
-
-/**
- * Rules that do funky things with their defaults and require special code
- * rather than just JSON.stringify-ing their defaults blob
- */
-const SPECIAL_CASE_DEFAULTS = new Map([
-  ['ban-types', '[{ /* See below for default options */ }]'],
 ]);
 
 const PRETTIER_CONFIG_PATH = path.resolve(
@@ -189,10 +183,7 @@ function linkToConfigs(configs: string[]): mdast.Node[] {
 }
 
 function getRuleDefaultOptions(page: RuleDocsPage): string {
-  const defaults =
-    SPECIAL_CASE_DEFAULTS.get(page.file.stem) ??
-    JSON.stringify(page.rule.defaultOptions);
-
+  const defaults = JSON.stringify(page.rule.defaultOptions);
   const recommended = page.rule.meta.docs.recommended;
 
   return typeof recommended === 'object'

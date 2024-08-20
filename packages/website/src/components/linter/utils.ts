@@ -95,7 +95,7 @@ export function parseMarkers(
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     result[group] ||= {
-      group: group,
+      group,
       uri: code.target,
       items: [],
     };
@@ -179,6 +179,6 @@ export function parseLintResults(
 }
 
 export function getPathRegExp(path: string): RegExp {
-  const escapedPath = path.replace(/\./g, '\\.').replace(/\*/g, '[^/]+');
+  const escapedPath = path.replaceAll('.', '\\.').replaceAll('*', '[^/]+');
   return new RegExp(`^${escapedPath}$`, '');
 }

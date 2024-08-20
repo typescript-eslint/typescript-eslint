@@ -1,3 +1,4 @@
+import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -8,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getContextualType,
   getDeclaration,
+  getModifiers,
   getParserServices,
   isNullableType,
   isTypeFlagSet,
@@ -79,29 +81,66 @@ export default createRule<Options, MessageIds>({
         ) &&
         // ignore class properties as they are compile time guarded
         // also ignore function arguments as they can't be used before defined
-        ts.isVariableDeclaration(declaration) &&
-        // is it `const x!: number`
-        declaration.initializer === undefined &&
-        declaration.exclamationToken === undefined &&
-        declaration.type !== undefined
+        ts.isVariableDeclaration(declaration)
       ) {
-        // check if the defined variable type has changed since assignment
-        const declarationType = checker.getTypeFromTypeNode(declaration.type);
-        const type = getConstrainedTypeAtLocation(services, node);
+        // For var declarations, we need to check whether the node
+        // is actually in a descendant of its declaration or not. If not,
+        // it may be used before defined.
+
+        // eg
+        // if (Math.random() < 0.5) {
+        //     var x: number  = 2;
+        // } else {
+        //     x!.toFixed();
+        // }
         if (
-          declarationType === type &&
-          // `declare`s are never narrowed, so never skip them
-          !(
-            services.tsNodeToESTreeNodeMap.get(declaration)
-              .parent as TSESTree.VariableDeclaration
-          ).declare
+          ts.isVariableDeclarationList(declaration.parent) &&
+          // var
+          declaration.parent.flags === ts.NodeFlags.None &&
+          // If they are not in the same file it will not exist.
+          // This situation must not occur using before defined.
+          services.tsNodeToESTreeNodeMap.has(declaration)
         ) {
-          // possibly used before assigned, so just skip it
-          // better to false negative and skip it, than false positive and fix to compile erroring code
-          //
-          // no better way to figure this out right now
-          // https://github.com/Microsoft/TypeScript/issues/31124
-          return true;
+          const declaratorNode: TSESTree.VariableDeclaration =
+            services.tsNodeToESTreeNodeMap.get(declaration);
+          const scope = context.sourceCode.getScope(node);
+          const declaratorScope = context.sourceCode.getScope(declaratorNode);
+          let parentScope: Scope | null = declaratorScope;
+          while ((parentScope = parentScope.upper)) {
+            if (parentScope === scope) {
+              return true;
+            }
+          }
+        }
+
+        if (
+          // is it `const x!: number`
+          declaration.initializer === undefined &&
+          declaration.exclamationToken === undefined &&
+          declaration.type !== undefined
+        ) {
+          // check if the defined variable type has changed since assignment
+          const declarationType = checker.getTypeFromTypeNode(declaration.type);
+          const type = getConstrainedTypeAtLocation(services, node);
+          if (
+            declarationType === type &&
+            // `declare`s are never narrowed, so never skip them
+            !(
+              ts.isVariableDeclarationList(declaration.parent) &&
+              ts.isVariableStatement(declaration.parent.parent) &&
+              tsutils.includesModifier(
+                getModifiers(declaration.parent.parent),
+                ts.SyntaxKind.DeclareKeyword,
+              )
+            )
+          ) {
+            // possibly used before assigned, so just skip it
+            // better to false negative and skip it, than false positive and fix to compile erroring code
+            //
+            // no better way to figure this out right now
+            // https://github.com/Microsoft/TypeScript/issues/31124
+            return true;
+          }
         }
       }
       return false;

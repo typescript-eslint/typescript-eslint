@@ -4,9 +4,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 const sortedWithoutGroupingDefaultOption: RunTests<MessageIds, Options> = {
   valid: [
     // default option + interface + multiple types
@@ -1829,156 +1827,6 @@ class FooTestGetter {
         },
       ],
     },
-
-    // default option + interface + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-interface Foo {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-}
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + type literal + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-type Foo = {
-  [a: string]: number;
-
-  a: x;
-  b: x;
-  c: x;
-
-  c(): void;
-  b(): void;
-  a(): void;
-
-  (): Baz;
-
-  new (): Bar;
-};
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-        },
-      ],
-    },
-
-    // default option + class + wrong order within group and wrong group order + alphabetically
-    {
-      code: `
-class Foo {
-  public static c: string = '';
-  public static b: string = '';
-  public static a: string;
-
-  constructor() {}
-
-  public d: string = '';
-}
-      `,
-      options: [
-        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'b',
-            beforeMember: 'c',
-          },
-        },
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'a',
-            beforeMember: 'b',
-          },
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'd',
-            rank: 'public constructor',
-          },
-        },
-      ],
-    },
-
     // default option + class expression + wrong order within group and wrong group order + alphabetically
     {
       code: `
@@ -2758,6 +2606,86 @@ class Foo {
           messageId: 'incorrectOrder',
           line: 5,
           column: 3,
+        },
+      ],
+    },
+    // default option + accessors
+    {
+      code: `
+class Foo {
+  @Dec() accessor b;
+  @Dec() accessor a;
+
+  accessor d;
+  accessor c;
+
+  abstract accessor f;
+  abstract accessor e;
+}
+      `,
+      options: [
+        { default: { memberTypes: defaultOrder, order: 'alphabetically' } },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'b',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'c',
+            beforeMember: 'd',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'e',
+            beforeMember: 'f',
+          },
+        },
+      ],
+    },
+    // accessors with wrong group order
+    {
+      code: `
+class Foo {
+  accessor a;
+  abstract accessor b;
+  accessor c;
+  @Dec() accessor d;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [
+              'decorated-accessor',
+              'accessor',
+              'abstract-accessor',
+            ],
+            order: 'alphabetically',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'c',
+            rank: 'abstract accessor',
+          },
+        },
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'd',
+            rank: 'accessor',
+          },
         },
       ],
     },

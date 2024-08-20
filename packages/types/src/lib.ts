@@ -1,7 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 type Lib =
   | 'es5'
@@ -73,6 +73,7 @@ type Lib =
   | 'es2022.regexp'
   | 'es2023.array'
   | 'es2023.collection'
+  | 'es2023.intl'
   | 'esnext.array'
   | 'esnext.collection'
   | 'esnext.symbol'
@@ -85,6 +86,7 @@ type Lib =
   | 'esnext.weakref'
   | 'esnext.decorators'
   | 'esnext.object'
+  | 'esnext.regexp'
   | 'decorators'
   | 'decorators.legacy'
   | 'es2016.full'

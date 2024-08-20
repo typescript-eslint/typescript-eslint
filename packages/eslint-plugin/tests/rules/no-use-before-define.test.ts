@@ -3,9 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-use-before-define';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 const parserOptions = { ecmaVersion: 6 as const };
 
@@ -71,7 +69,7 @@ function a() {
   alert(a);
 })();
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     `
 a();
@@ -84,14 +82,14 @@ try {
 class A {}
 new A();
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     `
 var a = 0,
   b = a;
     `,
-    { code: 'var { a = 0, b = a } = {};', parserOptions },
-    { code: 'var [a = 0, b = a] = {};', parserOptions },
+    { code: 'var { a = 0, b = a } = {};', languageOptions: { parserOptions } },
+    { code: 'var [a = 0, b = a] = {};', languageOptions: { parserOptions } },
     `
 function foo() {
   foo();
@@ -113,7 +111,7 @@ var a;
 for (a of a) {
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
 
     // Block-level bindings
@@ -125,7 +123,7 @@ a();
   function a() {}
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -136,7 +134,7 @@ a();
 }
       `,
       options: ['nofunc'],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -149,7 +147,7 @@ switch (foo) {
   }
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -158,7 +156,7 @@ a();
   let a = function () {};
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
     },
 
     // object style options
@@ -180,7 +178,7 @@ function a() {
 }
       `,
       options: [{ functions: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -190,7 +188,7 @@ function foo() {
 class A {}
       `,
       options: [{ classes: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
 
     // "variables" option
@@ -209,7 +207,7 @@ var foo = () => bar;
 var bar;
       `,
       options: [{ variables: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
 
     // "typedefs" option
@@ -274,7 +272,9 @@ export namespace Third {
   export let third = () => console.log('third');
 }
       `,
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/550
     `
@@ -335,7 +335,7 @@ export { a };
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -343,7 +343,7 @@ export { a as b };
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -351,7 +351,7 @@ export { a, b };
 let a, b;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -359,7 +359,7 @@ export { a };
 var a;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -367,7 +367,7 @@ export { f };
 function f() {}
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -375,7 +375,7 @@ export { C };
 class C {}
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -386,7 +386,7 @@ enum Foo {
 }
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -397,7 +397,7 @@ namespace Foo {
 }
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     {
       code: `
@@ -411,7 +411,7 @@ let baz: Enum;
 enum Enum {}
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2502
     {
@@ -420,10 +420,12 @@ import * as React from 'react';
 
 <div />;
       `,
-      parserOptions: {
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          sourceType: 'module',
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -433,10 +435,12 @@ import React from 'react';
 
 <div />;
       `,
-      parserOptions: {
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          sourceType: 'module',
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -446,11 +450,13 @@ import { h } from 'preact';
 
 <div />;
       `,
-      parserOptions: {
-        sourceType: 'module',
-        jsxPragma: 'h',
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          sourceType: 'module',
+          jsxPragma: 'h',
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -460,9 +466,11 @@ const React = require('react');
 
 <div />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -582,7 +590,9 @@ const baz = '';
 a++;
 var a = 19;
       `,
-      parserOptions: { sourceType: 'module' },
+      languageOptions: {
+        parserOptions: { sourceType: 'module' },
+      },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -596,7 +606,7 @@ var a = 19;
 a++;
 var a = 19;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -687,7 +697,7 @@ var a = function () {};
   var a = 42;
 })();
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -701,24 +711,7 @@ var a = function () {};
 (() => a())();
 function a() {}
       `,
-      parserOptions,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-'use strict';
-a();
-{
-  function a() {}
-}
-      `,
-      parser: require.resolve('espree'),
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -749,7 +742,7 @@ try {
 var f = () => a;
 var a;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -763,7 +756,7 @@ var a;
 new A();
 class A {}
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -779,7 +772,7 @@ function foo() {
 }
 class A {}
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -793,7 +786,7 @@ class A {}
 new A();
 var A = class {};
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -809,7 +802,7 @@ function foo() {
 }
 var A = class {};
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -827,7 +820,7 @@ a++;
   var a;
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -844,7 +837,7 @@ a++;
   function a() {}
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -860,7 +853,7 @@ a++;
   let a = 1;
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -878,7 +871,7 @@ switch (foo) {
     let a;
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -896,7 +889,7 @@ if (true) {
   let a;
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -927,7 +920,7 @@ new A();
 var A = class {};
       `,
       options: [{ classes: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -944,7 +937,7 @@ function foo() {
 var A = class {};
       `,
       options: [{ classes: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -967,7 +960,7 @@ var A = class {};
     },
     {
       code: 'let a = a + b;',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -978,7 +971,7 @@ var A = class {};
     },
     {
       code: 'const a = foo(a);',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -989,7 +982,7 @@ var A = class {};
     },
     {
       code: 'function foo(a = a) {}',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1000,7 +993,7 @@ var A = class {};
     },
     {
       code: 'var { a = a } = [];',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1011,7 +1004,7 @@ var A = class {};
     },
     {
       code: 'var [a = a] = [];',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1022,7 +1015,7 @@ var A = class {};
     },
     {
       code: 'var { b = a, a } = {};',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1033,7 +1026,7 @@ var A = class {};
     },
     {
       code: 'var [b = a, a] = {};',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1044,7 +1037,7 @@ var A = class {};
     },
     {
       code: 'var { a = 0 } = a;',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1055,7 +1048,7 @@ var A = class {};
     },
     {
       code: 'var [a = 0] = a;',
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1082,7 +1075,7 @@ for (var a in a) {
 for (var a of a) {
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1179,7 +1172,7 @@ function foo() {
 }
 var bar;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       options: [{ variables: false }],
       errors: [
         {
@@ -1252,7 +1245,7 @@ enum Foo {
 export { a };
 const a = 1;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1266,7 +1259,7 @@ export { a };
 const a = 1;
       `,
       options: [{}],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1280,7 +1273,7 @@ export { a };
 const a = 1;
       `,
       options: [{ allowNamedExports: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1294,7 +1287,7 @@ export { a };
 const a = 1;
       `,
       options: ['nofunc'],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1307,7 +1300,7 @@ const a = 1;
 export { a as b };
 const a = 1;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1320,7 +1313,7 @@ const a = 1;
 export { a, b };
 let a, b;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1337,7 +1330,7 @@ let a, b;
 export { a };
 var a;
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1350,7 +1343,7 @@ var a;
 export { f };
 function f() {}
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1363,7 +1356,7 @@ function f() {}
 export { C };
 class C {}
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1377,7 +1370,7 @@ export const foo = a;
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1393,8 +1386,7 @@ export function foo() {
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
-
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1412,8 +1404,7 @@ export class C {
 const a = 1;
       `,
       options: [{ allowNamedExports: true }],
-      parserOptions,
-
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1429,7 +1420,7 @@ enum Foo {
   BAR,
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1445,7 +1436,7 @@ namespace Foo {
   export let bar = () => console.log('bar');
 }
       `,
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',
@@ -1465,7 +1456,7 @@ let baz: Enum;
 enum Enum {}
       `,
       options: [{ ignoreTypeReferences: true, allowNamedExports: false }],
-      parserOptions,
+      languageOptions: { parserOptions },
       errors: [
         {
           messageId: 'noUseBeforeDefine',

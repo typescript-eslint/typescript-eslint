@@ -9,6 +9,12 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/sort-type-constituents** for documentation.
 
+:::danger Deprecated
+This rule has been deprecated in favor of the [`perfectionist/sort-intersection-types`](https://perfectionist.dev/rules/sort-intersection-types) and [`perfectionist/sort-union-types`](https://perfectionist.dev/rules/sort-union-types) rules.
+
+See [Docs: Deprecate sort-type-constituents in favor of eslint-plugin-perfectionist](https://github.com/typescript-eslint/typescript-eslint/issues/8915) and [eslint-plugin: Feature freeze naming and sorting stylistic rules](https://github.com/typescript-eslint/typescript-eslint/issues/8792) for more information.
+:::
+
 Sorting union (`|`) and intersection (`&`) types can help:
 
 - keep your codebase standardized
@@ -18,15 +24,6 @@ Sorting union (`|`) and intersection (`&`) types can help:
 This rule reports on any types that aren't sorted alphabetically.
 
 > Types are sorted case-insensitively and treating numbers like a human would, falling back to character code sorting in case of ties.
-
-:::note
-This rule is _feature frozen_: it will no longer receive new features such as new options.
-It still will accept bug and documentation fixes for its existing area of features.
-
-Stylistic rules that enforce naming and/or sorting conventions tend to grow incomprehensibly complex as increasingly obscure features are requested.
-This rule has reached the limit of what is reasonable for the typescript-eslint project to maintain.
-See [eslint-plugin: Feature freeze naming and sorting stylistic rules](https://github.com/typescript-eslint/typescript-eslint/issues/8792) for more information.
-:::
 
 ## Examples
 

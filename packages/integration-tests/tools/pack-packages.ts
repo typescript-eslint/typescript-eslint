@@ -7,9 +7,10 @@
  * against the exact same version of the package.
  */
 
-import { spawnSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+
 import tmp from 'tmp';
 
 interface PackageJSON {
@@ -35,6 +36,7 @@ for (const pkg of PACKAGES) {
     continue;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- this file needs to be sync and CJS for jest
   const packageJson = require(packagePath) as PackageJSON;
   if (packageJson.private === true) {
     continue;

@@ -32,7 +32,7 @@ export default createRule({
       if (
         valueNode.type === AST_NODE_TYPES.Literal &&
         typeNode.type === AST_NODE_TYPES.TSLiteralType &&
-        'raw' in typeNode.literal &&
+        typeNode.literal.type === AST_NODE_TYPES.Literal &&
         valueNode.raw === typeNode.literal.raw
       ) {
         if (canFix) {
