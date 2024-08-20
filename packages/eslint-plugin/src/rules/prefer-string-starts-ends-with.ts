@@ -725,6 +725,5 @@ export default createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-
   name: 'prefer-string-starts-ends-with',
 });

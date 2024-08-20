@@ -90,6 +90,5 @@ export default createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-
   name: 'max-params',
 });

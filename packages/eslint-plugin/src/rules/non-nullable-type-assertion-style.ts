@@ -143,6 +143,5 @@ export default createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'non-nullable-type-assertion-style',
 });

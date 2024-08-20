@@ -942,6 +942,5 @@ export default createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-
   name: 'consistent-type-imports',
 });

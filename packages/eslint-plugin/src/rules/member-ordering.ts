@@ -1047,13 +1047,6 @@ export default createRule<Options, MessageIds>({
             enum: allMemberTypes as string[],
             type: 'string',
           },
-          baseConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/allItems'),
-              objectConfig('#/items/0/$defs/allItems'),
-            ],
-          },
           optionalityOrderOptions: {
             enum: ['optional-first', 'required-first'],
             type: 'string',
@@ -1068,7 +1061,6 @@ export default createRule<Options, MessageIds>({
             ],
             type: 'string',
           },
-
           typeItems: {
             enum: [
               'readonly-signature',
@@ -1079,6 +1071,15 @@ export default createRule<Options, MessageIds>({
               'constructor',
             ],
             type: 'string',
+          },
+
+          // These properties must follow the preceding ones for ajv logic.
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
           },
           typesConfig: {
             oneOf: [

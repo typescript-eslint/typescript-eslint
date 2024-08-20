@@ -166,6 +166,5 @@ export default createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'prefer-return-this-type',
 });

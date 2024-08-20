@@ -448,7 +448,6 @@ export default createRule<Options, MessageId>({
     ],
     type: 'problem',
   },
-
   name: 'no-floating-promises',
 });
 

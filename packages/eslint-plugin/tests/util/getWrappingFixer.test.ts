@@ -50,7 +50,6 @@ const voidEverythingRule = createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'void-everything',
 });
 
@@ -321,7 +320,6 @@ const removeFunctionRule = createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'remove-function',
 });
 

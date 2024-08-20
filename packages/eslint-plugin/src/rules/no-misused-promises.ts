@@ -589,7 +589,6 @@ export default createRule<Options, MessageId>({
     ],
     type: 'problem',
   },
-
   name: 'no-misused-promises',
 });
 

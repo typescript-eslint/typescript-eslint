@@ -319,7 +319,6 @@ export default createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'prefer-find',
 });
 

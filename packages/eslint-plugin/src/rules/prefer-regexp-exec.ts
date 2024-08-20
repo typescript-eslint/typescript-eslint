@@ -13,10 +13,12 @@ import {
 } from '../util';
 
 enum ArgumentType {
-  Both = String | RegExp,
   Other = 0,
   RegExp = 1 << 1,
   String = 1 << 0,
+
+  // https://github.com/azat-io/eslint-plugin-perfectionist/issues/226
+  Both = String | RegExp,
 }
 
 export default createRule({
@@ -176,6 +178,5 @@ export default createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'prefer-regexp-exec',
 });

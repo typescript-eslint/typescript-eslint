@@ -307,6 +307,5 @@ export default createRule<[], MessageIds>({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'use-unknown-in-catch-callback-variable',
 });

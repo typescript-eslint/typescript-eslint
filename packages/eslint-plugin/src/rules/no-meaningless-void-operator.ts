@@ -86,6 +86,5 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     ],
     type: 'suggestion',
   },
-
   name: 'no-meaningless-void-operator',
 });

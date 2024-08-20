@@ -377,6 +377,5 @@ export default createRule<Options, MessageId>({
     ],
     type: 'problem',
   },
-
   name: 'no-confusing-void-expression',
 });

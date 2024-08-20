@@ -85,6 +85,5 @@ export default createRule<Options, MessageIds>({
     ],
     type: 'problem',
   },
-
   name: 'require-array-sort-compare',
 });

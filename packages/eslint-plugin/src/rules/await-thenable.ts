@@ -63,6 +63,5 @@ export default createRule({
     schema: [],
     type: 'problem',
   },
-
   name: 'await-thenable',
 });

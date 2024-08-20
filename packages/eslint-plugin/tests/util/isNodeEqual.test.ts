@@ -39,7 +39,6 @@ const rule = createRule({
     schema: [],
     type: 'suggestion',
   },
-
   name: 'no-useless-expression',
 });
 

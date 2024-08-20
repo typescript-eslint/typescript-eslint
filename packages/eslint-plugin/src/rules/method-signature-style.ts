@@ -239,6 +239,5 @@ export default createRule<Options, MessageIds>({
     ],
     type: 'suggestion',
   },
-
   name: 'method-signature-style',
 });

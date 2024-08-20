@@ -395,7 +395,6 @@ export default createRule({
     ],
     type: 'problem',
   },
-
   name: 'return-await',
 });
 
