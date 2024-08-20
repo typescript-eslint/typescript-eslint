@@ -5,8 +5,8 @@ import * as parser from '../../src';
 const PROJECT_DIR = join(__dirname, '../fixtures/projectTrue');
 
 const config = {
-  tsconfigRootDir: PROJECT_DIR,
   project: true,
+  tsconfigRootDir: PROJECT_DIR,
 } satisfies Partial<parser.TSESTreeOptions>;
 
 describe('parseAndGenerateServices', () => {

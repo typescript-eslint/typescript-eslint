@@ -3,12 +3,13 @@ import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
+import type { TSESTreeOptions } from '../parser-options';
+
 import {
   createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
 } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,

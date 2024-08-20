@@ -1,9 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as ts from 'typescript';
 
 import type { TSNode } from '../../src';
 import type { ConverterOptions } from '../../src/convert';
+
 import { Converter } from '../../src/convert';
 
 describe('convert', () => {
@@ -205,32 +207,32 @@ describe('convert', () => {
         pos: 0,
       };
       const convertedNode = instance['createNode'](tsNode, {
-        type: AST_NODE_TYPES.TSAbstractKeyword,
-        range: [0, 20],
         loc: {
-          start: {
-            line: 10,
-            column: 20,
-          },
           end: {
-            line: 15,
             column: 25,
+            line: 15,
+          },
+          start: {
+            column: 20,
+            line: 10,
           },
         },
+        range: [0, 20],
+        type: AST_NODE_TYPES.TSAbstractKeyword,
       });
       expect(convertedNode).toEqual({
-        type: AST_NODE_TYPES.TSAbstractKeyword,
-        range: [0, 20],
         loc: {
-          start: {
-            line: 10,
-            column: 20,
-          },
           end: {
-            line: 15,
             column: 25,
+            line: 15,
+          },
+          start: {
+            column: 20,
+            line: 10,
           },
         },
+        range: [0, 20],
+        type: AST_NODE_TYPES.TSAbstractKeyword,
       });
     });
   });

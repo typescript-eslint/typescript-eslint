@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'node:path';
-
 import * as ts from 'typescript';
 
 import type {
@@ -8,6 +7,7 @@ import type {
   TypeScriptProjectService,
 } from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
+
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
 
 const mockCreateNoProgram = jest.fn();
@@ -48,16 +48,16 @@ function createMockProjectService() {
   };
 
   return {
-    service: service as typeof service & TypeScriptProjectService,
     openClientFile,
+    service: service as typeof service & TypeScriptProjectService,
   };
 }
 
 const mockFileName = 'camelCaseFile.ts';
 
 const mockParseSettings = {
-  filePath: `path/PascalCaseDirectory/${mockFileName}`,
   extraFileExtensions: [] as readonly string[],
+  filePath: `path/PascalCaseDirectory/${mockFileName}`,
   tsconfigRootDir: currentDirectory,
 } as ParseSettings;
 

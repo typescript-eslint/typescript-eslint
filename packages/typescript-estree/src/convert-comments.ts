@@ -1,8 +1,9 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getLocFor } from './node-utils';
 import type { TSESTree } from './ts-estree';
+
+import { getLocFor } from './node-utils';
 import { AST_TOKEN_TYPES } from './ts-estree';
 
 /**
@@ -37,10 +38,10 @@ export function convertComments(
           : // multiline comments end 2 characters early
             range[1] - textStart - 2;
       comments.push({
+        loc,
+        range,
         type,
         value: code.slice(textStart, textStart + textEnd),
-        range,
-        loc,
       });
     },
     ast,

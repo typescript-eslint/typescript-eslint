@@ -84,7 +84,7 @@ interface ParseOptions {
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: false | ((message: string) => void);
+  loggerFn?: ((message: string) => void) | false;
 
   /**
    * Controls whether the `range` property is included on AST nodes.
@@ -94,14 +94,14 @@ interface ParseOptions {
   range?: boolean;
 
   /**
-   * Set to true to create a top-level array containing all tokens from the file.
-   */
-  tokens?: boolean;
-
-  /**
    * Whether deprecated AST properties should skip calling console.warn on accesses.
    */
   suppressDeprecatedPropertyWarnings?: boolean;
+
+  /**
+   * Set to true to create a top-level array containing all tokens from the file.
+   */
+  tokens?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
@@ -175,6 +175,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program(s).
+   */
+  programs?: ts.Program[] | null;
+
+  /**
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
@@ -183,7 +190,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Note that {@link projectService} is now preferred.
    */
-  project?: string[] | string | boolean | null;
+  project?: string[] | boolean | string | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -197,19 +204,12 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Whether to create a shared TypeScript project service to power program creation.
    */
-  projectService?: boolean | ProjectServiceOptions;
+  projectService?: ProjectServiceOptions | boolean;
 
   /**
    * The absolute path to the root directory for all provided `project`s.
    */
   tsconfigRootDir?: string;
-
-  /**
-   * An array of one or more instances of TypeScript Program objects to be used for type information.
-   * This overrides any program or programs that would have been computed from the `project` option.
-   * All linted files must be part of the provided program(s).
-   */
-  programs?: ts.Program[] | null;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -241,9 +241,9 @@ export interface ParserServicesNodeMaps {
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps,
     ParserServicesBase {
-  program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
+  program: ts.Program;
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps,
