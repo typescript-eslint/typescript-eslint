@@ -1983,8 +1983,8 @@ export class Converter {
                 break;
               case SyntaxKind.NamedImports:
                 result.specifiers.push(
-                  ...node.importClause.namedBindings.elements.map(el =>
-                    this.convertChild(el),
+                  ...node.importClause.namedBindings.elements.map(
+                    el => this.convertChild(el) as TSESTree.ImportClause,
                   ),
                 );
                 break;
