@@ -415,8 +415,6 @@ namespace SourceCode {
       >;
 
   export type CursorWithSkipOptions =
-    | FilterPredicate
-    | number
     | {
         /**
          * The predicate function to choose tokens.
@@ -430,12 +428,16 @@ namespace SourceCode {
          * The count of tokens the cursor skips.
          */
         skip?: number;
-      };
+      }
+    | FilterPredicate
+    | number;
 
   export type CursorWithCountOptions =
-    | FilterPredicate
-    | number
     | {
+        /**
+         * The maximum count of tokens the cursor iterates.
+         */
+        count?: number;
         /**
          * The predicate function to choose tokens.
          */
@@ -444,11 +446,9 @@ namespace SourceCode {
          * The flag to iterate comments as well.
          */
         includeComments?: boolean;
-        /**
-         * The maximum count of tokens the cursor iterates.
-         */
-        count?: number;
-      };
+      }
+    | FilterPredicate
+    | number;
 }
 
 class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}
