@@ -48,6 +48,7 @@ const getObjSpread = { ...getObj() };
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
 "Incorrect
 
+// { "allowStrings": false }
 const fruit = 'Apple';
 const chars = [...fruit];
                ~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
@@ -55,22 +56,22 @@ const chars = [...fruit];
 `;
 
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
-"Incorrect
+"Correct
+Options: {"allowStrings": true}
 
-declare function doWork();
-
-const spread = { ...doWork };
-                 ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
+// { "allowStrings": true }
+const fruit = 'Apple';
+const chars = [...fruit];
 "
 `;
 
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 5`] = `
 "Incorrect
 
-const set = new Set([1, 2, 3]);
+declare function doWork();
 
-const spread = { ...set };
-                 ~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+const spread = { ...doWork };
+                 ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
 "
 `;
 
@@ -105,5 +106,29 @@ class User {
 
 const spread = { ...User };
                  ~~~~~~~ Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 8`] = `
+"Incorrect
+
+type UnsafeIterable = Iterable<number>;
+
+declare const iterable: UnsafeIterable;
+
+const spread = { ...iterable };
+                 ~~~~~~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 9`] = `
+"Correct
+Options: {"allowForKnownSafeIterables":["SafeIterable"]}
+
+type SafeIterable = Iterable<number>;
+
+declare const iterable: SafeIterable;
+
+const spread = { ...iterable };
 "
 `;

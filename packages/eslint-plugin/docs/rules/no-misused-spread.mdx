@@ -60,7 +60,8 @@ const getObjSpread = { ...getObj() };
 
 ### `allowStrings`
 
-By default, this rule disallows using the spread operator on strings inside arrays:
+By default, this rule disallows using the spread operator on strings inside arrays.
+Set `"allowStrings": true` to allow this behavior.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -71,24 +72,23 @@ const chars = [...fruit];
 ```
 
 </TabItem>
+
+<TabItem value="✅ Correct">
+
+```ts option='{"allowStrings": true}'
+// { "allowStrings": true }
+const fruit = 'Apple';
+const chars = [...fruit];
+```
+
+</TabItem>
 </Tabs>
-
-If you want to allow this behavior, you can configure the rule with `"allowStrings": true`:
-
-```json
-{
-  "@typescript-eslint/no-misused-spread": [
-    "error",
-    {
-      "allowStrings": true
-    }
-  ]
-}
 ```
 
 ### `allowFunctions`
 
-By default, this rule disallows using the spread operator on functions without additional properties:
+By default, this rule disallows using the spread operator on functions without additional properties.
+Set `"allowFunctions": true` to allow this behavior.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -100,53 +100,23 @@ const spread = { ...doWork };
 ```
 
 </TabItem>
-</Tabs>
 
-If you want to allow this behavior, you can configure the rule with `"allowFunctions": true`:
+<TabItem value="✅ Correct">
 
-```json
-{
-  "@typescript-eslint/no-misused-spread": [
-    "error",
-    {
-      "allowFunctions": true
-    }
-  ]
-}
-```
+```ts option='{"allowFunctions": true}'
+// { "allowFunctions": true }
+declare function doWork();
 
-### `allowIterables`
-
-By default, this rule disallows using the spread operator on iterables:
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-const set = new Set([1, 2, 3]);
-
-const spread = { ...set };
+const spread = { ...doWork };
 ```
 
 </TabItem>
 </Tabs>
 
-If you want to allow this behavior, you can configure the rule with `"allowIterables": true`:
-
-```json
-{
-  "@typescript-eslint/no-misused-spread": [
-    "error",
-    {
-      "allowIterables": true
-    }
-  ]
-}
-```
-
 ### `allowClassInstances`
 
-By default, this rule disallows using the spread operator on instances of classes:
+By default, this rule disallows using the spread operator on instances of classes.
+Set `"allowClassInstances": true` to allow this behavior.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -166,24 +136,31 @@ const spread = { ...user };
 ```
 
 </TabItem>
-</Tabs>
 
-If you want to allow this behavior, you can configure the rule with `"allowClassInstances": true`:
+<TabItem value="✅ Correct">
 
-```json
-{
-  "@typescript-eslint/no-misused-spread": [
-    "error",
-    {
-      "allowClassInstances": true
-    }
-  ]
+```ts option='{"allowClassInstances": true}'
+// { "allowClassInstances": true }
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
 }
+
+const user = new User('John');
+
+const spread = { ...user };
 ```
+
+</TabItem>
+</Tabs>
 
 ### `allowClassDeclarations`
 
-By default, this rule disallows using the spread operator on class declarations:
+By default, this rule disallows using the spread operator on class declarations.
+Set `"allowClassDeclarations": true` to allow this behavior.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -201,20 +178,78 @@ const spread = { ...User };
 ```
 
 </TabItem>
+
+<TabItem value="✅ Correct">
+
+```ts option='{"allowClassDeclarations": true}'
+// { "allowClassDeclarations": true }
+class User {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+const spread = { ...User };
+```
+
+</TabItem>
 </Tabs>
 
-If you want to allow this behavior, you can configure the rule with `"allowClassDeclarations": true`:
+### `allowForKnownSafeIterables`
+
+By default, this rule disallows using the spread operator on iterables. This
+option allows marking specific iterable types as "safe" to be spread.
+
+This option takes an array of type specifiers to consider safe.
+Each item in the array must have one of the following forms:
+
+- A type defined in the current file, or globally available (`"SafeIterable"`)
+- A type defined in a file (`{ from: "file", name: "SafeIterable", path: "src/safe-iterable.ts" }` with `path` being an optional path relative to the project root directory)
+- A type from the default library (`{ from: "lib", name: "CustomIterable" }`)
+- A type from a package (`{ from: "package", name: "AwesomeIterable", package: "iterable-lib" }`, this also works for types defined in a typings package).
+
+Examples of a configuration for this option:
 
 ```json
-{
-  "@typescript-eslint/no-misused-spread": [
-    "error",
-    {
-      "allowClassDeclarations": true
-    }
-  ]
-}
+"@typescript-eslint/no-misused-spread": [
+  "error",
+  {
+    "allowForKnownSafeIterables": [
+      "SafeIterable",
+      { "from": "file", "name": "ProbablySafeIterable" },
+      { "from": "lib", "name": "CustomIterable" },
+      { "from": "package", "name": "AwesomeIterable", "package": "iterable-lib" }
+    ]
+  }
+]
 ```
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+type UnsafeIterable = Iterable<number>;
+
+declare const iterable: UnsafeIterable;
+
+const spread = { ...iterable };
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{"allowForKnownSafeIterables":["SafeIterable"]}'
+type SafeIterable = Iterable<number>;
+
+declare const iterable: SafeIterable;
+
+const spread = { ...iterable };
+```
+
+</TabItem>
+</Tabs>
 
 ## When Not To Use It
 

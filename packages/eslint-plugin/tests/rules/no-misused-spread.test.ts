@@ -791,7 +791,7 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
-        declare const ref = new WeakRef<{ a: number }>;
+        declare const ref = new WeakRef<{ a: number }>();
         const o = { ...ref };
       `,
       errors: [

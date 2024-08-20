@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -11,7 +12,6 @@ import {
   isTypeFlagSet,
   readonlynessOptionsSchema,
   typeMatchesSpecifier,
-  TypeOrValueSpecifier,
 } from '../util';
 
 type Options = [
@@ -73,11 +73,6 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowForKnownSafeIterables: {
-            ...readonlynessOptionsSchema.properties.allow,
-            description:
-              'An array of iterables type specifiers that are known to be safe to spread in objects.',
-          },
           allowStrings: {
             description:
               'Whether to allow spreading strings in arrays. Defaults to false.',
@@ -86,11 +81,6 @@ export default createRule<Options, MessageIds>({
           allowFunctions: {
             description:
               'Whether to allow spreading functions without properties in objects. Defaults to false.',
-            type: 'boolean',
-          },
-          allowIterables: {
-            description:
-              'Whether to allow spreading iterables in objects. Defaults to false.',
             type: 'boolean',
           },
           allowClassInstances: {
@@ -102,6 +92,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to allow spreading class declarations in objects. Defaults to false.',
             type: 'boolean',
+          },
+          allowForKnownSafeIterables: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description:
+              'An array of iterables type specifiers that are known to be safe to spread in objects.',
           },
         },
         additionalProperties: false,
@@ -197,7 +192,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const isTypeAllowed = () => {
+      const isTypeAllowed = (): boolean => {
         const allowedTypes = options.allowForKnownSafeIterables ?? [];
 
         return allowedTypes.some(specifier =>
