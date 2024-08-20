@@ -9,6 +9,6 @@ export {
 
 export type {
   ParserServices,
-  ParserServicesWithTypeInformation,
   ParserServicesWithoutTypeInformation,
+  ParserServicesWithTypeInformation,
 } from '@typescript-eslint/typescript-estree';

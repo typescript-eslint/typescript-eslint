@@ -23,6 +23,11 @@ export type MinimalRuleModule<
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class LinterBase {
   /**
+   * The version from package.json.
+   */
+  readonly version: string;
+
+  /**
    * Initialize the Linter.
    * @param config the config object
    */
@@ -84,6 +89,15 @@ declare class LinterBase {
     filenameOrOptions?: Linter.VerifyOptions | string,
   ): Linter.LintMessage[];
 
+  ////////////////////
+  // static members //
+  ////////////////////
+
+  /**
+   * The version from package.json.
+   */
+  static readonly version: string;
+
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
    * @param code The source text to apply fixes to.
@@ -96,20 +110,6 @@ declare class LinterBase {
     config: Linter.ConfigType,
     options: Linter.FixOptions,
   ): Linter.FixReport;
-
-  /**
-   * The version from package.json.
-   */
-  readonly version: string;
-
-  ////////////////////
-  // static members //
-  ////////////////////
-
-  /**
-   * The version from package.json.
-   */
-  static readonly version: string;
 }
 
 namespace Linter {
@@ -251,13 +251,13 @@ namespace Linter {
      */
     fixed: boolean;
     /**
-     * Fixed code text (might be the same as input if no fixes were applied).
-     */
-    output: string;
-    /**
      * Collection of all messages for the given code
      */
     messages: LintMessage[];
+    /**
+     * Fixed code text (might be the same as input if no fixes were applied).
+     */
+    output: string;
   }
 
   /** @deprecated use Parser.ParserModule */

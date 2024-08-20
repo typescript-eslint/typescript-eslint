@@ -18,13 +18,13 @@ export namespace SharedConfig {
 
   export type GlobalVariableOptionBase =
     | 'off'
+    | 'readable'
     | 'readonly'
-    | 'writable'
-    | /** @deprecated use `'writable'` */ 'writeable'
-    | /** @deprecated use `'readonly'` */ 'readable';
+    | /** @deprecated use `'writable'` */ 'writable'
+    | /** @deprecated use `'readonly'` */ 'writeable';
   export type GlobalVariableOptionBoolean =
-    | /** @deprecated use `'writable'` */ true
-    | /** @deprecated use `'readonly'` */ false;
+    | /** @deprecated use `'writable'` */ false
+    | /** @deprecated use `'readonly'` */ true;
   export type GlobalVariableOption =
     | GlobalVariableOptionBase
     | GlobalVariableOptionBoolean;
@@ -147,7 +147,7 @@ export namespace FlatConfig {
   export type Settings = SharedConfigurationSettings;
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
-  export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
+  export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
     [key: string]: Config;
@@ -246,17 +246,13 @@ export namespace FlatConfig {
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
     /**
-     * An string to identify the configuration object. Used in error messages and inspection tools.
-     */
-    name?: string;
-    /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
-      | string
-      // yes, a single layer of array nesting is supported
       | string[]
+      // yes, a single layer of array nesting is supported
+      | string
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
@@ -272,6 +268,10 @@ export namespace FlatConfig {
      */
     linterOptions?: LinterOptions;
     /**
+     * An string to identify the configuration object. Used in error messages and inspection tools.
+     */
+    name?: string;
+    /**
      * An object containing a name-value mapping of plugin names to plugin objects.
      * When `files` is specified, these plugins are only available to the matching files.
      */
@@ -281,7 +281,7 @@ export namespace FlatConfig {
      * a string indicating the name of a processor inside of a plugin
      * (i.e., `"pluginName/processorName"`).
      */
-    processor?: string | Processor;
+    processor?: Processor | string;
     /**
      * An object containing the configured rules.
      * When `files` or `ignores` are specified, these rule configurations are only available to the matching files.
