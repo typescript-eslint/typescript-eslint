@@ -539,6 +539,7 @@ interface RuleListenerBaseSelectors {
   TSQualifiedName?: RuleFunction<TSESTree.TSQualifiedName>;
   TSReadonlyKeyword?: RuleFunction<TSESTree.TSReadonlyKeyword>;
   TSRestType?: RuleFunction<TSESTree.TSRestType>;
+  TSSatisfiesExpression?: RuleFunction<TSESTree.TSSatisfiesExpression>;
   TSStaticKeyword?: RuleFunction<TSESTree.TSStaticKeyword>;
   TSStringKeyword?: RuleFunction<TSESTree.TSStringKeyword>;
   TSSymbolKeyword?: RuleFunction<TSESTree.TSSymbolKeyword>;
