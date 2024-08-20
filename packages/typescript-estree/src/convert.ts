@@ -703,48 +703,6 @@ export class Converter {
    * @param result The node that will have its location data mutated
    * @param childRange The child node range used to expand location
    */
-  private assertModuleSpecifier(
-    node: ts.ExportDeclaration | ts.ImportDeclaration,
-    allowNull: boolean,
-  ): void {
-    if (!allowNull && node.moduleSpecifier == null) {
-      this.#throwUnlessAllowInvalidAST(
-        node,
-        'Module specifier must be a string literal.',
-      );
-    }
-
-    if (
-      node.moduleSpecifier &&
-      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
-    ) {
-      this.#throwUnlessAllowInvalidAST(
-        node.moduleSpecifier,
-        'Module specifier must be a string literal.',
-      );
-    }
-  }
-
-  private fixParentLocation(
-    result: TSESTree.BaseNode,
-    childRange: [number, number],
-  ): void {
-    if (childRange[0] < result.range[0]) {
-      result.range[0] = childRange[0];
-      result.loc.start = getLineAndCharacterFor(result.range[0], this.ast);
-    }
-    if (childRange[1] > result.range[1]) {
-      result.range[1] = childRange[1];
-      result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
-    }
-  }
-
-  /**
-   * Converts a TypeScript node into an ESTree node.
-   * The core of the conversion logic:
-   * Identify and convert each relevant TypeScript SyntaxKind
-   * @returns the converted ESTree node
-   */
   #checkModifiers(node: ts.Node): void {
     if (this.options.allowInvalidAST) {
       return;
@@ -1002,6 +960,34 @@ export class Converter {
     }
   }
 
+  private assertModuleSpecifier(
+    node: ts.ExportDeclaration | ts.ImportDeclaration,
+    allowNull: boolean,
+  ): void {
+    if (!allowNull && node.moduleSpecifier == null) {
+      this.#throwUnlessAllowInvalidAST(
+        node,
+        'Module specifier must be a string literal.',
+      );
+    }
+
+    if (
+      node.moduleSpecifier &&
+      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
+    ) {
+      this.#throwUnlessAllowInvalidAST(
+        node.moduleSpecifier,
+        'Module specifier must be a string literal.',
+      );
+    }
+  }
+
+  /**
+   * Converts a TypeScript node into an ESTree node.
+   * The core of the conversion logic:
+   * Identify and convert each relevant TypeScript SyntaxKind
+   * @returns the converted ESTree node
+   */
   private convertNode(node: TSNode, parent: TSNode): TSESTree.Node | null {
     switch (node.kind) {
       case SyntaxKind.SourceFile: {
@@ -3501,6 +3487,20 @@ export class Converter {
 
       default:
         return this.deeplyCopy(node);
+    }
+  }
+
+  private fixParentLocation(
+    result: TSESTree.BaseNode,
+    childRange: [number, number],
+  ): void {
+    if (childRange[0] < result.range[0]) {
+      result.range[0] = childRange[0];
+      result.loc.start = getLineAndCharacterFor(result.range[0], this.ast);
+    }
+    if (childRange[1] > result.range[1]) {
+      result.range[1] = childRange[1];
+      result.loc.end = getLineAndCharacterFor(result.range[1], this.ast);
     }
   }
 
