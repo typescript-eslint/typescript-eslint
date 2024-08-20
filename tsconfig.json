@@ -3,6 +3,8 @@
   "files": [],
   "references": [
     { "path": "./packages/ast-spec" },
+    { "path": "./packages/eslint-plugin" },
+    { "path": "./packages/eslint-plugin-internal" },
     { "path": "./packages/integration-tests" },
     { "path": "./packages/parser" },
     { "path": "./packages/rule-schema-to-typescript-types" },
@@ -14,6 +16,7 @@
     { "path": "./packages/typescript-estree" },
     { "path": "./packages/utils" },
     { "path": "./packages/visitor-keys" },
+    { "path": "./packages/website" },
     { "path": "./packages/website-eslint" },
     { "path": "./tools" }
   ]

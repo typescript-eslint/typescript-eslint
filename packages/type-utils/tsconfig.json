@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/type-utils"
-  },
   "files": [],
   "references": [
     { "path": "../utils" },

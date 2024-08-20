@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/typescript-estree"
-  },
   "files": [],
   "references": [
     { "path": "../visitor-keys" },

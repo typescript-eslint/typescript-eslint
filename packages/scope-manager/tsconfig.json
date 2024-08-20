@@ -1,9 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/scope-manager",
-    "noImplicitAny": false
-  },
   "files": [],
   "references": [
     { "path": "../visitor-keys" },

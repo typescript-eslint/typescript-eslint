@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/rule-schema-to-typescript-types"
-  },
   "files": [],
   "references": [
     { "path": "../utils" },

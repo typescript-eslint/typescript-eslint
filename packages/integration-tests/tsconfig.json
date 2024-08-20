@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/integration-tests"
-  },
   "files": [],
   "references": [
     { "path": "../rule-tester" },
@@ -15,6 +12,7 @@
     { "path": "../typescript-estree" },
     { "path": "../scope-manager" },
     { "path": "../utils" },
+    { "path": "../eslint-plugin" },
     { "path": "../typescript-eslint" },
     { "path": "./tsconfig.build.json" },
     { "path": "./tsconfig.spec.json" }

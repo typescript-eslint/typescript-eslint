@@ -1,10 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // disable composite and emitDeclarationOnly for docusaurus usage
-    "composite": false,
-    "emitDeclarationOnly": false,
-    "noEmit": true,
+    "outDir": "../../dist/out-tsc/website",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "allowJs": true,
@@ -27,7 +24,8 @@
     "typings",
     "sidebars/*.js",
     "./*.mts",
-    "./*.ts"
+    "./*.ts",
+    "data/*.json"
   ],
   "references": [
     { "path": "../website-eslint" },

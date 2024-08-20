@@ -5,10 +5,10 @@
     // specifically disable declarations for the plugin (which requires disabling composite)
     // see reasoning in packages/eslint-plugin/rules.d.ts
     "composite": false,
-    "emitDeclarationOnly": false,
     "noEmit": true,
     "declaration": false,
     "declarationMap": false,
+    "emitDeclarationOnly": null,
     "rootDir": "."
   },
   "include": [

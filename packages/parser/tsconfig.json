@@ -1,8 +1,5 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../../dist/out-tsc/parser"
-  },
   "files": [],
   "references": [
     { "path": "../visitor-keys" },
