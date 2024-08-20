@@ -72,10 +72,10 @@ export function isReadonlyTypeLike(
   program: ts.Program,
   type: ts.Type,
   predicate?: (
-    subType: ts.Type & {
+    subType: {
       aliasSymbol: ts.Symbol;
       aliasTypeArguments: readonly ts.Type[];
-    },
+    } & ts.Type,
   ) => boolean,
 ): boolean {
   return isBuiltinTypeAliasLike(program, type, subtype => {
@@ -88,10 +88,10 @@ export function isBuiltinTypeAliasLike(
   program: ts.Program,
   type: ts.Type,
   predicate: (
-    subType: ts.Type & {
+    subType: {
       aliasSymbol: ts.Symbol;
       aliasTypeArguments: readonly ts.Type[];
-    },
+    } & ts.Type,
   ) => boolean,
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subtype => {
@@ -104,10 +104,10 @@ export function isBuiltinTypeAliasLike(
     if (
       isSymbolFromDefaultLibrary(program, aliasSymbol) &&
       predicate(
-        subtype as ts.Type & {
+        subtype as {
           aliasSymbol: ts.Symbol;
           aliasTypeArguments: readonly ts.Type[];
-        },
+        } & ts.Type,
       )
     ) {
       return true;
@@ -120,7 +120,7 @@ export function isBuiltinTypeAliasLike(
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
-  symbolName: string | string[],
+  symbolName: string[] | string,
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
     const symbol = subType.getSymbol();

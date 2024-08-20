@@ -1,6 +1,7 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
 import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
@@ -36,12 +37,11 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
       type: 'string',
     },
     {
-      type: 'object',
       additionalProperties: false,
       properties: {
         from: {
-          type: 'string',
           enum: ['file'],
+          type: 'string',
         },
         name: {
           oneOf: [
@@ -49,12 +49,12 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
               type: 'string',
             },
             {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
               items: {
                 type: 'string',
               },
+              minItems: 1,
+              type: 'array',
+              uniqueItems: true,
             },
           ],
         },
@@ -63,14 +63,14 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
         },
       },
       required: ['from', 'name'],
+      type: 'object',
     },
     {
-      type: 'object',
       additionalProperties: false,
       properties: {
         from: {
-          type: 'string',
           enum: ['lib'],
+          type: 'string',
         },
         name: {
           oneOf: [
@@ -78,25 +78,25 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
               type: 'string',
             },
             {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
               items: {
                 type: 'string',
               },
+              minItems: 1,
+              type: 'array',
+              uniqueItems: true,
             },
           ],
         },
       },
       required: ['from', 'name'],
+      type: 'object',
     },
     {
-      type: 'object',
       additionalProperties: false,
       properties: {
         from: {
-          type: 'string',
           enum: ['package'],
+          type: 'string',
         },
         name: {
           oneOf: [
@@ -104,12 +104,12 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
               type: 'string',
             },
             {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
               items: {
                 type: 'string',
               },
+              minItems: 1,
+              type: 'array',
+              uniqueItems: true,
             },
           ],
         },
@@ -118,6 +118,7 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
         },
       },
       required: ['from', 'name', 'package'],
+      type: 'object',
     },
   ],
 };
