@@ -1,4 +1,5 @@
 import type { ParentNodeType } from './types';
+
 import { filterProperties, isESNode, isRecord, isTSNode } from './utils';
 
 function isInRange(offset: number, value: object): boolean {
@@ -70,7 +71,7 @@ function findInObject(
 export function findSelectionPath(
   node: object,
   cursorPosition: number,
-): { path: string[]; node: object | null } {
+): { node: object | null; path: string[] } {
   const nodePath = ['ast'];
   const visited = new Set<unknown>();
   let currentNode: unknown = node;
@@ -86,8 +87,8 @@ export function findSelectionPath(
       currentNode = result.value;
       nodePath.push(...result.key);
     } else {
-      return { path: nodePath, node: currentNode };
+      return { node: currentNode, path: nodePath };
     }
   }
-  return { path: nodePath, node: null };
+  return { node: null, path: nodePath };
 }

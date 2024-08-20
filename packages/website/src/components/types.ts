@@ -9,8 +9,8 @@ export type SourceType = TSESLint.SourceType;
 export type RulesRecord = TSESLint.Linter.RulesRecord;
 
 export interface RuleDetails {
-  name: string;
   description?: string;
+  name: string;
   url?: string;
 }
 
@@ -21,38 +21,38 @@ export type ConfigFileType = `${ts.Extension}`;
 export type ConfigShowAst = 'es' | 'scope' | 'ts' | 'types' | false;
 
 export interface ConfigModel {
-  fileType?: ConfigFileType;
-  sourceType?: SourceType;
-  eslintrc: string;
-  tsconfig: string;
   code: string;
-  ts: string;
-  showAST?: ConfigShowAst;
-  scroll?: boolean;
-  showTokens?: boolean;
+  eslintrc: string;
   esQuery?: {
-    selector: ESQuery.Selector;
     filter?: string;
+    selector: ESQuery.Selector;
   };
+  fileType?: ConfigFileType;
+  scroll?: boolean;
+  showAST?: ConfigShowAst;
+  showTokens?: boolean;
+  sourceType?: SourceType;
+  ts: string;
+  tsconfig: string;
 }
 
 export type SelectedRange = [number, number];
 
 export interface ErrorItem {
-  message: string;
+  fixer?: { fix(): void; message: string };
   location: string;
+  message: string;
   severity: number;
-  suggestions: { message: string; fix(): void }[];
-  fixer?: { message: string; fix(): void };
+  suggestions: { fix(): void; message: string }[];
 }
 
 export interface ErrorGroup {
   group: string;
-  uri?: string;
   items: ErrorItem[];
+  uri?: string;
 }
 
-export type EslintRC = Record<string, unknown> & { rules: RulesRecord };
-export type TSConfig = Record<string, unknown> & {
+export type EslintRC = { rules: RulesRecord } & Record<string, unknown>;
+export type TSConfig = {
   compilerOptions: CompilerFlags;
-};
+} & Record<string, unknown>;
