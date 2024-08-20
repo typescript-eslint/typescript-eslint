@@ -38,6 +38,7 @@ export default {
       ignore: [
         'src/**/fixtures/**',
         'tests/*.type-test.ts',
+        'typings/**',
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
@@ -50,24 +51,28 @@ export default {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**'],
+      ignore: ['fixtures/**', 'typings/**'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
+    },
+    'packages/rule-tester': {
+      ignore: ['typings/**'],
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
     },
     'packages/type-utils': {
-      ignore: ['tests/fixtures/**'],
+      ignore: ['tests/fixtures/**', 'typings/**'],
     },
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
-      ignore: ['tests/fixtures/**'],
+      ignore: ['tests/fixtures/**', 'typings/**'],
     },
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
+        'webpack.plugin.js',
         'src/pages/**/*.tsx',
 
         // imported in MDX docs
@@ -99,8 +104,10 @@ export default {
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
-        'typedoc',
         'typedoc-plugin-markdown',
+
+        // Used within the webpack plugin, knip doesn't seem to detect the require.resolve
+        '@typescript-eslint/website-eslint',
       ],
     },
     'packages/website-eslint': {
@@ -120,6 +127,6 @@ export default {
         'src/mock/util.js',
       ],
     },
-    'tools/dummypkg': {},
+    tools: {},
   },
 } satisfies KnipConfig;

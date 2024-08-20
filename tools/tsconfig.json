@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist/out-tsc/tools",
+    "allowImportingTsExtensions": true
+  },
+  "include": ["**/*.mts"],
+  "files": ["scripts/typings/typescript.d.ts"]
+}

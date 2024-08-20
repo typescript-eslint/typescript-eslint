@@ -14,6 +14,7 @@
     { "path": "./packages/typescript-estree" },
     { "path": "./packages/utils" },
     { "path": "./packages/visitor-keys" },
-    { "path": "./packages/website-eslint" }
+    { "path": "./packages/website-eslint" },
+    { "path": "./tools" }
   ]
 }
