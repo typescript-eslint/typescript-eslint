@@ -9,15 +9,18 @@ import {
   isBuiltinSymbolLike,
   isPromiseLike,
   isTypeFlagSet,
+  readonlynessOptionsSchema,
+  typeMatchesSpecifier,
+  TypeOrValueSpecifier,
 } from '../util';
 
 type Options = [
   {
     allowStrings?: boolean;
     allowFunctions?: boolean;
-    allowIterables?: boolean;
     allowClassInstances?: boolean;
     allowClassDeclarations?: boolean;
+    allowForKnownSafeIterables?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -70,6 +73,11 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
+          allowForKnownSafeIterables: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description:
+              'An array of iterables type specifiers that are known to be safe to spread in objects.',
+          },
           allowStrings: {
             description:
               'Whether to allow spreading strings in arrays. Defaults to false.',
@@ -105,9 +113,9 @@ export default createRule<Options, MessageIds>({
     {
       allowStrings: false,
       allowFunctions: false,
-      allowIterables: false,
       allowClassInstances: false,
       allowClassDeclarations: false,
+      allowForKnownSafeIterables: [],
     },
   ],
 
@@ -167,20 +175,6 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (
-        !options.allowIterables &&
-        isIterable(type, checker) &&
-        !isString(type) &&
-        !isMap(services.program, type)
-      ) {
-        context.report({
-          node,
-          messageId: 'noIterableSpreadInObject',
-        });
-
-        return;
-      }
-
       if (!options.allowClassInstances && isClassInstance(type)) {
         context.report({
           node,
@@ -198,6 +192,23 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noClassDeclarationSpreadInObject',
+        });
+
+        return;
+      }
+
+      const isTypeAllowed = () => {
+        const allowedTypes = options.allowForKnownSafeIterables ?? [];
+
+        return allowedTypes.some(specifier =>
+          typeMatchesSpecifier(type, specifier, services.program),
+        );
+      };
+
+      if (isIterable(type, checker) && !isString(type) && !isTypeAllowed()) {
+        context.report({
+          node,
+          messageId: 'noIterableSpreadInObject',
         });
 
         return;
@@ -273,7 +284,8 @@ function isMap(program: ts.Program, type: ts.Type): boolean {
     type,
     t =>
       isBuiltinSymbolLike(program, t, 'Map') ||
-      isBuiltinSymbolLike(program, t, 'ReadonlyMap'),
+      isBuiltinSymbolLike(program, t, 'ReadonlyMap') ||
+      isBuiltinSymbolLike(program, t, 'WeakMap'),
   );
 }
 

@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -194,13 +195,68 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowIterables: true }],
+      options: [
+        {
+          allowForKnownSafeIterables: [{ from: 'lib', name: 'Iterable' }],
+        },
+      ],
       code: `
-        const iterator = {
-          *[Symbol.iterator]() {
-            yield 'test';
-          },
+        declare const iterator: Iterable<string>;
+
+        const a = { ...iterator };
+      `,
+    },
+
+    {
+      options: [{ allowForKnownSafeIterables: ['CustomIterable'] }],
+      code: `
+        type CustomIterable = {
+          [Symbol.iterator]: () => Generator<string>;
         };
+
+        declare const iterator: CustomIterable;
+
+        const a = { ...iterator };
+      `,
+    },
+
+    {
+      options: [
+        {
+          allowForKnownSafeIterables: [
+            { from: 'file', name: 'CustomIterable' },
+          ],
+        },
+      ],
+      code: `
+        type CustomIterable = {
+          [Symbol.iterator]: () => string;
+        };
+
+        declare const iterator: CustomIterable;
+
+        const a = { ...iterator };
+      `,
+    },
+
+    {
+      options: [
+        {
+          allowForKnownSafeIterables: [
+            { from: 'package', package: 'module', name: 'CustomIterable' },
+          ],
+        },
+      ],
+      code: `
+        declare module 'module' {
+          export type CustomIterable = {
+            [Symbol.iterator]: () => string;
+          };
+        }
+
+        import { CustomIterable } from 'module';
+
+        declare const iterator: CustomIterable;
 
         const a = { ...iterator };
       `,
@@ -229,6 +285,12 @@ ruleTester.run('no-misused-spread', rule, {
         };
       `,
     },
+
+    // WeakSet is not iterable
+    `
+      declare const set: WeakSet<number>;
+      const o = { ...set };
+    `,
   ],
 
   invalid: [
@@ -512,22 +574,6 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      code: `
-        const arr = [1, 2, 3];
-        const o = { ...arr };
-      `,
-      options: [{ allowIterables: true }],
-      errors: [
-        {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
-          column: 21,
-          endColumn: 27,
-        },
-      ],
-    },
-
-    {
       code: 'const o = { ...new Set([1, 2, 3]) };',
       errors: [
         {
@@ -685,6 +731,21 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        declare const map: WeakMap<{ a: number }, string>;
+        const o = { ...map };
+      `,
+      errors: [
+        {
+          messageId: 'noMapSpreadInObject',
+          line: 3,
+          column: 21,
+          endColumn: 27,
+        },
+      ],
+    },
+
+    {
+      code: `
         declare const map: Map<string, number> | { a: number };
         const o = { ...map };
       `,
@@ -724,6 +785,21 @@ ruleTester.run('no-misused-spread', rule, {
           line: 3,
           column: 21,
           endColumn: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const ref = new WeakRef<{ a: number }>;
+        const o = { ...ref };
+      `,
+      errors: [
+        {
+          messageId: 'noClassInstanceSpreadInObject',
+          line: 3,
+          column: 21,
+          endColumn: 27,
         },
       ],
     },
@@ -937,6 +1013,61 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
+        type CustomIterable = {
+          [Symbol.iterator]: () => Generator<string>;
+        };
+
+        const iterator: CustomIterable = {
+          *[Symbol.iterator]() {
+            yield 'test';
+          },
+        };
+
+        const a = { ...iterator };
+      `,
+      options: [{ allowForKnownSafeIterables: ['AnotherIterable'] }],
+      errors: [
+        {
+          messageId: 'noIterableSpreadInObject',
+          line: 12,
+          column: 21,
+          endColumn: 32,
+        },
+      ],
+    },
+    {
+      code: `
+        declare module 'module' {
+          export type CustomIterable = {
+            [Symbol.iterator]: () => string;
+          };
+        }
+
+        import { CustomIterable } from 'module';
+
+        declare const iterator: CustomIterable;
+
+        const a = { ...iterator };
+      `,
+      options: [
+        {
+          allowForKnownSafeIterables: [
+            { from: 'package', package: 'module', name: 'Nothing' },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noIterableSpreadInObject',
+          line: 12,
+          column: 21,
+          endColumn: 32,
+        },
+      ],
+    },
+
+    {
+      code: `
         declare const iterator: Iterable<string>;
 
         const o = { ...iterator };
@@ -1011,6 +1142,36 @@ ruleTester.run('no-misused-spread', rule, {
     {
       code: `
         const o = { ...new Date() };
+      `,
+      errors: [
+        {
+          messageId: 'noClassInstanceSpreadInObject',
+          line: 2,
+          column: 21,
+          endColumn: 34,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const element: HTMLElement;
+        const o = { ...element };
+      `,
+      errors: [
+        {
+          messageId: 'noClassInstanceSpreadInObject',
+          line: 2,
+          column: 21,
+          endColumn: 34,
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare const regex: RegExp;
+        const o = { ...regex };
       `,
       errors: [
         {
