@@ -94,21 +94,20 @@ export function resolveProjectList(
   const globProjects = sanitizedProjects.filter(project => isGlob(project));
 
   const uniqueCanonicalProjectPaths = new Map(
-    nonGlobProjects
-      .concat(
-        globProjects.length === 0
-          ? []
-          : globSync([...globProjects, ...projectFolderIgnoreList], {
-              cwd: options.tsconfigRootDir,
-              dot: true,
-            }),
-      )
-      .map(project => [
-        getCanonicalFileName(
-          ensureAbsolutePath(project, options.tsconfigRootDir),
-        ),
+    [
+      ...nonGlobProjects,
+      ...(globProjects.length === 0
+        ? []
+        : globSync([...globProjects, ...projectFolderIgnoreList], {
+            cwd: options.tsconfigRootDir,
+            dot: true,
+          })),
+    ].map(project => [
+      getCanonicalFileName(
         ensureAbsolutePath(project, options.tsconfigRootDir),
-      ]),
+      ),
+      ensureAbsolutePath(project, options.tsconfigRootDir),
+    ]),
   );
 
   log(

@@ -20,7 +20,7 @@ export function deepMerge(
   second: ObjectLike = {},
 ): Record<string, unknown> {
   // get the unique set of keys across both objects
-  const keys = new Set(Object.keys(first).concat(Object.keys(second)));
+  const keys = new Set([...Object.keys(first), ...Object.keys(second)]);
 
   return [...keys].reduce<ObjectLike>((acc, key) => {
     const firstHasKey = key in first;

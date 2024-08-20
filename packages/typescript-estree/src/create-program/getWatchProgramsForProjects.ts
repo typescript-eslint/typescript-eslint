@@ -320,7 +320,7 @@ function createWatchProgram(
         path,
         !extensions
           ? undefined
-          : extensions.concat(parseSettings.extraFileExtensions),
+          : [...extensions, ...parseSettings.extraFileExtensions],
         exclude,
         include,
         depth,

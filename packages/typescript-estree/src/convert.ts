@@ -1982,11 +1982,12 @@ export class Converter {
                 );
                 break;
               case SyntaxKind.NamedImports:
-                result.specifiers = result.specifiers.concat(
-                  node.importClause.namedBindings.elements.map(el =>
+                result.specifiers = [
+                  ...result.specifiers,
+                  ...node.importClause.namedBindings.elements.map(el =>
                     this.convertChild(el),
                   ),
-                );
+                ];
                 break;
             }
           }
@@ -2163,7 +2164,7 @@ export class Converter {
             left.type === AST_NODE_TYPES.SequenceExpression &&
             node.left.kind !== SyntaxKind.ParenthesizedExpression
           ) {
-            result.expressions = result.expressions.concat(left.expressions);
+            result.expressions.push(...left.expressions);
           } else {
             result.expressions.push(left);
           }

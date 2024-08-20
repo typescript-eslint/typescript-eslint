@@ -290,7 +290,7 @@ function* fixSeparateNamedExports(
 ): IterableIterator<TSESLint.RuleFix> {
   const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
     report;
-  const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
+  const typeSpecifiers = [...typeBasedSpecifiers, ...inlineTypeSpecifiers];
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 

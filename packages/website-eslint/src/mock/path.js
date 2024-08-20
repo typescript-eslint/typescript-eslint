@@ -172,7 +172,7 @@ export function relative(from, to) {
     outputParts.push('..');
   }
 
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+  outputParts = [...outputParts, ...toParts.slice(samePartsLength)];
 
   return outputParts.join('/');
 }
