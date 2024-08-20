@@ -54,7 +54,7 @@ export namespace FlatESLint {
      * Searches for default config file when falsy; doesn't do any config file lookup when `true`; considered to be a config filename when a string.
      * @default false
      */
-    overrideConfigFile?: string | boolean;
+    overrideConfigFile?: boolean | string;
     /**
      * A predicate function that filters rules to be run.
      * This function is called with an object containing `ruleId` and `severity`, and returns `true` if the rule should be run.

@@ -5811,7 +5811,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.2.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.2.0, @typescript-eslint/types@^8.1.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5889,6 +5889,7 @@ __metadata:
     eslint-plugin-jest: ^27.9.0
     eslint-plugin-jsdoc: ^47.0.2
     eslint-plugin-jsx-a11y: ^6.8.0
+    eslint-plugin-perfectionist: ^3.2.0
     eslint-plugin-react: ^7.34.1
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-simple-import-sort: ^10.0.0
@@ -5979,7 +5980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@8.2.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.2.0, @typescript-eslint/utils@^8.1.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -9924,6 +9925,33 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
   checksum: 122cbd22bbd8c3e4a37f386ec183ada63a4ecfa7af7d40cd8a110777ac5ad5ff542f60644596a9e2582ed138a1cc6d96c5d5ca934105e29d5245d6c951ebc3ef
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-perfectionist@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "eslint-plugin-perfectionist@npm:3.2.0"
+  dependencies:
+    "@typescript-eslint/types": ^8.1.0
+    "@typescript-eslint/utils": ^8.1.0
+    minimatch: ^10.0.1
+    natural-compare-lite: ^1.4.0
+  peerDependencies:
+    astro-eslint-parser: ^1.0.2
+    eslint: ">=8.0.0"
+    svelte: ">=3.0.0"
+    svelte-eslint-parser: ^0.41.0
+    vue-eslint-parser: ">=9.0.0"
+  peerDependenciesMeta:
+    astro-eslint-parser:
+      optional: true
+    svelte:
+      optional: true
+    svelte-eslint-parser:
+      optional: true
+    vue-eslint-parser:
+      optional: true
+  checksum: 1bb310a1165e1dcb1fa89a5bf008dc20c958256621f43dcf5563e1c9d4f8bb5eb14649545ba28fda11e0602316f20b6483374b43dcbb41a475a1e27b9cb3a39a
   languageName: node
   linkType: hard
 
@@ -14969,6 +14997,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minimatch@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "minimatch@npm:10.0.1"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: f5b63c2f30606091a057c5f679b067f84a2cd0ffbd2dbc9143bda850afd353c7be81949ff11ae0c86988f07390eeca64efd7143ee05a0dab37f6c6b38a2ebb6c
+  languageName: node
+  linkType: hard
+
 "minimatch@npm:^5.0.1, minimatch@npm:^5.1.6":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
@@ -15196,6 +15233,13 @@ __metadata:
   bin:
     nanoid: bin/nanoid.cjs
   checksum: d36c427e530713e4ac6567d488b489a36582ef89da1d6d4e3b87eded11eb10d7042a877958c6f104929809b2ab0bafa17652b076cdf84324aa75b30b722204f2
+  languageName: node
+  linkType: hard
+
+"natural-compare-lite@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "natural-compare-lite@npm:1.4.0"
+  checksum: 5222ac3986a2b78dd6069ac62cbb52a7bf8ffc90d972ab76dfe7b01892485d229530ed20d0c62e79a6b363a663b273db3bde195a1358ce9e5f779d4453887225
   languageName: node
   linkType: hard
 
