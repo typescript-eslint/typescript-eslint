@@ -23,7 +23,6 @@ interface TSModuleDeclarationBase extends BaseNode {
    */
   declare: boolean;
   // TODO - remove this in the next major (we have `.kind` now)
-  global: boolean;
   /**
    * Whether this is a global declaration
    * @example
@@ -33,6 +32,7 @@ interface TSModuleDeclarationBase extends BaseNode {
    *
    * @deprecated Use {@link kind} instead
    */
+  global: boolean;
   /**
    * The name of the module
    * ```
