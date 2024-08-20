@@ -123,25 +123,27 @@ export function wrapParser(
 
   if ('parseForESLint' in parser) {
     return {
-      // @ts-expect-error -- see above
       parseForESLint(...args): Parser.ParseResult {
         const parsed = parser.parseForESLint(...args) as Parser.ParseResult;
 
         defineStartEndAsErrorInTree(parsed.ast, parsed.visitorKeys);
         return parsed;
       },
+
+      // @ts-expect-error -- see above
       [parserSymbol]: parser,
     };
   }
 
   return {
-    // @ts-expect-error -- see above
     parse(...args): TSESTree.Program {
       const ast = parser.parse(...args) as TSESTree.Program;
 
       defineStartEndAsErrorInTree(ast);
       return ast;
     },
+
+    // @ts-expect-error -- see above
     [parserSymbol]: parser,
   };
 }
