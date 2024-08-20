@@ -122,7 +122,7 @@ function normalizeRuleOptions(
   ruleOptions: SharedConfig.RuleLevel | SharedConfig.RuleLevelAndOptions,
 ): SharedConfig.RuleLevelAndOptions {
   const finalOptions = Array.isArray(ruleOptions)
-    ? ruleOptions.slice(0)
+    ? [...ruleOptions]
     : [ruleOptions];
 
   finalOptions[0] = ruleSeverities.get(

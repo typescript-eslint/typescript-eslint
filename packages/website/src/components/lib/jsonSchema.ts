@@ -187,7 +187,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
         type: 'array',
         items: {
           type: 'string',
-          enum: Array.from(item.element.type.keys()),
+          enum: [...item.element.type.keys()],
         },
         description: item.description.message,
       };
@@ -195,7 +195,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
       options[item.name] = {
         type: 'string',
         description: item.description.message,
-        enum: Array.from(item.type.keys()),
+        enum: [...item.type.keys()],
       };
     }
     return options;

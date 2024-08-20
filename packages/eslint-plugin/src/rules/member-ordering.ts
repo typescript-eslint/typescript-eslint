@@ -299,8 +299,8 @@ export const defaultOrder: MemberType[] = [
   'method',
 ];
 
-const allMemberTypes = Array.from(
-  (
+const allMemberTypes = [
+  ...(
     [
       'readonly-signature',
       'signature',
@@ -367,7 +367,7 @@ const allMemberTypes = Array.from(
 
     return all;
   }, new Set<MemberType>()),
-);
+];
 
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
@@ -511,7 +511,7 @@ function getRankOrder(
   orderConfig: MemberType[],
 ): number {
   let rank = -1;
-  const stack = memberGroups.slice(); // Get a copy of the member groups
+  const stack = [...memberGroups]; // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

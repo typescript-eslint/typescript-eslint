@@ -182,7 +182,7 @@ export function createLinter(
 
   return {
     rules,
-    configs: Array.from(configs.keys()),
+    configs: [...configs.keys()],
     triggerFix,
     triggerLint,
     updateParserOptions,

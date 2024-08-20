@@ -17,7 +17,7 @@ export function getModifiers(
     if (includeIllegalModifiers || ts.canHaveModifiers(node)) {
       // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
       const modifiers = ts.getModifiers(node as ts.HasModifiers);
-      return modifiers ? Array.from(modifiers) : undefined;
+      return modifiers ? [...modifiers] : undefined;
     }
 
     return undefined;
@@ -44,7 +44,7 @@ export function getDecorators(
     if (includeIllegalDecorators || ts.canHaveDecorators(node)) {
       // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
       const decorators = ts.getDecorators(node as ts.HasDecorators);
-      return decorators ? Array.from(decorators) : undefined;
+      return decorators ? [...decorators] : undefined;
     }
 
     return undefined;

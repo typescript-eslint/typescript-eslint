@@ -634,7 +634,7 @@ export default createRule<Options, MessageIds>({
     return {
       'Program:exit'(node): void {
         const globalScope = context.sourceCode.getScope(node);
-        const stack = globalScope.childScopes.slice();
+        const stack = [...globalScope.childScopes];
 
         while (stack.length) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

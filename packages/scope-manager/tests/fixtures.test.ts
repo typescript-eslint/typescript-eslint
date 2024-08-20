@@ -125,7 +125,7 @@ function nestDescribe(
 
         if (type[1] && !type[1].has(value)) {
           throw new Error(
-            `Expected value for ${key} to be one of (${Array.from(type[1]).join(
+            `Expected value for ${key} to be one of (${[...type[1]].join(
               ' | ',
             )}), but got ${value as string}`,
           );

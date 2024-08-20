@@ -36,7 +36,7 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
       throw new UnexpectedError(
         `Could not find definition for $ref ${
           schema.$ref
-        }.\nAvailable refs:\n${Array.from(refMap.keys()).join('\n')})`,
+        }.\nAvailable refs:\n${[...refMap.keys()].join('\n')})`,
         schema,
       );
     }
