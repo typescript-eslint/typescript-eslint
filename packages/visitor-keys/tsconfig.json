@@ -5,8 +5,8 @@
   },
   "include": ["src", "typings", "tests", "tools"],
   "references": [
-    {
-      "path": "./tsconfig.build.json"
-    }
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "./tsconfig.build.json" }
   ]
 }

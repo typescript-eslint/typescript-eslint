@@ -8,14 +8,15 @@
   },
   "include": ["src", "types", "build.ts"],
   "references": [
-    {
-      "path": "../scope-manager/tsconfig.build.json"
-    },
-    {
-      "path": "../typescript-estree/tsconfig.build.json"
-    },
-    {
-      "path": "../visitor-keys/tsconfig.build.json"
-    }
+    { "path": "../rule-tester" },
+    { "path": "../type-utils" },
+    { "path": "../rule-schema-to-typescript-types" },
+    { "path": "../parser" },
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "../typescript-estree" },
+    { "path": "../scope-manager" },
+    { "path": "../utils" }
   ]
 }

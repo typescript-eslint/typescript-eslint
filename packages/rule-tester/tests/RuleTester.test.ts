@@ -111,7 +111,7 @@ describe('RuleTester', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
+  runRuleForItemSpy.mockImplementation((_1, _2, testCase: any) => {
     return {
       messages:
         'errors' in testCase
@@ -136,7 +136,7 @@ describe('RuleTester', () => {
   });
 
   function getTestConfigFromCall(): unknown[] {
-    return runRuleForItemSpy.mock.calls.map(c => {
+    return runRuleForItemSpy.mock.calls.map((c: any) => {
       return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
     });
   }

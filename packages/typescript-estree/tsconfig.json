@@ -5,11 +5,10 @@
   },
   "files": [],
   "references": [
-    {
-      "path": "./tsconfig.build.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "./tsconfig.build.json" },
+    { "path": "./tsconfig.spec.json" }
   ]
 }

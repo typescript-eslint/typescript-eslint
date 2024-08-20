@@ -7,5 +7,5 @@
     "resolveJsonModule": true
   },
   "include": ["src"],
-  "references": []
+  "references": [{ "path": "../ast-spec/tsconfig.build.json" }]
 }

@@ -8,11 +8,8 @@
   },
   "include": ["src", "typings"],
   "references": [
-    {
-      "path": "../types/tsconfig.build.json"
-    },
-    {
-      "path": "../visitor-keys/tsconfig.build.json"
-    }
+    { "path": "../visitor-keys/tsconfig.build.json" },
+    { "path": "../ast-spec/tsconfig.build.json" },
+    { "path": "../types/tsconfig.build.json" }
   ]
 }

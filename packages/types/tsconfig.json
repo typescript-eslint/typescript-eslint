@@ -4,9 +4,5 @@
     "outDir": "../../dist/out-tsc/types"
   },
   "include": ["src", "tools"],
-  "references": [
-    {
-      "path": "./tsconfig.build.json"
-    }
-  ]
+  "references": [{ "path": "../ast-spec" }, { "path": "./tsconfig.build.json" }]
 }

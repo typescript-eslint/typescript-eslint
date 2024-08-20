@@ -11,14 +11,14 @@
   },
   "include": ["src", "typings", "tests", "index.d.ts"],
   "references": [
-    {
-      "path": "../rule-tester/tsconfig.build.json"
-    },
-    {
-      "path": "../utils/tsconfig.build.json"
-    },
-    {
-      "path": "../type-utils/tsconfig.build.json"
-    }
+    { "path": "../type-utils" },
+    { "path": "../parser" },
+    { "path": "../rule-tester" },
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "../typescript-estree" },
+    { "path": "../scope-manager" },
+    { "path": "../utils" }
   ]
 }
