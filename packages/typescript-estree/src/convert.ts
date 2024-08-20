@@ -228,10 +228,12 @@ export class Converter {
     node: ts.Node,
     result: TSESTree.Node | null,
   ): void {
-    if (result && this.options.shouldPreserveNodeMaps) {
-      if (!this.tsNodeToESTreeNodeMap.has(node)) {
-        this.tsNodeToESTreeNodeMap.set(node, result);
-      }
+    if (
+      result &&
+      this.options.shouldPreserveNodeMaps &&
+      !this.tsNodeToESTreeNodeMap.has(node)
+    ) {
+      this.tsNodeToESTreeNodeMap.set(node, result);
     }
   }
 

@@ -23,10 +23,8 @@ export function extractEnum(
   const result: Record<number, string> = {};
   const keys = Object.entries(obj);
   for (const [name, value] of keys) {
-    if (typeof value === 'number') {
-      if (!(value in result)) {
-        result[value] = name;
-      }
+    if (typeof value === 'number' && !(value in result)) {
+      result[value] = name;
     }
   }
   return result;
