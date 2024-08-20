@@ -9,6 +9,7 @@ import {
   getStaticValue,
   getTypeName,
   getWrappingFixer,
+  isStaticKeyOfValue,
 } from '../util';
 
 enum ArgumentType {
@@ -98,9 +99,12 @@ export default createRule({
     }
 
     return {
-      "CallExpression[arguments.length=1] > MemberExpression.callee[property.name='match'][computed=false]"(
+      'CallExpression[arguments.length=1] > MemberExpression'(
         memberNode: TSESTree.MemberExpression,
       ): void {
+        if (!isStaticKeyOfValue(memberNode, 'match', context)) {
+          return;
+        }
         const objectNode = memberNode.object;
         const callNode = memberNode.parent as TSESTree.CallExpression;
         const [argumentNode] = callNode.arguments;
