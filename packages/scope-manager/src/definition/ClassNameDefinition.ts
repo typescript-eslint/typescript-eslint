@@ -9,12 +9,12 @@ class ClassNameDefinition extends DefinitionBase<
   null,
   TSESTree.Identifier
 > {
+  public readonly isTypeDefinition = true;
+
+  public readonly isVariableDefinition = true;
   constructor(name: TSESTree.Identifier, node: ClassNameDefinition['node']) {
     super(DefinitionType.ClassName, name, node, null);
   }
-
-  public readonly isTypeDefinition = true;
-  public readonly isVariableDefinition = true;
 }
 
 export { ClassNameDefinition };

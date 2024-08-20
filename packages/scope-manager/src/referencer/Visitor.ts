@@ -4,6 +4,7 @@ import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
 } from './PatternVisitor';
+
 import { PatternVisitor } from './PatternVisitor';
 import { VisitorBase, VisitorOptions } from './VisitorBase';
 

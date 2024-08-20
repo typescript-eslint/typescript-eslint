@@ -12,11 +12,14 @@ class ImportBindingDefinition extends DefinitionBase<
   TSESTree.ImportDeclaration | TSESTree.TSImportEqualsDeclaration,
   TSESTree.Identifier
 > {
+  public readonly isTypeDefinition = true;
+  public readonly isVariableDefinition = true;
   constructor(
     name: TSESTree.Identifier,
     node: TSESTree.TSImportEqualsDeclaration,
     decl: TSESTree.TSImportEqualsDeclaration,
   );
+
   constructor(
     name: TSESTree.Identifier,
     node: Exclude<
@@ -32,9 +35,6 @@ class ImportBindingDefinition extends DefinitionBase<
   ) {
     super(DefinitionType.ImportBinding, name, node, decl);
   }
-
-  public readonly isTypeDefinition = true;
-  public readonly isVariableDefinition = true;
 }
 
 export { ImportBindingDefinition };

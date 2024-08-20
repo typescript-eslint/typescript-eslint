@@ -9,15 +9,15 @@ class ImplicitGlobalVariableDefinition extends DefinitionBase<
   null,
   TSESTree.BindingName
 > {
+  public readonly isTypeDefinition = false;
+
+  public readonly isVariableDefinition = true;
   constructor(
     name: TSESTree.BindingName,
     node: ImplicitGlobalVariableDefinition['node'],
   ) {
     super(DefinitionType.ImplicitGlobalVariable, name, node, null);
   }
-
-  public readonly isTypeDefinition = false;
-  public readonly isVariableDefinition = true;
 }
 
 export { ImplicitGlobalVariableDefinition };

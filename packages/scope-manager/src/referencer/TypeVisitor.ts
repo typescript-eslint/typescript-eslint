@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { ParameterDefinition, TypeDefinition } from '../definition';
 import type { Scope } from '../scope';
-import { ScopeType } from '../scope';
 import type { Referencer } from './Referencer';
+
+import { ParameterDefinition, TypeDefinition } from '../definition';
+import { ScopeType } from '../scope';
 import { Visitor } from './Visitor';
 
 class TypeVisitor extends Visitor {
@@ -24,60 +26,6 @@ class TypeVisitor extends Visitor {
   // Visit helpers //
   ///////////////////
 
-  protected visitFunctionType(
-    node:
-      | TSESTree.TSCallSignatureDeclaration
-      | TSESTree.TSConstructorType
-      | TSESTree.TSConstructSignatureDeclaration
-      | TSESTree.TSFunctionType
-      | TSESTree.TSMethodSignature,
-  ): void {
-    // arguments and type parameters can only be referenced from within the function
-    this.#referencer.scopeManager.nestFunctionTypeScope(node);
-    this.visit(node.typeParameters);
-
-    for (const param of node.params) {
-      let didVisitAnnotation = false;
-      this.visitPattern(param, (pattern, info) => {
-        // a parameter name creates a value type variable which can be referenced later via typeof arg
-        this.#referencer
-          .currentScope()
-          .defineIdentifier(
-            pattern,
-            new ParameterDefinition(pattern, node, info.rest),
-          );
-
-        if (pattern.typeAnnotation) {
-          this.visit(pattern.typeAnnotation);
-          didVisitAnnotation = true;
-        }
-      });
-
-      // there are a few special cases where the type annotation is owned by the parameter, not the pattern
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!didVisitAnnotation && 'typeAnnotation' in param) {
-        this.visit(param.typeAnnotation);
-      }
-    }
-    this.visit(node.returnType);
-
-    this.#referencer.close(node);
-  }
-
-  protected visitPropertyKey(
-    node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
-  ): void {
-    if (!node.computed) {
-      return;
-    }
-    // computed members are treated as value references, and TS expects they have a literal type
-    this.#referencer.visit(node.key);
-  }
-
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
-
   protected Identifier(node: TSESTree.Identifier): void {
     this.#referencer.currentScope().referenceType(node);
   }
@@ -86,6 +34,10 @@ class TypeVisitor extends Visitor {
     this.visit(node.object);
     // don't visit the property
   }
+
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
 
   protected TSCallSignatureDeclaration(
     node: TSESTree.TSCallSignatureDeclaration,
@@ -264,7 +216,62 @@ class TypeVisitor extends Visitor {
     this.visit(node.typeAnnotation);
   }
 
+  protected visitFunctionType(
+    node:
+      | TSESTree.TSCallSignatureDeclaration
+      | TSESTree.TSConstructorType
+      | TSESTree.TSConstructSignatureDeclaration
+      | TSESTree.TSFunctionType
+      | TSESTree.TSMethodSignature,
+  ): void {
+    // arguments and type parameters can only be referenced from within the function
+    this.#referencer.scopeManager.nestFunctionTypeScope(node);
+    this.visit(node.typeParameters);
+
+    for (const param of node.params) {
+      let didVisitAnnotation = false;
+      this.visitPattern(param, (pattern, info) => {
+        // a parameter name creates a value type variable which can be referenced later via typeof arg
+        this.#referencer
+          .currentScope()
+          .defineIdentifier(
+            pattern,
+            new ParameterDefinition(pattern, node, info.rest),
+          );
+
+        if (pattern.typeAnnotation) {
+          this.visit(pattern.typeAnnotation);
+          didVisitAnnotation = true;
+        }
+      });
+
+      // there are a few special cases where the type annotation is owned by the parameter, not the pattern
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!didVisitAnnotation && 'typeAnnotation' in param) {
+        this.visit(param.typeAnnotation);
+      }
+    }
+    this.visit(node.returnType);
+
+    this.#referencer.close(node);
+  }
+
+  protected visitPropertyKey(
+    node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
+  ): void {
+    if (!node.computed) {
+      return;
+    }
+    // computed members are treated as value references, and TS expects they have a literal type
+    this.#referencer.visit(node.key);
+  }
+
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
+  protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
+    // check
+    this.visitChildren(node);
+  }
+
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     let entityName:
       | TSESTree.Identifier
@@ -288,11 +295,6 @@ class TypeVisitor extends Visitor {
     }
 
     this.visit(node.typeArguments);
-  }
-
-  protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
-    // check
-    this.visitChildren(node);
   }
 }
 

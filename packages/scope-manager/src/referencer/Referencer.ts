@@ -1,5 +1,11 @@
 import type { Lib, TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+import type { GlobalScope, Scope } from '../scope';
+import type { ScopeManager } from '../ScopeManager';
+import type { ReferenceImplicitGlobal } from './Reference';
+import type { VisitorOptions } from './Visitor';
 
 import { assert } from '../assert';
 import {
@@ -13,30 +19,26 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
-import type { GlobalScope, Scope } from '../scope';
-import type { ScopeManager } from '../ScopeManager';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
 import { PatternVisitor } from './PatternVisitor';
-import type { ReferenceImplicitGlobal } from './Reference';
 import { ReferenceFlag } from './Reference';
 import { TypeVisitor } from './TypeVisitor';
-import type { VisitorOptions } from './Visitor';
 import { Visitor } from './Visitor';
 
 interface ReferencerOptions extends VisitorOptions {
-  jsxPragma: string | null;
   jsxFragmentName: string | null;
+  jsxPragma: string | null;
   lib: Lib[];
 }
 
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
-  #jsxPragma: string | null;
-  #jsxFragmentName: string | null;
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
+  #jsxFragmentName: string | null;
+  #jsxPragma: string | null;
   #lib: Lib[];
   public readonly scopeManager: ScopeManager;
 
@@ -46,40 +48,6 @@ class Referencer extends Visitor {
     this.#jsxPragma = options.jsxPragma;
     this.#jsxFragmentName = options.jsxFragmentName;
     this.#lib = options.lib;
-  }
-
-  public currentScope(): Scope;
-  public currentScope(throwOnNull: true): Scope | null;
-  public currentScope(dontThrowOnNull?: true): Scope | null {
-    if (!dontThrowOnNull) {
-      assert(this.scopeManager.currentScope, 'aaa');
-    }
-    return this.scopeManager.currentScope;
-  }
-
-  public close(node: TSESTree.Node): void {
-    while (this.currentScope(true) && node === this.currentScope().block) {
-      this.scopeManager.currentScope = this.currentScope().close(
-        this.scopeManager,
-      );
-    }
-  }
-
-  public referencingDefaultValue(
-    pattern: TSESTree.Identifier,
-    assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[],
-    maybeImplicitGlobal: ReferenceImplicitGlobal | null,
-    init: boolean,
-  ): void {
-    assignments.forEach(assignment => {
-      this.currentScope().referenceValue(
-        pattern,
-        ReferenceFlag.Write,
-        assignment.right,
-        maybeImplicitGlobal,
-        init,
-      );
-    });
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
@@ -101,221 +69,44 @@ class Referencer extends Visitor {
       isValueVariable: false,
     });
   }
+  public close(node: TSESTree.Node): void {
+    while (this.currentScope(true) && node === this.currentScope().block) {
+      this.scopeManager.currentScope = this.currentScope().close(
+        this.scopeManager,
+      );
+    }
+  }
+  public currentScope(): Scope;
+
+  public currentScope(throwOnNull: true): Scope | null;
+
+  public currentScope(dontThrowOnNull?: true): Scope | null {
+    if (!dontThrowOnNull) {
+      assert(this.scopeManager.currentScope, 'aaa');
+    }
+    return this.scopeManager.currentScope;
+  }
+
+  public referencingDefaultValue(
+    pattern: TSESTree.Identifier,
+    assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[],
+    maybeImplicitGlobal: ReferenceImplicitGlobal | null,
+    init: boolean,
+  ): void {
+    assignments.forEach(assignment => {
+      this.currentScope().referenceValue(
+        pattern,
+        ReferenceFlag.Write,
+        assignment.right,
+        maybeImplicitGlobal,
+        init,
+      );
+    });
+  }
 
   /**
    * Searches for a variable named "name" in the upper scopes and adds a pseudo-reference from itself to itself
    */
-  private referenceInSomeUpperScope(name: string): boolean {
-    let scope = this.scopeManager.currentScope;
-    while (scope) {
-      const variable = scope.set.get(name);
-      if (!variable) {
-        scope = scope.upper;
-        continue;
-      }
-
-      scope.referenceValue(variable.identifiers[0]);
-      return true;
-    }
-
-    return false;
-  }
-
-  private referenceJsxPragma(): void {
-    if (this.#jsxPragma == null || this.#hasReferencedJsxFactory) {
-      return;
-    }
-    this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
-      this.#jsxPragma,
-    );
-  }
-
-  private referenceJsxFragment(): void {
-    if (
-      this.#jsxFragmentName == null ||
-      this.#hasReferencedJsxFragmentFactory
-    ) {
-      return;
-    }
-    this.#hasReferencedJsxFragmentFactory = this.referenceInSomeUpperScope(
-      this.#jsxFragmentName,
-    );
-  }
-
-  ///////////////////
-  // Visit helpers //
-  ///////////////////
-
-  protected visitClass(
-    node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-  ): void {
-    ClassVisitor.visit(this, node);
-  }
-
-  protected visitForIn(
-    node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
-  ): void {
-    if (
-      node.left.type === AST_NODE_TYPES.VariableDeclaration &&
-      node.left.kind !== 'var'
-    ) {
-      this.scopeManager.nestForScope(node);
-    }
-
-    if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
-      this.visit(node.left);
-      this.visitPattern(node.left.declarations[0].id, pattern => {
-        this.currentScope().referenceValue(
-          pattern,
-          ReferenceFlag.Write,
-          node.right,
-          null,
-          true,
-        );
-      });
-    } else {
-      this.visitPattern(
-        node.left,
-        (pattern, info) => {
-          const maybeImplicitGlobal = !this.currentScope().isStrict
-            ? {
-                pattern,
-                node,
-              }
-            : null;
-          this.referencingDefaultValue(
-            pattern,
-            info.assignments,
-            maybeImplicitGlobal,
-            false,
-          );
-          this.currentScope().referenceValue(
-            pattern,
-            ReferenceFlag.Write,
-            node.right,
-            maybeImplicitGlobal,
-            false,
-          );
-        },
-        { processRightHandNodes: true },
-      );
-    }
-    this.visit(node.right);
-    this.visit(node.body);
-
-    this.close(node);
-  }
-
-  protected visitFunctionParameterTypeAnnotation(
-    node: TSESTree.Parameter,
-  ): void {
-    switch (node.type) {
-      case AST_NODE_TYPES.AssignmentPattern:
-        this.visitType(node.left.typeAnnotation);
-        break;
-      case AST_NODE_TYPES.TSParameterProperty:
-        this.visitFunctionParameterTypeAnnotation(node.parameter);
-        break;
-      default:
-        this.visitType(node.typeAnnotation);
-        break;
-    }
-  }
-  protected visitFunction(
-    node:
-      | TSESTree.ArrowFunctionExpression
-      | TSESTree.FunctionDeclaration
-      | TSESTree.FunctionExpression
-      | TSESTree.TSDeclareFunction
-      | TSESTree.TSEmptyBodyFunctionExpression,
-  ): void {
-    // FunctionDeclaration name is defined in upper scope
-    // NOTE: Not referring variableScope. It is intended.
-    // Since
-    //  in ES5, FunctionDeclaration should be in FunctionBody.
-    //  in ES6, FunctionDeclaration should be block scoped.
-
-    if (node.type === AST_NODE_TYPES.FunctionExpression) {
-      if (node.id) {
-        // FunctionExpression with name creates its special scope;
-        // FunctionExpressionNameScope.
-        this.scopeManager.nestFunctionExpressionNameScope(node);
-      }
-    } else if (node.id) {
-      // id is defined in upper scope
-      this.currentScope().defineIdentifier(
-        node.id,
-        new FunctionNameDefinition(node.id, node),
-      );
-    }
-
-    // Consider this function is in the MethodDefinition.
-    this.scopeManager.nestFunctionScope(node, false);
-
-    // Process parameter declarations.
-    for (const param of node.params) {
-      this.visitPattern(
-        param,
-        (pattern, info) => {
-          this.currentScope().defineIdentifier(
-            pattern,
-            new ParameterDefinition(pattern, node, info.rest),
-          );
-
-          this.referencingDefaultValue(pattern, info.assignments, null, true);
-        },
-        { processRightHandNodes: true },
-      );
-      this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators.forEach(d => this.visit(d));
-    }
-
-    this.visitType(node.returnType);
-    this.visitType(node.typeParameters);
-
-    // In TypeScript there are a number of function-like constructs which have no body,
-    // so check it exists before traversing
-    if (node.body) {
-      // Skip BlockStatement to prevent creating BlockStatement scope.
-      if (node.body.type === AST_NODE_TYPES.BlockStatement) {
-        this.visitChildren(node.body);
-      } else {
-        this.visit(node.body);
-      }
-    }
-
-    this.close(node);
-  }
-
-  protected visitProperty(node: TSESTree.Property): void {
-    if (node.computed) {
-      this.visit(node.key);
-    }
-
-    this.visit(node.value);
-  }
-
-  protected visitType(node: TSESTree.Node | null | undefined): void {
-    if (!node) {
-      return;
-    }
-    TypeVisitor.visit(this, node);
-  }
-
-  protected visitTypeAssertion(
-    node:
-      | TSESTree.TSAsExpression
-      | TSESTree.TSSatisfiesExpression
-      | TSESTree.TSTypeAssertion,
-  ): void {
-    this.visit(node.expression);
-    this.visitType(node.typeAnnotation);
-  }
-
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
-
   protected ArrowFunctionExpression(
     node: TSESTree.ArrowFunctionExpression,
   ): void {
@@ -342,8 +133,8 @@ class Referencer extends Visitor {
           (pattern, info) => {
             const maybeImplicitGlobal = !this.currentScope().isStrict
               ? {
-                  pattern,
                   node,
+                  pattern,
                 }
               : null;
             this.referencingDefaultValue(
@@ -383,6 +174,10 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
+  ///////////////////
+  // Visit helpers //
+  ///////////////////
+
   protected BreakStatement(): void {
     // don't reference the break statement's label
   }
@@ -413,12 +208,11 @@ class Referencer extends Visitor {
 
     this.close(node);
   }
-
-  protected ClassExpression(node: TSESTree.ClassExpression): void {
+  protected ClassDeclaration(node: TSESTree.ClassDeclaration): void {
     this.visitClass(node);
   }
 
-  protected ClassDeclaration(node: TSESTree.ClassDeclaration): void {
+  protected ClassExpression(node: TSESTree.ClassExpression): void {
     this.visitClass(node);
   }
 
@@ -430,6 +224,10 @@ class Referencer extends Visitor {
     // this defines no local variables
   }
 
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
+
   protected ExportDefaultDeclaration(
     node: TSESTree.ExportDefaultDeclaration,
   ): void {
@@ -437,19 +235,6 @@ class Referencer extends Visitor {
       ExportVisitor.visit(this, node);
     } else {
       this.visit(node.declaration);
-    }
-  }
-
-  protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
-    if (node.expression.type === AST_NODE_TYPES.Identifier) {
-      // this is a special case - you can `export = T` where `T` is a type OR a
-      // value however `T[U]` is illegal when `T` is a type and `T.U` is illegal
-      // when `T.U` is a type
-      // i.e. if the expression is JUST an Identifier - it could be either ref
-      // kind; otherwise the standard rules apply
-      this.currentScope().referenceDualValueType(node.expression);
-    } else {
-      this.visit(node.expression);
     }
   }
 
@@ -501,6 +286,10 @@ class Referencer extends Visitor {
     this.visitType(node.typeAnnotation);
   }
 
+  protected ImportAttribute(): void {
+    // import assertions are module metadata and thus have no variables to reference
+  }
+
   protected ImportDeclaration(node: TSESTree.ImportDeclaration): void {
     assert(
       this.scopeManager.isModule(),
@@ -536,6 +325,7 @@ class Referencer extends Visitor {
     }
     // we don't ever reference the property as it's always going to be a property on the thing
   }
+
   protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.referenceJsxPragma();
     if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
@@ -628,28 +418,12 @@ class Referencer extends Visitor {
     this.visit(node.quasi);
     this.visitType(node.typeArguments);
   }
-
   protected TSAsExpression(node: TSESTree.TSAsExpression): void {
     this.visitTypeAssertion(node);
   }
 
   protected TSDeclareFunction(node: TSESTree.TSDeclareFunction): void {
     this.visitFunction(node);
-  }
-
-  protected TSImportEqualsDeclaration(
-    node: TSESTree.TSImportEqualsDeclaration,
-  ): void {
-    this.currentScope().defineIdentifier(
-      node.id,
-      new ImportBindingDefinition(node.id, node, node),
-    );
-
-    if (node.moduleReference.type === AST_NODE_TYPES.TSQualifiedName) {
-      this.visit(node.moduleReference.left);
-    } else {
-      this.visit(node.moduleReference);
-    }
   }
 
   protected TSEmptyBodyFunctionExpression(
@@ -696,6 +470,34 @@ class Referencer extends Visitor {
     }
 
     this.close(node);
+  }
+
+  protected TSExportAssignment(node: TSESTree.TSExportAssignment): void {
+    if (node.expression.type === AST_NODE_TYPES.Identifier) {
+      // this is a special case - you can `export = T` where `T` is a type OR a
+      // value however `T[U]` is illegal when `T` is a type and `T.U` is illegal
+      // when `T.U` is a type
+      // i.e. if the expression is JUST an Identifier - it could be either ref
+      // kind; otherwise the standard rules apply
+      this.currentScope().referenceDualValueType(node.expression);
+    } else {
+      this.visit(node.expression);
+    }
+  }
+
+  protected TSImportEqualsDeclaration(
+    node: TSESTree.TSImportEqualsDeclaration,
+  ): void {
+    this.currentScope().defineIdentifier(
+      node.id,
+      new ImportBindingDefinition(node.id, node, node),
+    );
+
+    if (node.moduleReference.type === AST_NODE_TYPES.TSQualifiedName) {
+      this.visit(node.moduleReference.left);
+    } else {
+      this.visit(node.moduleReference);
+    }
   }
 
   protected TSInstantiationExpression(
@@ -790,6 +592,173 @@ class Referencer extends Visitor {
     }
   }
 
+  protected visitClass(
+    node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
+  ): void {
+    ClassVisitor.visit(this, node);
+  }
+
+  protected visitForIn(
+    node: TSESTree.ForInStatement | TSESTree.ForOfStatement,
+  ): void {
+    if (
+      node.left.type === AST_NODE_TYPES.VariableDeclaration &&
+      node.left.kind !== 'var'
+    ) {
+      this.scopeManager.nestForScope(node);
+    }
+
+    if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
+      this.visit(node.left);
+      this.visitPattern(node.left.declarations[0].id, pattern => {
+        this.currentScope().referenceValue(
+          pattern,
+          ReferenceFlag.Write,
+          node.right,
+          null,
+          true,
+        );
+      });
+    } else {
+      this.visitPattern(
+        node.left,
+        (pattern, info) => {
+          const maybeImplicitGlobal = !this.currentScope().isStrict
+            ? {
+                node,
+                pattern,
+              }
+            : null;
+          this.referencingDefaultValue(
+            pattern,
+            info.assignments,
+            maybeImplicitGlobal,
+            false,
+          );
+          this.currentScope().referenceValue(
+            pattern,
+            ReferenceFlag.Write,
+            node.right,
+            maybeImplicitGlobal,
+            false,
+          );
+        },
+        { processRightHandNodes: true },
+      );
+    }
+    this.visit(node.right);
+    this.visit(node.body);
+
+    this.close(node);
+  }
+
+  protected visitFunction(
+    node:
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression
+      | TSESTree.TSDeclareFunction
+      | TSESTree.TSEmptyBodyFunctionExpression,
+  ): void {
+    // FunctionDeclaration name is defined in upper scope
+    // NOTE: Not referring variableScope. It is intended.
+    // Since
+    //  in ES5, FunctionDeclaration should be in FunctionBody.
+    //  in ES6, FunctionDeclaration should be block scoped.
+
+    if (node.type === AST_NODE_TYPES.FunctionExpression) {
+      if (node.id) {
+        // FunctionExpression with name creates its special scope;
+        // FunctionExpressionNameScope.
+        this.scopeManager.nestFunctionExpressionNameScope(node);
+      }
+    } else if (node.id) {
+      // id is defined in upper scope
+      this.currentScope().defineIdentifier(
+        node.id,
+        new FunctionNameDefinition(node.id, node),
+      );
+    }
+
+    // Consider this function is in the MethodDefinition.
+    this.scopeManager.nestFunctionScope(node, false);
+
+    // Process parameter declarations.
+    for (const param of node.params) {
+      this.visitPattern(
+        param,
+        (pattern, info) => {
+          this.currentScope().defineIdentifier(
+            pattern,
+            new ParameterDefinition(pattern, node, info.rest),
+          );
+
+          this.referencingDefaultValue(pattern, info.assignments, null, true);
+        },
+        { processRightHandNodes: true },
+      );
+      this.visitFunctionParameterTypeAnnotation(param);
+      param.decorators.forEach(d => this.visit(d));
+    }
+
+    this.visitType(node.returnType);
+    this.visitType(node.typeParameters);
+
+    // In TypeScript there are a number of function-like constructs which have no body,
+    // so check it exists before traversing
+    if (node.body) {
+      // Skip BlockStatement to prevent creating BlockStatement scope.
+      if (node.body.type === AST_NODE_TYPES.BlockStatement) {
+        this.visitChildren(node.body);
+      } else {
+        this.visit(node.body);
+      }
+    }
+
+    this.close(node);
+  }
+
+  protected visitFunctionParameterTypeAnnotation(
+    node: TSESTree.Parameter,
+  ): void {
+    switch (node.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        this.visitType(node.left.typeAnnotation);
+        break;
+      case AST_NODE_TYPES.TSParameterProperty:
+        this.visitFunctionParameterTypeAnnotation(node.parameter);
+        break;
+      default:
+        this.visitType(node.typeAnnotation);
+        break;
+    }
+  }
+
+  protected visitProperty(node: TSESTree.Property): void {
+    if (node.computed) {
+      this.visit(node.key);
+    }
+
+    this.visit(node.value);
+  }
+
+  protected visitType(node: TSESTree.Node | null | undefined): void {
+    if (!node) {
+      return;
+    }
+    TypeVisitor.visit(this, node);
+  }
+
+  protected visitTypeAssertion(
+    node:
+      | TSESTree.TSAsExpression
+      | TSESTree.TSSatisfiesExpression
+      | TSESTree.TSTypeAssertion,
+  ): void {
+    this.visit(node.expression);
+    this.visitType(node.typeAnnotation);
+  }
+
   protected WithStatement(node: TSESTree.WithStatement): void {
     this.visit(node.object);
 
@@ -801,8 +770,41 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
-  protected ImportAttribute(): void {
-    // import assertions are module metadata and thus have no variables to reference
+  private referenceInSomeUpperScope(name: string): boolean {
+    let scope = this.scopeManager.currentScope;
+    while (scope) {
+      const variable = scope.set.get(name);
+      if (!variable) {
+        scope = scope.upper;
+        continue;
+      }
+
+      scope.referenceValue(variable.identifiers[0]);
+      return true;
+    }
+
+    return false;
+  }
+
+  private referenceJsxFragment(): void {
+    if (
+      this.#jsxFragmentName == null ||
+      this.#hasReferencedJsxFragmentFactory
+    ) {
+      return;
+    }
+    this.#hasReferencedJsxFragmentFactory = this.referenceInSomeUpperScope(
+      this.#jsxFragmentName,
+    );
+  }
+
+  private referenceJsxPragma(): void {
+    if (this.#jsxPragma == null || this.#hasReferencedJsxFactory) {
+      return;
+    }
+    this.#hasReferencedJsxFactory = this.referenceInSomeUpperScope(
+      this.#jsxPragma,
+    );
   }
 }
 
