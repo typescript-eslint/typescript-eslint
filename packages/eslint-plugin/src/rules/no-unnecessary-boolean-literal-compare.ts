@@ -216,7 +216,7 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          fix: function* (fixer) {
+          *fix(fixer) {
             // 1. isUnaryNegation - parent negation
             // 2. literalBooleanInComparison - is compared to literal boolean
             // 3. negated - is expression negated

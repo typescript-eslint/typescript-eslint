@@ -253,7 +253,7 @@ export default {
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
-  typedef: typedef,
+  typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
   'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,

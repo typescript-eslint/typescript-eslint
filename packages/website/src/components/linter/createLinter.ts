@@ -66,7 +66,7 @@ export function createLinter(
 
   linter.getRules().forEach((item, name) => {
     rules.set(name, {
-      name: name,
+      name,
       description: item.meta?.docs?.description,
       url: item.meta?.docs?.url,
       schema: item.meta?.schema ?? [],
@@ -104,7 +104,7 @@ export function createLinter(
     const code = system.readFile(filename);
     if (code) {
       return linter.verifyAndFix(code, eslintConfig, {
-        filename: filename,
+        filename,
         fix: true,
       });
     }
