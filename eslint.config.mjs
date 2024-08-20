@@ -600,8 +600,7 @@ export default tseslint.config(
         'error',
         {
           order: 'asc',
-          groups: ['unknown', 'nullish'],
-          ignoreCase: false,
+          groups: ['unknown', 'keyword', 'nullish'],
           type: 'natural',
         },
       ],

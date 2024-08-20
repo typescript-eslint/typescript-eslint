@@ -146,7 +146,7 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.26
    */
-  extends?: string | string[] | undefined;
+  extends?: string[] | string | undefined;
 
   id?: string | undefined;
 
@@ -167,7 +167,7 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.7
    */
-  required?: boolean | string[] | undefined;
+  required?: string[] | boolean | undefined;
 
   /**
    * This attribute is a string that provides a short description of the

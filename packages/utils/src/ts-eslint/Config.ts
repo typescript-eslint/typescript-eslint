@@ -73,7 +73,7 @@ export namespace ClassicConfig {
     /**
      * The path to other config files or the package name of shareable configs.
      */
-    extends?: string | string[];
+    extends?: string[] | string;
     /**
      * The global variable settings.
      */
@@ -117,15 +117,15 @@ export namespace ClassicConfig {
   }
 
   export interface ConfigOverride extends BaseConfig {
-    excludedFiles?: string | string[];
-    files: string | string[];
+    excludedFiles?: string[] | string;
+    files: string[] | string;
   }
 
   export interface Config extends BaseConfig {
     /**
      * The glob patterns that ignore to lint.
      */
-    ignorePatterns?: string | string[];
+    ignorePatterns?: string[] | string;
     /**
      * The root flag.
      */
@@ -250,9 +250,9 @@ export namespace FlatConfig {
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
-      | string
-      // yes, a single layer of array nesting is supported
       | string[]
+      // yes, a single layer of array nesting is supported
+      | string
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.

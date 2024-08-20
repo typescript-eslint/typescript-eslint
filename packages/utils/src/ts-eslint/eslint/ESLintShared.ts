@@ -42,7 +42,7 @@ export declare class ESLintBase<
    * @param patterns The lint target files. This can contain any of file paths, directory paths, and glob patterns.
    * @returns The promise that will be fulfilled with an array of LintResult objects.
    */
-  lintFiles(patterns: string | string[]): Promise<LintResult[]>;
+  lintFiles(patterns: string[] | string): Promise<LintResult[]>;
 
   /**
    * This method lints the given source code text and then returns the results.

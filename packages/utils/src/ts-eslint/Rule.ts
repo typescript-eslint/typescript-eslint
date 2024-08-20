@@ -116,7 +116,7 @@ export interface SuggestionReportDescriptor<MessageIds extends string>
 
 export type ReportFixFunction = (
   fixer: RuleFixer,
-) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
+) => IterableIterator<RuleFix> | readonly RuleFix[] | RuleFix | null;
 
 export type ReportSuggestionArray<MessageIds extends string> =
   SuggestionReportDescriptor<MessageIds>[];
