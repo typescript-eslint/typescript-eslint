@@ -52,7 +52,9 @@ export default createRule<[], MessageIds>({
     messages: {
       useUnknown: useUnknownMessageBase,
       useUnknownArrayDestructuringPattern: `${useUnknownMessageBase} The thrown error may not be iterable.`,
-      useUnknownObjectDestructuringPattern: `${useUnknownMessageBase} The thrown error may be nullable, or may not have the expected shape.`,
+      useUnknownObjectDestructuringPattern: `${
+        useUnknownMessageBase
+      } The thrown error may be nullable, or may not have the expected shape.`,
       addUnknownTypeAnnotationSuggestion:
         'Add an explicit `: unknown` type annotation to the rejection callback variable.',
       addUnknownRestTypeAnnotationSuggestion:
