@@ -14,8 +14,11 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
   server: {
     ...jest.requireActual('typescript/lib/tsserverlibrary').server,
     ProjectService: class {
-      logger: ts.server.Logger;
       eventHandler: ts.server.ProjectServiceEventHandler | undefined;
+      logger: ts.server.Logger;
+      setCompilerOptionsForInferredProjects =
+        mockSetCompilerOptionsForInferredProjects;
+      setHostConfiguration = mockSetHostConfiguration;
       constructor(
         ...args: ConstructorParameters<typeof ts.server.ProjectService>
       ) {
@@ -27,9 +30,6 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
           } as ts.server.ProjectLoadingStartEvent);
         }
       }
-      setCompilerOptionsForInferredProjects =
-        mockSetCompilerOptionsForInferredProjects;
-      setHostConfiguration = mockSetHostConfiguration;
     },
   },
 }));

@@ -1,4 +1,5 @@
 import type { TSESTreeOptions } from '../../src';
+
 import { withoutProjectParserOptions } from '../../src';
 
 describe('withoutProjectParserOptions', () => {

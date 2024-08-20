@@ -1,5 +1,15 @@
-import debug from 'debug';
 import type * as ts from 'typescript';
+
+import debug from 'debug';
+
+import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
+import type {
+  ParserServices,
+  ParserServicesNodeMaps,
+  TSESTreeOptions,
+} from './parser-options';
+import type { ParseSettings } from './parseSettings';
+import type { TSESTree } from './ts-estree';
 
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
@@ -10,21 +20,13 @@ import {
   createSourceFile,
 } from './create-program/createSourceFile';
 import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
-import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
-import type {
-  ParserServices,
-  ParserServicesNodeMaps,
-  TSESTreeOptions,
-} from './parser-options';
-import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import type { TSESTree } from './ts-estree';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
@@ -88,9 +90,11 @@ function getProgramAndAST(
 }
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : {}) &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {});
+type AST<T extends TSESTreeOptions> = (T['comment'] extends true
+  ? { comments: TSESTree.Comment[] }
+  : {}) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
+  TSESTree.Program;
 /* eslint-enable @typescript-eslint/no-empty-object-type */
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
@@ -137,7 +141,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree, astMaps } = astConverter(
+  const { astMaps, estree } = astConverter(
     ast,
     parseSettings,
     shouldPreserveNodeMaps,
@@ -246,7 +250,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
       ? parseSettings.preserveNodeMaps
       : true;
 
-  const { estree, astMaps } = astConverter(
+  const { astMaps, estree } = astConverter(
     ast,
     parseSettings,
     shouldPreserveNodeMaps,
@@ -274,10 +278,10 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
 
 export {
   AST,
+  clearDefaultProjectMatchedFiles,
+  clearParseAndGenerateServicesCalls,
+  clearProgramCache,
   parse,
   parseAndGenerateServices,
   ParseAndGenerateServicesResult,
-  clearDefaultProjectMatchedFiles,
-  clearProgramCache,
-  clearParseAndGenerateServicesCalls,
 };

@@ -1,10 +1,12 @@
-import debug from 'debug';
 import type * as ts from 'typescript';
 
-import { firstDefined } from '../node-utils';
+import debug from 'debug';
+
 import type { ParseSettings } from '../parseSettings';
-import { createProjectProgramError } from './createProjectProgramError';
 import type { ASTAndDefiniteProgram } from './shared';
+
+import { firstDefined } from '../node-utils';
+import { createProjectProgramError } from './createProjectProgramError';
 import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');

@@ -1,3 +1,9 @@
+export * from './clear-caches';
+export * from './create-program/getScriptKind';
+export { getCanonicalFileName } from './create-program/shared';
+export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
+export * from './getModifiers';
+export { TSError } from './node-utils';
 export {
   AST,
   parse,
@@ -6,19 +12,13 @@ export {
 } from './parser';
 export {
   ParserServices,
-  ParserServicesWithTypeInformation,
   ParserServicesWithoutTypeInformation,
+  ParserServicesWithTypeInformation,
   TSESTreeOptions,
 } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
-export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
-export * from './create-program/getScriptKind';
-export { getCanonicalFileName } from './create-program/shared';
 export { typescriptVersionIsAtLeast } from './version-check';
-export * from './getModifiers';
-export { TSError } from './node-utils';
-export * from './clear-caches';
 export { withoutProjectParserOptions } from './withoutProjectParserOptions';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder

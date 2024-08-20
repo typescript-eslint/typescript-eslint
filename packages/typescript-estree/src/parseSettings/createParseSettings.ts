@@ -2,16 +2,17 @@ import debug from 'debug';
 import * as ts from 'typescript';
 
 import type { ProjectServiceSettings } from '../create-program/createProjectService';
+import type { TSESTreeOptions } from '../parser-options';
+import type { MutableParseSettings } from './index';
+
 import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
 import { isSourceFile } from '../source-files';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
 } from './ExpiringCache';
 import { getProjectConfigFiles } from './getProjectConfigFiles';
-import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
@@ -29,9 +30,9 @@ let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 const JSDocParsingMode = {
   ParseAll: ts.JSDocParsingMode?.ParseAll,
-  ParseNone: ts.JSDocParsingMode?.ParseNone,
   ParseForTypeErrors: ts.JSDocParsingMode?.ParseForTypeErrors,
   ParseForTypeInfo: ts.JSDocParsingMode?.ParseForTypeInfo,
+  ParseNone: ts.JSDocParsingMode?.ParseNone,
 } as const;
 /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 

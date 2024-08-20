@@ -1,8 +1,8 @@
 import path from 'node:path';
-
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
+
 import { describeFilePath } from './describeFilePath';
 
 const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([

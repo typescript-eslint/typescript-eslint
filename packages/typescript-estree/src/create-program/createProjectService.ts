@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import debug from 'debug';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
+import debug from 'debug';
+
 import type { ProjectServiceOptions } from '../parser-options';
+
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
 
@@ -37,7 +39,7 @@ export interface ProjectServiceSettings {
 }
 
 export function createProjectService(
-  optionsRaw: boolean | ProjectServiceOptions | undefined,
+  optionsRaw: ProjectServiceOptions | boolean | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
   tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {
@@ -101,18 +103,18 @@ export function createProjectService(
   log('Creating project service with: %o', options);
 
   const service = new tsserver.server.ProjectService({
-    host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
-    useSingleInferredProject: false,
-    useInferredProjectPerProjectRoot: false,
-    logger,
     eventHandler: logTsserverEvent.enabled
       ? (e): void => {
           logTsserverEvent(e);
         }
       : undefined,
-    session: undefined,
+    host: system,
     jsDocParsingMode,
+    logger,
+    session: undefined,
+    useInferredProjectPerProjectRoot: false,
+    useSingleInferredProject: false,
   });
 
   service.setHostConfiguration({

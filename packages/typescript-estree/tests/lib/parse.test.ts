@@ -1,13 +1,14 @@
-import { join, resolve } from 'node:path';
-
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
+import type * as typescriptModule from 'typescript';
+
 import debug from 'debug';
 import * as globbyModule from 'globby';
-import type * as typescriptModule from 'typescript';
+import { join, resolve } from 'node:path';
+
+import type { TSESTreeOptions } from '../../src/parser-options';
 
 import * as parser from '../../src';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
-import type { TSESTreeOptions } from '../../src/parser-options';
 import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
@@ -72,15 +73,15 @@ describe('parseAndGenerateServices', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
       comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
       filePath: 'file.ts',
+      loc: true,
+      range: true,
+      tokens: true,
     };
     const projectConfig: TSESTreeOptions = {
       ...baseConfig,
-      tsconfigRootDir: FIXTURES_DIR,
       project: './tsconfig.json',
+      tsconfigRootDir: FIXTURES_DIR,
     };
 
     it('should not impact the use of parse()', () => {
@@ -201,8 +202,8 @@ describe('parseAndGenerateServices', () => {
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
-            jsx: jsxSetting,
             filePath: join(FIXTURES_DIR, `file${ext}`),
+            jsx: jsxSetting,
           });
         });
         if (!shouldThrow) {
@@ -349,9 +350,9 @@ describe('parseAndGenerateServices', () => {
       const config: TSESTreeOptions = {
         comment: true,
         disallowAutomaticSingleRunInference: true,
-        tokens: true,
-        range: true,
         loc: true,
+        range: true,
+        tokens: true,
         tsconfigRootDir: PROJECT_DIR,
       };
       const testParse =
@@ -539,11 +540,11 @@ describe('parseAndGenerateServices', () => {
           const config: TSESTreeOptions = {
             comment: true,
             disallowAutomaticSingleRunInference: true,
-            tokens: true,
-            range: true,
             loc: true,
-            tsconfigRootDir: PROJECT_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            range: true,
+            tokens: true,
+            tsconfigRootDir: PROJECT_DIR,
           };
           const testParse = (filePath: string) => (): void => {
             try {
@@ -649,11 +650,11 @@ describe('parseAndGenerateServices', () => {
       const config: TSESTreeOptions = {
         comment: true,
         disallowAutomaticSingleRunInference: true,
-        tokens: true,
-        range: true,
         loc: true,
-        tsconfigRootDir: PROJECT_DIR,
         project: './**/tsconfig.json',
+        range: true,
+        tokens: true,
+        tsconfigRootDir: PROJECT_DIR,
       };
 
       const testParse =
@@ -664,8 +665,8 @@ describe('parseAndGenerateServices', () => {
         (): void => {
           parser.parseAndGenerateServices(code, {
             ...config,
-            projectFolderIgnoreList,
             filePath: join(PROJECT_DIR, filePath, './file.ts'),
+            projectFolderIgnoreList,
           });
         };
 
@@ -692,8 +693,8 @@ describe('parseAndGenerateServices', () => {
             },
             disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
-            tsconfigRootDir: FIXTURES_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            tsconfigRootDir: FIXTURES_DIR,
           });
         }
 

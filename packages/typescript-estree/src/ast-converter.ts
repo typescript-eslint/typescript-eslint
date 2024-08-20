@@ -1,18 +1,19 @@
 import type { SourceFile } from 'typescript';
 
 import type { ASTMaps } from './convert';
+import type { ParseSettings } from './parseSettings';
+import type { TSESTree } from './ts-estree';
+
 import { Converter, convertError } from './convert';
 import { convertComments } from './convert-comments';
 import { convertTokens } from './node-utils';
-import type { ParseSettings } from './parseSettings';
 import { simpleTraverse } from './simple-traverse';
-import type { TSESTree } from './ts-estree';
 
 export function astConverter(
   ast: SourceFile,
   parseSettings: ParseSettings,
   shouldPreserveNodeMaps: boolean,
-): { estree: TSESTree.Program; astMaps: ASTMaps } {
+): { astMaps: ASTMaps; estree: TSESTree.Program } {
   /**
    * The TypeScript compiler produced fundamental parse errors when parsing the
    * source.
@@ -71,5 +72,5 @@ export function astConverter(
 
   const astMaps = instance.getASTMaps();
 
-  return { estree, astMaps };
+  return { astMaps, estree };
 }
